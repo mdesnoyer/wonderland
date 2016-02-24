@@ -13,6 +13,9 @@ var h = require('./helpers');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var App = React.createClass({
+	getInitialState: function() {
+
+	},
 	render: function() {
 		return (
 			<div>
