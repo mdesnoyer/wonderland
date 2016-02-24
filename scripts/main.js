@@ -6,8 +6,9 @@ var ReactRouter = require('react-router');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
-var Navigation = ReactRouter.Navigation;
-var createBrowserHistory = require('history/lib/createBrowserHistory');
+var browserHistory = ReactRouter.browserHistory;
+
+var h = require('./helpers');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -52,14 +53,20 @@ var Progress = React.createClass({
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Upload = React.createClass({
+	submitForm: function(event) {
+		event.preventDefault();
+		var url = this.refs.url.value;
+		debugger;
+		browserHistory.push(url)
+	},
 	render: function() {
 		return (
 			<section>
-				<form>
+				<form onSubmit={ this.submitForm }>
 					<fieldset>
 						<legend></legend>
 						<label>URL</label>
-						<input type="text"></input>
+						<input ref="url" type="text" defaultValue={ h.getFunName() }></input>
 						<small>Error?</small>
 						<button>Process</button>
 						<small>Instructions, link to Terms</small>
@@ -123,9 +130,9 @@ var NotFound = React.createClass({
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var routes = (
-	<Router history={createBrowserHistory()}>
-		<Route path="/" component={TODO1} />
-		<Route path="/store/:storeId" component={TODO2} />
+	<Router history={browserHistory}>
+		<Route path="/" component={App} />
+		<Route path="/job/:jobId" component={App} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );
