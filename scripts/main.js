@@ -2,6 +2,12 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactRouter = require('react-router');
+
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var Navigation = ReactRouter.Navigation;
+var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -56,7 +62,7 @@ var Upload = React.createClass({
 						<input type="text"></input>
 						<small>Error?</small>
 						<button>Process</button>
-						<small>Instructions</small>
+						<small>Instructions, link to Terms</small>
 					</fieldset>
 				</form>
 			</section>
@@ -87,6 +93,7 @@ var Results = React.createClass({
 					<thead></thead>
 					<tbody>
 						<tr>
+							<th>Title TODO</th>
 							<td><ThumbnailRanked neonscore="99" src="http://loremflickr.com/320/240/neon"/></td>
 							<td><ThumbnailRanked neonscore="77" src="http://loremflickr.com/320/240/neon"/></td>
 							<td><ThumbnailRanked neonscore="66" src="http://loremflickr.com/320/240/neon"/></td>
@@ -104,6 +111,27 @@ var Results = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-ReactDOM.render(<App />, document.querySelector('#app'));
+var NotFound = React.createClass({
+	render: function() {
+		return (
+			<section>
+				<h1>Not Found</h1>
+			</section>
+		);
+	}
+})
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+var routes = (
+	<Router history={createBrowserHistory()}>
+		<Route path="/" component={TODO1} />
+		<Route path="/store/:storeId" component={TODO2} />
+		<Route path="*" component={NotFound} />
+	</Router>
+);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+ReactDOM.render(routes, document.querySelector('#app'));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
