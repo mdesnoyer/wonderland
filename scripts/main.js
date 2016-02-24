@@ -36,8 +36,8 @@ var Progress = React.createClass({
 	render: function() {
 		return (
 			<section>
-				<big>{this.props.message}</big>
-				<progress value={this.props.value} max="100"></progress>
+				<big>{ this.props.message }</big>
+				<progress value={ this.props.value } max="100"></progress>
 			</section>
 		);
 	}
@@ -70,8 +70,8 @@ var ThumbnailRanked = React.createClass({
 	render: function() {
 		return (
 			<figure>
-				<img></img>
-				<figcaption>99</figcaption>
+				<img src={ this.props.src }></img>
+				<figcaption>{ this.props.neonscore }</figcaption>
 			</figure>
 		);
 	}
@@ -87,7 +87,12 @@ var Results = React.createClass({
 					<thead></thead>
 					<tbody>
 						<tr>
-							<td><ThumbnailRanked /></td>
+							<td><ThumbnailRanked neonscore="99" src="http://loremflickr.com/320/240/neon"/></td>
+							<td><ThumbnailRanked neonscore="77" src="http://loremflickr.com/320/240/neon"/></td>
+							<td><ThumbnailRanked neonscore="66" src="http://loremflickr.com/320/240/neon"/></td>
+							<td><ThumbnailRanked neonscore="44" src="http://loremflickr.com/320/240/neon"/></td>
+							<td><ThumbnailRanked neonscore="22" src="http://loremflickr.com/320/240/neon"/></td>
+							<td><ThumbnailRanked neonscore="02" src="http://loremflickr.com/320/240/neon"/></td>
 						</tr>
 					</tbody>
 					<tfoot></tfoot>
