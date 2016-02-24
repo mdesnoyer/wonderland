@@ -86,7 +86,9 @@ var Results = React.createClass({
 				<table>
 					<thead></thead>
 					<tbody>
-						<ThumbnailRanked />
+						<tr>
+							<td><ThumbnailRanked /></td>
+						</tr>
 					</tbody>
 					<tfoot></tfoot>
 				</table>
