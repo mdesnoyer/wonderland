@@ -11,7 +11,7 @@ var App = React.createClass({
 			<div>
 				<CallToAction />
 				<Upload />
-				<Progress value="50" />
+				<Progress message="Things are cooking" value="50" />
 				<Results />
 			</div>
 		);
@@ -36,7 +36,7 @@ var Progress = React.createClass({
 	render: function() {
 		return (
 			<section>
-				<big>Text to go here</big>
+				<big>{this.props.message}</big>
 				<progress value={this.props.value} max="100"></progress>
 			</section>
 		);
