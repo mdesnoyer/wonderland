@@ -116,17 +116,6 @@ var Results = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var NotFound = React.createClass({
-	render: function() {
-		return (
-			<section>
-				<h1>Not Found</h1>
-			</section>
-		);
-	}
-})
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 var routes = (
 	<Router history={browserHistory}>
 		<Route path="/" component={App} />
