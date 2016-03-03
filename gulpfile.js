@@ -17,12 +17,17 @@ var historyApiFallback = require('connect-history-api-fallback')
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('styles', function() {
-    return gulp.src('css/**')
+    gulp.src('css/**')
         .pipe(sass()) // Using gulp-sass
         .pipe(gulp.dest('./build/css'))
         .pipe(reload({
-            stream:true
-        }))
+            stream: true
+        }));
+    gulp.src('node_modules/bulma/css/bulma.min.css')
+        .pipe(gulp.dest('./build/css'))
+        .pipe(reload({
+            stream: true
+        }));
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -30,6 +35,9 @@ gulp.task('styles', function() {
 gulp.task('html', function() {
     return gulp.src('./index.html')
         .pipe(gulp.dest('./build/'))
+        .pipe(reload({
+            stream: true
+        }));
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -106,6 +114,7 @@ gulp.task('scripts', function() {
 // run 'scripts' task first, then watch for future changes
 gulp.task('default', ['images', 'styles', 'scripts', 'html', 'browser-sync'], function() {
         gulp.watch('css/**/*', ['styles']); // gulp watch for changes
+        gulp.watch('./index.html', ['html']); // gulp watch for changes
         return buildScript('main.js', true); // browserify watch for JS changes
     }
 );
