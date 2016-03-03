@@ -22,10 +22,6 @@ var historyApiFallback = require('connect-history-api-fallback')
 */
 
 gulp.task('styles',function() {
-  // move over fonts
-
-  gulp.src('css/fonts/**.*')
-    .pipe(gulp.dest('build/css/fonts'))
 
   // Compiles CSS
   gulp.src('css/style.styl')
