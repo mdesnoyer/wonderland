@@ -7,22 +7,29 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
-var stylus = require('gulp-stylus');
-var autoprefixer = require('gulp-autoprefixer');
+var sass = require('gulp-sass');
+
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+
 var historyApiFallback = require('connect-history-api-fallback')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('styles', function() {
-    gulp.src('css/style.styl')
-        .pipe(stylus())
-        .pipe(autoprefixer())
+    return gulp.src('css/**')
+        .pipe(sass()) // Using gulp-sass
         .pipe(gulp.dest('./build/css'))
         .pipe(reload({
             stream:true
         }))
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('html', function() {
+    return gulp.src('./index.html')
+        .pipe(gulp.dest('./build/'))
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -36,8 +43,10 @@ gulp.task('images', function() {
 
 gulp.task('browser-sync', function() {
     browserSync({
-        server : {},
-        middleware : [ historyApiFallback() ],
+        server: {
+            baseDir: "./build/"
+        },
+        middleware: [ historyApiFallback() ],
         ghostMode: false
     });
 });
@@ -72,7 +81,7 @@ function buildScript(file, watch) {
         return stream
             .on('error', handleErrors)
             .pipe(source(file))
-            .pipe(gulp.dest('./build/'))
+            .pipe(gulp.dest('./build/js/'))
             .pipe(reload({ stream: true }))
     }
 
@@ -95,7 +104,7 @@ gulp.task('scripts', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 // run 'scripts' task first, then watch for future changes
-gulp.task('default', ['images','styles','scripts','browser-sync'], function() {
+gulp.task('default', ['images', 'styles', 'scripts', 'html', 'browser-sync'], function() {
         gulp.watch('css/**/*', ['styles']); // gulp watch for changes
         return buildScript('main.js', true); // browserify watch for JS changes
     }

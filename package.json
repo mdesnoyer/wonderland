@@ -1,15 +1,15 @@
 {
   "name": "TODO",
   "version": "0.0.1",
-  "private": true
-  "license" : "UNLICENSED"
+  "private": true,
+  "license": "UNLICENSED",
   "description": "",
   "main": "index.js",
   "author": "Ed Henderson <henderson@neon-lab.com>",
   "repository": {
     "type": "git",
     "url": "git://github.com/neon-lab/lookingglass"
-  }
+  },
   "devDependencies": {
     "autobind-decorator": "1.3.2",
     "babel": "5.8.23",
@@ -19,8 +19,8 @@
     "bulma": "0.0.16",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "3.9.0",
-    "gulp-autoprefixer": "3.1.0",
     "gulp-notify": "2.2.0",
+    "gulp-sass": "^2.2.0",
     "gulp-util": "3.0.7",
     "history": "1.12.5",
     "install": "0.1.8",
