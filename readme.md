@@ -1,4 +1,4 @@
-# Jabberwock
+# Looking Glass
 
 ## Setup
 
