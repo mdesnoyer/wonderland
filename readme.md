@@ -9,7 +9,6 @@ _(This is very much a work in progress, all feedback and amends welcome)_
 - Install Babel Syntax Highlighter (for Sublime Text or equivalent)
 
 ### Command Line
-- `npm install gulp -g` make sure you can install gulp, you may have to add a `sudo ` at the beginning
 - `npm install` installs into `node_modules` all the dependencies in `package.json`
 
 ### Web Server
