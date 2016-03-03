@@ -12,6 +12,10 @@ var h = require('./helpers');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+import NotFound from './components/Progress';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 var App = React.createClass({
 	getInitialState: function() {
 
@@ -42,16 +46,7 @@ var CallToAction = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var Progress = React.createClass({
-	render: function() {
-		return (
-			<section>
-				<big>{ this.props.message }</big>
-				<progress value={ this.props.value } max="100"></progress>
-			</section>
-		);
-	}
-});
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
