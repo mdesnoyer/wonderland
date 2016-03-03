@@ -1,5 +1,5 @@
 {
-  "name": "TODO",
+  "name": "wonderland",
   "version": "0.0.1",
   "private": true,
   "license": "UNLICENSED",
@@ -8,7 +8,7 @@
   "author": "Ed Henderson <henderson@neon-lab.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/neon-lab/lookingglass"
+    "url": "git://github.com/neon-lab/wonderland"
   },
   "devDependencies": {
     "autobind-decorator": "1.3.2",
