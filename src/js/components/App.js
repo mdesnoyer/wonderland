@@ -1,13 +1,17 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-let helpers =  {
-    formatNeonScore :  function(model_score) {
-        return model_score; // TODO
-    },
-}
+import React from 'react';
+
+var App = React.createClass({
+    render : function() {
+        return (
+            <section className="section">App TODO</section>
+        );
+    }
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default helpers;
+export default App;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
