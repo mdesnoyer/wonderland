@@ -1,8 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var source = require('vinyl-source-stream');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var babelify = require('babelify');
 var watchify = require('watchify');
@@ -16,14 +16,25 @@ var historyApiFallback = require('connect-history-api-fallback')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+function handleErrors() {
+    var args = Array.prototype.slice.call(arguments);
+    notify.onError({
+        title: 'Compile Error',
+        message: '<%= error.message %>'
+        }).apply(this, args);
+    this.emit('end'); // Keep gulp from hanging on this task
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 gulp.task('styles', function() {
-    gulp.src('css/**')
+    gulp.src('./src/css/**/*')
         .pipe(sass()) // Using gulp-sass
-        .pipe(gulp.dest('./build/css'))
+        .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
             stream: true
         }));
-    gulp.src('node_modules/bulma/css/bulma.min.css')
+    gulp.src('./node_modules/bulma/css/bulma.min.css')
         .pipe(gulp.dest('./build/css'))
         .pipe(reload({
             stream: true
@@ -33,7 +44,7 @@ gulp.task('styles', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('html', function() {
-    return gulp.src('./index.html')
+    return gulp.src('./src/**/*.html')
         .pipe(gulp.dest('./build/'))
         .pipe(reload({
             stream: true
@@ -43,8 +54,8 @@ gulp.task('html', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('images', function() {
-    gulp.src('img/**')
-        .pipe(gulp.dest('./build/img'))
+    gulp.src('./src/img/**')
+        .pipe(gulp.dest('./build/img/'))
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -61,20 +72,9 @@ gulp.task('browser-sync', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-function handleErrors() {
-    var args = Array.prototype.slice.call(arguments);
-    notify.onError({
-        title: 'Compile Error',
-        message: '<%= error.message %>'
-        }).apply(this, args);
-    this.emit('end'); // Keep gulp from hanging on this task
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 function buildScript(file, watch) {
     var props = {
-        entries: ['./scripts/' + file],
+        entries: ['./src/js/' + file],
         debug : true,
         cache: {},
         packageCache: {},
@@ -106,17 +106,16 @@ function buildScript(file, watch) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('scripts', function() {
-    return buildScript('main.js', false); // this will run once because we set watch to false
+    return buildScript('wonderland.js', false);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-// run 'scripts' task first, then watch for future changes
-gulp.task('default', ['images', 'styles', 'scripts', 'html', 'browser-sync'], function() {
-        gulp.watch('css/**/*', ['styles']); // gulp watch for changes
-        gulp.watch('./index.html', ['html']); // gulp watch for changes
-        return buildScript('main.js', true); // browserify watch for JS changes
-    }
-);
+gulp.task('build', ['images', 'styles', 'scripts', 'html', 'browser-sync'], function() {
+    gutil.log('Gulp is running!');
+    gulp.watch('./src/css/**/*', ['styles']);
+    gulp.watch('./src/index.html', ['html']);
+    return buildScript('wonderland.js', true);
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
