@@ -12,7 +12,7 @@ var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
-var historyApiFallback = require('connect-history-api-fallback')
+var historyApiFallback = require('connect-history-api-fallback');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -73,6 +73,7 @@ gulp.task('browser-sync', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 function buildScript(file, watch) {
+
     var props = {
         entries: ['./src/js/' + file],
         debug : true,
@@ -105,17 +106,21 @@ function buildScript(file, watch) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('scripts', function() {
-    return buildScript('wonderland.js', false);
+gulp.task('default', null, function() {
+    gutil.log('Gulp is running - default');
+    gutil.log('Please use debug OR live.');
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-gulp.task('build', ['images', 'styles', 'scripts', 'html', 'browser-sync'], function() {
-    gutil.log('Gulp is running!');
+gulp.task('debug', ['images', 'styles', 'html', 'browser-sync'], function() {
+    gutil.log('Gulp is running - debug');
     gulp.watch('./src/css/**/*', ['styles']);
     gulp.watch('./src/index.html', ['html']);
     return buildScript('wonderland.js', true);
+});
+
+gulp.task('live', ['images', 'styles', 'html'], function() {
+    gutil.log('Gulp is running - live');
+    return buildScript('wonderland.js', false);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
