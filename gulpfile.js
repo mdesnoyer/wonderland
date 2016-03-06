@@ -53,6 +53,13 @@ gulp.task('html', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+gulp.task('redirects', function() {
+    return gulp.src('./_redirects')
+        .pipe(gulp.dest('./build/'));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 gulp.task('images', function() {
     gulp.src('./src/img/**')
         .pipe(gulp.dest('./build/img/'))
@@ -118,7 +125,7 @@ gulp.task('debug', ['images', 'styles', 'html', 'browser-sync'], function() {
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'html'], function() {
+gulp.task('live', ['images', 'styles', 'html', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     return buildScript('wonderland.js', false);
 });
