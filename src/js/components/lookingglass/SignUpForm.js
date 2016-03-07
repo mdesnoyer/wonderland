@@ -2,21 +2,24 @@
 
 import React from 'react';
 
-var NotFound = React.createClass({
-	render: function() {
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+class SignUpForm extends React.Component {
+	render() {
 		return (
-			<section className="section">
-				<div className="container">
-					<h1 className="title">Page Not Found (Error 404)</h1>
-					<p>TODO</p>
-				</div>
+			<section>
+				<form onSubmit={ this.submitForm }>
+					<fieldset>
+						TODO
+					</fieldset>
+				</form>
 			</section>
 		);
 	}
-});
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default NotFound;
+export default SignUpForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
