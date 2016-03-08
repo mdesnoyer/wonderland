@@ -1,17 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import React from 'react';
-
-var App = React.createClass({
-    render : function() {
-        return (
-            <section className="section">App TODO</section>
-        );
-    }
-});
+let utils =  {
+	rando: function(num) {
+		return Math.floor(Math.random() * num + 1);
+	}
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default App;
+export default utils;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

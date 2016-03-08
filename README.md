@@ -1,39 +1,38 @@
 # Wonderland
 
-TODO
+_(This is very much a work in progress, all feedback welcome)_
 
 ## Setup
 
-_(This is very much a work in progress, all feedback and amends welcome)_
-
 - Install [Node.js](https://nodejs.org/en/download/)
-- Install [https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en](React Developer Tools) (Chrome Extension)
+- Install [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) (Chrome Extension)
 - Install Babel Syntax Highlighter (for Sublime Text or equivalent)
 - Clone this repo into a folder, e.g. `wonderland`
-- Goto root directory `wonderland`
-- `npm install` installs all dependencies mentioned in `/package.json` into `/node_modules/`
+- Go to root directory `wonderland`
+- `npm install` installs all dependencies mentioned in `./package.json` into `./node_modules/`
 
 ## Building
 
-- `gulp debug` runs `gulpfile.js` which should kick off all the required tasks start a server at [http://localhost:3000/](http://localhost:3000/) - this is what you use locally
+- `gulp debug` runs `./gulpfile.js` which should kick off all the required tasks start a server at [http://localhost:3000/](http://localhost:3000/) - this is what you use locally
 - `gulp live` is what is used for servers that are not being used to debug, i.e. live servers
+- The web code lives in `./src/` and is built to `./build/`
 
 ## Github
 
-- branches are `development` and `production`, these point to the respective sites, see below for site details.
+- `https://github.com/neon-lab/wonderland`
+- Branches are `development` and `production`, these point to their respective sites, see below for site details.
 
 ## Development Process
 
 - When working on feature, cut a branch from `development`, give it a sensible name, e.g. `eh-123` where EH is your initials and 123 is the ticket number OR `eh-new-feature-thing`
-- Work on this branch, when your feature is complete, open a Pull Request against `development` and assign to Ed Henderson
+- Work on this branch, when your feature is complete, open a Pull Request against `development` and assign to Ed Henderson (or other person that is not you)
 - Make sure there is a meaninful PR message and squash your branch into 1 commit
-- Once good, it will be merged to `development` and you can test feature on the Development site
+- Once signed off, you can merge to `development` and you can test said feature on the Development site
 - After merging, please delete your branch
 
 ## Release Process
 
-- Periodically, TBC we will push (merge) `development` into `production` and release.
-- TODO
+- Periodically, we will push (merge) `development` into `production` and release.
 
 ## QA
 
@@ -41,15 +40,11 @@ _(This is very much a work in progress, all feedback and amends welcome)_
 
 ## Hosting
 
-TODO
-
 ### Netlify
 - Sites are `wonderland-development.netlify.com` and `wonderland-production.netlify.com`, please ask Ed Henderson if you require access.
 - Temporary password to access sites is `kneewrong`
 
 # TODO
 
-- distinct development and production dependencies
-- split up Jira tickets
-- automated testing as part of build step
-- smarter/faster build
+- http://bulma.io/
+- distinct Development and Production dependencies
