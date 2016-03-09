@@ -4,8 +4,8 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-class UploadForm extends React.Component {
-	render() {
+var UploadForm = React.createClass({
+	render: function() {
 		return (
 			<section>
 				<form onSubmit={ this.submitForm }>
@@ -21,7 +21,7 @@ class UploadForm extends React.Component {
 			</section>
 		);
 	}
-};
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

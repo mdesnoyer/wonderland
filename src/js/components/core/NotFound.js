@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-class NotFound extends React.Component {
+var NotFound = React.createClass({
 	render() {
 		return (
 			<section className="section">
@@ -15,7 +15,7 @@ class NotFound extends React.Component {
 			</section>
 		);
 	}
-};
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

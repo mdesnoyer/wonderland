@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, Redirect, browserHistory, Link } from 'react-router';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -11,7 +11,7 @@ import NotFound from './components/core/NotFound';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import Job from './components/lookingglass/Job';
+import Video from './components/lookingglass/Video';
 import UploadForm from './components/lookingglass/UploadForm';
 import SignUpForm from './components/lookingglass/SignUpForm';
 
@@ -21,13 +21,10 @@ import SignUpForm from './components/lookingglass/SignUpForm';
 
 render((
 	<Router history={ browserHistory }>
+		<Redirect from='/' to='/signup/' />
 		<Route path="/signup/" component={ SignUpForm } />
-		<Route path="/signup" component={ SignUpForm } />
 		<Route path="/upload/" component={ UploadForm } />
-		<Route path="/upload" component={ UploadForm } />
-		<Route path="/job/:jobId" component= { Job } />
-		<Route path="/job/:jobId/" component= { Job } />
-		<Route path="/" component={ App } />
+		<Route path="/video/:videoId/" component= { Video } />
 		<Route path="*" component={ NotFound } />
 	</Router>
 ), document.querySelector('#wonderland'));

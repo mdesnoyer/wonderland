@@ -4,33 +4,30 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import ThumbnailRanked from './ThumbnailRanked';
+import Thumbnail from './Thumbnail';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-class Thumbnails extends React.Component {
-	render() {
+var Thumbnails = React.createClass({
+	render: function() {
+		var self = this;
 		return (
 			<section className="section">
-				<table>
-					<thead></thead>
-					<tbody>
-						<tr>
-							<th>Title TODO</th>
-							<td><ThumbnailRanked neonscore="99" src="http://loremflickr.com/320/240/neon"/></td>
-							<td><ThumbnailRanked neonscore="77" src="http://loremflickr.com/320/240/neon"/></td>
-							<td><ThumbnailRanked neonscore="66" src="http://loremflickr.com/320/240/neon"/></td>
-							<td><ThumbnailRanked neonscore="44" src="http://loremflickr.com/320/240/neon"/></td>
-							<td><ThumbnailRanked neonscore="22" src="http://loremflickr.com/320/240/neon"/></td>
-							<td><ThumbnailRanked neonscore="02" src="http://loremflickr.com/320/240/neon"/></td>
-						</tr>
-					</tbody>
-					<tfoot></tfoot>
-				</table>
+				<div className="columns is-multiline is-mobile">
+					{
+						this.props.thumbnails.map(function(thumbnail, i) {
+							return (
+								<div className="column is-half-mobile is-third-tablet is-quarter-desktop" key={i}>
+									<Thumbnail videoStateMapping={ self.props.videoStateMapping } thumbnail={thumbnail} />
+								</div>
+							)
+						})
+					}
+				</div>
 			</section>
 		);
 	}
-};
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
