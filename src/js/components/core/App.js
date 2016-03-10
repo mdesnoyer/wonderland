@@ -2,14 +2,15 @@
 
 import UTILS from '../../utils';
 import React from 'react';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import CallToAction from '../lookingglass/CallToAction';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-class App extends React.Component {
-    render() {
+var App = React.createClass({
+    render: function() {
         return (
         	<section className="section">
 	        	<div className="containter is-fluid">
@@ -25,7 +26,7 @@ class App extends React.Component {
 			</section>
         );
     }
-};
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

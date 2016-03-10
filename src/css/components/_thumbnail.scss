@@ -1,0 +1,32 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-thumbnail {
+	position: relative;
+	background-color: #eee;
+}
+
+.wonderland-thumbnail__image {
+
+}
+
+.wonderland-thumbnail__caption {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+}
+
+.wonderland-thumbnail__score {
+	position: absolute;
+	bottom: 4%;
+	right: 3%;
+}
+
+.wonderland-thumbnail__enabled {
+	position: absolute;
+	bottom: 4%;
+	left: 3%;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

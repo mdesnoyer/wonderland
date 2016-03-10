@@ -72,7 +72,12 @@ gulp.task('browser-sync', function() {
         server: {
             baseDir: "./build/"
         },
-        middleware: [ historyApiFallback() ],
+        middleware: [historyApiFallback({
+            // https://github.com/bripkens/connect-history-api-fallback#rewrites
+            rewrites: [{
+                from: /\/video\/.*/, to: '/index.html'
+            }]
+        })],
         ghostMode: false
     });
 });

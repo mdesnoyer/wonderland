@@ -4,8 +4,8 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-class CallToAction extends React.Component {
-	render() {
+var CallToAction = React.createClass({
+	render: function() {
 		return (
 			<div className="message is-success">
 				<div className="message-header">
@@ -17,7 +17,7 @@ class CallToAction extends React.Component {
 			</div>
 		);
 	}
-};
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

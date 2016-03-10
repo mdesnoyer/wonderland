@@ -2,7 +2,7 @@
 import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SignUpForm = React.createClass ({
+var SignUpForm = React.createClass({
 	render: function() {
 		return (
 			<section className="column is-half is-offset-quarter">
@@ -45,7 +45,8 @@ var SignUpForm = React.createClass ({
 		
 		this.props.history.pushState(null, '/upload');
 	}
-})
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 export default SignUpForm;
