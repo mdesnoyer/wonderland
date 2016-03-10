@@ -10,8 +10,10 @@ var Thumbnail = React.createClass({
 			checked: this.props.thumbnail.enabled || false
 		};
 	},
-	handleClick: function(e) {
-		alert('TODO');
+	handleChange: function(e) {
+		this.setState({
+			checked: !this.state.checked
+		});
 	},
 	render: function() {
 		var additionalClass = 'tag is-' + this.props.videoStateMapping + ' is-medium wonderland-thumbnail__score';
@@ -26,7 +28,7 @@ var Thumbnail = React.createClass({
 				<img className="wonderland-thumbnail__image" src={ this.props.thumbnail.url } alt="TODO" title="TODO" />
 				<figcaption className="wonderland-thumbnail__caption">
 					<span className={ additionalClass } title="NeonScore">{ this.props.thumbnail.cookedNeonScore }</span>
-					<input className="wonderland-thumbnail__enabled" onClick={ this.handleClick } checked={ this.state.checked } type="checkbox" />
+					<input className="wonderland-thumbnail__enabled" onChange={ this.handleChange } checked={ this.state.checked } type="checkbox" />
 				</figcaption>
 			</figure>
 		);
