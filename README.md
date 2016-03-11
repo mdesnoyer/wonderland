@@ -54,6 +54,22 @@ git push origin --delete branchname
 - API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
 - 152655.006.01.197 and 149293.043.01.197 are Video Ids for Discovery (Account Id, gvs3vytvg20ozp78rolqmdfa), read only please
 
+### Discovery
+
+- USERNAME = 'global_admin_neon'
+- PASSWORD = '4ERDWIlupafI'
+- ACCOUNT_ID = 'gvs3vytvg20ozp78rolqmdfa'
+
+### Test Videos
+
+- http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4
+- https://dl.dropboxusercontent.com/u/38984845/Neon%20Sledging.mov
+- https://vimeo.com/157318040
+- https://vimeo.com/105570424
+- https://vimeo.com/36552490
+- https://vimeo.com/41169610
+- https://vimeo.com/114583953
+
 ## Spike
 
 - moved spike/TODO to https://neonlabs.atlassian.net/browse/NEON-729

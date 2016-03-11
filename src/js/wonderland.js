@@ -12,6 +12,7 @@ import NotFound from './components/core/NotFound';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import Video from './components/lookingglass/Video';
+import Videos from './components/lookingglass/Videos';
 import UploadForm from './components/lookingglass/UploadForm';
 import SignUpForm from './components/lookingglass/SignUpForm';
 
@@ -24,6 +25,7 @@ render((
 		<Redirect from='/' to='/signup/' />
 		<Route path="/signup/" component={ SignUpForm } />
 		<Route path="/upload/" component={ UploadForm } />
+		<Route name="videos" path="/videos/" component= { Videos } />
 		<Route path="/video/:videoId/" component= { Video } />
 		<Route path="*" component={ NotFound } />
 	</Router>

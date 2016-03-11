@@ -5,7 +5,9 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import Thumbnails from './Thumbnails';
+import Notification from './Notification';
 import UTILS from '../../utils';
+import AJAX from '../../ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -21,82 +23,74 @@ var Video = React.createClass({
 			videoState: 'unknown',
 			videoStateMapping: UTILS.VIDEO_STATE['unknown'].mapping,
 			title: '',
-			duration: 0
+			duration: 0,
+			url: '',
+			error: ''
 		}
 	},
-	componentDidMount: function() {
+	checkStatus: function() {
 		var self = this;
-		setInterval(function() {
-			var USERNAME = 'global_admin_neon',
-				PASSWORD = '4ERDWIlupafI',
-	            AUTH_URL = 'https://auth.neon-lab.com/api/v2/authenticate?username=' + USERNAME + '&password=' + PASSWORD,
-	            ACCOUNT_ID = 'gvs3vytvg20ozp78rolqmdfa',
-				ajaxPostOptions = {
-					method: 'POST',
-					mode: 'cors'
-				},
-				ajaxGetOptions = {
-					method: 'GET',
-					mode: 'cors',
-					cache: 'reload'
-				}
-			;
-			console.log(AUTH_URL);
-			fetch(AUTH_URL, ajaxPostOptions)
-				.then(function(response) {
-	    			return response.json()
-	  			}).then(function(json) {
-					self.setState({
-						accessToken: json.access_token,
-						refreshToken: json.refresh_token
-					});
-					var apiUrl = 'http://services.neon-lab.com/api/v2/' + ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,duration,state,thumbnails&token=' + self.state.accessToken;
-					console.log(apiUrl);
-					fetch(apiUrl, ajaxGetOptions)
-						.then(function(response) {
-			    			return response.json();
-			  			}).then(function(json) {
-			  				var video = json.videos[0];
-			  				if (video.state !== self.state.videoState) {
-			  					// Only bother if the state has changed
-				  				var	newThumbnails = video.thumbnails.map(function(t) {
-				  						var neonScoreData = UTILS.getNeonScoreData(t.neon_score),
-				  							newT = {
-					  							url: t.url,
-					  							rawNeonScore: t.neon_score,
-					  							cookedNeonScore: neonScoreData.neonScore,
-					  							emoji: neonScoreData.emoji,
-					  							enabled: t.enabled,
-					  							type: t.type
-				  							}
-				  						;
-				  						return newT;
-				  					})
-				  				;
-								newThumbnails.sort(function(a, b) {
-									return (b.cookedNeonScore === '?' ? 0 : b.cookedNeonScore) - (a.cookedNeonScore === '?' ? 0 : a.cookedNeonScore);
-								});
-								self.setState({
-									thumbnails: newThumbnails,
-									videoState: video.state,
-									videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-									title: video.title,
-									duration: video.duration
-								});
-							}
-			  			}).catch(function(ex) {
-							self.setState({
-								status: 404,
-								message: ex.message
+		console.log(AJAX.AUTH_URL);
+		fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
+			.then(function(response) {
+				return response.json()
+				}).then(function(json) {
+				self.setState({
+					accessToken: json.access_token,
+					refreshToken: json.refresh_token
+				});
+				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,duration,state,url,thumbnails&token=' + self.state.accessToken;
+				console.log(apiUrl);
+				fetch(apiUrl, AJAX.GET_OPTIONS)
+					.then(function(response) {
+		    			return response.json();
+		  			}).then(function(json) {
+		  				var video = json.videos[0];
+		  				if (video.state !== self.state.videoState) {
+		  					// Only bother if the state has changed
+			  				var	newThumbnails = video.thumbnails.map(function(t) {
+			  						var neonScoreData = UTILS.getNeonScoreData(t.neon_score),
+			  							newT = {
+				  							url: t.url,
+				  							rawNeonScore: t.neon_score,
+				  							cookedNeonScore: neonScoreData.neonScore,
+				  							emoji: neonScoreData.emoji,
+				  							enabled: t.enabled,
+				  							type: t.type
+			  							}
+			  						;
+			  						return newT;
+			  					})
+			  				;
+							newThumbnails.sort(function(a, b) {
+								return (b.cookedNeonScore === '?' ? 0 : b.cookedNeonScore) - (a.cookedNeonScore === '?' ? 0 : a.cookedNeonScore);
 							});
-			  			});
-	  			}).catch(function(ex) {
+							self.setState({
+								thumbnails: newThumbnails,
+								videoState: video.state,
+								videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
+								title: video.title,
+								duration: video.duration,
+								url: video.url,
+								error: video.error ? video.error : ''
+							});
+						}
+		  			}).catch(function(ex) {
+						self.setState({
+							status: 404,
+							message: ex.message
+						});
+		  			});
+				}).catch(function(ex) {
 					self.setState({
 						status: 401,
 						message: ex.message
 					});
-	  			});
-	  	}, 10000);
+				});
+	},
+	componentDidMount: function() {
+		this.checkStatus();
+		setInterval(this.checkStatus, 10000);
 	},
 	render: function() {
 		if (this.state.status === 401) {
@@ -134,7 +128,9 @@ var Video = React.createClass({
 			);
 		}
 		if (this.state.status === 200) {
-			var additionalClass = 'tag is-' + this.state.videoStateMapping + ' is-medium';
+			var additionalClass = 'tag is-' + this.state.videoStateMapping + ' is-medium',
+				notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />
+			;
 			return (
 				<section className="section">
 					<div className="container">
@@ -149,14 +145,15 @@ var Video = React.createClass({
 							</div>
 							<div className="navbar-right">
 								<div className="navbar-item">
-									<span className="tag">{ this.state.videoId }</span>
+									<span className="tag is-medium">ID: { this.state.videoId }</span>
 								</div>
-
 								<div className="navbar-item">
-									<span className="tag">{ this.state.duration }<abbr title="seconds">s</abbr></span>
+									<span className="tag is-medium">Time: { Math.floor(this.state.duration) }<abbr title="seconds">s</abbr></span>
 								</div>
 							</div>
 						</nav>
+						<div><span className="tag is-medium">URL: { this.state.url }</span></div>
+						{ notificationNeeded }
 						<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
 					</div>
 				</section>
