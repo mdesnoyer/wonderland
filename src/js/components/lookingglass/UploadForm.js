@@ -24,7 +24,7 @@ var UploadForm = React.createClass({
 							<p>Instructions</p>
 							<legend className="title is-2">Upload Video</legend>
 							<p className="control is-grouped">
-								<input className="input" defaultValue="https://www.youtube.com/watch?v=a1Y73sPHKxw" type="text" ref="url" placeholder="Add Video URL" />
+								<input className="input" type="text" ref="url" placeholder="Add Video URL" />
 								<button className="button is-success">Upload</button>
 							</p>
 						</fieldset>
