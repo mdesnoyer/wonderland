@@ -39,7 +39,7 @@ var UploadForm = React.createClass({
 		var url = this.refs.url.value.trim();
 		
 		url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
-		url = url.replace('dl=0', 'dl=1');
+		url = url.replace('dl=0', 'dl=1&raw=1');
 		this.uploadVideo(url);
 	},
 	uploadVideo: function (url) {
@@ -58,7 +58,7 @@ var UploadForm = React.createClass({
 						method: 'POST',
 						body: JSON.stringify({
 							'external_video_ref': videoId,
-							'url': encodeURI(url),
+							'url': url,
 							'token': self.state.accessToken
 						}),
 						headers: new Headers({
