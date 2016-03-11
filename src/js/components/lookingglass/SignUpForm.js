@@ -1,5 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 import React from 'react';
+import TRACKING from '../../tracking';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignUpForm = React.createClass({
@@ -37,19 +38,19 @@ var SignUpForm = React.createClass({
 			</section>
 		);
 	},
-	handleSubmit: function (e) {
-
+	handleSubmit: function (e) {	
+		var self = this;
 		e.preventDefault();
-		var self = this,
-			userDataObject = {
-				name: this.refs.name.value.trim(),
-				email: this.refs.email.value.trim(),
-				password: this.refs.password.value.trim(),
-				title: this.refs.title.value.trim(),
-				company: this.refs.company.value.trim()
-			}
-		;
+		var userDataObject = {
+			name: this.refs.name.value.trim(),
+			email: this.refs.email.value.trim(),
+			password: this.refs.password.value.trim(),
+			title: this.refs.title.value.trim(),
+			company: this.refs.company.value.trim()
+		}
+		TRACKING.sendEvent(this, arguments, userDataObject.email)
 		self.context.router.push('/upload/video/');
+		// TODO submit data to create user account 
 	}
 });
 
