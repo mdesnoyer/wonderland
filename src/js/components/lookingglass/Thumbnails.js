@@ -16,11 +16,16 @@ var Thumbnails = React.createClass({
 				<div className="columns is-multiline is-mobile">
 					{
 						this.props.thumbnails.map(function(thumbnail, i) {
-							return (
-								<div className="column is-half-mobile is-third-tablet is-quarter-desktop" key={i}>
-									<Thumbnail videoStateMapping={ self.props.videoStateMapping } thumbnail={thumbnail} />
-								</div>
-							)
+							if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
+								return (
+									<div className="column is-half-mobile is-third-tablet is-quarter-desktop" key={i}>
+										<Thumbnail videoStateMapping={ self.props.videoStateMapping } thumbnail={thumbnail} />
+									</div>
+								);
+							}
+							else {
+								return;
+							}
 						})
 					}
 				</div>

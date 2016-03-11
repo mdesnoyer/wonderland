@@ -19,7 +19,7 @@ var Thumbnail = React.createClass({
 		var additionalClass = 'tag is-' + this.props.videoStateMapping + ' is-medium wonderland-thumbnail__score';
 		return (
 			<figure
-				className="wonderland-thumbnail image is-16by9"
+				className="wonderland-thumbnail"
 				data-raw-neonscore={this.props.thumbnail.rawNeonScore}
 				data-cooked-neonscore={this.props.thumbnail.cookedNeonScore}
 				data-type={this.props.thumbnail.type}
