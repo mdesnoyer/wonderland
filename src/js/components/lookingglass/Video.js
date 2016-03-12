@@ -39,7 +39,7 @@ var Video = React.createClass({
 					accessToken: json.access_token,
 					refreshToken: json.refresh_token
 				});
-				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,duration,state,url,thumbnails&token=' + self.state.accessToken;
+				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,publish_date,created,updated,duration,state,url,thumbnails&token=' + self.state.accessToken;
 				console.log(apiUrl);
 				fetch(apiUrl, AJAX.GET_OPTIONS)
 					.then(function(response) {
@@ -129,6 +129,7 @@ var Video = React.createClass({
 		}
 		if (this.state.status === 200) {
 			var additionalClass = 'tag is-' + this.state.videoStateMapping + ' is-medium',
+				displayTitle = this.state.title || this.state.videoId,
 				notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />
 			;
 			return (
@@ -140,7 +141,7 @@ var Video = React.createClass({
 									<span className={ additionalClass }>{ this.state.videoState }</span>
 								</div>
 								<div className="navbar-item">
-									<h2 className="title is-3">{ this.state.title }</h2>
+									<h2 className="title is-3">{ displayTitle }</h2>
 								</div>
 							</div>
 							<div className="navbar-right">
