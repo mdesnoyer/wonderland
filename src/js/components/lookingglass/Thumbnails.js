@@ -18,7 +18,7 @@ var Thumbnails = React.createClass({
 						this.props.thumbnails.map(function(thumbnail, i) {
 							if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
 								return (
-									<div className="column is-half-mobile is-third-tablet is-quarter-desktop" key={i}>
+									<div className="column is-half-mobile is-third-tablet is-third-desktop" key={i}>
 										<Thumbnail videoStateMapping={ self.props.videoStateMapping } thumbnail={thumbnail} />
 									</div>
 								);

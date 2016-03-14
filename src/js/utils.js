@@ -124,13 +124,13 @@ let utils =  {
                 if (score < NEONSCORES[i].modelScore) {
                     return {
                         neonScore: i - 1,
-                        emoji: NEONSCORES[i].emoji
+                        emoji: NEONSCORES[i - 1].emoji
                     };
                 }
             }
             return {
                 neonScore: i - 1,
-                emoji: NEONSCORES[i].emoji
+                emoji: NEONSCORES[i - 1].emoji
             };
         }
         else {
