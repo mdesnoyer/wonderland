@@ -17,14 +17,12 @@ import UploadForm from './components/lookingglass/UploadForm';
 import SignUpForm from './components/lookingglass/SignUpForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// Login
-// Logout
 
 render((
 	<Router history={ browserHistory }>
 		<Redirect from='/' to='/signup/' />
 		<Route path="/signup/" component={ SignUpForm } />
-		<Route path="/upload/" component={ UploadForm } />
+		<Route path="/upload/video/" component={ UploadForm } />
 		<Route name="videos" path="/videos/" component= { Videos } />
 		<Route path="/video/:videoId/" component= { Video } />
 		<Route path="*" component={ NotFound } />

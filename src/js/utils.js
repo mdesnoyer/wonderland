@@ -117,6 +117,15 @@ let utils =  {
 	rando: function(num) {
 		return Math.floor(Math.random() * num + 1);
 	},
+	dropboxUrlFilter: function(s) {
+		var returnValue = s;
+		returnValue = returnValue.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+		returnValue = returnValue.replace('dl=0', 'dl=1&raw=1');
+		return returnValue;
+	},
+	properEncodeURI: function(url) {
+		return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");
+	},
     getNeonScoreData: function(score) {
         if (score && !isNaN(score) && (score > 0)) {
             var neonScoresLength = NEONSCORES.length;

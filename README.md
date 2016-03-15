@@ -26,8 +26,11 @@ _(This is very much a work in progress, all feedback welcome)_
 
 - When working on feature, cut a branch from `development`, give it a sensible name, e.g. `eh-123` where EH is your initials and 123 is the ticket number OR `eh-new-feature-thing`
 - Work on this branch, when your feature is complete, open a Pull Request against `development` (you may need to rebase) and assign to Ed Henderson (or other person that is not you)
+- Make sure you can run `gulp live` against it and it builds
+- Make sure you can run `gulp debug` against it and it builds
 - Make sure there is a meaninful PR message
-- Once signed off, you can squash your branch into 1 commit and merge to `development` and you can test said feature on the Development site
+- Once signed off, you can squash your branch into 1 commit and merge to `development`
+- Once development site is built, please test
 - After merging, please delete your branch
 
 ```
@@ -49,10 +52,39 @@ git push origin --delete branchname
 - Sites are `wonderland-development.netlify.com` and `wonderland-production.netlify.com`, please ask Ed Henderson if you require access.
 - Temporary password to access sites is `kneewrong`
 
+## Style Guide (work in progress)
+
+- use `var` always
+- Use NAMES_LIKE_THIS for constant values
+- 4 spaces for tabs
+- space before `{`
+
+If in doubt, defer to the code.
+
+### Sass / CSS
+
+- 1 line per selector
+
+```
+.awesome,
+.cool,
+.fantastic {
+	text-align: center;
+}
+```
+
 ## Other
 
 - API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
 - 152655.006.01.197 and 149293.043.01.197 are Video Ids for Discovery (Account Id, gvs3vytvg20ozp78rolqmdfa), read only please
+
+## Credentials
+
+### Test Account
+
+- USERNAME = wonderland_demo
+- PASSWORD = ad9f8g4n3ibna9df
+- ACCOUNT_ID = uhet29evso83qb7ys70hvj3z
 
 ### Discovery
 
@@ -60,7 +92,7 @@ git push origin --delete branchname
 - PASSWORD = '4ERDWIlupafI'
 - ACCOUNT_ID = 'gvs3vytvg20ozp78rolqmdfa'
 
-### Test Videos
+## Test Videos
 
 - http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4
 - https://dl.dropboxusercontent.com/u/38984845/Neon%20Sledging.mov
