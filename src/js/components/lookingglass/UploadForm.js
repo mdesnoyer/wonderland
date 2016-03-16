@@ -2,6 +2,8 @@
 
 import React from 'react';
 import AJAX from '../../ajax';
+import shortid from 'shortid';
+import UTILS from '../../utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -12,10 +14,12 @@ var UploadForm = React.createClass({
 	getInitialState: function() {
 		return {
 			accessToken: '',
-			refreshToken: ''
+			refreshToken: '',
+			mode: 'silent' // silent/loading/error
 		}
 	},
 	render: function() {
+		var buttonClassName = 'button is-success is-' + this.state.mode;
 		return (
 			<section className="column is-half is-offset-quarter">
 				<div className="container">
@@ -24,8 +28,8 @@ var UploadForm = React.createClass({
 							<p>Instructions</p>
 							<legend className="title is-2">Upload Video</legend>
 							<p className="control is-grouped">
-								<input className="input" type="text" ref="url" placeholder="Add Video URL" />
-								<button className="button is-success">Upload</button>
+								<input required className="input" type="url" ref="url" placeholder="Add Video URL" />
+								<button className={ buttonClassName }>Upload</button>
 							</p>
 						</fieldset>
 					</form>
@@ -36,11 +40,7 @@ var UploadForm = React.createClass({
 	},
 	handleSubmit: function (e) {
 		e.preventDefault();
-		var url = this.refs.url.value.trim();
-		
-		url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
-		url = url.replace('dl=0', 'dl=1&raw=1');
-		this.uploadVideo(url);
+		this.uploadVideo(UTILS.dropboxUrlFilter(this.refs.url.value.trim()));
 	},
 	uploadVideo: function (url) {
 		var self = this;
@@ -50,15 +50,16 @@ var UploadForm = React.createClass({
   			}).then(function(json) {
   				self.setState({
 					accessToken: json.access_token,
-					refreshToken: json.refresh_token
+					refreshToken: json.refresh_token,
+					mode: 'loading'
 				});
 				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos',
-					videoId = 'wonderland-' + new Date().getTime(),
+					videoId = shortid.generate(),
 					options = {
 						method: 'POST',
 						body: JSON.stringify({
 							'external_video_ref': videoId,
-							'url': url,
+							'url': UTILS.properEncodeURI(url),
 							'token': self.state.accessToken
 						}),
 						headers: new Headers({

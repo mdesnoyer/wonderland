@@ -3,6 +3,9 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignUpForm = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	render: function() {
 		return (
 			<section className="column is-half is-offset-quarter">
@@ -35,16 +38,18 @@ var SignUpForm = React.createClass({
 		);
 	},
 	handleSubmit: function (e) {
+
 		e.preventDefault();
-		var userDataObject = {
-			name: this.refs.name.value.trim(),
-			email: this.refs.email.value.trim(),
-			password: this.refs.password.value.trim(),
-			title: this.refs.title.value.trim(),
-			company: this.refs.company.value.trim()
-		}
-		
-		this.props.history.pushState(null, '/upload/');
+		var self = this,
+			userDataObject = {
+				name: this.refs.name.value.trim(),
+				email: this.refs.email.value.trim(),
+				password: this.refs.password.value.trim(),
+				title: this.refs.title.value.trim(),
+				company: this.refs.company.value.trim()
+			}
+		;
+		self.context.router.push('/upload/video/');
 	}
 });
 

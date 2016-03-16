@@ -25,7 +25,12 @@ var Video = React.createClass({
 			title: '',
 			duration: 0,
 			url: '',
-			error: ''
+			error: '',
+			publishDate: '',
+			created: '',
+			updated: '',
+			intervalId: '',
+			mode: 'silent' // silent/loading/error
 		}
 	},
 	checkStatus: function() {
@@ -37,7 +42,8 @@ var Video = React.createClass({
 				}).then(function(json) {
 				self.setState({
 					accessToken: json.access_token,
-					refreshToken: json.refresh_token
+					refreshToken: json.refresh_token,
+					mode: 'loading'
 				});
 				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,publish_date,created,updated,duration,state,url,thumbnails&token=' + self.state.accessToken;
 				console.log(apiUrl);
@@ -46,6 +52,15 @@ var Video = React.createClass({
 		    			return response.json();
 		  			}).then(function(json) {
 		  				var video = json.videos[0];
+						if ((video.state === 'serving' && self.state.videoState == 'serving') 
+							|| (video.state === 'failed' && self.state.videoState == 'failed')) {
+							clearInterval(self.state.intervalId);
+							self.setState({
+								mode: 'silent',
+								intervalId: ''
+							});
+							return;
+						}
 		  				if (video.state !== self.state.videoState) {
 		  					// Only bother if the state has changed
 			  				var	newThumbnails = video.thumbnails.map(function(t) {
@@ -72,7 +87,16 @@ var Video = React.createClass({
 								title: video.title,
 								duration: video.duration,
 								url: video.url,
-								error: video.error ? video.error : ''
+								error: video.error ? video.error : '',
+								publishDate: video.publish_date,
+								created: video.created,
+								updated: video.updated,
+								mode: 'silent'
+							});
+						}
+						else {
+							self.setState({
+								mode: 'silent'
 							});
 						}
 		  			}).catch(function(ex) {
@@ -89,8 +113,13 @@ var Video = React.createClass({
 				});
 	},
 	componentDidMount: function() {
-		this.checkStatus();
-		setInterval(this.checkStatus, 10000);
+		var self = this,
+			intervalId = setInterval(self.checkStatus, 10000)
+		;
+		setTimeout(self.checkStatus, 0);
+		self.setState({
+			intervalId: intervalId
+		});
 	},
 	render: function() {
 		if (this.state.status === 401) {
@@ -128,7 +157,7 @@ var Video = React.createClass({
 			);
 		}
 		if (this.state.status === 200) {
-			var additionalClass = 'tag is-' + this.state.videoStateMapping + ' is-medium',
+			var additionalClass = 'button is-' + this.state.videoStateMapping + ' is-medium is-' + this.state.mode,
 				displayTitle = this.state.title || this.state.videoId,
 				notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />
 			;
@@ -138,7 +167,7 @@ var Video = React.createClass({
 						<nav className="navbar">
 							<div className="navbar-left">
 								<div className="navbar-item">
-									<span className={ additionalClass }>{ this.state.videoState }</span>
+									<button className={ additionalClass }>{ this.state.videoState }</button>
 								</div>
 								<div className="navbar-item">
 									<h2 className="title is-3">{ displayTitle }</h2>
@@ -153,6 +182,15 @@ var Video = React.createClass({
 								</div>
 							</div>
 						</nav>
+						<div className="navbar-item">
+							<span className="tag is-medium">Publish Date: { this.state.publishDate }</span>
+						</div>
+						<div className="navbar-item">
+							<span className="tag is-medium">Created: { this.state.created }</span>
+						</div>
+						<div className="navbar-item">
+							<span className="tag is-medium">Updated: { this.state.updated }</span>
+						</div>
 						<div><span className="tag is-medium">URL: { this.state.url }</span></div>
 						{ notificationNeeded }
 						<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
