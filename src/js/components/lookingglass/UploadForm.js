@@ -52,10 +52,11 @@ var UploadForm = React.createClass({
 					}),
 					headers: new Headers({
 						'Content-Type': 'application/json'
-					})
+					}),
+          mode: 'no-cors'
 				};
 
-		new AJAX().doPost('videos', options)
+		AJAX.doPost('videos', options)
 			.then(function(json) {
 				self.context.router.push('/video/' + videoId + '/');
 			})
