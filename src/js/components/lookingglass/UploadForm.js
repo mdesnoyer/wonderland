@@ -16,53 +16,71 @@ var UploadForm = React.createClass({
 		return {
 			accessToken: '',
 			refreshToken: '',
-			mode: 'silent' // silent/loading/error
+			isChecked: false
 		}
 	},
-	render: function() {
-		if (this.state.mode === 'loading') {
-			var buttonClassName = 'button is-primary is-disabled is-loading',
-				inputClassName = 'input is-disabled'
-			;
-		}
-		else {
-			var buttonClassName = 'button is-primary',
-				inputClassName = 'input'
-			;
-		}
-		return (
-			<section className="section columns">
-				<div className="column is-half is-offset-quarter">
-					<form onSubmit={ this.handleSubmit }>
-						<fieldset>
-							
-							<legend className="title is-2">Upload Video</legend>
-							<p className="control">Instructions TODO TODO</p>
-							<p className="control is-grouped">
-								<input required className={ inputClassName } type="url" ref="url" placeholder="Add Video URL" />
-								<button className={ buttonClassName }>Upload</button>
-							</p>
-							<p className="control">
-								<input className={ inputClassName } type="text" ref="title" placeholder="Optional Title" />
-							</p>
-							<p className="control">
-								<label className="checkbox">
-									<input type="checkbox" />
-										I agree
-								</label>
-							</p>
-						</fieldset>
-					</form>
-
-				</div>
-			</section>
-		);
+	render: function() {		
+			if (this.state.isChecked == true){
+				return (
+					<section className="section columns">
+						<div className="column is-half is-offset-quarter">
+							<form onSubmit={ this.handleSubmit }>
+								<fieldset>
+									<p>Instructions</p>
+									<legend className="title is-2">Upload Video</legend>
+									<p className="control is-grouped">	
+										<input className="input" type="url" ref="url" placeholder="Add Video URL" required/>
+										<button className="button is-primary">Upload</button>
+									</p>
+									<p className="control">
+										<input className="input" type="text" ref="title" placeholder="Optional Title" />
+									</p>
+									<label className="checkbox">
+									   <input type="checkbox" checked={this.state.isChecked} onChange={this.handleChange} required/>
+									   {this.state.isChecked ? this.props.labelOn : this.props.labelOff}
+									  	 <p>I agree to the Terms &amp; Conditions</p>
+									 </label>
+								</fieldset>
+							</form>
+						</div>
+					</section>
+				)
+			}
+			if (this.state.isChecked == false){
+				return(
+					<section className="section columns">
+						<div className="column is-half is-offset-quarter">
+							<form onSubmit={ this.handleSubmit }>
+								<fieldset>
+									<p>Instructions</p>
+									<legend className="title is-2">Upload Video</legend>
+									<p className="control is-grouped">	
+										<input className="input" type="url" ref="url" placeholder="Add Video URL" required/>
+										<button className="button is-primary is-disabled">Upload</button>
+									</p>
+									<p className="control">
+										<input className="input" type="text" ref="title" placeholder="Optional Title" />
+									</p>
+									<label className="checkbox">
+									   <input type="checkbox" checked={this.state.isChecked} onChange={this.handleChange} required/>
+									   {this.state.isChecked ? this.props.labelOn : this.props.labelOff}
+									  	 <p>I agree to the Terms &amp; Conditions</p>
+									 </label>
+								</fieldset>
+							</form>
+						</div>
+					</section>
+				)
+			}
+		},
+	handleChange: function(){		
+		this.setState({isChecked: !this.state.isChecked});
 	},
 	handleSubmit: function (e) {
 		e.preventDefault();
 		var url = this.refs.url.value.trim();
 		TRACKING.sendEvent(this, arguments, url);
-		this.uploadVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
+		this.uploadVideo(UTILS.dropboxUrlFilter(url));
 	},
 	uploadVideo: function (url, title) {
 		var self = this;
