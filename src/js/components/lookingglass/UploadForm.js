@@ -28,7 +28,7 @@ var UploadForm = React.createClass({
 							<p>Instructions</p>
 							<legend className="title is-2">Upload Video</legend>
 							<p className="control is-grouped">
-								<input required className="input" type="url" ref="url" placeholder="Add Video URL" />
+								<input required className="input" type="url" ref="url" placeholder="Add Video URL" defaultValue="https://s3-us-west-1.amazonaws.com/neon-mp4/sharks.mp4" />
 								<button className={ buttonClassName }>Upload</button>
 							</p>
 						</fieldset>
@@ -43,44 +43,25 @@ var UploadForm = React.createClass({
 		this.uploadVideo(UTILS.dropboxUrlFilter(this.refs.url.value.trim()));
 	},
 	uploadVideo: function (url) {
-		var self = this;
-		fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
-			.then(function(response) {
-    			return response.json()
-  			}).then(function(json) {
-  				self.setState({
-					accessToken: json.access_token,
-					refreshToken: json.refresh_token,
-					mode: 'loading'
-				});
-				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos',
-					videoId = shortid.generate(),
-					options = {
-						method: 'POST',
-						body: JSON.stringify({
-							'external_video_ref': videoId,
-							'url': UTILS.properEncodeURI(url),
-							'token': self.state.accessToken
-						}),
-						headers: new Headers({
-							'Content-Type': 'application/json'
-						}),
-						mode: 'cors'
-					}
-				;
-				fetch(apiUrl, options)
-					.then(function(response) {
-						return response.json()
-					}).then(function(json) {
-						self.context.router.push('/video/' + videoId + '/');
-					}).catch(function(ex) {
-  						self.context.router.push('/video/' + videoId + '/');
-  					})
-  				;	
-  			}).catch(function(ex) {
-  				console.log(ex.message)
-  			})
-  		;	
+		var self = this,
+        videoId = shortid.generate(),
+				options = {
+					body: JSON.stringify({
+						'external_video_ref': videoId,
+						'url': UTILS.properEncodeURI(url)
+					}),
+					headers: new Headers({
+						'Content-Type': 'application/json'
+					})
+				};
+
+		new AJAX().doPost('videos', options)
+			.then(function(json) {
+				self.context.router.push('/video/' + videoId + '/');
+			})
+      .catch(function(ex) {
+			  console.log(ex.message)
+      });	
 	}
 });
 
