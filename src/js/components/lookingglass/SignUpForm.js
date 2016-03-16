@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 import React from 'react';
 import TRACKING from '../../tracking';
+import TRANSLATOR from '../../translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignUpForm = React.createClass({
@@ -10,29 +11,29 @@ var SignUpForm = React.createClass({
 	render: function() {
 		return (
 			<section className="section columns">
-				<div className="column is-half is-offset-quarter">
+				<div className="column is-third is-offset-4">
 					<form onSubmit={ this.handleSubmit }>
 						<fieldset>	
 						    <legend className="title is-2">Sign Up</legend>
 						    <p className="control is-grouped">
-								<input className="input" type="text" ref="firstName" placeholder="First Name" />
-								<input className="input" type="text" ref="lastName" placeholder="Last Name" />
+								<input className="input" type="text" ref="firstName" placeholder={TRANSLATOR.firstName[TRANSLATOR.lang]} />
+								<input className="input" type="text" ref="lastName" placeholder={TRANSLATOR.lastName[TRANSLATOR.lang]} />
 							</p>
 							<p className="control">
-								<input className="input" type="email" ref="email" placeholder="Email" />
+								<input className="input" type="email" ref="email" placeholder={TRANSLATOR.email[TRANSLATOR.lang]} />
 							</p>
 							<p className="control is-grouped">
-								<input className="input" type="password" ref="passwordInitial" placeholder="Password" />
-								<input className="input" type="password" ref="passwordConfirm" placeholder="Confirm" />
+								<input className="input" type="password" ref="passwordInitial" placeholder={TRANSLATOR.password[TRANSLATOR.lang]} />
+								<input className="input" type="password" ref="passwordConfirm" placeholder={TRANSLATOR.confirm[TRANSLATOR.lang]} />
 							</p>
 							<p className="control">
-								<input className="input" type="text" ref="company" placeholder="Company" />
+								<input className="input" type="text" ref="company" placeholder={TRANSLATOR.company[TRANSLATOR.lang]} />
 							</p>
 							<p className="control">
-								<input className="input" type="text" ref="title" placeholder="Title" />
+								<input className="input" type="text" ref="title" placeholder={TRANSLATOR.title[TRANSLATOR.lang]}/>
 							</p>
 							<p className="is-text-centered">
-								<button className="button is-primary" type="submit">Sign Up</button>
+								<button className="button is-primary" type="submit">{TRANSLATOR.signUp[TRANSLATOR.lang]}</button>
 							</p>
 						</fieldset>
 					</form>
