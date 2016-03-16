@@ -53,6 +53,13 @@ gulp.task('html', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+gulp.task('redirects', function() {
+    return gulp.src('./_redirects')
+        .pipe(gulp.dest('./build/'));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 gulp.task('images', function() {
     gulp.src('./src/img/**')
         .pipe(gulp.dest('./build/img/'))
@@ -65,7 +72,12 @@ gulp.task('browser-sync', function() {
         server: {
             baseDir: "./build/"
         },
-        middleware: [ historyApiFallback() ],
+        middleware: [historyApiFallback({
+            // https://github.com/bripkens/connect-history-api-fallback#rewrites
+            rewrites: [{
+                from: /\/video\/.*/, to: '/index.html'
+            }]
+        })],
         ghostMode: false
     });
 });
@@ -113,12 +125,13 @@ gulp.task('default', null, function() {
 
 gulp.task('debug', ['images', 'styles', 'html', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
+    gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
     gulp.watch('./src/index.html', ['html']);
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'html'], function() {
+gulp.task('live', ['images', 'styles', 'html', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     return buildScript('wonderland.js', false);
 });
