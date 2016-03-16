@@ -165,7 +165,8 @@ var Video = React.createClass({
 		if (this.state.status === 200) {
 			var additionalClass = 'button is-' + this.state.videoStateMapping + ' is-medium is-' + this.state.mode,
 				displayTitle = this.state.title || this.state.videoId,
-				notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />
+				notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />,
+				videoLink = '/video/' + this.state.videoId + '/'
 			;
 			return (
 				<section className="section">
@@ -178,7 +179,7 @@ var Video = React.createClass({
 									</a>
 								</div>
 								<div className="navbar-item">
-									<h2 className="title is-3">{ displayTitle }</h2>
+									<h2 className="title is-3"><a href={videoLink}>{ displayTitle }</a></h2>
 								</div>
 							</div>
 							<div className="navbar-right">
