@@ -4,6 +4,7 @@ import React from 'react';
 import AJAX from '../../ajax';
 import shortid from 'shortid';
 import UTILS from '../../utils';
+import TRACKING from '../../tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -40,7 +41,9 @@ var UploadForm = React.createClass({
 	},
 	handleSubmit: function (e) {
 		e.preventDefault();
-		this.uploadVideo(UTILS.dropboxUrlFilter(this.refs.url.value.trim()));
+		var url = this.refs.url.value.trim();
+		TRACKING.sendEvent(this, arguments, url);
+		this.uploadVideo(UTILS.dropboxUrlFilter(url));
 	},
 	uploadVideo: function (url) {
 		var self = this;
