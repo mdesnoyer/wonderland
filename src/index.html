@@ -17,28 +17,36 @@
         </script>
     </head>
     <body>
-		<div class="notification is-danger is-marginless">
+		<div class="notification is-danger is-marginless is-text-centered">
 			Note: Please be aware this is a V1 DEMO only and should not be shared yet. Thank you. Neon.
 		</div>
-		<section class="hero is-dark is-left">
-			<div class="hero-content">
-				<div class="container">
-					<nav class="navbar">
-						<div class="navbar-left">
-							<h1 class="navbar-item title is-3">Wonderland</h1>
-							<h2 class="subtitle is-5 navbar-item">Just view it</h2>
-						</div>
-						<div class="navbar-right">
-							<p class="navbar-item"><a href="/">Home</a> | <a href="/videos/">Videos</a> | <a href="/upload/video/">Upload</a> | Logged in as <a href="TODO">Alice</a> | Log Out</p>
-						</div>
-					</nav>
+		<header class="header is-dark wonderland-banner">
+			<div class="container">
+				<div class="header-left">
+					<a class="header-item" href="/" title="Go to the home page">
+						<img src="/img/logo-white.png" alt="Neon" />
+					</a>
+				</div>
+				<div class="header-right header-menu">
+					<span class="header-item">
+						<a class="button is-primary" href="TODO">Contact Neon</a>
+					</span>
+					<span class="header-item">
+						<a href="/upload/video/">Upload</a>
+					</span>
+					<!--<span class="header-item">
+						<a href="/videos/">Videos</a>
+					</span>-->
+					<span class="header-item">
+						<img class="image is-24x24 wonderland-avatar" src="/img/alice.jpg" alt="TODO" title="TODO" />
+					</span>
 				</div>
 			</div>
-		</section>
-        <div id="wonderland"></div>
-		<footer class="footer">
+		</header>
+        <main id="wonderland"></main>
+		<footer class="footer wonderland-banner">
 			<div class="container">
-				<div class="content is-centered">
+				<div class="content is-text-centered">
 					<p>&copy; 2016 Neon Labs, Inc. All rights reserved.</p>
 				</div>
 			</div>

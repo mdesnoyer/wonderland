@@ -2,20 +2,19 @@
 
 .wonderland-thumbnail {
 	position: relative;
-	background-color: #eee;
+	cursor: pointer;
 }
 
 .wonderland-thumbnail__image {
 	display: block;
 	border-radius: 0.5em;
+	width: 100%;
+	height: auto;
+	border: 1px solid rgba(#939da7, 0.2);
 }
 
 .wonderland-thumbnail__caption {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	position: absolute;
+	// empty
 }
 
 .wonderland-thumbnail__score {

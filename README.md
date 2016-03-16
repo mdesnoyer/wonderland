@@ -78,6 +78,14 @@ If in doubt, defer to the code.
 - API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
 - 152655.006.01.197 and 149293.043.01.197 are Video Ids for Discovery (Account Id, gvs3vytvg20ozp78rolqmdfa), read only please
 
+## Troubleshooting
+
+```
+Fetch API cannot load http://services.neon-lab.com/api/v2/uhet29evso83qb7ys70hvj3z/videos. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:3000' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+
+https://bugs.chromium.org/p/chromium/issues/detail?id=67743
+
 ## Credentials
 
 ### Test Account
