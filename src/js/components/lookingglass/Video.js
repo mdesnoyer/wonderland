@@ -9,6 +9,8 @@ import Notification from './Notification';
 import UTILS from '../../utils';
 import AJAX from '../../ajax';
 
+import TimeAgoWrapper from '../core/TimeAgoWrapper';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Video = React.createClass({
@@ -35,6 +37,9 @@ var Video = React.createClass({
 	},
 	checkStatus: function() {
 		var self = this;
+		self.setState({
+			mode: 'loading'
+		});
 		console.log(AJAX.AUTH_URL);
 		fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
 			.then(function(response) {
@@ -43,7 +48,6 @@ var Video = React.createClass({
 				self.setState({
 					accessToken: json.access_token,
 					refreshToken: json.refresh_token,
-					mode: 'loading'
 				});
 				var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos?video_id=' + self.state.videoId + '&fields=title,publish_date,created,updated,duration,state,url,thumbnails&token=' + self.state.accessToken;
 				console.log(apiUrl);
@@ -102,13 +106,15 @@ var Video = React.createClass({
 		  			}).catch(function(ex) {
 						self.setState({
 							status: 404,
-							message: ex.message
+							message: ex.message,
+							mode: 'silent'
 						});
 		  			});
 				}).catch(function(ex) {
 					self.setState({
 						status: 401,
-						message: ex.message
+						message: ex.message,
+						mode: 'silent'
 					});
 				});
 	},
@@ -167,33 +173,53 @@ var Video = React.createClass({
 						<nav className="navbar">
 							<div className="navbar-left">
 								<div className="navbar-item">
-									<button className={ additionalClass }>{ this.state.videoState }</button>
+									<a className={ additionalClass }>
+										{ this.state.videoState }
+									</a>
 								</div>
 								<div className="navbar-item">
 									<h2 className="title is-3">{ displayTitle }</h2>
 								</div>
 							</div>
 							<div className="navbar-right">
-								<div className="navbar-item">
-									<span className="tag is-medium">ID: { this.state.videoId }</span>
-								</div>
-								<div className="navbar-item">
-									<span className="tag is-medium">Time: { Math.floor(this.state.duration) }<abbr title="seconds">s</abbr></span>
-								</div>
 							</div>
 						</nav>
-						<div className="navbar-item">
-							<span className="tag is-medium">Publish Date: { this.state.publishDate }</span>
-						</div>
-						<div className="navbar-item">
-							<span className="tag is-medium">Created: { this.state.created }</span>
-						</div>
-						<div className="navbar-item">
-							<span className="tag is-medium">Updated: { this.state.updated }</span>
-						</div>
-						<div><span className="tag is-medium">URL: { this.state.url }</span></div>
 						{ notificationNeeded }
-						<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
+						<div className="columns is-desktop">
+							<div className="column">
+								<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
+							</div>
+							<div className="column is-quarter">
+								<table className="table is-bordered is-striped is-narrow">
+									<tbody>
+										<tr>
+											<th>ID</th>
+											<td>{ this.state.videoId }</td>
+										</tr>
+										<tr>
+											<th>Duration</th>
+											<td>{Math.floor(this.state.duration)}<abbr title="seconds">s</abbr></td>
+										</tr>
+										{/*<tr>
+											<th>Created</th>
+											<td><TimeAgoWrapper date={ this.state.created } /></td>
+										</tr>
+										<tr>
+											<th>Updated</th>
+											<td><TimeAgoWrapper date={this.state.updated} /></td>
+										</tr>*/}
+										<tr>
+											<th>Published</th>
+											<td><TimeAgoWrapper date={this.state.publishDate} /></td>
+										</tr>
+										<tr>
+											<th>Original</th>
+											<td><a href={this.state.url} target="_blank">Source</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</section>
 			);

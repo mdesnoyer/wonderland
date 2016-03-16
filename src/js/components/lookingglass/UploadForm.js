@@ -20,21 +20,40 @@ var UploadForm = React.createClass({
 		}
 	},
 	render: function() {
-		var buttonClassName = 'button is-success is-' + this.state.mode;
+		if (this.state.mode === 'loading') {
+			var buttonClassName = 'button is-primary is-disabled is-loading',
+				inputClassName = 'input is-disabled'
+			;
+		}
+		else {
+			var buttonClassName = 'button is-primary',
+				inputClassName = 'input'
+			;
+		}
 		return (
-			<section className="column is-half is-offset-quarter">
-				<div className="container">
+			<section className="section columns">
+				<div className="column is-half is-offset-quarter">
 					<form onSubmit={ this.handleSubmit }>
 						<fieldset>
-							<p>Instructions</p>
+							
 							<legend className="title is-2">Upload Video</legend>
+							<p className="control">Instructions TODO TODO</p>
 							<p className="control is-grouped">
-								<input required className="input" type="url" ref="url" placeholder="Add Video URL" />
+								<input required className={ inputClassName } type="url" ref="url" placeholder="Add Video URL" />
 								<button className={ buttonClassName }>Upload</button>
+							</p>
+							<p className="control">
+								<input className={ inputClassName } type="text" ref="title" placeholder="Optional Title" />
+							</p>
+							<p className="control">
+								<label className="checkbox">
+									<input type="checkbox" />
+										I agree
+								</label>
 							</p>
 						</fieldset>
 					</form>
-					<p>I agree to the Terms &amp; Conditions</p>
+
 				</div>
 			</section>
 		);
@@ -43,10 +62,11 @@ var UploadForm = React.createClass({
 		e.preventDefault();
 		var url = this.refs.url.value.trim();
 		TRACKING.sendEvent(this, arguments, url);
-		this.uploadVideo(UTILS.dropboxUrlFilter(url));
+		this.uploadVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
 	},
-	uploadVideo: function (url) {
+	uploadVideo: function (url, title) {
 		var self = this;
+		console.log(AJAX.AUTH_URL);
 		fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
 			.then(function(response) {
     			return response.json()
@@ -61,16 +81,18 @@ var UploadForm = React.createClass({
 					options = {
 						method: 'POST',
 						body: JSON.stringify({
-							'external_video_ref': videoId,
-							'url': UTILS.properEncodeURI(url),
-							'token': self.state.accessToken
+							external_video_ref: videoId,
+							url: UTILS.properEncodeURI(url),
+							title: title,
+							token: self.state.accessToken
 						}),
-						headers: new Headers({
-							'Content-Type': 'application/json'
-						}),
+						headers: {
+							'Content-Type': 'application/json',
+						},
 						mode: 'cors'
 					}
 				;
+				console.log(apiUrl);
 				fetch(apiUrl, options)
 					.then(function(response) {
 						return response.json()
