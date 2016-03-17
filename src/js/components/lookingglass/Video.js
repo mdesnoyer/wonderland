@@ -186,6 +186,9 @@ var Video = React.createClass({
 							</div>
 						</nav>
 						{ notificationNeeded }
+						<section className="content">
+							<p>The following thumbnails were identified as the most &ldquo;clickable&rdquo; frames in this video.</p>
+						</section>
 						<div className="columns is-desktop">
 							<div className="column">
 								<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
@@ -221,6 +224,12 @@ var Video = React.createClass({
 								</table>
 							</div>
 						</div>
+						<section className="content">
+							<h2 className="title is-3">Not the ones you would have picked?</h2>
+							<p>That&rsquo;s not surprising. The prettiest images are usually NOT the ones that generate the most clicks.</p>
+							<p>These images were selected by measuring features which generate emotional attraction within 20 to 50 milliseconds; features such as faces, attention, color, symmetry, blurriness, and others.</p>
+							<p>70% of the time, Neon finds images that significantly outperform those chosen by human editors.</p>
+						</section>
 					</div>
 				</section>
 			);
