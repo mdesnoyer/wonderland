@@ -35,9 +35,10 @@ var UploadForm = React.createClass({
 				<div className="column is-half is-offset-quarter">
 					<form onSubmit={ this.handleSubmit }>
 						<fieldset>
-							
 							<legend className="title is-2">Upload Video</legend>
-							<p className="control">Instructions TODO TODO</p>
+							<p className="control">
+								(The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
+							</p>
 							<p className="control is-grouped">
 								<input required className={ inputClassName } type="url" ref="url" placeholder="Add Video URL" />
 								<button className={ buttonClassName }>Upload</button>
@@ -47,8 +48,7 @@ var UploadForm = React.createClass({
 							</p>
 							<p className="control">
 								<label className="checkbox">
-									<input type="checkbox" />
-										I agree
+									<input type="checkbox" />I agree to Neon&rsquo;s terms and conditions of use.
 								</label>
 							</p>
 						</fieldset>

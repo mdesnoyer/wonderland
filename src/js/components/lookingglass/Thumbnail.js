@@ -28,7 +28,7 @@ var Thumbnail = React.createClass({
 	render: function() {
 		var self = this,
 			additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
-			caption = 'Thumbnail ' + self.props.index,
+			caption = 'Thumbnail ' + (self.props.index + 1),
 			url = self.props.thumbnail.url,
 			cookedNeonScore = self.props.thumbnail.cookedNeonScore
 		;
