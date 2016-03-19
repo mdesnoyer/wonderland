@@ -1,12 +1,13 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import AJAX from '../../ajax';
 import shortid from 'shortid';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
+import Notification from './Notification';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UploadForm = React.createClass({
 	contextTypes: {
@@ -101,16 +102,16 @@ var UploadForm = React.createClass({
 					}).catch(function(ex) {
   						self.context.router.push('/video/' + videoId + '/');
   					})
-  				;	
+  				;
   			}).catch(function(ex) {
   				console.log(ex.message)
   			})
-  		;	
+  		;
 	}
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default UploadForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

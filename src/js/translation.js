@@ -1,11 +1,9 @@
-var lang = navigator.language;
+var lang = navigator.language.toLowerCase();
 
-let t = {	
-	
-	// lang: "en-US",
+let t = {
 	translatorCheck: function () {
-		if (lang === "en-US") {
-			this.library = "default"	
+		if (lang === "en-us") {
+			this.library = "default"
 		}else{
 			this.library = lang
 		}
@@ -27,59 +25,18 @@ let t = {
 		"Last Name": "Apellido",
 		"Email":"Correo Electrónico",
 		"Password": "Contraseña",
-		"Confirm":"Contraseña",
+		"Confirm":"Confirmar",
 		"Title": "Título",
 		"Company":"Empresa"
 	},
 	form: function(word) {
 		if (this.library === "default") {
-			return word 
-		}else { 
+			return word
+		}else {
 			return this[this.library][word]
 		}
-		
+
 	}
 }
 
-export default t; 
-
-	// signUp: {
-	// 	"en":"Sign Up",
-	// 	"es": "Regístrate",
-	// 	"fr": "S'inscrire"
-	// },
-	// firstName:{
-	// 	"en": "First Name",
-	// 	"es": "Nombre de Pila",
-	// 	"fr": "Prénom"
-	// },
-	// lastName:{
-	// 	"en-US": "Last Name",
-	// 	"es": "Apellido",
-	// 	"fr": "Nom de Famille"
-	// },
-	// email:{
-	// 	"en":"Email",
-	// 	"es": "Correo Electrónico",
-	// 	"fr": "Email"
-	// }, 
-	// password:{
-	// 	"en":"Password",
-	// 	"es": "Contraseña",
-	// 	"fr": "Mot de Passe"
-	// },
-	// confirm:{
-	// 	"en":"Confirm",
-	// 	"es": "Contraseña",
-	// 	"fr": "Confirmer"
-	// },
-	// title:{
-	// 	"en":"Title",
-	// 	"es": "Título",
-	// 	"fr": "Titre"
-	// },
-	// company:{
-	// 	"en":"Company",
-	// 	"es": "Empresa",
-	// 	"fr": "Compagnie"
-	// }
+export default t;
