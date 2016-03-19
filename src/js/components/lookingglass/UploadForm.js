@@ -19,7 +19,8 @@ var UploadForm = React.createClass({
 			refreshToken: '',
 			mode: 'silent', // silent/loading/error
 			isAgreementChecked: false,
-			url: ''
+			url:'',
+			isUrlValid: false
 		}
 	},
 	render: function() {
@@ -28,7 +29,7 @@ var UploadForm = React.createClass({
 				inputClassName = 'input is-disabled'
 			;
 		}
-		else if ((!this.state.isAgreementChecked || !this.state.url) && (this.state.mode === 'silent')) {
+		else if ((!this.state.isAgreementChecked || !this.state.isUrlValid) && (this.state.mode === 'silent')) {
 			var buttonClassName = 'button is-primary is-disabled',
 				inputClassName = 'input'
 		}
@@ -46,6 +47,7 @@ var UploadForm = React.createClass({
 							<p className="control">
 								(The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
 							</p>
+							<Notification message="Be sure to include 'https' for a secure experience" style="notification is-warning" status={this.state.isUrlValid} />
 							<p className="control is-grouped">
 								<input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder="Add Video URL" />
 								<button className={buttonClassName}>Upload</button>
@@ -55,21 +57,28 @@ var UploadForm = React.createClass({
 							</p>
 							<p className="control">
 								<label className="checkbox" onChange={this.handleChangeAgreement}  checked={this.state.isAgreementChecked}>
-									<input type="checkbox" />I agree to Neon&rsquo;s terms and conditions of use.
+									<input type="checkbox" />
 								</label>
+									I agree to Neon&rsquo;s terms and conditions of use.
 							</p>
 						</fieldset>
 					</form>
-
 				</div>
 			</section>
 		);
 	},
-	handleChangeUrl: function(e) { 
-		// TODO REGEX FOR URL IN THE INPUT 
+	handleChangeUrl: function (e) {
 		this.setState({url: e.target.value})
+		this.checkUrlHttps(e);
 	},
-	handleChangeAgreement: function(){
+	checkUrlHttps: function (e) {
+		if (/^(https)/gi.test(e.target.value)){
+			this.setState({isUrlValid: true})
+		}else{
+			this.setState({isUrlValid: false})
+		}
+	},
+	handleChangeAgreement: function () {
 		this.setState({isAgreementChecked: !this.state.isAgreementChecked})
 	},
 	handleSubmit: function (e) {

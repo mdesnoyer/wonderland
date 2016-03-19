@@ -1,14 +1,13 @@
 var lang = navigator.language.toLowerCase();
-
 let t = {
-	translatorCheck: function () {
+		form: function(word) {
 		if (lang === "en-us") {
-			this.library = "default"
-		}else{
-			this.library = lang
+			return word
+		} else {
+			return this[lang][word]
 		}
 	},
-	library: "",
+	//left this translation so you could test it.
 	"en-gb":{
 		"Sign Up": "Regístrate",
 		"First Name": "Nombre de Pila",
@@ -28,14 +27,6 @@ let t = {
 		"Confirm":"Confirmar",
 		"Title": "Título",
 		"Company":"Empresa"
-	},
-	form: function(word) {
-		if (this.library === "default") {
-			return word
-		}else {
-			return this[this.library][word]
-		}
-
 	}
 }
 

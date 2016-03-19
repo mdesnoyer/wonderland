@@ -10,7 +10,7 @@ var SignUpForm = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	render: function() {
-		T.translatorCheck();
+		// T.translatorCheck();
 		return (
 			<section className="section columns">
 				<div className="column is-third is-offset-4">
