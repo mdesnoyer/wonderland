@@ -1,8 +1,9 @@
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 import React from 'react';
 import TRACKING from '../../tracking';
 import T from '../../translation';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
@@ -10,7 +11,6 @@ var SignUpForm = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	render: function() {
-		// T.translatorCheck();
 		return (
 			<section className="section columns">
 				<div className="column is-third is-offset-4">
