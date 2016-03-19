@@ -1,47 +1,85 @@
-// var lang = navigator.language;
+var lang = navigator.language;
 
-let translator = {	
-	lang: navigator.language.substring(0,2) || navigator.userLanguage.substring(0,2),
-	signUp: {
-		"en":"Sign Up",
-		"es": "Regístrate",
-		"fr": "S'inscrire"
+let t = {	
+	
+	// lang: "en-US",
+	translatorCheck: function () {
+		if (lang === "en-US") {
+			this.library = "default"	
+		}else{
+			this.library = lang
+		}
 	},
-	firstName:{
-		"en": "First Name",
-		"es": "Nombre de Pila",
-		"fr": "Prénom"
+	library: "",
+	"en-gb":{
+		"Sign Up": "Regístrate",
+		"First Name": "Nombre de Pila",
+		"Last Name": "Apellido",
+		"Email":"Correo Electrónico",
+		"Password": "Contraseña",
+		"Confirm":"Contraseña",
+		"Title": "Título",
+		"Company":"Empresa"
 	},
-	lastName:{
-		"en-US": "Last Name",
-		"es": "Apellido",
-		"fr": "Nom de Famille"
+	"es-mx":{
+		"Sign Up": "Regístrate",
+		"First Name": "Nombre de Pila",
+		"Last Name": "Apellido",
+		"Email":"Correo Electrónico",
+		"Password": "Contraseña",
+		"Confirm":"Contraseña",
+		"Title": "Título",
+		"Company":"Empresa"
 	},
-	email:{
-		"en":"Email",
-		"es": "Correo Electrónico",
-		"fr": "Email"
-	}, 
-	password:{
-		"en":"Password",
-		"es": "Contraseña",
-		"fr": "Mot de Passe"
-	},
-	confirm:{
-		"en":"Confirm",
-		"es": "Contraseña",
-		"fr": "Confirmer"
-	},
-	title:{
-		"en":"Title",
-		"es": "Título",
-		"fr": "Titre"
-	},
-	company:{
-		"en":"Company",
-		"es": "Empresa",
-		"fr": "Compagnie"
-	} 
+	form: function(word) {
+		if (this.library === "default") {
+			return word 
+		}else { 
+			return this[this.library][word]
+		}
+		
+	}
 }
 
-export default translator; 
+export default t; 
+
+	// signUp: {
+	// 	"en":"Sign Up",
+	// 	"es": "Regístrate",
+	// 	"fr": "S'inscrire"
+	// },
+	// firstName:{
+	// 	"en": "First Name",
+	// 	"es": "Nombre de Pila",
+	// 	"fr": "Prénom"
+	// },
+	// lastName:{
+	// 	"en-US": "Last Name",
+	// 	"es": "Apellido",
+	// 	"fr": "Nom de Famille"
+	// },
+	// email:{
+	// 	"en":"Email",
+	// 	"es": "Correo Electrónico",
+	// 	"fr": "Email"
+	// }, 
+	// password:{
+	// 	"en":"Password",
+	// 	"es": "Contraseña",
+	// 	"fr": "Mot de Passe"
+	// },
+	// confirm:{
+	// 	"en":"Confirm",
+	// 	"es": "Contraseña",
+	// 	"fr": "Confirmer"
+	// },
+	// title:{
+	// 	"en":"Title",
+	// 	"es": "Título",
+	// 	"fr": "Titre"
+	// },
+	// company:{
+	// 	"en":"Company",
+	// 	"es": "Empresa",
+	// 	"fr": "Compagnie"
+	// }
