@@ -15,12 +15,14 @@ let tracking = {
 			});
 	},
 	findSynthEventIndex: function(eventArray, eventArguments){
-		var index = eventArray.findIndex(x => x.hasOwnProperty('_dispatchListeners'));
-		if (index === -1) {
-			return 'unknown';
-		}
-		else {
-			return this.returnFunctionName(index,eventArguments);
+
+		for (var i = 0; i < eventArray.length; i++) {
+			if (eventArray[i].hasOwnProperty('_dispatchListeners')) {
+				return this.returnFunctionName(i, eventArguments)
+			}
+			else{
+				return "Unknown"			
+			}
 		}
 	},
 	sliceArgumentArray: function(eventArguments){
