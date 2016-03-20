@@ -6,15 +6,12 @@ import React from 'react';
 
 var Notification = React.createClass({
 	render: function() {
-    if(this.props.status === true ){
-      return <p></p>;
-    } else {
-      return (
-            <div className={this.props.style}>
-              { this.props.message }
-            </div>
-      )
-    }
+		return (
+            <div className= {this.props.style} >
+				<div className="message-header">{this.props.status}</div>
+				<div className="message-body">{this.props.message}</div>
+			</div>
+		);
 	}
 });
 
