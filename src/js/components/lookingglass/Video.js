@@ -8,6 +8,7 @@ import Thumbnails from './Thumbnails';
 import Notification from './Notification';
 import UTILS from '../../utils';
 import AJAX from '../../ajax';
+import VideoInfoTable from './VideoInfoTable'
 
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 
@@ -132,16 +133,8 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<h1 className="title">Video ID: { this.props.params.videoId }</h1>
-						<div className="message is-danger">
-							<div className="message-header">
-								Unable to login
-							</div>
-							<div className="message-body">
-								{ this.state.message }
-							</div>
-						</div>
-					</div>
+						<Notification status={this.state.status} message="Unable to Login"  style="message is-danger" />
+					</div>	
 				</section>
 			);
 		}
@@ -149,17 +142,9 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<h1 className="title">Video ID: { this.props.params.videoId }</h1>
-						<div className="message is-warning">
-							<div className="message-header">
-								Not Found
-							</div>
-							<div className="message-body">
-								{ this.state.message }
-							</div>
-						</div>
+						<Notification status={this.state.status} message="Not Found" style="message is-danger" />
 					</div>
-				</section>
+				</section>	
 			);
 		}
 		if (this.state.status === 200) {
@@ -174,54 +159,27 @@ var Video = React.createClass({
 						<nav className="navbar">
 							<div className="navbar-left">
 								<div className="navbar-item">
-									<a className={ additionalClass }>
-										{ this.state.videoState }
+									<a className={ additionalClass}>
+										{this.state.videoState}
 									</a>
 								</div>
 								<div className="navbar-item">
-									<h2 className="title is-3"><a href={videoLink}>{ displayTitle }</a></h2>
+									<h2 className="title is-3"><a href={videoLink}>{displayTitle}</a></h2>
 								</div>
 							</div>
 							<div className="navbar-right">
 							</div>
 						</nav>
-						{ notificationNeeded }
+						{notificationNeeded}
 						<section className="content">
 							<p>The following thumbnails were identified as the most &ldquo;clickable&rdquo; frames in this video.</p>
 						</section>
 						<div className="columns is-desktop">
 							<div className="column">
-								<Thumbnails videoStateMapping={ this.state.videoStateMapping } thumbnails={ this.state.thumbnails } />
+								<Thumbnails videoStateMapping={this.state.videoStateMapping} thumbnails={this.state.thumbnails} />
 							</div>
 							<div className="column is-quarter">
-								<table className="table is-bordered is-striped is-narrow">
-									<tbody>
-										<tr>
-											<th>ID</th>
-											<td>{ this.state.videoId }</td>
-										</tr>
-										<tr>
-											<th>Duration</th>
-											<td>{Math.floor(this.state.duration)}<abbr title="seconds">s</abbr></td>
-										</tr>
-										{/*<tr>
-											<th>Created</th>
-											<td><TimeAgoWrapper date={ this.state.created } /></td>
-										</tr>
-										<tr>
-											<th>Updated</th>
-											<td><TimeAgoWrapper date={this.state.updated} /></td>
-										</tr>*/}
-										<tr>
-											<th>Published</th>
-											<td><TimeAgoWrapper date={this.state.publishDate} /></td>
-										</tr>
-										<tr>
-											<th>Original</th>
-											<td><a href={this.state.url} target="_blank">Source</a></td>
-										</tr>
-									</tbody>
-								</table>
+								<VideoInfoTable videoId={this.state.videoId} duration={this.state.duration} publishDate={this.state.publishDate} url={this.state.url} />
 							</div>
 						</div>
 						<section className="content">
