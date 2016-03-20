@@ -47,7 +47,7 @@ var UploadForm = React.createClass({
 							<p className="control">
 								(The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
 							</p>
-							<Notification message="Be sure to include 'https' for a secure experience" style="notification is-warning" status={this.state.isUrlValid} />
+							<Notification message="Be sure to include 'https' for a secure experience" style="notification is-warning" isUrlValid={this.state.isUrlValid} />
 							<p className="control is-grouped">
 								<input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder="Add Video URL" />
 								<button className={buttonClassName}>Upload</button>

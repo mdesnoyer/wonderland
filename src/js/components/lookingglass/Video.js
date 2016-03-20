@@ -1,8 +1,8 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import Thumbnails from './Thumbnails';
 import Notification from './Notification';
@@ -12,7 +12,7 @@ import VideoInfoTable from './VideoInfoTable'
 
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Video = React.createClass({
 	getInitialState: function() {
@@ -57,7 +57,7 @@ var Video = React.createClass({
 		    			return response.json();
 		  			}).then(function(json) {
 		  				var video = json.videos[0];
-						if ((video.state === 'serving' && self.state.videoState == 'serving') 
+						if ((video.state === 'serving' && self.state.videoState == 'serving')
 							|| (video.state === 'failed' && self.state.videoState == 'failed')) {
 							clearInterval(self.state.intervalId);
 							self.setState({
@@ -133,8 +133,8 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<Notification status={this.state.status} message="Unable to Login"  style="message is-danger" />
-					</div>	
+						<Notification status={"Error: " + this.state.status} message="Unable to Login"  style="notification is-danger" />
+					</div>
 				</section>
 			);
 		}
@@ -142,9 +142,9 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<Notification status={this.state.status} message="Not Found" style="message is-danger" />
+						<Notification status={"Error: " + this.state.status} message="Not Found" style="notification is-danger" />
 					</div>
-				</section>	
+				</section>
 			);
 		}
 		if (this.state.status === 200) {
@@ -195,8 +195,8 @@ var Video = React.createClass({
 	}
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Video;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

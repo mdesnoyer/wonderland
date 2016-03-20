@@ -13,7 +13,7 @@ var SignUpForm = React.createClass({
 	render: function() {
 		return (
 			<section className="section columns">
-				<div className="column is-third is-offset-4">
+				<div className="column is-half is-offset-quarter">
 					<form onSubmit={ this.handleSubmit }>
 						<fieldset>
 						    <legend className="title is-2">Sign Up</legend>
