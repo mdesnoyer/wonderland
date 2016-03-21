@@ -5,7 +5,7 @@ var lang = navigator.language.toLowerCase() || window.navigator.language.toLower
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 let t = {
 		form: function(word) {
-		if (lang === 'en-us') {
+		if (lang === 'en-gb') {
 			return this[word][lang]
 		} else {
 			return word
@@ -13,28 +13,28 @@ let t = {
 		}
 	},
 	"Sign Up": {
-		"en-us": "Regístrate"
+		"en-gb": "Regístrate"
 	},
 	"First Name": {
-		"en-us": "Nombre de Pila"
+		"en-gb": "Nombre de Pila"
 	},
 	"Last Name": {
-		"en-us": "Apellido"
+		"en-gb": "Apellido"
 	},
 	"Email": {
-		"en-us": "Correo Electrónico"
+		"en-gb": "Correo Electrónico"
 	},
 	"Password": {
-		"en-us": "Contraseña"
+		"en-gb": "Contraseña"
 	},
 	"Confirm": {
-		"en-us": "Confirmar"
+		"en-gb": "Confirmar"
 	},
 	"Title": {
-		"en-us": "Título"
+		"en-gb": "Título"
 	},
 	"Company": {
-		"en-us": "Empresa"
+		"en-gb": "Empresa"
 	} 
 
 }
