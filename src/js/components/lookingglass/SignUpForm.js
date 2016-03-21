@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 import React from 'react';
 import TRACKING from '../../tracking';
+import AJAX from '../../ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignUpForm = React.createClass({
@@ -41,20 +42,30 @@ var SignUpForm = React.createClass({
 		);
 	},
 	handleSubmit: function (e) {	
-		var self = this;
-		e.preventDefault();
-		var userDataObject = {
-			firstName: this.refs.firstName.value.trim(),
-			lastName: this.refs.lastName.value.trim(),
-			email: this.refs.email.value.trim(),
-			passwordInitial: this.refs.passwordInitial.value.trim(),
-			passwordConfirm: this.refs.passwordConfirm.value.trim(),
-			company: this.refs.company.value.trim(),
-			title: this.refs.title.value.trim()
-		}
-		TRACKING.sendEvent(this, arguments, userDataObject.email)
-		self.context.router.push('/upload/video/');
-		// TODO submit data to create user account 
+		var self = this,
+        userDataObject = {
+    			firstName: this.refs.firstName.value.trim(),
+    			lastName: this.refs.lastName.value.trim(),
+    			email: this.refs.email.value.trim(),
+    			passwordInitial: this.refs.passwordInitial.value.trim(),
+    			passwordConfirm: this.refs.passwordConfirm.value.trim(),
+    			company: this.refs.company.value.trim(),
+    			title: this.refs.title.value.trim()
+    		};
+
+    e.preventDefault();
+
+		AJAX.doPost('signup', {
+      host: AJAX.AUTH_HOST,
+      data: userDataObject
+    })
+      .then(function () {
+        self.context.router.push('/upload/video/');
+      })
+      .catch(function (err) {
+        console.error(err.responseText);
+        self.context.router.push('/upload/video/');
+      });
 	}
 });
 

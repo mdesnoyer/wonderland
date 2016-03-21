@@ -97,12 +97,12 @@ var Video = React.createClass({
           });
         }
       })
-      .catch(function(ex) {
-        console.log(ex.message);
+      .catch(function(err) {
+        console.log(err.responseText);
         clearInterval(self.state.intervalId);
         self.setState({
-          status: ex.status,
-          message: ex.message,
+          status: err.status,
+          message: err.responseText,
           intervalId: ''
         });
       });
