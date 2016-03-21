@@ -45,18 +45,32 @@ var AJAX = {
       accountId: undefined
     };
   },
+  getQueryParam: function(json) {
+  	return Object.keys(json).map(function (key) {
+      if (json[key] !== null && json[key] !== undefined) {
+	      if (Object.prototype.toString.call(json[key]) === '[object Array]') {
+	      	return encodeURIComponent(key) + '=' + encodeURIComponent(json[key].join());
+	      } else if (Object.prototype.toString.call(json[key]) === '[object Object]') {
+	      	return encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(json[key]));
+	      } else {
+	  	    return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
+	  	  }
+  	 	}
+    }).join('&');
+  },
 	doApiCall: function(url, options) {
 		var self = this;
 		function fin(resolve, reject) {
+			options.data = options.data || {};
+			options.data.token = self.state.accessToken;
 			if (options.method === 'GET') {
-				url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + 'token=' + self.state.accessToken;
+				url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(options.data);
+				delete options.data;
 			} else {
-				options.data = options.data || {};
-				options.data.token = self.state.accessToken;
 				options.data = JSON.stringify(options.data);
+				options.type = 'json';
+				options.contentType = 'application/json';
 			}
-			options.type = 'json';
-			options.contentType = 'application/json';
 			options.url = API_HOST + self.state.accountId + '/' + url;
 			reqwest(options)
 				.then(function (res) {

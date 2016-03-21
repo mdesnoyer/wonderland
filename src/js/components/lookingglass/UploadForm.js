@@ -57,7 +57,8 @@ var UploadForm = React.createClass({
 				self.context.router.push('/video/' + videoId + '/');
 			})
       .catch(function(ex) {
-			  console.log(ex.message)
+			  console.log(ex.message);
+        self.context.router.push('/video/' + videoId + '/');
       });	
 	}
 });
