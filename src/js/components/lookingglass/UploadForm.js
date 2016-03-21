@@ -82,9 +82,9 @@ var UploadForm = React.createClass({
 		console.log(AJAX.AUTH_URL);
 		fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
 			.then(function(response) {
-    			return response.json()
-  			}).then(function(json) {
-  				self.setState({
+					return response.json()
+				}).then(function(json) {
+					self.setState({
 					accessToken: json.access_token,
 					refreshToken: json.refresh_token,
 					mode: 'loading'
@@ -112,13 +112,13 @@ var UploadForm = React.createClass({
 					}).then(function(json) {
 						self.context.router.push('/video/' + videoId + '/');
 					}).catch(function(ex) {
-  						self.context.router.push('/video/' + videoId + '/');
-  					})
-  				;	
-  			}).catch(function(ex) {
-  				console.log(ex.message)
-  			})
-  		;	
+							self.context.router.push('/video/' + videoId + '/');
+						})
+					;	
+				}).catch(function(ex) {
+					console.log(ex.message)
+				})
+			;	
 	}
 });
 

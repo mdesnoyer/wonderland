@@ -1,41 +1,41 @@
 {
-  "name": "wonderland",
-  "version": "0.0.1",
-  "private": true,
-  "license": "UNLICENSED",
-  "description": "",
-  "main": "index.js",
-  "author": "Ed Henderson <henderson@neon-lab.com>",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/neon-lab/wonderland"
-  },
-  "devDependencies": {
-    "autobind-decorator": "1.3.2",
-    "babel": "5.8.23",
-    "babelify": "6.4.0",
-    "browser-sync": "2.9.11",
-    "browserify": "11.2.0",
-    "bulma": "0.0.16",
-    "connect-history-api-fallback": "1.1.0",
-    "gulp": "3.9.0",
-    "gulp-notify": "2.2.0",
-    "gulp-sass": "^2.2.0",
-    "gulp-util": "3.0.7",
-    "history": "1.12.5",
-    "install": "0.1.8",
-    "react": "^0.14.7",
-    "react-catalyst": "0.3.0",
-    "react-dom": "0.14.0",
-    "react-mixin": "3.0.0",
-    "react-router": "^2.0.0",
-    "react-timeago": "^2.2.1",
-    "shortid": "^2.2.4",
-    "vinyl-buffer": "1.0.0",
-    "vinyl-source-stream": "1.1.0",
-    "watchify": "3.4.0"
-  },
-  "dependencies": {
-    "whatwg-fetch": "^0.11.0"
-  }
+	"name": "wonderland",
+	"version": "0.0.1",
+	"private": true,
+	"license": "UNLICENSED",
+	"description": "",
+	"main": "index.js",
+	"author": "Ed Henderson <henderson@neon-lab.com>",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/neon-lab/wonderland"
+	},
+	"devDependencies": {
+		"autobind-decorator": "1.3.2",
+		"babel": "5.8.23",
+		"babelify": "6.4.0",
+		"browser-sync": "2.9.11",
+		"browserify": "11.2.0",
+		"bulma": "0.0.16",
+		"connect-history-api-fallback": "1.1.0",
+		"gulp": "3.9.0",
+		"gulp-notify": "2.2.0",
+		"gulp-sass": "^2.2.0",
+		"gulp-util": "3.0.7",
+		"history": "1.12.5",
+		"install": "0.1.8",
+		"react": "^0.14.7",
+		"react-catalyst": "0.3.0",
+		"react-dom": "0.14.0",
+		"react-mixin": "3.0.0",
+		"react-router": "^2.0.0",
+		"react-timeago": "^2.2.1",
+		"shortid": "^2.2.4",
+		"vinyl-buffer": "1.0.0",
+		"vinyl-source-stream": "1.1.0",
+		"watchify": "3.4.0"
+	},
+	"dependencies": {
+		"whatwg-fetch": "^0.11.0"
+	}
 }
