@@ -125,6 +125,7 @@ gulp.task('default', null, function() {
 
 gulp.task('debug', ['images', 'styles', 'html', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
+    gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
     gulp.watch('./src/index.html', ['html']);
     return buildScript('wonderland.js', true);
