@@ -77,14 +77,32 @@ var AJAX = {
 					resolve(res);
 				})
 				.catch(function (err) {
-					// TODO: Attempt Retry
-					self.clearSession();
-					reject(err);
+					var retryUrl = '';
+					if (err.status === 401 && self.state.refreshToken) {
+						retryUrl = AUTH_HOST + '?token=' + self.state.refreshToken;
+						reqwest({
+							url: retryUrl,
+							method: 'POST',
+							crossDomain: true,
+							type: 'json'
+						})
+							.then(function (res) {
+								self.setSession(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
+								fin(resolve, reject);
+							})
+							.catch(function (err) {
+								self.clearSession();
+								reject(err);
+							});
+					} else {
+						self.clearSession();
+						reject(err);
+					}
 				});
 		}
 
 		return new Promise(function (resolve, reject) {
-			let authUrl = '';
+			var authUrl = '';
 			if (self.state.accessToken) {
 				fin(resolve, reject);
 			} else {
