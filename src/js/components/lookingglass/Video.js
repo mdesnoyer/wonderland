@@ -133,7 +133,7 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<Notification status={"Error: " + this.state.status} message="Unable to Login"  style="notification is-danger" />
+						<Notification type={"Error: " + this.state.status} message="Unable to Login"  style="is-danger" />
 					</div>
 				</section>
 			);
@@ -142,7 +142,7 @@ var Video = React.createClass({
 			return (
 				<section className="section">
 					<div className="container">
-						<Notification status={"Error: " + this.state.status} message="Not Found" style="notification is-danger" />
+						<Notification type={"Error: " + this.state.status} message="Not Found" style="is-danger" />
 					</div>
 				</section>
 			);

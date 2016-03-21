@@ -1,27 +1,42 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var lang = navigator.language.toLowerCase();
+var lang = navigator.language.toLowerCase() || window.navigator.language.toLowerCase();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 let t = {
 		form: function(word) {
-		if (lang === "en-us") {
-			return word
+		if (lang === 'en-us') {
+			return this[word][lang]
 		} else {
-			return this[lang][word]
+			return word
+
 		}
 	},
-	//left this translation so you could test it.
-	"en-gb":{
-		"Sign Up": "Regístrate",
-		"First Name": "Nombre de Pila",
-		"Last Name": "Apellido",
-		"Email":"Correo Electrónico",
-		"Password": "Contraseña",
-		"Confirm":"Confirmar",
-		"Title": "Título",
-		"Company":"Empresa"
-	}
+	"Sign Up": {
+		"en-us": "Regístrate"
+	},
+	"First Name": {
+		"en-us": "Nombre de Pila"
+	},
+	"Last Name": {
+		"en-us": "Apellido"
+	},
+	"Email": {
+		"en-us": "Correo Electrónico"
+	},
+	"Password": {
+		"en-us": "Contraseña"
+	},
+	"Confirm": {
+		"en-us": "Confirmar"
+	},
+	"Title": {
+		"en-us": "Título"
+	},
+	"Company": {
+		"en-us": "Empresa"
+	} 
+
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -6,17 +6,17 @@ import React from 'react';
 
 var Notification = React.createClass({
 	render: function() {
-		if (this.props.isUrlValid){
-      return <div></div>
+	console.log(this.props.style)	
+		if (this.props.isUrlValid) {
+      return null
     }
     return (
-        <div className= {this.props.style} >
-				  {this.props.status} {this.props.message}
+        <div className={"notification " + this.props.style}>
+				  {this.props.type} {this.props.message}
 			</div>
 		);
 	}
 });
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Notification;
