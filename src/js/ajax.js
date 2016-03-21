@@ -1,9 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import cookie from 'react-cookie';
 import 'babel-polyfill';
 import reqwest from 'reqwest';
+import SESSION from './session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -11,41 +11,13 @@ const USERNAME ='wonderland_demo',
 			PASSWORD ='ad9f8g4n3ibna9df',
 			ACCOUNT_ID = 'uhet29evso83qb7ys70hvj3z',
 			AUTH_HOST = 'https://auth.neon-lab.com/api/v2/',
-			API_HOST = 'http://services.neon-lab.com/api/v2/';
+			API_HOST = '//services.neon-lab.com/api/v2/';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-const accessTokenKey = 'at',
-			refreshTokenKey = 'rt',
-			accountIdKey ='actId';
-
 var AJAX = {
-	state: {
-    accessToken: cookie.load(accessTokenKey),
-    refreshToken: cookie.load(refreshTokenKey),
-    accountId: cookie.load(accountIdKey)
-  },
-  setSession: function(accessToken, refreshToken, accountId) {
-    this.state = {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      accountId: accountId
-    };
-    cookie.save(accessTokenKey, accessToken, { path: '/' });
-    cookie.save(refreshTokenKey, refreshToken, { path: '/' });
-    cookie.save(accountIdKey, accountId, { path: '/' });
-  },
-  clearSession: function() {
-    cookie.remove(accessTokenKey, { path: '/' });
-    cookie.remove(refreshTokenKey, { path: '/' });
-    cookie.remove(accountIdKey, { path: '/' });
-    this.state = {
-      accessToken: undefined,
-      refreshToken: undefined,
-      accountId: undefined
-    };
-  },
-  getQueryParam: function(json) {
+	Session: null,
+	getQueryParam: function(json) {
   	return Object.keys(json).map(function (key) {
       if (json[key] !== null && json[key] !== undefined) {
 	      if (Object.prototype.toString.call(json[key]) === '[object Array]') {
@@ -62,7 +34,7 @@ var AJAX = {
 		var self = this;
 		function fin(resolve, reject) {
 			options.data = options.data || {};
-			options.data.token = self.state.accessToken;
+			options.data.token = self.Session.state.accessToken;
 			if (options.method === 'GET') {
 				url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(options.data);
 				delete options.data;
@@ -71,15 +43,15 @@ var AJAX = {
 				options.type = 'json';
 				options.contentType = 'application/json';
 			}
-			options.url = API_HOST + self.state.accountId + '/' + url;
+			options.url = options.host + (options.host === API_HOST ? self.Session.state.accountId + '/' : '') + url;
 			reqwest(options)
 				.then(function (res) {
 					resolve(res);
 				})
 				.catch(function (err) {
 					var retryUrl = '';
-					if (err.status === 401 && self.state.refreshToken) {
-						retryUrl = AUTH_HOST + '?token=' + self.state.refreshToken;
+					if (options.host !== AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
+						retryUrl = AUTH_HOST + '?token=' + self.Session.state.refreshToken;
 						reqwest({
 							url: retryUrl,
 							method: 'POST',
@@ -87,23 +59,25 @@ var AJAX = {
 							type: 'json'
 						})
 							.then(function (res) {
-								self.setSession(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
+								self.Session.set(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
 								fin(resolve, reject);
 							})
 							.catch(function (err) {
-								self.clearSession();
+								self.Session.end();
 								reject(err);
 							});
 					} else {
-						self.clearSession();
+						self.Session.end();
 						reject(err);
 					}
 				});
 		}
 
+		self.Session = self.Session || SESSION;
+
 		return new Promise(function (resolve, reject) {
 			var authUrl = '';
-			if (self.state.accessToken) {
+			if (self.Session.active() === true || options.host === AUTH_HOST) {
 				fin(resolve, reject);
 			} else {
 				if (USERNAME && PASSWORD) {
@@ -115,7 +89,7 @@ var AJAX = {
 						type: 'json'
 					})
 						.then(function (res) {
-							self.setSession(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
+							self.Session.set(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
 							fin(resolve, reject);
 						})
 						.catch(reject);
@@ -125,13 +99,17 @@ var AJAX = {
 			}
 		});
 	},
+	AUTH_HOST: AUTH_HOST,
+	API_HOST: API_HOST,
 	doGet: function(url, options) {
 		options = options || {};
+		options.host = options.host || API_HOST;
 		options.method = options.method || 'GET';
 		return this.doApiCall(url, options);
 	},
 	doPost: function(url, options) {
 		options = options || {};
+		options.host = options.host || API_HOST;
 		options.method = options.method || 'POST';
 		return this.doApiCall(url, options);
 	}
