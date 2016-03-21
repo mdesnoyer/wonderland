@@ -3,6 +3,7 @@
 import React from 'react';
 import cookie from 'react-cookie';
 import 'babel-polyfill';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -18,7 +19,7 @@ const accessTokenKey = 'at',
 			refreshTokenKey = 'rt',
 			accountIdKey ='actId';
 
-let AJAX = {
+var AJAX = {
 	state: {
     accessToken: cookie.load(accessTokenKey),
     refreshToken: cookie.load(refreshTokenKey),
@@ -47,35 +48,42 @@ let AJAX = {
 	doApiCall: function(url, options) {
 		var self = this;
 		function fin(resolve, reject) {
-			url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + 'token=' + self.state.accessToken;
-			fetch(API_HOST + self.state.accountId + '/' + url, options)
+			if (options.method === 'GET') {
+				url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + 'token=' + self.state.accessToken;
+			} else {
+				options.data = options.data || {};
+				options.data.token = self.state.accessToken;
+				options.data = JSON.stringify(options.data);
+			}
+			options.type = 'json';
+			options.contentType = 'application/json';
+			options.url = API_HOST + self.state.accountId + '/' + url;
+			reqwest(options)
 				.then(function (res) {
-					return res.json();
+					resolve(res);
 				})
 				.catch(function (err) {
 					// TODO: Attempt Retry
 					self.clearSession();
 					reject(err);
-				})
-				.then(function (json) {
-					resolve(json);
-				})
-				.catch(reject);
+				});
 		}
 
-		return new Promise((resolve, reject) => {
+		return new Promise(function (resolve, reject) {
 			let authUrl = '';
 			if (self.state.accessToken) {
 				fin(resolve, reject);
 			} else {
 				if (USERNAME && PASSWORD) {
 					authUrl = AUTH_HOST + 'authenticate?username=' + USERNAME + '&password=' + PASSWORD;
-					fetch(authUrl, {method: 'POST', mode: 'cors'})
+					reqwest({
+						url: authUrl,
+						method: 'POST',
+						crossDomain: true,
+						type: 'json'
+					})
 						.then(function (res) {
-							return res.json();
-						})
-						.then(function (json) {
-							self.setSession(json.access_token, json.refresh_token, ACCOUNT_ID || json.account_id);
+							self.setSession(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
 							fin(resolve, reject);
 						})
 						.catch(reject);
@@ -88,14 +96,11 @@ let AJAX = {
 	doGet: function(url, options) {
 		options = options || {};
 		options.method = options.method || 'GET';
-		options.mode = options.mode || 'cors';
-		options.cache = options.cache || 'reload';
 		return this.doApiCall(url, options);
 	},
 	doPost: function(url, options) {
 		options = options || {};
 		options.method = options.method || 'POST';
-		options.mode = options.mode || 'cors';
 		return this.doApiCall(url, options);
 	}
 };

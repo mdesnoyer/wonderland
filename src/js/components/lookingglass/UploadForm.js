@@ -46,14 +46,10 @@ var UploadForm = React.createClass({
 		var self = this,
         videoId = shortid.generate(),
 				options = {
-					body: JSON.stringify({
+					data: {
 						'external_video_ref': videoId,
 						'url': UTILS.properEncodeURI(url)
-					}),
-					headers: new Headers({
-						'Content-Type': 'application/json'
-					}),
-          mode: 'no-cors'
+					}
 				};
 
 		AJAX.doPost('videos', options)
