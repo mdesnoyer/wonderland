@@ -3,7 +3,7 @@ QA Testing [Rough Draft]
 
 ##Looking Glass Components: 
 
-###Sign Up Form 
+###Sign Up Form: 
   * Inputs ( checking for validation + proper submit functionality): 
     * First Name 
     * Last Name 
@@ -33,13 +33,13 @@ QA Testing [Rough Draft]
   * Do errors come back from the AJAX call ?
   * Google Analytics Upload Event Working?
 
-###Video
+###Video:
   * Does serving Bar show up / Change during Progress ?
   * Does Error Show when Progress Fails ?
   * Do thumbnails appear for video ( max 5 )? 
   * Does Info Table show up ?
 
-###Video Info Table 
+###Video Info Table: 
   * Does Correct ID appear ?
   * Is Duration Calculated correctly + format ?
   * Is published calculated correctly + format ?
