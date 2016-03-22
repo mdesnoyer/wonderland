@@ -19,8 +19,9 @@ var UploadForm = React.createClass({
 			refreshToken: '',
 			mode: 'silent', // silent/loading/error
 			isAgreementChecked: false,
+			//TODO URL VALIDATION: 
 			url: '',
-			isUrlValid: false
+			isUrlFilled: false
 		}
 	},
 	render: function() {
@@ -29,7 +30,7 @@ var UploadForm = React.createClass({
 				inputClassName = 'input is-disabled'
 			;
 		}
-		else if ((!this.state.isAgreementChecked || !this.state.isUrlValid) && (this.state.mode === 'silent')) {
+		else if ((!this.state.isAgreementChecked || !this.state.isUrlFilled) && (this.state.mode === 'silent')) {
 			var buttonClassName = 'button is-primary is-disabled',
 				inputClassName = 'input'
 		}
@@ -47,7 +48,6 @@ var UploadForm = React.createClass({
 							<p className="control">
 								(The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
 							</p>
-							<Notification message="Be sure to include 'https' for a secure experience" style="is-warning" isUrlValid={this.state.isUrlValid} />
 							<p className="control is-grouped">
 								<input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder="Add Video URL" />
 								<button className={buttonClassName}>Upload</button>
@@ -67,15 +67,23 @@ var UploadForm = React.createClass({
 			</section>
 		);
 	},
+	// TODO URL VALIDATION: 
 	handleChangeUrl: function (e) {
 		this.setState({url: e.target.value})
-		this.checkUrlHttps(e);
+		this.checkUrlFilled(e);
 	},
-	checkUrlHttps: function (e) {
-		if (/^(https)/gi.test(e.target.value)){
-			this.setState({isUrlValid: true})
-		}else{
-			this.setState({isUrlValid: false})
+	
+	checkUrlFilled: function (e) {
+		//TODO URL VALIDATION: REGEX to do later 
+		// if (/^(https)/gi.test(e.target.value)){
+		// 	this.setState({isUrlFilled: true})
+		// }else{
+		// 	this.setState({isUrlFilled: false})
+		// }
+		if (e.target.value !== "") {
+			this.setState({isUrlFilled: true})
+		} else {
+			this.setState({isUrlFilled: false})
 		}
 	},
 	handleChangeAgreement: function () {

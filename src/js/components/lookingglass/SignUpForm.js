@@ -18,24 +18,24 @@ var SignUpForm = React.createClass({
 						<fieldset>
 						    <legend className="title is-2">Sign Up</legend>
 						        <p className="control is-grouped">
-						    		<input className="input" type="text" ref="firstName" placeholder={ T.form("First Name") } />
-						    		<input className="input" type="text" ref="lastName" placeholder={T.form("Last Name")} />
+						    		<input className="input" type="text" ref="firstName" placeholder={T.form('firstName')} />
+						    		<input className="input" type="text" ref="lastName" placeholder= {T.form('lastName')} />
 						    	</p>
 						    	<p className="control">
-						    		<input className="input" type="email" ref="email" placeholder={T.form("Email")} />
+						    		<input className="input" type="email" ref="email" placeholder={T.form('email')} />
 						    	</p>
 						    	<p className="control is-grouped">
-						    		<input className="input" type="password" ref="passwordInitial" placeholder={T.form("Password")} />
-						    		<input className="input" type="password" ref="passwordConfirm" placeholder={T.form("Confirm")} />
+						    		<input className="input" type="password" ref="passwordInitial" placeholder={T.form('password')} />
+						    		<input className="input" type="password" ref="passwordConfirm" placeholder={T.form('confirm')} />
 						    	</p>
 						    	<p className="control">
-						    		<input className="input" type="text" ref="company" placeholder={T.form("Company")} />
+						    		<input className="input" type="text" ref="company" placeholder={T.form('company')} />
 						    	</p>
 						    	<p className="control">
-						    		<input className="input" type="text" ref="title" placeholder={T.form("Title")}/>
+						    		<input className="input" type="text" ref="title" placeholder={T.form('title')}/>
 						    	</p>
 						    	<p className="is-text-centered">
-						    		<button className="button is-primary" type="submit">{T.form("Sign Up")}</button>
+						    		<button className="button is-primary" type="submit"> {T.form('signUp')} </button>
 						    	</p>
 						</fieldset>
 					</form>
@@ -66,23 +66,4 @@ var SignUpForm = React.createClass({
 export default SignUpForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-						 //    <p className="control is-grouped">
-							// 	<input className="input" type="text" ref="firstName" placeholder={TRANSLATOR.firstName[TRANSLATOR.lang]} />
-							// 	<input className="input" type="text" ref="lastName" placeholder={TRANSLATOR.lastName[TRANSLATOR.lang]} />
-							// </p>
-							// <p className="control">
-							// 	<input className="input" type="email" ref="email" placeholder={TRANSLATOR.email[TRANSLATOR.lang]} />
-							// </p>
-							// <p className="control is-grouped">
-							// 	<input className="input" type="password" ref="passwordInitial" placeholder={TRANSLATOR.password[TRANSLATOR.lang]} />
-							// 	<input className="input" type="password" ref="passwordConfirm" placeholder={TRANSLATOR.confirm[TRANSLATOR.lang]} />
-							// </p>
-							// <p className="control">
-							// 	<input className="input" type="text" ref="company" placeholder={TRANSLATOR.company[TRANSLATOR.lang]} />
-							// </p>
-							// <p className="control">
-							// 	<input className="input" type="text" ref="title" placeholder={TRANSLATOR.title[TRANSLATOR.lang]}/>
-							// </p>
-							// <p className="is-text-centered">
-							// 	<button className="button is-primary" type="submit">{TRANSLATOR.signUp[TRANSLATOR.lang]}</button>
-							// </p>
+						 
