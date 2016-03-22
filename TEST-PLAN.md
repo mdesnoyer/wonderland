@@ -45,4 +45,4 @@ QA Testing
   2. Is Duration Calculated correctly + format?
   3. Is published calculated correctly + format?
   4. Does Source correctly link back to video ?
-
+  
