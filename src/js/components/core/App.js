@@ -10,10 +10,10 @@ import CallToAction from '../lookingglass/CallToAction';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var App = React.createClass({
-		render: function() {
-				return (
-					<section className="section">
-						<div className="containter is-fluid">
+    render: function() {
+        return (
+        	<section className="section">
+	        	<div className="containter is-fluid">
 					<div className="columns">
 						<div className="column">
 							<section className="section">App TODO ({ UTILS.rando(10)})</section>
@@ -24,8 +24,8 @@ var App = React.createClass({
 					</div>
 				</div>
 			</section>
-				);
-		}
+        );
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

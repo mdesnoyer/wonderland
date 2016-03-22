@@ -13,8 +13,8 @@ var SignUpForm = React.createClass({
 				<div className="column is-half is-offset-quarter">
 					<form onSubmit={ this.handleSubmit }>
 						<fieldset>	
-								<legend className="title is-2">Sign Up</legend>
-								<p className="control is-grouped">
+						    <legend className="title is-2">Sign Up</legend>
+						    <p className="control is-grouped">
 								<input className="input" type="text" ref="firstName" placeholder="First Name" />
 								<input className="input" type="text" ref="lastName" placeholder="Last Name" />
 							</p>
