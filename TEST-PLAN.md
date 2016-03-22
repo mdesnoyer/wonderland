@@ -54,14 +54,14 @@ QA Testing [Rough Draft]
   * Google Analytics Upload Event Working?
 
 ##Video
-  *Does serving Bar show up / Change during Progress ?
-  *Does Error Show when Progress Fails ?
-  *Do thumbnails appear for video ( max 5 )? 
-  *Does Info Table show up ?
+  * Does serving Bar show up / Change during Progress ?
+  * Does Error Show when Progress Fails ?
+  * Do thumbnails appear for video ( max 5 )? 
+  * Does Info Table show up ?
 
 ##Video Info Table 
-  *Does Correct ID appear ?
-  *Is Duration Calculated correctly + format ?
-  *Is published calculated correctly + format ?
-  *Does Source correctly link back to video  ?
+  * Does Correct ID appear ?
+  * Is Duration Calculated correctly + format ?
+  * Is published calculated correctly + format ?
+  * Does Source correctly link back to video  ?
 
