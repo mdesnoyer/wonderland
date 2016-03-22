@@ -15,7 +15,7 @@ QA Testing [Rough Draft]
   * Does Submit properly create an account with Ajax call ?
   * Do errors come back from the AJAX call ?
   * Google Analytics Sign Up Event Working  
-###Notification
+### Notification
   * Does component appear at the proper time? 
   * Is the message acurate to the ?
 
