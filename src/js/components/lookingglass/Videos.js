@@ -10,12 +10,12 @@ import Video from './Video';
 
 var Videos = React.createClass({
     render: function() {
-    	var params1 = { videoId: 'NJF-XsG6l' },
-	    	params2 = { videoId: '4kjKJif6l' },
-	    	params3 = { videoId: 'Ekybejz6e' },
-	    	params4 = { videoId: 'VkWNxoMpl' },
-	    	params5 = { videoId: '4Jtt7sfax' }
-    	;
+        var params1 = { videoId: 'NJF-XsG6l' },
+            params2 = { videoId: '4kjKJif6l' },
+            params3 = { videoId: 'Ekybejz6e' },
+            params4 = { videoId: 'VkWNxoMpl' },
+            params5 = { videoId: '4Jtt7sfax' }
+        ;
 
         return (
             <div>
@@ -35,7 +35,7 @@ var Videos = React.createClass({
                     <Video params={params5} />
                 </section>
             </div>
-    	);
+        );
     }
 });
 

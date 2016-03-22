@@ -19,14 +19,14 @@ import SignUpForm from './components/lookingglass/SignUpForm';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 render((
-	<Router history={ browserHistory }>
-		<Redirect from='/' to='/signup/' />
-		<Route path="/signup/" component={ SignUpForm } />
-		<Route path="/upload/video/" component={ UploadForm } />
-		<Route name="videos" path="/videos/" component= { Videos } />
-		<Route path="/video/:videoId/" component= { Video } />
-		<Route path="*" component={ NotFound } />
-	</Router>
+    <Router history={ browserHistory }>
+        <Redirect from='/' to='/signup/' />
+        <Route path="/signup/" component={ SignUpForm } />
+        <Route path="/upload/video/" component={ UploadForm } />
+        <Route name="videos" path="/videos/" component= { Videos } />
+        <Route path="/video/:videoId/" component= { Video } />
+        <Route path="*" component={ NotFound } />
+    </Router>
 ), document.querySelector('#wonderland'));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
