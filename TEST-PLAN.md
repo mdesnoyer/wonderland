@@ -24,13 +24,13 @@ QA Testing [Rough Draft]
 #Looking Glass Components: 
 
 ##Sign Up Form 
-   *Inputs ( checking for validation + proper submit functionality): 
-   *First Name 
-   *Last Name 
-   *Email (Validation)  
-   *Password 
-   *Company 
-   *Title 
+   * Inputs ( checking for validation + proper submit functionality): 
+   * First Name 
+   * Last Name 
+   * Email (Validation)  
+   * Password 
+   * Company 
+   * Title 
   *Does Sign Up Button trigger submit event ?
   *Does Submit properly create an account with Ajax call ?
   *Do errors come back from the AJAX call ?
