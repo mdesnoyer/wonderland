@@ -4,12 +4,11 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import Thumbnails from './Thumbnails';
 import Notification from './Notification';
 import UTILS from '../../utils';
 import AJAX from '../../ajax';
-import VideoInfoTable from './VideoInfoTable'
-
+import VideoHeader from './VideoHeader';
+import VideoMain from './VideoMain';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -17,6 +16,8 @@ import TimeAgoWrapper from '../core/TimeAgoWrapper';
 var Video = React.createClass({
     getInitialState: function() {
         return {
+            size: this.props.forceOpen ? 'big' : 'small',
+            forceOpen: this.props.forceOpen || false,
             thumbnails: [],
             accessToken: '',
             refreshToken: '',
@@ -35,6 +36,12 @@ var Video = React.createClass({
             intervalId: '',
             mode: 'silent' // silent/loading/error
         }
+    },
+    handleToggle: function() {
+        var self = this;
+        self.setState({
+            size: (self.state.size === 'small' ? 'big' : 'small')
+        });
     },
     checkStatus: function() {
         var self = this;
@@ -121,7 +128,7 @@ var Video = React.createClass({
     },
     componentDidMount: function() {
         var self = this,
-            intervalId = setInterval(self.checkStatus, 10000)
+            intervalId = setInterval(self.checkStatus, 10000 + UTILS.rando(10000))
         ;
         setTimeout(self.checkStatus, 0);
         self.setState({
@@ -148,48 +155,36 @@ var Video = React.createClass({
             );
         }
         if (this.state.status === 200) {
-            var additionalClass = 'button is-' + this.state.videoStateMapping + ' is-medium is-' + this.state.mode,
+            var additionalClass = 'wonderland-video--state button is-' + this.state.videoStateMapping + ' is-small is-' + this.state.mode,
                 displayTitle = this.state.title || this.state.videoId,
                 notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />,
-                videoLink = '/video/' + this.state.videoId + '/'
+                videoLink = '/video/' + this.state.videoId + '/',
+                videoSizeClass = 'video video--' + this.state.size
             ;
             return (
-                <section className="section">
-                    <div className="container">
-                        <nav className="navbar">
-                            <div className="navbar-left">
-                                <div className="navbar-item">
-                                    <a className={ additionalClass}>
-                                        {this.state.videoState}
-                                    </a>
-                                </div>
-                                <div className="navbar-item">
-                                    <h2 className="title is-3"><a href={videoLink}>{displayTitle}</a></h2>
-                                </div>
-                            </div>
-                            <div className="navbar-right">
-                            </div>
-                        </nav>
-                        {notificationNeeded}
-                        <section className="content">
-                            <p>The following thumbnails were identified as the most &ldquo;clickable&rdquo; frames in this video.</p>
-                        </section>
-                        <div className="columns is-desktop">
-                            <div className="column">
-                                <Thumbnails videoStateMapping={this.state.videoStateMapping} thumbnails={this.state.thumbnails} />
-                            </div>
-                            <div className="column is-quarter">
-                                <VideoInfoTable videoId={this.state.videoId} duration={this.state.duration} publishDate={this.state.publishDate} url={this.state.url} />
-                            </div>
-                        </div>
-                        <section className="content">
-                            <h2 className="title is-3">Not the ones you would have picked?</h2>
-                            <p>That&rsquo;s not surprising. The prettiest images are usually NOT the ones that generate the most clicks.</p>
-                            <p>These images were selected by measuring features which generate emotional attraction within 20 to 50 milliseconds; features such as faces, attention, color, symmetry, blurriness, and others.</p>
-                            <p>70% of the time, Neon finds images that significantly outperform those chosen by human editors.</p>
-                        </section>
-                    </div>
-                </section>
+                <div className={videoSizeClass}>
+                    <VideoHeader
+                        forceOpen={this.state.forceOpen}
+                        additionalClass={additionalClass}
+                        videoState={this.state.videoState}
+                        videoLink={videoLink}
+                        displayTitle={displayTitle}
+                        handleToggle={this.handleToggle}
+                        size={this.state.size}
+                        publishDate={this.state.publishDate || this.state.created}
+                    />
+                    <VideoMain
+                        notificationNeeded={notificationNeeded}
+                        size={this.state.size}
+                        videoStateMapping={this.state.videoStateMapping}
+                        videoState={this.state.videoState}
+                        thumbnails={this.state.thumbnails}
+                        url={this.state.url}
+                        videoId={this.state.videoId}
+                        duration={this.state.duration}
+                        publishDate={this.state.publishDate || this.state.created}
+                    />
+                </div>
             );
         }
     }

@@ -8,7 +8,6 @@ var ImageModal = React.createClass({
     getInitialState: function () {
         return {
             src: this.props.src
-            // src: '/img/tortoise.jpg'
         };
     },
     handleToggleModal: function(e) {

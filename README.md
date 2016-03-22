@@ -29,8 +29,9 @@ _(This is very much a work in progress, all feedback welcome)_
 - Make sure you can run `gulp live` against it and it builds
 - Make sure you can run `gulp debug` against it and it builds
 - Make sure there is a meaninful PR message
-- Once signed off, you can squash your branch into 1 commit and merge to `development`
-- Once development site is built, please test
+- Title the Pull Request of the form - `Sensible Title #123`
+- Once signed off, the reviewer says merge, you can squash your branch into 1 commit and merge to `development`
+- Once development site is built, please test, it is your responsibility
 - After merging, please delete your branch
 
 ```
@@ -44,7 +45,7 @@ git push origin --delete branchname
 
 ## QA
 
-- TODO
+- See QA.md
 
 ## Hosting
 
@@ -54,10 +55,19 @@ git push origin --delete branchname
 
 ## Style Guide (work in progress)
 
+### Javascript
+
 - use `var` always
 - Use NAMES_LIKE_THIS for constant values
 - 4 spaces for tabs
 - space before `{`
+- semicolons at end of line `;`
+- single quotes for strings in Javascript `'bacon'` NOT `"bacon"`
+
+### JSX
+
+- no spaces inside curly brackets, e.g. `{this.state.type}`, NOT `{ this.state.type }`
+- close your tags, e.g. `<input type="text" />`, use one space before closing, NOT `<input type="text"/>`
 
 If in doubt, defer to the code.
 
@@ -110,8 +120,3 @@ https://bugs.chromium.org/p/chromium/issues/detail?id=67743
 - https://vimeo.com/36552490
 - https://vimeo.com/41169610
 - https://vimeo.com/114583953
-
-## Spike
-
-- moved spike/TODO to https://neonlabs.atlassian.net/browse/NEON-729
-
