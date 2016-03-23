@@ -2,7 +2,6 @@
 
 import React from 'react';
 import AJAX from '../../ajax';
-import shortid from 'shortid';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
 
@@ -78,23 +77,23 @@ var UploadForm = React.createClass({
     },
     uploadVideo: function (url, title) {
         var self = this,
-        videoId = shortid.generate(),
-                options = {
-                    data: {
-                        external_video_ref: videoId,
-                        url: UTILS.properEncodeURI(url),
-            title: title
-                    }
-                };
+            videoId = UTILS.generateId(),
+            options = {
+                data: {
+                    external_video_ref: videoId,
+                    url: UTILS.properEncodeURI(url),
+                    title: title
+                }
+            };
 
         AJAX.doPost('videos', options)
             .then(function(json) {
                 self.context.router.push('/video/' + videoId + '/');
             })
-      .catch(function(err) {
-              console.error(err.responseText);
-        self.context.router.push('/video/' + videoId + '/');
-      });
+            .catch(function(err) {
+                console.error(err.responseText);
+                self.context.router.push('/video/' + videoId + '/');
+            });
     }
 });
 
