@@ -2,7 +2,6 @@
 
 import React from 'react';
 import AJAX from '../../ajax';
-import shortid from 'shortid';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
 
@@ -90,7 +89,7 @@ var UploadForm = React.createClass({
                     mode: 'loading'
                 });
                 var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos',
-                    videoId = shortid.generate(),
+                    videoId = UTILS.generateId(),
                     options = {
                         method: 'POST',
                         body: JSON.stringify({
