@@ -8,7 +8,7 @@ var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
 var sass = require('gulp-sass');
-
+var replace = require('gulp-replace');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
@@ -102,6 +102,9 @@ function buildScript(file, watch) {
         return stream
             .on('error', handleErrors)
             .pipe(source(file))
+            // in double quotes to support the single quotes - used to fix any
+            // errant class="bacon" when it should be className="bacon"
+            .pipe(replace("'class':", "className:"))
             .pipe(gulp.dest('./build/js/'))
             .pipe(reload({ stream: true }))
     }
