@@ -58,7 +58,6 @@ var UploadForm = React.createClass({
                             </p>
                         </fieldset>
                     </form>
-
                 </div>
             </section>
         );
@@ -77,47 +76,24 @@ var UploadForm = React.createClass({
         this.uploadVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
     },
     uploadVideo: function (url, title) {
-        var self = this;
-        console.log(AJAX.AUTH_URL);
-        fetch(AJAX.AUTH_URL, AJAX.POST_OPTIONS)
-            .then(function(response) {
-                return response.json()
-            }).then(function(json) {
-                self.setState({
-                    accessToken: json.access_token,
-                    refreshToken: json.refresh_token,
-                    mode: 'loading'
-                });
-                var apiUrl = 'http://services.neon-lab.com/api/v2/' + AJAX.ACCOUNT_ID + '/videos',
-                    videoId = UTILS.generateId(),
-                    options = {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            external_video_ref: videoId,
-                            url: UTILS.properEncodeURI(url),
-                            title: title,
-                            token: self.state.accessToken
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        mode: 'cors'
-                    }
-                ;
-                console.log(apiUrl);
-                fetch(apiUrl, options)
-                    .then(function(response) {
-                        return response.json()
-                    }).then(function(json) {
-                        self.context.router.push('/video/' + videoId + '/');
-                    }).catch(function(ex) {
-                        self.context.router.push('/video/' + videoId + '/');
-                    })
-                ;   
-            }).catch(function(ex) {
-                console.log(ex.message)
+        var self = this,
+            videoId = UTILS.generateId(),
+            options = {
+                data: {
+                    external_video_ref: videoId,
+                    url: UTILS.properEncodeURI(url),
+                    title: title
+                }
+            };
+
+        AJAX.doPost('videos', options)
+            .then(function(json) {
+                self.context.router.push('/video/' + videoId + '/');
             })
-        ;   
+            .catch(function(err) {
+                console.error(err.responseText);
+                self.context.router.push('/video/' + videoId + '/');
+            });
     }
 });
 
