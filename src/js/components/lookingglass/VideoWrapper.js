@@ -1,26 +1,24 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import Video from './Video'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var CallToAction = React.createClass({
+var VideoWrapper = React.createClass({
     render: function() {
         return (
-            <div className="message is-success">
-                <div className="message-header">
-                    TODO
+            <section className="section">
+                <div className="container">
+                    <Video params={this.props.params} forceOpen={true} />
                 </div>
-                <div className="message-body">
-                    TODO
-                </div>
-            </div>
+            </section>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default CallToAction;
+export default VideoWrapper;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

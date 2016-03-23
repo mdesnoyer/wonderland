@@ -1,33 +1,32 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 .wonderland-thumbnail {
-	position: relative;
-	cursor: pointer;
+    position: relative;
+    cursor: pointer;
 }
 
 .wonderland-thumbnail__image {
-	display: block;
-	border-radius: 0.5em;
-	width: 100%;
-	height: auto;
-	border: 1px solid rgba(#939da7, 0.2);
+    display: block;
+    border-radius: 0.5em;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(#939da7, 0.2);
 }
 
 .wonderland-thumbnail__caption {
-	// empty
+    // empty
 }
 
 .wonderland-thumbnail__score {
-	position: absolute;
-	bottom: 4%;
-	right: 3%;
-	display: none;
+    position: absolute;
+    bottom: 4%;
+    right: 3%;
 }
 
 .wonderland-thumbnail__enabled {
-	position: absolute;
-	bottom: 4%;
-	left: 3%;
+    position: absolute;
+    bottom: 4%;
+    left: 3%;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
