@@ -2,13 +2,13 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
-import 'babel-polyfill';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 const accessTokenKey = 'at',
       refreshTokenKey = 'rt',
-      accountIdKey ='actId';
+      accountIdKey ='actId',
+      userKey = 'user';
 
 var Session = {
   state: {
@@ -38,8 +38,25 @@ var Session = {
       user: undefined
     };
   },
+  // Returns current state of the session
   active: function() {
     return !!this.state.accessToken;
+  },
+  // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
+  user: function (userData) {
+    return new Promise(function (resolve, reject) {
+      if (userData) {
+        localStorage.setItem(userKey, JSON.stringify(userData));
+      } else {
+        try {
+          userData = JSON.parse(localStorage.getItem(userKey));
+        } catch (e) {
+          // TODO: Get user from API based on session?
+          return reject(e);
+        }
+      }
+      resolve(userData);
+    });
   }
 };
 
