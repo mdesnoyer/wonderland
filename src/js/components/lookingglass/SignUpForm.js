@@ -18,24 +18,24 @@ var SignUpForm = React.createClass({
                         <fieldset>
                             <legend className="title is-2">Sign Up</legend>
                                 <p className="control is-grouped">
-                                    <input className="input" type="text" ref="firstName" placeholder={T.form('firstName')} />
-                                    <input className="input" type="text" ref="lastName" placeholder= {T.form('lastName')} />
+                                    <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
+                                    <input className="input" type="text" ref="lastName" placeholder= {T.get('lastName')} />
                                 </p>
                                 <p className="control">
-                                    <input className="input" type="email" ref="email" placeholder={T.form('email')} />
+                                    <input className="input" type="email" ref="email" placeholder={T.get('email')} />
                                 </p>
                                 <p className="control is-grouped">
-                                    <input className="input" type="password" ref="passwordInitial" placeholder={T.form('password')} />
-                                    <input className="input" type="password" ref="passwordConfirm" placeholder={T.form('confirm')} />
+                                    <input className="input" type="password" ref="passwordInitial" placeholder={T.get('password')} />
+                                    <input className="input" type="password" ref="passwordConfirm" placeholder={T.get('confirm')} />
                                 </p>
                                 <p className="control">
-                                    <input className="input" type="text" ref="company" placeholder={T.form('company')} />
+                                    <input className="input" type="text" ref="company" placeholder={T.get('company')} />
                                 </p>
                                 <p className="control">
-                                    <input className="input" type="text" ref="title" placeholder={T.form('title')}/>
+                                    <input className="input" type="text" ref="title" placeholder={T.get('title')}/>
                                 </p>
                                 <p className="is-text-centered">
-                                    <button className="button is-primary" type="submit"> {T.form('signUp')} </button>
+                                    <button className="button is-primary" type="submit"> {T.get('signUp')} </button>
                                 </p>
                         </fieldset>
                     </form>
