@@ -1,5 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+var shortid = require('shortid'),
+    fnv = require('fnv-plus')
+;
+shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     NEONSCORES = [
@@ -116,6 +123,12 @@ let utils =  {
     },
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
+    },
+    generateId: function() {
+        var id = shortid.generate(),
+            hash64 = fnv.hash(id + Date.now(), 128)
+        ;
+        return hash64.str();
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
