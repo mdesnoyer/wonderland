@@ -1,24 +1,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import Video from './Video'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var VideoWrapper = React.createClass({
+var NewsFlash = React.createClass({
     render: function() {
         return (
-            <section className="section">
-                <div className="container">
-                    <Video params={this.props.params} forceOpen={true} />
-                </div>
-            </section>
+            <div className="notification is-danger is-marginless is-text-centered">
+                {this.props.message}
+            </div>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default VideoWrapper;
+export default NewsFlash;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

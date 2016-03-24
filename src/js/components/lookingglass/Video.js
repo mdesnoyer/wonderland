@@ -43,19 +43,22 @@ var Video = React.createClass({
             size: (self.state.size === 'small' ? 'big' : 'small')
         });
     },
+    componentWillUnmount: function() {
+        var self = this;
+        clearInterval(self.state.intervalId);
+    },
     checkStatus: function() {
         var self = this,
-        options = {
-          data: {
-            video_id: self.state.videoId,
-            fields: [ 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails' ]
-          }
-        };
-
+            options = {
+                data: {
+                    video_id: self.state.videoId,
+                    fields: [ 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails' ]
+                }
+            }
+        ;
         self.setState({
             mode: 'loading'
         });
-
         AJAX.doGet('videos', options)
             .then(function(json) {
                 var video = json.videos[0];
