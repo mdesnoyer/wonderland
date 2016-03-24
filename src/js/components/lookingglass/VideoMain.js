@@ -16,7 +16,7 @@ var VideoMain = React.createClass({
             return (
                 <div>
                     <br />
-                    {this.props.notificationNeeded}
+                    {this.props.messageNeeded}
                     <div className="columns is-desktop">
                         <div className="column">
                             <Thumbnails

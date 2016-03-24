@@ -8,7 +8,8 @@
 @import
     'abstracts/variables',
     'abstracts/functions',
-    'abstracts/mixins';
+    'abstracts/mixins',
+    'abstracts/animation';
 
 // 2. Vendors
 // @import
@@ -30,6 +31,7 @@
 @import
     'components/thumbnail',
     'components/video',
+    'components/slides',
     'components/banner'
 ;
 

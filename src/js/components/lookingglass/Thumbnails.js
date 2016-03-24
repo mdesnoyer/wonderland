@@ -13,11 +13,17 @@ var Thumbnails = React.createClass({
         var self = this;
         if (self.props.videoState === 'processing') {
             return (
-                <figure
-                    className="wonderland-thumbnail"
-                >
-                    <img className="wonderland-thumbnail__image" src="/img/tortoise.jpg" />
-                </figure>
+                <div className="wonderland-slides">
+                    <div className="wonderland-slides-slide notification is-info">
+                        Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.
+                    </div>
+                    <div className="wonderland-slides-slide notification is-info">
+                        Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.
+                    </div>
+                    <div className="wonderland-slides-slide notification is-info">
+                        When complete, your thumbnails will appear below. If you don&rsquo;t want to wait, you can exit this page without interrupting the process and come back later to view the results.
+                    </div>
+                </div>
             );
         }
         else {
