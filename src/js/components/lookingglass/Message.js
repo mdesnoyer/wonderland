@@ -5,19 +5,20 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var Notification = React.createClass({
+var Message = React.createClass({
     render: function() {
+        var messageClass = 'message is-' + this.props.flavour;
         return (
-            <div className= {this.props.style} >
-                <div className="message-header">{this.props.status}</div>
-                <div className="message-body">{this.props.message}</div>
-            </div>
+            <blockquote className={messageClass}>
+                <p className="message-header">{this.props.header}</p>
+                <p className="message-body">{this.props.body}</p>
+            </blockquote>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default Notification;
+export default Message;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
