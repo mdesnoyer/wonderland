@@ -3,7 +3,7 @@
 
 import React from 'react';
 import TRACKING from '../../tracking';
-import Message from './message';
+import Message from './Message';
 import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
