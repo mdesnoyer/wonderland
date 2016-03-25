@@ -1,12 +1,11 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
 import AJAX from '../../ajax';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
-import Notification from './Notification';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var UploadForm = React.createClass({
     contextTypes: {
@@ -18,9 +17,7 @@ var UploadForm = React.createClass({
             refreshToken: '',
             mode: 'silent', // silent/loading/error
             isAgreementChecked: false,
-            //TODO URL VALIDATION: 
-            url: '',
-            isUrlFilled: false
+            url: ''
         }
     },
     render: function() {
@@ -29,7 +26,7 @@ var UploadForm = React.createClass({
                 inputClassName = 'input is-disabled'
             ;
         }
-        else if ((!this.state.isAgreementChecked || !this.state.isUrlFilled) && (this.state.mode === 'silent')) {
+        else if ((!this.state.isAgreementChecked || !this.state.url) && (this.state.mode === 'silent')) {
             var buttonClassName = 'button is-primary is-disabled',
                 inputClassName = 'input'
         }
@@ -56,9 +53,8 @@ var UploadForm = React.createClass({
                             </p>
                             <p className="control">
                                 <label className="checkbox" onChange={this.handleChangeAgreement}  checked={this.state.isAgreementChecked}>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" />I agree to Neon&rsquo;s terms and conditions of use.
                                 </label>
-                                    I agree to Neon&rsquo;s terms and conditions of use.
                             </p>
                         </fieldset>
                     </form>
@@ -66,25 +62,11 @@ var UploadForm = React.createClass({
             </section>
         );
     },
-    // TODO URL VALIDATION: 
-    handleChangeUrl: function (e) {
+    handleChangeUrl: function(e) { 
+        // TODO REGEX FOR URL IN THE INPUT 
         this.setState({url: e.target.value})
-        this.checkUrlFilled(e);
     },
-    checkUrlFilled: function (e) {
-        //TODO URL VALIDATION: REGEX to do later 
-        // if (/^(https)/gi.test(e.target.value)){
-        //     this.setState({isUrlFilled: true})
-        // }else{
-        //     this.setState({isUrlFilled: false})
-        // }
-        if (e.target.value !== "") {
-            this.setState({isUrlFilled: true})
-        } else {
-            this.setState({isUrlFilled: false})
-        }
-    },
-    handleChangeAgreement: function () {
+    handleChangeAgreement: function(){
         this.setState({isAgreementChecked: !this.state.isAgreementChecked})
     },
     handleSubmit: function (e) {
@@ -103,6 +85,7 @@ var UploadForm = React.createClass({
                     title: title
                 }
             };
+
         AJAX.doPost('videos', options)
             .then(function(json) {
                 self.context.router.push('/video/' + videoId + '/');
@@ -114,8 +97,8 @@ var UploadForm = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 export default UploadForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

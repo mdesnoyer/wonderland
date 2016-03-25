@@ -1,17 +1,17 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import Notification from './Notification';
+import Message from './Message';
 import UTILS from '../../utils';
 import AJAX from '../../ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Video = React.createClass({
     getInitialState: function() {
@@ -55,11 +55,12 @@ var Video = React.createClass({
         self.setState({
             mode: 'loading'
         });
+
         AJAX.doGet('videos', options)
             .then(function(json) {
                 var video = json.videos[0];
-                if ((video.state === 'serving' && self.state.videoState == 'serving') 
-                    || (video.state === 'failed' && self.state.videoState == 'failed')) {
+                if ((video.state === 'serving' && self.state.videoState === 'serving') 
+                    || (video.state === 'failed' && self.state.videoState === 'failed')) {
                     clearInterval(self.state.intervalId);
                     self.setState({
                         mode: 'silent',
@@ -127,8 +128,8 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Notification type={"Error: " + this.state.status} message="Unable to Login"  style="is-danger" />
-                    </div>
+                        <Message header={this.state.status} body="Unable to Login" flavour="danger" />
+                    </div>  
                 </section>
             );
         }
@@ -136,15 +137,15 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Notification type={"Error: " + this.state.status} message="Not Found" style="is-danger" />
+                        <Message header={this.state.status} body="Not Found" flavour="danger" />
                     </div>
-                </section>
+                </section>  
             );
         }
         if (this.state.status === 200) {
             var additionalClass = 'wonderland-video--state button is-' + this.state.videoStateMapping + ' is-small is-' + this.state.mode,
                 displayTitle = this.state.title || this.state.videoId,
-                notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />,
+                messageNeeded = this.state.error === '' ? '' : <Message header="Error" body={this.state.error} flavour="danger" />,
                 videoLink = '/video/' + this.state.videoId + '/',
                 videoSizeClass = 'video video--' + this.state.size
             ;
@@ -161,7 +162,7 @@ var Video = React.createClass({
                         publishDate={this.state.publishDate || this.state.created}
                     />
                     <VideoMain
-                        notificationNeeded={notificationNeeded}
+                        messageNeeded={messageNeeded}
                         size={this.state.size}
                         videoStateMapping={this.state.videoStateMapping}
                         videoState={this.state.videoState}
@@ -177,8 +178,8 @@ var Video = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 export default Video;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
