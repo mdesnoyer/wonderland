@@ -3,6 +3,8 @@
 
 import React from 'react';
 import TRACKING from '../../tracking';
+import AJAX from '../../ajax';
+import SESSION from '../../session';
 import Message from './Message';
 import T from '../../translation';
 
@@ -15,13 +17,13 @@ var SignUpForm = React.createClass({
     getInitialState: function() {
         return {
             password: '',
-            confirm: '', 
+            confirm: '',
             errorMessageArray: [],
             isError: false
         }  
     },
     render: function() {
-        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={this.state.errorMessageArray} flavour="danger" />  : ''; 
+        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={this.state.errorMessageArray} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
                 {MessageNeeded}
@@ -29,7 +31,7 @@ var SignUpForm = React.createClass({
                     <legend className="title is-2">Sign Up</legend>
                     <p className="control is-grouped">
                         <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                        <input className="input" type="text" ref="lastName" placeholder={T.get('lassssstName')} />
+                        <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input" type="email" required ref="email" placeholder="Email" />
@@ -66,10 +68,10 @@ var SignUpForm = React.createClass({
         );
     },
     handlePasswordInitialChange: function (event) {
-        this.setState({ password: event.target.value })    
+        this.setState({ password: event.target.value });
     },
     handlePasswordConfirmChange: function (event) {
-        this.setState({confirm: event.target.value})  
+        this.setState({confirm: event.target.value});
     },
     validatePassword: function () {
         // at least one number, one lowercase and one uppercase letter
@@ -78,34 +80,37 @@ var SignUpForm = React.createClass({
         return re.test(this.state.password);
     },
     validateConfirm: function () {
-        return this.state.password === this.state.confirm
+        return this.state.password === this.state.confirm;
     },
     handleError: function (errorMessage, check) {
-        if (this.state.errorMessageArray.indexOf(errorMessage) === -1 &&  check === false){
-            this.state.errorMessageArray.push(errorMessage)
-        } else if (check === true) { 
+        if (this.state.errorMessageArray.indexOf(errorMessage) === -1 &&  check === false) {
+            this.state.errorMessageArray.push(errorMessage);
+        } else if (check === true) {
             for (var i = 0; i < this.state.errorMessageArray.length; i++) {
-                if (this.state.errorMessageArray[i] === errorMessage){
-                    this.state.errorMessageArray.splice(i, 1) 
+                if (this.state.errorMessageArray[i] === errorMessage) {
+                    this.state.errorMessageArray.splice(i, 1);
                 }
             }
         }
     },
     handleAllErrorCheck: function () {
-        this.handleError("Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.", this.validatePassword())
-        this.handleError("Password does not match the confirm password.", this.validateConfirm()) 
+        this.handleError("Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.", this.validatePassword());
+        this.handleError("Password does not match the confirm password.", this.validateConfirm());
     },
-    handleSubmit: function (e) {          
-        var self = this;
-        self.handleAllErrorCheck()
-        self.setState({isSubmited: true})
+    handleSubmit: function (e) {
+        var self = this,
+            canProcceed,
+            userDataObject;
+
+        e.preventDefault();
+
+        self.handleAllErrorCheck();
+        self.setState({isSubmited: true});
         var canProcceed = self.validatePassword(self.state.password) && self.validateConfirm();
         if (canProcceed === false) {
-            self.setState({isError: true})
-            e.preventDefault();    
-        }
-        else {
-            var userDataObject = {
+            self.setState({isError: true});
+        } else {
+            userDataObject = {
                 firstName: this.refs.firstName.value.trim(),
                 lastName: this.refs.lastName.value.trim(),
                 email: this.refs.email.value.trim(),
@@ -114,10 +119,22 @@ var SignUpForm = React.createClass({
                 company: this.refs.company.value.trim(),
                 title: this.refs.title.value.trim()
             };
+
             TRACKING.sendEvent(this, arguments, userDataObject.email);
-            // TODO submit data to create user account 
-            self.context.router.push('/upload/video/');
-        }        
+
+            AJAX.doPost('signup', {
+                host: AJAX.AUTH_HOST,
+                data: userDataObject
+            })
+                .then(function (json) {
+                    SESSION.user(json);
+                    self.context.router.push('/upload/video/');
+                })
+                .catch(function (err) {
+                    this.handleError(err.responseText, false);
+                    self.setState({isError: true});
+                });
+        }
     }
 });
 
