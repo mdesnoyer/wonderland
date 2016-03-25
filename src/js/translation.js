@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const _DEFAULT_LOCALE = 'en-US',
-    _TRANSLATIONS = {  
+    _TRANSLATIONS = {
         'en-US': {
             signUp: 'Sign Up',
             firstName: 'First Name',

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import TRACKING from '../../tracking';
-import Message from './message';
+import Message from './Message';
 import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -13,12 +13,12 @@ var SignUpForm = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
-      return {
-        password: '',
-        confirm: '', 
-        errorMessageArray: [],
-        isError: false
-      }  
+        return {
+            password: '',
+            confirm: '', 
+            errorMessageArray: [],
+            isError: false
+        }  
     },
     render: function() {
         var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={this.state.errorMessageArray} flavour="danger" />  : ''; 
@@ -109,15 +109,15 @@ var SignUpForm = React.createClass({
             e.preventDefault();    
         }
         else {
-        var userDataObject = {
-            firstName: this.refs.firstName.value.trim(),
-            lastName: this.refs.lastName.value.trim(),
-            email: this.refs.email.value.trim(),
-            passwordInitial: this.refs.passwordInitial.value.trim(),
-            passwordConfirm: this.refs.passwordConfirm.value.trim(),
-            company: this.refs.company.value.trim(),
-            title: this.refs.title.value.trim()
-            }
+            var userDataObject = {
+                firstName: this.refs.firstName.value.trim(),
+                lastName: this.refs.lastName.value.trim(),
+                email: this.refs.email.value.trim(),
+                passwordInitial: this.refs.passwordInitial.value.trim(),
+                passwordConfirm: this.refs.passwordConfirm.value.trim(),
+                company: this.refs.company.value.trim(),
+                title: this.refs.title.value.trim()
+            };
             TRACKING.sendEvent(this, arguments, userDataObject.email);
             // TODO submit data to create user account 
             self.context.router.push('/upload/video/');
