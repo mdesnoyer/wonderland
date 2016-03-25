@@ -23,50 +23,46 @@ var SignUpForm = React.createClass({
     render: function() {
         var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={this.state.errorMessageArray} flavour="danger" />  : ''; 
         return (
-            <section className="section columns">
-                <div className="column is-half is-offset-quarter">
-                    {MessageNeeded}    
-                    <form onSubmit={ this.handleSubmit }>
-                        <fieldset>  
-                            <legend className="title is-2">Sign Up</legend>
-                            <p className="control is-grouped">
-                                <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                                <input className="input" type="text" ref="lastName" placeholder={T.get('lassssstName')} />
-                            </p>
-                            <p className="control is-grouped">
-                                <input className="input" type="email" required ref="email" placeholder="Email" />
-                            </p>
-                            <p className="control is-grouped">
-                                <input
-                                    className="input" 
-                                    type="password" 
-                                    required
-                                    ref="passwordInitial"
-                                    placeholder="Password"
-                                    onChange={this.handlePasswordInitialChange} 
-                                />
-                                <input 
-                                    className="input" 
-                                    type="password" 
-                                    required
-                                    ref="passwordConfirm" 
-                                    placeholder="Confirm"
-                                    onChange={this.handlePasswordConfirmChange}
-                                />
-                            </p>
-                            <p className="control">
-                                <input className="input" type="text" ref="company" placeholder="Company" />                                
-                            </p>
-                            <p className="control">
-                                <input className="input" type="text" ref="title" placeholder="Title" />
-                            </p>
-                            <p className="is-text-centered">
-                                <button className="button is-primary" type="submit">Sign Up</button>
-                            </p>
-                        </fieldset>
-                    </form>
-                </div>
-            </section>
+            <form onSubmit={ this.handleSubmit }>
+                {MessageNeeded}
+                <fieldset>  
+                    <legend className="title is-2">Sign Up</legend>
+                    <p className="control is-grouped">
+                        <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
+                        <input className="input" type="text" ref="lastName" placeholder={T.get('lassssstName')} />
+                    </p>
+                    <p className="control is-grouped">
+                        <input className="input" type="email" required ref="email" placeholder="Email" />
+                    </p>
+                    <p className="control is-grouped">
+                        <input
+                            className="input" 
+                            type="password" 
+                            required
+                            ref="passwordInitial"
+                            placeholder="Password"
+                            onChange={this.handlePasswordInitialChange} 
+                        />
+                        <input 
+                            className="input" 
+                            type="password" 
+                            required
+                            ref="passwordConfirm" 
+                            placeholder="Confirm"
+                            onChange={this.handlePasswordConfirmChange}
+                        />
+                    </p>
+                    <p className="control">
+                        <input className="input" type="text" ref="company" placeholder="Company" />                                
+                    </p>
+                    <p className="control">
+                        <input className="input" type="text" ref="title" placeholder="Title" />
+                    </p>
+                    <p className="is-text-centered">
+                        <button className="button is-primary" type="submit">Sign Up</button>
+                    </p>
+                </fieldset>
+            </form>
         );
     },
     handlePasswordInitialChange: function (event) {
