@@ -4,13 +4,20 @@ const _DEFAULT_LOCALE = 'en-US',
     _TRANSLATIONS = {
         'en-US': {
             signUp: 'Sign Up',
+            signIn: 'Sign In',
+            rememberMe: 'Remember Me',
+            signOut: 'Sign Out',
+            signOutSuccess: 'You\'ve been signed out.',
             firstName: 'First Name',
             lastName: 'Last Name',
             email: 'Email',
             password: 'Password',
             confirm: 'Confirm',
             title: 'Title',
-            company: 'Company'          
+            company: 'Company',
+            error: 'Error',
+            passwordFormatInvalid: 'Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.',
+            passwordMatchInvalid: 'Password does not match the confirm password.'
         },
         'en-GB': {
             firstName: 'Forename'

@@ -8,6 +8,8 @@ import cookie from 'react-cookie';
 const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
     accountIdKey ='actId',
+    rememberMeKey = 'rme',
+    rememberedEmailKey = 're',
     userKey = 'user';
 
 var Session = {
@@ -64,6 +66,29 @@ var Session = {
             }
             resolve(userData);
         });
+    },
+    // Getter/setter on whether to store email during login or not
+    rememberMe: function(bool) {
+        if (bool !== undefined) {
+            if (bool) {
+                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+            } else {
+                cookie.remove(rememberMeKey, {path: '/'});
+                cookie.remove(rememberedEmailKey, {path: '/'});
+            }
+        } else {
+            bool = cookie.load(rememberMeKey) ? true : false;
+        }
+        return !!bool;
+    },
+    // Getter/setter for email stored during login
+    rememberedEmail: function(email) {
+        if (email) {
+            cookie.save(rememberedEmailKey, email, {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+        } else {
+            email = cookie.load(rememberedEmailKey);
+        }
+        return email;
     }
 };
 

@@ -28,13 +28,13 @@ var SignUpForm = React.createClass({
             <form onSubmit={ this.handleSubmit }>
                 {MessageNeeded}
                 <fieldset>  
-                    <legend className="title is-2">Sign Up</legend>
+                    <legend className="title is-2">{T.get('signUp')}</legend>
                     <p className="control is-grouped">
                         <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input" type="email" required ref="email" placeholder="Email" />
+                        <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
@@ -42,7 +42,7 @@ var SignUpForm = React.createClass({
                             type="password" 
                             required
                             ref="passwordInitial"
-                            placeholder="Password"
+                            placeholder={T.get('password')}
                             onChange={this.handlePasswordInitialChange} 
                         />
                         <input 
@@ -50,18 +50,18 @@ var SignUpForm = React.createClass({
                             type="password" 
                             required
                             ref="passwordConfirm" 
-                            placeholder="Confirm"
+                            placeholder={T.get('confirm')}
                             onChange={this.handlePasswordConfirmChange}
                         />
                     </p>
                     <p className="control">
-                        <input className="input" type="text" ref="company" placeholder="Company" />                                
+                        <input className="input" type="text" ref="company" placeholder={T.get('company')} />                                
                     </p>
                     <p className="control">
-                        <input className="input" type="text" ref="title" placeholder="Title" />
+                        <input className="input" type="text" ref="title" placeholder={T.get('title')} />
                     </p>
                     <p className="is-text-centered">
-                        <button className="button is-primary" type="submit">Sign Up</button>
+                        <button className="button is-primary" type="submit">{T.get('signUp')}</button>
                     </p>
                 </fieldset>
             </form>
@@ -83,19 +83,17 @@ var SignUpForm = React.createClass({
         return this.state.password === this.state.confirm;
     },
     handleError: function (errorMessage, check) {
-        if (this.state.errorMessageArray.indexOf(errorMessage) === -1 &&  check === false) {
+        var msgIndex = this.state.errorMessageArray.indexOf(errorMessage);
+        if (check === false && msgIndex === -1) {
             this.state.errorMessageArray.push(errorMessage);
-        } else if (check === true) {
-            for (var i = 0; i < this.state.errorMessageArray.length; i++) {
-                if (this.state.errorMessageArray[i] === errorMessage) {
-                    this.state.errorMessageArray.splice(i, 1);
-                }
-            }
+        } else if (check === true && msgIndex > -1) {
+            this.state.errorMessageArray.splice(msgIndex, 1);
         }
+        return check;
     },
     handleAllErrorCheck: function () {
-        this.handleError("Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.", this.validatePassword());
-        this.handleError("Password does not match the confirm password.", this.validateConfirm());
+        return this.handleError(T.get('passwordFormatInvalid'), this.validatePassword())
+            && this.handleError(T.get('passwordMatchInvalid'), this.validateConfirm());
     },
     handleSubmit: function (e) {
         var self = this,
@@ -104,36 +102,39 @@ var SignUpForm = React.createClass({
 
         e.preventDefault();
 
-        self.handleAllErrorCheck();
-        self.setState({isSubmited: true});
-        var canProcceed = self.validatePassword(self.state.password) && self.validateConfirm();
-        if (canProcceed === false) {
-            self.setState({isError: true});
+        if (self.handleAllErrorCheck()) {
+            self.setState({isSubmited: true});
+            canProcceed = self.validatePassword(self.state.password) && self.validateConfirm();
+            if (canProcceed === false) {
+                self.setState({isError: true});
+            } else {
+                userDataObject = {
+                    firstName: this.refs.firstName.value.trim(),
+                    lastName: this.refs.lastName.value.trim(),
+                    email: this.refs.email.value.trim(),
+                    passwordInitial: this.refs.passwordInitial.value.trim(),
+                    passwordConfirm: this.refs.passwordConfirm.value.trim(),
+                    company: this.refs.company.value.trim(),
+                    title: this.refs.title.value.trim()
+                };
+
+                TRACKING.sendEvent(this, arguments, userDataObject.email);
+
+                AJAX.doPost('signup', {
+                        host: AJAX.AUTH_HOST,
+                        data: userDataObject
+                    })
+                    .then(function (json) {
+                        SESSION.user(json);
+                        self.context.router.push('/upload/video/');
+                    })
+                    .catch(function (err) {
+                        self.handleError(err.responseText, false);
+                        self.setState({isError: true});
+                    });
+            }
         } else {
-            userDataObject = {
-                firstName: this.refs.firstName.value.trim(),
-                lastName: this.refs.lastName.value.trim(),
-                email: this.refs.email.value.trim(),
-                passwordInitial: this.refs.passwordInitial.value.trim(),
-                passwordConfirm: this.refs.passwordConfirm.value.trim(),
-                company: this.refs.company.value.trim(),
-                title: this.refs.title.value.trim()
-            };
-
-            TRACKING.sendEvent(this, arguments, userDataObject.email);
-
-            AJAX.doPost('signup', {
-                host: AJAX.AUTH_HOST,
-                data: userDataObject
-            })
-                .then(function (json) {
-                    SESSION.user(json);
-                    self.context.router.push('/upload/video/');
-                })
-                .catch(function (err) {
-                    this.handleError(err.responseText, false);
-                    self.setState({isError: true});
-                });
+            self.setState({isError: true});
         }
     }
 });
