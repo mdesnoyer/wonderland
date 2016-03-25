@@ -1,9 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import Video from './Video';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,46 +18,41 @@ var Videos = React.createClass({
             params9 = { videoId: 'VkWNxoMpl' },
             params10 = { videoId: '4Jtt7sfax' }
         ;
-
         return (
-            <section className="section">
-                <div className="container">
-                    <table className="table is-striped">
-                        <tbody>
-                            <tr>
-                                <td><Video params={params1} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params2} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params3} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params4} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params5} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params6} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params7} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params8} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params9} /></td>
-                            </tr>
-                            <tr>
-                                <td><Video params={params10} /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <table className="table is-striped">
+                <tbody>
+                    <tr>
+                        <td><Video params={params1} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params2} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params3} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params4} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params5} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params6} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params7} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params8} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params9} /></td>
+                    </tr>
+                    <tr>
+                        <td><Video params={params10} /></td>
+                    </tr>
+                </tbody>
+            </table>
         );
     }
 });

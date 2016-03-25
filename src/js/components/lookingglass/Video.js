@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import Notification from './Notification';
+import Message from './Message';
 import UTILS from '../../utils';
 import AJAX from '../../ajax';
 import VideoHeader from './VideoHeader';
@@ -43,81 +43,28 @@ var Video = React.createClass({
             size: (self.state.size === 'small' ? 'big' : 'small')
         });
     },
+    componentWillUnmount: function() {
+        var self = this;
+        clearInterval(self.state.intervalId);
+    },
     checkStatus: function() {
         var self = this,
-        options = {
-          data: {
-            video_id: self.state.videoId,
-            fields: [ 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails' ]
-          }
-        };
-
+            options = {
+                data: {
+                    video_id: self.state.videoId,
+                    fields: [ 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails' ]
+                }
+            }
+        ;
         self.setState({
             mode: 'loading'
         });
 
-<<<<<<< HEAD
-    AJAX.doGet('videos', options)
-      .then(function(json) {
-        var video = json.videos[0];
-        if ((video.state === 'serving' && self.state.videoState == 'serving') 
-            || (video.state === 'failed' && self.state.videoState == 'failed')) {
-          clearInterval(self.state.intervalId);
-          self.setState({
-            mode: 'silent',
-            intervalId: ''
-          });
-          return;
-        }
-        if (video.state !== self.state.videoState) {
-          // Only bother if the state has changed
-          var newThumbnails = video.thumbnails.map(function (t) {
-            var neonScoreData = UTILS.getNeonScoreData(t.neon_score),
-                newT = {
-                  url: t.url,
-                  rawNeonScore: t.neon_score,
-                  cookedNeonScore: neonScoreData.neonScore,
-                  emoji: neonScoreData.emoji,
-                  enabled: t.enabled,
-                  type: t.type
-                };
-            return newT;
-          });
-          newThumbnails.sort(function (a, b) {
-            return (b.cookedNeonScore === '?' ? 0 : b.cookedNeonScore) - (a.cookedNeonScore === '?' ? 0 : a.cookedNeonScore);
-          });
-          self.setState({
-            thumbnails: newThumbnails,
-            videoState: video.state,
-            videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-            title: video.title,
-            duration: video.duration,
-            url: video.url,
-            error: video.error ? video.error : '',
-            publishDate: video.publish_date,
-            created: video.created,
-            updated: video.updated,
-            mode: 'silent'
-          });
-        } else {
-          self.setState({
-            mode: 'silent'
-          });
-        }
-      })
-      .catch(function(err) {
-        console.log(err.responseText);
-        clearInterval(self.state.intervalId);
-        self.setState({
-          status: err.status,
-          message: err.responseText,
-          intervalId: ''
-=======
         AJAX.doGet('videos', options)
             .then(function(json) {
                 var video = json.videos[0];
-                if ((video.state === 'serving' && self.state.videoState == 'serving') 
-                    || (video.state === 'failed' && self.state.videoState == 'failed')) {
+                if ((video.state === 'serving' && self.state.videoState === 'serving') 
+                    || (video.state === 'failed' && self.state.videoState === 'failed')) {
                     clearInterval(self.state.intervalId);
                     self.setState({
                         mode: 'silent',
@@ -164,10 +111,12 @@ var Video = React.createClass({
                     });
                 }
             }).catch(function(ex) {
+                clearInterval(self.state.intervalId);
                 self.setState({
-                    status: 401,
-                    message: ex.message,
-                    mode: 'silent'
+                    status: err.status,
+                    message: err.responseText,
+                    mode: 'silent',
+                    intervalId: ''
                 });
             });
     },
@@ -178,7 +127,6 @@ var Video = React.createClass({
         setTimeout(self.checkStatus, 0);
         self.setState({
             intervalId: intervalId
->>>>>>> development
         });
     },
     render: function() {
@@ -186,7 +134,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Notification status={this.state.status} message="Unable to Login"  style="message is-danger" />
+                        <Message header={this.state.status} body="Unable to Login" flavour="danger" />
                     </div>  
                 </section>
             );
@@ -195,7 +143,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Notification status={this.state.status} message="Not Found" style="message is-danger" />
+                        <Message header={this.state.status} body="Not Found" flavour="danger" />
                     </div>
                 </section>  
             );
@@ -203,7 +151,7 @@ var Video = React.createClass({
         if (this.state.status === 200) {
             var additionalClass = 'wonderland-video--state button is-' + this.state.videoStateMapping + ' is-small is-' + this.state.mode,
                 displayTitle = this.state.title || this.state.videoId,
-                notificationNeeded = this.state.error == '' ? '' : <Notification message={ this.state.error } />,
+                messageNeeded = this.state.error === '' ? '' : <Message header="Error" body={this.state.error} flavour="danger" />,
                 videoLink = '/video/' + this.state.videoId + '/',
                 videoSizeClass = 'video video--' + this.state.size
             ;
@@ -220,7 +168,7 @@ var Video = React.createClass({
                         publishDate={this.state.publishDate || this.state.created}
                     />
                     <VideoMain
-                        notificationNeeded={notificationNeeded}
+                        messageNeeded={messageNeeded}
                         size={this.state.size}
                         videoStateMapping={this.state.videoStateMapping}
                         videoState={this.state.videoState}

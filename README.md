@@ -4,12 +4,26 @@ _(This is very much a work in progress, all feedback welcome)_
 
 ## Setup
 
-- Install [Node.js](https://nodejs.org/en/download/)
-- Install [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) (Chrome Extension)
-- Install Babel Syntax Highlighter (for Sublime Text or equivalent)
-- Clone this repo into a folder, e.g. `wonderland`
-- Go to root directory `wonderland`
-- `npm install` installs all dependencies mentioned in `./package.json` into `./node_modules/`
+Homebrew
+* If you have not already, install Homebrew - http://brew.sh/#install
+
+Node & NPM
+* If you have not already, install Node & NPM:
+<pre><code>brew install node</code></pre>
+
+React Developer Tools
+* Install [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) (Chrome Extension)
+
+Repository
+* Check out this repo into your chosen location
+<pre><code>git checkout https://github.com/neon-lab/wonderland.git</code></pre>
+
+Dependencies
+* Go to root directory `wonderland`
+<pre><code>npm install</code></pre>
+
+Optional
+* Install Babel Syntax Highlighter (for Sublime Text or equivalent)
 
 ## Building
 
@@ -32,6 +46,7 @@ _(This is very much a work in progress, all feedback welcome)_
 - Title the Pull Request of the form - `Sensible Title #123`
 - Once signed off, the reviewer says merge, you can squash your branch into 1 commit and merge to `development`
 - Once development site is built, please test, it is your responsibility
+- You should also login to Netlify and check the build log (please ask if you do not know how to do this)
 - After merging, please delete your branch
 
 ```
@@ -54,6 +69,9 @@ git push origin --delete branchname
 - Temporary password to access sites is `kneewrong`
 
 ## Style Guide (work in progress)
+
+### Language
+- Sign Up, Sign In, Sign Out to be used in code to standardise how we talk about this process (SignUp, SignIn, SignOut)
 
 ### Javascript
 

@@ -1,24 +1,24 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import Video from './Video'
+import NewsFlash from './NewsFlash';
+import SiteBanner from './SiteBanner';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var VideoWrapper = React.createClass({
+var SiteHeader = React.createClass({
     render: function() {
         return (
-            <section className="section">
-                <div className="container">
-                    <Video params={this.props.params} forceOpen={true} />
-                </div>
-            </section>
+            <div>
+                <NewsFlash message="Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon." />
+                <SiteBanner />
+            </div>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default VideoWrapper;
+export default SiteHeader;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

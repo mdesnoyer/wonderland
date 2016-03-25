@@ -3,6 +3,11 @@
     color: #fff;
     a {
         color: #fff;
+        &.active {
+            background-color: #fff;
+            color: #939da7;
+            padding: 0.2em;
+        }
     }
 }
 
