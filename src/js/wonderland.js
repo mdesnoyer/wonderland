@@ -1,14 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-<<<<<<< HEAD
-import { render } from 'react-dom';
-import { Router, Route, Redirect, browserHistory, Link } from 'react-router';
-import 'babel-polyfill';
-=======
 import {render} from 'react-dom';
 import {Router, Route, Redirect, browserHistory} from 'react-router';
->>>>>>> development
+import 'babel-polyfill';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

@@ -33,7 +33,7 @@ var SignUpForm = React.createClass({
                             <legend className="title is-2">Sign Up</legend>
                             <p className="control is-grouped">
                                 <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                                <input className="input" type="text" ref="lastName" placeholder={T.get('lassssstName')} />
+                                <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                             </p>
                             <p className="control is-grouped">
                                 <input className="input" type="email" required ref="email" placeholder="Email" />
