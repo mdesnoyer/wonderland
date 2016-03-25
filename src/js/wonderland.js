@@ -1,31 +1,37 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import { render } from 'react-dom';
-import { Router, Route, Redirect, browserHistory, Link } from 'react-router';
+import {render} from 'react-dom';
+import {Router, Route, Redirect, browserHistory} from 'react-router';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import App from './components/core/App';
-import NotFound from './components/core/NotFound';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import VideoWrapper from './components/lookingglass/VideoWrapper';
-import Videos from './components/lookingglass/Videos';
-import UploadForm from './components/lookingglass/UploadForm';
-import SignUpForm from './components/lookingglass/SignUpForm';
+// Pages
+import SignUpPage from './components/pages/SignUpPage';
+import SignInPage from './components/pages/SignInPage';
+import SignOutPage from './components/pages/SignOutPage';
+import NotFoundPage from './components/pages/NotFoundPage';
+import UploadPage from './components/pages/UploadPage';
+import VideosPage from './components/pages/VideosPage';
+import VideoPage from './components/pages/VideoPage';
+import HomePage from './components/pages/HomePage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 render((
     <Router history={browserHistory}>
-        <Redirect from='/' to='/signup/' />
-        <Route path="/signup/" component={SignUpForm} />
-        <Route path="/upload/video/" component={UploadForm} />
-        <Route name="videos" path="/videos/" component= {Videos} />
-        <Route path="/video/:videoId/" component= {VideoWrapper} />
-        <Route path="*" component={NotFound} />
+        <Route path="/" component={HomePage} />
+        <Route path="/signup/" component={SignUpPage} />
+        <Route path="/signin/" component={SignInPage} />
+        <Route path="/signout/" component={SignOutPage} />
+        <Route path="/upload/video/" component={UploadPage} />
+        <Route path="/videos/" component={VideosPage} />
+        <Route path="/video/:videoId/" component= {VideoPage} />
+        <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
 

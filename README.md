@@ -46,6 +46,7 @@ Optional
 - Title the Pull Request of the form - `Sensible Title #123`
 - Once signed off, the reviewer says merge, you can squash your branch into 1 commit and merge to `development`
 - Once development site is built, please test, it is your responsibility
+- You should also login to Netlify and check the build log (please ask if you do not know how to do this)
 - After merging, please delete your branch
 
 ```
@@ -68,6 +69,9 @@ git push origin --delete branchname
 - Temporary password to access sites is `kneewrong`
 
 ## Style Guide (work in progress)
+
+### Language
+- Sign Up, Sign In, Sign Out to be used in code to standardise how we talk about this process (SignUp, SignIn, SignOut)
 
 ### Javascript
 
