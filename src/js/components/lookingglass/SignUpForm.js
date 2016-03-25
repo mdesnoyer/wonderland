@@ -1,8 +1,11 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 import React from 'react';
 import TRACKING from '../../tracking';
 import Message from './message';
+import T from '../../translation';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignUpForm = React.createClass({
@@ -27,8 +30,8 @@ var SignUpForm = React.createClass({
                         <fieldset>  
                             <legend className="title is-2">Sign Up</legend>
                             <p className="control is-grouped">
-                                <input className="input" type="text" ref="firstName" placeholder="First Name" />
-                                <input className="input" type="text" ref="lastName" placeholder="Last Name" />
+                                <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
+                                <input className="input" type="text" ref="lastName" placeholder={T.get('lassssstName')} />
                             </p>
                             <p className="control is-grouped">
                                 <input className="input" type="email" required ref="email" placeholder="Email" />
