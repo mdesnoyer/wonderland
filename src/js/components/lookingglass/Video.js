@@ -59,6 +59,7 @@ var Video = React.createClass({
         self.setState({
             mode: 'loading'
         });
+
         AJAX.doGet('videos', options)
             .then(function(json) {
                 var video = json.videos[0];
@@ -110,10 +111,12 @@ var Video = React.createClass({
                     });
                 }
             }).catch(function(ex) {
+                clearInterval(self.state.intervalId);
                 self.setState({
-                    status: 401,
-                    message: ex.message,
-                    mode: 'silent'
+                    status: err.status,
+                    message: err.responseText,
+                    mode: 'silent',
+                    intervalId: ''
                 });
             });
     },

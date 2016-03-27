@@ -12,7 +12,11 @@ var SignUpPage = React.createClass({
         return (
             <div>
                 <SiteHeader />
-                <SignUpForm />
+                    <section className="section columns">
+                        <div className="column is-half is-offset-quarter">
+                            <SignUpForm />
+                        </div>
+                    </section>
                 <SiteFooter />
             </div>
         );
