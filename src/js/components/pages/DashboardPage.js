@@ -3,18 +3,17 @@
 import React from 'react';
 import SiteHeader from '../lookingglass/SiteHeader';
 import SiteFooter from '../lookingglass/SiteFooter';
-import SignInForm from '../lookingglass/SignInForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SignInPage = React.createClass({
+var DashboardPage = React.createClass({
     render: function() {
         return (
             <div>
                 <SiteHeader />
-                <section className="section columns">
-                    <div className="column is-half is-offset-quarter">
-                        <SignInForm />
+                <section className="section">
+                    <div className="container">
+                        TODO
                     </div>
                 </section>
                 <SiteFooter />
@@ -25,6 +24,6 @@ var SignInPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default SignInPage;
+export default DashboardPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

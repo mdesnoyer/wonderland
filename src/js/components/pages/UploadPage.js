@@ -12,11 +12,11 @@ var UploadPage = React.createClass({
         return (
             <div>
                 <SiteHeader />
-                    <section className="section columns">
-                        <div className="column is-half is-offset-quarter">
-                            <UploadForm />
-                        </div>
-                    </section>
+                <section className="section columns">
+                    <div className="column is-half is-offset-quarter">
+                        <UploadForm />
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );

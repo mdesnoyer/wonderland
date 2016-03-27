@@ -113,7 +113,7 @@ var UNKNOWN_STRING = '?',
     ]
 ;
 
-let utils =  {
+var utils =  {
     VIDEO_STATE: {
         'unknown': { mapping: 'dark' },
         'processing': { mapping: 'info' },
@@ -135,6 +135,14 @@ let utils =  {
         returnValue = returnValue.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
         returnValue = returnValue.replace('dl=0', 'dl=1&raw=1');
         return returnValue;
+    },
+    isValidPassword: function(password) {
+        // TODO: default pwd doesn't match regex...
+        return true;
+        // at least one number, one lowercase and one uppercase letter
+        // at least six characters
+        var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+        return re.test(password);
     },
     properEncodeURI: function(url) {
         return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");

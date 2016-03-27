@@ -79,8 +79,9 @@ git push origin --delete branchname
 - Use NAMES_LIKE_THIS for constant values
 - 4 spaces for tabs
 - space before `{`
-- semicolons at end of line `;`
+- semicolons at end of line `;` apart from declaration blocks where they should be on their own line
 - single quotes for strings in Javascript `'bacon'` NOT `"bacon"`
+- boolean variables and functions, where possible use the isSomething convention, e.g. `isCool()`
 
 ### JSX
 

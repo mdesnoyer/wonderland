@@ -10,7 +10,9 @@ const _DEFAULT_LOCALE = 'en-US',
             signOutSuccess: 'You\'ve been signed out.',
             firstName: 'First Name',
             lastName: 'Last Name',
+            accountId: 'Account ID',
             email: 'Email',
+            username: 'Username',
             password: 'Password',
             confirm: 'Confirm',
             title: 'Title',
@@ -41,7 +43,7 @@ const _DEFAULT_LOCALE = 'en-US',
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function _getLocale() {
-    let locale = navigator.language.split('-');
+    var locale = navigator.language.split('-');
     locale = locale[1] ? `${locale[0]}-${locale[1].toUpperCase()}` : navigator.language;
     return locale;
 }
@@ -54,7 +56,7 @@ function _getTranslations() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-let t = {
+var t = {
     get: function(key) {
         return _DICTIONARY[key] || _UNKNOWN_STRING;
     }
