@@ -10,6 +10,7 @@ import AJAX from '../../ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -134,7 +135,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Message header={this.state.status} body="Unable to Login" flavour="danger" />
+                        <Message header={this.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
                     </div>  
                 </section>
             );
@@ -143,7 +144,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Message header={this.state.status} body="Not Found" flavour="danger" />
+                        <Message header={this.state.status} body={T.get('error.notFoundPage')} flavour="danger" />
                     </div>
                 </section>  
             );

@@ -5,6 +5,7 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import Thumbnail from './Thumbnail';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -15,13 +16,13 @@ var Thumbnails = React.createClass({
             return (
                 <div className="wonderland-slides">
                     <div className="wonderland-slides-slide notification is-info">
-                        Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.
+                        {T.get('copy.slideOne')}
                     </div>
                     <div className="wonderland-slides-slide notification is-info">
-                        Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.
+                        {T.get('copy.slideTwo')}
                     </div>
                     <div className="wonderland-slides-slide notification is-info">
-                        When complete, your thumbnails will appear below. If you don&rsquo;t want to wait, you can exit this page without interrupting the process and come back later to view the results.
+                        {T.get('copy.slideThree')}
                     </div>
                 </div>
             );

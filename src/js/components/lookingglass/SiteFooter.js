@@ -12,7 +12,7 @@ var SiteFooter = React.createClass({
                 <footer className="footer wonderland-banner">
                     <div className="container">
                         <div className="content is-text-centered">
-                            <p>&copy; 2016 Neon Labs, Inc. All rights reserved.<br />Current locale is {T.getLocale()}</p>
+                            <p>{T.get('copy.copyRight')}</p>
                         </div>
                     </div>
                 </footer>
