@@ -19,10 +19,14 @@ const _DEFAULT_LOCALE = 'en-US',
             company: 'Company',
             error: 'Error',
             passwordFormatInvalid: 'Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.',
-            passwordMatchInvalid: 'Password does not match the confirm password.'
+            passwordMatchInvalid: 'Password does not match the confirm password.',
+            'copy.PreviousLabel': 'Previous',
+            'copy.NextLabel': 'Next',
         },
         'en-GB': {
-            firstName: 'Forename'
+            firstName: 'Forename',
+            'copy.PreviousLabel': 'BACK!',
+            'copy.NextLabel': 'FORWARD!',
         },
         'es-MX': {
             signUp: 'Regístrate',
@@ -56,14 +60,15 @@ function _getTranslations() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var t = {
+let T = {
     get: function(key) {
         return _DICTIONARY[key] || _UNKNOWN_STRING;
-    }
+    },
+    getLocale: _getLocale
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default t;
+export default T;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
