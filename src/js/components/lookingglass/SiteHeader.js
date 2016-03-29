@@ -3,14 +3,16 @@
 import React from 'react';
 import NewsFlash from './NewsFlash';
 import SiteBanner from './SiteBanner';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SiteHeader = React.createClass({
     render: function() {
+    	var newsFlashMessage = T.get('copy.newsFlashMessage')
         return (
             <div>
-                <NewsFlash message="Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon." />
+                <NewsFlash message={newsFlashMessage}/>
                 <SiteBanner />
             </div>
         );

@@ -4,6 +4,7 @@ import React from 'react';
 import AJAX from '../../ajax';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -38,20 +39,20 @@ var UploadForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit} >
                 <fieldset>
-                    <legend className="title is-2">Upload Video</legend>
+                    <legend className="title is-2">{T.get('upload')}</legend>
                     <p className="control">
-                        (The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
+                        ({T.get('copy.processingTime')})
                     </p>
                     <p className="control is-grouped">
-                        <input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder="Add Video URL" />
+                        <input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder={T.get('upload.addVideoUrl')} />
                         <button className={buttonClassName}>Upload</button>
                     </p>
                     <p className="control">
-                        <input className={inputClassName} type="text" ref="title" placeholder="Optional Title" />
+                        <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
                     </p>
                     <p className="control">
                         <label className="checkbox" onChange={this.handleChangeAgreement}  checked={this.state.isAgreementChecked}>
-                            <input type="checkbox" />I agree to Neon&rsquo;s terms and conditions of use.
+                            <input type="checkbox" />{T.get('copy.agreeTerms')}
                         </label>
                     </p>
                 </fieldset>

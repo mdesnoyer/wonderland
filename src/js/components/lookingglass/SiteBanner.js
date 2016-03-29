@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Link} from 'react-router';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -17,25 +18,25 @@ var SiteBanner = React.createClass({
                     </div>
                     <div className="header-right header-menu">
                         <span className="header-item">
-                            <a className="button is-primary" href="https://neon-lab.com/" target="_blank">Contact Neon</a>
+                            <a className="button is-primary" href="https://neon-lab.com/" target="_blank">{T.get('nav.contact')}</a>
                         </span>
                         <span className="header-item">
-                            <Link activeClassName="active" to="/upload/video/">Upload</Link>
+                            <Link activeClassName="active" to="/upload/video/">{T.get('nav.upload')}</Link>
                         </span>
                         <span className="header-item">
-                            <Link activeClassName="active" to="/videos/">Videos</Link>
+                            <Link activeClassName="active" to="/videos/">{T.get('nav.videos')}</Link>
                         </span>
                         <span className="header-item">
                             <img className="image is-24x24 wonderland-avatar" src="/img/alice.jpg" alt="Signed in as Alice" title="Logged in as Alice" />
                         </span>
                         <span className="header-item">
-                            <Link activeClassName="active" to="/signup/">Sign Up</Link>
+                            <Link activeClassName="active" to="/signup/">{T.get('nav.signUp')}</Link>
                         </span>
                         <span className="header-item">
-                            <Link activeClassName="active" to="/signin/">Sign In</Link>
+                            <Link activeClassName="active" to="/signin/">{T.get('nav.signIn')}</Link>
                         </span>
                         <span className="header-item">
-                            <Link activeClassName="active" to="/signout/">Sign Out</Link>
+                            <Link activeClassName="active" to="/signout/">{T.get('nav.signOut')}</Link>
                         </span>
                     </div>
                 </div>

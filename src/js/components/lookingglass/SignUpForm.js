@@ -87,8 +87,8 @@ var SignUpForm = React.createClass({
         return check;
     },
     handleAllErrorCheck: function () {
-        return this.handleError(T.get('passwordFormatInvalid'), UTILS.isValidPassword(this.state.password))
-            && this.handleError(T.get('passwordMatchInvalid'), this.isPasswordEqualsConfirm());
+        return this.handleError(T.get('error.passwordFormatInvalid'), UTILS.isValidPassword(this.state.password))
+            && this.handleError(T.get('error.passwordMatchInvalid'), this.isPasswordEqualsConfirm());
     },
     handleSubmit: function (e) {
         var self = this,
