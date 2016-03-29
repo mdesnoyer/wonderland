@@ -110,7 +110,7 @@ var Video = React.createClass({
                         mode: 'silent'
                     });
                 }
-            }).catch(function(ex) {
+            }).catch(function(err) {
                 clearInterval(self.state.intervalId);
                 self.setState({
                     status: err.status,

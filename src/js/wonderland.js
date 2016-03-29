@@ -20,6 +20,7 @@ import UploadPage from './components/pages/UploadPage';
 import VideosPage from './components/pages/VideosPage';
 import VideoPage from './components/pages/VideoPage';
 import HomePage from './components/pages/HomePage';
+import DashboardPage from './components/pages/DashboardPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -32,6 +33,7 @@ render((
         <Route path="/upload/video/" component={UploadPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
+        <Route path="/dashboard/" component= {DashboardPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
