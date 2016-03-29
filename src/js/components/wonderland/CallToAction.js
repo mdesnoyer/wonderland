@@ -1,20 +1,28 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ContactModal from '../core/ContactModal';
+import T from '../../translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var CallToAction = React.createClass({
+     getInitialState: function () {
+         return {
+             isModalActive: false
+         };
+     },
+    toggleModal: function() {
+        this.setState({
+            isModalActive: !this.state.isModalActive
+        });
+    },
     render: function() {
         return (
-            <div className="message is-success">
-                <div className="message-header">
-                    TODO
-                </div>
-                <div className="message-body">
-                    TODO
-                </div>
-            </div>
+            <div className="control">
+                <a className="button is-primary" onClick={this.toggleModal}>{T.get('contact')}</a>
+                <ContactModal isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} />
+            </div>  
         );
     }
 });

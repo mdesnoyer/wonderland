@@ -18,6 +18,7 @@ const _DEFAULT_LOCALE = 'en-US',
             error: 'Error',
             signUp: 'Sign Up',
             signIn: 'Sign In',
+            contact: 'Contact',
             rememberMe: 'Remember Me',
             signOutSuccess: 'You' + String.fromCharCode(39) + 've been signed out.',
             //upload page 
