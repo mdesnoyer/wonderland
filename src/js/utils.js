@@ -169,6 +169,13 @@ var utils =  {
                 emoji: UNKNOWN_EMOJI
             };
         }
+    },
+    isValidPassword: function(password) {
+        // (?=.*\d) ==== at least one digit
+        // (?=.*\W) === at least one special symbol
+        // {8} === length is at least 8 
+        var re = /(?=.*\d)(?=.*\W).{8}/
+        return re.test(password);
     }
 };
 

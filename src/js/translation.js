@@ -21,7 +21,7 @@ const _DEFAULT_LOCALE = 'en-US',
             passwordFormatInvalid: 'Passwords must be 6 Characters and include one number, one lowercase and one uppercase letter.',
             passwordMatchInvalid: 'Password does not match the confirm password.',
             'copy.PreviousLabel': 'Previous',
-            'copy.NextLabel': 'Next',
+            'copy.NextLabel': 'Next'
         },
         'en-GB': {
             firstName: 'Forename',

@@ -7,6 +7,7 @@ import AJAX from '../../ajax';
 import SESSION from '../../session';
 import Message from './Message';
 import T from '../../translation';
+import UTILS from '../../utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -73,13 +74,7 @@ var SignUpForm = React.createClass({
     handlePasswordConfirmChange: function (event) {
         this.setState({confirm: event.target.value});
     },
-    validatePassword: function () {
-        // at least one number, one lowercase and one uppercase letter
-        // at least six characters
-        var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-        return re.test(this.state.password);
-    },
-    validateConfirm: function () {
+    isPasswordEqualsConfirm: function () {
         return this.state.password === this.state.confirm;
     },
     handleError: function (errorMessage, check) {
@@ -92,20 +87,14 @@ var SignUpForm = React.createClass({
         return check;
     },
     handleAllErrorCheck: function () {
-        return this.handleError(T.get('passwordFormatInvalid'), this.validatePassword())
-            && this.handleError(T.get('passwordMatchInvalid'), this.validateConfirm());
+        return this.handleError(T.get('passwordFormatInvalid'), UTILS.isValidPassword(this.state.password))
+            && this.handleError(T.get('passwordMatchInvalid'), this.isPasswordEqualsConfirm());
     },
     handleSubmit: function (e) {
         var self = this,
-            canProcceed,
             userDataObject;
-
         e.preventDefault();
-
-        if (self.handleAllErrorCheck()) {
-            self.setState({isSubmited: true});
-            canProcceed = self.validatePassword(self.state.password) && self.validateConfirm();
-            if (canProcceed === false) {
+        if (!self.handleAllErrorCheck()) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {
@@ -117,9 +106,7 @@ var SignUpForm = React.createClass({
                     company: this.refs.company.value.trim(),
                     title: this.refs.title.value.trim()
                 };
-
                 TRACKING.sendEvent(this, arguments, userDataObject.email);
-
                 AJAX.doPost('signup', {
                         host: AJAX.AUTH_HOST,
                         data: userDataObject
@@ -133,9 +120,6 @@ var SignUpForm = React.createClass({
                         self.setState({isError: true});
                     });
             }
-        } else {
-            self.setState({isError: true});
-        }
     }
 });
 
