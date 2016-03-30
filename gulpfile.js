@@ -43,8 +43,8 @@ gulp.task('styles', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('html', function() {
-    return gulp.src('./src/**/*.html')
+gulp.task('statics', function() {
+    return gulp.src(['./src/**/*.html', './src/robots.txt'])
         .pipe(gulp.dest('./build/'))
         .pipe(reload({
             stream: true
@@ -55,13 +55,6 @@ gulp.task('html', function() {
 
 gulp.task('redirects', function() {
     return gulp.src('./_redirects')
-        .pipe(gulp.dest('./build/'));
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-gulp.task('favicon', function() {
-    return gulp.src('./src/favicon.ico')
         .pipe(gulp.dest('./build/'));
 });
 
@@ -130,15 +123,15 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'favicon', 'styles', 'html', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'statics', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
-    gulp.watch('./src/index.html', ['html']);
+    gulp.watch('./src/**/*.html', ['statics']);
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'favicon', 'styles', 'html', 'redirects', 'browser-sync'], function() {
+gulp.task('live', ['images', 'styles', 'statics', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     return buildScript('wonderland.js', false);
 });
