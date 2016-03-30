@@ -5,7 +5,7 @@ import TRACKING from '../../tracking';
 import AJAX from '../../ajax';
 import UTILS from '../../utils';
 import SESSION from '../../session';
-import Message from './Message';
+import Message from '../wonderland/Message';
 import T from '../../translation';
 
 // TODO: Using sample values until account creation works:

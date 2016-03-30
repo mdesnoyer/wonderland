@@ -5,7 +5,7 @@ import React from 'react';
 import TRACKING from '../../tracking';
 import AJAX from '../../ajax';
 import SESSION from '../../session';
-import Message from './Message';
+import Message from '../wonderland/Message';
 import T from '../../translation';
 import UTILS from '../../utils';
 
