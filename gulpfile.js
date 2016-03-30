@@ -14,6 +14,8 @@ var reload = browserSync.reload;
 
 var historyApiFallback = require('connect-history-api-fallback');
 
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 function handleErrors() {
@@ -44,7 +46,7 @@ gulp.task('styles', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('statics', function() {
-    return gulp.src(['./src/**/*.html', './src/robots.txt'])
+    return gulp.src(staticsSrc)
         .pipe(gulp.dest('./build/'))
         .pipe(reload({
             stream: true
@@ -127,7 +129,7 @@ gulp.task('debug', ['images', 'styles', 'statics', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
-    gulp.watch('./src/**/*.html', ['statics']);
+    gulp.watch(staticsSrc, ['statics']);
     return buildScript('wonderland.js', true);
 });
 
