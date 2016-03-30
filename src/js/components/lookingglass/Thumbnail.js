@@ -45,7 +45,7 @@ var Thumbnail = React.createClass({
                     <span className={ additionalClass } title="NeonScore">{cookedNeonScore}</span>
                     <input className="wonderland-thumbnail__enabled" onChange={self.handleEnabledChange} checked={self.state.checked} type="checkbox" />
                 </figcaption>
-                <ImageModal src={url} isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} />
+                <ImageModal src={url} isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} caption={caption} />
             </figure>
         );
     }
