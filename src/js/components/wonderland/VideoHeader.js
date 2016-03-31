@@ -3,7 +3,7 @@
 
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

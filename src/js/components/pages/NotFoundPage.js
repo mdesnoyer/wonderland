@@ -3,7 +3,7 @@
 import React from 'react';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -15,7 +15,7 @@ var NotFoundPage = React.createClass({
                     <section className="section">
                         <div className="container">
                             <h1 className="title">{T.get('error.notFoundPage')}</h1>
-                            <p>TODO</p>
+                            TODO - NotFoundPage
                         </div>
                     </section>
                 <SiteFooter />

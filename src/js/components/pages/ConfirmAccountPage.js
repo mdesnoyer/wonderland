@@ -6,16 +6,16 @@ import SiteFooter from '../wonderland/SiteFooter';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var HomePage = React.createClass({
+var ConfirmAccountPage = React.createClass({
     render: function() {
         return (
             <div>
                 <SiteHeader />
-                    <section className="section">
-                        <div className="container">
-                            TODO - HomePage
-                        </div>
-                    </section>
+                <section className="section">
+                    <div className="container">
+                        TODO - ConfirmAccountPage
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );
@@ -24,6 +24,6 @@ var HomePage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default HomePage;
+export default ConfirmAccountPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

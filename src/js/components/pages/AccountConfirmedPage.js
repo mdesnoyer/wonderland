@@ -3,18 +3,17 @@
 import React from 'react';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import UploadForm from '../forms/UploadForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var UploadPage = React.createClass({
+var AccountConfirmedPage = React.createClass({
     render: function() {
         return (
             <div>
                 <SiteHeader />
-                <section className="section columns">
-                    <div className="column is-half is-offset-quarter">
-                        <UploadForm />
+                <section className="section">
+                    <div className="container">
+                        TODO - AccountConfirmedPage
                     </div>
                 </section>
                 <SiteFooter />
@@ -25,6 +24,6 @@ var UploadPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default UploadPage;
+export default AccountConfirmedPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

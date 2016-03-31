@@ -1,15 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import AJAX from '../../ajax';
-import UTILS from '../../utils';
-import TRACKING from '../../tracking';
-import T from '../../translation';
+import AJAX from '../../modules/ajax';
+import UTILS from '../../modules/utils';
+import TRACKING from '../../modules/tracking';
+import T from '../../modules/translation';
 import TermsOfServiceModal from '../core/TermsOfServiceModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var UploadForm = React.createClass({
+var UploadVideoForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -105,6 +105,6 @@ var UploadForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default UploadForm;
+export default UploadVideoForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
