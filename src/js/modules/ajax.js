@@ -39,7 +39,8 @@ var AJAX = {
             if (options.method === 'GET') {
                 url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(options.data);
                 delete options.data;
-            } else {
+            }
+            else {
                 options.data = JSON.stringify(options.data);
                 options.type = 'json';
                 options.contentType = 'application/json';
@@ -112,6 +113,12 @@ var AJAX = {
         options = options || {};
         options.host = options.host || API_HOST;
         options.method = options.method || 'POST';
+        return this.doApiCall(url, options);
+    },
+    doPut: function(url, options) {
+        options = options || {};
+        options.host = options.host || API_HOST;
+        options.method = options.method || 'PUT';
         return this.doApiCall(url, options);
     }
 };
