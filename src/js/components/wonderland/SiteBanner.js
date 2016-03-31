@@ -3,6 +3,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import T from '../../translation';
+import CallToAction from '../wonderland/CallToAction';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -18,7 +19,7 @@ var SiteBanner = React.createClass({
                     </div>
                     <div className="header-right header-menu">
                         <span className="header-item">
-                            <a className="button is-primary" href="https://neon-lab.com/" target="_blank">{T.get('nav.contact')}</a>
+                            <CallToAction />
                         </span>
                         <span className="header-item">
                             <Link activeClassName="active" to="/upload/video/">{T.get('nav.upload')}</Link>

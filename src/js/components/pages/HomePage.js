@@ -11,11 +11,11 @@ var HomePage = React.createClass({
         return (
             <div>
                 <SiteHeader />
-                    <section className="section">
-                        <div className="container">
-                            TODO
-                        </div>
-                    </section>
+                <section className="section">
+                    <div className="container">
+                        TODO
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );
