@@ -5,6 +5,7 @@ import AJAX from '../../ajax';
 import UTILS from '../../utils';
 import TRACKING from '../../tracking';
 import T from '../../translation';
+import TermsOfServiceModal from '../core/TermsOfServiceModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -18,10 +19,17 @@ var UploadForm = React.createClass({
             refreshToken: '',
             mode: 'silent', // silent/loading/error
             isAgreementChecked: false,
-            url: ''
-        }
+            url: '',
+            isModalActive: false
+        };
+    },
+    toggleModal: function() {
+        this.setState({
+            isModalActive: !this.state.isModalActive
+        });
     },
     render: function() {
+        var copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'});
         if (this.state.mode === 'loading') {
             var buttonClassName = 'button is-primary is-disabled is-loading',
                 inputClassName = 'input is-disabled'
@@ -50,11 +58,12 @@ var UploadForm = React.createClass({
                     <p className="control">
                         <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
                     </p>
-                    <p className="control">
-                        <label className="checkbox" onChange={this.handleChangeAgreement}  checked={this.state.isAgreementChecked}>
-                            <input type="checkbox" />{T.get('copy.agreeTerms')}
+                    <div className="control">
+                        <label className="checkbox" onChange={this.handleChangeAgreement} checked={this.state.isAgreementChecked}>
+                            <input type="checkbox" />
                         </label>
-                    </p>
+                        <span dangerouslySetInnerHTML={{__html: copyTerms}} />
+                    </div>
                 </fieldset>
             </form>
         );

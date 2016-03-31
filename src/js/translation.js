@@ -37,7 +37,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unableToSignIn': 'Unable to Login',
             //copy + marketing 
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            'copy.agreeTerms': 'I agree to Neon' + String.fromCharCode(39) + 's terms and conditions of use.',
+            'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             'copy.slideOne': 'Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.',
             'copy.slideTwo': 'Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.',
             'copy.slideThree': 'When complete, your thumbnails will appear below. If you don&rsquo;t want to wait, you can exit this page without interrupting the process and come back later to view the results.',
@@ -54,7 +54,8 @@ const _DEFAULT_LOCALE = 'en-US',
         },
         'en-GB': {
             firstName: 'Forename',
-            'copy.newsFlashMessage': 'FOGGY DIES SPOILER SPOILER WOLVERINE MARRIES KAREN !!! DAREDEVIL LOSES THE LEASE ON HIS APPARTMENT'
+            'copy.newsFlashMessage': 'FOGGY DIES SPOILER SPOILER WOLVERINE MARRIES KAREN !!! DAREDEVIL LOSES THE LEASE ON HIS APPARTMENT',
+            'copy.agreeTerms': 'Here is a link <a href="@link">TERMS</a> for you to click.',
         },
         'es-MX': {
             signUp: 'Regístrate',
@@ -89,8 +90,23 @@ function _getTranslations() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 let T = {
-    get: function(key) {
-        return _DICTIONARY[key] || _UNKNOWN_STRING;
+    get: function(key, placeholders) {
+        if (_DICTIONARY[key]) { 
+            if (placeholders) {
+                var new_str = _DICTIONARY[key];
+                for (var key in placeholders) {
+                    if (!placeholders.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    new_str = new_str.replace(key, placeholders[key]);
+                } 
+                return new_str;
+            }
+            return _DICTIONARY[key]
+        }
+        else {
+            return  _UNKNOWN_STRING;
+        }
     },
     getLocale: _getLocale
 }
