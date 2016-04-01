@@ -7,18 +7,22 @@ import Message from '../wonderland/message';
 var ForgotPasswordForm = React.createClass({
     getInitialState: function() {
     	return {
-    		isEmailMessageSent: false
+    		isEmailMessageSent: false,
+    		isError: false
     	}
     },
     handleSubmit: function(e) { 
     	e.preventDefault();
     	this.setState({isEmailMessageSent: true})
-    	console.log(this.state.isEmailMessageSent)
+    	// console.log(this.state.isEmailMessageSent)
+
     },
 	render: function() {
+		var MessageNeeded = this.state.isEmailMessageSent === true ? <Message body="Please Check your Email for Reset Instrcutions" />  : '';
 		var resetConfirm = <Message body="Please Check your Email for Reset Instrcutions" />
 		return (
 			<form onSubmit={ this.handleSubmit }>
+                {MessageNeeded}
                 <fieldset>  
                     <legend className="title is-2">Password Reset</legend>
                     <p className="control">
