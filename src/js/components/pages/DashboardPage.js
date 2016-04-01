@@ -13,7 +13,7 @@ var DashboardPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        TODO
+                        TODO - DashboardPage
                     </div>
                 </section>
                 <SiteFooter />

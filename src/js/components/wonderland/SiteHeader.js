@@ -3,7 +3,7 @@
 import React from 'react';
 import NewsFlash from './NewsFlash';
 import SiteBanner from './SiteBanner';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

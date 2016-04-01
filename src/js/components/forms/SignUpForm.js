@@ -2,12 +2,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import TRACKING from '../../tracking';
-import AJAX from '../../ajax';
-import SESSION from '../../session';
+import TRACKING from '../../modules/tracking';
+import AJAX from '../../modules/ajax';
+import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
-import T from '../../translation';
-import UTILS from '../../utils';
+import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

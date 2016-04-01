@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Link} from 'react-router';
-import T from '../../translation';
+import T from '../../modules/translation';
 import CallToAction from '../wonderland/CallToAction';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -22,6 +22,12 @@ var SiteBanner = React.createClass({
                             <CallToAction />
                         </span>
                         <span className="header-item">
+                            <Link activeClassName="active" to="/">Home</Link>
+                        </span>
+                        <span className="header-item">
+                            <Link activeClassName="active" to="/dashboard/">Dashboard</Link>
+                        </span>
+                        <span className="header-item">
                             <Link activeClassName="active" to="/upload/video/">{T.get('nav.upload')}</Link>
                         </span>
                         <span className="header-item">
@@ -32,6 +38,15 @@ var SiteBanner = React.createClass({
                         </span>
                         <span className="header-item">
                             <Link activeClassName="active" to="/signup/">{T.get('nav.signUp')}</Link>
+                        </span>
+                        <span className="header-item">
+                            <Link activeClassName="active" to="/forgot/">Forgot Password</Link>
+                        </span>
+                        <span className="header-item">
+                            <Link activeClassName="active" to="/confirm/">Confirm Account</Link>
+                        </span>
+                        <span className="header-item">
+                            <Link activeClassName="active" to="/confirmed/">Account Confirmed</Link>
                         </span>
                         <span className="header-item">
                             <Link activeClassName="active" to="/signin/">{T.get('nav.signIn')}</Link>

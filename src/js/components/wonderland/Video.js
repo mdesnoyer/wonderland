@@ -5,12 +5,12 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import Message from './Message';
-import UTILS from '../../utils';
-import AJAX from '../../ajax';
+import UTILS from '../../modules/utils';
+import AJAX from '../../modules/ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

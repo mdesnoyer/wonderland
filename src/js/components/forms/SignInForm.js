@@ -1,12 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import TRACKING from '../../tracking';
-import AJAX from '../../ajax';
-import UTILS from '../../utils';
-import SESSION from '../../session';
+import TRACKING from '../../modules/tracking';
+import AJAX from '../../modules/ajax';
+import UTILS from '../../modules/utils';
+import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // TODO: Using sample values until account creation works:
 const USERNAME ='wonderland_demo',
