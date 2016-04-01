@@ -14,6 +14,8 @@ var reload = browserSync.reload;
 
 var historyApiFallback = require('connect-history-api-fallback');
 
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 function handleErrors() {
@@ -43,8 +45,8 @@ gulp.task('styles', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('html', function() {
-    return gulp.src('./src/**/*.html')
+gulp.task('statics', function() {
+    return gulp.src(staticsSrc)
         .pipe(gulp.dest('./build/'))
         .pipe(reload({
             stream: true
@@ -123,15 +125,15 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'html', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'statics', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
-    gulp.watch('./src/index.html', ['html']);
+    gulp.watch(staticsSrc, ['statics']);
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'html', 'redirects'], function() {
+gulp.task('live', ['images', 'styles', 'statics', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     return buildScript('wonderland.js', false);
 });

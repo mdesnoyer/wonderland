@@ -1,0 +1,33 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+@include keyframes(xfade) {
+    0% {
+        opacity: 1;
+    }
+    33.32% {
+        opacity: 1;
+    }
+    33.33% {
+        opacity: 0;
+    }
+}
+
+.wonderland-slides {
+    min-height: 10em;
+}
+
+.wonderland-slides-slide {
+    opacity: 0;
+    position: absolute;
+    &:nth-child(1) {
+        @include animation(xfade 15s 0s infinite);
+    }
+    &:nth-child(2) {
+        @include animation(xfade 15s 5s infinite);
+    }
+    &:nth-child(3) {
+        @include animation(xfade 15s 10s infinite);
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

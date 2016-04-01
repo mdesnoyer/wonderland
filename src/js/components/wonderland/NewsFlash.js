@@ -4,23 +4,18 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var CallToAction = React.createClass({
-	render: function() {
-		return (
-			<div className="message is-success">
-				<div className="message-header">
-					TODO
-				</div>
-				<div className="message-body">
-					TODO
-				</div>
-			</div>
-		);
-	}
+var NewsFlash = React.createClass({
+    render: function() {
+        return (
+            <div className="notification is-danger is-marginless is-text-centered">
+                {this.props.message}
+            </div>
+        );
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default CallToAction;
+export default NewsFlash;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

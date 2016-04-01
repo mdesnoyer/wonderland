@@ -1,11 +1,16 @@
 .wonderland-banner {
-	background-color: #939da7;
-	color: #fff;
-	a {
-		color: #fff;
-	}
+    background-color: #939da7;
+    color: #fff;
+    a {
+        color: #fff;
+        &.active {
+            background-color: #fff;
+            color: #939da7;
+            padding: 0.2em;
+        }
+    }
 }
 
 .wonderland-avatar {
-	border-radius: 50%;
+    border-radius: 50%;
 }

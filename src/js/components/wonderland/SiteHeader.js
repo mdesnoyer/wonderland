@@ -1,24 +1,26 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import NewsFlash from './NewsFlash';
+import SiteBanner from './SiteBanner';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var NotFound = React.createClass({
-    render() {
+var SiteHeader = React.createClass({
+    render: function() {
+    	var newsFlashMessage = T.get('copy.newsFlashMessage')
         return (
-            <section className="section">
-                <div className="container">
-                    <h1 className="title">Page Not Found (Error 404)</h1>
-                    <p>TODO</p>
-                </div>
-            </section>
+            <div>
+                <NewsFlash message={newsFlashMessage}/>
+                <SiteBanner />
+            </div>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default NotFound;
+export default SiteHeader;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
