@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ContactModal from '../core/ContactModal';
-import T from '../../translation';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
