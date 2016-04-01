@@ -64,3 +64,13 @@ git push origin --delete branchname
 ## API
 
 - API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
+
+## Monitoring
+
+We use Pingdom:
+
+- USERNAME: ops@neon-lab.com
+- PASSWORD: Neon-lab1
+- LOGIN URL: https://my.pingdom.com/dashboard
+- UPTIME CHECK URL: https://my.pingdom.com/newchecks/checks
+- SITE NAME: Wonderland Development
