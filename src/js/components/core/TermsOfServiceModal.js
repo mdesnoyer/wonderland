@@ -6,7 +6,7 @@ import React from 'react';
 
 var TermsOfServiceModal = React.createClass({
     handleToggleModal: function(e) {
-        this.props.toggleModal();
+        this.props.handleToggleModal();
     },
     render: function() {
         var self = this,

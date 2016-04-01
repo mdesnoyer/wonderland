@@ -1,13 +1,14 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
+import ModalWrapper from '../core/ModalWrapper';
 import ImageModal from '../core/ImageModal';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
     getInitialState: function () {
@@ -17,9 +18,10 @@ var Thumbnail = React.createClass({
             busy: false
         };
     },
-    toggleModal: function(e) {
-        this.setState({
-            isModalActive: !this.state.isModalActive
+    handleToggleModal: function(e) {
+        var self = this;
+        self.setState({
+            isModalActive: !self.state.isModalActive
         });
     },
     handleEnabledChange: function(e) {
@@ -66,19 +68,21 @@ var Thumbnail = React.createClass({
                 data-enabled={self.props.thumbnail.enabled}
                 data-thumbnail-id={thumbnailId}
             >
-                <img className="wonderland-thumbnail__image" src={url} alt={caption} title={caption} onClick={this.toggleModal} />
+                <img className="wonderland-thumbnail__image" src={url} alt={caption} title={caption} onClick={self.handleToggleModal} />
                 <figcaption className="wonderland-thumbnail__caption">
                     <span className={additionalClass} title="NeonScore">{cookedNeonScore}</span>
                     <input className="wonderland-thumbnail__enabled" onChange={self.handleEnabledChange} checked={self.state.checked} type="checkbox" disabled={enabledDisabled} />
                 </figcaption>
-                <ImageModal src={url} isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} caption={caption} />
+                <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
+                    <ImageModal src={url} caption={caption} />
+                </ModalWrapper>
             </figure>
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Thumbnail;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

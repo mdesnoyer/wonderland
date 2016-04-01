@@ -23,7 +23,7 @@ var UploadVideoForm = React.createClass({
             isModalActive: false
         };
     },
-    toggleModal: function() {
+    handleToggleModal: function() {
         this.setState({
             isModalActive: !this.state.isModalActive
         });
