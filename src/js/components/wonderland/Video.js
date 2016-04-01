@@ -83,7 +83,8 @@ var Video = React.createClass({
                                     cookedNeonScore: neonScoreData.neonScore,
                                     emoji: neonScoreData.emoji,
                                     enabled: t.enabled,
-                                    type: t.type
+                                    type: t.type,
+                                    thumbnailId: t.thumbnail_id
                                 }
                             ;
                             return newT;
