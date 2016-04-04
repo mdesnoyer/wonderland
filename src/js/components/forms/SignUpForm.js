@@ -116,7 +116,9 @@ var SignUpForm = React.createClass({
                         self.context.router.push('/upload/video/');
                     })
                     .catch(function (err) {
-                        self.handleError(err.responseText, false);
+                        // To be used later 
+                        // self.handleError(err.responseText, false);
+                        self.handleError(T.get('copy.accountCreationTempError'), false)
                         self.setState({isError: true});
                     });
             }
