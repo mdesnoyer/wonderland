@@ -21,6 +21,12 @@ const _DEFAULT_LOCALE = 'en-US',
             contact: 'Contact',
             rememberMe: 'Remember Me',
             signOutSuccess: 'You' + String.fromCharCode(39) + 've been signed out.',
+            returnSignIn: 'Return to Sign In',
+            //password reset
+            'reset.forgot':  'Forgot your password?',
+            'reset.passwordReset': 'Password Reset',
+            'reset.sendReset': 'Send Reset Instructions',
+            'reset.message': 'Please Check your Email for Reset Instructions',
             //upload page 
             'upload.addVideoUrl': 'Add Video URL',
             'upload.optionalTitle': 'Optional Title',

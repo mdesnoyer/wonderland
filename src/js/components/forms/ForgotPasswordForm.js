@@ -15,29 +15,30 @@ var ForgotPasswordForm = React.createClass({
     },
     handleSubmit: function(e) { 
     	e.preventDefault();
-    	this.setState({isEmailMessageSent: true})
+    	this.setState({
+            isEmailMessageSent: true
+        });
     },
 	render: function() {
-		var MessageNeeded = this.state.isEmailMessageSent === true ? <Message body="Please Check your Email for Reset Instrcutions" />  : '';
 		if (this.state.isEmailMessageSent) {
             return (
-                    <Message header="Please Check your Email for Reset Instrcutions" body={<Link activeClassName="active" to="/signin/">Return to Sign In</Link>} />
-                )
+                    <Message header={T.get('reset.message')} body={<Link activeClassName="active" to="/signin/">{T.get('returnSignIn')}</Link>} />
+                );
         }
         else {
             return (
                 <form onSubmit={ this.handleSubmit }>
                     <fieldset>  
-                        <legend className="title is-2">Password Reset</legend>
+                        <legend className="title is-2">{T.get('reset.passwordReset')}</legend>
                         <p className="control">
-                            <input className="input" type="text" ref="email" placeholder="email" />
+                            <input className="input" type="text" ref="email" placeholder={T.get('email')} />
                         </p>
                         <p className="is-text-centered">
-                            <button className="button is-primary" type="submit">Send Reset Instrcutions</button>
+                            <button className="button is-primary" type="submit">{T.get('reset.sendReset')}</button>
                         </p>
                     </fieldset>
                 </form>
-            )
+            );
         }
 	}
 })
