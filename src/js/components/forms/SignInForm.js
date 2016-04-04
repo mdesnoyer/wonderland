@@ -73,7 +73,8 @@ var SignInForm = React.createClass({
         return check;
     },
     handleAllErrorCheck: function () {
-        return this.handleError(T.get('passwordFormatInvalid'), UTILS.isValidPassword(this.refs.password.value.trim()));
+        // return this.handleError(T.get('passwordFormatInvalid'), UTILS.isValidPassword(this.refs.password.value.trim()));
+        return true; 
     },
     handleSubmit: function (e) {
         var self = this,
