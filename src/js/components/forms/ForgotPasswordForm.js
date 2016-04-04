@@ -1,7 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import {Link} from 'react-router';
 import Message from '../wonderland/message';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 var ForgotPasswordForm = React.createClass({
@@ -14,26 +16,29 @@ var ForgotPasswordForm = React.createClass({
     handleSubmit: function(e) { 
     	e.preventDefault();
     	this.setState({isEmailMessageSent: true})
-    	// console.log(this.state.isEmailMessageSent)
-
     },
 	render: function() {
 		var MessageNeeded = this.state.isEmailMessageSent === true ? <Message body="Please Check your Email for Reset Instrcutions" />  : '';
-		var resetConfirm = <Message body="Please Check your Email for Reset Instrcutions" />
-		return (
-			<form onSubmit={ this.handleSubmit }>
-                {MessageNeeded}
-                <fieldset>  
-                    <legend className="title is-2">Password Reset</legend>
-                    <p className="control">
-						<input className="input" type="text" ref="email" placeholder="email" />
-                    </p>
-                    <p className="is-text-centered">
-                        <button className="button is-primary" type="submit">Send Reset Instrcutions</button>
-                    </p>
-                </fieldset>
-            </form>
-		)
+		if (this.state.isEmailMessageSent) {
+            return (
+                    <Message header="Please Check your Email for Reset Instrcutions" body={<Link activeClassName="active" to="/signin/">Return to Sign In</Link>} />
+                )
+        }
+        else {
+            return (
+                <form onSubmit={ this.handleSubmit }>
+                    <fieldset>  
+                        <legend className="title is-2">Password Reset</legend>
+                        <p className="control">
+                            <input className="input" type="text" ref="email" placeholder="email" />
+                        </p>
+                        <p className="is-text-centered">
+                            <button className="button is-primary" type="submit">Send Reset Instrcutions</button>
+                        </p>
+                    </fieldset>
+                </form>
+            )
+        }
 	}
 })
 
