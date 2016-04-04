@@ -1,10 +1,11 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ContactModal from '../core/ContactModal';
 import T from '../../modules/translation';
+import ModalWrapper from '../core/ModalWrapper';
+import ContactModal from '../core/ContactModal';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var CallToAction = React.createClass({
      getInitialState: function () {
@@ -12,23 +13,27 @@ var CallToAction = React.createClass({
              isModalActive: false
          };
      },
-    toggleModal: function() {
-        this.setState({
-            isModalActive: !this.state.isModalActive
+    handleToggleModal: function() {
+        var self = this;
+        self.setState({
+            isModalActive: !self.state.isModalActive
         });
     },
     render: function() {
+        var self = this;
         return (
             <div className="control">
-                <a className="button is-primary" onClick={this.toggleModal}>{T.get('contact')}</a>
-                <ContactModal isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} />
-            </div>  
+                <a className="button is-primary" onClick={self.handleToggleModal}>{T.get('contact')}</a>
+                <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
+                    <ContactModal />
+                </ModalWrapper>
+            </div>
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default CallToAction;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
