@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Link} from 'react-router';
-import Message from '../wonderland/message';
+import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
