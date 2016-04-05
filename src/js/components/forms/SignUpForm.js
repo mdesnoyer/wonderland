@@ -8,6 +8,7 @@ import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import handleErrorMod from '../../modules/handleErrors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -35,7 +36,7 @@ var SignUpForm = React.createClass({
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
+                        <input className="input" type="email" ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
@@ -91,10 +92,13 @@ var SignUpForm = React.createClass({
             && this.handleError(T.get('error.passwordMatchInvalid'), this.isPasswordEqualsConfirm());
     },
     handleSubmit: function (e) {
-        var self = this,
+        var self = this
             userDataObject;
         e.preventDefault();
-        if (!self.handleAllErrorCheck()) {
+        // if (!self.handleAllErrorCheck()) {
+            // console.log(handleErrorMod.handleAllErrorCheck(this.state))
+    
+        if (!handleErrorMod.handleAllErrorCheck(this.state)) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {
