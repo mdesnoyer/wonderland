@@ -1,8 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import SiteHeader from '../lookingglass/SiteHeader';
-import SiteFooter from '../lookingglass/SiteFooter';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -13,8 +14,8 @@ var NotFoundPage = React.createClass({
                 <SiteHeader />
                     <section className="section">
                         <div className="container">
-                            <h1 className="title">Page Not Found (Error 404)</h1>
-                            <p>TODO</p>
+                            <h1 className="title">{T.get('error.notFoundPage')}</h1>
+                            TODO - NotFoundPage
                         </div>
                     </section>
                 <SiteFooter />

@@ -1,19 +1,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import NewsFlash from './NewsFlash';
+import SiteBanner from './SiteBanner';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var CallToAction = React.createClass({
+var SiteHeader = React.createClass({
     render: function() {
+    	var newsFlashMessage = T.get('copy.newsFlashMessage')
         return (
-            <div className="message is-success">
-                <div className="message-header">
-                    TODO
-                </div>
-                <div className="message-body">
-                    TODO
-                </div>
+            <div>
+                <NewsFlash message={newsFlashMessage}/>
+                <SiteBanner />
             </div>
         );
     }
@@ -21,6 +21,6 @@ var CallToAction = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default CallToAction;
+export default SiteHeader;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

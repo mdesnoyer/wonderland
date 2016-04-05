@@ -5,11 +5,12 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import Message from './Message';
-import UTILS from '../../utils';
-import AJAX from '../../ajax';
+import UTILS from '../../modules/utils';
+import AJAX from '../../modules/ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -82,7 +83,8 @@ var Video = React.createClass({
                                     cookedNeonScore: neonScoreData.neonScore,
                                     emoji: neonScoreData.emoji,
                                     enabled: t.enabled,
-                                    type: t.type
+                                    type: t.type,
+                                    thumbnailId: t.thumbnail_id
                                 }
                             ;
                             return newT;
@@ -110,7 +112,7 @@ var Video = React.createClass({
                         mode: 'silent'
                     });
                 }
-            }).catch(function(ex) {
+            }).catch(function(err) {
                 clearInterval(self.state.intervalId);
                 self.setState({
                     status: err.status,
@@ -134,7 +136,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Message header={this.state.status} body="Unable to Login" flavour="danger" />
+                        <Message header={this.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
                     </div>  
                 </section>
             );
@@ -143,7 +145,7 @@ var Video = React.createClass({
             return (
                 <section className="section">
                     <div className="container">
-                        <Message header={this.state.status} body="Not Found" flavour="danger" />
+                        <Message header={this.state.status} body={T.get('error.notFoundPage')} flavour="danger" />
                     </div>
                 </section>  
             );

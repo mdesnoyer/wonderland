@@ -1,13 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import AJAX from '../../ajax';
-import UTILS from '../../utils';
-import TRACKING from '../../tracking';
+import AJAX from '../../modules/ajax';
+import UTILS from '../../modules/utils';
+import TRACKING from '../../modules/tracking';
+import T from '../../modules/translation';
+import TermsOfServiceModal from '../core/TermsOfServiceModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var UploadForm = React.createClass({
+var UploadVideoForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -17,10 +19,17 @@ var UploadForm = React.createClass({
             refreshToken: '',
             mode: 'silent', // silent/loading/error
             isAgreementChecked: false,
-            url: ''
-        }
+            url: '',
+            isModalActive: false
+        };
+    },
+    handleToggleModal: function() {
+        this.setState({
+            isModalActive: !this.state.isModalActive
+        });
     },
     render: function() {
+        var copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'});
         if (this.state.mode === 'loading') {
             var buttonClassName = 'button is-primary is-disabled is-loading',
                 inputClassName = 'input is-disabled'
@@ -38,22 +47,23 @@ var UploadForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit} >
                 <fieldset>
-                    <legend className="title is-2">Upload Video</legend>
+                    <legend className="title is-2">{T.get('upload')}</legend>
                     <p className="control">
-                        (The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.)
+                        ({T.get('copy.processingTime')})
                     </p>
                     <p className="control is-grouped">
-                        <input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder="Add Video URL" />
+                        <input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder={T.get('upload.addVideoUrl')} />
                         <button className={buttonClassName}>Upload</button>
                     </p>
                     <p className="control">
-                        <input className={inputClassName} type="text" ref="title" placeholder="Optional Title" />
+                        <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
                     </p>
-                    <p className="control">
-                        <label className="checkbox" onChange={this.handleChangeAgreement}  checked={this.state.isAgreementChecked}>
-                            <input type="checkbox" />I agree to Neon&rsquo;s terms and conditions of use.
+                    <div className="control">
+                        <label className="checkbox" onChange={this.handleChangeAgreement} checked={this.state.isAgreementChecked}>
+                            <input type="checkbox" />
                         </label>
-                    </p>
+                        <span dangerouslySetInnerHTML={{__html: copyTerms}} />
+                    </div>
                 </fieldset>
             </form>
         );
@@ -95,6 +105,6 @@ var UploadForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default UploadForm;
+export default UploadVideoForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

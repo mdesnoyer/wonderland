@@ -8,7 +8,12 @@ import cookie from 'react-cookie';
 const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
     accountIdKey ='actId',
-    userKey = 'user';
+    rememberMeKey = 'rme',
+    rememberedUsernameKey = 'ru',
+    userKey = 'user'
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Session = {
     state: {
@@ -64,6 +69,30 @@ var Session = {
             }
             resolve(userData);
         });
+    },
+    // Getter/setter on whether to store items during login or not
+    rememberMe: function(bool) {
+        if (bool !== undefined) {
+            if (bool) {
+                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+            } else {
+                cookie.remove(rememberMeKey, {path: '/'});
+                cookie.remove(rememberedUsernameKey, {path: '/'});
+            }
+        } else {
+            bool = cookie.load(rememberMeKey) ? true : false;
+        }
+        return !!bool;
+    },
+    // Getter/setter for username stored during login
+    rememberedUsername: function(username) {
+        if (username) {
+            cookie.save(rememberedUsernameKey, username, {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+        }
+        else {
+            username = cookie.load(rememberedUsernameKey);
+        }
+        return username;
     }
 };
 

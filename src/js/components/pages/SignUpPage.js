@@ -1,9 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import SiteHeader from '../lookingglass/SiteHeader';
-import SiteFooter from '../lookingglass/SiteFooter';
-import SignUpForm from '../lookingglass/SignUpForm';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
+import SignUpForm from '../forms/SignUpForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -12,7 +12,11 @@ var SignUpPage = React.createClass({
         return (
             <div>
                 <SiteHeader />
-                <SignUpForm />
+                <section className="section columns">
+                    <div className="column is-half is-offset-quarter">
+                        <SignUpForm />
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );

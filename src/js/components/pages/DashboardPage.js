@@ -1,20 +1,22 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SiteFooter = React.createClass({
+var DashboardPage = React.createClass({
     render: function() {
         return (
             <div>
-                <footer className="footer wonderland-banner">
+                <SiteHeader />
+                <section className="section">
                     <div className="container">
-                        <div className="content is-text-centered">
-                            <p>&copy; 2016 Neon Labs, Inc. All rights reserved.</p>
-                        </div>
+                        TODO - DashboardPage
                     </div>
-                </footer>
+                </section>
+                <SiteFooter />
             </div>
         );
     }
@@ -22,6 +24,6 @@ var SiteFooter = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default SiteFooter;
+export default DashboardPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,17 +1,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import NewsFlash from './NewsFlash';
-import SiteBanner from './SiteBanner';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SiteHeader = React.createClass({
+var SiteFooter = React.createClass({
     render: function() {
         return (
             <div>
-                <NewsFlash message="Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon." />
-                <SiteBanner />
+                <footer className="footer wonderland-banner">
+                    <div className="container">
+                        <div className="content is-text-centered">
+                            <p>{T.get('copy.copyRight')}</p>
+                        </div>
+                    </div>
+                </footer>
             </div>
         );
     }
@@ -19,6 +23,6 @@ var SiteHeader = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default SiteHeader;
+export default SiteFooter;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

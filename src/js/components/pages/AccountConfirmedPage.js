@@ -1,22 +1,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import SiteHeader from '../lookingglass/SiteHeader';
-import SiteFooter from '../lookingglass/SiteFooter';
-import UploadForm from '../lookingglass/UploadForm';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var UploadPage = React.createClass({
+var AccountConfirmedPage = React.createClass({
     render: function() {
         return (
             <div>
                 <SiteHeader />
-                    <section className="section columns">
-                        <div className="column is-half is-offset-quarter">
-                            <UploadForm />
-                        </div>
-                    </section>
+                <section className="section">
+                    <div className="container">
+                        TODO - AccountConfirmedPage
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );
@@ -25,6 +24,6 @@ var UploadPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default UploadPage;
+export default AccountConfirmedPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

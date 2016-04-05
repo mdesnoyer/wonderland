@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Video from './Video';
+import FilterBar from '../core/FilterBar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -20,6 +21,16 @@ var Videos = React.createClass({
         ;
         return (
             <table className="table is-striped">
+                <thead>
+                    <tr>
+                        <th><FilterBar /></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th><FilterBar /></th>
+                    </tr>
+                </tfoot>
                 <tbody>
                     <tr>
                         <td><Video params={params1} /></td>

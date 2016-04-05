@@ -1,9 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import SiteHeader from '../lookingglass/SiteHeader';
-import SiteFooter from '../lookingglass/SiteFooter';
-import Video from '../lookingglass/Video';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
+import Video from '../wonderland/Video';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

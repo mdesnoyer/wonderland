@@ -3,6 +3,7 @@
 
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -14,7 +15,8 @@ var VideoHeader = React.createClass({
     render: function() {
         var toggleButtonContent = this.props.size === 'small' ? '\u2191' : '\u2193',
             toggleButton = '', 
-            title = ''
+            title = '',
+            videoTranslatedState = T.get('copy.' + this.props.videoState + 'State')
         ;
         if (!this.props.forceOpen) {
             if (this.props.videoState === 'processed' || this.props.videoState === 'serving') {
@@ -32,7 +34,7 @@ var VideoHeader = React.createClass({
                 <div className="navbar-left">
                     <div className="navbar-item">
                         <a className={this.props.additionalClass}>
-                            {this.props.videoState}
+                            {videoTranslatedState}
                         </a>
                     </div>
                     <div className="navbar-item">
