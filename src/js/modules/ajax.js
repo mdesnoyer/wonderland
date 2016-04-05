@@ -17,17 +17,17 @@ const USERNAME ='wonderland_demo',
 var AJAX = {
     Session: null,
     getQueryParam: function(json) {
-    return Object.keys(json).map(function (key) {
-        if (json[key] !== null && json[key] !== undefined) {
-            if (Object.prototype.toString.call(json[key]) === '[object Array]') {
-                return encodeURIComponent(key) + '=' + encodeURIComponent(json[key].join());
-            } else if (Object.prototype.toString.call(json[key]) === '[object Object]') {
-                return encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(json[key]));
-            } else {
-                return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
+        return Object.keys(json).map(function (key) {
+            if (json[key] !== null && json[key] !== undefined) {
+                if (Object.prototype.toString.call(json[key]) === '[object Array]') {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(json[key].join());
+                } else if (Object.prototype.toString.call(json[key]) === '[object Object]') {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(json[key]));
+                } else {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
+                }
             }
-        }
-    }).join('&');
+        }).join('&');
     },
     doApiCall: function(url, options) {
         var self = this;
@@ -78,7 +78,8 @@ var AJAX = {
         self.Session = self.Session || SESSION;
 
         return new Promise(function (resolve, reject) {
-            var authUrl = '';
+            var authUrl = '',
+                err;
             if (self.Session.active() === true || options.host === AUTH_HOST) {
                 fin(resolve, reject);
             } else {
@@ -96,7 +97,9 @@ var AJAX = {
                         })
                         .catch(reject);
                 } else {
-                    reject(new Error('TODO: Trigger Sign In/Register'));
+                    err = new Error('Unauthorized');
+                    err.status = 401;
+                    reject(err);
                 }
             }
         });
