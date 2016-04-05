@@ -8,7 +8,6 @@ import SiteFooter from '../wonderland/SiteFooter';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ForgotPasswordPage = React.createClass({
-
     render: function() {
         return (
             <div>

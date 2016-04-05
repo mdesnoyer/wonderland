@@ -5,11 +5,16 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SESSION from '../../modules/session';
 import T from '../../modules/translation';
+import Secured from '../../mixins/secured';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignOutPage = React.createClass({
-    componentDidMount: function() {
+    mixins: [ Secured ],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    componentWillMount: function() {
         SESSION.end();
     },
     render: function() {
