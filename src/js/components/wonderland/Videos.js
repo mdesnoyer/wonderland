@@ -1,76 +1,136 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import Video from './Video';
+
+import Message from './Message';
 import FilterBar from '../core/FilterBar';
 import TutorialPanels from './TutorialPanels'
+import VideosResults from './VideosResults';
+import AJAX from '../../modules/ajax';
+import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
+    getInitialState: function() {
+        return {
+            errorMessageArray: [],
+            isError: false,
+            videos: [],
+            prevPage: '',
+            nextPage: '',
+            pageCount: 0,
+            isBusy: false,
+            referrer: 0, // prev/next
+            bonusSearchUrl: '' // used to hold the next/prev choice
+        }  
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+        self.doSearch(1);  
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
     render: function() {
-        var params1 = { videoId: '4yogINjTl' },
-            params2 = { videoId: 'Vk6WkNo6e' },
-            params3 = { videoId: 'E1r4aXjal' },
-            params4 = { videoId: 'VJX4_Giag' },
-            params5 = { videoId: 'E16-u4iTg' },
-            params6 = { videoId: '41oIONoTe' },
-            params7 = { videoId: 'NkW3_Eiag' },
-            params8 = { videoId: 'Ekybejz6e' },
-            params9 = { videoId: 'VkWNxoMpl' },
-            params10 = { videoId: '4Jtt7sfax' },
-            showTutorial = true ? <TutorialPanels /> : ''
+        var self = this,
+            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : ''
         ;
         return (
-            <div>
-                {showTutorial}
-                <table className="table is-striped">
-                    <thead>
-                        <tr>
-                            <th><FilterBar /></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th><FilterBar /></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td><Video params={params1} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params2} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params3} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params4} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params5} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params6} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params7} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params8} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params9} /></td>
-                        </tr>
-                        <tr>
-                            <td><Video params={params10} /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <VideosResults
+                videos={self.state.videos}
+                handleNewSearch={self.handleNewSearch}
+                prevPage={self.state.prevPage}
+                nextPage={self.state.nextPage}
+                errorMessage={errorMessage}
+                pageCount={self.state.pageCount}
+                isBusy={self.state.isBusy}
+                referrer={self.state.referrer}
+            />
         );
-    }
+    },
+    handleNewSearch: function(bonusSearchUrl, pageAdjustment) {
+        var self = this;
+        if (!self._isMounted) {
+            return false;
+        }
+        self.setState({
+            bonusSearchUrl: '?' + bonusSearchUrl.split('?')[1]
+        }, function() {
+            self.doSearch(pageAdjustment);
+        });
+    },
+    doSearch: function(pageAdjustment) {
+        var self = this,
+            options = {
+                data: {
+                    fields: UTILS.VIDEO_FIELDS,
+                    limit: UTILS.VIDEO_PAGE_SIZE
+                }
+            }
+        ;
+        self.setState({
+            isBusy: true,
+            pageCount: self.state.pageCount + pageAdjustment
+        }, function() {
+            AJAX.doGet('videos/search' + self.state.bonusSearchUrl, options)
+                .then(function(json) {
+                    if (!self._isMounted) {
+                        return false;
+                    }
+                    self.setState({
+                        videoCount: json.video_count,
+                        bonusSearchUrl: '',
+                        isBusy: false
+                    }, function() {
+                        if (json.video_count === 0) {
+                            var newErrorMessageArray = self.state.errorMessageArray;
+                            if (self.state.referrer === 0) {
+                                newErrorMessageArray.push('No Videos');
+                            }
+                            else {
+                                newErrorMessageArray.push('You reached the end');
+                            }
+                            self.setState({
+                                errorMessageArray: newErrorMessageArray,
+                                isError: true,
+                                videos: [],
+                                prevPage: '',
+                                nextPage: '',
+                            });
+                        }
+                        else {
+                            self.setState({
+                                errorMessageArray: [],
+                                isError: false,
+                                videos: json.videos,
+                                prevPage: json.prev_page,
+                                nextPage: json.next_page,
+                            });
+                        }
+                    });
+                }).catch(function(err) {
+                    if (self._isMounted) {
+                        return false;
+                    }
+                    var newErrorMessageArray = self.state.errorMessageArray;
+                    newErrorMessageArray.push('Error');
+                    self.setState({
+                        errorMessageArray: newErrorMessageArray,
+                        isError: true,
+                        videos: [],
+                        prevPage: '',
+                        nextPage: '',
+                        videoCount: 0,
+                        bonusSearchUrl: '',
+                        isBusy: false
+                    });
+                });
+            });
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

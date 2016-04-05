@@ -8,7 +8,7 @@ import Thumbnails from './Thumbnails';
 
 var VideoMain = React.createClass({
     render: function() {
-        if (this.props.size === 'small') {
+        if (!this.props.forceOpen) {
             return false;
         }
         else {

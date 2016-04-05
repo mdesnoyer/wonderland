@@ -31,17 +31,18 @@ render((
     <Router history={browserHistory}>
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
-        <Route path="/pending/" component={PendingAccountPage} />
-        <Route path="/account/confirm" component={ConfirmAccountPage} />
-        <Route path="/confirmed/" component={AccountConfirmedPage} />
+        <Route path="/account/confirm/:token/" component={ConfirmAccountPage} />
+        <Route path="/account/pending/" component={PendingAccountPage} />
+        <Route path="/account/confirmed/" component={AccountConfirmedPage} />
         <Route path="/forgot/" component={ForgotPasswordPage} />
         <Route path="/signin/" component={SignInPage} />
+        <Route path="/signin/forgot/" component={ForgotPasswordPage} />
+        { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
         <Route path="/dashboard/" component= {DashboardPage} />
         <Route path="/signout/" component={SignOutPage} />
         <Route path="/upload/video/" component={UploadVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
-        
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
