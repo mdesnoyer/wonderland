@@ -111,9 +111,18 @@ var SignUpForm = React.createClass({
                         host: AJAX.AUTH_HOST,
                         data: userDataObject
                     })
-                    .then(function (json) {
-                        SESSION.user(json);
-                        self.context.router.push('/upload/video/');
+                    .then(function (user) {
+                        return AJAX.doPost('authenticate', {
+                                host: AJAX.AUTH_HOST,
+                                data: {
+                                    username: userDataObject.email,
+                                    password: userDataObject.passwordInitial
+                                }
+                            })
+                            .then(function (res) {
+                                SESSION.set(res.access_token, res.refresh_token, res.account_id, user);
+                                self.context.router.push('/upload/video/');
+                            });
                     })
                     .catch(function (err) {
                         // To be used later 
