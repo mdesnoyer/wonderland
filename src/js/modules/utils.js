@@ -170,7 +170,7 @@ var utils =  {
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm
+        return state.password === state.confirm;
     }
 };
 

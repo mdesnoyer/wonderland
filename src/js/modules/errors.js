@@ -24,14 +24,14 @@ let E = {
             } 
         }
         if (count === errorList.length) {
-            return true
+            return true;
         }
         else {
-            return false 
+            return false; 
         }
 	},
     getErrors: function() {
-        return this.errorMessageArray
+        return this.errorMessageArray;
     }
 }
 
