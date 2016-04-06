@@ -27,7 +27,7 @@ var SignInForm = React.createClass({
         }  
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.errorMessageArray} flavour="danger" />  : '';
+        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
                 {messageNeeded}
@@ -78,7 +78,7 @@ var SignInForm = React.createClass({
                     self.context.router.push('/dashboard/');
                 })
                 .catch(function (err) {
-                    E.handleError(T.get(err.statusText, false))
+                    E.handleError(err.statusText, false);
                     self.setState({
                         isError: true
                     });

@@ -23,7 +23,7 @@ var SignUpForm = React.createClass({
         }  
     },
     render: function() {
-        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.errorMessageArray} flavour="danger" />  : '';
+        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
                 {MessageNeeded}

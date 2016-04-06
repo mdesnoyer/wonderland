@@ -7,7 +7,8 @@ import T from './translation';
 
 let E = {
 	errorMessageArray: [],
-    // If an error is thrown then check will be false  
+    // The check variable is to ensure that errors are only added if they are true in the current state 
+    // Likewise it removes the error from the array if the error is no longer
 	handleError: function(errorMessage, check) {
 		var msgIndex = this.errorMessageArray.indexOf(errorMessage);
         if (check === false && msgIndex === -1) {
@@ -19,8 +20,14 @@ let E = {
 	},
 	handleAllErrorCheck: function(state) {
         return this.handleError(T.get('error.passwordFormatInvalid'), UTILS.isValidPassword(state.password))
-            && this.handleError(T.get('error.passwordMatchInvalid'), state.password === state.confirm);
-	}
+            && this.handleError(T.get('error.passwordMatchInvalid'), this.isPasswordConfirm(state));
+	},
+    getErrors: function() {
+        return this.errorMessageArray
+    },
+    isPasswordConfirm: function(state) {
+        return state.password === state.confirm
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
