@@ -1,25 +1,24 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import UTILS from './utils';
-import T from './translation';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 let E = {
 	errorMessageArray: [],
-	handleError: function(errorMessage, check) {
-		var msgIndex = this.errorMessageArray.indexOf(errorMessage);
-        if (check === false && msgIndex === -1) {
+	checkForError: function(errorMessage, check) {
+		var messageIndex = (this.errorMessageArray.indexOf(errorMessage)),
+            isFound = (messageIndex > -1 ),
+            isError = !check
+        ;
+        if (isError && !isFound) {
             this.errorMessageArray.push(errorMessage);
-        } else if (check === true && msgIndex > -1) {
-            this.errorMessageArray.splice(msgIndex, 1);
+        }
+        if (!isError && isFound) {
+            this.errorMessageArray.splice(messageIndex, 1);
         }
         return check;
 	},
-	handleAllErrorCheck: function(errorList) {
+	checkForErrors: function(errorList) {
         var count = 0 
         for (var i = 0; i < errorList.length; i++) {
-            if (this.handleError(errorList[i].message, errorList[i].check)){
+            if (this.checkForError(errorList[i].message, errorList[i].check)){
                 count +=1
             } 
         }

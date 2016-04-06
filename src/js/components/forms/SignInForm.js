@@ -61,7 +61,7 @@ var SignInForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        if (!E.handleAllErrorCheck(errorList)) {
+        if (!E.checkForErrors(errorList)) {
             TRACKING.sendEvent(self, arguments, username);
             AJAX.doPost('authenticate', {
                     host: AJAX.AUTH_HOST,
@@ -81,7 +81,7 @@ var SignInForm = React.createClass({
                     self.context.router.push('/dashboard/');
                 })
                 .catch(function (err) {
-                    E.handleError(err.statusText, false);
+                    E.checkForError(err.statusText, false);
                     self.setState({
                         isError: true
                     });

@@ -34,7 +34,7 @@ var SignUpForm = React.createClass({
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input" type="email" ref="email" placeholder={T.get('email')} />
+                        <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
@@ -82,7 +82,7 @@ var SignUpForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        if (!E.handleAllErrorCheck(errorList, self.state)) {
+        if (!E.checkForErrors(errorList, self.state)) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {
@@ -106,7 +106,7 @@ var SignUpForm = React.createClass({
                     .catch(function (err) {
                         // To be used later 
                         // self.handleError(err.responseText, false);
-                        E.handleError(T.get('copy.accountCreationTempError'), false)
+                        E.checkForError(T.get('copy.accountCreationTempError'), false)
                         self.setState({isError: true});
                     });
             }
