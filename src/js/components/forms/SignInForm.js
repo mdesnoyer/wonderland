@@ -7,6 +7,7 @@ import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import E from '../../modules/errors';
 
 // TODO: Using sample values until account creation works:
 const USERNAME ='wonderland_demo',
@@ -22,12 +23,11 @@ var SignInForm = React.createClass({
     },
     getInitialState: function() {
         return {
-            errorMessageArray: [],
             isError: false
         }  
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={this.state.errorMessageArray} flavour="danger" />  : '';
+        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.errorMessageArray} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
                 {messageNeeded}
@@ -51,31 +51,6 @@ var SignInForm = React.createClass({
             </form>
         );
     },
-    handleError: function (errorMessage, check) {
-        var self = this,
-            msgIndex = this.state.errorMessageArray.indexOf(errorMessage),
-            newErrorMessageArray = self.state.errorMessageArray
-        ;
-        if (check === false && msgIndex === -1) {
-            newErrorMessageArray.push(errorMessage);
-            self.setState({
-                errorMessageArray: newErrorMessageArray
-            });
-        }
-        else {
-            if (check === true && msgIndex > -1) {
-                newErrorMessageArray.splice(msgIndex, 1);
-                self.setState({
-                    errorMessageArray: newErrorMessageArray
-                });
-            }
-        }
-        return check;
-    },
-    handleAllErrorCheck: function () {
-        // return this.handleError(T.get('passwordFormatInvalid'), UTILS.isValidPassword(this.refs.password.value.trim()));
-        return true; 
-    },
     handleSubmit: function (e) {
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
@@ -83,7 +58,7 @@ var SignInForm = React.createClass({
             password = self.refs.password.value.trim()
         ;
         e.preventDefault();
-        if (self.handleAllErrorCheck()) {
+        if (!E.handleAllErrorCheck(this.state)) {
             TRACKING.sendEvent(self, arguments, username);
             AJAX.doPost('authenticate', {
                     host: AJAX.AUTH_HOST,
@@ -103,7 +78,7 @@ var SignInForm = React.createClass({
                     self.context.router.push('/dashboard/');
                 })
                 .catch(function (err) {
-                    self.handleError(err.statusText, false);
+                    E.handleError(T.get(err.statusText, false))
                     self.setState({
                         isError: true
                     });

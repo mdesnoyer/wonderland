@@ -7,6 +7,7 @@ import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -18,12 +19,11 @@ var SignUpForm = React.createClass({
         return {
             password: '',
             confirm: '',
-            errorMessageArray: [],
             isError: false
         }  
     },
     render: function() {
-        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={this.state.errorMessageArray} flavour="danger" />  : '';
+        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.errorMessageArray} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
                 {MessageNeeded}
@@ -73,28 +73,11 @@ var SignUpForm = React.createClass({
     handlePasswordConfirmChange: function (event) {
         this.setState({confirm: event.target.value});
     },
-    isPasswordEqualsConfirm: function () {
-        return this.state.password === this.state.confirm;
-    },
-    handleError: function (errorMessage, check) {
-        var msgIndex = this.state.errorMessageArray.indexOf(errorMessage);
-        if (check === false && msgIndex === -1) {
-            this.state.errorMessageArray.push(errorMessage);
-        } else if (check === true && msgIndex > -1) {
-            this.state.errorMessageArray.splice(msgIndex, 1);
-        }
-        return check;
-    },
-    handleAllErrorCheck: function () {
-        return this.handleError(T.get('error.passwordFormatInvalid'), UTILS.isValidPassword(this.state.password))
-            && this.handleError(T.get('error.passwordMatchInvalid'), this.isPasswordEqualsConfirm());
-    },
     handleSubmit: function (e) {
-        debugger
         var self = this,
             userDataObject;
         e.preventDefault();
-        if (!self.handleAllErrorCheck()) {
+        if (!E.handleAllErrorCheck(this.state)) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {
@@ -118,7 +101,7 @@ var SignUpForm = React.createClass({
                     .catch(function (err) {
                         // To be used later 
                         // self.handleError(err.responseText, false);
-                        self.handleError(T.get('copy.accountCreationTempError'), false)
+                        E.handleError(T.get('copy.accountCreationTempError'), false)
                         self.setState({isError: true});
                     });
             }
