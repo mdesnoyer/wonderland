@@ -32,7 +32,7 @@ Optional
 ## Github
 
 - `https://github.com/neon-lab/wonderland`
-- Branches are `development` and `production`, these point to their respective sites, see below for site details.
+- Branches are `development`, `staging` and `production`, these point to their respective sites (these all run `gulp live`)
 
 ## Development Process
 
@@ -54,11 +54,12 @@ git push origin --delete branchname
 
 ## Release Process
 
-- Periodically, we will push (merge) `development` into `production` and release.
+- Periodically, we will push (merge) `development` into `staging` and release for testing.
+- We will push (merge) `development` into `production` and release.
 
 ## Hosting
 
-- Sites are `wonderland-development.netlify.com` and `wonderland-production.netlify.com`, please ask if you require access.
+- Sites are `wonderland-development.netlify.com`, `wonderland-staging.netlify.com` and `wonderland-production.netlify.com`, please ask if you require access.
 - Temporary password to access sites is `kneewrong`
 
 ## API
