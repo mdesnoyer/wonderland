@@ -34,7 +34,7 @@ var SignUpForm = React.createClass({
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
+                        <input className="input" type="email" ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
@@ -75,9 +75,14 @@ var SignUpForm = React.createClass({
     },
     handleSubmit: function (e) {
         var self = this,
-            userDataObject;
+            userDataObject,
+            errorList = [
+                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
+                {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
+            ]
+        ;
         e.preventDefault();
-        if (!E.handleAllErrorCheck(this.state)) {
+        if (!E.handleAllErrorCheck(errorList, self.state)) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {

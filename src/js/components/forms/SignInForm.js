@@ -55,10 +55,13 @@ var SignInForm = React.createClass({
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
             username = self.refs.username.value.trim(),
-            password = self.refs.password.value.trim()
+            password = self.refs.password.value.trim(),
+            errorList = [
+                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)}
+            ]
         ;
         e.preventDefault();
-        if (!E.handleAllErrorCheck(this.state)) {
+        if (!E.handleAllErrorCheck(errorList)) {
             TRACKING.sendEvent(self, arguments, username);
             AJAX.doPost('authenticate', {
                     host: AJAX.AUTH_HOST,
