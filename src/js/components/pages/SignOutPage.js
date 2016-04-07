@@ -6,6 +6,8 @@ import SiteFooter from '../wonderland/SiteFooter';
 import SESSION from '../../modules/session';
 import T from '../../modules/translation';
 import Secured from '../../mixins/secured';
+import Helmet from 'react-helmet';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -20,6 +22,9 @@ var SignOutPage = React.createClass({
     render: function() {
         return (
             <div>
+                <Helmet
+                    title={UTILS.buildPageTitle('Sign Out')}
+                />
                 <SiteHeader />
                     <section className="section">
                         <div className="container">
