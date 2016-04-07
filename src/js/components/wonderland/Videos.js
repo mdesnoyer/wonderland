@@ -3,6 +3,7 @@
 import React from 'react';
 import Video from './Video';
 import FilterBar from '../core/FilterBar';
+import TutorialPanels from './TutorialPanels'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,53 +18,57 @@ var Videos = React.createClass({
             params7 = { videoId: 'NkW3_Eiag' },
             params8 = { videoId: 'Ekybejz6e' },
             params9 = { videoId: 'VkWNxoMpl' },
-            params10 = { videoId: '4Jtt7sfax' }
+            params10 = { videoId: '4Jtt7sfax' },
+            showTutorial = true ? <TutorialPanels /> : ''
         ;
         return (
-            <table className="table is-striped">
-                <thead>
-                    <tr>
-                        <th><FilterBar /></th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th><FilterBar /></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr>
-                        <td><Video params={params1} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params2} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params3} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params4} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params5} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params6} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params7} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params8} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params9} /></td>
-                    </tr>
-                    <tr>
-                        <td><Video params={params10} /></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                {showTutorial}
+                <table className="table is-striped">
+                    <thead>
+                        <tr>
+                            <th><FilterBar /></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th><FilterBar /></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td><Video params={params1} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params2} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params3} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params4} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params5} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params6} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params7} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params8} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params9} /></td>
+                        </tr>
+                        <tr>
+                            <td><Video params={params10} /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         );
     }
 });

@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import Helmet from 'react-helmet';
@@ -7,7 +7,7 @@ import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var HomePage = React.createClass({
     render: function() {
@@ -19,7 +19,7 @@ var HomePage = React.createClass({
                 <SiteHeader />
                     <section className="section">
                         <div className="container">
-                            TODO - HomePage
+                            TODO
                         </div>
                     </section>
                 <SiteFooter />
@@ -28,8 +28,8 @@ var HomePage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default HomePage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
