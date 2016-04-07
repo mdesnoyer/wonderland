@@ -29,9 +29,12 @@ var SignUpForm = React.createClass({
                 {MessageNeeded}
                 <fieldset>  
                     <legend className="title is-2">{T.get('signUp')}</legend>
-                    <p className="control is-grouped">
+                    {/* <p className="control is-grouped">
                         <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
+                    </p> */}
+                    <p className="control">
+                        <input className="input" type="text" ref="company" placeholder={T.get('company')} />                                
                     </p>
                     <p className="control is-grouped">
                         <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
@@ -54,12 +57,9 @@ var SignUpForm = React.createClass({
                             onChange={this.handlePasswordConfirmChange}
                         />
                     </p>
-                    <p className="control">
-                        <input className="input" type="text" ref="company" placeholder={T.get('company')} />                                
-                    </p>
-                    <p className="control">
+                    {/* <p className="control">
                         <input className="input" type="text" ref="title" placeholder={T.get('title')} />
-                    </p>
+                    </p> */}
                     <p className="is-text-centered">
                         <button className="button is-primary" type="submit">{T.get('signUp')}</button>
                     </p>
@@ -86,22 +86,28 @@ var SignUpForm = React.createClass({
                 self.setState({isError: true});
             } else {
                 userDataObject = {
-                    firstName: this.refs.firstName.value.trim(),
-                    lastName: this.refs.lastName.value.trim(),
                     email: this.refs.email.value.trim(),
-                    passwordInitial: this.refs.passwordInitial.value.trim(),
-                    passwordConfirm: this.refs.passwordConfirm.value.trim(),
-                    company: this.refs.company.value.trim(),
-                    title: this.refs.title.value.trim()
+                    admin_user_username: this.refs.email.value.trim(),
+                    admin_user_password: this.refs.passwordInitial.value.trim(),
+                    customer_name: this.refs.company.value.trim()
                 };
                 TRACKING.sendEvent(this, arguments, userDataObject.email);
-                AJAX.doPost('signup', {
+                AJAX.doPost('accounts', {
                         host: AJAX.AUTH_HOST,
                         data: userDataObject
                     })
-                    .then(function (json) {
-                        SESSION.user(json);
-                        self.context.router.push('/upload/video/');
+                    .then(function (account) {
+                        return AJAX.doPost('authenticate', {
+                                host: AJAX.AUTH_HOST,
+                                data: {
+                                    username: userDataObject.email,
+                                    password: userDataObject.passwordInitial
+                                }
+                            })
+                            .then(function (res) {
+                                SESSION.set(res.access_token, res.refresh_token, account.account_id);
+                                self.context.router.push('/upload/video/');
+                            });
                     })
                     .catch(function (err) {
                         // To be used later 

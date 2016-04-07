@@ -9,7 +9,6 @@ import UTILS from '../../modules/utils';
 import AJAX from '../../modules/ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
-import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
