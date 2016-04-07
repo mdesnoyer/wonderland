@@ -79,6 +79,10 @@ Please ask if you require access (temporary password to access sites is `kneewro
 
 - [Netlify](https://netlify.com)
 
+## SSL
+
+- Provided by Netlify and [Let's Encrypt](https://letsencrypt.org/)
+
 ## API
 
 - API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
