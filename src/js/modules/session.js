@@ -48,7 +48,7 @@ var Session = {
             });
         } else {
             ret = new Promise(function (resolve, reject) {
-                reject(new Error('No active session.'));
+                resolve();
             });
         }
         cookie.remove(accessTokenKey, { path: '/' });
