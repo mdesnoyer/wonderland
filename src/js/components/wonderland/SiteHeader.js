@@ -9,10 +9,10 @@ import T from '../../modules/translation';
 
 var SiteHeader = React.createClass({
     render: function() {
-    	var newsFlashMessage = T.get('copy.newsFlashMessage')
+    	var newsFlashMessage = T.get('copy.newsFlashMessage');
         return (
             <div>
-                <NewsFlash message={newsFlashMessage}/>
+                <NewsFlash message={newsFlashMessage} isActive={false} />
                 <SiteBanner />
             </div>
         );
