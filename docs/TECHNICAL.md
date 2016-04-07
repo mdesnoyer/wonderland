@@ -57,10 +57,27 @@ git push origin --delete branchname
 - Periodically, we will push (merge) `development` into `staging` and release for testing.
 - We will push (merge) `development` into `production` and release.
 
+## DNS
+
+- [DNSimple](https://dnsimple.com)
+- ops@neon-lab.com
+- !~E5>hs${<xLp+\`
+
 ## Hosting
 
-- Sites are `wonderland-development.netlify.com`, `wonderland-staging.netlify.com` and `wonderland-production.netlify.com`, please ask if you require access.
-- Temporary password to access sites is `kneewrong`
+Sites are:
+
+| Domain | Actual |
+| --- | --- |
+| `development-app.neon-lab.com` | `wonderland-development.netlify.com` |
+| `staging-app.neon-lab.com` | `wonderland-staging.netlify.com` |
+| `app.neon-lab.com` | `wonderland-production.netlify.com` |
+
+Please ask if you require access (temporary password to access sites is `kneewrong`)
+
+### Netlify
+
+- [Netlify](https://netlify.com)
 
 ## API
 
@@ -68,10 +85,8 @@ git push origin --delete branchname
 
 ## Monitoring
 
-We use Pingdom:
+### Pingdom
 
-- USERNAME: ops@neon-lab.com
-- PASSWORD: Neon-lab1
-- LOGIN URL: https://my.pingdom.com/dashboard
-- UPTIME CHECK URL: https://my.pingdom.com/newchecks/checks
-- SITE NAME: Wonderland Development
+- ops@neon-lab.com
+- Neon-lab1
+- https://my.pingdom.com/dashboard
