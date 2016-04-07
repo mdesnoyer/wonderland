@@ -178,6 +178,9 @@ var UTILS = {
         // {8} === length is at least 8 
         var re = /(?=.*\d)(?=.*\W).{8}/
         return re.test(password);
+    },
+    isPasswordConfirm: function(state) {
+        return state.password === state.confirm;
     }
 };
 
