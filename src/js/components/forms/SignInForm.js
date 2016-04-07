@@ -61,7 +61,9 @@ var SignInForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        if (!E.checkForErrors(errorList)) {
+        // if (!E.checkForErrors(errorList)) {
+        //placeholder for error handling later 
+        if (true) {
             TRACKING.sendEvent(self, arguments, username);
             AJAX.doPost('authenticate', {
                     host: AJAX.AUTH_HOST,
