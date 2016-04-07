@@ -19,11 +19,11 @@ let E = {
         var count = 0 
         for (var i = 0; i < errorList.length; i++) {
             if (this.checkForError(errorList[i].message, errorList[i].check)){
-                count +=1;
+                count += 1;
             }
         }
         if (count === errorList.length) {
-            this.clearErrors()
+            this.clearErrors();
             return true;
         }
         else {

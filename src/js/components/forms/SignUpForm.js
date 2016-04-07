@@ -82,7 +82,7 @@ var SignUpForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        if (!E.checkForErrors(errorList, self.state)) {
+        if (!E.checkForErrors(errorList)) {
                 self.setState({isError: true});
             } else {
                 userDataObject = {
