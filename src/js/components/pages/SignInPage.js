@@ -6,6 +6,8 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
 import T from '../../modules/translation';
+import Helmet from 'react-helmet';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -13,6 +15,9 @@ var SignInPage = React.createClass({
     render: function() {
         return (
             <div>
+                <Helmet
+                    title={UTILS.buildPageTitle('Sign In')}
+                />
                 <SiteHeader />
                 <section className="section columns">
                     <div className="column is-half is-offset-quarter">

@@ -1,5 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+import T from './translation';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 var shortid = require('shortid'),
     fnv = require('fnv-plus')
 ;
@@ -113,7 +117,7 @@ var UNKNOWN_STRING = '?',
     ]
 ;
 
-var utils =  {
+var UTILS = {
     VIDEO_STATE: {
         'unknown': { mapping: 'dark' },
         'processing': { mapping: 'info' },
@@ -162,6 +166,12 @@ var utils =  {
             };
         }
     },
+    buildPageTitle: function(title) {
+        return title + T.get('app.separator') + T.get('app.credit', {
+            '@app': T.get('app.appName'),
+            '@name': T.get('app.companyName')
+        });
+    },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit
         // (?=.*\W) === at least one special symbol
@@ -173,6 +183,6 @@ var utils =  {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default utils;
+export default UTILS;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
