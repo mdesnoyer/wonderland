@@ -3,3 +3,5 @@ build/
 *.zip
 .DS_Store
 *.sublime-workspace
+
+env/config.json

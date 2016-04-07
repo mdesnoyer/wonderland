@@ -8,11 +8,16 @@ var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
 var sass = require('gulp-sass');
+var rename = require('gulp-rename');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 var historyApiFallback = require('connect-history-api-fallback');
+
+var argv = require('yargs').argv;
+var env = argv.env ? argv.env : 'dev';
+var configSrc   = './env/config.json.' + env;
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
@@ -48,6 +53,17 @@ gulp.task('styles', function() {
 gulp.task('statics', function() {
     return gulp.src(staticsSrc)
         .pipe(gulp.dest('./build/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('config', function() {
+    return gulp.src(configSrc)
+        .pipe(rename('config.json'))
+        .pipe(gulp.dest('./env'))
         .pipe(reload({
             stream: true
         }));
@@ -125,16 +141,19 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'statics', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
+    gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
     gulp.watch('./src/css/**/*', ['styles']);
     gulp.watch(staticsSrc, ['statics']);
+    gulp.watch(configSrc, ['config']);
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'statics', 'redirects'], function() {
+gulp.task('live', ['images', 'styles', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
+    gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
 });
 

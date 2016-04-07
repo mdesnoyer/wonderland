@@ -27,6 +27,9 @@ import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+const CONFIG = require('json!../../../env/config.json');
+window.CONFIG = CONFIG;
+
 render((
     <Router history={browserHistory}>
         <Route path="/" component={HomePage} />
