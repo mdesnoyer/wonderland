@@ -6,6 +6,15 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var FilterBar = React.createClass({
+    propTypes: {
+        handleNewSearch: React.PropTypes.func.isRequired,
+        prevPage: React.PropTypes.string.isRequired,
+        nextPage: React.PropTypes.string.isRequired,
+        pageCount: React.PropTypes.number.isRequired,
+        videoCountServed: React.PropTypes.number.isRequired,
+        videoCountRequested: React.PropTypes.number.isRequired,
+        isBusy: React.PropTypes.bool.isRequired
+    },
     handlePrevButton: function(e) {
         var self = this;
         e.preventDefault();
@@ -19,7 +28,7 @@ var FilterBar = React.createClass({
     render() {
         var self = this,
             prevDisabled = self.props.isBusy || self.props.prevPage === '' || self.props.pageCount === 1,
-            nextDisabled = self.props.isBusy || self.props.nextPage === '',
+            nextDisabled = self.props.isBusy || self.props.nextPage === '' || self.props.videoCountServed < self.props.videoCountRequested,
             busyClass = 'button is-primary' + (self.props.isBusy ? ' is-loading' : '')
         ;
         return (

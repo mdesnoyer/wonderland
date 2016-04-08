@@ -12,7 +12,7 @@ import ImageModal from '../core/ImageModal';
 
 var Thumbnail = React.createClass({
     propTypes: {
-        isEnabled: React.PropTypes.boolean.isRequired,
+        isEnabled: React.PropTypes.bool.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
         rawNeonScore: React.PropTypes.oneOf(['string', 'number']).isRequired,

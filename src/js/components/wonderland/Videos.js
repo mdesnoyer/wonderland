@@ -20,6 +20,7 @@ var Videos = React.createClass({
             videos: [],
             prevPage: '',
             nextPage: '',
+            videoCountServed: 0,
             pageCount: 0,
             isBusy: false,
             referrer: 0, // prev/next
@@ -49,6 +50,8 @@ var Videos = React.createClass({
                 pageCount={self.state.pageCount}
                 isBusy={self.state.isBusy}
                 referrer={self.state.referrer}
+                videoCountServed={self.state.videoCountServed}
+                videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
             />
         );
     },
@@ -82,7 +85,7 @@ var Videos = React.createClass({
                         return false;
                     }
                     self.setState({
-                        videoCount: json.video_count,
+                        videoCountServed: json.video_count,
                         bonusSearchUrl: '',
                         isBusy: false
                     }, function() {
@@ -124,7 +127,7 @@ var Videos = React.createClass({
                         videos: [],
                         prevPage: '',
                         nextPage: '',
-                        videoCount: 0,
+                        videoCountServed: 0,
                         bonusSearchUrl: '',
                         isBusy: false
                     });
