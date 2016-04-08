@@ -13,7 +13,10 @@ import UTILS from '../../modules/utils';
 
 var SignOutPage = React.createClass({
     componentWillMount: function() {
-        SESSION.end();
+        SESSION.end()
+            .catch(function (err) {
+                console.error(err);
+            });
     },
     render: function() {
         return (
