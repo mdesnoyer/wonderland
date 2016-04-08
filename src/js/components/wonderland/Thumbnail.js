@@ -15,8 +15,8 @@ var Thumbnail = React.createClass({
         isEnabled: React.PropTypes.bool.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
-        rawNeonScore: React.PropTypes.oneOf(['string', 'number']).isRequired,
-        cookedNeonScore: React.PropTypes.oneOf(['string', 'number']).isRequired,
+        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
+        cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired

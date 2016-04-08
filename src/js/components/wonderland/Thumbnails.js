@@ -50,10 +50,10 @@ var Thumbnails = React.createClass({
                                             videoStateMapping={self.props.videoStateMapping}
                                             isEnabled={thumbnail.enabled}
                                             url={thumbnail.url}
+                                            rawNeonScore={thumbnail.neon_score || ''}
                                             cookedNeonScore={neonScoreData.neonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
-                                            rawNeonScore={thumbnail.neon_score}
-                                            type={thumbnail.tpe}
+                                            type={thumbnail.type}
                                         />
                                     </div>
                                 );
