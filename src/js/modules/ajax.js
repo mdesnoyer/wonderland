@@ -45,7 +45,7 @@ var AJAX = {
                 .catch(function (err) {
                     var retryUrl = '';
                     if (options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
-                        retryUrl = CONFIG.AUTH_HOST + '?token=' + self.Session.state.refreshToken;
+                        retryUrl = CONFIG.AUTH_HOST + 'refresh_token?token=' + self.Session.state.refreshToken;
                         reqwest({
                             url: retryUrl,
                             method: 'POST',
