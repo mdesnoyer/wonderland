@@ -2,6 +2,7 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
+import AJAX from './ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -37,6 +38,19 @@ var Session = {
         }
     },
     end: function() {
+        var ret;
+        if (this.state.accessToken) {
+            ret = AJAX.doPost('logout', {
+                host: CONFIG.AUTH_HOST,
+                data: {
+                    token: this.state.accessToken
+                }
+            });
+        } else {
+            ret = new Promise(function (resolve, reject) {
+                resolve();
+            });
+        }
         cookie.remove(accessTokenKey, { path: '/' });
         cookie.remove(refreshTokenKey, { path: '/' });
         cookie.remove(accountIdKey, { path: '/' });
@@ -46,6 +60,7 @@ var Session = {
             accountId: undefined,
             user: undefined
         };
+        return ret;
     },
     // Returns current state of the session
     active: function() {

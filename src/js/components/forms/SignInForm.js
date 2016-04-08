@@ -9,12 +9,6 @@ import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
 
-// TODO: Using sample values until account creation works:
-const USERNAME ='wonderland_demo',
-    PASSWORD ='ad9f8g4n3ibna9df',
-    ACCOUNT_ID = 'uhet29evso83qb7ys70hvj3z'
-;
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInForm = React.createClass({
@@ -35,11 +29,9 @@ var SignInForm = React.createClass({
                     <legend className="title is-2">{T.get('signIn')}</legend>
                     <p className="control">
                         <input className="input" type="text" required ref="username" placeholder={T.get('username')} defaultValue={SESSION.rememberedUsername()} />
-                        <span className="wonderland-small">example: {USERNAME}</span>
                     </p>
                     <p className="control">
                         <input className="input" type="password" required ref="password" placeholder={T.get('password')} />
-                        <span className="wonderland-small">example: {PASSWORD}</span>
                     </p>
                     <p className="control">
                         <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} /><label htmlFor="isRememberMe">&nbsp;{T.get('rememberMe')}</label>
@@ -66,14 +58,14 @@ var SignInForm = React.createClass({
         if (true) {
             TRACKING.sendEvent(self, arguments, username);
             AJAX.doPost('authenticate', {
-                    host: AJAX.AUTH_HOST,
+                    host: CONFIG.AUTH_HOST,
                     data: {
                         username: username,
                         password: password
                     }
                 })
                 .then(function (res) {
-                    SESSION.set(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
+                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedUsername(username);
                     }

@@ -4,15 +4,7 @@ import React from 'react';
 import reqwest from 'reqwest';
 import SESSION from './session';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-const USERNAME ='wonderland_demo',
-    PASSWORD ='ad9f8g4n3ibna9df',
-    ACCOUNT_ID = 'uhet29evso83qb7ys70hvj3z',
-    AUTH_HOST = 'https://auth.neon-lab.com/api/v2/',
-    API_HOST = '//services.neon-lab.com/api/v2/';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AJAX = {
     Session: null,
@@ -33,7 +25,7 @@ var AJAX = {
         var self = this;
         function fin(resolve, reject) {
             options.data = options.data || {};
-            if (options.host !== AUTH_HOST) {
+            if (options.host !== CONFIG.AUTH_HOST) {
                 options.data.token = self.Session.state.accessToken;
             }
             if (options.method === 'GET') {
@@ -45,15 +37,15 @@ var AJAX = {
                 options.type = 'json';
                 options.contentType = 'application/json';
             }
-            options.url = options.host + (options.host === API_HOST ? self.Session.state.accountId + '/' : '') + url;
+            options.url = options.host + (options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + url;
             reqwest(options)
                 .then(function (res) {
                     resolve(res);
                 })
                 .catch(function (err) {
                     var retryUrl = '';
-                    if (options.host !== AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
-                        retryUrl = AUTH_HOST + '?token=' + self.Session.state.refreshToken;
+                    if (options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
+                        retryUrl = CONFIG.AUTH_HOST + '?token=' + self.Session.state.refreshToken;
                         reqwest({
                             url: retryUrl,
                             method: 'POST',
@@ -61,7 +53,7 @@ var AJAX = {
                             type: 'json'
                         })
                             .then(function (res) {
-                                self.Session.set(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
+                                self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
                                 fin(resolve, reject);
                             })
                             .catch(function (err) {
@@ -80,47 +72,30 @@ var AJAX = {
         return new Promise(function (resolve, reject) {
             var authUrl = '',
                 err;
-            if (self.Session.active() === true || options.host === AUTH_HOST) {
+            if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
                 fin(resolve, reject);
             } else {
-                if (USERNAME && PASSWORD) {
-                    authUrl = AUTH_HOST + 'authenticate?username=' + USERNAME + '&password=' + PASSWORD;
-                    reqwest({
-                        url: authUrl,
-                        method: 'POST',
-                        crossDomain: true,
-                        type: 'json'
-                    })
-                        .then(function (res) {
-                            self.Session.set(res.access_token, res.refresh_token, ACCOUNT_ID || res.account_id);
-                            fin(resolve, reject);
-                        })
-                        .catch(reject);
-                } else {
-                    err = new Error('Unauthorized');
-                    err.status = 401;
-                    reject(err);
-                }
+                err = new Error('Unauthorized');
+                err.status = 401;
+                reject(err);
             }
         });
     },
-    AUTH_HOST: AUTH_HOST,
-    API_HOST: API_HOST,
     doGet: function(url, options) {
         options = options || {};
-        options.host = options.host || API_HOST;
+        options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
         return this.doApiCall(url, options);
     },
     doPost: function(url, options) {
         options = options || {};
-        options.host = options.host || API_HOST;
+        options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
         return this.doApiCall(url, options);
     },
     doPut: function(url, options) {
         options = options || {};
-        options.host = options.host || API_HOST;
+        options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
         return this.doApiCall(url, options);
     }
