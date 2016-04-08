@@ -12,10 +12,6 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignOutPage = React.createClass({
-    mixins: [ Secured ],
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     componentWillMount: function() {
         SESSION.end()
             .catch(function (err) {

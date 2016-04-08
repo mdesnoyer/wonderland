@@ -93,7 +93,7 @@ var SignUpForm = React.createClass({
                 };
                 TRACKING.sendEvent(this, arguments, userDataObject.email);
                 AJAX.doPost('accounts', {
-                        host: AJAX.AUTH_HOST,
+                        host: CONFIG.AUTH_HOST,
                         data: userDataObject
                     })
                     .then(function (account) {
