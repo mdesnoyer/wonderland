@@ -24,27 +24,29 @@ var AJAX = {
     doApiCall: function(url, options) {
         var self = this;
         function fin(resolve, reject) {
-            options.data = options.data || {};
-            if (options.host !== CONFIG.AUTH_HOST) {
-                options.data.token = self.Session.state.accessToken;
+            var _url = url,
+                _options = options ? JSON.parse(JSON.stringify(options)) : {};
+            _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
+            if (_options.host !== CONFIG.AUTH_HOST) {
+                _options.data.token = self.Session.state.accessToken;
             }
-            if (options.method === 'GET') {
-                url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(options.data);
-                delete options.data;
+            if (_options.method === 'GET') {
+                _url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(_options.data);
+                delete _options.data;
             }
             else {
-                options.data = JSON.stringify(options.data);
-                options.type = 'json';
-                options.contentType = 'application/json';
+                _options.data = JSON.stringify(_options.data);
+                _options.type = 'json';
+                _options.contentType = 'application/json';
             }
-            options.url = options.host + (options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + url;
-            reqwest(options)
+            _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
+            reqwest(_options)
                 .then(function (res) {
                     resolve(res);
                 })
                 .catch(function (err) {
                     var retryUrl = '';
-                    if (options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
+                    if (_options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
                         retryUrl = CONFIG.AUTH_HOST + 'refresh_token?token=' + self.Session.state.refreshToken;
                         reqwest({
                             url: retryUrl,
@@ -54,6 +56,7 @@ var AJAX = {
                         })
                             .then(function (res) {
                                 self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                                debugger;
                                 fin(resolve, reject);
                             })
                             .catch(function (err) {
@@ -61,7 +64,6 @@ var AJAX = {
                                 reject(err);
                             });
                     } else {
-                        self.Session.end();
                         reject(err);
                     }
                 });
