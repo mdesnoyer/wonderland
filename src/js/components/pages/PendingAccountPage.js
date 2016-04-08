@@ -1,31 +1,25 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import {Link} from 'react-router';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import SignInForm from '../forms/SignInForm';
-import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SignInPage = React.createClass({
+var PendingAccountPage = React.createClass({
     render: function() {
-        var confirmed = this.props.location.query.confirmed ? <Message body={T.get('confirmedAccount')} flavour="success" />  : '';
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Sign In')}
+                    title={UTILS.buildPageTitle('Pending Account')}
                 />
                 <SiteHeader />
-                <section className="section columns">
-                    <div className="column is-half is-offset-quarter">
-                        {confirmed}
-                        <SignInForm />
-                        <Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>
+                <section className="section">
+                    <div className="container">
+                        <h1>Please check your email for a verification email.</h1>
+                        <p>If you don't see an email, please check your filters and trash folders</p>
                     </div>
                 </section>
                 <SiteFooter />
@@ -36,6 +30,6 @@ var SignInPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default SignInPage;
+export default PendingAccountPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -97,22 +97,10 @@ var SignUpForm = React.createClass({
                         data: userDataObject
                     })
                     .then(function (account) {
-                        return AJAX.doPost('authenticate', {
-                                host: AJAX.AUTH_HOST,
-                                data: {
-                                    username: userDataObject.email,
-                                    password: userDataObject.passwordInitial
-                                }
-                            })
-                            .then(function (res) {
-                                SESSION.set(res.access_token, res.refresh_token, account.account_id);
-                                self.context.router.push('/upload/video/');
-                            });
+                        self.context.router.push('/pending/');
                     })
                     .catch(function (err) {
-                        // To be used later 
-                        // self.handleError(err.responseText, false);
-                        E.checkForError(T.get('copy.accountCreationTempError'), false)
+                        self.handleError(JSON.parse(err.responseText).error.data, false);
                         self.setState({isError: true});
                     });
             }

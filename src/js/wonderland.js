@@ -17,17 +17,22 @@ import VideosPage from './components/pages/VideosPage';
 import VideoPage from './components/pages/VideoPage';
 import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
+import PendingAccountPage from './components/pages/PendingAccountPage';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+const CONFIG = require('json../../../env/config.json');
+window.CONFIG = CONFIG;
+
 render((
     <Router history={browserHistory}>
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
-        <Route path="/confirm/" component={ConfirmAccountPage} />
+        <Route path="/pending/" component={PendingAccountPage} />
+        <Route path="/account/confirm" component={ConfirmAccountPage} />
         <Route path="/confirmed/" component={AccountConfirmedPage} />
         <Route path="/forgot/" component={ForgotPasswordPage} />
         <Route path="/signin/" component={SignInPage} />

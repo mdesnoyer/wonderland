@@ -17,7 +17,10 @@ var SignOutPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     componentWillMount: function() {
-        SESSION.end();
+        SESSION.end()
+            .catch(function (err) {
+                console.error(err);
+            });
     },
     render: function() {
         return (
