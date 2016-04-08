@@ -1,4 +1,3 @@
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
@@ -8,6 +7,10 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoHeader = React.createClass({
+    propTypes: {
+        handleToggle: React.PropTypes.func,
+        forceOpen: React.PropTypes.boolean
+    },
     handleToggle: function(e) {
         var self = this;
         e.preventDefault();
