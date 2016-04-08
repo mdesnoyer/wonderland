@@ -100,7 +100,7 @@ var SignUpForm = React.createClass({
                         self.context.router.push('/pending/');
                     })
                     .catch(function (err) {
-                        self.handleError(JSON.parse(err.responseText).error.data, false);
+                        E.checkForError(JSON.parse(err.responseText).error.data, false);
                         self.setState({isError: true});
                     });
             }
