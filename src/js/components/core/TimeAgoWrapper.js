@@ -15,7 +15,7 @@ var TimeAgoWrapper = React.createClass({
                 timestamp = moment(this.props.date).format()
             ;
             return (
-                <time datetime={timestamp}>{time}</time>
+                <time dateTime={timestamp}>{time}</time>
             );
         }
         else {

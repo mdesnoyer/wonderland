@@ -23,10 +23,10 @@ var SignUpForm = React.createClass({
         }  
     },
     render: function() {
-        var MessageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '';
+        var messageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '';
         return (
             <form onSubmit={ this.handleSubmit }>
-                {MessageNeeded}
+                {messageNeeded}
                 <fieldset>  
                     <legend className="title is-2">{T.get('signUp')}</legend>
                     {/* <p className="control is-grouped">
@@ -68,10 +68,14 @@ var SignUpForm = React.createClass({
         );
     },
     handlePasswordInitialChange: function (event) {
-        this.setState({ password: event.target.value });
+        this.setState({
+            password: event.target.value
+        });
     },
     handlePasswordConfirmChange: function (event) {
-        this.setState({confirm: event.target.value});
+        this.setState({
+            confirm: event.target.value
+        });
     },
     handleSubmit: function (e) {
         var self = this,
@@ -84,26 +88,40 @@ var SignUpForm = React.createClass({
         e.preventDefault();
         if (!E.checkForErrors(errorList)) {
                 self.setState({isError: true});
-            } else {
-                userDataObject = {
-                    email: this.refs.email.value.trim(),
-                    admin_user_username: this.refs.email.value.trim(),
-                    admin_user_password: this.refs.passwordInitial.value.trim(),
-                    customer_name: this.refs.company.value.trim()
-                };
-                TRACKING.sendEvent(this, arguments, userDataObject.email);
-                AJAX.doPost('accounts', {
-                        host: CONFIG.AUTH_HOST,
-                        data: userDataObject
-                    })
-                    .then(function (account) {
-                        self.context.router.push('/pending/');
-                    })
-                    .catch(function (err) {
-                        E.checkForError(JSON.parse(err.responseText).error.data, false);
-                        self.setState({isError: true});
-                    });
-            }
+        }
+        else {
+            userDataObject = {
+                email: this.refs.email.value.trim(),
+                admin_user_username: this.refs.email.value.trim(),
+                admin_user_password: this.refs.passwordInitial.value.trim(),
+                customer_name: this.refs.company.value.trim()
+            };
+            TRACKING.sendEvent(this, arguments, userDataObject.email);
+            AJAX.doPost('accounts', {
+                    host: AJAX.AUTH_HOST,
+                    data: userDataObject
+                })
+                .then(function (account) {
+                    return AJAX.doPost('authenticate', {
+                            host: AJAX.AUTH_HOST,
+                            data: {
+                                username: userDataObject.email,
+                                password: userDataObject.passwordInitial
+                            }
+                        })
+                        .then(function (res) {
+                            SESSION.set(res.access_token, res.refresh_token, account.account_id);
+                            self.context.router.push('/upload/video/');
+                        });
+                })
+                .catch(function (err) {
+                    // To be used later 
+                    // self.handleError(err.responseText, false);
+                    E.checkForError(T.get('copy.accountCreationTempError'), false)
+                    self.setState({isError: true});
+                })
+            ;
+        }
     }
 });
 

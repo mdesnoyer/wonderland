@@ -125,6 +125,9 @@ var UTILS = {
         'serving': { mapping: 'success' },
         'failed': { mapping: 'danger' },
     },
+    VIDEO_CHECK_INTERVAL: 10000, // 10s
+    VIDEO_PAGE_SIZE: 10,
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },

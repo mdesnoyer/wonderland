@@ -6,10 +6,16 @@ import React from 'react';
 
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Thumbnails = React.createClass({
+    propTypes: {
+        videoState: React.PropTypes.string.isRequired,
+        videoStateMapping: React.PropTypes.string.isRequired,
+        thumbnails:  React.PropTypes.array.isRequired
+    },
     render: function() {
         var self = this;
         if (self.props.videoState === 'processing') {
@@ -28,14 +34,27 @@ var Thumbnails = React.createClass({
             );
         }
         else {
+            var sortedThumbnails = this.props.thumbnails.sort(function(a, b) {
+                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+            });
             return (
                 <div className="columns is-multiline is-mobile">
                     {
-                        this.props.thumbnails.map(function(thumbnail, i) {
+                        sortedThumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
+                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score);
                                 return (
-                                    <div className="column is-half-mobile is-third-tablet is-third-desktop" key={i}>
-                                        <Thumbnail index={i} videoStateMapping={self.props.videoStateMapping} thumbnail={thumbnail} />
+                                    <div className="column is-half-mobile is-third-tablet is-third-desktop" key={thumbnail.thumbnail_id}>
+                                        <Thumbnail
+                                            index={i}
+                                            videoStateMapping={self.props.videoStateMapping}
+                                            isEnabled={thumbnail.enabled}
+                                            url={thumbnail.url}
+                                            cookedNeonScore={neonScoreData.neonScore}
+                                            thumbnailId={thumbnail.thumbnail_id}
+                                            rawNeonScore={thumbnail.neon_score}
+                                            type={thumbnail.tpe}
+                                        />
                                     </div>
                                 );
                             }

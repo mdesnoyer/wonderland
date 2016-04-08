@@ -15,7 +15,11 @@ var VideoPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes: {
+        videoId: React.PropTypes.string
+    },
     render: function() {
+        var self = this;
         return (
             <div>
                 <Helmet
@@ -24,7 +28,12 @@ var VideoPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <Video params={this.props.params} forceOpen={true} />
+                        <Video
+                            videoId={self.props.params.videoId}
+                            pingInitial={true}
+                            pingInterval={true}
+                            forceOpen={true}
+                        />
                     </div>
                 </section>
                 <SiteFooter />
