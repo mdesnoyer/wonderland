@@ -10,7 +10,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var DashboardPage = React.createClass({
-    mixins: [ Secured ],
+    mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

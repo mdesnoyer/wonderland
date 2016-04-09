@@ -12,7 +12,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideosPage = React.createClass({
-    mixins: [ Secured ],
+    mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
