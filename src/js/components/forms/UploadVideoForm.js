@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import AJAX from '../../modules/ajax';
@@ -6,9 +6,8 @@ import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import ModalWrapper from '../core/ModalWrapper';
-import TermsOfServiceModal from '../core/TermsOfServiceModal';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UploadVideoForm = React.createClass({
     contextTypes: {
@@ -23,21 +22,6 @@ var UploadVideoForm = React.createClass({
             url: '',
             isModalActive: false
         };
-    },
-    handleToggleModal: function(e) {     
-        if  (e === undefined) {
-            this.setState({
-                isModalActive: !this.state.isModalActive
-            })
-        }
-        else if (e.hasOwnProperty('target')){
-                if (e.target.innerText === "Terms and Conditions") {
-                    e.preventDefault()
-                        this.setState({
-                            isModalActive: !this.state.isModalActive
-                        })
-                }
-        }
     },
     render: function() {
         var copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'});
@@ -72,18 +56,15 @@ var UploadVideoForm = React.createClass({
                     <div className="control">
                         <label className="checkbox" onChange={this.handleChangeAgreement} checked={this.state.isAgreementChecked}>
                             <input type="checkbox" />
-                        </label>                                                
-                        <span dangerouslySetInnerHTML={{__html: copyTerms}} onClick={this.handleToggleModal} />
-                            <ModalWrapper isModalActive={this.state.isModalActive} handleToggleModal={this.handleToggleModal}>
-                                <TermsOfServiceModal />
-                            </ModalWrapper>
+                        </label>
+                        <span dangerouslySetInnerHTML={{__html: copyTerms}} />
                     </div>
                 </fieldset>
             </form>
         );
     },
-    handleChangeUrl: function(e) { 
-        // TODO REGEX FOR URL IN THE INPUT 
+    handleChangeUrl: function(e) {
+        // TODO REGEX FOR URL IN THE INPUT
         this.setState({url: e.target.value})
     },
     handleChangeAgreement: function(){
@@ -117,8 +98,8 @@ var UploadVideoForm = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default UploadVideoForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
