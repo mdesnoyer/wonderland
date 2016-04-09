@@ -14,7 +14,8 @@ var Thumbnails = React.createClass({
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
-        thumbnails:  React.PropTypes.array.isRequired
+        thumbnails:  React.PropTypes.array.isRequired,
+        forceOpen:  React.PropTypes.bool.isRequired
     },
     render: function() {
         var self = this;
@@ -54,6 +55,7 @@ var Thumbnails = React.createClass({
                                             cookedNeonScore={neonScoreData.neonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
                                             type={thumbnail.type}
+                                            forceOpen={self.props.forceOpen}
                                         />
                                     </div>
                                 );
