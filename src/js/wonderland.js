@@ -29,6 +29,8 @@ window.CONFIG = CONFIG;
 
 render((
     <Router history={browserHistory}>
+        <Redirect from='/' to='/signin/' />
+        <Redirect from='/dashboard/' to='/videos/' />
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
         <Route path="/account/confirm/:token/" component={ConfirmAccountPage} />
