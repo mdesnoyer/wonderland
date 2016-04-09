@@ -2,28 +2,29 @@
 
 import React from 'react';
 import Video from './Video';
-import FilterBar from '../core/FilterBar';
+import NavigationBar from '../core/NavigationBar';
+import SearchBar from '../core/SearchBar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosResults = React.createClass({
     render: function() {
         var self = this,
-            filterBar = <FilterBar {...self.props} />
+            additionalClass = 'table is-striped' + (self.props.isBusy ? ' is-busy' : '')
         ;
         return (
-            <table className="table is-striped">
+            <table className={additionalClass}>
                 <caption>
                     {self.props.errorMessage}
                 </caption>
                 <thead>
                     <tr>
-                        <th>{filterBar}</th>
+                        <th><SearchBar {...self.props} /></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>{filterBar}</th>
+                        <th><NavigationBar {...self.props} /></th>
                     </tr>
                 </tfoot>
                 <tbody>

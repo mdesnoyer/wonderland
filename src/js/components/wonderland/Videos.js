@@ -1,9 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-
 import Message from './Message';
-import FilterBar from '../core/FilterBar';
 import TutorialPanels from './TutorialPanels'
 import VideosResults from './VideosResults';
 import AJAX from '../../modules/ajax';
