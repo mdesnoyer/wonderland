@@ -56,7 +56,6 @@ var AJAX = {
                         })
                             .then(function (res) {
                                 self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                                debugger;
                                 fin(resolve, reject);
                             })
                             .catch(function (err) {
