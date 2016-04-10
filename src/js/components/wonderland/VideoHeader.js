@@ -3,7 +3,6 @@
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import T from '../../modules/translation';
-import Thumbnails from './Thumbnails';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
