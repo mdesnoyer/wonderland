@@ -116,6 +116,12 @@ var Video = React.createClass({
                 }
             }
         ;
+        // If the video is 'serving' or 'failed', its going nowhere, so don't
+        // bother checking
+        if (self.state.videoState === 'serving' || self.state.videoState === 'failed') {
+            clearInterval(self.timer);
+            return false;
+        }
         self.setState({
             isBusy: true
         }, function() {
@@ -125,14 +131,6 @@ var Video = React.createClass({
                         return;
                     }
                     var video = json.videos[0];
-                    if ((video.state === 'serving' && self.state.videoState === 'serving') || (video.state === 'failed' && self.state.videoState === 'failed')) {
-                        self.setState({
-                            isBusy: false,
-                        }, function() {
-                            clearInterval(self.timer);
-                        });
-                        return false;
-                    }
                     if (video.state !== self.state.videoState) {
                         // Only bother if the state has changed
                         self.setState({
