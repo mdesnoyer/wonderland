@@ -1,15 +1,15 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import T from './translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var shortid = require('shortid'),
     fnv = require('fnv-plus')
 ;
 shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~')
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
@@ -178,17 +178,21 @@ var UTILS = {
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit
         // (?=.*\W) === at least one special symbol
-        // {8} === length is at least 8 
+        // {8} === length is at least 8
         var re = /(?=.*\d)(?=.*\W).{8}/
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
         return state.password === state.confirm;
+    },
+    //the following function strips a url of its protocol
+    stripProtocol: function(url) {
+        return url.replace(/^(https?):/, '');
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default UTILS;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
