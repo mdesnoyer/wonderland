@@ -5,7 +5,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var FilterBar = React.createClass({
+var NavigationBar = React.createClass({
     propTypes: {
         handleNewSearch: React.PropTypes.func.isRequired,
         prevPage: React.PropTypes.string.isRequired,
@@ -15,15 +15,42 @@ var FilterBar = React.createClass({
         videoCountRequested: React.PropTypes.number.isRequired,
         isBusy: React.PropTypes.bool.isRequired
     },
+    componentDidMount: function(e) {
+        var self = this;
+        document.body.onkeydown = self.handleKeyPress;
+    },
+    componentWillUnmount: function(e) {
+        var self = this;
+        document.body.onkeydown = '';
+    },
+    doNext: function() {
+        var self = this;
+        if (!self.refs.nextButton.attributes.disabled) {
+            self.props.handleNewSearch(self.props.nextPage, 1);
+        }
+    },
+    doPrev: function() {
+        var self = this;
+        if (!self.refs.prevButton.attributes.disabled) {
+            self.props.handleNewSearch(self.props.prevPage, -1);
+        }
+    },
+    handleKeyPress: function(e) {
+        var self = this;
+        if (e.keyCode === 37) {
+            self.doPrev();
+        }
+        if (e.keyCode === 39) {
+            self.doNext();
+        }
+    },
     handlePrevButton: function(e) {
         var self = this;
-        e.preventDefault();
-        self.props.handleNewSearch(self.props.prevPage, -1);
+        self.doPrev();
     },
     handleNextButton: function(e) {
         var self = this;
-        e.preventDefault();
-        self.props.handleNewSearch(self.props.nextPage, 1);
+        self.doNext();
     },
     render() {
         var self = this,
@@ -37,7 +64,7 @@ var FilterBar = React.createClass({
                 </div>
                 <div className="navbar-right">
                     <div className="navbar-item">
-                        <a href={'#' + self.props.prevPage} disabled={prevDisabled} className={busyClass} onClick={self.handlePrevButton}>
+                        <a ref="prevButton" href={'#' + self.props.prevPage} disabled={prevDisabled} className={busyClass} onClick={self.handlePrevButton}>
                             {T.get('copy.PreviousLabel')}
                         </a>
                     </div>
@@ -45,7 +72,7 @@ var FilterBar = React.createClass({
                         <p className="subtitle is-5">{self.props.pageCount}</p>
                     </div>
                     <div className="navbar-item">
-                        <a href={'#' + self.props.nextPage} disabled={nextDisabled} className={busyClass} onClick={self.handleNextButton}>
+                        <a ref="nextButton" href={'#' + self.props.nextPage} disabled={nextDisabled} className={busyClass} onClick={self.handleNextButton}>
                             {T.get('copy.NextLabel')}
                         </a>
                     </div>
@@ -57,6 +84,6 @@ var FilterBar = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default FilterBar;
+export default NavigationBar;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
