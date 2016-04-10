@@ -1,13 +1,13 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
-import TermsOfServiceModal from '../core/TermsOfServiceModal';
+import ModalWrapper from '../core/ModalWrapper';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UploadVideoForm = React.createClass({
     contextTypes: {
@@ -22,11 +22,6 @@ var UploadVideoForm = React.createClass({
             url: '',
             isModalActive: false
         };
-    },
-    toggleModal: function() {
-        this.setState({
-            isModalActive: !this.state.isModalActive
-        });
     },
     render: function() {
         var copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'});
@@ -68,8 +63,8 @@ var UploadVideoForm = React.createClass({
             </form>
         );
     },
-    handleChangeUrl: function(e) { 
-        // TODO REGEX FOR URL IN THE INPUT 
+    handleChangeUrl: function(e) {
+        // TODO REGEX FOR URL IN THE INPUT
         this.setState({url: e.target.value})
     },
     handleChangeAgreement: function(){
@@ -103,8 +98,8 @@ var UploadVideoForm = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default UploadVideoForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

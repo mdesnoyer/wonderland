@@ -1,26 +1,22 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import NewsFlash from './NewsFlash';
-import SiteBanner from './SiteBanner';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var SiteHeader = React.createClass({
-    render: function() {
-    	var newsFlashMessage = T.get('copy.newsFlashMessage');
+var SearchBar = React.createClass({
+    render() {
         return (
-            <div>
-                <NewsFlash message={newsFlashMessage} isActive={false} />
-                <SiteBanner />
-            </div>
+            <nav className="navbar">
+                Search Bar TODO
+            </nav>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default SiteHeader;
+export default SearchBar;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

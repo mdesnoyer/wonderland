@@ -1,11 +1,15 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+import T from './translation';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var shortid = require('shortid'),
     fnv = require('fnv-plus')
 ;
 shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~')
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
@@ -113,7 +117,7 @@ var UNKNOWN_STRING = '?',
     ]
 ;
 
-var utils =  {
+var UTILS = {
     VIDEO_STATE: {
         'unknown': { mapping: 'dark' },
         'processing': { mapping: 'info' },
@@ -121,6 +125,9 @@ var utils =  {
         'serving': { mapping: 'success' },
         'failed': { mapping: 'danger' },
     },
+    VIDEO_CHECK_INTERVAL: 10000, // 10s
+    VIDEO_PAGE_SIZE: 10,
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -162,17 +169,30 @@ var utils =  {
             };
         }
     },
+    buildPageTitle: function(title) {
+        return title + T.get('app.separator') + T.get('app.credit', {
+            '@app': T.get('app.appName'),
+            '@name': T.get('app.companyName')
+        });
+    },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit
         // (?=.*\W) === at least one special symbol
-        // {8} === length is at least 8 
+        // {8} === length is at least 8
         var re = /(?=.*\d)(?=.*\W).{8}/
         return re.test(password);
+    },
+    isPasswordConfirm: function(state) {
+        return state.password === state.confirm;
+    },
+    //the following function strips a url of its protocol
+    stripProtocol: function(url) {
+        return url.replace(/^(https?):/, '');
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default utils;
+export default UTILS;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

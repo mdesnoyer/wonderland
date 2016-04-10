@@ -29,10 +29,20 @@ Optional
 - `gulp live` is what is used for servers that are not being used to debug, i.e. live servers
 - The web code lives in `./src/` and is built to `./build/`
 
+## Environment
+
+- Default environment is "dev"
+- ` --env=prod` may be added to the build command (ex: `gulp debug --env=prod`) in order to use the Production servers
+- Other environments may also be used. To add an environment (or view available one):
+-- Environment configs are stored in .../env
+-- File name format is "config.json.<env name>"
+-- `... --env=<env name>` can then be used to run the new environment config
+-- "config.json" is the current running environment (NOTE: config.json is not in source control)
+
 ## Github
 
 - `https://github.com/neon-lab/wonderland`
-- Branches are `development` and `production`, these point to their respective sites, see below for site details.
+- Branches are `development`, `staging` and `production`, these point to their respective sites (these all run `gulp live`)
 
 ## Development Process
 
@@ -54,12 +64,34 @@ git push origin --delete branchname
 
 ## Release Process
 
-- Periodically, we will push (merge) `development` into `production` and release.
+- Periodically, we will push (merge) `development` into `staging` and release for testing.
+- We will push (merge) `development` into `production` and release.
+
+## DNS
+
+- [DNSimple](https://dnsimple.com)
+- ops@neon-lab.com
+- !~E5>hs${<xLp+\`
 
 ## Hosting
 
-- Sites are `wonderland-development.netlify.com` and `wonderland-production.netlify.com`, please ask if you require access.
-- Temporary password to access sites is `kneewrong`
+Sites are:
+
+| Domain | Actual |
+| --- | --- |
+| `development-app.neon-lab.com` | `wonderland-development.netlify.com` |
+| `staging-app.neon-lab.com` | `wonderland-staging.netlify.com` |
+| `app.neon-lab.com` | `wonderland-production.netlify.com` |
+
+Please ask if you require access (temporary password to access sites is `kneewrong`)
+
+### Netlify
+
+- [Netlify](https://netlify.com)
+
+## SSL
+
+- Provided by Netlify and [Let's Encrypt](https://letsencrypt.org/)
 
 ## API
 
@@ -67,10 +99,8 @@ git push origin --delete branchname
 
 ## Monitoring
 
-We use Pingdom:
+### Pingdom
 
-- USERNAME: ops@neon-lab.com
-- PASSWORD: Neon-lab1
-- LOGIN URL: https://my.pingdom.com/dashboard
-- UPTIME CHECK URL: https://my.pingdom.com/newchecks/checks
-- SITE NAME: Wonderland Development
+- ops@neon-lab.com
+- Neon-lab1
+- https://my.pingdom.com/dashboard

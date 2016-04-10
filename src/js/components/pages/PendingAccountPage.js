@@ -1,31 +1,25 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import Helmet from 'react-helmet';
-import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import Videos from '../wonderland/Videos';
-import Secured from '../../mixins/secured';
-import T from '../../modules/translation';
+import Helmet from 'react-helmet';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var VideosPage = React.createClass({
-    mixins: [Secured],
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+var PendingAccountPage = React.createClass({
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('videos'))}
+                    title={UTILS.buildPageTitle('Pending Account')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <Videos />
+                        <h1>Please check your email for a verification email.</h1>
+                        <p>If you don't see an email, please check your filters and trash folders</p>
                     </div>
                 </section>
                 <SiteFooter />
@@ -36,6 +30,6 @@ var VideosPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default VideosPage;
+export default PendingAccountPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

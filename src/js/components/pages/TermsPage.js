@@ -1,30 +1,26 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import UploadVideoForm from '../forms/UploadVideoForm';
-import Secured from '../../mixins/secured';
-import Helmet from 'react-helmet';
+import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import TermsOfService from '../core/TermsOfService'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var UploadVideoPage = React.createClass({
-    mixins: [Secured],
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+var TermsPage = React.createClass({
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Upload Video')}
+                    title={UTILS.buildPageTitle('Terms of Service')}
                 />
                 <SiteHeader />
-                <section className="section columns">
-                    <div className="column is-half is-offset-quarter">
-                        <UploadVideoForm />
+                <section className="section">
+                    <div className="container">
+                        <TermsOfService />
                     </div>
                 </section>
                 <SiteFooter />
@@ -35,6 +31,6 @@ var UploadVideoPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UploadVideoPage;
+export default TermsPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,4 +1,3 @@
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
@@ -8,42 +7,43 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoHeader = React.createClass({
+    propTypes: {
+        handleToggle: React.PropTypes.func,
+        forceOpen: React.PropTypes.bool
+    },
     handleToggle: function(e) {
+        var self = this;
         e.preventDefault();
-        this.props.handleToggle();
+        self.props.handleToggle();
     },
     render: function() {
-        var toggleButtonContent = this.props.size === 'small' ? '\u2191' : '\u2193',
-            toggleButton = '', 
+        var self = this,
+            toggleButtonContent = self.props.forceOpen ? '\u2191' : '\u2193',
+            toggleButton = <a className="button" onClick={self.handleToggle}>{toggleButtonContent}</a>, 
             title = '',
-            videoTranslatedState = T.get('copy.' + this.props.videoState + 'State')
+            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State')
         ;
-        if (!this.props.forceOpen) {
-            if (this.props.videoState === 'processed' || this.props.videoState === 'serving') {
-                toggleButton = <a className="button" onClick={this.handleToggle}>{toggleButtonContent}</a>;
-            }
-        }
-        if (this.props.forceOpen) {
-            title = this.props.displayTitle;
+        if (self.props.forceOpen) {
+            title = self.props.displayTitle;
         }
         else {
-            title = <a href={this.props.videoLink}>{this.props.displayTitle}</a>;
+            title = <a href={self.props.videoLink}>{self.props.displayTitle}</a>;
         }
         return (
             <nav className="navbar is-marginless">
                 <div className="navbar-left">
                     <div className="navbar-item">
-                        <a className={this.props.additionalClass}>
+                        <a className={self.props.additionalClass}>
                             {videoTranslatedState}
                         </a>
                     </div>
                     <div className="navbar-item">
-                        <h2 className="title is-5">{title}</h2>
+                        <h2 className="title is-5" title={self.props.videoId}>{title}</h2>
                     </div>
                 </div>
                 <div className="navbar-right">
                     <div className="navbar-item">
-                        <span className="subtitle is-6"><TimeAgoWrapper date={this.props.publishDate} /></span>
+                        <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
                     </div>
                     <div className="navbar-item">
                         {toggleButton}

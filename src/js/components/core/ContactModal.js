@@ -1,33 +1,23 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ContactModal = React.createClass({
-    handleToggleModal: function(e) {
-        this.props.toggleModal();
-    },
-    render() {
-        var self = this,
-            modalClass = 'modal' + (self.props.isModalActive ? ' is-active' : '')
-        ;
+    render: function() {
         return (
-            <div className={modalClass}>
-                <div className="modal-background"></div>
-                <div className="modal-content">
-                    <div className="box">
-                        TODO
-                    </div>
+            <section className="section">
+                <div className="container">
+                    TODO - ContactModal
                 </div>
-                <button className="modal-close" onClick={self.handleToggleModal}></button>
-            </div>
+            </section>
         );
     }
-});
+})
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default ContactModal;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

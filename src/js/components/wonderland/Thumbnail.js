@@ -1,84 +1,132 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
+import ModalWrapper from '../core/ModalWrapper';
 import ImageModal from '../core/ImageModal';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
+    propTypes: {
+        isEnabled: React.PropTypes.bool.isRequired,
+        videoStateMapping: React.PropTypes.string.isRequired,
+        index: React.PropTypes.number.isRequired,
+        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
+        cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
+        type: React.PropTypes.string.isRequired,
+        thumbnailId: React.PropTypes.string.isRequired,
+        url: React.PropTypes.string.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+    },
     getInitialState: function () {
+        var self = this;
         return {
-            checked: this.props.thumbnail.enabled || false,
+            isEnabled: self.props.isEnabled,
             isModalActive: false,
-            busy: false
+            isBusy: false
         };
     },
-    toggleModal: function(e) {
-        this.setState({
-            isModalActive: !this.state.isModalActive
-        });
+    componentDidMount: function() {
+        var self = this;
+        if (!self.props.forceOpen) {
+            // We want to sneak these in since it is closed
+            var thumbnailImage = self.refs.thumbnailImage,
+                bufferImage = new Image()
+            ;
+            bufferImage.onload = function() {
+                var _self = this; // img
+                thumbnailImage.setAttribute('src', _self.src);
+                console.log('Lazy Loaded ' + _self.src);
+            };
+            bufferImage.src = thumbnailImage.getAttribute('data-src');
+        }
+        self._isMounted = true;
     },
-    handleEnabledChange: function(e) {
-        var self = this,
-            options = {
-                data: {
-                    thumbnail_id: this.props.thumbnail.thumbnailId,
-                    enabled: self.state.checked ? '0' : '1' // yes this is reversed because checked has not changed yet
-                }
-            }
-        ;
-        self.setState({
-            busy: true
-        });
-        AJAX.doPut('thumbnails', options)
-            .then(function(json) {
-                self.setState({
-                    checked: !self.state.checked,
-                    busy: false
-                });
-            })
-            .catch(function(err) {
-                console.error(err.responseText);
-                    self.setState({
-                        busy: false
-                    });
-            });
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
     },
     render: function() {
         var self = this,
             additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
-            url = self.props.thumbnail.url,
-            cookedNeonScore = self.props.thumbnail.cookedNeonScore,
-            thumbnailId = self.props.thumbnail.thumbnailId,
-            enabledDisabled = self.state.busy ? 'disabled' : ''
+            enabledDisabled = self.state.isBusy ? 'disabled' : '',
+            src = (self.props.forceOpen ? self.props.url : '/img/clear.gif'),
+            dataSrc = (self.props.forceOpen ? '' : self.props.url)
         ;
         return (
             <figure
                 className="wonderland-thumbnail"
-                data-raw-neonscore={self.props.thumbnail.rawNeonScore}
-                data-cooked-neonscore={cookedNeonScore}
-                data-type={self.props.thumbnail.type}
-                data-enabled={self.props.thumbnail.enabled}
-                data-thumbnail-id={thumbnailId}
+                data-raw-neonscore={self.props.rawNeonScore}
+                data-cooked-neonscore={self.props.cookedNeonScore}
+                data-type={self.props.type}
+                data-enabled={self.props.isEnabled}
+                data-thumbnail-id={self.props.thumbnailId}
             >
-                <img className="wonderland-thumbnail__image" src={url} alt={caption} title={caption} onClick={this.toggleModal} />
+                <img
+                    ref="thumbnailImage"
+                    className="wonderland-thumbnail__image"
+                    src={src}
+                    data-src={dataSrc}
+                    alt={caption}
+                    title={caption}
+                    onClick={self.handleToggleModal}
+                />
                 <figcaption className="wonderland-thumbnail__caption">
-                    <span className={additionalClass} title="NeonScore">{cookedNeonScore}</span>
-                    <input className="wonderland-thumbnail__enabled" onChange={self.handleEnabledChange} checked={self.state.checked} type="checkbox" disabled={enabledDisabled} />
+                    <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
+                    <input className="wonderland-thumbnail__enabled" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                 </figcaption>
-                <ImageModal src={url} isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} caption={caption} />
+                <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
+                    <ImageModal src={self.props.url} caption={caption} />
+                </ModalWrapper>
             </figure>
         );
+    },
+    handleToggleModal: function(e) {
+        var self = this;
+        self.setState({
+            isModalActive: !self.state.isModalActive
+        });
+    },
+    handleisEnabledChange: function(e) {
+        var self = this,
+            options = {
+                data: {
+                    thumbnail_id: self.props.thumbnailId,
+                    enabled: self.state.isEnabled ? '0' : '1' // yes this is reversed because isEnabled has not changed yet
+                }
+            }
+        ;
+        self.setState({
+            isBusy: true
+        }, function() {
+            AJAX.doPut('thumbnails', options)
+                .then(function(json) {
+                    if (self._isMounted) {
+                        self.setState({
+                            isEnabled: !self.state.isEnabled,
+                            isBusy: false
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    if (self._isMounted) {
+                        self.setState({
+                            isBusy: false
+                        });
+                    }
+                });
+            })
+        ;
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Thumbnail;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

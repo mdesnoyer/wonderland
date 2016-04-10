@@ -12,7 +12,7 @@ var SiteFooter = React.createClass({
                 <footer className="footer wonderland-banner">
                     <div className="container">
                         <div className="content is-text-centered">
-                            <p>{T.get('copy.copyRight')}</p>
+                            <p>{T.get('copy.copyright', {'@name': T.get('app.companyFullName')})}</p>
                         </div>
                     </div>
                 </footer>
