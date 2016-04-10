@@ -19,7 +19,8 @@ var Thumbnail = React.createClass({
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
-        url: React.PropTypes.string.isRequired
+        url: React.PropTypes.string.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
     },
     getInitialState: function () {
         var self = this;
@@ -31,6 +32,18 @@ var Thumbnail = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
+        if (!self.props.forceOpen) {
+            // We want to sneak these in since it is closed
+            var thumbnailImage = self.refs.thumbnailImage,
+                bufferImage = new Image()
+            ;
+            bufferImage.onload = function() {
+                var _self = this; // img
+                thumbnailImage.setAttribute('src', _self.src);
+                console.log('Lazy Loaded ' + _self.src);
+            };
+            bufferImage.src = thumbnailImage.getAttribute('data-src');
+        }
         self._isMounted = true;
     },
     componentWillUnmount: function() {
@@ -41,7 +54,9 @@ var Thumbnail = React.createClass({
         var self = this,
             additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
-            enabledDisabled = self.state.isBusy ? 'disabled' : ''
+            enabledDisabled = self.state.isBusy ? 'disabled' : '',
+            src = (self.props.forceOpen ? self.props.url : '/img/clear.gif'),
+            dataSrc = (self.props.forceOpen ? '' : self.props.url)
         ;
         return (
             <figure
@@ -52,7 +67,15 @@ var Thumbnail = React.createClass({
                 data-enabled={self.props.isEnabled}
                 data-thumbnail-id={self.props.thumbnailId}
             >
-                <img className="wonderland-thumbnail__image" src={self.props.url} alt={caption} title={caption} onClick={self.handleToggleModal} />
+                <img
+                    ref="thumbnailImage"
+                    className="wonderland-thumbnail__image"
+                    src={src}
+                    data-src={dataSrc}
+                    alt={caption}
+                    title={caption}
+                    onClick={self.handleToggleModal}
+                />
                 <figcaption className="wonderland-thumbnail__caption">
                     <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
                     <input className="wonderland-thumbnail__enabled" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
