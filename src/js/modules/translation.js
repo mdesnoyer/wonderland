@@ -38,6 +38,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'upload.optionalTitle': 'Optional Title',
             //navigation bar 
             'nav.home': 'Home',
+            'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
             'nav.signOut': 'Sign Out',
