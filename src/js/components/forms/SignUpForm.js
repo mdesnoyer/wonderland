@@ -25,7 +25,7 @@ var SignUpForm = React.createClass({
     render: function() {
         var messageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '';
         return (
-            <form onSubmit={ this.handleSubmit }>
+            <form onSubmit={this.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
                     <legend className="title is-2">{T.get('signUp')}</legend>

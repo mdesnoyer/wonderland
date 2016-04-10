@@ -53,6 +53,7 @@ var Thumbnails = React.createClass({
                                             videoStateMapping={self.props.videoStateMapping}
                                             isEnabled={thumbnail.enabled}
                                             url={strippedUrl}
+                                            rawNeonScore={thumbnail.neon_score}
                                             cookedNeonScore={neonScoreData.neonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
                                             type={thumbnail.type}

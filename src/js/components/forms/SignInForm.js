@@ -21,9 +21,10 @@ var SignInForm = React.createClass({
         }  
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+        var self = this,
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
         return (
-            <form onSubmit={ this.handleSubmit }>
+            <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
                     <legend className="title is-2">{T.get('signIn')}</legend>
@@ -53,6 +54,9 @@ var SignInForm = React.createClass({
             ]
         ;
         e.preventDefault();
+        self.setState({
+            isError: false
+        });
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {

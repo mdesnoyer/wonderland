@@ -27,7 +27,7 @@ var ForgotPasswordForm = React.createClass({
         }
         else {
             return (
-                <form onSubmit={ this.handleSubmit }>
+                <form onSubmit={this.handleSubmit}>
                     <fieldset>  
                         <legend className="title is-2">{T.get('reset.passwordReset')}</legend>
                         <p className="control">

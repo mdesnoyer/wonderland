@@ -1,7 +1,5 @@
 {
-    "USERNAME": "global_admin_neon",
-    "PASSWORD": "4ERDWIlupafI",
-    "ACCOUNT_ID": "07llxh34tqoxntlkgllkp1to",
-    "AUTH_HOST": "https://test-auth.neon-lab.com/api/v2/",
-    "API_HOST": "//test-services.neon-lab.com/api/v2/"
+    LABEL: 'dev',
+    AUTH_HOST: "https://test-auth.neon-lab.com/api/v2/",
+    API_HOST: "//test-services.neon-lab.com/api/v2/"
 }
