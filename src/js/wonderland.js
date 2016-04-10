@@ -21,6 +21,7 @@ import PendingAccountPage from './components/pages/PendingAccountPage';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
+import TermsPage from './components/pages/TermsPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -45,6 +46,7 @@ render((
         <Route path="/upload/video/" component={UploadVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
+        <Route path="/terms/" component= {TermsPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));

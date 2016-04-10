@@ -6,21 +6,23 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import TermsOfService from '../core/TermsOfService'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var HomePage = React.createClass({
+var TermsPage = React.createClass({
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('nav.home'))}
+                    title={UTILS.buildPageTitle('Terms of Service')}
                 />
                 <SiteHeader />
-                    <section className="section">
-                        <div className="container">
-                        </div>
-                    </section>
+                <section className="section">
+                    <div className="container">
+                        <TermsOfService />
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );
@@ -29,6 +31,6 @@ var HomePage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default HomePage;
+export default TermsPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

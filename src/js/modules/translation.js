@@ -53,6 +53,8 @@ const _DEFAULT_LOCALE = 'en-US',
             //copy + marketing 
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
+            // 'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's',
+            // 'copy.termsLink': ' Terms and Conditions.',
             'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             'copy.slideOne': 'Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.',
             'copy.slideTwo': 'Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.',
