@@ -64,11 +64,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
             //image processing stages 
-            'copy.unknownState': 'unknown',
-            'copy.processingState': 'processing',
-            'copy.processedState': 'processed',
-            'copy.servingState': 'serving',
-            'copy.failedState': 'failed'
+            'copy.unknownState': 'Unknown',
+            'copy.processingState': 'Processing',
+            'copy.processedState': 'OK',
+            'copy.servingState': 'OK',
+            'copy.failedState': 'Failed'
         },
         'en-GB': {
             firstName: 'Forename',

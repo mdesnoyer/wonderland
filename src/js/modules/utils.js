@@ -119,11 +119,21 @@ var UNKNOWN_STRING = '?',
 
 var UTILS = {
     VIDEO_STATE: {
-        'unknown': { mapping: 'dark' },
-        'processing': { mapping: 'info' },
-        'processed': { mapping: 'warning' },
-        'serving': { mapping: 'success' },
-        'failed': { mapping: 'danger' },
+        unknown: {
+            mapping: 'dark'
+        },
+        processing: {
+            mapping: 'info'
+        },
+        processed: {
+            mapping: 'success'
+        },
+        serving: {
+            mapping: 'success'
+        },
+        failed: {
+            mapping: 'danger'
+        }
     },
     VIDEO_CHECK_INTERVAL: 10000, // 10s
     VIDEO_PAGE_SIZE: 10,

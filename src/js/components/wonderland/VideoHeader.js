@@ -8,8 +8,10 @@ import T from '../../modules/translation';
 
 var VideoHeader = React.createClass({
     propTypes: {
-        handleToggle: React.PropTypes.func,
-        forceOpen: React.PropTypes.bool
+        handleToggle: React.PropTypes.func.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+        title: React.PropTypes.string,
+        videoId: React.PropTypes.string.isRequired
     },
     handleToggle: function(e) {
         var self = this;
@@ -21,19 +23,20 @@ var VideoHeader = React.createClass({
             toggleButtonContent = self.props.forceOpen ? '\u2191' : '\u2193',
             toggleButton = <a className="button" onClick={self.handleToggle}>{toggleButtonContent}</a>, 
             title = '',
-            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State')
+            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
+            displayTitle = self.props.title || self.props.videoId
         ;
         if (self.props.forceOpen) {
-            title = self.props.displayTitle;
+            title = displayTitle;
         }
         else {
-            title = <a href={self.props.videoLink}>{self.props.displayTitle}</a>;
+            title = <a href={self.props.videoLink}>{displayTitle}</a>;
         }
         return (
             <nav className="navbar is-marginless">
                 <div className="navbar-left">
                     <div className="navbar-item">
-                        <a className={self.props.additionalClass}>
+                        <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
                     </div>
