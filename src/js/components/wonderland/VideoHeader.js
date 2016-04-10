@@ -18,7 +18,7 @@ var VideoHeader = React.createClass({
     },
     render: function() {
         var self = this,
-            toggleButtonContent = self.props.forceOpen ? '\u2191' : '\u2193',
+            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-down"></i> : <i className="fa fa-chevron-up"></i>,
             toggleButton = <a className="button" onClick={self.handleToggle}>{toggleButtonContent}</a>, 
             title = '',
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State')
