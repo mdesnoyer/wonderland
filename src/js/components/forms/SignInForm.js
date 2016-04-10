@@ -28,7 +28,14 @@ var SignInForm = React.createClass({
                 <fieldset>  
                     <legend className="title is-2">{T.get('signIn')}</legend>
                     <p className="control">
-                        <input className="input" type="text" required ref="username" placeholder={T.get('username')} defaultValue={SESSION.rememberedUsername()} />
+                        <input
+                            className="input"
+                            type="email"
+                            required
+                            ref="email"
+                            placeholder={T.get('email')}
+                            defaultValue={SESSION.rememberedEmail()}
+                        />
                     </p>
                     <p className="control">
                         <input className="input" type="password" required ref="password" placeholder={T.get('password')} />
@@ -46,7 +53,7 @@ var SignInForm = React.createClass({
     handleSubmit: function (e) {
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
-            username = self.refs.username.value.trim(),
+            email = self.refs.email.value.trim(),
             password = self.refs.password.value.trim(),
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)}
@@ -56,18 +63,18 @@ var SignInForm = React.createClass({
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
-            TRACKING.sendEvent(self, arguments, username);
+            TRACKING.sendEvent(self, arguments, email);
             AJAX.doPost('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
-                        username: username,
+                        username: email,
                         password: password
                     }
                 })
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
                     if (SESSION.rememberMe(isRememberMe)) {
-                        SESSION.rememberedUsername(username);
+                        SESSION.rememberedEmail(email);
                     }
                     self.setState({
                         isError: false
