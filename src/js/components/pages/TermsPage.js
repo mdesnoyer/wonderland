@@ -15,11 +15,12 @@ var TermsPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Terms of Service')}
+                    title={UTILS.buildPageTitle(T.get('copy.terms.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
-                    <div className="container">
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
+                        <h1 className="title is-2">{T.get('copy.terms.heading')}</h1>
                         <TermsOfService />
                     </div>
                 </section>

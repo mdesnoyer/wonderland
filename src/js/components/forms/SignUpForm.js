@@ -27,8 +27,8 @@ var SignUpForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit}>
                 {messageNeeded}
-                <fieldset>  
-                    <legend className="title is-2">{T.get('signUp')}</legend>
+                <fieldset>
+                    <legend className="subtitle is-5">{T.get('copy.signUp.heading')}</legend>
                     {/* <p className="control is-grouped">
                         <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
                         <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />

@@ -26,7 +26,46 @@ const _DEFAULT_LOCALE = 'en-US',
             confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
             contact: 'Contact',
             rememberMe: 'Remember Me',
-            signOutSuccess: 'You' + String.fromCharCode(39) + 've been signed out.',
+
+            'copy.uploadVideo.title': 'Upload Video',
+            'copy.uploadVideo.heading': 'Upload Video',
+            'copy.uploadVideo.body': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
+
+            'copy.signIn.title': 'Sign In',
+            'copy.signIn.heading': 'Sign In',
+            'copy.signIn.body': 'Sign in using the form below.',
+
+            'copy.signUp.title': 'Sign Up',
+            'copy.signUp.heading': 'Sign Up',
+            'copy.signUp.body': 'Sign up using the form below.',
+
+            'copy.signOut.title': 'Sign Out',
+            'copy.signOut.heading': 'You' + String.fromCharCode(39) + 've been signed out',
+            'copy.signOut.body': 'You' + String.fromCharCode(39) + 've been signed out. Why not Sign In again?',
+
+            'copy.terms.title': 'Terms of Service',
+            'copy.terms.heading': 'Terms of Service',
+
+            'copy.notFound.title': 'Page Not Found (Error 404)',
+            'copy.notFound.heading': 'Page Not Found (Error 404)',
+            'copy.notFound.body': 'We could not find what you were looking for.',
+
+            'copy.forgotPassword.title': 'Forgot Password',
+            'copy.forgotPassword.heading': 'Forgot Password',
+            'copy.forgotPassword.body': 'Please enter your email below to reset your password.',
+
+            'copy.pendingAccount.title': 'Pending Account',
+            'copy.pendingAccount.heading': 'Pending Account',
+            'copy.pendingAccount.body': 'Please check your email for a verification email. If you don' + String.fromCharCode(39) + 't see an email, please check your filters and trash folders.',
+
+            'copy.confirmAccount.title': 'Confirm Account',
+            'copy.confirmAccount.heading': 'Confirm Account',
+            'copy.confirmAccount.body': 'TODO',
+
+            'copy.accountConfirmed.title': 'Account Confirmed',
+            'copy.accountConfirmed.heading': 'Account Confirmed',
+            'copy.accountConfirmed.body': 'TODO',
+
             returnSignIn: 'Return to Sign In',
             //password reset
             'reset.forgot':  'Forgot your password?',

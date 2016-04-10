@@ -27,7 +27,7 @@ var SignInForm = React.createClass({
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
-                    <legend className="title is-2">{T.get('signIn')}</legend>
+                    <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
                     <p className="control">
                         <input
                             className="input"

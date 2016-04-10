@@ -5,6 +5,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -13,13 +14,13 @@ var PendingAccountPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Your Account is Pending')}
+                    title={UTILS.buildPageTitle(T.get('copy.pendingAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
-                    <div className="container">
-                        <h1>Please check your Inbox for a verification email.</h1>
-                        <p>If you don&rsquo;t see an email, please check your Spam or Junk folders</p>
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
+                        <h1 className="title is-2">{T.get('copy.pendingAccount.heading')}</h1>
+                        <p>{T.get('copy.pendingAccount.body')}</p>
                     </div>
                 </section>
                 <SiteFooter />
