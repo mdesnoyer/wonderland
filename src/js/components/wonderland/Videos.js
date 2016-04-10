@@ -6,6 +6,7 @@ import TutorialPanels from './TutorialPanels'
 import VideosResults from './VideosResults';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
+import UploadVideoForm from '../forms/UploadVideoForm';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,18 +40,23 @@ var Videos = React.createClass({
             errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : ''
         ;
         return (
-            <VideosResults
-                videos={self.state.videos}
-                handleNewSearch={self.handleNewSearch}
-                prevPage={self.state.prevPage}
-                nextPage={self.state.nextPage}
-                errorMessage={errorMessage}
-                pageCount={self.state.pageCount}
-                isBusy={self.state.isBusy}
-                referrer={self.state.referrer}
-                videoCountServed={self.state.videoCountServed}
-                videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
-            />
+            <div>
+                <UploadVideoForm
+                    postHook={self.doSearch}
+                />
+                <VideosResults
+                    videos={self.state.videos}
+                    handleNewSearch={self.handleNewSearch}
+                    prevPage={self.state.prevPage}
+                    nextPage={self.state.nextPage}
+                    errorMessage={errorMessage}
+                    pageCount={self.state.pageCount}
+                    isBusy={self.state.isBusy}
+                    referrer={self.state.referrer}
+                    videoCountServed={self.state.videoCountServed}
+                    videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                />
+            </div>
         );
     },
     handleNewSearch: function(bonusSearchUrl, pageAdjustment) {
@@ -75,7 +81,7 @@ var Videos = React.createClass({
         ;
         self.setState({
             isBusy: true,
-            pageCount: self.state.pageCount + pageAdjustment
+            pageCount: pageAdjustment ? (self.state.pageCount + pageAdjustment) : 1
         }, function() {
             AJAX.doGet('videos/search' + self.state.bonusSearchUrl, options)
                 .then(function(json) {

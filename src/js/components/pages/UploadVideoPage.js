@@ -20,7 +20,7 @@ var UploadVideoPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Upload Video')}
+                    title={T.get('copy.uploadVideo.title')}
                 />
                 <SiteHeader />
                 <section className="section columns is-desktop">
@@ -29,7 +29,9 @@ var UploadVideoPage = React.createClass({
                         <div className="content">
                             <p>{T.get('copy.uploadVideo.body')}</p>
                         </div>
-                        <UploadVideoForm />
+                        <UploadVideoForm
+                            shouldRedirect={true}
+                        />
                     </div>
                 </section>
                 <SiteFooter />

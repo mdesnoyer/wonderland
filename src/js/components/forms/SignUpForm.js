@@ -30,18 +30,18 @@ var SignUpForm = React.createClass({
                 <fieldset>
                     <legend className="subtitle is-5">{T.get('copy.signUp.heading')}</legend>
                     {/* <p className="control is-grouped">
-                        <input className="input" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                        <input className="input" type="text" ref="lastName" placeholder={T.get('lastName')} />
+                        <input className="input is-medium" type="text" ref="firstName" placeholder={T.get('firstName')} />
+                        <input className="input is-medium" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p> */}
                     <p className="control">
-                        <input className="input" type="text" ref="company" placeholder={T.get('company')} />                                
+                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />                                
                     </p>
                     <p className="control is-grouped">
-                        <input className="input" type="email" required ref="email" placeholder={T.get('email')} />
+                        <input className="input is-medium" type="email" required ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
-                            className="input" 
+                            className="input is-medium" 
                             type="password" 
                             required
                             ref="passwordInitial"
@@ -49,7 +49,7 @@ var SignUpForm = React.createClass({
                             onChange={this.handlePasswordInitialChange} 
                         />
                         <input 
-                            className="input" 
+                            className="input is-medium" 
                             type="password" 
                             required
                             ref="passwordConfirm" 
@@ -58,10 +58,12 @@ var SignUpForm = React.createClass({
                         />
                     </p>
                     {/* <p className="control">
-                        <input className="input" type="text" ref="title" placeholder={T.get('title')} />
+                        <input className="input is-medium" type="text" ref="title" placeholder={T.get('title')} />
                     </p> */}
-                    <p className="is-text-centered">
-                        <button className="button is-primary" type="submit">{T.get('signUp')}</button>
+                    <p className="control">
+                        <p className="is-text-centered">
+                            <button className="button is-medium is-primary" type="submit">{T.get('signUp')}</button>
+                        </p>
                     </p>
                 </fieldset>
             </form>

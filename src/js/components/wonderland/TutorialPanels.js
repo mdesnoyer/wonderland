@@ -22,9 +22,6 @@ var TutorialPanels = React.createClass({
                         return <TutorialPanel key={idx} icon={panel} direction={panels[panel]}/>
                     }.bind(this))}
                 </div>
-                <section className="section">
-                    <UploadVideoForm />
-                </section>
             </div>
         );
     }

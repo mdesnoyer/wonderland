@@ -23,7 +23,7 @@ var CallToAction = React.createClass({
         var self = this;
         return (
             <div className="control">
-                <a className="button is-primary" onClick={self.handleToggleModal}>{T.get('contact')}</a>
+                <a className="button is-medium is-primary" onClick={self.handleToggleModal}>{T.get('contact')}</a>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
                     <ContactModal />
                 </ModalWrapper>

@@ -52,7 +52,7 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
+            additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-large wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
@@ -78,7 +78,7 @@ var Thumbnail = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
-                    <input className="wonderland-thumbnail__enabled" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
+                    <input className="wonderland-thumbnail__enabled is-medium" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                 </figcaption>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
                     <ImageModal

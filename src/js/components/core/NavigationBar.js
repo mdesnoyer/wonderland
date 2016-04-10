@@ -56,7 +56,7 @@ var NavigationBar = React.createClass({
         var self = this,
             prevDisabled = self.props.isBusy || self.props.prevPage === '' || self.props.pageCount === 1,
             nextDisabled = self.props.isBusy || self.props.nextPage === '' || self.props.videoCountServed < self.props.videoCountRequested,
-            busyClass = 'button is-primary' + (self.props.isBusy ? ' is-loading' : '')
+            busyClass = 'button is-primary is-medium' + (self.props.isBusy ? ' is-loading' : '')
         ;
         return (
             <nav className="navbar">
