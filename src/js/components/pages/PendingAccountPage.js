@@ -13,13 +13,13 @@ var PendingAccountPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Pending Account')}
+                    title={UTILS.buildPageTitle('Your Account is Pending')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1>Please check your email for a verification email.</h1>
-                        <p>If you don't see an email, please check your filters and trash folders</p>
+                        <h1>Please check your Inbox for a verification email.</h1>
+                        <p>If you don&rsquo;t see an email, please check your Spam or Junk folders</p>
                     </div>
                 </section>
                 <SiteFooter />

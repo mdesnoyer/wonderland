@@ -10,8 +10,8 @@ const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
     accountIdKey ='actId',
     rememberMeKey = 'rme',
-    rememberedUsernameKey = 'ru',
-    userKey = 'user'
+    rememberedEmailKey = 'ru',
+    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -46,7 +46,8 @@ var Session = {
                     token: this.state.accessToken
                 }
             });
-        } else {
+        }
+        else {
             ret = new Promise(function (resolve, reject) {
                 resolve();
             });
@@ -72,12 +73,15 @@ var Session = {
             if (userData) {
                 this.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
-            } else if (this.state.user) {
+            }
+            else if (this.state.user) {
                 userData = this.state.user;
-            } else {
+            }
+            else {
                 try {
                     userData = JSON.parse(localStorage.getItem(userKey));
-                } catch (e) {
+                }
+                catch (e) {
                     // TODO: Get user from API based on session
                     return reject(e);
                 }
@@ -89,25 +93,33 @@ var Session = {
     rememberMe: function(bool) {
         if (bool !== undefined) {
             if (bool) {
-                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
-            } else {
-                cookie.remove(rememberMeKey, {path: '/'});
-                cookie.remove(rememberedUsernameKey, {path: '/'});
+                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {
+                    path: '/',
+                    maxAge: COOKIE_MAX_AGE
+                });
             }
-        } else {
+            else {
+                cookie.remove(rememberMeKey, {path: '/'});
+                cookie.remove(rememberedEmailKey, {path: '/'});
+            }
+        }
+        else {
             bool = cookie.load(rememberMeKey) ? true : false;
         }
         return !!bool;
     },
-    // Getter/setter for username stored during login
-    rememberedUsername: function(username) {
-        if (username) {
-            cookie.save(rememberedUsernameKey, username, {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+    // Getter/setter for email stored during login
+    rememberedEmail: function(email) {
+        if (email) {
+            cookie.save(rememberedEmailKey, email, {
+                path: '/',
+                maxAge: COOKIE_MAX_AGE
+            });
         }
         else {
-            username = cookie.load(rememberedUsernameKey);
+            email = cookie.load(rememberedEmailKey);
         }
-        return username;
+        return email;
     }
 };
 

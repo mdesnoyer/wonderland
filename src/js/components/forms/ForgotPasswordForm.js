@@ -31,7 +31,7 @@ var ForgotPasswordForm = React.createClass({
                     <fieldset>  
                         <legend className="title is-2">{T.get('reset.passwordReset')}</legend>
                         <p className="control">
-                            <input className="input" type="text" ref="email" placeholder={T.get('email')} />
+                            <input className="input" type="email" ref="email" placeholder={T.get('email')} />
                         </p>
                         <p className="is-text-centered">
                             <button className="button is-primary" type="submit">{T.get('reset.sendReset')}</button>
