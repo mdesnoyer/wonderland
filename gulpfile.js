@@ -46,6 +46,11 @@ gulp.task('styles', function() {
         .pipe(reload({
             stream: true
         }));
+    gulp.src('./node_modules/font-awesome/css/font-awesome.min.css')
+        .pipe(gulp.dest('./build/css'))
+        .pipe(reload({
+            stream: true
+        }));
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -75,6 +80,11 @@ gulp.task('redirects', function() {
     return gulp.src('./_redirects')
         .pipe(gulp.dest('./build/'));
 });
+
+gulp.task('fonts', function() {
+    return gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest('./build/fonts/'));
+})
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -142,7 +152,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'fonts', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -152,7 +162,7 @@ gulp.task('debug', ['images', 'styles', 'statics', 'config', 'browser-sync'], fu
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'styles', 'fonts', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);

@@ -43,7 +43,7 @@ var Video = React.createClass({
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
-            url: self.props.url
+            url: self.props.url || ''
         }
     },
     componentDidMount: function() {

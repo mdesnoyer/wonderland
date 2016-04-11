@@ -29,9 +29,7 @@ var UploadVideoPage = React.createClass({
                         <div className="content">
                             <p>{T.get('copy.uploadVideo.body')}</p>
                         </div>
-                        <UploadVideoForm
-                            shouldRedirect={true}
-                        />
+                        <UploadVideoForm />
                     </div>
                 </section>
                 <SiteFooter />

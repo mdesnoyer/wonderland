@@ -15,7 +15,7 @@ var UploadVideoForm = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getDefaultProps: function() {
-        postHook: React.PropTypes.func.isRequired
+        postHook: React.PropTypes.func
     },
     getInitialState: function() {
         var self = this;

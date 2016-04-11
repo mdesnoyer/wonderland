@@ -1,4 +1,4 @@
-{
+  {
   "name": "wonderland",
   "version": "0.0.1",
   "private": true,
@@ -31,6 +31,7 @@
     "babel-polyfill": "^6.7.2",
     "bulma": "0.0.16",
     "fnv-plus": "^1.2.12",
+    "font-awesome": "^4.5.0",
     "history": "1.12.5",
     "moment": "^2.12.0",
     "react": "^0.14.7",
