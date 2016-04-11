@@ -60,11 +60,11 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.confirmAccount.title': 'Confirm Account',
             'copy.confirmAccount.heading': 'Confirm Account',
-            'copy.confirmAccount.body': 'TODO',
+            'copy.confirmAccount.body': 'Please wait while we confirm your account.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
-            'copy.accountConfirmed.body': 'TODO',
+            'copy.accountConfirmed.body': 'Your Account is now confirmed. You may now Sign In.',
 
             returnSignIn: 'Return to Sign In',
             //password reset
