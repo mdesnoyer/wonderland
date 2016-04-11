@@ -24,12 +24,9 @@ const _DEFAULT_LOCALE = 'en-US',
             signIn: 'Sign In',
             confirmAccount: 'Confirm Account',
             confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
+
             contact: 'Contact',
             rememberMe: 'Remember Me',
-
-            'copy.uploadVideo.title': 'Upload Video',
-            'copy.uploadVideo.heading': 'Upload Video',
-            'copy.uploadVideo.body': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
 
             'copy.signIn.title': 'Sign In',
             'copy.signIn.heading': 'Sign In',
@@ -42,6 +39,15 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': 'You' + String.fromCharCode(39) + 've been signed out',
             'copy.signOut.body': 'You' + String.fromCharCode(39) + 've been signed out. Why not Sign In again?',
+
+            'copy.videos.title': 'Videos',
+            'copy.videos.heading': 'Videos',
+            'copy.videos.body': 'TODO',
+
+            'copy.uploadVideo.title': 'Upload Video',
+            'copy.uploadVideo.heading': 'Upload Video',
+            'copy.uploadVideo.body': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
+            'copy.uploadVideo.maxLimitHit': 'Sorry, the current limit of %limit has been hit.',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
@@ -92,9 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
             //copy + marketing 
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            // 'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's',
-            // 'copy.termsLink': ' Terms and Conditions.',
-            'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
+            'copy.agreeTerms': 'I agree with Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             'copy.slideOne': 'Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.',
             'copy.slideTwo': 'Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.',
             'copy.slideThree': 'When complete, your thumbnails will appear below. If you don&rsquo;t want to wait, you can exit this page without interrupting the process and come back later to view the results.',
@@ -110,22 +114,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.failedState': 'Failed'
         },
         'en-GB': {
-            firstName: 'Forename',
-            'copy.newsFlashMessage': 'FOGGY DIES SPOILER SPOILER WOLVERINE MARRIES KAREN !!! DAREDEVIL LOSES THE LEASE ON HIS APPARTMENT',
-            'copy.agreeTerms': 'Here is a link <a href="@link">TERMS</a> for you to click.',
-            'app.credit': '@app is proudly written by @name',
-            'app.separator': ' !!! ',
-            'error.notFoundPage': 'It canny be foond!',
         },
         'es-MX': {
-            signUp: 'Regístrate',
-            firstName: 'Nombre de Pila',
-            lastName: 'Apellido',
-            email: 'Correo Electrónico',
-            password: 'Contraseña',
-            confirm: 'Confirmar',
-            title: 'Título',
-            company: 'Empresa' 
         }
     },
     _LOCALE = _getLocale(), 

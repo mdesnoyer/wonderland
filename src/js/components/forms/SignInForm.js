@@ -30,7 +30,7 @@ var SignInForm = React.createClass({
                     <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
                     <p className="control">
                         <input
-                            className="input"
+                            className="input is-medium"
                             type="text"
                             required
                             ref="email"
@@ -39,13 +39,13 @@ var SignInForm = React.createClass({
                         />
                     </p>
                     <p className="control">
-                        <input className="input" type="password" required ref="password" placeholder={T.get('password')} />
+                        <input className="input is-medium" type="password" required ref="password" placeholder={T.get('password')} />
                     </p>
                     <p className="control">
                         <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} /><label htmlFor="isRememberMe">&nbsp;{T.get('rememberMe')}</label>
                     </p>
                     <p className="is-text-centered">
-                        <button className="button is-primary" type="submit">{T.get('signIn')}</button>
+                        <button className="button is-medium is-primary" type="submit">{T.get('signIn')}</button>
                     </p>
                 </fieldset>
             </form>

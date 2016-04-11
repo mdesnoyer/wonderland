@@ -20,11 +20,15 @@ var VideosPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('videos'))}
+                    title={UTILS.buildPageTitle(T.get('copy.videos.title'))}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
+                        <h1 className="title is-2">{T.get('copy.videos.heading')}</h1>
+                        <div className="content">
+                            {T.get('copy.videos.body')}
+                        </div>
                         <Videos />
                     </div>
                 </section>
