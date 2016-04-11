@@ -11,9 +11,6 @@ import SignInForm from '../forms/SignInForm';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountConfirmedPage = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     render: function() {
         return (
             <div>

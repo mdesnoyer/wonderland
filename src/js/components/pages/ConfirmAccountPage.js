@@ -29,11 +29,13 @@ var ConfirmAccountPage = React.createClass({
         AJAX.doPost('accounts/verify', {
             host: CONFIG.AUTH_HOST,
             data: {
-                token: self.props.location.query.token
+                token: self.props.params.token
             }
         }).then(function () {
-            self.render = function () { return false; };
-            self.context.router.push('/signin/?confirmed=true');
+            self.render = function () {
+                return false;
+            };
+            self.context.router.push('/account/confirmed/');
         }, function (err) {
             // TODO - This is ugly and prone to problems; need a better error handling method (global in AJAX.doAPICall?)
             self.handleError(JSON.parse(err.responseText).error.data, false);

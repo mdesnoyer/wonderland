@@ -93,7 +93,8 @@ gulp.task('browser-sync', function() {
         middleware: [historyApiFallback({
             // https://github.com/bripkens/connect-history-api-fallback#rewrites
             rewrites: [{
-                from: /\/video\/.*/, to: '/index.html'
+                from: /\/video\/.*/, to: '/index.html',
+                from: /\/account\/confirm\/.*/, to: '/index.html'
             }]
         })],
         ghostMode: false
