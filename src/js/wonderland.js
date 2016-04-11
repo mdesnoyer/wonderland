@@ -28,6 +28,8 @@ import TermsPage from './components/pages/TermsPage';
 const CONFIG = require('json../../../env/config.json');
 window.CONFIG = CONFIG;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 render((
     <Router history={browserHistory}>
         <Redirect from='/' to='/signin/' />
