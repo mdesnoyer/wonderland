@@ -72,6 +72,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountConfirmed.heading': 'Account Confirmed',
             'copy.accountConfirmed.body': 'Your Account is now confirmed. You may now Sign In.',
 
+            'copy.contact.title': 'Contact',
+            'copy.contact.heading': 'Contact',
+            'copy.contact.body': 'CONTACT BODY TODO',
+
             returnSignIn: 'Return to Sign In',
             //password reset
             'reset.forgot':  'Forgot your password?',
