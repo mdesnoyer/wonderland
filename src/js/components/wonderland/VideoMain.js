@@ -35,7 +35,7 @@ var VideoMain = React.createClass({
                     </div>
                     <div className="column is-2">
                         <div className="box">
-                            <p><a href={self.props.videoLink}><i className="fa fa-link"></i></a> {Math.round(self.props.duration) + 's'} <a href={self.props.url} rel="external"><i className="fa fa-external-link"></i></a></p>
+                            <p><a href={self.props.videoLink}><i className="fa fa-link" aria-hidden="true"></i></a> {Math.round(self.props.duration) + 's'} <a href={self.props.url} rel="external"><i className="fa fa-external-link" aria-hidden="true"></i></a></p>
                         </div>
                     </div>
                 </div>

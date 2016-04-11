@@ -1,21 +1,33 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ThumbBox from '../wonderland/ThumbBox';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageModal = React.createClass({
+    propTypes: {
+        caption: React.PropTypes.string.isRequired,
+        strippedUrl: React.PropTypes.string.isRequired,
+        copyUrl: React.PropTypes.string.isRequired,
+        downloadUrl: React.PropTypes.string.isRequired,
+        handleToggleModal: React.PropTypes.func
+    },
     render: function() {
+        var self = this;
         return (
             <figure className="wonderland-thumbnail">
-                <img className="wonderland-thumbnail__image" src={this.props.src} alt={this.props.caption} title={this.props.caption} />
+                <img
+                    className="wonderland-thumbnail__image"
+                    src={self.props.strippedUrl}
+                    alt={self.props.caption}
+                    title={self.props.caption}
+                />
                 <figcaption className="wonderland-thumbnail__caption">
-                    <p className="control">
-                        <a className="button is-primary is-medium" download={this.props.copySrc} title="Download this Thumbnail" href={this.props.copySrc}>Download</a>
-                    </p>
-                    <p className="control">
-                        <input className="input is-medium" type="text" defaultValue={this.props.copySrc} disabled />
-                    </p>
+                    <ThumbBox
+                        copyUrl={self.props.copyUrl}
+                        downloadUrl={self.props.downloadUrl}
+                    />
                 </figcaption>
             </figure>
         );
