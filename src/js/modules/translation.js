@@ -8,7 +8,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'app.appName': 'Wonderland',
             'app.credit': '@app by @name',
             'app.separator': ' | ',
-            //Common terms 
+            //Common terms
             upload: 'Upload',
             videos: 'Videos',
             firstName: 'First Name',
@@ -76,16 +76,21 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.contact.heading': 'Contact',
             'copy.contact.body': 'CONTACT BODY TODO',
 
+            'copy.tutorialPanels.panelOne': 'Find A Video You Would Like to Score',
+            'copy.tutorialPanels.panelTwo': 'Copy & Paste URL into the Upload Bar ',
+            'copy.tutorialPanels.panelThree': 'Click on the Upload Button',
+            'copy.tutorialPanels.panelFour': 'Watch the Results',
+
             returnSignIn: 'Return to Sign In',
             //password reset
             'reset.forgot':  'Forgot your password?',
             'reset.passwordReset': 'Password Reset',
             'reset.sendReset': 'Send Reset Instructions',
             'reset.message': 'Please Check your Email for Reset Instructions',
-            //upload page 
+            //upload page
             'upload.addVideoUrl': 'Add Video URL',
             'upload.optionalTitle': 'Optional Title',
-            //navigation bar 
+            //navigation bar
             'nav.home': 'Home',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
@@ -99,7 +104,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
             'error.notFoundPage': 'Page Not Found (Error 404)',
             'error.unableToSignIn': 'Unable to Sign In',
-            //copy + marketing 
+            //copy + marketing
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'I agree with Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
@@ -110,7 +115,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.newsFlashMessage': 'Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon.',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
-            //image processing stages 
+            //image processing stages
             'copy.unknownState': 'Unknown',
             'copy.processingState': 'Processing',
             'copy.processedState': 'OK',
@@ -122,7 +127,7 @@ const _DEFAULT_LOCALE = 'en-US',
         'es-MX': {
         }
     },
-    _LOCALE = _getLocale(), 
+    _LOCALE = _getLocale(),
     _DICTIONARY = _getTranslations(),
     _UNKNOWN_STRING = '[UNKNOWN]'
 ;
@@ -145,7 +150,7 @@ function _getTranslations() {
 
 let T = {
     get: function(key, placeholders) {
-        if (_DICTIONARY[key]) { 
+        if (_DICTIONARY[key]) {
             if (placeholders) {
                 var new_str = _DICTIONARY[key];
                 for (var key in placeholders) {
@@ -153,7 +158,7 @@ let T = {
                         continue;
                     }
                     new_str = new_str.replace(key, placeholders[key]);
-                } 
+                }
                 return new_str;
             }
             return _DICTIONARY[key]
