@@ -22,11 +22,9 @@ var VideoHeader = React.createClass({
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-down"></i> : <i className="fa fa-chevron-up"></i>,
             toggleButton = <a className="button" onClick={self.handleToggle}>{toggleButtonContent}</a>, 
-            title = '',
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             displayTitle = self.props.title || self.props.videoId
         ;
-        title = self.props.displayTitle;
         return (
             <nav className="wonderland-video__header navbar is-marginless" onClick={self.handleToggle}>
                 <div className="navbar-left">
@@ -36,7 +34,7 @@ var VideoHeader = React.createClass({
                         </a>
                     </div>
                     <div className="navbar-item">
-                        <h2 className="title is-5" title={self.props.videoId}>{title}</h2>
+                        <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
                     </div>
                 </div>
                 <div className="navbar-right">

@@ -42,7 +42,7 @@ var Video = React.createClass({
             isBusy: false,
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
-            duration: self.props.duration,
+            duration: self.props.duration || 0,
             url: self.props.url
         }
     },

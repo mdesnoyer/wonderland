@@ -31,7 +31,7 @@ var SignInForm = React.createClass({
                     <p className="control">
                         <input
                             className="input"
-                            type="email"
+                            type="text"
                             required
                             ref="email"
                             placeholder={T.get('email')}
