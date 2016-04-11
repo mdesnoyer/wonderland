@@ -23,26 +23,10 @@ Dependencies
 Optional
 * Install Babel Syntax Highlighter (for Sublime Text or equivalent)
 
-## Build
-
-- `gulp debug` runs `./gulpfile.js` which should kick off all the required tasks start a server at [http://localhost:3000/](http://localhost:3000/) - this is what you use locally
-- `gulp live` is what is used for servers that are not being used to debug, i.e. live servers
-- The web code lives in `./src/` and is built to `./build/`
-
-## Environment
-
-- Default environment is "dev"
-- ` --env=prod` may be added to the build command (ex: `gulp debug --env=prod`) in order to use the Production servers
-- Other environments may also be used. To add an environment (or view available one):
--- Environment configs are stored in .../env
--- File name format is "config.json.<env name>"
--- `... --env=<env name>` can then be used to run the new environment config
--- "config.json" is the current running environment (NOTE: config.json is not in source control)
-
 ## Github
 
 - `https://github.com/neon-lab/wonderland`
-- Branches are `development`, `staging` and `production`, these point to their respective sites (these all run `gulp live`)
+- Branches are `development`, `staging` and `production`, these point to their respective sites, see BUILD.md for more details.
 
 ## Development Process
 
@@ -62,36 +46,11 @@ git branch -d branchname
 git push origin --delete branchname
 ```
 
-## Release Process
-
-- Periodically, we will push (merge) `development` into `staging` and release for testing.
-- We will push (merge) `development` into `production` and release.
-
 ## DNS
 
 - [DNSimple](https://dnsimple.com)
 - ops@neon-lab.com
 - !~E5>hs${<xLp+\`
-
-## Hosting
-
-Sites are:
-
-| Domain | Actual |
-| --- | --- |
-| `development-app.neon-lab.com` | `wonderland-development.netlify.com` |
-| `staging-app.neon-lab.com` | `wonderland-staging.netlify.com` |
-| `app.neon-lab.com` | `wonderland-production.netlify.com` |
-
-Please ask if you require access (temporary password to access sites is `kneewrong`)
-
-### Netlify
-
-- [Netlify](https://netlify.com)
-
-## SSL
-
-- Provided by Netlify and [Let's Encrypt](https://letsencrypt.org/)
 
 ## API
 
