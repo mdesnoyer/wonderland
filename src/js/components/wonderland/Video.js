@@ -73,7 +73,6 @@ var Video = React.createClass({
         }
         if (self.state.status === 200) {
             var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
-                displayTitle = self.state.title || self.state.videoId,
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -84,7 +83,7 @@ var Video = React.createClass({
                         handleToggle={self.handleToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
-                        displayTitle={displayTitle}
+                        title={self.state.title}
                         videoLink={videoLink}
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
