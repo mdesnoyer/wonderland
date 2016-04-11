@@ -26,14 +26,9 @@ var VideoHeader = React.createClass({
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             displayTitle = self.props.title || self.props.videoId
         ;
-        if (self.props.forceOpen) {
-            title = displayTitle;
-        }
-        else {
-            title = <a href={self.props.videoLink}>{displayTitle}</a>;
-        }
+        title = self.props.displayTitle;
         return (
-            <nav className="navbar is-marginless">
+            <nav className="wonderland-video__header navbar is-marginless" onClick={self.handleToggle}>
                 <div className="navbar-left">
                     <div className="navbar-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>

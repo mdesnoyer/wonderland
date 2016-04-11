@@ -2,6 +2,11 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import {Link} from 'react-router';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+const CONFIG = require('json../../../env/config.json');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -13,6 +18,8 @@ var SiteFooter = React.createClass({
                     <div className="container">
                         <div className="content is-text-centered">
                             <p>{T.get('copy.copyright', {'@name': T.get('app.companyFullName')})}</p>
+                            <p><Link activeClassName="active" to="/terms/">{T.get('nav.terms')}</Link> | <Link activeClassName="active" to="/contact/">{T.get('nav.contact')}</Link></p>
+                            <p>{CONFIG.LABEL}</p>
                         </div>
                     </div>
                 </footer>
