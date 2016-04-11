@@ -7,6 +7,7 @@ import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import Slide from './Slide';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,16 +22,10 @@ var Thumbnails = React.createClass({
         var self = this;
         if (self.props.videoState === 'processing') {
             return (
-                <div className="wonderland-slides">
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideOne')}
-                    </div>
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideTwo')}
-                    </div>
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideThree')}
-                    </div>
+                <div className="wonderland-slides column container is-10 is-offset-2 is-fluid">
+                    <Slide slideContent={T.get('copy.slideOne')} icon="check-circle"/>
+                    <Slide slideContent={T.get('copy.slideTwo')} icon="clock-o"/>
+                    <Slide slideContent={T.get('copy.slideThree')} icon="sign-out"/>
                 </div>
             );
         }
