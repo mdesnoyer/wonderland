@@ -45,13 +45,16 @@ var ConfirmAccountPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Confirm Account')}
+                    title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
-                    <div className="container">
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
                         {messageNeeded}
-                        TODO - ConfirmAccountPage
+                        <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
+                        <div className="content">
+                            <p>{T.get('copy.confirmAccount.body')}</p>
+                        </div>
                     </div>
                 </section>
                 <SiteFooter />

@@ -42,10 +42,7 @@ var UploadVideoForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit} >
                 <fieldset>
-                    <legend className="title is-2">{T.get('upload')}</legend>
-                    <p className="control">
-                        ({T.get('copy.processingTime')})
-                    </p>
+                    <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')}</legend>
                     <p className="control is-grouped">
                         <input required className={inputClassName} type="url" ref="url"  onChange={this.handleChangeUrl} value={this.state.url} placeholder={T.get('upload.addVideoUrl')} />
                         <button className={buttonClassName}>Upload</button>
