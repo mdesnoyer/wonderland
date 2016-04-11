@@ -43,16 +43,17 @@ var Thumbnails = React.createClass({
                     {
                         sortedThumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
-                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score);
-                                var strippedUrl = UTILS.stripProtocol(thumbnail.url);
-                                console.log(strippedUrl)
+                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
+                                    strippedUrl = UTILS.stripProtocol(thumbnail.url)
+                                ;
                                 return (
                                     <div className="column is-half-mobile is-third-tablet is-third-desktop" key={thumbnail.thumbnail_id}>
                                         <Thumbnail
                                             index={i}
                                             videoStateMapping={self.props.videoStateMapping}
                                             isEnabled={thumbnail.enabled}
-                                            url={strippedUrl}
+                                            strippedUrl={strippedUrl}
+                                            url={thumbnail.url}
                                             rawNeonScore={thumbnail.neon_score}
                                             cookedNeonScore={neonScoreData.neonScore}
                                             thumbnailId={thumbnail.thumbnail_id}

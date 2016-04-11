@@ -15,11 +15,12 @@ var Thumbnail = React.createClass({
         isEnabled: React.PropTypes.bool.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
-        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
+        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
+        strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
     },
     getInitialState: function () {
@@ -40,7 +41,6 @@ var Thumbnail = React.createClass({
             bufferImage.onload = function() {
                 var _self = this; // img
                 thumbnailImage.setAttribute('src', _self.src);
-                console.log('Lazy Loaded ' + _self.src);
             };
             bufferImage.src = thumbnailImage.getAttribute('data-src');
         }
@@ -55,8 +55,8 @@ var Thumbnail = React.createClass({
             additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
-            src = (self.props.forceOpen ? self.props.url : '/img/clear.gif'),
-            dataSrc = (self.props.forceOpen ? '' : self.props.url)
+            src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
+            dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl)
         ;
         return (
             <figure
@@ -81,7 +81,11 @@ var Thumbnail = React.createClass({
                     <input className="wonderland-thumbnail__enabled" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                 </figcaption>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
-                    <ImageModal src={self.props.url} caption={caption} />
+                    <ImageModal
+                        src={self.props.strippedUrl}
+                        copySrc={self.props.url}
+                        caption={caption}
+                    />
                 </ModalWrapper>
             </figure>
         );
