@@ -115,7 +115,9 @@ var SignUpForm = React.createClass({
         else {
             userDataObject = {
                 email: this.refs.email.value.trim(),
-                password: this.refs.passwordInitial.value.trim()
+                admin_user_username: this.refs.email.value.trim(),
+                admin_user_password: this.refs.passwordInitial.value.trim(),
+                customer_name: this.refs.company.value.trim()
             };
             TRACKING.sendEvent(this, arguments, userDataObject.email);
             AJAX.doPost('accounts', {
