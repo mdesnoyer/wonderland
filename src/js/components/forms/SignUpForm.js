@@ -17,8 +17,8 @@ var SignUpForm = React.createClass({
     },
     getInitialState: function() {
         return {
-            password: '',
-            confirm: '',
+            passwordInitial: '',
+            passwordConfirm: '',
             isError: false,
             isAgreementChecked: false
         }
@@ -86,12 +86,12 @@ var SignUpForm = React.createClass({
     },
     handlePasswordInitialChange: function (event) {
         this.setState({
-            password: event.target.value
+            passwordInitial: event.target.value
         });
     },
     handlePasswordConfirmChange: function (event) {
         this.setState({
-            confirm: event.target.value
+            passwordConfirm: event.target.value
         });
     },
     handleAgreementChange: function(e) {
@@ -103,8 +103,8 @@ var SignUpForm = React.createClass({
         var self = this,
             userDataObject,
             errorList = [
-                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
-                {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
+                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.passwordInitial)},
+                {message: T.get('error.passwordMatchInvalid'), check: (self.state.passwordInitial === self.state.passwordConfirm)}
             ]
         ;
         e.preventDefault();
@@ -114,9 +114,7 @@ var SignUpForm = React.createClass({
         else {
             userDataObject = {
                 email: this.refs.email.value.trim(),
-                admin_user_username: this.refs.email.value.trim(),
-                admin_user_password: this.refs.passwordInitial.value.trim(),
-                customer_name: this.refs.company.value.trim()
+                password: this.refs.passwordInitial.value.trim()
             };
             TRACKING.sendEvent(this, arguments, userDataObject.email);
             AJAX.doPost('accounts', {

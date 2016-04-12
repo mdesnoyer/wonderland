@@ -79,6 +79,7 @@ var SignInForm = React.createClass({
                     }
                 })
                 .then(function (res) {
+                    var self = this;
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
@@ -89,6 +90,7 @@ var SignInForm = React.createClass({
                     self.context.router.push('/dashboard/');
                 })
                 .catch(function (err) {
+                    var self = this;
                     E.checkForError(err.statusText, false);
                     self.setState({
                         isError: true

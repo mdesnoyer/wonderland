@@ -192,9 +192,6 @@ var UTILS = {
         var re = /(?=.*\d)(?=.*\W).{8}/
         return re.test(password);
     },
-    isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
-    },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');

@@ -24,11 +24,12 @@ var Session = {
         user: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
-        this.state = {
+        var self = this;
+        self.state = {
             accessToken: accessToken,
             refreshToken: refreshToken,
             accountId: accountId,
-            user: user || this.state.user
+            user: user || self.state.user
         };
         cookie.save(accessTokenKey, accessToken, { path: '/' });
         cookie.save(refreshTokenKey, refreshToken, { path: '/' });
@@ -38,12 +39,14 @@ var Session = {
         }
     },
     end: function() {
-        var ret;
-        if (this.state.accessToken) {
+        var self = this,
+            ret
+        ;
+        if (self.state.accessToken) {
             ret = AJAX.doPost('logout', {
                 host: CONFIG.AUTH_HOST,
                 data: {
-                    token: this.state.accessToken
+                    token: self.state.accessToken
                 }
             });
         }
@@ -52,10 +55,10 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, { path: '/' });
-        cookie.remove(refreshTokenKey, { path: '/' });
-        cookie.remove(accountIdKey, { path: '/' });
-        this.state = {
+        cookie.remove(accessTokenKey, {path: '/'});
+        cookie.remove(refreshTokenKey, {path: '/'});
+        cookie.remove(accountIdKey, {path: '/'});
+        self.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
@@ -65,17 +68,19 @@ var Session = {
     },
     // Returns current state of the session
     active: function() {
-        return !!this.state.accessToken;
+        var self = this;
+        return !!self.state.accessToken;
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function (userData) {
         return new Promise(function (resolve, reject) {
+            var self = this;
             if (userData) {
-                this.state.user = userData;
+                self.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
             }
-            else if (this.state.user) {
-                userData = this.state.user;
+            else if (self.state.user) {
+                userData = self.state.user;
             }
             else {
                 try {
