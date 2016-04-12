@@ -7,6 +7,7 @@ import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import ModalWrapper from '../core/ModalWrapper';
 import Message from '../wonderland/Message';
+import TutorialPanels from '../wonderland/TutorialPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,19 +27,28 @@ var UploadVideoForm = React.createClass({
             isAgreementChecked: false,
             url: '',
             isModalActive: false,
-            currentVideoCount: self.props.currentVideoCount,
+            // currentVideoCount: self.props.currentVideoCount,
             maxVideoCount: self.props.maxVideoCount,
-            currentVideoCount: 9, // TODO
+            //left at zero to demonstrate that it works
+            currentVideoCount: 0, // TODO
             maxVideoCount: 10 // TODO
         };
     },
     render: function() {
-        var self = this;
+        var self = this,
+            tutorialComponent,
+            panels = {
+                'youtube-play': T.get('copy.tutorialPanels.panelOne'),
+                'files-o': T.get('copy.tutorialPanels.panelTwo'),
+                'upload': T.get('copy.tutorialPanels.panelThree'),
+                'eye': T.get('copy.tutorialPanels.panelFour')
+            }
+        ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             return (
                 <Message header={T.get('copy.uploadVideo.heading')} body={T.get('copy.uploadVideo.maxLimitHit', {
                     '%limit': self.state.maxVideoCount
-                })} flavour="danger" /> 
+                })} flavour="danger" />
             );
         }
         else {
@@ -57,28 +67,32 @@ var UploadVideoForm = React.createClass({
                     inputClassName = 'input is-medium'
                 ;
             }
+            tutorialComponent = self.state.currentVideoCount === 0 ? <TutorialPanels panels={panels}/> : '';
             return (
-                <form onSubmit={self.handleSubmit}>
-                    <fieldset>
-                        <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')}</legend>
-                        <p className="control is-grouped">
-                            <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('upload.addVideoUrl')} />
-                            <button className={buttonClassName}>Upload</button>
-                        </p>
-                        <p className="control">
-                            <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
-                        </p>
-                        <div className="control">
-                            <label className="checkbox is-medium" onChange={self.handleChangeAgreement} checked={self.state.isAgreementChecked}>
-                                <input type="checkbox" />
-                                <span dangerouslySetInnerHTML={{__html: copyTerms}} />
-                            </label>
-                        </div>
-                    </fieldset>
-                </form>
+                <div>
+                    {tutorialComponent}
+                    <form onSubmit={self.handleSubmit}>
+                        <fieldset>
+                            <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')}</legend>
+                            <p className="control is-grouped">
+                                <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('upload.addVideoUrl')} />
+                                <button className={buttonClassName}>Upload</button>
+                            </p>
+                            <p className="control">
+                                <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
+                            </p>
+                            <div className="control">
+                                <label className="checkbox is-medium" onChange={self.handleChangeAgreement} checked={self.state.isAgreementChecked}>
+                                    <input type="checkbox" />
+                                    <span dangerouslySetInnerHTML={{__html: copyTerms}} />
+                                </label>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             );
         }
-        
+
     },
     handleChangeUrl: function(e) {
         this.setState({
