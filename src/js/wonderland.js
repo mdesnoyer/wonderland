@@ -37,7 +37,7 @@ render((
         <Redirect from='/dashboard/' to='/videos/' />
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
-        <Route path="/account/confirm/:token/" component={ConfirmAccountPage} />
+        <Route path="/account/confirm" component={ConfirmAccountPage} />
         <Route path="/account/pending/" component={PendingAccountPage} />
         <Route path="/account/confirmed/" component={AccountConfirmedPage} />
         <Route path="/forgot/" component={ForgotPasswordPage} />

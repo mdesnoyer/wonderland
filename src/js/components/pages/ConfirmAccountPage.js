@@ -22,14 +22,15 @@ var ConfirmAccountPage = React.createClass({
         }  
     },
     handleError: function (errorMessage) {
-        this.state.errorMessageArray.push(errorMessage);
+        var self = this;
+        self.state.errorMessageArray.push(errorMessage);
     },
     componentWillMount: function() {
         var self = this;
         AJAX.doPost('accounts/verify', {
             host: CONFIG.AUTH_HOST,
             data: {
-                token: self.props.params.token
+                token: self.props.location.query.token
             }
         }).then(function () {
             self.render = function () {
@@ -43,7 +44,9 @@ var ConfirmAccountPage = React.createClass({
         });
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={this.state.errorMessageArray} flavour="danger" />  : '';
+        var self = this,
+            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" />  : ''
+        ;
         return (
             <div>
                 <Helmet
