@@ -24,7 +24,6 @@ var UploadVideoForm = React.createClass({
             accessToken: '',
             refreshToken: '',
             mode: 'silent', // silent/loading/error
-            isAgreementChecked: false,
             url: '',
             isModalActive: false,
             // currentVideoCount: self.props.currentVideoCount,
@@ -52,13 +51,12 @@ var UploadVideoForm = React.createClass({
             );
         }
         else {
-            var copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'});
             if (self.state.mode === 'loading') {
                 var buttonClassName = 'button is-primary is-medium is-disabled is-loading',
                     inputClassName = 'input is-medium is-disabled'
                 ;
             }
-            else if ((!self.state.isAgreementChecked || !self.state.url) && (self.state.mode === 'silent')) {
+            else if (!self.state.url && self.state.mode === 'silent') {
                 var buttonClassName = 'button is-medium is-primary is-disabled',
                     inputClassName = 'input is-medium'
             }
@@ -81,12 +79,6 @@ var UploadVideoForm = React.createClass({
                             <p className="control">
                                 <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
                             </p>
-                            <div className="control">
-                                <label className="checkbox is-medium" onChange={self.handleChangeAgreement} checked={self.state.isAgreementChecked}>
-                                    <input type="checkbox" />
-                                    <span dangerouslySetInnerHTML={{__html: copyTerms}} />
-                                </label>
-                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -97,11 +89,6 @@ var UploadVideoForm = React.createClass({
     handleChangeUrl: function(e) {
         this.setState({
             url: e.target.value
-        });
-    },
-    handleChangeAgreement: function(e) {
-        this.setState({
-            isAgreementChecked: !this.state.isAgreementChecked
         });
     },
     handleSubmit: function (e) {

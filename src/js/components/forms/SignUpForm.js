@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import TRACKING from '../../modules/tracking';
@@ -9,7 +9,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
     contextTypes: {
@@ -19,50 +19,67 @@ var SignUpForm = React.createClass({
         return {
             password: '',
             confirm: '',
-            isError: false
-        }  
+            isError: false,
+            isAgreementChecked: false
+        }
     },
     render: function() {
-        var messageNeeded = this.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '';
+        var self = this,
+            buttonClassName,
+            messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '',
+            copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'})
+         ;
+        if (!self.state.isAgreementChecked) {
+             buttonClassName = 'button is-medium is-primary is-disabled';
+        }
+        else {
+             buttonClassName = 'button is-medium is-primary';
+        }
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>
                     <legend className="subtitle is-5">{T.get('copy.signUp.heading')}</legend>
                     {/* <p className="control is-grouped">
                         <input className="input is-medium" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" placeholder={T.get('lastName')} />
+                        <input className={input is-medium} type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p> */}
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />                                
+                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input is-medium" type="email" required ref="email" placeholder={T.get('email')} />
+                        <input className="input is-medium" required type="email" ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input
-                            className="input is-medium" 
-                            type="password" 
+                            className="input is-medium"
+                            type="password"
                             required
                             ref="passwordInitial"
                             placeholder={T.get('password')}
-                            onChange={this.handlePasswordInitialChange} 
+                            onChange={self.handlePasswordInitialChange}
                         />
-                        <input 
-                            className="input is-medium" 
-                            type="password" 
+                        <input
+                            className="input is-medium"
+                            type="password"
                             required
-                            ref="passwordConfirm" 
+                            ref="passwordConfirm"
                             placeholder={T.get('confirm')}
-                            onChange={this.handlePasswordConfirmChange}
+                            onChange={self.handlePasswordConfirmChange}
                         />
                     </p>
                     {/* <p className="control">
                         <input className="input is-medium" type="text" ref="title" placeholder={T.get('title')} />
                     </p> */}
                     <p className="control">
+                        <label className="checkbox is-medium" >
+                            <input type="checkbox" required onChange={self.handleChangeAgreement} checked={self.state.isAgreementChecked}/>
+                            <span dangerouslySetInnerHTML={{__html: copyTerms}} />
+                        </label>
+                    </p>
+                    <p className="control">
                         <p className="is-text-centered">
-                            <button className="button is-medium is-primary" type="submit">{T.get('signUp')}</button>
+                            <button className={buttonClassName} type="submit">{T.get('signUp')}</button>
                         </p>
                     </p>
                 </fieldset>
@@ -77,6 +94,11 @@ var SignUpForm = React.createClass({
     handlePasswordConfirmChange: function (event) {
         this.setState({
             confirm: event.target.value
+        });
+    },
+    handleChangeAgreement: function(e) {
+        this.setState({
+            isAgreementChecked: !this.state.isAgreementChecked
         });
     },
     handleSubmit: function (e) {
@@ -117,7 +139,7 @@ var SignUpForm = React.createClass({
                         });
                 })
                 .catch(function (err) {
-                    // To be used later 
+                    // To be used later
                     // self.handleError(err.responseText, false);
                     E.checkForError(T.get('copy.accountCreationTempError'), false)
                     self.setState({isError: true});
@@ -127,9 +149,9 @@ var SignUpForm = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SignUpForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
