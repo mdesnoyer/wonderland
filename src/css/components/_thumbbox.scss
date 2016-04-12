@@ -33,6 +33,7 @@ $transition: all 0.3333s;
 
  .wonderland-thumbbox__tool {
     width: 100%;
+    cursor: pointer;
     transition: $transition;
     color: rgba(#fff, 0.7777);
     &:hover {
