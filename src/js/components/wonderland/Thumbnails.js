@@ -22,7 +22,7 @@ var Thumbnails = React.createClass({
         var self = this;
         if (self.props.videoState === 'processing') {
             return (
-                <div className="wonderland-slides column container is-10 is-offset-2 is-fluid">
+                <div className="wonderland-slides container">
                     <Slide slideContent={T.get('copy.slideOne')} icon="check-circle"/>
                     <Slide slideContent={T.get('copy.slideTwo')} icon="clock-o"/>
                     <Slide slideContent={T.get('copy.slideThree')} icon="sign-out"/>
