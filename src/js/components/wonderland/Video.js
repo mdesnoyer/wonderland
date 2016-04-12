@@ -90,6 +90,7 @@ var Video = React.createClass({
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
+                        thumbnails={self.state.thumbnails}
                     />
                     <VideoMain
                         forceOpen={self.state.forceOpen}

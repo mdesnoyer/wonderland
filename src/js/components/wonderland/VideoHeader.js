@@ -2,6 +2,7 @@
 
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import Xylophone from '../core/Xylophone';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -11,7 +12,8 @@ var VideoHeader = React.createClass({
         handleToggle: React.PropTypes.func.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
         title: React.PropTypes.string,
-        videoId: React.PropTypes.string.isRequired
+        videoId: React.PropTypes.string.isRequired,
+        thumbnails: React.PropTypes.array.isRequired
     },
     handleToggle: function(e) {
         var self = this;
@@ -40,6 +42,11 @@ var VideoHeader = React.createClass({
                 <div className="navbar-right">
                     <div className="navbar-item">
                         <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
+                    </div>
+                    <div className="navbar-item">
+                        <Xylophone
+                            thumbnails={self.props.thumbnails}
+                        />
                     </div>
                     <div className="navbar-item">
                         {toggleButton}
