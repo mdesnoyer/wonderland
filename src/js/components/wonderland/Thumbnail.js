@@ -7,6 +7,7 @@ import React from 'react';
 import AJAX from '../../modules/ajax';
 import ModalWrapper from '../core/ModalWrapper';
 import ImageModal from '../core/ImageModal';
+import ThumbBox from '../wonderland/ThumbBox';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -82,15 +83,18 @@ var Thumbnail = React.createClass({
                     <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
                     <input title="Enable/Disable this Thumbnail" className="wonderland-thumbnail__enabled is-medium" onChange={self.handleEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                     <span onClick={self.handleEnabledChange} className="wonderland-thumbnail__indicator"><i className={'fa ' + indicator}></i></span>
-                    <aside className="wonderland-thumbnail__thumbbox">
-                        <button onClick={self.handleToggleModal}>THUMBBOX</button>
-                    </aside>
+                    <ThumbBox
+                        copyUrl={self.props.url}
+                        downloadUrl={self.props.url}
+                        handleToggleModal={self.handleToggleModal}
+                    />
                 </figcaption>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
                     <ImageModal
-                        src={self.props.strippedUrl}
-                        copySrc={self.props.url}
                         caption={caption}
+                        strippedUrl={self.props.strippedUrl}
+                        copyUrl={self.props.url}
+                        downloadUrl={self.props.url}
                     />
                 </ModalWrapper>
             </figure>

@@ -3,11 +3,12 @@
 .wonderland-thumbnail {
     position: relative;
     cursor: pointer;
+    border-radius: 0.5em;
+    overflow: hidden;
 }
 
 .wonderland-thumbnail__image {
     display: block;
-    border-radius: 0.5em;
     width: 100%;
     height: auto;
     transition: all 1s;
@@ -29,13 +30,6 @@
     right: 3%;
     background-color: silver;
     transition: all 1s;
-}
-
-.wonderland-thumbnail__thumbbox {
-    position: absolute;
-    bottom: 4%;
-    left: 3%;
-    cursor: pointer;
 }
 
 .wonderland-thumbnail__indicator {
