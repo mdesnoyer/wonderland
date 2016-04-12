@@ -129,7 +129,44 @@ var SignUpForm = React.createClass({
                     self.setState({isError: true});
                 })
             ;
-        }
+            e.preventDefault();
+            if (!E.checkForErrors(errorList)) {
+                self.setState({
+                    isError: true
+                });
+            }
+            else {
+                userDataObject = {
+                    email: this.refs.email.value.trim(),
+                    password: this.refs.passwordInitial.value.trim()
+                };
+                TRACKING.sendEvent(this, arguments, userDataObject.email);
+                AJAX.doPost('accounts', {
+                        host: AJAX.AUTH_HOST,
+                        data: userDataObject
+                    })
+                    .then(function (account) {
+                        return AJAX.doPost('authenticate', {
+                                host: AJAX.AUTH_HOST,
+                                data: {
+                                    username: userDataObject.email,
+                                    password: userDataObject.password
+                                }
+                            })
+                            .then(function (res) {
+                                SESSION.set(res.access_token, res.refresh_token, account.account_id);
+                                self.context.router.push('/upload/video/');
+                            });
+                    })
+                    .catch(function (err) {
+                        E.checkForError(T.get('copy.accountCreationTempError') + ' ' + err, false)
+                        self.setState({
+                            isError: true
+                        });
+                    })
+                ;
+            }
+        });
     }
 });
 
