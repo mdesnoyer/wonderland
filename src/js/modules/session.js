@@ -24,12 +24,11 @@ var Session = {
         user: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
-        var self = this;
-        self.state = {
+        this.state = {
             accessToken: accessToken,
             refreshToken: refreshToken,
             accountId: accountId,
-            user: user || self.state.user
+            user: user || this.state.user
         };
         cookie.save(accessTokenKey, accessToken, { path: '/' });
         cookie.save(refreshTokenKey, refreshToken, { path: '/' });
@@ -39,14 +38,12 @@ var Session = {
         }
     },
     end: function() {
-        var self = this,
-            ret
-        ;
-        if (self.state.accessToken) {
+        var ret;
+        if (this.state.accessToken) {
             ret = AJAX.doPost('logout', {
                 host: CONFIG.AUTH_HOST,
                 data: {
-                    token: self.state.accessToken
+                    token: this.state.accessToken
                 }
             });
         }
@@ -58,7 +55,7 @@ var Session = {
         cookie.remove(accessTokenKey, {path: '/'});
         cookie.remove(refreshTokenKey, {path: '/'});
         cookie.remove(accountIdKey, {path: '/'});
-        self.state = {
+        this.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
@@ -68,19 +65,17 @@ var Session = {
     },
     // Returns current state of the session
     active: function() {
-        var self = this;
-        return !!self.state.accessToken;
+        return !!this.state.accessToken;
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function (userData) {
         return new Promise(function (resolve, reject) {
-            var self = this;
             if (userData) {
-                self.state.user = userData;
+                this.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
             }
-            else if (self.state.user) {
-                userData = self.state.user;
+            else if (this.state.user) {
+                userData = this.state.user;
             }
             else {
                 try {
