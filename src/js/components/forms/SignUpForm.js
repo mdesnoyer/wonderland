@@ -107,9 +107,10 @@ var SignUpForm = React.createClass({
                 {message: T.get('error.passwordMatchInvalid'), check: (self.state.passwordInitial === self.state.passwordConfirm)}
             ]
         ;
-        e.preventDefault();
         if (!E.checkForErrors(errorList)) {
-                self.setState({isError: true});
+            self.setState({
+                isError: true
+            });
         }
         else {
             userDataObject = {
@@ -125,37 +126,13 @@ var SignUpForm = React.createClass({
                     self.context.router.push('/account/pending/');
                 })
                 .catch(function (err) {
-                    E.checkForError(T.get('copy.accountCreationTempError'), false)
-                    self.setState({isError: true});
+                    E.checkForError(T.get('copy.accountCreationTempError') + ' ' + err, false)
+                    self.setState({
+                        isError: true
+                    });
                 })
             ;
-            if (!E.checkForErrors(errorList)) {
-                self.setState({
-                    isError: true
-                });
-            }
-            else {
-                userDataObject = {
-                    email: this.refs.email.value.trim(),
-                    password: this.refs.passwordInitial.value.trim()
-                };
-                TRACKING.sendEvent(this, arguments, userDataObject.email);
-                AJAX.doPost('accounts', {
-                        host: AJAX.AUTH_HOST,
-                        data: userDataObject
-                    })
-                    .then(function (account) {
-                        self.context.router.push('/account/pending/');
-                    })
-                    .catch(function (err) {
-                        E.checkForError(T.get('copy.accountCreationTempError') + ' ' + err, false)
-                        self.setState({
-                            isError: true
-                        });
-                    })
-                ;
-            }
-        });
+        }
     }
 });
 
