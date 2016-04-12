@@ -12,6 +12,10 @@ import SignInForm from '../forms/SignInForm';
 
 var AccountConfirmedPage = React.createClass({
     render: function() {
+        var body = T.get('copy.accountConfirmed.body', {
+                '@link': '/signin/'
+            })
+        ;
         return (
             <div>
                 <Helmet
@@ -22,7 +26,8 @@ var AccountConfirmedPage = React.createClass({
                     <div className="column is-half is-offset-quarter">
                        <h1 className="title is-2">{T.get('copy.accountConfirmed.heading')}</h1>
                         <div className="content">
-                            <p>{T.get('copy.accountConfirmed.body')}</p>
+                            <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
+                            <p><em>{T.get('app.companySig')}</em></p>
                         </div>
                         <SignInForm />
                     </div>

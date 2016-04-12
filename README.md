@@ -19,7 +19,3 @@
 ## Credentials
 
 - Please see `docs/CREDENTIALS.md`
-
-## Copy
-
-- Please see `docs/COPY.md`

@@ -6,7 +6,7 @@ import TutorialPanels from './TutorialPanels'
 import VideosResults from './VideosResults';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
-import UploadVideoForm from '../forms/UploadVideoForm';
+import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,7 +41,7 @@ var Videos = React.createClass({
         ;
         return (
             <div>
-                <UploadVideoForm
+                <AnalyzeVideoForm
                     postHook={self.doSearch}
                 />
                 <VideosResults

@@ -12,7 +12,7 @@ import SignUpPage from './components/pages/SignUpPage';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
-import UploadVideoPage from './components/pages/UploadVideoPage';
+import AnalyzeVideoPage from './components/pages/AnalyzeVideoPage';
 import VideosPage from './components/pages/VideosPage';
 import VideoPage from './components/pages/VideoPage';
 import HomePage from './components/pages/HomePage';
@@ -45,7 +45,7 @@ render((
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
         <Route path="/dashboard/" component= {DashboardPage} />
         <Route path="/signout/" component={SignOutPage} />
-        <Route path="/upload/video/" component={UploadVideoPage} />
+        <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
         <Route path="/terms/" component= {TermsPage} />

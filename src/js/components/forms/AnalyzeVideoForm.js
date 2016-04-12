@@ -11,7 +11,7 @@ import TutorialPanels from '../wonderland/TutorialPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var UploadVideoForm = React.createClass({
+var AnalyzeVideoForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -39,13 +39,13 @@ var UploadVideoForm = React.createClass({
             panels = {
                 'youtube-play': T.get('copy.tutorialPanels.panelOne'),
                 'files-o': T.get('copy.tutorialPanels.panelTwo'),
-                'upload': T.get('copy.tutorialPanels.panelThree'),
+                'analyze': T.get('copy.tutorialPanels.panelThree'),
                 'eye': T.get('copy.tutorialPanels.panelFour')
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             return (
-                <Message header={T.get('copy.uploadVideo.heading')} body={T.get('copy.uploadVideo.maxLimitHit', {
+                <Message header={T.get('copy.analyzeVideo.heading')} body={T.get('copy.analyzeVideo.maxLimitHit', {
                     '%limit': self.state.maxVideoCount
                 })} flavour="danger" />
             );
@@ -71,13 +71,13 @@ var UploadVideoForm = React.createClass({
                     {tutorialComponent}
                     <form onSubmit={self.handleSubmit}>
                         <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')}</legend>
+                            <legend className="subtitle is-5">{T.get('copy.analyzeVideo.heading')}</legend>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('upload.addVideoUrl')} />
-                                <button className={buttonClassName}>Upload</button>
+                                <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('analyze.addVideoUrl')} />
+                                <button className={buttonClassName}>Analyze</button>
                             </p>
                             <p className="control">
-                                <input className={inputClassName} type="text" ref="title" placeholder={T.get('upload.optionalTitle')} />
+                                <input className={inputClassName} type="text" ref="title" placeholder={T.get('analyze.optionalTitle')} />
                             </p>
                         </fieldset>
                     </form>
@@ -95,9 +95,9 @@ var UploadVideoForm = React.createClass({
         var url = this.refs.url.value.trim();
         e.preventDefault();
         TRACKING.sendEvent(this, arguments, url);
-        this.uploadVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
+        this.analyzeVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
     },
-    uploadVideo: function (url, title) {
+    analyzeVideo: function (url, title) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -131,6 +131,6 @@ var UploadVideoForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UploadVideoForm;
+export default AnalyzeVideoForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

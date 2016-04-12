@@ -135,6 +135,8 @@ var UTILS = {
             mapping: 'danger'
         }
     },
+    CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
+    CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
     VIDEO_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
@@ -182,7 +184,7 @@ var UTILS = {
     buildPageTitle: function(title) {
         return title + T.get('app.separator') + T.get('app.credit', {
             '@app': T.get('app.appName'),
-            '@name': T.get('app.companyName')
+            '@name': T.get('app.companyShortName')
         });
     },
     isValidPassword: function(password) {

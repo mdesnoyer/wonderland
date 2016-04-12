@@ -27,18 +27,18 @@ var SiteNavigation = React.createClass({
             items = {
                 cta: <CallToAction />,
                 dashboard: <Link activeClassName="active" to="/dashboard/">Dashboard</Link>,
-                uploadVideo: <Link activeClassName="active" to="/upload/video/">{T.get('nav.upload')}</Link>,
+                analyzeVideo: <Link activeClassName="active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link activeClassName="active" to="/videos/">{T.get('nav.videos')}</Link>,
                 avatar: <img className="image is-24x24 wonderland-avatar" src="/img/alice.jpg" alt="Signed in as Alice" title="Logged in as Alice" />,
                 signUp: <Link activeClassName="active" to="/signup/">{T.get('nav.signUp')}</Link>,
-                forgotPassword: <Link activeClassName="active" to="/forgot/">Forgot Password</Link>,
+                forgotPassword: <Link activeClassName="active" to="/account/forgot/">Forgot Password</Link>,
                 signIn: <Link activeClassName="active" to="/signin/">{T.get('nav.signIn')}</Link>,
                 signOut: <Link activeClassName="active" to="/signout/">{T.get('nav.signOut')}</Link>
             },
             constructedNav = []
         ;
         if (self.state.isSignedIn) {
-            constructedNav.push(items.uploadVideo);
+            constructedNav.push(items.analyzeVideo);
             constructedNav.push(items.videos);
             constructedNav.push(items.avatar);
             constructedNav.push(items.signOut);

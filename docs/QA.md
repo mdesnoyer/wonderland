@@ -45,15 +45,15 @@
 1. CheckBox removes them from the liked videos  
 1. Translation transforms string/placeholder on the page
 
-## Upload Form: 
+## Analyze Form: 
 1. Inputs: 
   * URL ( checking for validation + proper submit functionality)
-1. Upload Button
+1. Analyze Button
 1. CheckBox disable Button
 1. Processing Button
 1. Submit properly create an account with Ajax call
 1. Do errors come back from the AJAX call
-1. Google Analytics Upload Event Working?
+1. Google Analytics Analyze Event Working?
 1. Terms and conditions trigger T&C page route?
 1. Translation transforms string/placeholder on the page
 
