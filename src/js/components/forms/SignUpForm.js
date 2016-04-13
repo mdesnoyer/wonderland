@@ -45,7 +45,7 @@ var SignUpForm = React.createClass({
                         <input className={input is-medium} type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p> */}
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
+                        <input required className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input is-medium" required type="email" ref="email" placeholder={T.get('email')} />

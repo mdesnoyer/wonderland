@@ -40,11 +40,17 @@ var AJAX = {
                 _options.contentType = 'application/json';
             }
             _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
+            console.log(_options);
+            console.log(_options.url);
+            console.log(_options.data);
             reqwest(_options)
                 .then(function (res) {
                     resolve(res);
                 })
                 .catch(function (err) {
+                    console.log(_options.host);
+                    console.log(err.status);
+                    console.log(self.Session.state.refreshToken);
                     var retryUrl = '';
                     if (_options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
                         retryUrl = CONFIG.AUTH_HOST + 'refresh_token?token=' + self.Session.state.refreshToken;
@@ -55,10 +61,12 @@ var AJAX = {
                             type: 'json'
                         })
                             .then(function (res) {
+                                console.log(4);
                                 self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
                                 fin(resolve, reject);
                             })
                             .catch(function (err) {
+                                console.log(5);
                                 self.Session.end();
                                 reject(err);
                             });
@@ -72,10 +80,12 @@ var AJAX = {
 
         return new Promise(function (resolve, reject) {
             var authUrl = '',
-                err;
+                err
+            ;
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
                 fin(resolve, reject);
-            } else {
+            }
+            else {
                 err = new Error('Unauthorized');
                 err.status = 401;
                 reject(err);
