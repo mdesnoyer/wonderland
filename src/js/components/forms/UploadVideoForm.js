@@ -33,6 +33,24 @@ var UploadVideoForm = React.createClass({
             maxVideoCount: 10 // TODO
         };
     },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+        AJAX.doGet('limits', {
+            host: CONFIG.API_HOST
+        })
+            .then(function(json) {
+                debugger;
+            })
+            .catch(function(err) {
+                debugger;
+            })
+        ;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
     render: function() {
         var self = this,
             tutorialComponent,
@@ -71,7 +89,7 @@ var UploadVideoForm = React.createClass({
                     {tutorialComponent}
                     <form onSubmit={self.handleSubmit}>
                         <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')}</legend>
+                            <legend className="subtitle is-5">{T.get('copy.uploadVideo.heading')} (X of Y)</legend>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('upload.addVideoUrl')} />
                                 <button className={buttonClassName}>Upload</button>
