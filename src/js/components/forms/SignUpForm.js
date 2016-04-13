@@ -17,8 +17,8 @@ var SignUpForm = React.createClass({
     },
     getInitialState: function() {
         return {
-            password: '',
-            confirm: '',
+            passwordInitial: '',
+            passwordConfirm: '',
             isError: false,
             isAgreementChecked: false
         }
@@ -45,7 +45,7 @@ var SignUpForm = React.createClass({
                         <input className={input is-medium} type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p> */}
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
+                        <input required className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input is-medium" required type="email" ref="email" placeholder={T.get('email')} />
@@ -86,12 +86,12 @@ var SignUpForm = React.createClass({
     },
     handlePasswordInitialChange: function (event) {
         this.setState({
-            password: event.target.value
+            passwordInitial: event.target.value
         });
     },
     handlePasswordConfirmChange: function (event) {
         this.setState({
-            confirm: event.target.value
+            passwordConfirm: event.target.value
         });
     },
     handleAgreementChange: function(e) {
@@ -103,13 +103,14 @@ var SignUpForm = React.createClass({
         var self = this,
             userDataObject,
             errorList = [
-                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
-                {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
+                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.passwordInitial)},
+                {message: T.get('error.passwordMatchInvalid'), check: (self.state.passwordInitial === self.state.passwordConfirm)}
             ]
         ;
-        e.preventDefault();
         if (!E.checkForErrors(errorList)) {
-                self.setState({isError: true});
+            self.setState({
+                isError: true
+            });
         }
         else {
             userDataObject = {
@@ -127,8 +128,10 @@ var SignUpForm = React.createClass({
                     self.context.router.push('/account/pending/');
                 })
                 .catch(function (err) {
-                    E.checkForError(T.get('copy.accountCreationTempError'), false)
-                    self.setState({isError: true});
+                    E.checkForError(T.get('copy.accountCreationTempError') + ' ' + err, false)
+                    self.setState({
+                        isError: true
+                    });
                 })
             ;
         }

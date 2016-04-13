@@ -52,9 +52,9 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, { path: '/' });
-        cookie.remove(refreshTokenKey, { path: '/' });
-        cookie.remove(accountIdKey, { path: '/' });
+        cookie.remove(accessTokenKey, {path: '/'});
+        cookie.remove(refreshTokenKey, {path: '/'});
+        cookie.remove(accountIdKey, {path: '/'});
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,

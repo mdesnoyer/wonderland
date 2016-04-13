@@ -72,10 +72,12 @@ var AJAX = {
 
         return new Promise(function (resolve, reject) {
             var authUrl = '',
-                err;
+                err
+            ;
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
                 fin(resolve, reject);
-            } else {
+            }
+            else {
                 err = new Error('Unauthorized');
                 err.status = 401;
                 reject(err);
