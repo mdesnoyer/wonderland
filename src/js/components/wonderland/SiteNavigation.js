@@ -46,7 +46,7 @@ var SiteNavigation = React.createClass({
         }
         else {
             constructedNav.push(items.signUp);
-            constructedNav.push(items.forgotPassword);
+            // constructedNav.push(items.forgotPassword);
             constructedNav.push(items.signIn);
             constructedNav.push(items.cta);
         }
