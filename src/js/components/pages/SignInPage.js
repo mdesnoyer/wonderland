@@ -27,7 +27,7 @@ var SignInPage = React.createClass({
                             <p>{T.get('copy.signIn.body')}</p>
                         </div>
                         <SignInForm />
-                        <Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>
+                        {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                     </div>
                 </section>
                 <SiteFooter />

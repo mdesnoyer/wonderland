@@ -40,9 +40,8 @@ render((
         <Route path="/account/confirm" component={ConfirmAccountPage} />
         <Route path="/account/pending/" component={PendingAccountPage} />
         <Route path="/account/confirmed/" component={AccountConfirmedPage} />
-        <Route path="/forgot/" component={ForgotPasswordPage} />
+        <Route path="/account/forgot/" component={ForgotPasswordPage} />
         <Route path="/signin/" component={SignInPage} />
-        <Route path="/signin/forgot/" component={ForgotPasswordPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
         <Route path="/dashboard/" component= {DashboardPage} />
         <Route path="/signout/" component={SignOutPage} />

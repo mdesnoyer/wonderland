@@ -42,7 +42,10 @@ var SignInForm = React.createClass({
                         <input className="input is-medium" type="password" required ref="password" placeholder={T.get('password')} />
                     </p>
                     <p className="control">
-                        <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} /><label htmlFor="isRememberMe">&nbsp;{T.get('rememberMe')}</label>
+                        <label className="checkbox is-medium" htmlFor="isRememberMe">
+                            <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} />
+                            {T.get('rememberMe')}
+                        </label>
                     </p>
                     <p className="is-text-centered">
                         <button className="button is-medium is-primary" type="submit">{T.get('signIn')}</button>
