@@ -26,7 +26,6 @@ const _DEFAULT_LOCALE = 'en-US',
             confirmAccount: 'Confirm Account',
             confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
 
-            contact: 'Contact',
             rememberMe: 'Remember Me',
 
             'copy.signIn.title': 'Sign In',
@@ -81,10 +80,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountConfirmed.heading': 'Account Confirmed',
             'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by <a href="@link">signing in now</a>. You are now ready to make your video thumbnails more clickable!',
 
-            'copy.contact.title': 'Contact',
-            'copy.contact.heading': 'Contact',
-            'copy.contact.body': 'CONTACT BODY TODO',
-
             'copy.tutorialPanels.panelOne': 'Find A Video You Would Like to Score',
             'copy.tutorialPanels.panelTwo': 'Copy & Paste URL into the Analyze Bar ',
             'copy.tutorialPanels.panelThree': 'Click on the Analyze Button',
@@ -100,6 +95,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'analyze.addVideoUrl': 'Add Video URL',
             'analyze.optionalTitle': 'Optional Title',
             //navigation bar
+
             'nav.home': 'Home',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
@@ -108,6 +104,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.videos': 'Videos',
             'nav.analyze': 'Analyze',
             'nav.contact': 'Contact',
+
             //error messages
             'error.passwordFormatInvalid': 'Passwords must be 8 Characters and include one number and one special character.',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
