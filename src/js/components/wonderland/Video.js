@@ -99,7 +99,7 @@ var Video = React.createClass({
                         thumbnails={self.state.thumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
-                        duration={self.state.duration}
+                        duration={self.state.duration || 0}
                         url={self.state.url}
                     />
                 </div>
