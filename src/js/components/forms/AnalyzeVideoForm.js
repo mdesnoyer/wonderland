@@ -74,10 +74,12 @@ var AnalyzeVideoForm = React.createClass({
                             <legend className="subtitle is-5">{T.get('copy.analyzeVideo.heading')}</legend>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('analyze.addVideoUrl')} />
-                                <button className={buttonClassName}>Analyze</button>
                             </p>
                             <p className="control">
                                 <input className={inputClassName} type="text" ref="title" placeholder={T.get('analyze.optionalTitle')} />
+                            </p>
+                            <p className="is-text-centered">
+                                <button className={buttonClassName} type="submit">{T.get('analyze')}</button>
                             </p>
                         </fieldset>
                     </form>
