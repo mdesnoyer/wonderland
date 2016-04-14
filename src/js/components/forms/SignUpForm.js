@@ -40,12 +40,9 @@ var SignUpForm = React.createClass({
                 {messageNeeded}
                 <fieldset>
                     <legend className="subtitle is-5">{T.get('copy.signUp.heading')}</legend>
-                    {/* <p className="control is-grouped">
+                    <p className="control is-grouped">
                         <input className="input is-medium" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                        <input className={input is-medium} type="text" ref="lastName" placeholder={T.get('lastName')} />
-                    </p> */}
-                    <p className="control">
-                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
+                        <input className="input is-medium" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input is-medium" required type="email" ref="email" placeholder={T.get('email')} />
@@ -68,9 +65,12 @@ var SignUpForm = React.createClass({
                             onChange={self.handlePasswordConfirmChange}
                         />
                     </p>
-                    {/* <p className="control">
+                    <p className="control">
+                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
+                    </p>
+                    <p className="control">
                         <input className="input is-medium" type="text" ref="title" placeholder={T.get('title')} />
-                    </p> */}
+                    </p>
                     <p className="control">
                         <label className="checkbox is-medium">
                             <input type="checkbox" required onChange={self.handleAgreementChange} checked={self.state.isAgreementChecked} />
@@ -114,9 +114,12 @@ var SignUpForm = React.createClass({
         else {
             userDataObject = {
                 email: this.refs.email.value.trim(),
+                customer_name: this.refs.company.value.trim(),
                 admin_user_username: this.refs.email.value.trim(),
                 admin_user_password: this.refs.passwordInitial.value.trim(),
-                customer_name: this.refs.company.value.trim()
+                admin_user_first_name: this.refs.firstName.value.trim(),
+                admin_user_last_name: this.refs.lastName.value.trim(),
+                admin_user_title: this.refs.title.value.trim()
             };
             TRACKING.sendEvent(this, arguments, userDataObject.email);
             AJAX.doPost('accounts', {
