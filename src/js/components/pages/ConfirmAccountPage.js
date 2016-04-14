@@ -22,7 +22,8 @@ var ConfirmAccountPage = React.createClass({
         }  
     },
     handleError: function (errorMessage) {
-        this.state.errorMessageArray.push(errorMessage);
+        var self = this;
+        self.state.errorMessageArray.push(errorMessage);
     },
     componentWillMount: function() {
         var self = this;
@@ -32,8 +33,10 @@ var ConfirmAccountPage = React.createClass({
                 token: self.props.location.query.token
             }
         }).then(function () {
-            self.render = function () { return false; };
-            self.context.router.push('/signin/?confirmed=true');
+            self.render = function () {
+                return false;
+            };
+            self.context.router.push('/account/confirmed/');
         }, function (err) {
             // TODO - This is ugly and prone to problems; need a better error handling method (global in AJAX.doAPICall?)
             self.handleError(JSON.parse(err.responseText).error.data, false);
@@ -41,17 +44,22 @@ var ConfirmAccountPage = React.createClass({
         });
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={this.state.errorMessageArray} flavour="danger" />  : '';
+        var self = this,
+            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" />  : ''
+        ;
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle('Confirm Account')}
+                    title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
-                    <div className="container">
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
                         {messageNeeded}
-                        TODO - ConfirmAccountPage
+                        <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
+                        <div className="content">
+                            <p>{T.get('copy.confirmAccount.body')}</p>
+                        </div>
                     </div>
                 </section>
                 <SiteFooter />

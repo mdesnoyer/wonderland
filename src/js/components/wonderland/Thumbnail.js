@@ -7,6 +7,7 @@ import React from 'react';
 import AJAX from '../../modules/ajax';
 import ModalWrapper from '../core/ModalWrapper';
 import ImageModal from '../core/ImageModal';
+import ThumbBox from '../wonderland/ThumbBox';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,11 +16,12 @@ var Thumbnail = React.createClass({
         isEnabled: React.PropTypes.bool.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
-        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
+        rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
+        strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
     },
     getInitialState: function () {
@@ -40,7 +42,6 @@ var Thumbnail = React.createClass({
             bufferImage.onload = function() {
                 var _self = this; // img
                 thumbnailImage.setAttribute('src', _self.src);
-                console.log('Lazy Loaded ' + _self.src);
             };
             bufferImage.src = thumbnailImage.getAttribute('data-src');
         }
@@ -52,19 +53,21 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + self.props.videoStateMapping + ' is-medium wonderland-thumbnail__score',
+            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-large wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
-            src = (self.props.forceOpen ? self.props.url : '/img/clear.gif'),
-            dataSrc = (self.props.forceOpen ? '' : self.props.url)
+            src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
+            dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
+            figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
+            indicator = self.state.isEnabled ? 'fa-check-circle' : 'fa-times-circle'
         ;
         return (
             <figure
-                className="wonderland-thumbnail"
+                className={figureClassName}
                 data-raw-neonscore={self.props.rawNeonScore}
                 data-cooked-neonscore={self.props.cookedNeonScore}
                 data-type={self.props.type}
-                data-enabled={self.props.isEnabled}
+                data-enabled={self.state.isEnabled}
                 data-thumbnail-id={self.props.thumbnailId}
             >
                 <img
@@ -74,14 +77,25 @@ var Thumbnail = React.createClass({
                     data-src={dataSrc}
                     alt={caption}
                     title={caption}
-                    onClick={self.handleToggleModal}
+                    onClick={self.handleEnabledChange}
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
-                    <input className="wonderland-thumbnail__enabled" onChange={self.handleisEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
+                    <input title="Enable/Disable this Thumbnail" className="wonderland-thumbnail__enabled is-medium" onChange={self.handleEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
+                    <span onClick={self.handleEnabledChange} className="wonderland-thumbnail__indicator"><i className={'fa ' + indicator}></i></span>
+                    <ThumbBox
+                        copyUrl={self.props.url}
+                        downloadUrl={self.props.url}
+                        handleToggleModal={self.handleToggleModal}
+                    />
                 </figcaption>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
-                    <ImageModal src={self.props.url} caption={caption} />
+                    <ImageModal
+                        caption={caption}
+                        strippedUrl={self.props.strippedUrl}
+                        copyUrl={self.props.url}
+                        downloadUrl={self.props.url}
+                    />
                 </ModalWrapper>
             </figure>
         );
@@ -92,7 +106,7 @@ var Thumbnail = React.createClass({
             isModalActive: !self.state.isModalActive
         });
     },
-    handleisEnabledChange: function(e) {
+    handleEnabledChange: function(e) {
         var self = this,
             options = {
                 data: {
@@ -102,13 +116,13 @@ var Thumbnail = React.createClass({
             }
         ;
         self.setState({
-            isBusy: true
+            isBusy: true,
+            isEnabled: !self.state.isEnabled
         }, function() {
             AJAX.doPut('thumbnails', options)
                 .then(function(json) {
                     if (self._isMounted) {
                         self.setState({
-                            isEnabled: !self.state.isEnabled,
                             isBusy: false
                         });
                     }
@@ -116,7 +130,8 @@ var Thumbnail = React.createClass({
                 .catch(function(err) {
                     if (self._isMounted) {
                         self.setState({
-                            isBusy: false
+                            isBusy: false,
+                            isEnabled: !self.state.isEnabled // put it back
                         });
                     }
                 });

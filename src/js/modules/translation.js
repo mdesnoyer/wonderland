@@ -8,14 +8,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'app.appName': 'Wonderland',
             'app.credit': '@app by @name',
             'app.separator': ' | ',
-            //Common terms 
+            //Common terms
             upload: 'Upload',
             videos: 'Videos',
             firstName: 'First Name',
             lastName: 'Last Name',
             accountId: 'Account ID',
             email: 'Email',
-            username: 'Username',
             password: 'Password',
             confirm: 'Confirm',
             title: 'Title',
@@ -25,20 +24,75 @@ const _DEFAULT_LOCALE = 'en-US',
             signIn: 'Sign In',
             confirmAccount: 'Confirm Account',
             confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
+
             contact: 'Contact',
             rememberMe: 'Remember Me',
-            signOutSuccess: 'You' + String.fromCharCode(39) + 've been signed out.',
+
+            'copy.signIn.title': 'Sign In',
+            'copy.signIn.heading': 'Sign In',
+            'copy.signIn.body': 'Sign in using the form below.',
+
+            'copy.signUp.title': 'Sign Up',
+            'copy.signUp.heading': 'Sign Up',
+            'copy.signUp.body': 'Sign up using the form below.',
+
+            'copy.signOut.title': 'Sign Out',
+            'copy.signOut.heading': 'You' + String.fromCharCode(39) + 've been signed out',
+            'copy.signOut.body': 'You' + String.fromCharCode(39) + 've been signed out. Why not Sign In again?',
+
+            'copy.videos.title': 'Videos',
+            'copy.videos.heading': 'Videos',
+            'copy.videos.body': 'TODO',
+
+            'copy.uploadVideo.title': 'Upload Video',
+            'copy.uploadVideo.heading': 'Upload Video',
+            'copy.uploadVideo.body': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
+            'copy.uploadVideo.maxLimitHit': 'Sorry, the current limit of %limit has been hit.',
+
+            'copy.terms.title': 'Terms of Service',
+            'copy.terms.heading': 'Terms of Service',
+
+            'copy.notFound.title': 'Page Not Found (Error 404)',
+            'copy.notFound.heading': 'Page Not Found (Error 404)',
+            'copy.notFound.body': 'We could not find what you were looking for.',
+
+            'copy.forgotPassword.title': 'Forgot Password',
+            'copy.forgotPassword.heading': 'Forgot Password',
+            'copy.forgotPassword.body': 'Please enter your email below to reset your password.',
+
+            'copy.pendingAccount.title': 'Pending Account',
+            'copy.pendingAccount.heading': 'Pending Account',
+            'copy.pendingAccount.body': 'Please check your email for a verification email. If you don' + String.fromCharCode(39) + 't see an email, please check your filters and trash folders.',
+
+            'copy.confirmAccount.title': 'Confirm Account',
+            'copy.confirmAccount.heading': 'Confirm Account',
+            'copy.confirmAccount.body': 'Please wait while we confirm your account.',
+
+            'copy.accountConfirmed.title': 'Account Confirmed',
+            'copy.accountConfirmed.heading': 'Account Confirmed',
+            'copy.accountConfirmed.body': 'Your Account is now confirmed. You may now Sign In.',
+
+            'copy.contact.title': 'Contact',
+            'copy.contact.heading': 'Contact',
+            'copy.contact.body': 'CONTACT BODY TODO',
+
+            'copy.tutorialPanels.panelOne': 'Find A Video You Would Like to Score',
+            'copy.tutorialPanels.panelTwo': 'Copy & Paste URL into the Upload Bar ',
+            'copy.tutorialPanels.panelThree': 'Click on the Upload Button',
+            'copy.tutorialPanels.panelFour': 'Watch the Results',
+
             returnSignIn: 'Return to Sign In',
             //password reset
             'reset.forgot':  'Forgot your password?',
             'reset.passwordReset': 'Password Reset',
             'reset.sendReset': 'Send Reset Instructions',
             'reset.message': 'Please Check your Email for Reset Instructions',
-            //upload page 
+            //upload page
             'upload.addVideoUrl': 'Add Video URL',
             'upload.optionalTitle': 'Optional Title',
-            //navigation bar 
+            //navigation bar
             'nav.home': 'Home',
+            'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
             'nav.signOut': 'Sign Out',
@@ -50,12 +104,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
             'error.notFoundPage': 'Page Not Found (Error 404)',
             'error.unableToSignIn': 'Unable to Sign In',
-            //copy + marketing 
+            //copy + marketing
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            // 'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's',
-            // 'copy.termsLink': ' Terms and Conditions.',
-            'copy.agreeTerms': 'I agree with the Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
+            'copy.agreeTerms': 'I agree with Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             'copy.slideOne': 'Thank you for uploading your video to Neon. We are scanning it now to determine the top 5  most "clickable" thumbnails.',
             'copy.slideTwo': 'Please be patient. Scanning takes place in real time, so a 10 minute video will take approximately 10 minutes to scan.',
             'copy.slideThree': 'When complete, your thumbnails will appear below. If you don&rsquo;t want to wait, you can exit this page without interrupting the process and come back later to view the results.',
@@ -63,33 +115,19 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.newsFlashMessage': 'Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon.',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
-            //image processing stages 
-            'copy.unknownState': 'unknown',
-            'copy.processingState': 'processing',
-            'copy.processedState': 'processed',
-            'copy.servingState': 'serving',
-            'copy.failedState': 'failed'
+            //image processing stages
+            'copy.unknownState': 'Unknown',
+            'copy.processingState': 'Processing',
+            'copy.processedState': 'OK',
+            'copy.servingState': 'OK',
+            'copy.failedState': 'Failed'
         },
         'en-GB': {
-            firstName: 'Forename',
-            'copy.newsFlashMessage': 'FOGGY DIES SPOILER SPOILER WOLVERINE MARRIES KAREN !!! DAREDEVIL LOSES THE LEASE ON HIS APPARTMENT',
-            'copy.agreeTerms': 'Here is a link <a href="@link">TERMS</a> for you to click.',
-            'app.credit': '@app is proudly written by @name',
-            'app.separator': ' !!! ',
-            'error.notFoundPage': 'It canny be foond!',
         },
         'es-MX': {
-            signUp: 'Regístrate',
-            firstName: 'Nombre de Pila',
-            lastName: 'Apellido',
-            email: 'Correo Electrónico',
-            password: 'Contraseña',
-            confirm: 'Confirmar',
-            title: 'Título',
-            company: 'Empresa' 
         }
     },
-    _LOCALE = _getLocale(), 
+    _LOCALE = _getLocale(),
     _DICTIONARY = _getTranslations(),
     _UNKNOWN_STRING = '[UNKNOWN]'
 ;
@@ -112,7 +150,7 @@ function _getTranslations() {
 
 let T = {
     get: function(key, placeholders) {
-        if (_DICTIONARY[key]) { 
+        if (_DICTIONARY[key]) {
             if (placeholders) {
                 var new_str = _DICTIONARY[key];
                 for (var key in placeholders) {
@@ -120,7 +158,7 @@ let T = {
                         continue;
                     }
                     new_str = new_str.replace(key, placeholders[key]);
-                } 
+                }
                 return new_str;
             }
             return _DICTIONARY[key]

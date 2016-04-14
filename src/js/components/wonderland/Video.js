@@ -42,6 +42,8 @@ var Video = React.createClass({
             isBusy: false,
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
+            duration: self.props.duration || 0,
+            url: self.props.url || ''
         }
     },
     componentDidMount: function() {
@@ -72,8 +74,7 @@ var Video = React.createClass({
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
-                displayTitle = self.state.title || self.state.videoId,
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-medium is-' + (self.state.isBusy ? 'loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -84,11 +85,12 @@ var Video = React.createClass({
                         handleToggle={self.handleToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
-                        displayTitle={displayTitle}
+                        title={self.state.title}
                         videoLink={videoLink}
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
+                        thumbnails={self.state.thumbnails}
                     />
                     <VideoMain
                         forceOpen={self.state.forceOpen}
@@ -96,6 +98,9 @@ var Video = React.createClass({
                         videoStateMapping={self.state.videoStateMapping}
                         thumbnails={self.state.thumbnails}
                         videoState={self.state.videoState}
+                        videoLink={videoLink}
+                        duration={self.state.duration}
+                        url={self.state.url}
                     />
                 </div>
             );
@@ -139,8 +144,8 @@ var Video = React.createClass({
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
-                            // duration
-                            // url
+                            duration: video.duration,
+                            url: video.url,
                             // publish_date
                             // updated
                             created: video.created,

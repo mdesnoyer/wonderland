@@ -3,14 +3,21 @@
 .wonderland-thumbnail {
     position: relative;
     cursor: pointer;
+    border-radius: 0.5em;
+    overflow: hidden;
 }
 
 .wonderland-thumbnail__image {
     display: block;
-    border-radius: 0.5em;
     width: 100%;
     height: auto;
-    border: 1px solid rgba(#939da7, 0.2);
+    transition: all 1s;
+    .is-wonderland-enabled & {
+    }
+    .is-wonderland-disabled & {
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
+    }
 }
 
 .wonderland-thumbnail__caption {
@@ -21,12 +28,31 @@
     position: absolute;
     bottom: 4%;
     right: 3%;
+    background-color: silver;
+    transition: all 1s;
+}
+
+.wonderland-thumbnail__indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+    color: #000;
+    transition: all 1s;
+    .is-wonderland-enabled & {
+        opacity: 0;
+    }
+    .is-wonderland-disabled & {
+        opacity: 0.2;
+    }
+    .fa {
+        font-size: 8vw; // hack
+    }
 }
 
 .wonderland-thumbnail__enabled {
-    position: absolute;
-    bottom: 4%;
-    left: 3%;
+    display: none;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

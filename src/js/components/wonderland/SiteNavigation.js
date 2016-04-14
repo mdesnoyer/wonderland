@@ -1,11 +1,11 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import CallToAction from '../wonderland/CallToAction';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
     getDefaultProps: function() {
@@ -46,7 +46,7 @@ var SiteNavigation = React.createClass({
         }
         else {
             constructedNav.push(items.signUp);
-            constructedNav.push(items.forgotPassword);
+            // constructedNav.push(items.forgotPassword);
             constructedNav.push(items.signIn);
             constructedNav.push(items.cta);
         }
@@ -60,14 +60,14 @@ var SiteNavigation = React.createClass({
                     })
                 }
             </div>
-        );    
+        );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SiteNavigation;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

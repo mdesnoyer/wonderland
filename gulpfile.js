@@ -46,6 +46,11 @@ gulp.task('styles', function() {
         .pipe(reload({
             stream: true
         }));
+    gulp.src('./node_modules/font-awesome/css/font-awesome.min.css')
+        .pipe(gulp.dest('./build/css'))
+        .pipe(reload({
+            stream: true
+        }));
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -53,6 +58,16 @@ gulp.task('styles', function() {
 gulp.task('statics', function() {
     return gulp.src(staticsSrc)
         .pipe(gulp.dest('./build/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('vendorJs', function() {
+    return gulp.src('./node_modules/clipboard/dist/clipboard.min.js')
+        .pipe(gulp.dest('./build/js/'))
         .pipe(reload({
             stream: true
         }));
@@ -76,6 +91,11 @@ gulp.task('redirects', function() {
         .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('fonts', function() {
+    return gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest('./build/fonts/'));
+})
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 gulp.task('images', function() {
@@ -93,7 +113,8 @@ gulp.task('browser-sync', function() {
         middleware: [historyApiFallback({
             // https://github.com/bripkens/connect-history-api-fallback#rewrites
             rewrites: [{
-                from: /\/video\/.*/, to: '/index.html'
+                from: /\/video\/.*/, to: '/index.html',
+                from: /\/account\/confirm\/.*/, to: '/index.html'
             }]
         })],
         ghostMode: false
@@ -141,7 +162,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'vendorJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -151,7 +172,7 @@ gulp.task('debug', ['images', 'styles', 'statics', 'config', 'browser-sync'], fu
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'styles', 'vendorJs', 'fonts', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);

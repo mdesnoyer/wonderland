@@ -2,14 +2,18 @@
 
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import Xylophone from '../core/Xylophone';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoHeader = React.createClass({
     propTypes: {
-        handleToggle: React.PropTypes.func,
-        forceOpen: React.PropTypes.bool
+        handleToggle: React.PropTypes.func.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+        title: React.PropTypes.string,
+        videoId: React.PropTypes.string.isRequired,
+        thumbnails: React.PropTypes.array.isRequired
     },
     handleToggle: function(e) {
         var self = this;
@@ -18,32 +22,31 @@ var VideoHeader = React.createClass({
     },
     render: function() {
         var self = this,
-            toggleButtonContent = self.props.forceOpen ? '\u2191' : '\u2193',
-            toggleButton = <a className="button" onClick={self.handleToggle}>{toggleButtonContent}</a>, 
-            title = '',
-            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State')
+            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
+            toggleButton = <a className="button is-medium" onClick={self.handleToggle}>{toggleButtonContent}</a>,
+            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
+            displayTitle = self.props.title || self.props.videoId
         ;
-        if (self.props.forceOpen) {
-            title = self.props.displayTitle;
-        }
-        else {
-            title = <a href={self.props.videoLink}>{self.props.displayTitle}</a>;
-        }
         return (
-            <nav className="navbar is-marginless">
+            <nav className="wonderland-video__header navbar is-marginless" onClick={self.handleToggle}>
                 <div className="navbar-left">
                     <div className="navbar-item">
-                        <a className={self.props.additionalClass}>
+                        <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
                     </div>
                     <div className="navbar-item">
-                        <h2 className="title is-5" title={self.props.videoId}>{title}</h2>
+                        <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
                     </div>
                 </div>
                 <div className="navbar-right">
                     <div className="navbar-item">
                         <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
+                    </div>
+                    <div className="navbar-item">
+                        <Xylophone
+                            thumbnails={self.props.thumbnails}
+                        />
                     </div>
                     <div className="navbar-item">
                         {toggleButton}

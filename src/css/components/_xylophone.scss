@@ -1,0 +1,46 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-xylophone {
+    display: block;
+    height: 2em;
+    width: 56px;
+}
+
+.wonderland-xylophone__slot {
+    width: 6px;
+    height: 100%;
+    display: inline-block;
+    margin-right: 2px;
+    background-color: #f5f7fa;
+    position: relative;
+    &.is-dummy {
+        background-color: transparent;
+    }
+}
+
+.wonderland-xylophone__bar {
+    width: 6px;
+    // height: set inline;
+    display: block;
+    vertical-align: bottom;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    &.is-dummy {
+        background-color: transparent;
+    }
+    &.is-good {
+        background-color: #97cd76;
+    }
+    &.is-ok {
+        background-color: #f68b39;
+    }
+    &.is-bad {
+        background-color: #ed6c63;
+    }
+    &.is-disabled {
+        background-color: #aeb1b5;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

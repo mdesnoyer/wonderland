@@ -21,23 +21,34 @@ var SignInForm = React.createClass({
         }  
     },
     render: function() {
-        var messageNeeded = this.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+        var self = this,
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
         return (
-            <form onSubmit={ this.handleSubmit }>
+            <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
-                    <legend className="title is-2">{T.get('signIn')}</legend>
+                    <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
                     <p className="control">
-                        <input className="input" type="text" required ref="username" placeholder={T.get('username')} defaultValue={SESSION.rememberedUsername()} />
+                        <input
+                            className="input is-medium"
+                            type="text"
+                            required
+                            ref="email"
+                            placeholder={T.get('email')}
+                            defaultValue={SESSION.rememberedEmail()}
+                        />
                     </p>
                     <p className="control">
-                        <input className="input" type="password" required ref="password" placeholder={T.get('password')} />
+                        <input className="input is-medium" type="password" required ref="password" placeholder={T.get('password')} />
                     </p>
                     <p className="control">
-                        <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} /><label htmlFor="isRememberMe">&nbsp;{T.get('rememberMe')}</label>
+                        <label className="checkbox is-medium" htmlFor="isRememberMe">
+                            <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} />
+                            {T.get('rememberMe')}
+                        </label>
                     </p>
                     <p className="is-text-centered">
-                        <button className="button is-primary" type="submit">{T.get('signIn')}</button>
+                        <button className="button is-medium is-primary" type="submit">{T.get('signIn')}</button>
                     </p>
                 </fieldset>
             </form>
@@ -46,28 +57,31 @@ var SignInForm = React.createClass({
     handleSubmit: function (e) {
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
-            username = self.refs.username.value.trim(),
+            email = self.refs.email.value.trim(),
             password = self.refs.password.value.trim(),
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)}
             ]
         ;
         e.preventDefault();
+        self.setState({
+            isError: false
+        });
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
-            TRACKING.sendEvent(self, arguments, username);
+            TRACKING.sendEvent(self, arguments, email);
             AJAX.doPost('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
-                        username: username,
+                        username: email,
                         password: password
                     }
                 })
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
                     if (SESSION.rememberMe(isRememberMe)) {
-                        SESSION.rememberedUsername(username);
+                        SESSION.rememberedEmail(email);
                     }
                     self.setState({
                         isError: false

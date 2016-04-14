@@ -42,8 +42,8 @@ var VideosResults = React.createClass({
                                             thumbnails={video.thumbnails}
                                             title={video.title}
                                             error={video.error}
-                                            // duration
-                                            // url
+                                            duration={video.duration}
+                                            url={video.url}
                                             // publish_date
                                             // updated
                                             created={video.created}

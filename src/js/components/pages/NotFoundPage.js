@@ -14,15 +14,17 @@ var NotFoundPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('error.notFoundPage'))}
+                    title={UTILS.buildPageTitle(T.get('copy.notFound.title'))}
                 />
                 <SiteHeader />
-                    <section className="section">
-                        <div className="container">
-                            <h1 className="title">{T.get('error.notFoundPage')}</h1>
-                            TODO - NotFoundPage
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
+                        <h1 className="title is-2">{T.get('copy.notFound.heading')}</h1>
+                        <div className="content">
+                            <p>{T.get('copy.notFound.body')}</p>
                         </div>
-                    </section>
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );

@@ -7,6 +7,7 @@ import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import Slide from './Slide';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,16 +22,10 @@ var Thumbnails = React.createClass({
         var self = this;
         if (self.props.videoState === 'processing') {
             return (
-                <div className="wonderland-slides">
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideOne')}
-                    </div>
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideTwo')}
-                    </div>
-                    <div className="wonderland-slides-slide notification is-info">
-                        {T.get('copy.slideThree')}
-                    </div>
+                <div className="wonderland-slides container">
+                    <Slide slideContent={T.get('copy.slideOne')} icon="check-circle"/>
+                    <Slide slideContent={T.get('copy.slideTwo')} icon="clock-o"/>
+                    <Slide slideContent={T.get('copy.slideThree')} icon="sign-out"/>
                 </div>
             );
         }
@@ -43,16 +38,18 @@ var Thumbnails = React.createClass({
                     {
                         sortedThumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
-                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score);
-                                var strippedUrl = UTILS.stripProtocol(thumbnail.url);
-                                console.log(strippedUrl)
+                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
+                                    strippedUrl = UTILS.stripProtocol(thumbnail.url)
+                                ;
                                 return (
                                     <div className="column is-half-mobile is-third-tablet is-third-desktop" key={thumbnail.thumbnail_id}>
                                         <Thumbnail
                                             index={i}
                                             videoStateMapping={self.props.videoStateMapping}
                                             isEnabled={thumbnail.enabled}
-                                            url={strippedUrl}
+                                            strippedUrl={strippedUrl}
+                                            url={thumbnail.url}
+                                            rawNeonScore={thumbnail.neon_score}
                                             cookedNeonScore={neonScoreData.neonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
                                             type={thumbnail.type}

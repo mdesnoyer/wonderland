@@ -1,7 +1,5 @@
 {
-    "USERNAME": "wonderland_demo",
-    "PASSWORD": "ad9f8g4n3ibna9df",
-    "ACCOUNT_ID": "uhet29evso83qb7ys70hvj3z",
-    "AUTH_HOST": "https://auth.neon-lab.com/api/v2/",
-    "API_HOST": "//services.neon-lab.com/api/v2/"
+    LABEL: 'prod',
+    AUTH_HOST: "https://auth.neon-lab.com/api/v2/",
+    API_HOST: "//services.neon-lab.com/api/v2/"
 }

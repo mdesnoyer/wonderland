@@ -17,10 +17,11 @@ var HomePage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
                 />
                 <SiteHeader />
-                    <section className="section">
-                        <div className="container">
-                        </div>
-                    </section>
+                <section className="section columns is-desktop">
+                    <div className="column is-half is-offset-quarter">
+                        <p>TODO</p>
+                    </div>
+                </section>
                 <SiteFooter />
             </div>
         );
