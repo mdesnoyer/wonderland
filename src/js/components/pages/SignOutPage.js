@@ -19,6 +19,13 @@ var SignOutPage = React.createClass({
             });
     },
     render: function() {
+        var heading = T.get('copy.signOut.heading', { 
+                // '@username': 'TODO'
+            }),
+            body = T.get('copy.signOut.body', {
+                '@link': '/signin/'
+            })
+        ;
         return (
             <div>
                 <Helmet
@@ -27,9 +34,9 @@ var SignOutPage = React.createClass({
                 <SiteHeader />
                 <section className="section columns is-desktop">
                     <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.signOut.heading')}</h1>
+                        <h1 className="title is-2">{heading}</h1>
                         <div className="content">
-                            <p>{T.get('copy.signOut.body')}</p>
+                            <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
                         </div>
                         <SignInForm />
                     </div>

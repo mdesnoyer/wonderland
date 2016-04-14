@@ -23,9 +23,10 @@ var Thumbnails = React.createClass({
         if (self.props.videoState === 'processing') {
             return (
                 <div className="wonderland-slides container">
-                    <Slide slideContent={T.get('copy.slideOne')} icon="check-circle"/>
-                    <Slide slideContent={T.get('copy.slideTwo')} icon="clock-o"/>
-                    <Slide slideContent={T.get('copy.slideThree')} icon="sign-out"/>
+                    <Slide slideContent={T.get('copy.processingSlide.1')} icon="check-circle"/>
+                    <Slide slideContent={T.get('copy.processingSlide.2')} icon="clock-o"/>
+                    <Slide slideContent={T.get('copy.processingSlide.3')} icon="trophy"/>
+                    <Slide slideContent={T.get('copy.processingSlide.4')} icon="picture-o"/>
                 </div>
             );
         }

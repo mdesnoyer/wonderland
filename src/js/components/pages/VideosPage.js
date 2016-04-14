@@ -17,17 +17,22 @@ var VideosPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     render: function() {
+        var heading = T.get('copy.videosPage.heading'),
+            body = T.get('copy.videosPage.body', {
+                // '@username': 'TODO'
+            })
+        ;
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.videos.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.videos.heading')}</h1>
+                        <h1 className="title is-2">{heading}</h1>
                         <div className="content">
-                            {T.get('copy.videos.body')}
+                            {body}
                         </div>
                         <Videos />
                     </div>

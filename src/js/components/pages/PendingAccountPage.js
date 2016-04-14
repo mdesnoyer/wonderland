@@ -11,6 +11,12 @@ import T from '../../modules/translation';
 
 var PendingAccountPage = React.createClass({
     render: function() {
+        var body1 = T.get('copy.pendingAccount.body1'),
+            body2 = T.get('copy.pendingAccount.body2'),
+            body3 = T.get('copy.pendingAccount.body3', {
+                '@link': UTILS.CONTACT_EXTERNAL_URL
+            })
+        ;
         return (
             <div>
                 <Helmet
@@ -20,7 +26,11 @@ var PendingAccountPage = React.createClass({
                 <section className="section columns is-desktop">
                     <div className="column is-half is-offset-quarter">
                         <h1 className="title is-2">{T.get('copy.pendingAccount.heading')}</h1>
-                        <p>{T.get('copy.pendingAccount.body')}</p>
+                        <div className="content">
+                            <p>{body1}</p>
+                            <p>{body2}</p>
+                            <p>{<span dangerouslySetInnerHTML={{__html: body3}} />}</p>
+                        </div>
                     </div>
                 </section>
                 <SiteFooter />
