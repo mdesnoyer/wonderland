@@ -38,16 +38,29 @@
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1;
-    color: #000;
-    transition: all 1s;
+    transition: opacity 1s;
+    &.-foreground {
+        .is-wonderland-enabled & {
+            color: #97cd76;
+        }
+        .is-wonderland-disabled & {
+            color: #ed6c63;
+        }
+    }
+    &.-background {
+        display: none;
+    }
     .is-wonderland-enabled & {
         opacity: 0;
     }
     .is-wonderland-disabled & {
-        opacity: 0.2;
+        opacity: 1;
     }
     .fa {
-        font-size: 8vw; // hack
+        font-size: 6em; // hack
+        .modal & {
+            font-size: 15em; // hack
+        }
     }
 }
 

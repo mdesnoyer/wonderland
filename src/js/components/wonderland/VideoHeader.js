@@ -10,32 +10,27 @@ import UTILS from '../../modules/utils';
 
 var VideoHeader = React.createClass({
     propTypes: {
-        handleToggle: React.PropTypes.func.isRequired,
+        handleVideoOpenToggle: React.PropTypes.func.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
         title: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired
     },
-    handleToggle: function(e) {
-        var self = this;
-        e.preventDefault();
-        self.props.handleToggle();
-    },
     render: function() {
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
-            toggleButton = <a className="button is-medium" onClick={self.handleToggle}>{toggleButtonContent}</a>,
+            toggleButton = <a className="button is-small" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             displayTitle = self.props.title || self.props.videoId,
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless" onClick={self.handleToggle}>
+            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
                 <div className="navbar-left">
                     <div className="navbar-item">
-                        <a className={self.props.additionalClass} title={self.props.videoState}>
+                        <button className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
-                        </a>
+                        </button>
                     </div>
                     <div className="navbar-item">
                         <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
