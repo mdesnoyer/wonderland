@@ -7,17 +7,45 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteBanner = React.createClass({
+    getInitialState: function() {
+        return {
+            displayName: ''
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData.first_name) {
+                        self.setState({
+                            displayName: userData.first_name
+                        });
+                    }
+                    else {
+                        self.setState({
+                            displayName: userData.username
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
+    },
     render: function() {
         var self = this;
         return (
-            <header className="header is-dark wonderland-banner">
+            <header className="is-dark wonderland-banner">
                 <div className="container">
-                    <div className="header-left">
-                        <a className="header-item" href="/" title="Go to the Home page">
-                            <img src="/img/logo-white.png" alt="Neon" title="Neon" />
-                        </a>
-                    </div>
-                    <SiteNavigation containerClass="header-right header-menu" isSignedIn={SESSION.active()} />
+                    <nav className="navbar wonderland-navbar is-fullwidth">
+                        <SiteNavigation side="left" isSignedIn={SESSION.active()} />
+                        <SiteNavigation displayName={self.state.displayName} side="right" isSignedIn={SESSION.active()} />
+                    </nav>
                 </div>
             </header>
         );

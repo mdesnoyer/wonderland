@@ -71,13 +71,14 @@ var Session = {
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function (userData) {
+        var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {
-                this.state.user = userData;
+                self.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
             }
-            else if (this.state.user) {
-                userData = this.state.user;
+            else if (self.state.user) {
+                userData = self.state.user;
             }
             else {
                 try {
