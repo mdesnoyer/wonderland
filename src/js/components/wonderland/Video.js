@@ -70,7 +70,7 @@ var Video = React.createClass({
         }
         if (self.state.status === 404) {
             return (
-                <Message header={self.state.status} body={T.get('error.notFoundPage')} flavour="danger" />
+                <Message header={self.state.status} body="Could not find Video" flavour="danger" />
             );
         }
         if (self.state.status === 200) {
@@ -99,7 +99,7 @@ var Video = React.createClass({
                         thumbnails={self.state.thumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
-                        duration={self.state.duration}
+                        duration={self.state.duration || 0}
                         url={self.state.url}
                     />
                 </div>
