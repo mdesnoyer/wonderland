@@ -18,13 +18,15 @@ var ForgotPasswordPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.forgotPassword.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.forgotPassword.heading')}</h1>
-                        <div className="content">
-                            <p>{T.get('copy.forgotPassword.body')}</p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{T.get('copy.forgotPassword.heading')}</h1>
+                            <div className="content">
+                                <p>{T.get('copy.forgotPassword.body')}</p>
+                            </div>
+                            <ForgotPasswordForm />
                         </div>
-                        <ForgotPasswordForm />
                     </div>
                 </section>
                 <SiteFooter />

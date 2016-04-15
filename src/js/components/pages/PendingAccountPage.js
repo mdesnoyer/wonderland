@@ -23,13 +23,15 @@ var PendingAccountPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.pendingAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.pendingAccount.heading')}</h1>
-                        <div className="content">
-                            <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
-                            <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
-                            <p><span dangerouslySetInnerHTML={{__html: body3}} /></p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{T.get('copy.pendingAccount.heading')}</h1>
+                            <div className="content">
+                                <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
+                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
+                                <p><span dangerouslySetInnerHTML={{__html: body3}} /></p>
+                            </div>
                         </div>
                     </div>
                 </section>

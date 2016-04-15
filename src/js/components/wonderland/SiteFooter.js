@@ -15,7 +15,7 @@ var SiteFooter = React.createClass({
     render: function() {
         return (
             <div>
-                <footer className="footer wonderland-banner">
+                <footer className="footer wonderland-banner wonderland-banner--footer">
                     <div className="container">
                         <div className="content is-text-centered">
                             <p>{T.get('copy.copyright', {'@name': T.get('app.companyLongName')})}</p>

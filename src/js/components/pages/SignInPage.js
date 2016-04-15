@@ -20,14 +20,16 @@ var SignInPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
-                        <div className="content">
-                            <p>{T.get('copy.signIn.body')}</p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
+                            <div className="content">
+                                <p>{T.get('copy.signIn.body')}</p>
+                            </div>
+                            <SignInForm />
+                            {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
-                        <SignInForm />
-                        {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                     </div>
                 </section>
                 <SiteFooter />

@@ -18,10 +18,12 @@ var TermsPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.terms.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.terms.heading')}</h1>
-                        <TermsOfService />
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{T.get('copy.terms.heading')}</h1>
+                            <TermsOfService />
+                        </div>
                     </div>
                 </section>
                 <SiteFooter />

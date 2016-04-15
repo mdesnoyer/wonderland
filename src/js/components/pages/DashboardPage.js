@@ -21,9 +21,11 @@ var DashboardPage = React.createClass({
                     title={UTILS.buildPageTitle('Dashboard')}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        TODO - DashboardPage
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            TODO - DashboardPage
+                        </div>
                     </div>
                 </section>
                 <SiteFooter />
