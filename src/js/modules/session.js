@@ -11,6 +11,7 @@ const accessTokenKey = 'at',
     accountIdKey ='actId',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
+    userKey = 'user_info',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
@@ -55,6 +56,7 @@ var Session = {
         cookie.remove(accessTokenKey, { path: '/' });
         cookie.remove(refreshTokenKey, { path: '/' });
         cookie.remove(accountIdKey, { path: '/' });
+        localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
