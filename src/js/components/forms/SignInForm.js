@@ -22,6 +22,14 @@ var SignInForm = React.createClass({
             this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
     },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
     getInitialState: function() {
         return {
             isError: false
@@ -71,9 +79,11 @@ var SignInForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        self.setState({
-            isError: false
-        });
+        if (self._isMounted) {
+            self.setState({
+                isError: false
+            });
+        }
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
@@ -90,22 +100,28 @@ var SignInForm = React.createClass({
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
-                    self.setState({
-                        isError: false
-                    });
+                    if (self._isMounted) {
+                        self.setState({
+                            isError: false
+                        });
+                    }
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
                     E.checkForError(err.statusText, false);
-                    self.setState({
-                        isError: true
-                    });
+                    if (self._isMounted) {
+                        self.setState({
+                            isError: true
+                        });
+                    }
                 });
         }
         else {
-            self.setState({
-                isError: true
-            });
+            if (self._isMounted) {
+                self.setState({
+                    isError: true
+                });
+            }
         }
     }
 });

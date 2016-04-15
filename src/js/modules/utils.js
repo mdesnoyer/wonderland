@@ -140,6 +140,7 @@ var UTILS = {
             URL: '/dashboard/'
         }
     },
+    NEON_SCORE_ENABLED: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s

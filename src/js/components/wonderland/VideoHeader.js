@@ -4,6 +4,7 @@ import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import Xylophone from '../core/Xylophone';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -25,7 +26,8 @@ var VideoHeader = React.createClass({
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
             toggleButton = <a className="button is-medium" onClick={self.handleToggle}>{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            displayTitle = self.props.title || self.props.videoId
+            displayTitle = self.props.title || self.props.videoId,
+            xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
             <nav className="wonderland-video__header navbar is-marginless" onClick={self.handleToggle}>
@@ -44,9 +46,7 @@ var VideoHeader = React.createClass({
                         <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
                     </div>
                     <div className="navbar-item">
-                        <Xylophone
-                            thumbnails={self.props.thumbnails}
-                        />
+                        {xylophone}
                     </div>
                     <div className="navbar-item">
                         {toggleButton}

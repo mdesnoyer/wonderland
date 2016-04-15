@@ -10,6 +10,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'app.separator': ' | ',
             'app.companySig': '- The Neon Team',
             //Common terms
+            neonScore: 'NeonScore',
             analyze: 'Analyze',
             videos: 'Videos',
             firstName: 'First Name',
