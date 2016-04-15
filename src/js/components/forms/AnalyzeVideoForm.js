@@ -9,6 +9,7 @@ import ModalWrapper from '../core/ModalWrapper';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
 import E from '../../modules/errors';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,10 +48,13 @@ var AnalyzeVideoForm = React.createClass({
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
-            return (
-                <Message header={T.get('copy.analyzeVideo.heading')} body={T.get('copy.analyzeVideo.maxLimitHit', {
+            var body = <span dangerouslySetInnerHTML={{
+                __html: T.get('copy.analyzeVideo.maxLimitHit', {
                     '%limit': self.state.maxVideoCount
-                })} flavour="danger" />
+                })
+            }} />;
+            return (
+                <Message header={T.get('copy.analyzeVideo.heading')} body={body} flavour="danger" />
             );
         }
         else {
@@ -128,14 +132,18 @@ var AnalyzeVideoForm = React.createClass({
         });
     },
     handleSubmit: function (e) {
-        e.preventDefault();
         var self = this,
-            url = self.refs.url.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim()
+            url = this.refs.url.value.trim(),
+            optionalTitle = self.refs.optionalTitle.value.trim() || self.makeTitle()
         ;
-        TRACKING.sendEvent(this, arguments, url);
+        e.preventDefault();
+        TRACKING.sendEvent(self, arguments, url);
         self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
         self.resetForm();
+    },
+    makeTitle: function() {
+        var self = this;
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     analyzeVideo: function (url, optionalTitle) {
         var self = this,

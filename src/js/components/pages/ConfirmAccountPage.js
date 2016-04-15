@@ -57,13 +57,15 @@ var ConfirmAccountPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        {messageNeeded}
-                        <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
-                        <div className="content">
-                            <p>{body1}</p>
-                            <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            {messageNeeded}
+                            <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
+                            <div className="content">
+                                <p>{body1}</p>
+                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
+                            </div>
                         </div>
                     </div>
                 </section>

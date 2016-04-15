@@ -39,7 +39,9 @@ var Thumbnails = React.createClass({
                     {
                         sortedThumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
-                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
+                                var neonScoreData = UTILS.NEON_SCORE_ENABLED ? UTILS.getNeonScoreData(thumbnail.neon_score) : '',
+                                    rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,
+                                    cookedNeonScore = UTILS.NEON_SCORE_ENABLED ? neonScoreData.neonScore : 0,
                                     strippedUrl = UTILS.stripProtocol(thumbnail.url)
                                 ;
                                 return (
@@ -50,8 +52,8 @@ var Thumbnails = React.createClass({
                                             isEnabled={thumbnail.enabled}
                                             strippedUrl={strippedUrl}
                                             url={thumbnail.url}
-                                            rawNeonScore={thumbnail.neon_score}
-                                            cookedNeonScore={neonScoreData.neonScore}
+                                            rawNeonScore={rawNeonScore}
+                                            cookedNeonScore={cookedNeonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}

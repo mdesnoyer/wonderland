@@ -11,6 +11,7 @@ const accessTokenKey = 'at',
     accountIdKey ='actId',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
+    userKey = 'user_info',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
@@ -55,6 +56,7 @@ var Session = {
         cookie.remove(accessTokenKey, { path: '/' });
         cookie.remove(refreshTokenKey, { path: '/' });
         cookie.remove(accountIdKey, { path: '/' });
+        localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
@@ -69,13 +71,14 @@ var Session = {
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function (userData) {
+        var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {
-                this.state.user = userData;
+                self.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
             }
-            else if (this.state.user) {
-                userData = this.state.user;
+            else if (self.state.user) {
+                userData = self.state.user;
             }
             else {
                 try {

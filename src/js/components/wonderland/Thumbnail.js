@@ -8,6 +8,8 @@ import AJAX from '../../modules/ajax';
 import ModalWrapper from '../core/ModalWrapper';
 import ImageModal from '../core/ImageModal';
 import ThumbBox from '../wonderland/ThumbBox';
+import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -59,7 +61,8 @@ var Thumbnail = React.createClass({
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
-            indicator = self.state.isEnabled ? 'fa-check-circle' : 'fa-times-circle'
+            indicator = self.state.isEnabled ? 'fa-check-circle' : 'fa-times-circle',
+            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : ''
         ;
         return (
             <figure
@@ -80,7 +83,7 @@ var Thumbnail = React.createClass({
                     onClick={self.handleEnabledChange}
                 />
                 <figcaption className="wonderland-thumbnail__caption">
-                    <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
+                    {neonScore}
                     <input title="Enable/Disable this Thumbnail" className="wonderland-thumbnail__enabled is-medium" onChange={self.handleEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                     <span onClick={self.handleEnabledChange} className="wonderland-thumbnail__indicator"><i className={'fa ' + indicator}></i></span>
                     <ThumbBox
