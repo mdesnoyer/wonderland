@@ -3,7 +3,6 @@ $max: 4em;
 .wonderland-banner {
     background-color: #939da7;
     color: #fff;
-    height: $max;
     a {
         color: #fff;
         &.active {
@@ -12,6 +11,10 @@ $max: 4em;
             padding: 0.2em;
         }
     }
+}
+
+.wonderland-banner--header {
+    height: $max;
 }
 
 .wonderland-navbar {
