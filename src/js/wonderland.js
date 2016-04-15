@@ -23,6 +23,9 @@ import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 import TermsPage from './components/pages/TermsPage';
 import ContactPage from './components/pages/ContactPage';
+import IntegrationsPage from './components/pages/IntegrationsPage';
+import IntegrationsNewPage from './components/pages/IntegrationsNewPage';
+import IntegrationsBrightcovePage from './components/pages/IntegrationsBrightcovePage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -50,6 +53,9 @@ render((
         <Route path="/video/:videoId/" component= {VideoPage} />
         <Route path="/terms/" component= {TermsPage} />
         <Route path="/contact/" component= {ContactPage} />
+        <Route path="/integrations/" component={IntegrationsPage} />
+        <Route path="/integrations/new" component={IntegrationsNewPage} />
+        <Route path="/integrations/brightcove" component={IntegrationsBrightcovePage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
