@@ -9,6 +9,7 @@ import ModalWrapper from '../core/ModalWrapper';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
 import E from '../../modules/errors';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -133,7 +134,7 @@ var AnalyzeVideoForm = React.createClass({
     handleSubmit: function (e) {
         var self = this,
             url = this.refs.url.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim()
+            optionalTitle = self.refs.optionalTitle.value.trim() || self.makeTitle()
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, url);
@@ -142,7 +143,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     makeTitle: function() {
         var self = this;
-        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + (self.state.currentVideoCount + 1);
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     analyzeVideo: function (url, optionalTitle) {
         var self = this,
@@ -151,7 +152,7 @@ var AnalyzeVideoForm = React.createClass({
                 data: {
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(url),
-                    title: title || self.makeTitle()
+                    title: optionalTitle
                 }
             }
         ;
