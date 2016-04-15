@@ -135,6 +135,11 @@ var UTILS = {
             mapping: 'danger'
         }
     },
+    DRY_NAV: {
+        DASHBOARD: {
+            URL: '/dashboard/'
+        }
+    },
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s

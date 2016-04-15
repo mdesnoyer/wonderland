@@ -15,6 +15,13 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    componentWillMount: function() {
+        if (SESSION.active()) {
+            // Play nice, transport the user to the internal home
+            // page (dashboard)
+            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        }
+    },
     getInitialState: function() {
         return {
             isError: false
@@ -86,7 +93,7 @@ var SignInForm = React.createClass({
                     self.setState({
                         isError: false
                     });
-                    self.context.router.push('/dashboard/');
+                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
                     E.checkForError(err.statusText, false);

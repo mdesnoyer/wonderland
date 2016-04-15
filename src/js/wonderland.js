@@ -7,6 +7,10 @@ import 'babel-polyfill';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+import UTILS from './modules/utils';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // Pages
 import SignUpPage from './components/pages/SignUpPage';
 import SignInPage from './components/pages/SignInPage';
@@ -33,7 +37,7 @@ window.CONFIG = CONFIG;
 render((
     <Router history={browserHistory}>
         <Redirect from='/' to='/signin/' />
-        <Redirect from='/dashboard/' to='/videos/' />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to='/videos/' />
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
         <Route path="/account/confirm" component={ConfirmAccountPage} />
@@ -42,7 +46,7 @@ render((
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
         <Route path="/signin/" component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
-        <Route path="/dashboard/" component= {DashboardPage} />
+        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
         <Route path="/signout/" component={SignOutPage} />
         <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />

@@ -4,6 +4,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import CallToAction from '../wonderland/CallToAction';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,7 +27,7 @@ var SiteNavigation = React.createClass({
         var self = this,
             items = {
                 cta: <CallToAction />,
-                dashboard: <Link activeClassName="active" to="/dashboard/">Dashboard</Link>,
+                dashboard: <Link activeClassName="active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
                 analyzeVideo: <Link activeClassName="active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link activeClassName="active" to="/videos/">{T.get('nav.videos')}</Link>,
                 avatar: <img className="image is-24x24 wonderland-avatar" src="/img/alice.jpg" alt="Signed in as Alice" title="Logged in as Alice" />,
