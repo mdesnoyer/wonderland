@@ -15,18 +15,31 @@ var IntegrationsNewPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    addBrightcove: function () {
+        this.context.router.push('/integrations/brightcove');
+    },
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.integrations.new.title')}
+                    title={T.get('copy.integrations.add.title')}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.integrations.new.heading')}</h1>
+                <section className="section">
+                    <div className="container">
+                        <h1 className="title is-2">{T.get('copy.integrations.add.heading')}</h1>
                         <div className="content">
-                            <p>{T.get('copy.integrations.new.body')}</p>
+                            {T.get('copy.integrations.add.body')}
+                        </div>
+                        <div className="columns">
+                            <div className="card column is-third">
+                                <div className="card-content is-text-centered">
+                                    <img src={T.get('copy.integrations.types.brightcove.img')} />
+                                    <div>
+                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
