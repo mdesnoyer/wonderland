@@ -37,10 +37,10 @@ var AnalyzeVideoForm = React.createClass({
         var self = this,
             tutorialComponent,
             panels = {
-                'youtube-play': T.get('copy.tutorialPanels.panelOne'),
-                'files-o': T.get('copy.tutorialPanels.panelTwo'),
-                'analyze': T.get('copy.tutorialPanels.panelThree'),
-                'eye': T.get('copy.tutorialPanels.panelFour')
+                'youtube-play': T.get('copy.analyzeVideoPanel.panel.1'),
+                'files-o': T.get('copy.analyzeVideoPanel.panel.2'),
+                'upload': T.get('copy.analyzeVideoPanel.panel.3'),
+                'eye': T.get('copy.analyzeVideoPanel.panel.4')
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
