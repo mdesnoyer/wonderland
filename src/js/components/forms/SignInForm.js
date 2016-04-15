@@ -96,7 +96,7 @@ var SignInForm = React.createClass({
                     }
                 })
                 .then(function (res) {
-                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
