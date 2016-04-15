@@ -7,12 +7,16 @@ import 'babel-polyfill';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+import UTILS from './modules/utils';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // Pages
 import SignUpPage from './components/pages/SignUpPage';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
-import UploadVideoPage from './components/pages/UploadVideoPage';
+import AnalyzeVideoPage from './components/pages/AnalyzeVideoPage';
 import VideosPage from './components/pages/VideosPage';
 import VideoPage from './components/pages/VideoPage';
 import HomePage from './components/pages/HomePage';
@@ -22,7 +26,6 @@ import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 import TermsPage from './components/pages/TermsPage';
-import ContactPage from './components/pages/ContactPage';
 import IntegrationsPage from './components/pages/IntegrationsPage';
 import IntegrationsNewPage from './components/pages/IntegrationsNewPage';
 import IntegrationsBrightcovePage from './components/pages/IntegrationsBrightcovePage';
@@ -37,7 +40,7 @@ window.CONFIG = CONFIG;
 render((
     <Router history={browserHistory}>
         <Redirect from='/' to='/signin/' />
-        <Redirect from='/dashboard/' to='/videos/' />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to='/videos/' />
         <Route path="/" component={HomePage} />
         <Route path="/signup/" component={SignUpPage} />
         <Route path="/account/confirm" component={ConfirmAccountPage} />
@@ -46,13 +49,12 @@ render((
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
         <Route path="/signin/" component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
-        <Route path="/dashboard/" component= {DashboardPage} />
+        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
         <Route path="/signout/" component={SignOutPage} />
-        <Route path="/upload/video/" component={UploadVideoPage} />
+        <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
         <Route path="/terms/" component= {TermsPage} />
-        <Route path="/contact/" component= {ContactPage} />
         <Route path="/integrations/" component={IntegrationsPage} />
         <Route path="/integrations/new" component={IntegrationsNewPage} />
         <Route path="/integrations/brightcove" component={IntegrationsBrightcovePage} />

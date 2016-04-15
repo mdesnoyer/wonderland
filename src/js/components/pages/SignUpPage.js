@@ -12,6 +12,9 @@ import T from '../../modules/translation';
 
 var SignUpPage = React.createClass({
     render: function() {
+        var heading = T.get('copy.signUp.heading'),
+            body = T.get('copy.signUp.body')
+        ;
         return (
             <div>
                 <Helmet
@@ -20,9 +23,9 @@ var SignUpPage = React.createClass({
                 <SiteHeader />
                 <section className="section columns is-desktop">
                     <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.signUp.heading')}</h1>
+                        <h1 className="title is-2">{heading}</h1>
                         <div className="content">
-                            <p>{T.get('copy.signUp.body')}</p>
+                            <p>{body}</p>
                         </div>
                         <SignUpForm />
                     </div>
