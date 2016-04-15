@@ -8,6 +8,7 @@ import T from '../../modules/translation';
 import ModalWrapper from '../core/ModalWrapper';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
+import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,6 +26,7 @@ var AnalyzeVideoForm = React.createClass({
             refreshToken: '',
             mode: 'silent', // silent/loading/error
             url: '',
+            optionalTitle: '',
             isModalActive: false,
             // currentVideoCount: self.props.currentVideoCount,
             maxVideoCount: self.props.maxVideoCount,
@@ -35,6 +37,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     render: function() {
         var self = this,
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
             tutorialComponent,
             panels = {
                 'youtube-play': T.get('copy.analyzeVideoPanel.panel.1'),
@@ -70,13 +73,29 @@ var AnalyzeVideoForm = React.createClass({
                 <div>
                     {tutorialComponent}
                     <form onSubmit={self.handleSubmit}>
+                        {messageNeeded}
                         <fieldset>
                             <legend className="subtitle is-5">{T.get('copy.analyzeVideo.heading')}</legend>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="url" ref="url"  onChange={self.handleChangeUrl} value={self.state.url} placeholder={T.get('analyze.addVideoUrl')} />
+                                <input
+                                    required
+                                    className={inputClassName}
+                                    type="url"
+                                    ref="url"
+                                    onChange={self.handleChangeUrl}
+                                    value={self.state.url}
+                                    placeholder={T.get('analyze.addVideoUrl')}
+                                />
                             </p>
                             <p className="control">
-                                <input className={inputClassName} type="text" ref="title" placeholder={T.get('analyze.optionalTitle')} />
+                                <input
+                                    className={inputClassName}
+                                    type="text"
+                                    ref="optionalTitle"
+                                    onChange={self.handleChangeOptionalTitle}
+                                    value={self.state.optionalTitle}
+                                    placeholder={T.get('analyze.optionalTitle')}
+                                />
                             </p>
                             <p className="is-text-centered">
                                 <button className={buttonClassName} type="submit">{T.get('analyze')}</button>
@@ -89,29 +108,51 @@ var AnalyzeVideoForm = React.createClass({
 
     },
     handleChangeUrl: function(e) {
-        this.setState({
+        var self = this;
+        self.setState({
             url: e.target.value
         });
     },
-    handleSubmit: function (e) {
-        var url = this.refs.url.value.trim();
-        e.preventDefault();
-        TRACKING.sendEvent(this, arguments, url);
-        this.analyzeVideo(UTILS.dropboxUrlFilter(url), this.refs.title.value.trim());
+    handleChangeOptionalTitle: function(e) {
+        var self = this;
+        self.setState({
+            optionalTitle: e.target.value
+        });
     },
-    analyzeVideo: function (url, title) {
+    resetForm: function() {
+        var self = this;
+        self.setState({
+            isError: false,
+            url: '',
+            optionalTitle: ''
+        });
+    },
+    handleSubmit: function (e) {
+        e.preventDefault();
+        var self = this,
+            url = self.refs.url.value.trim(),
+            optionalTitle = self.refs.optionalTitle.value.trim()
+        ;
+        TRACKING.sendEvent(this, arguments, url);
+        self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
+        self.resetForm();
+    },
+    analyzeVideo: function (url, optionalTitle) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
                 data: {
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(url),
-                    title: title
+                    title: optionalTitle
                 }
             }
         ;
         AJAX.doPost('videos', options)
             .then(function(json) {
+                self.setState({
+                    isError: false
+                });
                 if (self.props.postHook) {
                     self.props.postHook();
                 }
@@ -120,13 +161,10 @@ var AnalyzeVideoForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                console.error(err.responseText);
-                if (self.props.postHook) {
-                    self.props.postHook();
-                }
-                else {
-                    self.context.router.push('/video/' + videoId + '/');
-                }
+                E.checkForError(err.statusText, false);
+                self.setState({
+                    isError: true
+                });
             });
     }
 });

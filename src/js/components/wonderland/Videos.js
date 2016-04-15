@@ -29,7 +29,7 @@ var Videos = React.createClass({
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
-        self.doSearch(1);  
+        self.doVideoSearch(1, false);
     },
     componentWillUnmount: function() {
         var self = this;
@@ -42,9 +42,10 @@ var Videos = React.createClass({
         return (
             <div>
                 <AnalyzeVideoForm
-                    postHook={self.doSearch}
+                    postHook={self.doVideoSearch}
                 />
                 <VideosResults
+                    forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                     videos={self.state.videos}
                     handleNewSearch={self.handleNewSearch}
                     prevPage={self.state.prevPage}
@@ -67,10 +68,10 @@ var Videos = React.createClass({
         self.setState({
             bonusSearchUrl: '?' + bonusSearchUrl.split('?')[1]
         }, function() {
-            self.doSearch(pageAdjustment);
+            self.doVideoSearch(pageAdjustment, false);
         });
     },
-    doSearch: function(pageAdjustment) {
+    doVideoSearch: function(pageAdjustment, forceOpenFirstOverride) {
         var self = this,
             options = {
                 data: {
@@ -81,6 +82,7 @@ var Videos = React.createClass({
         ;
         self.setState({
             isBusy: true,
+            forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
             pageCount: pageAdjustment ? (self.state.pageCount + pageAdjustment) : 1
         }, function() {
             AJAX.doGet('videos/search' + self.state.bonusSearchUrl, options)
