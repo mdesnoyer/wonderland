@@ -47,10 +47,13 @@ var AnalyzeVideoForm = React.createClass({
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
-            return (
-                <Message header={T.get('copy.analyzeVideo.heading')} body={T.get('copy.analyzeVideo.maxLimitHit', {
+            var body = <span dangerouslySetInnerHTML={{
+                __html: T.get('copy.analyzeVideo.maxLimitHit', {
                     '%limit': self.state.maxVideoCount
-                })} flavour="danger" />
+                })
+            }} />;
+            return (
+                <Message header={T.get('copy.analyzeVideo.heading')} body={body} flavour="danger" />
             );
         }
         else {
@@ -128,14 +131,18 @@ var AnalyzeVideoForm = React.createClass({
         });
     },
     handleSubmit: function (e) {
-        e.preventDefault();
         var self = this,
-            url = self.refs.url.value.trim(),
+            url = this.refs.url.value.trim(),
             optionalTitle = self.refs.optionalTitle.value.trim()
         ;
-        TRACKING.sendEvent(this, arguments, url);
+        e.preventDefault();
+        TRACKING.sendEvent(self, arguments, url);
         self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
         self.resetForm();
+    },
+    makeTitle: function() {
+        var self = this;
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + (self.state.currentVideoCount + 1);
     },
     analyzeVideo: function (url, optionalTitle) {
         var self = this,
@@ -144,7 +151,7 @@ var AnalyzeVideoForm = React.createClass({
                 data: {
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(url),
-                    title: optionalTitle
+                    title: title || self.makeTitle()
                 }
             }
         ;
