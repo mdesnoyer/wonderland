@@ -12,11 +12,11 @@ var Slide = React.createClass({
     render: function() {
         var self = this;  
             return (
-                <div className="wonderland-slides-slide box is-text-centered">
+                <div className="wonderland-slides-slide box is-fullwidth is-text-centered">
                     <p className="icon is-large ">
                         <i className={'fa fa-' + self.props.icon}></i>
                     </p>
-                    <p>{self.props.slideContent}</p>
+                    <p><span dangerouslySetInnerHTML={{__html: self.props.slideContent}} /></p>
                 </div>
             );
     }

@@ -15,13 +15,6 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-        }
-    },
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;

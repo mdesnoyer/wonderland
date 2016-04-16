@@ -17,6 +17,7 @@
 }
 
 .wonderland-slides-slide {
+    min-height: 10em;
     opacity: 0;
     position: absolute;
     &:nth-child(1) {
