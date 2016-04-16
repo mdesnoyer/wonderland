@@ -44,7 +44,7 @@ var AnalyzeVideoForm = React.createClass({
                 'youtube-play': T.get('copy.analyzeVideoPanel.panel.1'),
                 'files-o': T.get('copy.analyzeVideoPanel.panel.2'),
                 'upload': T.get('copy.analyzeVideoPanel.panel.3'),
-                'eye': T.get('copy.analyzeVideoPanel.panel.4')
+                'th-large': T.get('copy.analyzeVideoPanel.panel.4')
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
@@ -102,7 +102,9 @@ var AnalyzeVideoForm = React.createClass({
                                 />
                             </p>
                             <p className="is-text-centered">
-                                <button className={buttonClassName} type="submit">{T.get('analyze')}</button>
+                                <button className={buttonClassName} type="submit">
+                                    <i className="fa fa-eye" aria-hidden="true"></i> {T.get('analyze')}
+                                </button>
                             </p>
                         </fieldset>
                     </form>

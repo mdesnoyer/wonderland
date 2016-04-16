@@ -18,9 +18,9 @@ var VideosResults = React.createClass({
                     {self.props.errorMessage}
                 </caption>
                 <thead>
-                    <tr>
+                    {/*}<tr>
                         <th><SearchBar {...self.props} /></th>
-                    </tr>
+                    </tr>*/}
                 </thead>
                 <tfoot>
                     <tr>
