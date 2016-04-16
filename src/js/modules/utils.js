@@ -138,6 +138,9 @@ var UTILS = {
     DRY_NAV: {
         DASHBOARD: {
             URL: '/dashboard/'
+        },
+        INTEGRATIONS: {
+            URL: '/integrations/'
         }
     },
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',

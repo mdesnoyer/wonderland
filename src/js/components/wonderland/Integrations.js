@@ -90,7 +90,9 @@ var Integrations = React.createClass({
         this.context.router.push('/integrations/' + integration.type + '?id=' + integration.integration_id);
     },
     addNew: function() {
-        this.context.router.push('/integrations/new');
+        // this.context.router.push('/integrations/new');
+        // Temp until there are more types of integrations
+        this.context.router.push('/integrations/brightcove');
     }
 });
 
