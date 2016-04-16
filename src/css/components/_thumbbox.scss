@@ -40,9 +40,10 @@ $transition: all 0.3333s;
         color: #fff;
     }
     .fa {
-        font-size: 0.618em;
+        font-size: 0.618em; // hack
+        vertical-align: baseline;
         .modal & {
-            font-size: 1.618em;
+            font-size: 1.618em; // hack
         }
     }
  }
