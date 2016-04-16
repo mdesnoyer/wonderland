@@ -2,6 +2,7 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
+import AJAX from './ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -9,8 +10,9 @@ const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
     accountIdKey ='actId',
     rememberMeKey = 'rme',
-    rememberedUsernameKey = 'ru',
-    userKey = 'user'
+    rememberedEmailKey = 'ru',
+    userKey = 'user_info',
+    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -37,15 +39,31 @@ var Session = {
         }
     },
     end: function() {
+        var ret;
+        if (this.state.accessToken) {
+            ret = AJAX.doPost('logout', {
+                host: CONFIG.AUTH_HOST,
+                data: {
+                    token: this.state.accessToken
+                }
+            });
+        }
+        else {
+            ret = new Promise(function (resolve, reject) {
+                resolve();
+            });
+        }
         cookie.remove(accessTokenKey, { path: '/' });
         cookie.remove(refreshTokenKey, { path: '/' });
         cookie.remove(accountIdKey, { path: '/' });
+        localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
             user: undefined
         };
+        return ret;
     },
     // Returns current state of the session
     active: function() {
@@ -53,16 +71,20 @@ var Session = {
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function (userData) {
+        var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {
-                this.state.user = userData;
+                self.state.user = userData;
                 localStorage.setItem(userKey, JSON.stringify(userData));
-            } else if (this.state.user) {
-                userData = this.state.user;
-            } else {
+            }
+            else if (self.state.user) {
+                userData = self.state.user;
+            }
+            else {
                 try {
                     userData = JSON.parse(localStorage.getItem(userKey));
-                } catch (e) {
+                }
+                catch (e) {
                     // TODO: Get user from API based on session
                     return reject(e);
                 }
@@ -74,25 +96,33 @@ var Session = {
     rememberMe: function(bool) {
         if (bool !== undefined) {
             if (bool) {
-                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
-            } else {
-                cookie.remove(rememberMeKey, {path: '/'});
-                cookie.remove(rememberedUsernameKey, {path: '/'});
+                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {
+                    path: '/',
+                    maxAge: COOKIE_MAX_AGE
+                });
             }
-        } else {
+            else {
+                cookie.remove(rememberMeKey, {path: '/'});
+                cookie.remove(rememberedEmailKey, {path: '/'});
+            }
+        }
+        else {
             bool = cookie.load(rememberMeKey) ? true : false;
         }
         return !!bool;
     },
-    // Getter/setter for username stored during login
-    rememberedUsername: function(username) {
-        if (username) {
-            cookie.save(rememberedUsernameKey, username, {path: '/', maxAge: 5*365*24*60*60}); // 5yr expiration
+    // Getter/setter for email stored during login
+    rememberedEmail: function(email) {
+        if (email) {
+            cookie.save(rememberedEmailKey, email, {
+                path: '/',
+                maxAge: COOKIE_MAX_AGE
+            });
         }
         else {
-            username = cookie.load(rememberedUsernameKey);
+            email = cookie.load(rememberedEmailKey);
         }
-        return username;
+        return email;
     }
 };
 

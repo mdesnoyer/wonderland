@@ -23,16 +23,10 @@ Dependencies
 Optional
 * Install Babel Syntax Highlighter (for Sublime Text or equivalent)
 
-## Build
-
-- `gulp debug` runs `./gulpfile.js` which should kick off all the required tasks start a server at [http://localhost:3000/](http://localhost:3000/) - this is what you use locally
-- `gulp live` is what is used for servers that are not being used to debug, i.e. live servers
-- The web code lives in `./src/` and is built to `./build/`
-
 ## Github
 
 - `https://github.com/neon-lab/wonderland`
-- Branches are `development` and `production`, these point to their respective sites, see below for site details.
+- Branches are `development`, `staging` and `production`, these point to their respective sites, see BUILD.md for more details.
 
 ## Development Process
 
@@ -52,14 +46,11 @@ git branch -d branchname
 git push origin --delete branchname
 ```
 
-## Release Process
+## DNS
 
-- Periodically, we will push (merge) `development` into `production` and release.
-
-## Hosting
-
-- Sites are `wonderland-development.netlify.com` and `wonderland-production.netlify.com`, please ask if you require access.
-- Temporary password to access sites is `kneewrong`
+- [DNSimple](https://dnsimple.com)
+- ops@neon-lab.com
+- !~E5>hs${<xLp+\`
 
 ## API
 
@@ -67,10 +58,8 @@ git push origin --delete branchname
 
 ## Monitoring
 
-We use Pingdom:
+### Pingdom
 
-- USERNAME: ops@neon-lab.com
-- PASSWORD: Neon-lab1
-- LOGIN URL: https://my.pingdom.com/dashboard
-- UPTIME CHECK URL: https://my.pingdom.com/newchecks/checks
-- SITE NAME: Wonderland Development
+- ops@neon-lab.com
+- Neon-lab1
+- https://my.pingdom.com/dashboard

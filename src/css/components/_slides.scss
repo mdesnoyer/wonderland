@@ -20,13 +20,16 @@
     opacity: 0;
     position: absolute;
     &:nth-child(1) {
-        @include animation(xfade 15s 0s infinite);
+        @include animation(xfade 20s 0s infinite);
     }
     &:nth-child(2) {
-        @include animation(xfade 15s 5s infinite);
+        @include animation(xfade 20s 5s infinite);
     }
     &:nth-child(3) {
-        @include animation(xfade 15s 10s infinite);
+        @include animation(xfade 20s 10s infinite);
+    }
+    &:nth-child(4) {
+        @include animation(xfade 20s 15s infinite);
     }
 }
 

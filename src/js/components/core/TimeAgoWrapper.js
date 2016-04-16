@@ -4,7 +4,6 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import TimeAgo from 'react-timeago';
 import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -12,14 +11,16 @@ import moment from 'moment';
 var TimeAgoWrapper = React.createClass({
     render() {
         if (this.props.date) {
-            var niceTimestamp = moment(this.props.date).format();
+            var time = moment.utc(this.props.date).fromNow(),
+                timestamp = moment(this.props.date).format()
+            ;
             return (
-                <span title={niceTimestamp}><TimeAgo date={this.props.date} /></span>
+                <time dateTime={timestamp}>{time}</time>
             );
         }
         else {
             return (
-                <span>Unknown</span>
+                <time>Unknown</time>
             );
         }
     }

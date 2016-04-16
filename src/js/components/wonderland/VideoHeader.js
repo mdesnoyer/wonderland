@@ -1,49 +1,47 @@
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import Xylophone from '../core/Xylophone';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoHeader = React.createClass({
-    handleToggle: function(e) {
-        e.preventDefault();
-        this.props.handleToggle();
+    propTypes: {
+        handleVideoOpenToggle: React.PropTypes.func.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+        title: React.PropTypes.string,
+        videoId: React.PropTypes.string.isRequired,
+        thumbnails: React.PropTypes.array.isRequired
     },
     render: function() {
-        var toggleButtonContent = this.props.size === 'small' ? '\u2191' : '\u2193',
-            toggleButton = '', 
-            title = '',
-            videoTranslatedState = T.get('copy.' + this.props.videoState + 'State')
+        var self = this,
+            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
+            toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
+            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
+            displayTitle = self.props.title || self.props.videoId,
+            xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
-        if (!this.props.forceOpen) {
-            if (this.props.videoState === 'processed' || this.props.videoState === 'serving') {
-                toggleButton = <a className="button" onClick={this.handleToggle}>{toggleButtonContent}</a>;
-            }
-        }
-        if (this.props.forceOpen) {
-            title = this.props.displayTitle;
-        }
-        else {
-            title = <a href={this.props.videoLink}>{this.props.displayTitle}</a>;
-        }
         return (
-            <nav className="navbar is-marginless">
+            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
                 <div className="navbar-left">
                     <div className="navbar-item">
-                        <a className={this.props.additionalClass}>
+                        <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
                     </div>
                     <div className="navbar-item">
-                        <h2 className="title is-5">{title}</h2>
+                        <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
                     </div>
                 </div>
                 <div className="navbar-right">
                     <div className="navbar-item">
-                        <span className="subtitle is-6"><TimeAgoWrapper date={this.props.publishDate} /></span>
+                        <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
+                    </div>
+                    <div className="navbar-item">
+                        {xylophone}
                     </div>
                     <div className="navbar-item">
                         {toggleButton}

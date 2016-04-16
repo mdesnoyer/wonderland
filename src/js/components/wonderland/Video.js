@@ -9,181 +9,169 @@ import UTILS from '../../modules/utils';
 import AJAX from '../../modules/ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
-import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Video = React.createClass({
-    getInitialState: function() {
+    propTypes: {
+        videoId: React.PropTypes.string.isRequired
+    },
+    getDefaultProps: function() {
+        var self = this;
         return {
-            size: this.props.forceOpen ? 'big' : 'small',
-            forceOpen: this.props.forceOpen || false,
-            thumbnails: [],
-            accessToken: '',
-            refreshToken: '',
-            videoId: this.props.params.videoId,
-            status: 200,
-            message: '',
             videoState: 'unknown',
-            videoStateMapping: UTILS.VIDEO_STATE['unknown'].mapping,
-            title: '',
-            duration: 0,
-            url: '',
+            forceOpen: false,
+            thumbnails: [],
+            title: 'Unknown',
             error: '',
-            publishDate: '',
             created: '',
-            updated: '',
-            intervalId: '',
-            mode: 'silent' // silent/loading/error
         }
     },
-    handleToggle: function() {
+    getInitialState: function() {
         var self = this;
-        self.setState({
-            size: (self.state.size === 'small' ? 'big' : 'small')
-        });
+        return {
+            videoId: self.props.videoId,
+            videoState: self.props.videoState,
+            videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
+            forceOpen: self.props.forceOpen,
+            thumbnails: self.props.thumbnails,
+            title: self.props.title,
+            error: self.props.error,
+            created: self.props.created,
+            isBusy: false,
+            status: 200,
+            size: self.props.forceOpen ? 'big' : 'small',
+            duration: self.props.duration || 0,
+            url: self.props.url || ''
+        }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+        if (self.props.pingInterval) {
+            self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL));
+        }
+        if (self.props.pingInitial) {
+            setTimeout(self.pingVideo, 0);
+        }
     },
     componentWillUnmount: function() {
         var self = this;
-        clearInterval(self.state.intervalId);
-    },
-    checkStatus: function() {
-        var self = this,
-            options = {
-                data: {
-                    video_id: self.state.videoId,
-                    fields: [ 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails' ]
-                }
-            }
-        ;
-        self.setState({
-            mode: 'loading'
-        });
-
-        AJAX.doGet('videos', options)
-            .then(function(json) {
-                var video = json.videos[0];
-                if ((video.state === 'serving' && self.state.videoState === 'serving') 
-                    || (video.state === 'failed' && self.state.videoState === 'failed')) {
-                    clearInterval(self.state.intervalId);
-                    self.setState({
-                        mode: 'silent',
-                        intervalId: ''
-                    });
-                    return;
-                }
-                if (video.state !== self.state.videoState) {
-                    // Only bother if the state has changed
-                    var newThumbnails = video.thumbnails.map(function(t) {
-                            var neonScoreData = UTILS.getNeonScoreData(t.neon_score),
-                                newT = {
-                                    url: t.url,
-                                    rawNeonScore: t.neon_score,
-                                    cookedNeonScore: neonScoreData.neonScore,
-                                    emoji: neonScoreData.emoji,
-                                    enabled: t.enabled,
-                                    type: t.type,
-                                    thumbnailId: t.thumbnail_id
-                                }
-                            ;
-                            return newT;
-                        })
-                    ;
-                    newThumbnails.sort(function(a, b) {
-                        return (b.cookedNeonScore === '?' ? 0 : b.cookedNeonScore) - (a.cookedNeonScore === '?' ? 0 : a.cookedNeonScore);
-                    });
-                    self.setState({
-                        thumbnails: newThumbnails,
-                        videoState: video.state,
-                        videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-                        title: video.title,
-                        duration: video.duration,
-                        url: video.url,
-                        error: video.error ? video.error : '',
-                        publishDate: video.publish_date,
-                        created: video.created,
-                        updated: video.updated,
-                        mode: 'silent'
-                    });
-                }
-                else {
-                    self.setState({
-                        mode: 'silent'
-                    });
-                }
-            }).catch(function(err) {
-                clearInterval(self.state.intervalId);
-                self.setState({
-                    status: err.status,
-                    message: err.responseText,
-                    mode: 'silent',
-                    intervalId: ''
-                });
-            });
-    },
-    componentDidMount: function() {
-        var self = this,
-            intervalId = setInterval(self.checkStatus, 10000 + UTILS.rando(10000))
-        ;
-        setTimeout(self.checkStatus, 0);
-        self.setState({
-            intervalId: intervalId
-        });
+        self._isMounted = false;
+        clearInterval(self.timer);
     },
     render: function() {
-        if (this.state.status === 401) {
+        var self = this;
+        if (self.state.status === 401) {
             return (
-                <section className="section">
-                    <div className="container">
-                        <Message header={this.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
-                    </div>  
-                </section>
+                <Message header={self.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
             );
         }
-        if (this.state.status === 404) {
+        if (self.state.status === 404) {
             return (
-                <section className="section">
-                    <div className="container">
-                        <Message header={this.state.status} body={T.get('error.notFoundPage')} flavour="danger" />
-                    </div>
-                </section>  
+                <Message header={self.state.status} body="Could not find Video" flavour="danger" />
             );
         }
-        if (this.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + this.state.videoStateMapping + ' is-small is-' + this.state.mode,
-                displayTitle = this.state.title || this.state.videoId,
-                messageNeeded = this.state.error === '' ? '' : <Message header="Error" body={this.state.error} flavour="danger" />,
-                videoLink = '/video/' + this.state.videoId + '/',
-                videoSizeClass = 'video video--' + this.state.size
+        if (self.state.status === 200) {
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-medium is-' + (self.state.isBusy ? 'loading' : ''),
+                messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
+                videoLink = '/video/' + self.state.videoId + '/',
+                videoSizeClass = 'video video--' + self.state.size
             ;
             return (
                 <div className={videoSizeClass}>
                     <VideoHeader
-                        forceOpen={this.state.forceOpen}
-                        additionalClass={additionalClass}
-                        videoState={this.state.videoState}
+                        handleVideoOpenToggle={self.handleVideoOpenToggle}
+                        forceOpen={self.state.forceOpen}
+                        videoState={self.state.videoState}
+                        title={self.state.title}
                         videoLink={videoLink}
-                        displayTitle={displayTitle}
-                        handleToggle={this.handleToggle}
-                        size={this.state.size}
-                        publishDate={this.state.publishDate || this.state.created}
+                        additionalClass={additionalClass}
+                        videoId={self.state.videoId}
+                        created={self.state.created}
+                        thumbnails={self.state.thumbnails}
                     />
                     <VideoMain
+                        forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
-                        size={this.state.size}
-                        videoStateMapping={this.state.videoStateMapping}
-                        videoState={this.state.videoState}
-                        thumbnails={this.state.thumbnails}
-                        url={this.state.url}
-                        videoId={this.state.videoId}
-                        duration={this.state.duration}
-                        publishDate={this.state.publishDate || this.state.created}
+                        videoStateMapping={self.state.videoStateMapping}
+                        thumbnails={self.state.thumbnails}
+                        videoState={self.state.videoState}
+                        videoLink={videoLink}
+                        duration={self.state.duration || 0}
+                        url={self.state.url}
                     />
                 </div>
             );
         }
-    }
+    },
+    handleVideoOpenToggle: function(e) {
+        e.preventDefault();
+        console.log('handleVideoOpenToggle');
+        var self = this;
+        self.setState({
+            forceOpen: !self.state.forceOpen
+        });
+    },
+    pingVideo: function() {
+        var self = this,
+            options = {
+                data: {
+                    video_id: self.state.videoId,
+                    fields: UTILS.VIDEO_FIELDS
+                }
+            }
+        ;
+        // If the video is 'serving' or 'failed', its going nowhere, so don't
+        // bother checking
+        if (self.state.videoState === 'serving' || self.state.videoState === 'failed') {
+            clearInterval(self.timer);
+            return false;
+        }
+        self.setState({
+            isBusy: true
+        }, function() {
+            AJAX.doGet('videos', options)
+                .then(function(json) {
+                    if (self._isMounted === false) {
+                        return;
+                    }
+                    var video = json.videos[0];
+                    if (video.state !== self.state.videoState) {
+                        // Only bother if the state has changed
+                        self.setState({
+                            status: 200,
+                            thumbnails: video.thumbnails,
+                            videoState: video.state,
+                            videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
+                            title: video.title,
+                            duration: video.duration,
+                            url: video.url,
+                            // publish_date
+                            // updated
+                            created: video.created,
+                            error: video.error ? video.error : '',
+                            isBusy: false
+                        });
+                    }
+                    else {
+                        self.setState({
+                            isBusy: false
+                        });
+                    }
+                }).catch(function(err) {
+                    self.setState({
+                        status: err.status,
+                        message: err.responseText,
+                        isBusy: false
+                    }, function() {
+                        clearInterval(self.timer);
+                    });
+                });
+            })
+        ;
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,34 +1,29 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ContactModal from '../core/ContactModal';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var CallToAction = React.createClass({
-     getInitialState: function () {
-         return {
-             isModalActive: false
-         };
-     },
-    toggleModal: function() {
-        this.setState({
-            isModalActive: !this.state.isModalActive
-        });
-    },
     render: function() {
+        var self = this;
         return (
             <div className="control">
-                <a className="button is-primary" onClick={this.toggleModal}>{T.get('contact')}</a>
-                <ContactModal isModalActive={this.state.isModalActive} toggleModal={this.toggleModal} />
-            </div>  
+                <a
+                    className="button is-primary"
+                    href={UTILS.CONTACT_EXTERNAL_URL}
+                >
+                    <i className="fa fa-envelope-o" aria-hidden="true"></i> {T.get('nav.contact')}
+                </a>
+            </div>
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default CallToAction;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

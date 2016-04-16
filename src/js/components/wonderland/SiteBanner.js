@@ -1,68 +1,59 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import {Link} from 'react-router';
-import T from '../../modules/translation';
-import CallToAction from '../wonderland/CallToAction';
+import SiteNavigation from '../wonderland/SiteNavigation';
+import SESSION from '../../modules/session';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteBanner = React.createClass({
+    getInitialState: function() {
+        return {
+            displayName: ''
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData.first_name) {
+                        self.setState({
+                            displayName: userData.first_name
+                        });
+                    }
+                    else {
+                        self.setState({
+                            displayName: userData.username
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
+    },
     render: function() {
+        var self = this;
         return (
-            <header className="header is-dark wonderland-banner">
+            <header className="is-dark wonderland-banner wonderland-banner--header">
                 <div className="container">
-                    <div className="header-left">
-                        <a className="header-item" href="/" title="Go to the home page">
-                            <img src="/img/logo-white.png" alt="Neon" />
-                        </a>
-                    </div>
-                    <div className="header-right header-menu">
-                        <span className="header-item">
-                            <CallToAction />
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/">Home</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/dashboard/">Dashboard</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/upload/video/">{T.get('nav.upload')}</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/videos/">{T.get('nav.videos')}</Link>
-                        </span>
-                        <span className="header-item">
-                            <img className="image is-24x24 wonderland-avatar" src="/img/alice.jpg" alt="Signed in as Alice" title="Logged in as Alice" />
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/signup/">{T.get('nav.signUp')}</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/forgot/">Forgot Password</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/confirm/">Confirm Account</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/confirmed/">Account Confirmed</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/signin/">{T.get('nav.signIn')}</Link>
-                        </span>
-                        <span className="header-item">
-                            <Link activeClassName="active" to="/signout/">{T.get('nav.signOut')}</Link>
-                        </span>
-                    </div>
+                    <nav className="navbar wonderland-navbar is-fullwidth">
+                        <SiteNavigation side="left" isSignedIn={SESSION.active()} />
+                        <SiteNavigation displayName={self.state.displayName} side="right" isSignedIn={SESSION.active()} />
+                    </nav>
                 </div>
             </header>
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SiteBanner;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
