@@ -82,7 +82,7 @@ var Video = React.createClass({
             return (
                 <div className={videoSizeClass}>
                     <VideoHeader
-                        handleToggle={self.handleToggle}
+                        handleVideoOpenToggle={self.handleVideoOpenToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
                         title={self.state.title}
@@ -106,7 +106,9 @@ var Video = React.createClass({
             );
         }
     },
-    handleToggle: function() {
+    handleVideoOpenToggle: function(e) {
+        e.preventDefault();
+        console.log('handleVideoOpenToggle');
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen
