@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ThumbBox from '../wonderland/ThumbBox';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,7 +18,7 @@ var ImageModal = React.createClass({
     },
     render: function() {
         var self = this,
-            indicator = self.props.isEnabled ? 'fa-check' : 'fa-times'
+            enabledIndicator = UTILS.enabledDisabledIcon(self.props.isEnabled)
         ;
         return (
             <figure className="wonderland-thumbnail">
@@ -29,12 +30,13 @@ var ImageModal = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     <span className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
-                    <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa ' + indicator}></i></span>
+                    <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                     <ThumbBox
                         copyUrl={self.props.copyUrl}
                         downloadUrl={self.props.downloadUrl}
                         isEnabled={self.props.isEnabled}
                         handleEnabledChange={self.props.handleEnabledChange}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </figcaption>
             </figure>

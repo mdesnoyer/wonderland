@@ -7,7 +7,7 @@ import React from 'react';
 var Slide = React.createClass({
     propTypes: {
         icon: React.PropTypes.string.isRequired,
-        slideContent:  React.PropTypes.string.isRequired
+        slideContent: React.PropTypes.string.isRequired
     },
     render: function() {
         var self = this;  

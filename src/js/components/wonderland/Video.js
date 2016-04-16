@@ -101,6 +101,7 @@ var Video = React.createClass({
                         videoLink={videoLink}
                         duration={self.state.duration || 0}
                         url={self.state.url}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </div>
             );
@@ -108,7 +109,6 @@ var Video = React.createClass({
     },
     handleVideoOpenToggle: function(e) {
         e.preventDefault();
-        console.log('handleVideoOpenToggle');
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen

@@ -56,6 +56,7 @@ var Videos = React.createClass({
                     referrer={self.state.referrer}
                     videoCountServed={self.state.videoCountServed}
                     videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                    isAccountServingEnabled={self.props.isAccountServingEnabled}
                 />
             </div>
         );
