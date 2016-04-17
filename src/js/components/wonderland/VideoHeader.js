@@ -15,14 +15,15 @@ var VideoHeader = React.createClass({
         forceOpen: React.PropTypes.bool.isRequired,
         title: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
-        thumbnails: React.PropTypes.array.isRequired
+        thumbnails: React.PropTypes.array.isRequired,
+        created: React.PropTypes.string
     },
     render: function() {
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
             toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            displayTitle = self.props.title || self.props.videoId,
+            displayTitle = self.props.title,
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (

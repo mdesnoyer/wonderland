@@ -102,7 +102,8 @@ var Video = React.createClass({
                         thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
-                        duration={self.state.duration || 0}
+                        duration={self.state.duration}
+                        created={self.state.created}
                         url={self.state.url}
                         isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />

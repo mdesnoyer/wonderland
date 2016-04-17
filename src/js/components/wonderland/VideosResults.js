@@ -17,16 +17,16 @@ var VideosResults = React.createClass({
                 <caption>
                     {self.props.errorMessage}
                 </caption>
-                <thead>
-                    {/*}<tr>
+                {/*<thead>
+                    <tr>
                         <th><SearchBar {...self.props} /></th>
-                    </tr>*/}
+                    </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th><NavigationBar {...self.props} /></th>
                     </tr>
-                </tfoot>
+                </tfoot>*/}
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
