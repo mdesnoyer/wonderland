@@ -36,9 +36,9 @@ var SignInPage = React.createClass({
                         <div className="column is-half is-offset-quarter">
                             <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
                             <div className="content">
-                                <p>{T.get('copy.signIn.body')}</p>
+                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
                             </div>
-                            <SignInForm />
+                            <SignInForm showLegend={false} />
                             {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
                     </div>
