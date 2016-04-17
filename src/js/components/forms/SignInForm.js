@@ -35,6 +35,7 @@ var SignInForm = React.createClass({
     componentWillUnmount: function() {
         var self = this;
         self._isMounted = false;
+        E.clearErrors();
     },
     render: function() {
         var self = this,
@@ -111,7 +112,7 @@ var SignInForm = React.createClass({
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
-                    E.checkForError(err.statusText, false);
+                    E.checkForError('Sorry, we could not sign you in.', false);
                     if (self._isMounted) {
                         self.setState({
                             isError: true

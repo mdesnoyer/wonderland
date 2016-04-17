@@ -65,8 +65,18 @@ gulp.task('statics', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('vendorJs', function() {
+gulp.task('clipboardJs', function() {
     return gulp.src('./node_modules/clipboard/dist/clipboard.min.js')
+        .pipe(gulp.dest('./build/js/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('webfontJs', function() {
+    return gulp.src('./src/js/vendor/google.webfont.js')
         .pipe(gulp.dest('./build/js/'))
         .pipe(reload({
             stream: true
@@ -162,7 +172,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'vendorJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'styles', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -172,7 +182,7 @@ gulp.task('debug', ['images', 'styles', 'vendorJs', 'fonts', 'statics', 'config'
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'vendorJs', 'fonts', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'styles', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
