@@ -21,6 +21,7 @@ var Thumbnail = React.createClass({
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
+        frameNo: React.PropTypes.number.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
@@ -107,6 +108,8 @@ var Thumbnail = React.createClass({
                         isEnabled={self.state.isEnabled}
                         handleEnabledChange={handleEnabledChangeHook}
                         isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        type={self.props.type}
+                        frameNo={self.props.frameNo}
                     />
                 </ModalWrapper>
             </figure>

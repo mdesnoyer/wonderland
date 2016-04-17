@@ -53,6 +53,7 @@ var Thumbnails = React.createClass({
                                             rawNeonScore={rawNeonScore}
                                             cookedNeonScore={cookedNeonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
+                                            frameNo={thumbnail.frameno}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}
                                             isAccountServingEnabled={self.props.isAccountServingEnabled}
