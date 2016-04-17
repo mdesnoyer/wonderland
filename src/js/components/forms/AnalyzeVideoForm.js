@@ -49,7 +49,8 @@ var AnalyzeVideoForm = React.createClass({
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             var body = <span dangerouslySetInnerHTML={{
                 __html: T.get('copy.analyzeVideo.maxLimitHit', {
-                    '%limit': self.state.maxVideoCount
+                    '%limit': self.state.maxVideoCount,
+                    '@link': UTILS.CONTACT_EXTERNAL_URL
                 })
             }} />;
             return (
@@ -87,7 +88,7 @@ var AnalyzeVideoForm = React.createClass({
                                     ref="url"
                                     onChange={self.handleChangeUrl}
                                     value={self.state.url}
-                                    placeholder={T.get('analyze.addVideoUrl')}
+                                    placeholder={T.get('analyze.videoUrl')}
                                 />
                             </p>
                             <p className="control">
@@ -170,7 +171,16 @@ var AnalyzeVideoForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                E.checkForError(err.statusText, false);
+                if (err.status === 402) {
+                    E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
+                        '%limit': self.state.maxVideoCount,
+                        '@link': UTILS.CONTACT_EXTERNAL_URL
+                    }), false);
+                }
+                else {
+                    E.checkForError(err.statusText, false);
+                }
+                
                 self.setState({
                     isError: true
                 });
