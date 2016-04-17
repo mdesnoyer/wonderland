@@ -32,13 +32,10 @@ var Thumbnails = React.createClass({
             );
         }
         else {
-            var sortedThumbnails = this.props.thumbnails.sort(function(a, b) {
-                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-            });
             return (
                 <div className="columns is-multiline is-mobile">
                     {
-                        sortedThumbnails.map(function(thumbnail, i) {
+                        self.props.thumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
                                 var neonScoreData = UTILS.NEON_SCORE_ENABLED ? UTILS.getNeonScoreData(thumbnail.neon_score) : '',
                                     rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,

@@ -39,7 +39,7 @@ var SignInPage = React.createClass({
                                 {/*<p>{T.get('copy.signIn.body')}</p>*/}
                             </div>
                             <SignInForm showLegend={false} />
-                            {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
+                            {/*<Link activeClassName="wonderland-active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
                     </div>
                 </section>
