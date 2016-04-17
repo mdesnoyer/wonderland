@@ -107,7 +107,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.contact': 'Contact',
 
             //error messages
-            'error.passwordFormatInvalid': 'Passwords must be 8 Characters and include one number and one special character.',
+            'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
             'error.unableToSignIn': 'Unable to Sign In',
             //copy + marketing
@@ -115,9 +115,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'I agree with Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             
-            'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the the 6 most clickable thumbnails.',
-            'copy.processingSlide.2': 'Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
-            'copy.processingSlide.3': 'Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
+            'copy.processingSlide.1': '1. Thank you for submitting your video to Neon. We are now analyzing your video to find the the six most clickable thumbnails.',
+            'copy.processingSlide.2': '2. Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
+            'copy.processingSlide.3': '3. Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
             // TODO 'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results. You will also get an email from Neon when your thumbnails are ready.',
             'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',
 

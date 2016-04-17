@@ -7,17 +7,20 @@ import React from 'react';
 
 var Message = React.createClass({
     render: function() {
-        var message = this.props.body,
-        	messageClass = 'message is-' + this.props.flavour,
+        var self = this,
+            message = self.props.body,
+        	messageClass = 'message is-' + self.props.flavour,
         	finalMessage = ''
     	;
     	if (message.constructor == Array) {
     		finalMessage = (
     			<div>
-    				<p className="message-header">{this.props.header}</p>
+    				<p className="message-header">{self.props.header}</p>
 	    			<ul className="message-body">
-	    				{message.map(function(message, index){
-							return <li key = {index}>{message}</li>  
+	    				{message.map(function(message, index) {
+							return <li key = {index}>
+                                <span dangerouslySetInnerHTML={{__html: message}} />
+                            </li>
 						})}
 	    			</ul>
     			</div>
@@ -26,8 +29,8 @@ var Message = React.createClass({
     	else {
 			finalMessage = (
 				<div>
-					<p className="message-header">{this.props.header}</p>
-                	<p className="message-body">{this.props.body}</p>
+					<p className="message-header">{self.props.header}</p>
+                	<p className="message-body"><span dangerouslySetInnerHTML={{__html: self.props.body}} /></p>
             	</div>
             );
     	}
