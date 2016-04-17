@@ -41,16 +41,16 @@ var AnalyzeVideoForm = React.createClass({
             messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
             tutorialComponent,
             panels = {
-                'youtube-play': T.get('copy.analyzeVideoPanel.panel.1'),
-                'files-o': T.get('copy.analyzeVideoPanel.panel.2'),
-                'upload': T.get('copy.analyzeVideoPanel.panel.3'),
-                'th-large': T.get('copy.analyzeVideoPanel.panel.4')
+                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
+                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
+                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             var body = <span dangerouslySetInnerHTML={{
                 __html: T.get('copy.analyzeVideo.maxLimitHit', {
-                    '%limit': self.state.maxVideoCount
+                    '%limit': self.state.maxVideoCount,
+                    '@link': UTILS.CONTACT_EXTERNAL_URL
                 })
             }} />;
             return (
@@ -88,7 +88,7 @@ var AnalyzeVideoForm = React.createClass({
                                     ref="url"
                                     onChange={self.handleChangeUrl}
                                     value={self.state.url}
-                                    placeholder={T.get('analyze.addVideoUrl')}
+                                    placeholder={T.get('analyze.videoUrl')}
                                 />
                             </p>
                             <p className="control">
@@ -171,7 +171,16 @@ var AnalyzeVideoForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                E.checkForError(err.statusText, false);
+                if (err.status === 402) {
+                    E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
+                        '%limit': self.state.maxVideoCount,
+                        '@link': UTILS.CONTACT_EXTERNAL_URL
+                    }), false);
+                }
+                else {
+                    E.checkForError(err.statusText, false);
+                }
+                
                 self.setState({
                     isError: true
                 });

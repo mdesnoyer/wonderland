@@ -22,7 +22,7 @@ var ForgotPasswordForm = React.createClass({
 	render: function() {
 		if (this.state.isEmailMessageSent) {
             return (
-                    <Message header={T.get('reset.message')} body={<Link activeClassName="active" to="/signin/">{T.get('returnSignIn')}</Link>} />
+                    <Message header={T.get('reset.message')} body={<Link activeClassName="wonderland-active" to="/signin/">{T.get('returnSignIn')}</Link>} />
                 );
         }
         else {

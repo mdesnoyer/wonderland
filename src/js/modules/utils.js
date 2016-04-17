@@ -149,6 +149,9 @@ var UTILS = {
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
+    enabledDisabledIcon: function(enabled) {
+        return enabled ? 'check' : 'times';
+    },
     generateId: function() {
         var id = shortid.generate(),
             hash64 = fnv.hash(id + Date.now(), 128)

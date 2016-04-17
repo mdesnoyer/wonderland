@@ -21,10 +21,12 @@ var Thumbnail = React.createClass({
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
+        frameNo: React.PropTypes.number.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
+        isAccountServingEnabled: React.PropTypes.bool.isRequired
     },
     getInitialState: function () {
         var self = this;
@@ -61,8 +63,9 @@ var Thumbnail = React.createClass({
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
-            indicator = self.state.isEnabled ? 'fa-check' : 'fa-times',
-            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : ''
+            enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
+            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
+            handleEnabledChangeHook = self.props.isAccountServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
             <figure
@@ -84,15 +87,16 @@ var Thumbnail = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     {neonScore}
-                    <input className="wonderland-thumbnail__enabled is-medium" onChange={self.handleEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
-                    <span className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
-                    <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa ' + indicator}></i></span>
+                    <input className="wonderland-thumbnail__enabled is-medium" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
+                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
+                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                     <ThumbBox
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
                         isEnabled={self.state.isEnabled}
                         handleToggleModal={self.handleToggleModal}
-                        handleEnabledChange={self.handleEnabledChange}
+                        handleEnabledChange={handleEnabledChangeHook}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </figcaption>
                 <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
@@ -102,7 +106,10 @@ var Thumbnail = React.createClass({
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
                         isEnabled={self.state.isEnabled}
-                        handleEnabledChange={self.handleEnabledChange}
+                        handleEnabledChange={handleEnabledChangeHook}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        type={self.props.type}
+                        frameNo={self.props.frameNo}
                     />
                 </ModalWrapper>
             </figure>

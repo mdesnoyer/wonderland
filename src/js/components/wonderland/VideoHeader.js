@@ -3,6 +3,7 @@
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import Xylophone from '../core/Xylophone';
+import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
@@ -14,14 +15,15 @@ var VideoHeader = React.createClass({
         forceOpen: React.PropTypes.bool.isRequired,
         title: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
-        thumbnails: React.PropTypes.array.isRequired
+        thumbnails: React.PropTypes.array.isRequired,
+        created: React.PropTypes.string
     },
     render: function() {
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
             toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            displayTitle = self.props.title || self.props.videoId,
+            displayTitle = self.props.title,
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
@@ -31,6 +33,11 @@ var VideoHeader = React.createClass({
                         <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
+                    </div>
+                    <div className="navbar-item">
+                        <HeroThumbnail
+                            thumbnail={self.props.thumbnails[0]}
+                        />
                     </div>
                     <div className="navbar-item">
                         <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>

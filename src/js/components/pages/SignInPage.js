@@ -9,10 +9,21 @@ import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInPage = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    componentWillMount: function() {
+        if (SESSION.active()) {
+            // Play nice, transport the user to the internal home
+            // page (dashboard)
+            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        }
+    },
     render: function() {
         return (
             <div>
@@ -25,10 +36,10 @@ var SignInPage = React.createClass({
                         <div className="column is-half is-offset-quarter">
                             <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
                             <div className="content">
-                                <p>{T.get('copy.signIn.body')}</p>
+                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
                             </div>
-                            <SignInForm />
-                            {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
+                            <SignInForm showLegend={false} />
+                            {/*<Link activeClassName="wonderland-active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
                     </div>
                 </section>

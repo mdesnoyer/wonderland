@@ -7,9 +7,6 @@ import UTILS from '../../modules/utils';
 
 var Xylophone = React.createClass({
     render: function() {
-        var sortedThumbnails = this.props.thumbnails.sort(function(a, b) {
-            return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-        });
         return (
             <div className="wonderland-xylophone">
                 <div
@@ -22,7 +19,7 @@ var Xylophone = React.createClass({
                     </div>
                 </div>
                 {
-                    sortedThumbnails.map(function(thumbnail, i) {
+                    self.props.thumbnails.map(function(thumbnail, i) {
                         if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
                             var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
                                 inlineStyle = {'height': neonScoreData.neonScore + '%'}

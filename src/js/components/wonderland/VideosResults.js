@@ -10,23 +10,23 @@ import SearchBar from '../core/SearchBar';
 var VideosResults = React.createClass({
     render: function() {
         var self = this,
-            additionalClass = 'table is-striped' + (self.props.isBusy ? ' is-busy' : '')
+            additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')
         ;
         return (
             <table className={additionalClass}>
                 <caption>
                     {self.props.errorMessage}
                 </caption>
-                <thead>
-                    {/*}<tr>
+                {/*<thead>
+                    <tr>
                         <th><SearchBar {...self.props} /></th>
-                    </tr>*/}
+                    </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th><NavigationBar {...self.props} /></th>
                     </tr>
-                </tfoot>
+                </tfoot>*/}
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
@@ -48,6 +48,7 @@ var VideosResults = React.createClass({
                                             // publish_date
                                             // updated
                                             created={video.created}
+                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
                                         />
                                     </td>
                                 </tr>

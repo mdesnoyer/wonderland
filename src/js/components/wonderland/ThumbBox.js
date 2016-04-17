@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -20,8 +21,9 @@ var ThumbBox = React.createClass({
     render: function() {
         var self = this,
             toggleModalButton = '',
-            isEnabledIndicator = 'fa ' + (!self.props.isEnabled ? 'fa-check' : 'fa-times'),
-            enabledTooltip = (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail')
+            enabledIndicator = UTILS.enabledDisabledIcon(!self.props.isEnabled), // we want the opposite
+            enabledTooltip = self.props.isAccountServingEnabled ? (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail') : 'Serving is Disabled for this Account',
+            enabledDisabledClass = self.props.isAccountServingEnabled ? '' : ' -disabled'
         ;
         if (self.props.handleToggleModal) {
             toggleModalButton = function() {
@@ -46,10 +48,10 @@ var ThumbBox = React.createClass({
                     </span>
                     <span
                         title={enabledTooltip}
-                        className="icon wonderland-thumbbox__tool"
+                        className={'icon wonderland-thumbbox__tool' + enabledDisabledClass}
                         onClick={self.props.handleEnabledChange}
                     >
-                        <i className={isEnabledIndicator} aria-hidden="true"></i>
+                        <i className={'fa fa-' + enabledIndicator} aria-hidden="true"></i>
                     </span>
                     <a
                         href={self.props.downloadUrl}

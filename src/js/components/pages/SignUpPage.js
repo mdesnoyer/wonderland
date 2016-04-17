@@ -28,7 +28,7 @@ var SignUpPage = React.createClass({
                             <div className="content">
                                 <p>{body}</p>
                             </div>
-                            <SignUpForm />
+                            <SignUpForm showLegend={false} />
                         </div>
                     </div>
                 </section>
