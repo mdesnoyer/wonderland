@@ -17,7 +17,7 @@ var NavigationBar = React.createClass({
     },
     componentDidMount: function(e) {
         var self = this;
-        document.body.onkeydown = self.handleKeyPress;
+        document.body.onkeydown = self.handleKeyEvent;
     },
     componentWillUnmount: function(e) {
         var self = this;
@@ -35,7 +35,7 @@ var NavigationBar = React.createClass({
             self.props.handleNewSearch(self.props.prevPage, -1);
         }
     },
-    handleKeyPress: function(e) {
+    handleKeyEvent: function(e) {
         var self = this;
         if (e.keyCode === 37) {
             self.doPrev();

@@ -9,10 +9,21 @@ import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInPage = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    componentWillMount: function() {
+        if (SESSION.active()) {
+            // Play nice, transport the user to the internal home
+            // page (dashboard)
+            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        }
+    },
     render: function() {
         return (
             <div>

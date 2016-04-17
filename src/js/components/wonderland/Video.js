@@ -125,7 +125,7 @@ var Video = React.createClass({
         ;
         // If the video is 'serving' or 'failed', its going nowhere, so don't
         // bother checking
-        if (self.state.videoState === 'serving' || self.state.videoState === 'failed') {
+        if (self.state.videoState === 'serving' || self.state.videoState === 'failed' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
         }

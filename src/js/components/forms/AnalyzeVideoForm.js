@@ -41,10 +41,9 @@ var AnalyzeVideoForm = React.createClass({
             messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
             tutorialComponent,
             panels = {
-                'youtube-play': T.get('copy.analyzeVideoPanel.panel.1'),
-                'files-o': T.get('copy.analyzeVideoPanel.panel.2'),
-                'upload': T.get('copy.analyzeVideoPanel.panel.3'),
-                'th-large': T.get('copy.analyzeVideoPanel.panel.4')
+                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
+                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
+                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
             }
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {

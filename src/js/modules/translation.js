@@ -82,10 +82,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountConfirmed.heading': 'Account Confirmed',
             'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by <a href="@link">signing in now</a>. You are now ready to make your video thumbnails more clickable!',
 
-            'copy.analyzeVideoPanel.panel.1': '1. Find A Video You Would Like to Score',
-            'copy.analyzeVideoPanel.panel.2': '2. Copy &amp; Paste URL into the Analyze Bar ',
-            'copy.analyzeVideoPanel.panel.3': '3. Click on the Analyze Button',
-            'copy.analyzeVideoPanel.panel.4': '4. Watch the Results',
+            'copy.analyzeVideoPanel.panel.1': '1. Find a video and paste the URL link Into the Analyze bar',
+            'copy.analyzeVideoPanel.panel.2': '2. Click on the Analyze Button',
+            'copy.analyzeVideoPanel.panel.3': '3. View the Results',
 
             returnSignIn: 'Return to Sign In',
             //password reset
