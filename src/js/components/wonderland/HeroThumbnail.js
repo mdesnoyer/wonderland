@@ -20,19 +20,23 @@ var HeroThumbnail = React.createClass({
         if (self.props.thumbnail) {
             src = UTILS.stripProtocol(self.props.thumbnail.url);
             caption = 'Best Thumbnail';
+            return (
+                <img
+                    className="wonderland-hero-thumbnail"
+                    src={src}
+                    alt={caption}
+                    title={caption}
+                />
+            );
         }
         else {
-            src = '';
-            caption = '';
+            return (
+                <span className="wonderland-hero-thumbnail-dummy has-text-centered">
+                    <i className="fa fa-picture-o" aria-hidden="true"></i>
+                </span>
+            );
         }
-        return (
-            <img
-                className="wonderland-hero-thumbnail"
-                src={src}
-                alt={caption}
-                title={caption}
-            />
-        );
+
     }
 });
 
