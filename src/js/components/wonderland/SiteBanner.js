@@ -17,15 +17,21 @@ var SiteBanner = React.createClass({
         if (SESSION.active()) {
             SESSION.user()
                 .then(function(userData) {
-                    if (userData.first_name) {
-                        self.setState({
-                            displayName: userData.first_name
-                        });
-                    }
-                    else {
-                        self.setState({
-                            displayName: userData.username
-                        });
+                    if (userData) {
+                        if (userData.first_name) {
+                            if (self._isMounted) {
+                                self.setState({
+                                    displayName: userData.first_name
+                                });
+                            }
+                        }
+                        else {
+                            if (self._isMounted) {
+                                self.setState({
+                                    displayName: userData.username
+                                });
+                            }
+                        }
                     }
                 })
                 .catch(function(err) {
@@ -36,6 +42,14 @@ var SiteBanner = React.createClass({
         else {
             // Do nothing
         }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
     },
     render: function() {
         var self = this;

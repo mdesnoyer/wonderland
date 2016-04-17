@@ -22,7 +22,6 @@ var Videos = React.createClass({
             videoCountServed: 0,
             pageCount: 0,
             isBusy: false,
-            referrer: 0, // prev/next
             bonusSearchUrl: '' // used to hold the next/prev choice
         }  
     },
@@ -41,22 +40,26 @@ var Videos = React.createClass({
         ;
         return (
             <div>
-                <AnalyzeVideoForm
-                    postHook={self.doVideoSearch}
-                />
-                <VideosResults
-                    forceOpenFirstOverride={self.state.forceOpenFirstOverride}
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPage={self.state.prevPage}
-                    nextPage={self.state.nextPage}
-                    errorMessage={errorMessage}
-                    pageCount={self.state.pageCount}
-                    isBusy={self.state.isBusy}
-                    referrer={self.state.referrer}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
-                />
+                <section className="section">
+                    <AnalyzeVideoForm
+                        postHook={self.doVideoSearch}
+                    />
+                </section>
+                <section className="section">
+                    <VideosResults
+                        forceOpenFirstOverride={self.state.forceOpenFirstOverride}
+                        videos={self.state.videos}
+                        handleNewSearch={self.handleNewSearch}
+                        prevPage={self.state.prevPage}
+                        nextPage={self.state.nextPage}
+                        errorMessage={errorMessage}
+                        pageCount={self.state.pageCount}
+                        isBusy={self.state.isBusy}
+                        videoCountServed={self.state.videoCountServed}
+                        videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                    />
+                </section>
             </div>
         );
     },
@@ -96,16 +99,9 @@ var Videos = React.createClass({
                         isBusy: false
                     }, function() {
                         if (json.video_count === 0) {
-                            var newErrorMessageArray = self.state.errorMessageArray;
-                            if (self.state.referrer === 0) {
-                                newErrorMessageArray.push('No Videos');
-                            }
-                            else {
-                                newErrorMessageArray.push('You reached the end');
-                            }
                             self.setState({
-                                errorMessageArray: newErrorMessageArray,
-                                isError: true,
+                                errorMessageArray: [],
+                                isError: false,
                                 videos: [],
                                 prevPage: '',
                                 nextPage: '',

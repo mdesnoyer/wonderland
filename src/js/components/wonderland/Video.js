@@ -36,6 +36,9 @@ var Video = React.createClass({
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
+            sortedThumbnails: self.props.thumbnails.sort(function(a, b) {
+                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+            }),
             title: self.props.title,
             error: self.props.error,
             created: self.props.created,
@@ -90,17 +93,19 @@ var Video = React.createClass({
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
-                        thumbnails={self.state.thumbnails}
+                        thumbnails={self.state.sortedThumbnails}
                     />
                     <VideoMain
                         forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
                         videoStateMapping={self.state.videoStateMapping}
-                        thumbnails={self.state.thumbnails}
+                        thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
-                        duration={self.state.duration || 0}
+                        duration={self.state.duration}
+                        created={self.state.created}
                         url={self.state.url}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </div>
             );
@@ -108,7 +113,6 @@ var Video = React.createClass({
     },
     handleVideoOpenToggle: function(e) {
         e.preventDefault();
-        console.log('handleVideoOpenToggle');
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen
@@ -125,7 +129,7 @@ var Video = React.createClass({
         ;
         // If the video is 'serving' or 'failed', its going nowhere, so don't
         // bother checking
-        if (self.state.videoState === 'serving' || self.state.videoState === 'failed') {
+        if (self.state.videoState === 'serving' || self.state.videoState === 'failed' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
         }

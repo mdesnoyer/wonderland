@@ -12,7 +12,7 @@ var CallToAction = React.createClass({
         return (
             <div className="control">
                 <a
-                    className="button is-primary"
+                    className=""
                     href={UTILS.CONTACT_EXTERNAL_URL}
                 >
                     <i className="fa fa-envelope-o" aria-hidden="true"></i> {T.get('nav.contact')}
