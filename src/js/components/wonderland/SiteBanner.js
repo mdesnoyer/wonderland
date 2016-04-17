@@ -54,7 +54,7 @@ var SiteBanner = React.createClass({
     render: function() {
         var self = this;
         return (
-            <header className="is-dark wonderland-banner wonderland-banner--header">
+            <header className="wonderland-banner wonderland-banner--header">
                 <div className="container">
                     <nav className="navbar wonderland-navbar is-fullwidth">
                         <SiteNavigation side="left" isSignedIn={SESSION.active()} />

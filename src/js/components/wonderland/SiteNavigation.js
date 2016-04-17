@@ -3,7 +3,6 @@
 import React from 'react';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
-import CallToAction from '../wonderland/CallToAction';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -25,18 +24,18 @@ var SiteNavigation = React.createClass({
     render: function() {
         var self = this,
             items = {
-                logo: <a  href="/" title="Go to the Home page"><img className="wonderland-logo" src="/img/logo-white.png" alt="Neon" title="Neon" /></a>,
-                cta: <CallToAction />,
+                logo: <a  href="/" title="Go to the Home page"><img className="wonderland-logo" src="/img/logo-white.svg" alt="Neon" title="Neon" /></a>,
+                contact: <a className="" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
                 blank: <span>&nbsp;&nbsp;&nbsp;</span>,
                 dashboard: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
                 analyzeVideo: <Link activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
                 avatar: <span className="wonderland-avatar"><i className="fa fa-user" aria-hidden="true" /></span>,
-                signUp: <Link className="button is-danger" activeClassName="" to="/signup/">{T.get('nav.signUp')} Free</Link>,
+                signUp: <Link className="button is-danger" activeClassName="wonderland-active" to="/signup/">{T.get('nav.signUp')}</Link>,
                 forgotPassword: <Link activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
-                signIn: <Link activeClassName="" to="/signin/">{T.get('nav.signIn')}</Link>,
+                signIn: <Link activeClassName="wonderland-active" to="/signin/">{T.get('nav.signIn')}</Link>,
                 signOut: <Link activeClassName="wonderland-active" to="/signout/">{T.get('nav.signOut')}</Link>,
-                username: <span>{self.props.displayName}</span>
+                username: <span className="un">{self.props.displayName}</span>
             },
             constructedNav = [],
             className = 'navbar-' + self.props.side
@@ -52,7 +51,7 @@ var SiteNavigation = React.createClass({
                 constructedNav.push(items.username);
                 constructedNav.push(items.avatar);
                 constructedNav.push(items.signOut);
-                constructedNav.push(items.cta);
+                constructedNav.push(items.contact);
             }
         }
         else {
@@ -62,9 +61,9 @@ var SiteNavigation = React.createClass({
                 // constructedNav.push(items.forgotPassword);
             }
             if (self.props.side === 'right') {
+                constructedNav.push(items.contact);
                 constructedNav.push(items.signIn);
                 constructedNav.push(items.signUp);
-                constructedNav.push(items.cta);
             }
         }
         return (
@@ -72,7 +71,7 @@ var SiteNavigation = React.createClass({
                 {
                     constructedNav.map(function(navbarItem, i) {
                         return (
-                            <div key={i} className="navbar-item">{navbarItem}</div>
+                            <div key={i} className="wonderland-navbar-item navbar-item">{navbarItem}</div>
                         );
                     })
                 }

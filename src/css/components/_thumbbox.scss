@@ -5,7 +5,7 @@ $transition: all 0.3333s;
 .wonderland-thumbbox {
     position: absolute;
     top: 0;
-    background-color: #847bb9;
+    background-color: $orange;
     width: 10%;
     height: 100%;
     overflow: hidden;
@@ -41,15 +41,15 @@ $transition: all 0.3333s;
     width: 100%;
     cursor: pointer;
     transition: $transition;
-    color: rgba(#fff, 0.7777);
+    color: rgba($white, 0.7777);
     &:hover {
-        color: #fff;
+        color: $white;
     }
     &.-disabled {
-        color: rgba(#fff, 0.2);
+        color: rgba($white, 0.2);
         cursor: not-allowed;
         &:hover {
-            color: rgba(#fff, 0.2);
+            color: rgba($white, 0.2);
         }
     }
     .fa {
@@ -62,7 +62,7 @@ $transition: all 0.3333s;
  }
 
 .wonderland-thumbbox__tease {
-    color: #fff;
+    color: $white;
     transition: $transition;
     position: absolute;
     right: 0;
