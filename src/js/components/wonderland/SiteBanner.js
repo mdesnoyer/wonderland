@@ -17,15 +17,17 @@ var SiteBanner = React.createClass({
         if (SESSION.active()) {
             SESSION.user()
                 .then(function(userData) {
-                    if (userData.first_name) {
-                        self.setState({
-                            displayName: userData.first_name
-                        });
-                    }
-                    else {
-                        self.setState({
-                            displayName: userData.username
-                        });
+                    if (userData) {
+                        if (userData.first_name) {
+                            self.setState({
+                                displayName: userData.first_name
+                            });
+                        }
+                        else {
+                            self.setState({
+                                displayName: userData.username
+                            });
+                        }
                     }
                 })
                 .catch(function(err) {

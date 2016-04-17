@@ -48,6 +48,7 @@ var VideosResults = React.createClass({
                                             // publish_date
                                             // updated
                                             created={video.created}
+                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
                                         />
                                     </td>
                                 </tr>

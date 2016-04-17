@@ -15,8 +15,9 @@ var Thumbnails = React.createClass({
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
-        thumbnails:  React.PropTypes.array.isRequired,
-        forceOpen:  React.PropTypes.bool.isRequired
+        thumbnails: React.PropTypes.array.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+        isAccountServingEnabled: React.PropTypes.bool.isRequired
     },
     render: function() {
         var self = this;
@@ -57,6 +58,7 @@ var Thumbnails = React.createClass({
                                             thumbnailId={thumbnail.thumbnail_id}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}
+                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
                                         />
                                     </div>
                                 );
