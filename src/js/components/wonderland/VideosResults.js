@@ -10,7 +10,7 @@ import SearchBar from '../core/SearchBar';
 var VideosResults = React.createClass({
     render: function() {
         var self = this,
-            additionalClass = 'table is-striped' + (self.props.isBusy ? ' is-busy' : '')
+            additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')
         ;
         return (
             <table className={additionalClass}>

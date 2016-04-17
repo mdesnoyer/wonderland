@@ -3,6 +3,7 @@
 import React from 'react';
 import TimeAgoWrapper from '../core/TimeAgoWrapper';
 import Xylophone from '../core/Xylophone';
+import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
@@ -31,6 +32,11 @@ var VideoHeader = React.createClass({
                         <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
+                    </div>
+                    <div className="navbar-item">
+                        <HeroThumbnail
+                            thumbnail={self.props.thumbnails[0]}
+                        />
                     </div>
                     <div className="navbar-item">
                         <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>

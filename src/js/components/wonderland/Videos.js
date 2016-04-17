@@ -40,22 +40,26 @@ var Videos = React.createClass({
         ;
         return (
             <div>
-                <AnalyzeVideoForm
-                    postHook={self.doVideoSearch}
-                />
-                <VideosResults
-                    forceOpenFirstOverride={self.state.forceOpenFirstOverride}
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPage={self.state.prevPage}
-                    nextPage={self.state.nextPage}
-                    errorMessage={errorMessage}
-                    pageCount={self.state.pageCount}
-                    isBusy={self.state.isBusy}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
-                    isAccountServingEnabled={self.props.isAccountServingEnabled}
-                />
+                <section className="section">
+                    <AnalyzeVideoForm
+                        postHook={self.doVideoSearch}
+                    />
+                </section>
+                <section className="section">
+                    <VideosResults
+                        forceOpenFirstOverride={self.state.forceOpenFirstOverride}
+                        videos={self.state.videos}
+                        handleNewSearch={self.handleNewSearch}
+                        prevPage={self.state.prevPage}
+                        nextPage={self.state.nextPage}
+                        errorMessage={errorMessage}
+                        pageCount={self.state.pageCount}
+                        isBusy={self.state.isBusy}
+                        videoCountServed={self.state.videoCountServed}
+                        videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                    />
+                </section>
             </div>
         );
     },
