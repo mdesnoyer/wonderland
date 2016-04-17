@@ -88,7 +88,7 @@ var AnalyzeVideoForm = React.createClass({
                                     ref="url"
                                     onChange={self.handleChangeUrl}
                                     value={self.state.url}
-                                    placeholder={T.get('analyze.addVideoUrl')}
+                                    placeholder={T.get('analyze.videoUrl')}
                                 />
                             </p>
                             <p className="control">

@@ -93,7 +93,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'reset.sendReset': 'Send Reset Instructions',
             'reset.message': 'Please Check your Email for Reset Instructions',
             //analyze page
-            'analyze.addVideoUrl': 'Add Video URL',
+            'analyze.videoUrl': 'Video URL',
             'analyze.optionalTitle': 'Optional Title',
             //navigation bar
 
@@ -113,7 +113,7 @@ const _DEFAULT_LOCALE = 'en-US',
             //copy + marketing
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            'copy.agreeTerms': 'I agree with Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
+            'copy.agreeTerms': 'I agree to Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
             
             'copy.processingSlide.1': '1. Thank you for submitting your video to Neon. We are now analyzing your video to find the the six most clickable thumbnails.',
             'copy.processingSlide.2': '2. Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
