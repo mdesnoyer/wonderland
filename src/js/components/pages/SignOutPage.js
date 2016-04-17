@@ -39,7 +39,7 @@ var SignOutPage = React.createClass({
                             <div className="content">
                                 <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
                             </div>
-                            <SignInForm />
+                            <SignInForm showLegend={false} />
                         </div>
                     </div>
                 </section>

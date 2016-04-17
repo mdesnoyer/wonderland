@@ -11,7 +11,7 @@
     height: 100%;
     display: inline-block;
     margin-right: 2px;
-    background-color: #f5f7fa;
+    background-color: $grey-lighter;
     position: relative;
     &.is-dummy {
         background-color: transparent;
@@ -30,16 +30,16 @@
         background-color: transparent;
     }
     &.is-good {
-        background-color: #97cd76;
+        background-color: $green;
     }
     &.is-ok {
-        background-color: #f68b39;
+        background-color: $orange;
     }
     &.is-bad {
-        background-color: #ed6c63;
+        background-color: $red;
     }
     &.is-disabled {
-        background-color: #aeb1b5;
+        background-color: $grey;
     }
 }
 
