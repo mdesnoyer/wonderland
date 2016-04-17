@@ -15,6 +15,19 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
+    getDefaultProps: function() {
+        return {
+            showLegend: true
+        }
+    },
+    getInitialState: function() {
+        return {
+            isError: false
+        }  
+    },
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
@@ -23,19 +36,16 @@ var SignInForm = React.createClass({
         var self = this;
         self._isMounted = false;
     },
-    getInitialState: function() {
-        return {
-            isError: false
-        }  
-    },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
+            legendElement = self.props.showLegend ? <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend> : ''
+        ;
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
-                    <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
+                    {legendElement}                    
                     <p className="control">
                         <input
                             className="input is-medium"

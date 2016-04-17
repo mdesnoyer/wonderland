@@ -102,7 +102,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
             'nav.signOut': 'Sign Out',
-            'nav.videos': 'Videos',
+            'nav.videoLibrary': 'Video Library',
             'nav.analyze': 'Analyze',
             'nav.contact': 'Contact',
 

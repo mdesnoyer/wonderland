@@ -30,7 +30,7 @@ var SiteNavigation = React.createClass({
                 blank: <span>&nbsp;</span>,
                 dashboard: <Link activeClassName="active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
                 analyzeVideo: <Link activeClassName="active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
-                videos: <Link activeClassName="active" to="/videos/">{T.get('nav.videos')}</Link>,
+                videos: <Link activeClassName="active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
                 avatar: <span className="wonderland-avatar"><i className="fa fa-user" aria-hidden="true" /></span>,
                 signUp: <Link className="button is-danger" activeClassName="" to="/signup/">{T.get('nav.signUp')} Free</Link>,
                 forgotPassword: <Link activeClassName="active" to="/account/forgot/">Forgot Password</Link>,
