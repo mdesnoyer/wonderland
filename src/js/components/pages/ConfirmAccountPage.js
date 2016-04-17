@@ -32,15 +32,23 @@ var ConfirmAccountPage = React.createClass({
             data: {
                 token: self.props.location.query.token
             }
-        }).then(function () {
-            self.render = function () {
-                return false;
-            };
+        })
+        .then(function (res) {
             self.context.router.push('/account/confirmed/');
-        }, function (err) {
-            // TODO - This is ugly and prone to problems; need a better error handling method (global in AJAX.doAPICall?)
-            self.handleError(JSON.parse(err.responseText).error.data, false);
-            self.setState({isError: true});
+        })
+        .catch(function (err) {
+            if (err.status === 409) {
+                self.handleError('It looks like you have already confirmed this account.', false);
+                self.setState({
+                    isError: true
+                });
+            }
+            else {
+                self.handleError(JSON.parse(err.responseText).error.data, false);
+                self.setState({
+                    isError: true
+                });
+            }
         });
     },
     render: function() {
