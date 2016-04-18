@@ -57,7 +57,7 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-large wonderland-thumbnail__score',
+            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-medium wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),

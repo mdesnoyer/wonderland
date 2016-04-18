@@ -33,9 +33,7 @@ var VideosPage = React.createClass({
                 <section className="section">
                     <div className="container">
                         <h1 className="title is-2">{heading}</h1>
-                        <div className="content">
-                            {body}
-                        </div>
+                        {body}
                         <Videos
                             isAccountServingEnabled={self.state.isAccountServingEnabled}
                         />
