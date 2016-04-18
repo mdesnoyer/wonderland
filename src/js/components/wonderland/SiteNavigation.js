@@ -31,10 +31,10 @@ var SiteNavigation = React.createClass({
                 analyzeVideo: <Link activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
                 avatar: <span className="wonderland-avatar"><i className="fa fa-user" aria-hidden="true" /></span>,
-                signUp: <Link className="button is-danger" activeClassName="wonderland-active" to="/signup/">{T.get('nav.signUp')}</Link>,
+                signUp: <Link className="button is-danger" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
                 forgotPassword: <Link activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
-                signIn: <Link activeClassName="wonderland-active" to="/signin/">{T.get('nav.signIn')}</Link>,
-                signOut: <Link activeClassName="wonderland-active" to="/signout/">{T.get('nav.signOut')}</Link>,
+                signIn: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
+                signOut: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
                 username: <span className="un">{self.props.displayName}</span>
             },
             constructedNav = [],
