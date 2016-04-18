@@ -5,8 +5,8 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
-import ModalWrapper from '../core/ModalWrapper';
-import ImageModal from '../core/ImageModal';
+import ModalParent from '../core/ModalParent';
+import ImageModalChild from '../core/ImageModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -99,8 +99,12 @@ var Thumbnail = React.createClass({
                         isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </figcaption>
-                <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
-                    <ImageModal
+                <ModalParent
+                    isModalActive={self.state.isModalActive}
+                    handleToggleModal={self.handleToggleModal}
+                    isModalContentClipped={true}
+                >
+                    <ImageModalChild
                         caption={caption}
                         strippedUrl={self.props.strippedUrl}
                         copyUrl={self.props.url}
@@ -111,7 +115,7 @@ var Thumbnail = React.createClass({
                         type={self.props.type}
                         frameNo={self.props.frameNo}
                     />
-                </ModalWrapper>
+                </ModalParent>
             </figure>
         );
     },
