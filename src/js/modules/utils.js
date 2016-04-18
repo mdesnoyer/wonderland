@@ -140,6 +140,7 @@ var UTILS = {
             URL: '/dashboard/'
         }
     },
+    VERSION: '1.6',
     NEON_SCORE_ENABLED: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',

@@ -7,6 +7,7 @@ import UTILS from '../../modules/utils';
 
 var Xylophone = React.createClass({
     render: function() {
+        var self = this;
         return (
             <div className="wonderland-xylophone">
                 <div
