@@ -17,8 +17,14 @@ var AnalyzeVideoForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
     getDefaultProps: function() {
-        postHook: React.PropTypes.func
+        return {
+            videoCountServed: 0,
+            showLegend: true
+        }
     },
     getInitialState: function() {
         var self = this;
@@ -29,11 +35,8 @@ var AnalyzeVideoForm = React.createClass({
             url: '',
             optionalTitle: '',
             isModalActive: false,
-            // currentVideoCount: self.props.currentVideoCount,
-            maxVideoCount: self.props.maxVideoCount,
-            //left at zero to demonstrate that it works
-            currentVideoCount: 0, // TODO
-            maxVideoCount: 10 // TODO
+            maxVideoCount: 10,
+            currentVideoCount: self.props.videoCountServed
         };
     },
     componentWillUnmount: function(e) {
@@ -42,12 +45,7 @@ var AnalyzeVideoForm = React.createClass({
     render: function() {
         var self = this,
             messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
-            tutorialComponent,
-            panels = {
-                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
-                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
-                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
-            }
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : ''
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             var body = <span dangerouslySetInnerHTML={{
@@ -75,43 +73,39 @@ var AnalyzeVideoForm = React.createClass({
                     inputClassName = 'input is-medium'
                 ;
             }
-            tutorialComponent = self.state.currentVideoCount === 0 ? <TutorialPanels panels={panels}/> : '';
             return (
-                <div>
-                    {tutorialComponent}
-                    <form onSubmit={self.handleSubmit}>
-                        {messageNeeded}
-                        <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.analyzeVideo.heading')}</legend>
-                            <p className="control is-grouped">
-                                <input
-                                    required
-                                    className={inputClassName}
-                                    type="url"
-                                    ref="url"
-                                    onChange={self.handleChangeUrl}
-                                    value={self.state.url}
-                                    placeholder={T.get('analyze.videoUrl')}
-                                />
-                            </p>
-                            <p className="control">
-                                <input
-                                    className={inputClassName}
-                                    type="text"
-                                    ref="optionalTitle"
-                                    onChange={self.handleChangeOptionalTitle}
-                                    value={self.state.optionalTitle}
-                                    placeholder={T.get('analyze.optionalTitle')}
-                                />
-                            </p>
-                            <p className="is-text-centered">
-                                <button className={buttonClassName} type="submit">
-                                    <i className="fa fa-eye" aria-hidden="true"></i> {T.get('analyze')}
-                                </button>
-                            </p>
-                        </fieldset>
-                    </form>
-                </div>
+                <form onSubmit={self.handleSubmit}>
+                    {messageNeeded}
+                    <fieldset>
+                        {legendElement}
+                        <p className="control">
+                            <input
+                                required
+                                className={inputClassName}
+                                type="url"
+                                ref="url"
+                                onChange={self.handleChangeUrl}
+                                value={self.state.url}
+                                placeholder={T.get('analyze.videoUrl')}
+                            />
+                        </p>
+                        <p className="control">
+                            <input
+                                className={inputClassName}
+                                type="text"
+                                ref="optionalTitle"
+                                onChange={self.handleChangeOptionalTitle}
+                                value={self.state.optionalTitle}
+                                placeholder={T.get('analyze.optionalTitle')}
+                            />
+                        </p>
+                        <p className="is-text-centered">
+                            <button className={buttonClassName} type="submit">
+                                <i className="fa fa-eye" aria-hidden="true"></i> {T.get('analyze')}
+                            </button>
+                        </p>
+                    </fieldset>
+                </form>
             );
         }
 

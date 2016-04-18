@@ -29,7 +29,7 @@ var ForgotPasswordForm = React.createClass({
             return (
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <legend className="subtitle is-5">{T.get('copy.forgotPassword.heading')}</legend>
+                        <legend className="title is-4">{T.get('copy.forgotPassword.heading')}</legend>
                         <p className="control">
                             <input className="input is-medium" type="email" ref="email" placeholder={T.get('email')} />
                         </p>

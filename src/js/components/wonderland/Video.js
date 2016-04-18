@@ -77,7 +77,7 @@ var Video = React.createClass({
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-medium is-' + (self.state.isBusy ? 'loading' : ''),
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -147,6 +147,9 @@ var Video = React.createClass({
                         self.setState({
                             status: 200,
                             thumbnails: video.thumbnails,
+                            sortedThumbnails: video.thumbnails.sort(function(a, b) {
+                                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+                            }),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,

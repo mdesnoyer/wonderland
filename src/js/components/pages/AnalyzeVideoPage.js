@@ -27,10 +27,14 @@ var AnalyzeVideoPage = React.createClass({
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-quarter">
                             <h1 className="title is-2">{T.get('copy.analyzeVideo.heading')}</h1>
-                            <div className="content">
+                            {/*<div className="content">
                                 <p>{T.get('copy.analyzeVideo.body')}</p>
-                            </div>
-                            <AnalyzeVideoForm />
+                            </div>*/}
+                            <section className="container">
+                                <AnalyzeVideoForm
+                                    showLegend={false}
+                                />
+                            </section>
                         </div>
                     </div>
                 </section>

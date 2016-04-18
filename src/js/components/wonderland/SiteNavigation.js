@@ -24,7 +24,7 @@ var SiteNavigation = React.createClass({
     render: function() {
         var self = this,
             items = {
-                logo: <a  href="/" title="Go to the Home page"><img className="wonderland-logo" src="/img/logo-white.svg" alt="Neon" title="Neon" /></a>,
+                logo: <a  href="/" title="Go to the Home page"><img className="wonderland-logo" src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
                 contact: <a className="" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
                 blank: <span>&nbsp;&nbsp;&nbsp;</span>,
                 dashboard: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
@@ -44,7 +44,6 @@ var SiteNavigation = React.createClass({
             if (self.props.side === 'left') {
                 constructedNav.push(items.logo);
                 constructedNav.push(items.blank);
-                constructedNav.push(items.analyzeVideo);
                 constructedNav.push(items.videos);
             }
             if (self.props.side === 'right') {
