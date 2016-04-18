@@ -2,6 +2,7 @@
 
 import React from 'react';
 import UTILS from '../../modules/utils';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -28,7 +29,11 @@ var ThumbBox = React.createClass({
         if (self.props.handleToggleModal) {
             toggleModalButton = function() {
                 return (
-                    <span className="icon wonderland-thumbbox__tool" onClick={self.props.handleToggleModal}>
+                    <span
+                        className="icon wonderland-thumbbox__tool"
+                        onClick={self.props.handleToggleModal}
+                        title="View this Thumbnail larger"
+                    >
                         <i className="fa fa-search-plus" aria-hidden="true"></i>
                     </span>
                 );
@@ -63,7 +68,7 @@ var ThumbBox = React.createClass({
                     </a>
                     {toggleModalButton}
                 </div>
-                <span title="View the Thumbnail larger" className="wonderland-thumbbox__tease">
+                <span className="wonderland-thumbbox__tease" title="Expand">
                     <i className="fa fa-caret-right" aria-hidden="true"></i>
                 </span>
             </aside>
