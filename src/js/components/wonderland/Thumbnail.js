@@ -92,8 +92,7 @@ var Thumbnail = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     {neonScore}
-                    <input className="wonderland-thumbnail__enabled is-medium" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
-                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
+                    <input className="wonderland-thumbnail__enabled" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
                     <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                     <ThumbBox
                         copyUrl={self.props.url}

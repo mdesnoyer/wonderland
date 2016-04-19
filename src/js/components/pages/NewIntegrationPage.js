@@ -32,8 +32,8 @@ var NewIntegrationPage = React.createClass({
                             {T.get('copy.new.integration.body')}
                         </div>
                         <div className="columns">
-                            <div className="card column is-third">
-                                <div className="card-content is-text-centered">
+                            <div className="card column is-one-third">
+                                <div className="card-content has-text-centered">
                                     <img src={T.get('copy.integrations.types.brightcove.img')} />
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>

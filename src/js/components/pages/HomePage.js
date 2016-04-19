@@ -19,7 +19,7 @@ var HomePage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             <p>TODO</p>
                         </div>
                     </div>

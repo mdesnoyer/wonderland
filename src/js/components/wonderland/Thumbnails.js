@@ -43,7 +43,7 @@ var Thumbnails = React.createClass({
                                     strippedUrl = UTILS.stripProtocol(thumbnail.url)
                                 ;
                                 return (
-                                    <div className="column is-half-mobile is-third-tablet is-third-desktop" key={thumbnail.thumbnail_id}>
+                                    <div className="column is-half-mobile is-one-third-tablet is-one-third-desktop" key={thumbnail.thumbnail_id}>
                                         <Thumbnail
                                             index={i}
                                             videoStateMapping={self.props.videoStateMapping}

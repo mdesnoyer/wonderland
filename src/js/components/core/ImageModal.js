@@ -34,7 +34,6 @@ var ImageModalChild = React.createClass({
                             title={self.props.caption}
                         />
                         <figcaption className="wonderland-thumbnail__caption">
-                            <span className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
                             <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                             <ThumbBox
                                 copyUrl={self.props.copyUrl}
