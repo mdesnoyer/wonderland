@@ -154,16 +154,12 @@ var AnalyzeVideoForm = React.createClass({
     handleSubmit: function (e) {
         var self = this,
             url = this.refs.url.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim() || self.makeTitle()
+            optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle()
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, url);
         self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
         self.resetForm();
-    },
-    makeTitle: function() {
-        var self = this;
-        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     analyzeVideo: function (url, optionalTitle) {
         var self = this,
