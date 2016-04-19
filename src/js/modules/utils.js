@@ -147,7 +147,7 @@ var UTILS = {
             URL: '/integrations/new/'
         },
         INTEGRATIONS_BRIGHTCOVE: {
-            URL: '/integrations/brightcove/'
+            URL: '/integrations/new/brightcove/'
         },
         SIGNUP: {
             URL: '/signup/'
@@ -157,9 +157,27 @@ var UTILS = {
         },
         SIGNOUT: {
             URL: '/signout/'
+        },
+        ACCOUNTSETTINGS: {
+            URL: '/settings/account/'
+        },
+        USERSETTINGS: {
+            URL: '/settings/user/'
+        },
+        BILLING: {
+            URL: '/billing/'
+        },
+        TELEMETRY: {
+            URL: '/telemetry/'
+        },
+        API: {
+            URL: '/api/'
+        },
+        NEONSCOPE: {
+            URL: '/neonscope/'
         }
     },
-    VERSION: '1.7',
+    VERSION: '1.8',
     NEON_SCORE_ENABLED: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',

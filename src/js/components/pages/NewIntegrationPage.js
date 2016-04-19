@@ -10,7 +10,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var IntegrationsNewPage = React.createClass({
+var NewIntegrationPage = React.createClass({
     mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -22,14 +22,14 @@ var IntegrationsNewPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.integrations.new.title')}
+                    title={T.get('copy.new.integration.title')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.integrations.new.heading')}</h1>
+                        <h1 className="title is-2">{T.get('copy.new.integration.heading')}</h1>
                         <div className="content">
-                            {T.get('copy.integrations.new.body')}
+                            {T.get('copy.new.integration.body')}
                         </div>
                         <div className="columns">
                             <div className="card column is-third">
@@ -51,6 +51,6 @@ var IntegrationsNewPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default IntegrationsNewPage;
+export default NewIntegrationPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

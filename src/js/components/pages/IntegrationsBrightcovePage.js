@@ -28,13 +28,18 @@ var IntegrationsBrightcovePage = React.createClass({
                     title={T.get('copy.integrations.types.brightcove.title')}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">
-                            <img src={T.get('copy.integrations.types.brightcove.img')} />
-                        </h1>
-                        <div className="content">
-                            <IntegrationsForm provider="brightcove" id={this.state.id} />
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">
+                                <img src={T.get('copy.integrations.types.brightcove.img')} />
+                            </h1>
+                            <section className="container">
+                                <IntegrationsForm
+                                    provider="brightcove"
+                                    id={this.state.id}
+                                />
+                            </section>
                         </div>
                     </div>
                 </section>
