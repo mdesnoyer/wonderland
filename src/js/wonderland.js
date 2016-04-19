@@ -55,9 +55,9 @@ render((
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
         <Route path="/terms/" component= {TermsPage} />
-        <Route path="/integrations/" component={IntegrationsPage} />
-        <Route path="/integrations/new" component={IntegrationsNewPage} />
-        <Route path="/integrations/brightcove" component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS.URL} component={IntegrationsPage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS_NEW.URL} component={IntegrationsNewPage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));

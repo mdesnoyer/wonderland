@@ -87,12 +87,12 @@ var Integrations = React.createClass({
         );
     },
     configure: function(integration) {
-        this.context.router.push('/integrations/' + integration.type + '?id=' + integration.integration_id);
+        this.context.router.push('/integrations/' + integration.type + '/?id=' + integration.integration_id);
     },
     addNew: function() {
-        // this.context.router.push('/integrations/new');
+        // this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_NEW.URL);
         // Temp until there are more types of integrations
-        this.context.router.push('/integrations/brightcove');
+        this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL);
     }
 });
 

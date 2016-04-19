@@ -6,7 +6,7 @@ import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import E from '../../modules/errors';
-import ModalWrapper from '../core/ModalWrapper';
+import ModalWrapper from '../core/ModalParent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

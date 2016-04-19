@@ -17,7 +17,6 @@ var IntegrationsBrightcovePage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
-        var self = this;
         return {
             id: this.props.location.query.id
         };

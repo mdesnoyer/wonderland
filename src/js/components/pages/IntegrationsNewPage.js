@@ -16,7 +16,7 @@ var IntegrationsNewPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     addBrightcove: function () {
-        this.context.router.push('/integrations/brightcove');
+        this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL);
     },
     render: function() {
         return (
