@@ -140,6 +140,15 @@ var UTILS = {
         DASHBOARD: {
             URL: '/dashboard/'
         },
+        INTEGRATIONS: {
+            URL: '/integrations/'
+        },
+        INTEGRATIONS_NEW: {
+            URL: '/integrations/new/'
+        },
+        INTEGRATIONS_BRIGHTCOVE: {
+            URL: '/integrations/brightcove/'
+        },
         SIGNUP: {
             URL: '/signup/'
         },
