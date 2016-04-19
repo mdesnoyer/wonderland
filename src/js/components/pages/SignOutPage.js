@@ -23,7 +23,7 @@ var SignOutPage = React.createClass({
                 // '@username': 'TODO'
             }),
             body = T.get('copy.signOut.body', {
-                '@link': '/signin/'
+                '@link': UTILS.DRY_NAV.SIGNIN.URL
             })
         ;
         return (

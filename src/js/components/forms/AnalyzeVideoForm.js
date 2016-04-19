@@ -5,7 +5,6 @@ import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
-import ModalWrapper from '../core/ModalWrapper';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
 import E from '../../modules/errors';
@@ -34,7 +33,6 @@ var AnalyzeVideoForm = React.createClass({
             mode: 'silent', // silent/loading/error
             url: '',
             optionalTitle: '',
-            isModalActive: false,
             maxVideoCount: 10,
             currentVideoCount: self.props.videoCountServed
         };

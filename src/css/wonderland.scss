@@ -22,7 +22,7 @@ $orange: $flamingo;
 $grey-darker: $boulder;
 $grey-dark: $boulder;
 $grey: $silver-chalice;
-$grey-light: $athens-gray;
+$grey-light: mix($silver-chalice, $athens-gray, 25%);
 $grey-lighter: $athens-gray;
 
 $family-sans-serif: "Open Sans", sans-serif;
@@ -70,6 +70,7 @@ $background: $white;
     'components/thumbbox',
     'components/slides',
     'components/infobox',
+    'components/modal',
     'components/xylophone',
     'components/banner'
 ;

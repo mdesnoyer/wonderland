@@ -36,18 +36,18 @@ window.CONFIG = CONFIG;
 
 render((
     <Router history={browserHistory}>
-        <Redirect from='/' to='/signin/' />
+        <Redirect from='/' to={UTILS.DRY_NAV.SIGNIN.URL} />
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to='/videos/' />
         <Route path="/" component={HomePage} />
-        <Route path="/signup/" component={SignUpPage} />
+        <Route path={UTILS.DRY_NAV.SIGNUP.URL} component={SignUpPage} />
         <Route path="/account/confirm" component={ConfirmAccountPage} />
         <Route path="/account/pending/" component={PendingAccountPage} />
         <Route path="/account/confirmed/" component={AccountConfirmedPage} />
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
-        <Route path="/signin/" component={SignInPage} />
+        <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
-        <Route path="/signout/" component={SignOutPage} />
+        <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
         <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />

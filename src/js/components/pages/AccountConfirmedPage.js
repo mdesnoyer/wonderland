@@ -13,7 +13,7 @@ import SignInForm from '../forms/SignInForm';
 var AccountConfirmedPage = React.createClass({
     render: function() {
         var body = T.get('copy.accountConfirmed.body', {
-                '@link': '/signin/'
+                '@link': UTILS.DRY_NAV.SIGNIN.URL
             })
         ;
         return (

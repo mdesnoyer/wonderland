@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import T from './translation';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -138,11 +139,20 @@ var UTILS = {
     DRY_NAV: {
         DASHBOARD: {
             URL: '/dashboard/'
+        },
+        SIGNUP: {
+            URL: '/signup/'
+        },
+        SIGNIN: {
+            URL: '/signin/'
+        },
+        SIGNOUT: {
+            URL: '/signout/'
         }
     },
-    VERSION: '1.6',
+    VERSION: '1.7',
     NEON_SCORE_ENABLED: false,
-    CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
+    CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
     VIDEO_PAGE_SIZE: 10,
@@ -152,6 +162,13 @@ var UTILS = {
     },
     enabledDisabledIcon: function(enabled) {
         return enabled ? 'check' : 'times';
+    },
+    leadingZero: function(x) {
+        return (x < 10) ? ('0' + x) : x;
+    },
+    formatDuration: function(durationSeconds) {
+        var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
+        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
     generateId: function() {
         var id = shortid.generate(),
