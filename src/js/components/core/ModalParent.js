@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var ModalWrapper = React.createClass({
+var ModalParent = React.createClass({
     handleToggleModal: function(e) {
         var self = this;
         self.props.handleToggleModal();
