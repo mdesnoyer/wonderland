@@ -15,11 +15,12 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
+    getDefaultProps: function() {
+        return {
+            showLegend: true
         }
     },
     getInitialState: function() {
@@ -27,14 +28,25 @@ var SignInForm = React.createClass({
             isError: false
         }  
     },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+        E.clearErrors();
+    },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : ''
+        ;
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
-                    <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
+                    {legendElement}                    
                     <p className="control">
                         <input
                             className="input is-medium"
@@ -71,9 +83,11 @@ var SignInForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        self.setState({
-            isError: false
-        });
+        if (self._isMounted) {
+            self.setState({
+                isError: false
+            });
+        }
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
@@ -86,26 +100,32 @@ var SignInForm = React.createClass({
                     }
                 })
                 .then(function (res) {
-                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
-                    self.setState({
-                        isError: false
-                    });
+                    if (self._isMounted) {
+                        self.setState({
+                            isError: false
+                        });
+                    }
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
-                    E.checkForError(err.statusText, false);
-                    self.setState({
-                        isError: true
-                    });
+                    E.checkForError('Sorry, we could not sign you in.', false);
+                    if (self._isMounted) {
+                        self.setState({
+                            isError: true
+                        });
+                    }
                 });
         }
         else {
-            self.setState({
-                isError: true
-            });
+            if (self._isMounted) {
+                self.setState({
+                    isError: true
+                });
+            }
         }
     }
 });

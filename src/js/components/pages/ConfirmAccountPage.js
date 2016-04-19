@@ -32,15 +32,23 @@ var ConfirmAccountPage = React.createClass({
             data: {
                 token: self.props.location.query.token
             }
-        }).then(function () {
-            self.render = function () {
-                return false;
-            };
+        })
+        .then(function (res) {
             self.context.router.push('/account/confirmed/');
-        }, function (err) {
-            // TODO - This is ugly and prone to problems; need a better error handling method (global in AJAX.doAPICall?)
-            self.handleError(JSON.parse(err.responseText).error.data, false);
-            self.setState({isError: true});
+        })
+        .catch(function (err) {
+            if (err.status === 409) {
+                self.handleError('It looks like you have already confirmed this account.', false);
+                self.setState({
+                    isError: true
+                });
+            }
+            else {
+                self.handleError(JSON.parse(err.responseText).error.data, false);
+                self.setState({
+                    isError: true
+                });
+            }
         });
     },
     render: function() {
@@ -57,13 +65,15 @@ var ConfirmAccountPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        {messageNeeded}
-                        <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
-                        <div className="content">
-                            <p>{body1}</p>
-                            <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            {messageNeeded}
+                            <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
+                            <div className="content">
+                                <p>{body1}</p>
+                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
+                            </div>
                         </div>
                     </div>
                 </section>

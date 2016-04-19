@@ -4,6 +4,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 var ForgotPasswordForm = React.createClass({
@@ -22,14 +23,14 @@ var ForgotPasswordForm = React.createClass({
 	render: function() {
 		if (this.state.isEmailMessageSent) {
             return (
-                    <Message header={T.get('reset.message')} body={<Link activeClassName="active" to="/signin/">{T.get('returnSignIn')}</Link>} />
+                    <Message header={T.get('reset.message')} body={<Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('returnSignIn')}</Link>} />
                 );
         }
         else {
             return (
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <legend className="subtitle is-5">{T.get('copy.forgotPassword.heading')}</legend>
+                        <legend className="title is-4">{T.get('copy.forgotPassword.heading')}</legend>
                         <p className="control">
                             <input className="input is-medium" type="email" ref="email" placeholder={T.get('email')} />
                         </p>

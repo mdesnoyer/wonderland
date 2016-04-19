@@ -6,12 +6,13 @@ import SiteFooter from '../wonderland/SiteFooter';
 import Video from '../wonderland/Video';
 import Secured from '../../mixins/secured';
 import Helmet from 'react-helmet';
+import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoPage = React.createClass({
-    mixins: [Secured],
+    mixins: [Secured, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -33,6 +34,7 @@ var VideoPage = React.createClass({
                             pingInitial={true}
                             pingInterval={true}
                             forceOpen={true}
+                            isAccountServingEnabled={self.state.isAccountServingEnabled}
                         />
                     </div>
                 </section>

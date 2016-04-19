@@ -5,9 +5,11 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
-import ModalWrapper from '../core/ModalWrapper';
-import ImageModal from '../core/ImageModal';
+import ModalParent from '../core/ModalParent';
+import ImageModalChild from '../core/ImageModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
+import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,10 +21,12 @@ var Thumbnail = React.createClass({
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
+        frameNo: React.PropTypes.number.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
+        isAccountServingEnabled: React.PropTypes.bool.isRequired
     },
     getInitialState: function () {
         var self = this;
@@ -53,13 +57,15 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-large wonderland-thumbnail__score',
+            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-medium wonderland-thumbnail__score',
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
-            indicator = self.state.isEnabled ? 'fa-check-circle' : 'fa-times-circle'
+            enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
+            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
+            handleEnabledChangeHook = self.props.isAccountServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
             <figure
@@ -77,26 +83,39 @@ var Thumbnail = React.createClass({
                     data-src={dataSrc}
                     alt={caption}
                     title={caption}
-                    onClick={self.handleEnabledChange}
+                    onClick={self.handleToggleModal}
                 />
                 <figcaption className="wonderland-thumbnail__caption">
-                    <span className={additionalClass} title="NeonScore">{self.props.cookedNeonScore}</span>
-                    <input title="Enable/Disable this Thumbnail" className="wonderland-thumbnail__enabled is-medium" onChange={self.handleEnabledChange} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
-                    <span onClick={self.handleEnabledChange} className="wonderland-thumbnail__indicator"><i className={'fa ' + indicator}></i></span>
+                    {neonScore}
+                    <input className="wonderland-thumbnail__enabled is-medium" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
+                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
+                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                     <ThumbBox
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
+                        isEnabled={self.state.isEnabled}
                         handleToggleModal={self.handleToggleModal}
+                        handleEnabledChange={handleEnabledChangeHook}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </figcaption>
-                <ModalWrapper isModalActive={self.state.isModalActive} handleToggleModal={self.handleToggleModal}>
-                    <ImageModal
+                <ModalParent
+                    isModalActive={self.state.isModalActive}
+                    handleToggleModal={self.handleToggleModal}
+                    isModalContentClipped={true}
+                >
+                    <ImageModalChild
                         caption={caption}
                         strippedUrl={self.props.strippedUrl}
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
+                        isEnabled={self.state.isEnabled}
+                        handleEnabledChange={handleEnabledChangeHook}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        type={self.props.type}
+                        frameNo={self.props.frameNo}
                     />
-                </ModalWrapper>
+                </ModalParent>
             </figure>
         );
     },

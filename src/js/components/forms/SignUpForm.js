@@ -15,6 +15,14 @@ var SignUpForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
+    getDefaultProps: function() {
+        return {
+            showLegend: true
+        }
+    },
     getInitialState: function() {
         return {
             password: '',
@@ -23,12 +31,16 @@ var SignUpForm = React.createClass({
             isAgreementChecked: false
         }
     },
+    componentWillUnmount: function(e) {
+        E.clearErrors();
+    },
     render: function() {
         var self = this,
             buttonClassName,
             messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" />  : '',
-            copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'})
-         ;
+            copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'}),
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
+        ;
         if (!self.state.isAgreementChecked) {
              buttonClassName = 'button is-medium is-primary is-disabled';
         }
@@ -39,12 +51,12 @@ var SignUpForm = React.createClass({
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>
-                    <legend className="subtitle is-5">{T.get('copy.signUp.heading')}</legend>
+                    {legendElement}
                     <p className="control is-grouped">
                         <input className="input is-medium" type="text" ref="firstName" placeholder={T.get('firstName')} />
                         <input className="input is-medium" type="text" ref="lastName" placeholder={T.get('lastName')} />
                     </p>
-                    <p className="control is-grouped">
+                    <p className="control">
                         <input className="input is-medium" required type="email" ref="email" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">

@@ -28,7 +28,7 @@
     position: absolute;
     bottom: 4%;
     right: 3%;
-    background-color: silver;
+    background-color: $grey;
     transition: all 1s;
 }
 
@@ -38,21 +38,50 @@
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1;
-    color: #000;
-    transition: all 1s;
+    transition: opacity 1s;
+    &.-foreground {
+        .is-wonderland-enabled & {
+            color: $success;
+        }
+        .is-wonderland-disabled & {
+            color: $danger;
+        }
+    }
+    &.-background {
+        display: none;
+    }
     .is-wonderland-enabled & {
         opacity: 0;
     }
     .is-wonderland-disabled & {
-        opacity: 0.2;
+        opacity: 1;
     }
     .fa {
-        font-size: 8vw; // hack
+        font-size: 6em; // hack
+        .modal & {
+            font-size: 15em; // hack
+        }
     }
 }
 
 .wonderland-thumbnail__enabled {
     display: none;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-hero-thumbnail {
+    width: 5em;
+    height: auto;
+}
+
+.wonderland-hero-thumbnail-dummy {
+    text-align: center;
+    color: $grey-light;
+    height: auto;
+    .fa {
+        font-size: 5em;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,16 +1,82 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+$max: 5em;
+
 .wonderland-banner {
-    background-color: #939da7;
-    color: #fff;
-    a {
-        color: #fff;
-        &.active {
-            background-color: #fff;
-            color: #939da7;
-            padding: 0.2em;
-        }
-    }
+    background-color: $grey-darker;
+}
+
+.wonderland-banner--header {
+    height: $max;
+}
+
+.wonderland-navbar {
+    height: $max;
+}
+
+.wonderland-logo {
+    width: auto;
+    height: $max * 0.618;
+    margin-top: $max * 0.191;
 }
 
 .wonderland-avatar {
     border-radius: 50%;
+    width: $max * 0.618;
+    height: $max * 0.618;
+    background-color: $white;
+    margin-top: $max * 0.191;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fa {
+        font-size: $max * 0.5;
+        color: $grey;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar-item {
+    margin-right: 2em !important;
+    height: $max;
+    a {
+        &.wonderland-active {
+            border-bottom: 4px solid $orange;
+        }
+        &:not(.button) {
+            height: $max;    
+            display: block;
+            line-height: $max;
+            color: $white;
+        }
+        &.button {
+            height: $max * 0.5;
+            margin-top: $max * 0.25;
+        }
+    }
+    .un {
+        height: $max;    
+        display: block;
+        line-height: $max;
+        color: $white;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-banner--footer {
+    color: $grey-light;
+    a {
+        color: $grey-light; 
+        &:link,
+        &:visited {
+            color: $grey-light; 
+        }
+        &:focus,
+        &:hover,
+        &:active {
+            color: $white; 
+        }
+    }
 }

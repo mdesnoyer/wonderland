@@ -10,14 +10,14 @@ import SearchBar from '../core/SearchBar';
 var VideosResults = React.createClass({
     render: function() {
         var self = this,
-            additionalClass = 'table is-striped' + (self.props.isBusy ? ' is-busy' : '')
+            additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')
         ;
         return (
             <table className={additionalClass}>
                 <caption>
                     {self.props.errorMessage}
                 </caption>
-                <thead>
+                {/*<thead>
                     <tr>
                         <th><SearchBar {...self.props} /></th>
                     </tr>
@@ -26,10 +26,11 @@ var VideosResults = React.createClass({
                     <tr>
                         <th><NavigationBar {...self.props} /></th>
                     </tr>
-                </tfoot>
+                </tfoot>*/}
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
+                            var forceOpen = (i === 0) && self.props.forceOpenFirstOverride;
                             return (
                                 <tr key={video.video_id}>
                                     <td>
@@ -37,7 +38,7 @@ var VideosResults = React.createClass({
                                             videoId={video.video_id}
                                             pingInitial={false}
                                             pingInterval={true}
-                                            forceOpen={false}
+                                            forceOpen={forceOpen}
                                             videoState={video.state}
                                             thumbnails={video.thumbnails}
                                             title={video.title}
@@ -47,6 +48,7 @@ var VideosResults = React.createClass({
                                             // publish_date
                                             // updated
                                             created={video.created}
+                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
                                         />
                                     </td>
                                 </tr>

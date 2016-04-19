@@ -23,7 +23,7 @@ var SignOutPage = React.createClass({
                 // '@username': 'TODO'
             }),
             body = T.get('copy.signOut.body', {
-                '@link': '/signin/'
+                '@link': UTILS.DRY_NAV.SIGNIN.URL
             })
         ;
         return (
@@ -32,13 +32,15 @@ var SignOutPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.signOut.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{heading}</h1>
-                        <div className="content">
-                            <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{heading}</h1>
+                            <div className="content">
+                                <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
+                            </div>
+                            <SignInForm showLegend={false} />
                         </div>
-                        <SignInForm />
                     </div>
                 </section>
                 <SiteFooter />

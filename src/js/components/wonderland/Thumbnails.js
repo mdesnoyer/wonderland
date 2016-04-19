@@ -15,8 +15,9 @@ var Thumbnails = React.createClass({
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
-        thumbnails:  React.PropTypes.array.isRequired,
-        forceOpen:  React.PropTypes.bool.isRequired
+        thumbnails: React.PropTypes.array.isRequired,
+        forceOpen: React.PropTypes.bool.isRequired,
+        isAccountServingEnabled: React.PropTypes.bool.isRequired
     },
     render: function() {
         var self = this;
@@ -31,15 +32,14 @@ var Thumbnails = React.createClass({
             );
         }
         else {
-            var sortedThumbnails = this.props.thumbnails.sort(function(a, b) {
-                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-            });
             return (
                 <div className="columns is-multiline is-mobile">
                     {
-                        sortedThumbnails.map(function(thumbnail, i) {
+                        self.props.thumbnails.map(function(thumbnail, i) {
                             if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
-                                var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
+                                var neonScoreData = UTILS.NEON_SCORE_ENABLED ? UTILS.getNeonScoreData(thumbnail.neon_score) : '',
+                                    rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,
+                                    cookedNeonScore = UTILS.NEON_SCORE_ENABLED ? neonScoreData.neonScore : 0,
                                     strippedUrl = UTILS.stripProtocol(thumbnail.url)
                                 ;
                                 return (
@@ -50,11 +50,13 @@ var Thumbnails = React.createClass({
                                             isEnabled={thumbnail.enabled}
                                             strippedUrl={strippedUrl}
                                             url={thumbnail.url}
-                                            rawNeonScore={thumbnail.neon_score}
-                                            cookedNeonScore={neonScoreData.neonScore}
+                                            rawNeonScore={rawNeonScore}
+                                            cookedNeonScore={cookedNeonScore}
                                             thumbnailId={thumbnail.thumbnail_id}
+                                            frameNo={thumbnail.frameno}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}
+                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
                                         />
                                     </div>
                                 );

@@ -9,10 +9,21 @@ import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInPage = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    componentWillMount: function() {
+        if (SESSION.active()) {
+            // Play nice, transport the user to the internal home
+            // page (dashboard)
+            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        }
+    },
     render: function() {
         return (
             <div>
@@ -20,14 +31,16 @@ var SignInPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
                 <SiteHeader />
-                <section className="section columns is-desktop">
-                    <div className="column is-half is-offset-quarter">
-                        <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
-                        <div className="content">
-                            <p>{T.get('copy.signIn.body')}</p>
+                <section className="section">
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-quarter">
+                            <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
+                            <div className="content">
+                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
+                            </div>
+                            <SignInForm showLegend={false} />
+                            {/*<Link activeClassName="wonderland-active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
-                        <SignInForm />
-                        {/*<Link activeClassName="active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                     </div>
                 </section>
                 <SiteFooter />

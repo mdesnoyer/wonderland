@@ -36,6 +36,9 @@ var Video = React.createClass({
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
+            sortedThumbnails: self.props.thumbnails.sort(function(a, b) {
+                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+            }),
             title: self.props.title,
             error: self.props.error,
             created: self.props.created,
@@ -74,7 +77,7 @@ var Video = React.createClass({
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-medium is-' + (self.state.isBusy ? 'loading' : ''),
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -82,7 +85,7 @@ var Video = React.createClass({
             return (
                 <div className={videoSizeClass}>
                     <VideoHeader
-                        handleToggle={self.handleToggle}
+                        handleVideoOpenToggle={self.handleVideoOpenToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
                         title={self.state.title}
@@ -90,23 +93,26 @@ var Video = React.createClass({
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
-                        thumbnails={self.state.thumbnails}
+                        thumbnails={self.state.sortedThumbnails}
                     />
                     <VideoMain
                         forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
                         videoStateMapping={self.state.videoStateMapping}
-                        thumbnails={self.state.thumbnails}
+                        thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
-                        duration={self.state.duration || 0}
+                        duration={self.state.duration}
+                        created={self.state.created}
                         url={self.state.url}
+                        isAccountServingEnabled={self.props.isAccountServingEnabled}
                     />
                 </div>
             );
         }
     },
-    handleToggle: function() {
+    handleVideoOpenToggle: function(e) {
+        e.preventDefault();
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen
@@ -123,7 +129,7 @@ var Video = React.createClass({
         ;
         // If the video is 'serving' or 'failed', its going nowhere, so don't
         // bother checking
-        if (self.state.videoState === 'serving' || self.state.videoState === 'failed') {
+        if (self.state.videoState === 'serving' || self.state.videoState === 'failed' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
         }
@@ -141,6 +147,9 @@ var Video = React.createClass({
                         self.setState({
                             status: 200,
                             thumbnails: video.thumbnails,
+                            sortedThumbnails: video.thumbnails.sort(function(a, b) {
+                                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+                            }),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
