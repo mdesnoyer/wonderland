@@ -1,6 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 $maximum-nav-height: 5em;
+$smaller-ratio: 0.618;
+$smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -40,7 +42,7 @@ $maximum-nav-height: 5em;
 
 .wonderland-navbar__icon,
 .wonderland-navbar__logo {
-    margin: $maximum-nav-height * 0.191 0;
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -49,7 +51,7 @@ $maximum-nav-height: 5em;
     display: block;
     img {
         width: auto;
-        height: $maximum-nav-height * 0.618;
+        height: $maximum-nav-height * $smaller-ratio;
     }
 }
 
@@ -64,7 +66,7 @@ $maximum-nav-height: 5em;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wul {
+.wonderland-navbar__subnav {
     display: none;
     position: absolute;
     z-index: 1111;
@@ -76,7 +78,7 @@ $maximum-nav-height: 5em;
         display: inline-block;
         border: 7px solid transparent;
         border-bottom-color: $white;
-        left: $maximum-nav-height * 0.618 * 0.5;
+        left: $maximum-nav-height * $smaller-ratio * 0.5;
         bottom: 100%;
         content: '';
         transform: translateX(-50%);
@@ -85,7 +87,7 @@ $maximum-nav-height: 5em;
         min-width: 10em;
         a {
             display: block;
-            padding: 0.618em;
+            padding: $smaller-ratio * 1em;
             &:link,
             &:visited {
                 background-color: $white;
@@ -102,7 +104,7 @@ $maximum-nav-height: 5em;
 }
 
 .wonderland-navbar__item:hover {
-    .wul {
+    .wonderland-navbar__subnav {
         display: block;
 
     }
@@ -132,17 +134,11 @@ $maximum-nav-height: 5em;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wonderland-navbar__button {
-    
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 .wonderland-navbar__icon {
     transition: color 0.3333s;
     border-radius: 50%;
-    width: $maximum-nav-height * 0.618;
-    height: $maximum-nav-height * 0.618;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
     display: flex;
     align-items: center;
     justify-content: center;
