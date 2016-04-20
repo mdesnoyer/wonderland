@@ -5,6 +5,7 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
+import TRACKING from '../../modules/tracking';
 import ModalParent from '../core/ModalParent';
 import ImageModalChild from '../core/ImageModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
@@ -131,9 +132,11 @@ var Thumbnail = React.createClass({
     },
     handleToggleModal: function(e) {
         var self = this;
+        TRACKING.sendEvent('ThumbNail','Toggle Modal' ,'User Expanded/Contracted');
         self.setState({
             isModalActive: !self.state.isModalActive
-        });
+        })
+;
     },
     handleEnabledChange: function(e) {
         var self = this,

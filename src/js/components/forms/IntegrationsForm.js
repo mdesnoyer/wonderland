@@ -50,7 +50,7 @@ var IntegrationsForm = React.createClass({
                         break;
                     }
                 }).catch(function(err) {
-                    E.checkForError(err.statusText, false);
+                    E.checkForError(err.statusText, false, 'IntegrationsForm');
                     self.setState({
                         isError: true,
                         mode: 'adding'
@@ -225,7 +225,7 @@ var IntegrationsForm = React.createClass({
             .then(function(res) {
                 self.context.router.push(UTILS.DRY_NAV.INTEGRATIONS.URL);
             }).catch(function(err) {
-                E.checkForError(err.statusText, false);
+                E.checkForError(err.statusText, false, 'IntegrationsForm');
                 self.setState({
                     isError: true
                 });

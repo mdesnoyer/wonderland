@@ -1,13 +1,18 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+import TRACKING from './tracking';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 let E = {
     errorMessageArray: [],
-    checkForError: function(errorMessage, check) {
+    checkForError: function(errorMessage, check, errorsLocation) {
         var messageIndex = (this.errorMessageArray.indexOf(errorMessage)),
             isFound = (messageIndex > -1 ),
             isError = !check
         ;
         if (isError && !isFound) {
+            TRACKING.sendEvent(errorsLocation, 'Error', errorMessage);
             this.errorMessageArray.push(errorMessage);
         }
         if (!isError && isFound) {
@@ -15,10 +20,11 @@ let E = {
         }
         return check;
     },
-    checkForErrors: function(errorList) {
+    checkForErrors: function(errorList, errorsLocation) {
+        debugger 
         var count = 0 
         for (var i = 0; i < errorList.length; i++) {
-            if (this.checkForError(errorList[i].message, errorList[i].check)){
+            if (this.checkForError(errorList[i].message, errorList[i].check, errorsLocation)){
                 count += 1;
             }
         }

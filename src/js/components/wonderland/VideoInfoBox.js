@@ -2,6 +2,7 @@
 
 import React from 'react';
 import UTILS from '../../modules/utils';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -21,12 +22,15 @@ var VideoInfoBox = React.createClass({
                     <dt className="wonderland-dt">Duration</dt>
                         <dd className="wonderland-dd">{niceDuration}</dd>
                     <dt className="wonderland-dt">Original</dt>
-                        <dd className="wonderland-dd"><a href={self.props.url} rel="external">Link</a></dd>
+                        <dd className="wonderland-dd"><a href={self.props.url} rel="external" onClick={this.handleClick} name="Original">Link</a></dd>
                     <dt className="wonderland-dt">Direct</dt>
-                        <dd className="wonderland-dd"><a href={self.props.videoLink}>Link</a></dd>
+                        <dd className="wonderland-dd"><a href={self.props.videoLink} onClick={this.handleClick} name="Direct">Link</a></dd>
                 </dl>
             </aside>
         );
+    },
+    handleClick: function(e) { 
+        TRACKING.sendEvent('VideoInfoBox','Link' ,'User clicked: ' + e.target.name); 
     }
 });
 

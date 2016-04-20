@@ -134,12 +134,13 @@ var AnalyzeVideoForm = React.createClass({
             optionalTitle = self.refs.optionalTitle.value.trim() || self.makeTitle()
         ;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, url);
+        TRACKING.sendEvent('AnalyzeVideoForm','Submit', url);
         self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
         self.resetForm();
     },
     makeTitle: function() {
         var self = this;
+        TRACKING.sendEvent('AnalyzeVideoForm','Submit', 'Auto Generated Title Used');
         return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     analyzeVideo: function (url, optionalTitle) {
@@ -170,10 +171,10 @@ var AnalyzeVideoForm = React.createClass({
                     E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
                         '%limit': self.state.maxVideoCount,
                         '@link': UTILS.CONTACT_EXTERNAL_URL
-                    }), false);
+                    }), false, 'AnalyzeVideoForm');
                 }
                 else {
-                    E.checkForError(err.statusText, false);
+                    E.checkForError(err.statusText, false, 'AnalyzeVideoForm');
                 }
                 self.setState({
                     isError: true

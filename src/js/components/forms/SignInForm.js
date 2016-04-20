@@ -109,7 +109,7 @@ var SignInForm = React.createClass({
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
-            TRACKING.sendEvent(self, arguments, email);
+            TRACKING.sendEvent('SignInForm', 'Submit','User Sign In');
             AJAX.doPost('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
@@ -120,6 +120,7 @@ var SignInForm = React.createClass({
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
                     if (SESSION.rememberMe(isRememberMe)) {
+                        TRACKING.sendEvent('SignInForm', 'Click','Remember Me');
                         SESSION.rememberedEmail(email);
                     }
                     if (self._isMounted) {
@@ -132,7 +133,7 @@ var SignInForm = React.createClass({
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
-                    E.checkForError('Sorry, we could not sign you in.', false);
+                    E.checkForError('Sorry, we could not sign you in.', false, 'SignInForm');
                     if (self._isMounted) {
                         self._isSubmitted = false;
                         self.setState({
