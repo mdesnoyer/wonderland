@@ -52,11 +52,16 @@ var Thumbnails = React.createClass({
                                             url={thumbnail.url}
                                             rawNeonScore={rawNeonScore}
                                             cookedNeonScore={cookedNeonScore}
-                                            thumbnailId={thumbnail.thumbnail_id}
                                             frameNo={thumbnail.frameno}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}
                                             isAccountServingEnabled={self.props.isAccountServingEnabled}
+                                            width={thumbnail.width}
+                                            height={thumbnail.height}
+                                            thumbnailId={thumbnail.thumbnail_id}
+                                            created={thumbnail.created}
+                                            updated={thumbnail.updated}
+                                            ctr={thumbnail.ctr}
                                         />
                                     </div>
                                 );

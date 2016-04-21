@@ -22,11 +22,16 @@ var Thumbnail = React.createClass({
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
         frameNo: React.PropTypes.number.isRequired,
-        thumbnailId: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
-        isAccountServingEnabled: React.PropTypes.bool.isRequired
+        isAccountServingEnabled: React.PropTypes.bool.isRequired,
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        thumbnailId: React.PropTypes.string.isRequired,
+        created: React.PropTypes.string.isRequired,
+        updated: React.PropTypes.string.isRequired,
+        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     },
     getInitialState: function () {
         var self = this;
@@ -114,6 +119,12 @@ var Thumbnail = React.createClass({
                         isAccountServingEnabled={self.props.isAccountServingEnabled}
                         type={self.props.type}
                         frameNo={self.props.frameNo}
+                        width={self.props.width}
+                        height={self.props.height}
+                        thumbnailId={self.props.thumbnailId}
+                        created={self.props.created}
+                        updated={self.props.updated}
+                        ctr={self.props.ctr}
                     />
                 </ModalParent>
             </figure>
