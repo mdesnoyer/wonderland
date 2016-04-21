@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import moment from 'moment';
+import TimeAgoWrapper from '../core/TimeAgoWrapper';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -24,9 +24,9 @@ var ThumbnailInfoBox = React.createClass({
                     <dt className="wonderland-dt">Thumbnail ID</dt>
                         <dd className="wonderland-dd">{self.props.thumbnailId}</dd>
                     <dt className="wonderland-dt">Created</dt>
-                        <dd className="wonderland-dd">{moment.utc(self.props.created).format()}</dd>
+                        <dd className="wonderland-dd"><TimeAgoWrapper date={self.props.created} /></dd>
                     <dt className="wonderland-dt">Updated</dt>
-                        <dd className="wonderland-dd">{moment.utc(self.props.updated).format()}</dd>
+                        <dd className="wonderland-dd"><TimeAgoWrapper date={self.props.updated} /></dd>
                     <dt className="wonderland-dt">CTR</dt>
                         <dd className="wonderland-dd">{self.props.ctr ? self.props.ctr : 'n/a'}</dd>
                 </dl>
