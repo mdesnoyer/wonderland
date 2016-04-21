@@ -6,7 +6,7 @@ import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

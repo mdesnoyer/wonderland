@@ -23,8 +23,8 @@ var ThumbBox = React.createClass({
         var self = this,
             toggleModalButton = '',
             enabledIndicator = UTILS.enabledDisabledIcon(!self.props.isEnabled), // we want the opposite
-            enabledTooltip = self.props.isAccountServingEnabled ? (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail') : 'Serving is Disabled for this Account',
-            enabledDisabledClass = self.props.isAccountServingEnabled ? '' : ' -disabled'
+            enabledTooltip = self.props.isServingEnabled ? (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail') : 'Serving is Disabled for this Account',
+            enabledDisabledClass = self.props.isServingEnabled ? '' : ' -disabled'
         ;
         if (self.props.handleToggleModal) {
             toggleModalButton = function() {

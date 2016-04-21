@@ -55,7 +55,7 @@ git push origin --delete branchname
 
 ## API
 
-- API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
+- API info is available at http://api.docs.neon-lab.com/
 
 ## Monitoring
 

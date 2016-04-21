@@ -190,6 +190,12 @@ var UTILS = {
     enabledDisabledIcon: function(enabled) {
         return enabled ? 'check' : 'times';
     },
+    // HT - https://gist.github.com/mathewbyrne/1280286
+    slugify: function(text) {
+        return text.toString().toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove undesired characters
+            .replace(/[\s_-]+/g, '-'); // Replace spaces, underscores, and hyphens with "-"
+    },
     leadingZero: function(x) {
         return (x < 10) ? ('0' + x) : x;
     },
@@ -237,8 +243,8 @@ var UTILS = {
     },
     buildPageTitle: function(title) {
         return title + T.get('app.separator') + T.get('app.credit', {
-            '@app': T.get('app.appName'),
-            '@name': T.get('app.companyShortName')
+            '@appName': T.get('app.appName'),
+            '@companyShortName': T.get('app.companyShortName')
         });
     },
     isValidPassword: function(password) {

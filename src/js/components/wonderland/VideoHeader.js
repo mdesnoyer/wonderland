@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import TimeAgoWrapper from '../core/TimeAgoWrapper';
+import FuzzyTime from '../core/FuzzyTime';
 import Xylophone from '../core/Xylophone';
 import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
@@ -45,7 +45,7 @@ var VideoHeader = React.createClass({
                 </div>
                 <div className="navbar-right">
                     <div className="navbar-item">
-                        <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
+                        <span className="subtitle is-6"><FuzzyTime date={self.props.created} /></span>
                     </div>
                     <div className="navbar-item">
                         {xylophone}

@@ -7,7 +7,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Videos from '../wonderland/Videos';
 import Account from '../../mixins/Account';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -35,7 +35,7 @@ var VideosPage = React.createClass({
                         <h1 className="title is-2">{heading}</h1>
                         {body}
                         <Videos
-                            isAccountServingEnabled={self.state.isAccountServingEnabled}
+                            isServingEnabled={self.state.isServingEnabled}
                         />
                     </div>
                 </section>

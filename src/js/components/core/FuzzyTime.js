@@ -5,11 +5,12 @@ import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var TimeAgoWrapper = React.createClass({
-    render() {
-        if (this.props.date) {
-            var time = moment.utc(this.props.date).fromNow(),
-                timestamp = moment(this.props.date).format()
+var FuzzyTime = React.createClass({
+    render: function() {
+        var self = this;
+        if (self.props.date) {
+            var time = moment.utc(self.props.date).fromNow(),
+                timestamp = moment(self.props.date).format()
             ;
             return (
                 <time dateTime={timestamp}>{time}</time>
@@ -25,6 +26,6 @@ var TimeAgoWrapper = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default TimeAgoWrapper;
+export default FuzzyTime;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
