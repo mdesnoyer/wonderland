@@ -3,12 +3,16 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
+var uglifycss = require('gulp-uglifycss');
+var gulpif = require('gulp-if');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -34,23 +38,39 @@ function handleErrors() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('styles', function() {
+function buildStyle(isUglified) {
     gulp.src('./src/css/**/*')
         .pipe(sass()) // Using gulp-sass
+        .pipe(gulpif(isUglified, uglifycss()))
         .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
             stream: true
-        }));
+        }))
+    ;
     gulp.src('./node_modules/bulma/css/bulma.min.css')
         .pipe(gulp.dest('./build/css'))
         .pipe(reload({
             stream: true
-        }));
+        }))
+    ;
     gulp.src('./node_modules/font-awesome/css/font-awesome.min.css')
         .pipe(gulp.dest('./build/css'))
         .pipe(reload({
             stream: true
-        }));
+        }))
+    ;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('stylesDebug', function() {
+    buildStyle(false);
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+gulp.task('stylesLive', function() {
+    buildStyle(true);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -151,6 +171,8 @@ function buildScript(file, watch) {
         return stream
             .on('error', handleErrors)
             .pipe(source(file))
+            .pipe(buffer())
+            .pipe(gulpif(!watch, uglify()))
             .pipe(gulp.dest('./build/js/'))
             .pipe(reload({ stream: true }))
     }
@@ -172,7 +194,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'styles', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -182,7 +204,7 @@ gulp.task('debug', ['images', 'styles', 'clipboardJs', 'webfontJs', 'fonts', 'st
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'styles', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
