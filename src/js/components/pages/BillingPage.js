@@ -1,35 +1,30 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import Helmet from 'react-helmet';
-import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import Integrations from '../wonderland/Integrations';
-import Secured from '../../mixins/secured';
 import T from '../../modules/translation';
+import Helmet from 'react-helmet';
+import UTILS from '../../modules/utils';
+import Secured from '../../mixins/secured';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var IntegrationsPage = React.createClass({
+var BillingPage = React.createClass({
     mixins: [Secured],
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.integrations.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.billing.title'))}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.integrations.heading')}</h1>
+                        <h1 className="title is-2">{T.get('copy.billing.heading')}</h1>
                         <div className="content">
-                            {T.get('copy.integrations.body')}
+                            <p><span dangerouslySetInnerHTML={{__html: T.get('copy.billing.body')}} /></p>
                         </div>
-                        <Integrations />
                     </div>
                 </section>
                 <SiteFooter />
@@ -40,6 +35,7 @@ var IntegrationsPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default IntegrationsPage;
+export default BillingPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+

@@ -11,7 +11,7 @@
 // Ours
 $curious-blue: #26a9e0;
 $flamingo: #f16122;
-$boulder: #777;
+$gray: #888;
 $silver-chalice: #aaa;
 $athens-gray: #edecee;
 $white: #fff;
@@ -19,8 +19,8 @@ $white: #fff;
 // Overrides
 $blue: $curious-blue;
 $orange: $flamingo;
-$grey-darker: $boulder;
-$grey-dark: $boulder;
+$grey-darker: $gray;
+$grey-dark: $gray;
 $grey: $silver-chalice;
 $grey-light: mix($silver-chalice, $athens-gray, 25%);
 $grey-lighter: $athens-gray;
