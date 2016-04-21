@@ -11,16 +11,18 @@ var ModalParent = React.createClass({
     },
     handleEscKey:function(e) {
         var self = this;
-        if (e.keyCode === 27) {
+        if (e.keyCode === 27 && self.props.isModalActive) {
             e.preventDefault();
             self.handleToggleModal(e);
         }
     },
-    componentWillMount:function(){
-        document.addEventListener("keydown", this.handleEscKey, false);
+    componentWillMount:function() {
+        var self = this;
+        document.addEventListener('keydown', self.handleEscKey, false);
     },
     componentWillUnmount: function() {
-        document.removeEventListener("keydown", this.handleEscKey, false);
+        var self = this;
+        document.removeEventListener('keydown', self.handleEscKey, false);
     },
     render: function() {
         var self = this,

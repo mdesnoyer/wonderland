@@ -16,7 +16,7 @@ var SiteFooter = React.createClass({
         return (
             <footer className="footer wonderland-banner wonderland-banner--footer">
                 <div className="container">
-                    <div className="content is-text-centered">
+                    <div className="content has-text-centered">
                         <p>{T.get('copy.copyright', {'@name': T.get('app.companyLongName')})}</p>
                         <p><Link activeClassName="wonderland-active" to="/terms/">{T.get('nav.terms')}</Link> | <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a></p>
                         <p>{T.get('app.appName') + ' v' + UTILS.VERSION + '.' + CONFIG.LABEL}</p>

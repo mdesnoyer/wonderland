@@ -22,13 +22,15 @@ var SignUpPage = React.createClass({
                 />
                 <SiteHeader />
                 <section className="section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
-                            <h1 className="title is-2">{heading}</h1>
-                            <div className="content">
-                                <p>{body}</p>
+                    <div className="container">
+                        <div className="columns is-desktop">
+                            <div className="column is-half is-offset-one-quarter">
+                                <h1 className="title is-2">{heading}</h1>
+                                <div className="content">
+                                    <p>{body}</p>
+                                </div>
+                                <SignUpForm showLegend={false} />
                             </div>
-                            <SignUpForm showLegend={false} />
                         </div>
                     </div>
                 </section>

@@ -6,7 +6,7 @@ import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import E from '../../modules/errors';
-import ModalWrapper from '../core/ModalParent';
+import ModalParent from '../core/ModalParent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -107,7 +107,7 @@ var IntegrationsForm = React.createClass({
                             </div>
                         </fieldset>
                     </form>
-                    <ModalWrapper isModalActive={(self.state.activeModal === 'brightcove-publisherId')} handleToggleModal={self.closeModal}>
+                    <ModalParent isModalActive={(self.state.activeModal === 'brightcove-publisherId')} handleToggleModal={self.closeModal}>
                         <section className="box is-desktop">
                             <h1 className="title is-4">
                                 How to locate your Publisher ID
@@ -123,8 +123,8 @@ var IntegrationsForm = React.createClass({
                                 </ol>
                             </div>
                         </section>
-                    </ModalWrapper>
-                    <ModalWrapper isModalActive={(self.state.activeModal === 'brightcove-readToken')} handleToggleModal={self.closeModal}>
+                    </ModalParent>
+                    <ModalParent isModalActive={(self.state.activeModal === 'brightcove-readToken')} handleToggleModal={self.closeModal}>
                         <section className="box is-desktop">
                             <h1 className="title is-4">
                                 How to locate your Read Token with URL access
@@ -146,8 +146,8 @@ var IntegrationsForm = React.createClass({
                                 Note: You may have multiple Read Tokens with URL Access if you or someone on your team has engaged in API management tasks in the past. You can use any Read Token as long as the one you pick has URL Access.
                             </div>
                         </section>
-                    </ModalWrapper>
-                    <ModalWrapper isModalActive={(self.state.activeModal === 'brightcove-writeToken')} handleToggleModal={self.closeModal}>
+                    </ModalParent>
+                    <ModalParent isModalActive={(self.state.activeModal === 'brightcove-writeToken')} handleToggleModal={self.closeModal}>
                         <section className="box is-desktop">
                             <h1 className="title is-4">
                                 How to locate your Write Token
@@ -169,7 +169,7 @@ var IntegrationsForm = React.createClass({
                                 </ol>
                             </div>
                         </section>
-                    </ModalWrapper>
+                    </ModalParent>
                 </div>
             );
         case 'ooyala':

@@ -12,8 +12,8 @@ var TutorialPanel = React.createClass({
     render: function() {
         var self = this;
         return (
-            <div className="card column is-third">
-                <div className="card-content is-text-centered">
+            <div className="card column is-one-third">
+                <div className="card-content has-text-centered">
                     <div className="icon is-large">
                         <i className={'fa fa-' + self.props.icon}></i>
                     </div>

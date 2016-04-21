@@ -85,12 +85,12 @@ var SignUpForm = React.createClass({
                         <input className="input is-medium" type="text" ref="title" placeholder={T.get('title')} />
                     </p>
                     <p className="control">
-                        <label className="checkbox is-medium">
-                            <input type="checkbox" required onChange={self.handleAgreementChange} checked={self.state.isAgreementChecked} />
+                        <label className="checkbox">
+                            <input className="wonderland-checkbox--checkbox" type="checkbox" required onChange={self.handleAgreementChange} checked={self.state.isAgreementChecked} />
                             <span dangerouslySetInnerHTML={{__html: copyTerms}} />
                         </label>
                     </p>
-                    <p className="is-text-centered">
+                    <p className="has-text-centered">
                         <button className={buttonClassName} type="submit">{T.get('signUp')}</button>
                     </p>
                 </fieldset>

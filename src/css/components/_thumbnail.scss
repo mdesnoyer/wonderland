@@ -47,9 +47,6 @@
             color: $danger;
         }
     }
-    &.-background {
-        display: none;
-    }
     .is-wonderland-enabled & {
         opacity: 0;
     }
