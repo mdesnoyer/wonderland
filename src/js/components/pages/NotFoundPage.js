@@ -12,10 +12,10 @@ import UTILS from '../../modules/utils';
 var NotFoundPage = React.createClass({
     render: function() {
         var body1 = T.get('copy.notFound.body.1'),
-            body2 = T.get('copy.notFound.body.2'),
-            body3 = T.get('copy.notFound.body.3', {
+            body2 = T.get('copy.notFound.body.2',{
                 '@link': UTILS.CORP_EXTERNAL_URL
-            })
+            }),
+            body3 = T.get('copy.notFound.body.3')
         ;
         return (
             <div>
