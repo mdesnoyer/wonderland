@@ -18,10 +18,15 @@
     "browserify": "11.2.0",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "3.9.0",
+    "gulp-if": "^2.0.0",
     "gulp-notify": "2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-uglifycss": "^1.0.6",
     "gulp-util": "3.0.7",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "1.1.0",
     "watchify": "3.4.0",
     "yargs": "^4.4.0"
   },
@@ -31,9 +36,6 @@
     "clipboard": "^1.5.10",
     "fnv-plus": "^1.2.12",
     "font-awesome": "^4.5.0",
-    "gulp-if": "^2.0.0",
-    "gulp-uglify": "^1.5.3",
-    "gulp-uglifycss": "^1.0.6",
     "history": "1.12.5",
     "moment": "^2.12.0",
     "react": "^0.14.7",
@@ -45,8 +47,6 @@
     "react-router": "^2.0.0",
     "react-timeago": "^2.2.1",
     "reqwest": "^2.0.5",
-    "shortid": "^2.2.4",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "1.1.0"
+    "shortid": "^2.2.4"
   }
 }
