@@ -198,7 +198,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'webfontJs', 'fonts'
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
-    gulp.watch('./src/css/**/*', ['styles']);
+    gulp.watch('./src/css/**/*', ['stylesDebug']);
     gulp.watch(staticsSrc, ['statics']);
     gulp.watch(configSrc, ['config']);
     return buildScript('wonderland.js', true);
