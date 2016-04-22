@@ -17,7 +17,7 @@ var NewsFlash = React.createClass({
         var self = this;
         if (self.props.isActive) {
             return (
-                <div className="notification is-danger is-marginless is-text-centered">
+                <div className="notification is-danger is-marginless has-text-centered">
                     {this.props.message}
                 </div>
             );

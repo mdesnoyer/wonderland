@@ -12,10 +12,10 @@ import UTILS from '../../modules/utils';
 var NotFoundPage = React.createClass({
     render: function() {
         var body1 = T.get('copy.notFound.body.1'),
-            body2 = T.get('copy.notFound.body.2'),
-            body3 = T.get('copy.notFound.body.3', {
+            body2 = T.get('copy.notFound.body.2',{
                 '@link': UTILS.CORP_EXTERNAL_URL
-            })
+            }),
+            body3 = T.get('copy.notFound.body.3')
         ;
         return (
             <div>
@@ -25,7 +25,7 @@ var NotFoundPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             <h1 className="title is-2">{T.get('copy.notFound.heading')}</h1>
                             <div className="content">
                                 <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
@@ -46,3 +46,4 @@ var NotFoundPage = React.createClass({
 export default NotFoundPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+

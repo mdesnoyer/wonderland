@@ -17,7 +17,13 @@ var ImageModalChild = React.createClass({
         handleToggleModal: React.PropTypes.func,
         handleEnabledChange: React.PropTypes.func.isRequired,
         type: React.PropTypes.string.isRequired,
-        frameNo: React.PropTypes.number.isRequired
+        frameNo: React.PropTypes.number.isRequired,
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        thumbnailId: React.PropTypes.string.isRequired,
+        created: React.PropTypes.string.isRequired,
+        updated: React.PropTypes.string.isRequired,
+        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     },
     render: function() {
         var self = this,
@@ -25,7 +31,7 @@ var ImageModalChild = React.createClass({
         ;
         return (
             <aside className="columns">
-                <div className="column is-10">
+                <div className="column is-9">
                     <figure className="wonderland-thumbnail">
                         <img
                             className="wonderland-thumbnail__image"
@@ -34,7 +40,6 @@ var ImageModalChild = React.createClass({
                             title={self.props.caption}
                         />
                         <figcaption className="wonderland-thumbnail__caption">
-                            <span className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
                             <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                             <ThumbBox
                                 copyUrl={self.props.copyUrl}
@@ -46,10 +51,16 @@ var ImageModalChild = React.createClass({
                         </figcaption>
                     </figure>
                 </div>
-                <div className="column is-2">
+                <div className="column is-3">
                     <ThumbnailInfoBox
                         frameNo={self.props.frameNo}
                         type={self.props.type}
+                        width={self.props.width}
+                        height={self.props.height}
+                        thumbnailId={self.props.thumbnailId}
+                        created={self.props.created}
+                        updated={self.props.updated}
+                        ctr={self.props.ctr}
                     />
                 </div>
             </aside>

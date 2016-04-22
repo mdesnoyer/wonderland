@@ -3,7 +3,7 @@
 import React from 'react';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
+import IntegrationsForm from '../forms/IntegrationsForm';
 import Secured from '../../mixins/secured';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
@@ -11,28 +11,33 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AnalyzeVideoPage = React.createClass({
+var IntegrationsBrightcovePage = React.createClass({
     mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function() {
+        return {
+            id: this.props.location.query.id
+        };
     },
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.analyzeVideo.title')}
+                    title={T.get('copy.integrations.types.brightcove.title')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.analyzeVideo.heading')}</h1>
-                            {/*<div className="content">
-                                <p>{T.get('copy.analyzeVideo.body')}</p>
-                            </div>*/}
+                            <h1 className="title is-2">
+                                <img src={T.get('copy.integrations.types.brightcove.img')} />
+                            </h1>
                             <section className="container">
-                                <AnalyzeVideoForm
-                                    showLegend={false}
+                                <IntegrationsForm
+                                    provider="brightcove"
+                                    id={this.state.id}
                                 />
                             </section>
                         </div>
@@ -46,6 +51,6 @@ var AnalyzeVideoPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default AnalyzeVideoPage;
+export default IntegrationsBrightcovePage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

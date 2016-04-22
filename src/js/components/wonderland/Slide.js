@@ -12,7 +12,7 @@ var Slide = React.createClass({
     render: function() {
         var self = this;  
             return (
-                <div className="wonderland-slides-slide box is-fullwidth is-text-centered">
+                <div className="wonderland-slides-slide box is-fullwidth has-text-centered">
                     <p className="icon is-large ">
                         <i className={'fa fa-' + self.props.icon}></i>
                     </p>

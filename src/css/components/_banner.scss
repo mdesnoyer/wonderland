@@ -1,65 +1,34 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-$max: 5em;
+$maximum-nav-height: 5em;
+$smaller-ratio: 0.618;
+$smallest-ratio: 0.191;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 .wonderland-banner {
     background-color: $grey-darker;
 }
 
 .wonderland-banner--header {
-    height: $max;
-}
-
-.wonderland-navbar {
-    height: $max;
-}
-
-.wonderland-logo {
-    width: auto;
-    height: $max * 0.618;
-    margin-top: $max * 0.191;
-}
-
-.wonderland-avatar {
-    border-radius: 50%;
-    width: $max * 0.618;
-    height: $max * 0.618;
-    background-color: $white;
-    margin-top: $max * 0.191;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .fa {
-        font-size: $max * 0.5;
-        color: $grey;
-    }
+    height: $maximum-nav-height;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wonderland-navbar-item {
-    margin-right: 2em !important;
-    height: $max;
+.wonderland-banner--footer {
+    color: $grey-light;
     a {
-        &.wonderland-active {
-            border-bottom: 4px solid $orange;
+        color: $grey-light; 
+        &:link,
+        &:visited {
+            color: $grey-light; 
         }
-        &:not(.button) {
-            height: $max;    
-            display: block;
-            line-height: $max;
-            color: $white;
+        &:focus,
+        &:hover,
+        &:active {
+            color: $white; 
         }
-        &.button {
-            height: $max * 0.5;
-            margin-top: $max * 0.25;
-        }
-    }
-    .un {
-        height: $max;    
-        display: block;
-        line-height: $max;
-        color: $white;
     }
 }
 
@@ -80,3 +49,183 @@ $max: 5em;
         }
     }
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar {
+    height: $maximum-nav-height;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__icon,
+.wonderland-navbar__logo {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__logo {
+    display: block;
+    img {
+        width: auto;
+        height: $maximum-nav-height * $smaller-ratio;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__item {
+    margin-right: 2em !important;
+    height: $maximum-nav-height;
+    display: flex;
+    align-items: center;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__subnav {
+    display: none;
+    position: absolute;
+    z-index: 1111;
+    padding: 0;
+    border-radius: 0;
+    top: 95%;
+    &:before {
+        position: absolute;
+        display: inline-block;
+        border: 7px solid transparent;
+        border-bottom-color: $white;
+        left: $maximum-nav-height * $smaller-ratio * 0.5;
+        bottom: 100%;
+        content: '';
+        transform: translateX(-50%);
+    }
+    li {
+        min-width: 10em;
+        a {
+            display: block;
+            padding: $smaller-ratio * 1em;
+            &:link,
+            &:visited {
+                background-color: $white;
+                color: $grey-darker; 
+            }
+            &:focus,
+            &:hover,
+            &:active {
+                background-color: $grey-lighter;
+                color: $orange; 
+            }
+        }
+    }
+}
+
+.wonderland-navbar__item:hover {
+    .wonderland-navbar__subnav {
+        display: block;
+
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__text {
+    height: $maximum-nav-height;    
+    display: block;
+    line-height: $maximum-nav-height;
+    color: $white;
+    font-style: normal;
+    &:link,
+    &:visited {
+        color: $grey-light; 
+    }
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white; 
+    }
+    &.wonderland-active {
+        border-bottom: 4px solid $orange;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__icon {
+    transition: color 0.3333s;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fa {
+        font-size: $maximum-nav-height * 0.5;
+    }
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white; 
+    }
+    &.wonderland-active {
+        border-bottom: 4px solid $orange;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__icon {
+    transition: color 0.3333s;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fa {
+        font-size: $maximum-nav-height * 0.5;
+    }
+}
+
+.wonderland-navbar__icon--regular {
+    color: $grey;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white;
+    }
+}
+
+.wonderland-navbar__icon--alternate {
+    background-color: $white;
+    color: $grey;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $grey-darker;
+    }
+
+}
+
+.wonderland-navbar__icon--regular {
+    color: $grey;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white;
+    }
+}
+
+.wonderland-navbar__icon--alternate {
+    background-color: $white;
+    color: $grey;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $grey-darker;
+    }
+
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

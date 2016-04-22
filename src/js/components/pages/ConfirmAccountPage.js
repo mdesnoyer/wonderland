@@ -67,7 +67,7 @@ var ConfirmAccountPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             {messageNeeded}
                             <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
                             <div className="content">

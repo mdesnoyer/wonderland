@@ -26,8 +26,13 @@ const _DEFAULT_LOCALE = 'en-US',
             signIn: 'Sign In',
             confirmAccount: 'Confirm Account',
             confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
+            configure: 'Configure',
+            add: 'Add',
+            cancel: 'Cancel',
+            save: 'Save',
+            update: 'Update',
 
-            rememberMe: 'Remember Me',
+            rememberMe: 'Remember',
 
             'copy.signIn.title': 'Sign In',
             'copy.signIn.heading': 'Welcome to Neon! Sign In Below',
@@ -66,6 +71,30 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.forgotPassword.heading': 'Forgot Password',
             'copy.forgotPassword.body': 'Please enter your email address below to start the password reset process.',
 
+            'copy.billing.title': 'Billing',
+            'copy.billing.heading': 'Billing',
+            'copy.billing.body': 'TODO',
+
+            'copy.api.title': 'API Documentation',
+            'copy.api.heading': 'API Documentation',
+            'copy.api.body': 'TODO',
+
+            'copy.telemetry.title': 'Telemetry',
+            'copy.telemetry.heading': 'Telemetry',
+            'copy.telemetry.body': 'TODO',
+
+            'copy.neonscope.title': 'Neonscope',
+            'copy.neonscope.heading': 'Neonscope',
+            'copy.neonscope.body': 'TODO',
+
+            'copy.userSettings.title': 'User Settings',
+            'copy.userSettings.heading': 'User Settings',
+            'copy.userSettings.body': 'TODO',
+
+            'copy.accountSettings.title': 'Account Settings',
+            'copy.accountSettings.heading': 'Account Settings',
+            'copy.accountSettings.body': 'TODO',
+
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
             'copy.pendingAccount.body.1': 'Almost there! Get ready to start creating higher performing video thumbnails.',
@@ -80,6 +109,21 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
             'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by <a href="@link">signing in now</a>. You are now ready to make your video thumbnails more clickable!',
+
+            'copy.integrations.title': 'Integrations',
+            'copy.integrations.heading': 'Integrations',
+            'copy.integrations.body': 'TODO',
+
+            'copy.new.integration.title': 'Add Integration',
+            'copy.new.integration.heading': 'Add Integration',
+            'copy.new.integration.body': 'TODO',
+            
+            'copy.integrations.types.brightcove.title': 'Brightcove',
+            'copy.integrations.types.brightcove.img': '/img/brightcove.png',
+            'copy.integrations.types.brightcove.form.heading': 'Integration Settings',
+            'copy.integrations.types.brightcove.form.publisherId': 'Brightcove Publisher Id',
+            'copy.integrations.types.brightcove.form.readToken': 'Read Token (with URL Access)',
+            'copy.integrations.types.brightcove.form.writeToken': 'Write Token',
 
             'copy.analyzeVideoPanel.panel.1': 'Find a video and paste the URL link Into the Analyze bar',
             'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze Button',
@@ -104,6 +148,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.videoLibrary': 'Video Library',
             'nav.analyze': 'Analyze',
             'nav.contact': 'Contact',
+
+            'nav.integrations': 'Integrations',
+            'nav.api': 'API Documentation',
+            'nav.telemetry': 'Telemetry',
+            'nav.neonscope': 'Neonscope',
+            'nav.billing': 'Billing',
+            'nav.accountSettings': 'Account Settings',
+            'nav.userSettings': 'User Settings',
 
             //error messages
             'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',

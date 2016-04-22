@@ -97,7 +97,7 @@ var AnalyzeVideoForm = React.createClass({
                                 placeholder={T.get('analyze.optionalTitle')}
                             />
                         </p>
-                        <p className="is-text-centered">
+                        <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
                                 <i className="fa fa-eye" aria-hidden="true"></i> {T.get('analyze')}
                             </button>

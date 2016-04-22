@@ -43,7 +43,7 @@ var Thumbnails = React.createClass({
                                     strippedUrl = UTILS.stripProtocol(thumbnail.url)
                                 ;
                                 return (
-                                    <div className="column is-half-mobile is-third-tablet is-third-desktop" key={thumbnail.thumbnail_id}>
+                                    <div className="column is-half-mobile is-one-third-tablet is-one-third-desktop" key={thumbnail.thumbnail_id}>
                                         <Thumbnail
                                             index={i}
                                             videoStateMapping={self.props.videoStateMapping}
@@ -52,11 +52,16 @@ var Thumbnails = React.createClass({
                                             url={thumbnail.url}
                                             rawNeonScore={rawNeonScore}
                                             cookedNeonScore={cookedNeonScore}
-                                            thumbnailId={thumbnail.thumbnail_id}
                                             frameNo={thumbnail.frameno}
                                             type={thumbnail.type}
                                             forceOpen={self.props.forceOpen}
                                             isAccountServingEnabled={self.props.isAccountServingEnabled}
+                                            width={thumbnail.width}
+                                            height={thumbnail.height}
+                                            thumbnailId={thumbnail.thumbnail_id}
+                                            created={thumbnail.created}
+                                            updated={thumbnail.updated}
+                                            ctr={thumbnail.ctr}
                                         />
                                     </div>
                                 );
