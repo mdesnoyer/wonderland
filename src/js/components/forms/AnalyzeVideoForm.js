@@ -67,12 +67,10 @@ var AnalyzeVideoForm = React.createClass({
             inputClassName
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
-            var body = <span dangerouslySetInnerHTML={{
-                __html: T.get('copy.analyzeVideo.maxLimitHit', {
-                    '%limit': self.state.maxVideoCount,
-                    '@link': UTILS.CONTACT_EXTERNAL_URL
-                })
-            }} />;
+            var body = T.get('copy.analyzeVideo.maxLimitHit', {
+                '%limit': self.state.maxVideoCount,
+                '@link': UTILS.CONTACT_EXTERNAL_URL
+            });
             return (
                 <Message header={T.get('copy.analyzeVideo.heading')} body={body} flavour="danger" />
             );
