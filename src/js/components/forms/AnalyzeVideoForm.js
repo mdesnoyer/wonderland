@@ -32,7 +32,7 @@ var AnalyzeVideoForm = React.createClass({
         return {
             accessToken: '',
             refreshToken: '',
-            mode: 'loading', // loading/disabled/silent/error
+            mode: 'silent', // loading/disabled/silent/error
             url: '',
             optionalTitle: '',
             maxVideoCount: 10,
@@ -47,7 +47,6 @@ var AnalyzeVideoForm = React.createClass({
         AJAX.doGet('limits')
             .then(function(json) {
                 self.setState({
-                    isError: false,
                     currentVideoCount: json.video_posts,
                     maxVideoCount: json.max_video_posts,
                     mode: 'silent'
@@ -56,14 +55,13 @@ var AnalyzeVideoForm = React.createClass({
             .catch(function(err) {
                 E.checkForError(err.statusText, false);
                 self.setState({
-                    isError: true,
-                    mode: 'disabled'
+                    mode: 'error'
                 });
             });
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
+            messageNeeded = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
             buttonClassName,
             inputClassName
@@ -146,9 +144,9 @@ var AnalyzeVideoForm = React.createClass({
     resetForm: function() {
         var self = this;
         self.setState({
-            isError: false,
             url: '',
-            optionalTitle: ''
+            optionalTitle: '',
+            mode: 'silent'
         });
     },
     handleSubmit: function (e) {
@@ -158,8 +156,12 @@ var AnalyzeVideoForm = React.createClass({
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, url);
-        self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
-        self.resetForm();
+        self.setState({
+            mode: 'loading'
+        },
+            self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle)
+        );
+        
     },
     makeTitle: function() {
         var self = this;
@@ -179,10 +181,11 @@ var AnalyzeVideoForm = React.createClass({
         AJAX.doPost('videos', options)
             .then(function(json) {
                 self.setState({
-                    isError: false
+                    mode: 'silent'
                 });
                 if (self.props.postHook) {
                     self.props.postHook();
+                    self.resetForm();
                 }
                 else {
                     self.context.router.push('/video/' + videoId + '/');
@@ -199,7 +202,7 @@ var AnalyzeVideoForm = React.createClass({
                     E.checkForError(err.statusText, false);
                 }
                 self.setState({
-                    isError: true
+                    mode: 'error'
                 });
             });
     }
