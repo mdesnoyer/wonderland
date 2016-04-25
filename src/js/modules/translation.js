@@ -117,6 +117,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.new.integration.title': 'Add Integration',
             'copy.new.integration.heading': 'Add Integration',
             'copy.new.integration.body': 'TODO',
+
+            'copy.message.line.one': 'Oops! We can’t find what you’re looking for.',
+            'copy.message.line.two': 'Here are some helpful links instead:' ,
+            'copy.message.link.one': '<a href="@link">Neon Home</a>',
+            'copy.message.link.two': '<a href="@link">Video Library</a>',
+            'copy.message.link.three': '<a href="@link">Contact</a>',
             
             'copy.integrations.types.brightcove.title': 'Brightcove',
             'copy.integrations.types.brightcove.img': '/img/brightcove.png',
