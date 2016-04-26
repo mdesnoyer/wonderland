@@ -175,7 +175,10 @@ var UTILS = {
         },
         NEONSCOPE: {
             URL: '/neonscope/'
-        }
+        },
+        VIDEOLIBRARY: {
+            URL: '/videos/'
+        }    
     },
     VERSION: '1.8',
     NEON_SCORE_ENABLED: false,
