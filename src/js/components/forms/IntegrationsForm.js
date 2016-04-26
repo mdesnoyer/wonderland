@@ -62,7 +62,7 @@ var IntegrationsForm = React.createClass({
         var self = this,
             buttonClassName,
             inputClassName,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
         ;
         if (self.state.mode === 'loading') {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';

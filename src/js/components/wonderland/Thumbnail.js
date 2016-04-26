@@ -25,7 +25,7 @@ var Thumbnail = React.createClass({
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
-        isAccountServingEnabled: React.PropTypes.bool.isRequired,
+        isServingEnabled: React.PropTypes.bool.isRequired,
         width: React.PropTypes.number.isRequired,
         height: React.PropTypes.number.isRequired,
         thumbnailId: React.PropTypes.string.isRequired,
@@ -70,7 +70,7 @@ var Thumbnail = React.createClass({
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
             neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
-            handleEnabledChangeHook = self.props.isAccountServingEnabled ? self.handleEnabledChange : function() { return false; }
+            handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
             <figure
@@ -100,7 +100,7 @@ var Thumbnail = React.createClass({
                         isEnabled={self.state.isEnabled}
                         handleToggleModal={self.handleToggleModal}
                         handleEnabledChange={handleEnabledChangeHook}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                     />
                 </figcaption>
                 <ModalParent
@@ -115,7 +115,7 @@ var Thumbnail = React.createClass({
                         downloadUrl={self.props.url}
                         isEnabled={self.state.isEnabled}
                         handleEnabledChange={handleEnabledChangeHook}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                         type={self.props.type}
                         frameNo={self.props.frameNo}
                         width={self.props.width}
@@ -163,7 +163,8 @@ var Thumbnail = React.createClass({
                             isEnabled: !self.state.isEnabled // put it back
                         });
                     }
-                });
+                })
+            ;
             })
         ;
     }
