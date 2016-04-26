@@ -54,7 +54,7 @@ var Account = {
             })
             .catch(function(err) {
                 var self = this;
-                console.log(err);
+                console.log(JSON.parse(err.responseText).error.data, false);
                 self.setState({
                     isLoading: false,
                     isError: true

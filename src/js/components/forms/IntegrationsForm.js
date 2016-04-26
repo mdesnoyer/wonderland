@@ -120,7 +120,7 @@ var IntegrationsForm = React.createClass({
                                     <li>Log into your Brightcove account</li>
                                     <li>Your Publisher ID is below where it says “Welcome, _name_”
                                         <br/>
-                                        <img src="/img/brightcove_publisher_id.png"/>
+                                        <img src="/img/brightcove_publisher_id.png" />
                                     </li>
                                 </ol>
                             </div>
@@ -138,11 +138,11 @@ var IntegrationsForm = React.createClass({
                                     <li>Click on “Account Settings” in the top right corner of the page</li>
                                     <li>Select "API Management" in the left sidebar
                                         <br/>
-                                        <img src="/img/brightcove_account_settings.png"/>
+                                        <img src="/img/brightcove_account_settings.png" />
                                     </li>
                                     <li>In the list of tokens, you should see at least one Read Token with "URL Access" listed in the options. You can copy this token by clicking the middle "Copy" button in the "Manage" column.
                                         <br/>
-                                        <img src="/img/brightcove_read_token.png"/>
+                                        <img src="/img/brightcove_read_token.png" />
                                     </li>
                                 </ol>
                                 Note: You may have multiple Read Tokens with URL Access if you or someone on your team has engaged in API management tasks in the past. You can use any Read Token as long as the one you pick has URL Access.
@@ -161,11 +161,11 @@ var IntegrationsForm = React.createClass({
                                     <li>Click on “Account Settings” in the top right corner of the page</li>
                                     <li>Select "API Management" in the left sidebar
                                         <br/>
-                                        <img src="/img/brightcove_account_settings.png"/>
+                                        <img src="/img/brightcove_account_settings.png" />
                                     </li>
                                     <li>In the bottom right of the tokens panel, click the dropdown menu and select “Write Token” to create a new token.
                                         <br/>
-                                        <img src="/img/brightcove_write_token.png"/>
+                                        <img src="/img/brightcove_write_token.png" />
                                     </li>
                                     <li>The new Write Token should appear at the bottom of the list. You can copy this token by clicking the middle "Copy" button under the "Manage" column.</li>
                                 </ol>
