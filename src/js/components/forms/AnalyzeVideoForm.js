@@ -30,7 +30,7 @@ var AnalyzeVideoForm = React.createClass({
         return {
             accessToken: '',
             refreshToken: '',
-            mode: 'silent', // silent/loading/error
+            mode: 'loading', // loading/disabled/silent/error
             url: '',
             optionalTitle: '',
             maxVideoCount: 10,
@@ -40,36 +40,57 @@ var AnalyzeVideoForm = React.createClass({
     componentWillUnmount: function(e) {
         E.clearErrors();
     },
+    componentWillMount: function(e) {
+        var self = this;
+        AJAX.doGet('limits')
+            .then(function(json) {
+                self.setState({
+                    isError: false,
+                    currentVideoCount: json.video_posts,
+                    maxVideoCount: json.max_video_posts,
+                    mode: 'silent'
+                });
+            })
+            .catch(function(err) {
+                E.checkForError(err.statusText, false);
+                self.setState({
+                    isError: true,
+                    mode: 'disabled'
+                });
+            });
+    },
     render: function() {
         var self = this,
             messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : ''
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
+            buttonClassName,
+            inputClassName
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
-            var body = <span dangerouslySetInnerHTML={{
-                __html: T.get('copy.analyzeVideo.maxLimitHit', {
-                    '%limit': self.state.maxVideoCount,
-                    '@link': UTILS.CONTACT_EXTERNAL_URL
-                })
-            }} />;
+            var body = T.get('copy.analyzeVideo.maxLimitHit', {
+                '%limit': self.state.maxVideoCount,
+                '@link': UTILS.CONTACT_EXTERNAL_URL
+            });
             return (
                 <Message header={T.get('copy.analyzeVideo.heading')} body={body} flavour="danger" />
             );
         }
         else {
             if (self.state.mode === 'loading') {
-                var buttonClassName = 'button is-primary is-medium is-disabled is-loading',
-                    inputClassName = 'input is-medium is-disabled'
-                ;
+                buttonClassName = 'button is-primary is-medium is-disabled is-loading';
+                inputClassName = 'input is-medium is-disabled';
+            }
+            else if (self.state.mode === 'disabled') {
+                buttonClassName = 'button is-medium is-primary is-disabled';
+                inputClassName = 'input is-medium is-disabled';
             }
             else if (!self.state.url && self.state.mode === 'silent') {
-                var buttonClassName = 'button is-medium is-primary is-disabled',
-                    inputClassName = 'input is-medium'
+                buttonClassName = 'button is-medium is-primary is-disabled';
+                inputClassName = 'input is-medium';
             }
             else {
-                var buttonClassName = 'button is-medium is-primary',
-                    inputClassName = 'input is-medium'
-                ;
+                buttonClassName = 'button is-medium is-primary';
+                inputClassName = 'input is-medium';
             }
             return (
                 <form onSubmit={self.handleSubmit}>
