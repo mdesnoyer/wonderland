@@ -34,7 +34,7 @@ Optional
 - Work on this branch, when your feature is complete, open a Pull Request against `development` (you may need to rebase) and assign to a Senior Engineer (or other person that is not you)
 - Make sure you can run `gulp live` against it and it builds
 - Make sure you can run `gulp debug` against it and it builds
-- Make sure there is a meaninful PR message
+- Make sure there is a meaningful PR message
 - Title the Pull Request of the form - `Sensible Title #123`
 - Once signed off, the reviewer says merge, you can squash your branch into 1 commit and merge to `development`
 - Once development site is built, please test, it is your responsibility
