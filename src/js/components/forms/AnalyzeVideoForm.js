@@ -42,7 +42,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : ''
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
@@ -99,7 +99,7 @@ var AnalyzeVideoForm = React.createClass({
                         </p>
                         <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
-                                <i className="fa fa-eye" aria-hidden="true"></i> {T.get('analyze')}
+                                <i className="fa fa-eye" aria-hidden="true"></i>&nbsp;{T.get('analyze')}
                             </button>
                         </p>
                     </fieldset>

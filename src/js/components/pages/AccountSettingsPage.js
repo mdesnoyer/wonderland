@@ -6,7 +6,8 @@ import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
+import AccountSettingsForm from '../forms/AccountSettingsForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -21,9 +22,14 @@ var AccountSettingsPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.accountSettings.heading')}</h1>
-                        <div className="content">
-                            <p><span dangerouslySetInnerHTML={{__html: T.get('copy.accountSettings.body')}} /></p>
+                        <div className="columns is-desktop">
+                            <div className="column is-half is-offset-one-quarter">
+                                <h1 className="title is-2">{T.get('copy.accountSettings.title')}</h1>
+                                <div className="content">
+                                    <p><span dangerouslySetInnerHTML={{__html: T.get('copy.accountSettings.body')}} /></p>
+                                </div>
+                                <AccountSettingsForm />
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -113,7 +113,7 @@ var Video = React.createClass({
                         duration={self.state.duration}
                         created={self.state.created}
                         url={self.state.url}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                     />
                 </div>
             );

@@ -6,7 +6,7 @@ import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Integrations from '../wonderland/Integrations';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
