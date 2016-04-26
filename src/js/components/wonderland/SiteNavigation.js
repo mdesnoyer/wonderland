@@ -4,6 +4,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -93,12 +94,20 @@ var SiteNavigation = React.createClass({
                 {
                     constructedNav.map(function(navbarItem, i) {
                         return (
-                            <div key={i} className="wonderland-navbar__item navbar-item">{navbarItem}</div>
+                            <div key={i} className="wonderland-navbar-item navbar-item" onClick={self.handleClick}>{navbarItem}</div>
                         );
                     })
                 }
             </div>
         );
+    },
+    handleClick: function(e) {
+        if (e.target.tagName === 'A') {
+            TRACKING.sendEvent('SiteNavigation', 'Click', e.target.text); 
+        }
+        else if (e.target.tagName === 'I') {
+            TRACKING.sendEvent('SiteNavigation', 'Click', e.target.className); 
+        }
     }
 });
 

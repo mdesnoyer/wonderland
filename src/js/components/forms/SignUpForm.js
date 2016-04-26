@@ -87,7 +87,7 @@ var SignUpForm = React.createClass({
                     <p className="control">
                         <label className="checkbox">
                             <input className="wonderland-checkbox--checkbox" type="checkbox" required onChange={self.handleAgreementChange} checked={self.state.isAgreementChecked} />
-                            <span dangerouslySetInnerHTML={{__html: copyTerms}} />
+                            <span dangerouslySetInnerHTML={{__html: copyTerms}} onClick={self.handleTermsClick}/>
                         </label>
                     </p>
                     <p className="has-text-centered">
@@ -96,6 +96,9 @@ var SignUpForm = React.createClass({
                 </fieldset>
             </form>
         );
+    },
+    handleTermsClick: function(){
+        TRACKING.sendEvent('SignUpForm', 'Click','Terms Link');
     },
     handlePasswordInitialChange: function (event) {
         this.setState({
@@ -108,6 +111,7 @@ var SignUpForm = React.createClass({
         });
     },
     handleAgreementChange: function(e) {
+        TRACKING.sendEvent('SignUpForm', 'Click','Agreement Check');
         this.setState({
             isAgreementChecked: !this.state.isAgreementChecked
         });
@@ -121,11 +125,11 @@ var SignUpForm = React.createClass({
             ]
         ;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
+        TRACKING.sendEvent('SignUpForm', 'Submit','intial Contact');
         self.setState({ 
             isBusy: true 
         });
-        if (!E.checkForErrors(errorList)) {
+        if (!E.checkForErrors(errorList, 'SignUpForm')) {
                 self.setState({
                     isError: true,
                     isBusy: false

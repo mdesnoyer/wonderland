@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import moment from 'moment';
 
@@ -46,7 +47,7 @@ var ThumbBox = React.createClass({
                         title="Copy the URL of this Thumbnail"
                         className="icon wonderland-thumbbox__tool"
                         ref="copyUrl"
-                        onClick={self.handleCopyUrlClick}
+                        onClick={self.handleCopy}
                         data-clipboard-text={self.props.copyUrl}
                     >
                         <i className="fa fa-files-o" aria-hidden="true"></i>
@@ -61,6 +62,7 @@ var ThumbBox = React.createClass({
                     <a
                         href={self.props.downloadUrl}
                         download={self.props.downloadUrl}
+                        onClick={self.handleDownload}
                         className="icon wonderland-thumbbox__tool"
                         title="Download this Thumbnail"
                     >
@@ -73,6 +75,15 @@ var ThumbBox = React.createClass({
                 </span>
             </aside>
         );
+    },
+    handleCopy: function() {
+        var self = this; 
+        self.handleCopyUrlClick
+        TRACKING.sendEvent('ThumbBox', 'Click', 'Copy to Clipboard');
+    },
+    handleDownload: function() {
+        var self = this; 
+        TRACKING.sendEvent('ThumbBox','Click', 'Download Thumbnail' );
     }
 });
 

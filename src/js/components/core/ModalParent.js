@@ -1,18 +1,22 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ModalParent = React.createClass({
     handleToggleModal: function(e) {
         var self = this;
+        TRACKING.sendEvent('ModalParent', 'Click', 'Toggle Modal Close');
         self.props.handleToggleModal();
+
     },
     handleEscKey:function(e) {
         var self = this;
         if (e.keyCode === 27 && self.props.isModalActive) {
             e.preventDefault();
+            TRACKING.sendEvent('ModalParent', 'Enter', 'Toggle Modal Close with ESC Key');
             self.handleToggleModal(e);
         }
     },

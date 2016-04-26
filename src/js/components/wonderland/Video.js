@@ -7,6 +7,7 @@ import React from 'react';
 import Message from './Message';
 import UTILS from '../../modules/utils';
 import AJAX from '../../modules/ajax';
+import TRACKING from '../../modules/tracking';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
@@ -114,6 +115,7 @@ var Video = React.createClass({
     handleVideoOpenToggle: function(e) {
         e.preventDefault();
         var self = this;
+        TRACKING.sendEvent('Video', 'Click', 'Pressed The Toggle Cheveron');
         self.setState({
             forceOpen: !self.state.forceOpen
         });

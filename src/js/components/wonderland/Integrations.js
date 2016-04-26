@@ -33,7 +33,7 @@ var Integrations = React.createClass({
                     integrations: res.integrations || res.integration_ids || []
                 });
             }).catch(function(err) {
-                E.checkForError(err.statusText, false);
+                E.checkForError(err.statusText, false, 'Integrations');
                 self.setState({
                     isError: true
                 });

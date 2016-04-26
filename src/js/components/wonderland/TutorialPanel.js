@@ -1,6 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,6 +25,10 @@ var TutorialPanel = React.createClass({
                 </div>
             </div>
         );
+    },
+    handleClick: function() {
+        var self = this;
+        TRACKING.sendEvent('TutorialPanel', 'Click', "Clicked on TutorialPanel");
     }
 })
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
