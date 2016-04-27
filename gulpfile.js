@@ -13,6 +13,7 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
 var gulpif = require('gulp-if');
+var clean = require('gulp-clean');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -105,13 +106,18 @@ gulp.task('webfontJs', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-gulp.task('config', function() {
+gulp.task('config',['clean:config'] ,function() {
     return gulp.src(configSrc)
         .pipe(rename('config.json'))
         .pipe(gulp.dest('./env'))
         .pipe(reload({
             stream: true
         }));
+});
+ 
+gulp.task('clean:config', function() {
+      return gulp.src('./env/config.json', {read: false})
+        .pipe(clean());
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

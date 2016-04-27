@@ -40,7 +40,7 @@ var ImageModalChild = React.createClass({
                                 downloadUrl={self.props.downloadUrl}
                                 isEnabled={self.props.isEnabled}
                                 handleEnabledChange={self.props.handleEnabledChange}
-                                isAccountServingEnabled={self.props.isAccountServingEnabled}
+                                isServingEnabled={self.props.isServingEnabled}
                             />
                         </figcaption>
                     </figure>

@@ -4,7 +4,7 @@ import React from 'react';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';

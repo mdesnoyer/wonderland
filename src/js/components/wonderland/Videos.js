@@ -65,7 +65,7 @@ var Videos = React.createClass({
                         isBusy={self.state.isBusy}
                         videoCountServed={self.state.videoCountServed}
                         videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                     />
                 </section>
             </div>

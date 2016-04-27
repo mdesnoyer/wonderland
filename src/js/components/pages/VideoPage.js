@@ -4,7 +4,7 @@ import React from 'react';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Video from '../wonderland/Video';
-import Secured from '../../mixins/secured';
+import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
@@ -34,7 +34,7 @@ var VideoPage = React.createClass({
                             pingInitial={true}
                             pingInterval={true}
                             forceOpen={true}
-                            isAccountServingEnabled={self.state.isAccountServingEnabled}
+                            isServingEnabled={self.state.isServingEnabled}
                         />
                     </div>
                 </section>

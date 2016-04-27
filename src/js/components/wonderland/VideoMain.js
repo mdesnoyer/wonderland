@@ -17,7 +17,7 @@ var VideoMain = React.createClass({
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
-        isAccountServingEnabled: React.PropTypes.bool.isRequired
+        isServingEnabled: React.PropTypes.bool.isRequired
     },
     render: function() {
         var self = this,
@@ -34,7 +34,7 @@ var VideoMain = React.createClass({
                             thumbnails={self.props.thumbnails}
                             videoState={self.props.videoState}
                             forceOpen={self.props.forceOpen}
-                            isAccountServingEnabled={self.props.isAccountServingEnabled}
+                            isServingEnabled={self.props.isServingEnabled}
                         />
                     </div>
                     <aside className="column is-2">

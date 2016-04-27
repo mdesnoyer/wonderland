@@ -65,7 +65,15 @@ var Video = React.createClass({
         clearInterval(self.timer);
     },
     render: function() {
-        var self = this;
+        var self = this,
+            fourZeroFourMessageArray = [
+                T.get('copy.message.line.one'),
+                T.get('copy.message.line.two'),
+                T.get('copy.message.link.one', {'@link': UTILS.CORP_EXTERNAL_URL}),
+                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEOLIBRARY.URL}),
+                T.get('copy.message.link.three', {'@link': UTILS.CONTACT_EXTERNAL_URL})
+            ]
+        ;
         if (self.state.status === 401) {
             return (
                 <Message header={self.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
@@ -73,7 +81,7 @@ var Video = React.createClass({
         }
         if (self.state.status === 404) {
             return (
-                <Message header={self.state.status} body="Could not find Video" flavour="danger" />
+                <Message header={self.state.status} body={fourZeroFourMessageArray} flavour="danger" />
             );
         }
         if (self.state.status === 200) {
@@ -105,7 +113,7 @@ var Video = React.createClass({
                         duration={self.state.duration}
                         created={self.state.created}
                         url={self.state.url}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                     />
                 </div>
             );

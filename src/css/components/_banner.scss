@@ -34,31 +34,21 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wonderland-banner--footer {
-    color: $grey-light;
-    a {
-        color: $grey-light; 
-        &:link,
-        &:visited {
-            color: $grey-light; 
-        }
-        &:focus,
-        &:hover,
-        &:active {
-            color: $white; 
-        }
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 .wonderland-navbar {
     height: $maximum-nav-height;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wonderland-navbar__icon,
+.wonderland-navbar__item {
+    margin-right: 2em !important;
+    height: $maximum-nav-height;
+    display: flex;
+    align-items: center;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 .wonderland-navbar__logo {
     margin: ($maximum-nav-height * $smallest-ratio) 0;
 }
@@ -75,11 +65,59 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.wonderland-navbar__item {
-    margin-right: 2em !important;
-    height: $maximum-nav-height;
+.wonderland-navbar__icon {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+    transition: color 0.3333s;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
     display: flex;
     align-items: center;
+    justify-content: center;
+    .fa {
+        font-size: $maximum-nav-height * 0.5;
+    }
+}
+
+.wonderland-navbar__icon--regular {
+    color: $grey-lighter;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $orange;
+    }
+}
+
+.wonderland-navbar__icon--alternate {
+    background-color: $white;
+    color: $grey;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $orange;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-navbar__text {
+    height: $maximum-nav-height;    
+    display: block;
+    line-height: $maximum-nav-height;
+    color: $white;
+    font-style: normal;
+    &:link,
+    &:visited {
+        color: $grey-light; 
+    }
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white; 
+    }
+    &.wonderland-active {
+        border-bottom: 4px solid $orange;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -124,108 +162,7 @@ $smallest-ratio: 0.191;
 .wonderland-navbar__item:hover {
     .wonderland-navbar__subnav {
         display: block;
-
     }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-.wonderland-navbar__text {
-    height: $maximum-nav-height;    
-    display: block;
-    line-height: $maximum-nav-height;
-    color: $white;
-    font-style: normal;
-    &:link,
-    &:visited {
-        color: $grey-light; 
-    }
-    &:focus,
-    &:hover,
-    &:active {
-        color: $white; 
-    }
-    &.wonderland-active {
-        border-bottom: 4px solid $orange;
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-.wonderland-navbar__icon {
-    transition: color 0.3333s;
-    border-radius: 50%;
-    width: $maximum-nav-height * $smaller-ratio;
-    height: $maximum-nav-height * $smaller-ratio;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .fa {
-        font-size: $maximum-nav-height * 0.5;
-    }
-    &:focus,
-    &:hover,
-    &:active {
-        color: $white; 
-    }
-    &.wonderland-active {
-        border-bottom: 4px solid $orange;
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-.wonderland-navbar__icon {
-    transition: color 0.3333s;
-    border-radius: 50%;
-    width: $maximum-nav-height * $smaller-ratio;
-    height: $maximum-nav-height * $smaller-ratio;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .fa {
-        font-size: $maximum-nav-height * 0.5;
-    }
-}
-
-.wonderland-navbar__icon--regular {
-    color: $grey;
-    &:focus,
-    &:hover,
-    &:active {
-        color: $white;
-    }
-}
-
-.wonderland-navbar__icon--alternate {
-    background-color: $white;
-    color: $grey;
-    &:focus,
-    &:hover,
-    &:active {
-        color: $grey-darker;
-    }
-
-}
-
-.wonderland-navbar__icon--regular {
-    color: $grey;
-    &:focus,
-    &:hover,
-    &:active {
-        color: $white;
-    }
-}
-
-.wonderland-navbar__icon--alternate {
-    background-color: $white;
-    color: $grey;
-    &:focus,
-    &:hover,
-    &:active {
-        color: $grey-darker;
-    }
-
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
