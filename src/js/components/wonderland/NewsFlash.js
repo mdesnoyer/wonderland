@@ -1,10 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var NewsFlash = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         isActive: React.PropTypes.bool
     },

@@ -1,10 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Slide = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         icon: React.PropTypes.string.isRequired,
         slideContent: React.PropTypes.string.isRequired

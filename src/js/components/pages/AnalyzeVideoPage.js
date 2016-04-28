@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
@@ -12,7 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoPage = React.createClass({
-    mixins: [Secured],
+    mixins: [Secured, ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

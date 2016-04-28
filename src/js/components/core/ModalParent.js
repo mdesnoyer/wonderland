@@ -1,10 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ModalParent = React.createClass({
+	mixins: [ReactDebugMixin],
     handleToggleModal: function(e) {
         var self = this;
         self.props.handleToggleModal();

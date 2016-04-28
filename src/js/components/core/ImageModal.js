@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import ThumbBox from '../wonderland/ThumbBox';
 import ThumbnailInfoBox from '../wonderland/ThumbnailInfoBox';
 import UTILS from '../../modules/utils';
@@ -8,6 +9,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageModalChild = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         caption: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
@@ -17,7 +19,7 @@ var ImageModalChild = React.createClass({
         handleToggleModal: React.PropTypes.func,
         handleEnabledChange: React.PropTypes.func.isRequired,
         type: React.PropTypes.string.isRequired,
-        frameNo: React.PropTypes.number.isRequired
+        frameNo: React.PropTypes.number
     },
     render: function() {
         var self = this,
