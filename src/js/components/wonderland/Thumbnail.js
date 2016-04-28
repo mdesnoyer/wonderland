@@ -109,6 +109,7 @@ var Thumbnail = React.createClass({
                     isModalActive={self.state.isModalActive}
                     handleToggleModal={self.handleToggleModal}
                     isModalContentClipped={true}
+                    isModalContentMax={true}
                 >
                     <ImageModalChild
                         caption={caption}
