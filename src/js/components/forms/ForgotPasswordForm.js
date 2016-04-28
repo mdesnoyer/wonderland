@@ -9,19 +9,19 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 var ForgotPasswordForm = React.createClass({
     getInitialState: function() {
-    	return {
-    		isEmailMessageSent: false,
-    		isError: false
-    	}
+        return {
+            isEmailMessageSent: false,
+            isError: false
+        }
     },
     handleSubmit: function(e) { 
-    	e.preventDefault();
-    	this.setState({
+        e.preventDefault();
+        this.setState({
             isEmailMessageSent: true
         });
     },
-	render: function() {
-		if (this.state.isEmailMessageSent) {
+    render: function() {
+        if (this.state.isEmailMessageSent) {
             return (
                     <Message header={T.get('reset.message')} body={<Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('returnSignIn')}</Link>} />
                 );
@@ -41,7 +41,7 @@ var ForgotPasswordForm = React.createClass({
                 </form>
             );
         }
-	}
+    }
 })
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
