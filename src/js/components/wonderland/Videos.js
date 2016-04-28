@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
 import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
@@ -12,6 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
+	mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             errorMessageArray: [],

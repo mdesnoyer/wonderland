@@ -1,11 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var NavigationBar = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         handleNewSearch: React.PropTypes.func.isRequired,
         prevPage: React.PropTypes.string.isRequired,

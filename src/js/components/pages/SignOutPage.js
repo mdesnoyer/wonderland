@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -12,6 +13,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignOutPage = React.createClass({
+	mixins: [ReactDebugMixin],
     componentWillMount: function() {
         SESSION.end()
             .catch(function (err) {

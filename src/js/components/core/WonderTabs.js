@@ -1,11 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var WonderTabs = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         tabs: React.PropTypes.object.isRequired
     },

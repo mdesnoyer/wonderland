@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
@@ -12,7 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsBrightcovePage = React.createClass({
-    mixins: [Secured],
+    mixins: [Secured, ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

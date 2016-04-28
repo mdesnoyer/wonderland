@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -14,6 +15,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,
@@ -21,7 +23,7 @@ var Thumbnail = React.createClass({
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
-        frameNo: React.PropTypes.number.isRequired,
+        frameNo: React.PropTypes.number,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,

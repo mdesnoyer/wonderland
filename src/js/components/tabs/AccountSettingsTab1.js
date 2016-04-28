@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
@@ -8,6 +9,7 @@ import Message from '../wonderland/Message';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsTab1 = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool,
         defaultThumbnailId: React.PropTypes.string,

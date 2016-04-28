@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
 import WonderTabs from '../core/WonderTabs';
 import AccountSettingsTab1 from '../tabs/AccountSettingsTab1';
@@ -10,7 +11,7 @@ import AccountSettingsTab3 from '../tabs/AccountSettingsTab3';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsForm = React.createClass({
-    mixins: [Account],
+    mixins: [Account, ReactDebugMixin],
     render: function() {
         var self = this,
             tabs = {

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,6 +13,7 @@ import Slide from './Slide';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnails = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         videoStateMapping: React.PropTypes.string.isRequired,

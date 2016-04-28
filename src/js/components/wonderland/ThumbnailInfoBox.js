@@ -1,14 +1,16 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import FuzzyTime from '../core/FuzzyTime';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ThumbnailInfoBox = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         type: React.PropTypes.string.isRequired,
-        frameNo: React.PropTypes.number.isRequired
+        frameNo: React.PropTypes.number
     },
     render: function() {
         var self = this;

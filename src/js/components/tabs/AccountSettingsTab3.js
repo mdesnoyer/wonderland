@@ -1,11 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsTab3 = React.createClass({
+	mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool.isRequired,
         accountName: React.PropTypes.string,
