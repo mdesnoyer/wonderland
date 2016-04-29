@@ -127,6 +127,7 @@ var Thumbnail = React.createClass({
                         created={self.props.created}
                         updated={self.props.updated}
                         ctr={self.props.ctr}
+                        neonScore={neonScore}
                     />
                 </ModalParent>
             </figure>
