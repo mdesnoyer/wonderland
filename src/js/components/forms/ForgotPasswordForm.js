@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
@@ -9,7 +9,7 @@ import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 var ForgotPasswordForm = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             isEmailMessageSent: false,

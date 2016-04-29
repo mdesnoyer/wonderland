@@ -1,14 +1,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ThumbBox = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         copyUrl: React.PropTypes.string.isRequired,
         downloadUrl: React.PropTypes.string.isRequired,

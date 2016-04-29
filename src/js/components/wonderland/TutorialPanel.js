@@ -1,12 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TutorialPanel = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         icon: React.PropTypes.string.isRequired,
         direction: React.PropTypes.string.isRequired

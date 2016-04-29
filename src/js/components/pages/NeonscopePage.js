@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -12,7 +12,7 @@ import Secured from '../../mixins/Secured';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var NeonscopePage = React.createClass({
-    mixins: [Secured, ReactDebugMixin],
+    mixins: [Secured], // ReactDebugMixin
     render: function() {
         return (
             <div>
