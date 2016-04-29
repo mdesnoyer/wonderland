@@ -24,12 +24,12 @@ var VideoHeader = React.createClass({
     render: function() {
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
-            toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
+            toggleButton = <a className="button is-medium">{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless">
+            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
                 <div className="navbar-left">
                     <div className="navbar-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>
