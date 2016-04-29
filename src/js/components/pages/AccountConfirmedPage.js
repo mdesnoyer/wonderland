@@ -8,6 +8,7 @@ import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import SignInForm from '../forms/SignInForm';
+import Onboarding from '../onboarding/Onboarding';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -32,7 +33,7 @@ var AccountConfirmedPage = React.createClass({
                                 <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
                                 <p><em>{T.get('app.companySig')}</em></p>
                             </div>
-                            <SignInForm />
+                            <Onboarding />
                         </div>
                     </div>
                 </section>
@@ -47,3 +48,4 @@ var AccountConfirmedPage = React.createClass({
 export default AccountConfirmedPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// <SignInForm />
