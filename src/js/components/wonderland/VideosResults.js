@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import Video from './Video';
 import NavigationBar from '../core/NavigationBar';
 import SearchBar from '../core/SearchBar';
@@ -9,7 +9,7 @@ import SearchBar from '../core/SearchBar';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosResults = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
             additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')

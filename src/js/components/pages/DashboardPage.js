@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Secured from '../../mixins/Secured';
@@ -11,7 +11,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var DashboardPage = React.createClass({
-    mixins: [Secured, ReactDebugMixin],
+    mixins: [Secured], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

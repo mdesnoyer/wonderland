@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import FuzzyTime from '../core/FuzzyTime';
 import Xylophone from '../core/Xylophone';
 import HeroThumbnail from '../wonderland/HeroThumbnail';
@@ -11,7 +11,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoHeader = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         handleVideoOpenToggle: React.PropTypes.func.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,

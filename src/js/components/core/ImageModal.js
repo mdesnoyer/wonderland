@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import ThumbBox from '../wonderland/ThumbBox';
 import ThumbnailInfoBox from '../wonderland/ThumbnailInfoBox';
 import UTILS from '../../modules/utils';
@@ -9,7 +9,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageModalChild = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         caption: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
