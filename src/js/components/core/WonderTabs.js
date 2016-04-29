@@ -39,7 +39,7 @@ var WonderTabs = React.createClass({
         var self = this;
         return (
             <div>
-                <nav className="tabs is-boxed">
+                <nav className="wonderland-tabs tabs is-boxed">
                     <ul>
                         {
                             self.state.tabs.map(function(tab, i) {

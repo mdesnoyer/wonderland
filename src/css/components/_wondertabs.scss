@@ -1,4 +1,5 @@
-.tabs li.is-disabled a {
+.wonderland-tabs.tabs li.is-disabled a {
     color: $grey-light;
+    cursor: not-allowed;
     pointer-events: none;
 }
