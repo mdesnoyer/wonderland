@@ -181,7 +181,7 @@ var UTILS = {
         }    
     },
     VERSION: '1.8',
-    NEON_SCORE_ENABLED: false,
+    NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
