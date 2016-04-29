@@ -250,6 +250,9 @@ var UTILS = {
             '@companyShortName': T.get('app.companyShortName')
         });
     },
+    makeTitle: function() {
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
+    },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit
         // (?=.*\W) === at least one special symbol

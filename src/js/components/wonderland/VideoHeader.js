@@ -7,6 +7,7 @@ import Xylophone from '../core/Xylophone';
 import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import InputTextEdit from '../core/InputTextEdit';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -25,11 +26,10 @@ var VideoHeader = React.createClass({
             toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
             toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            displayTitle = self.props.title,
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
+            <nav className="wonderland-video__header navbar is-marginless">
                 <div className="navbar-left">
                     <div className="navbar-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>
@@ -42,7 +42,15 @@ var VideoHeader = React.createClass({
                         />
                     </div>
                     <div className="navbar-item">
-                        <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
+                        <InputTextEdit
+                            valueDest="videos"
+                            value={self.props.title}
+                            fallbackValue={UTILS.makeTitle()}
+                            idType="video_id"
+                            valueId={self.props.videoId}
+                            valueType="title"
+                            classStyle="title is-5" 
+                        />
                     </div>
                 </div>
                 <div className="navbar-right">
