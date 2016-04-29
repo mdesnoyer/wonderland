@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Video from '../wonderland/Video';
@@ -12,7 +13,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoPage = React.createClass({
-    mixins: [Secured, Account],
+    mixins: [Secured, Account, ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

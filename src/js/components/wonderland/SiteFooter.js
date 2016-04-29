@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -12,6 +13,7 @@ const CONFIG = require('json../../../env/config.json');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteFooter = React.createClass({
+	mixins: [ReactDebugMixin],
     render: function() {
         return (
             <footer className="footer wonderland-banner wonderland-banner--footer">

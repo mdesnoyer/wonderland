@@ -1,20 +1,26 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ModalParent = React.createClass({
+	mixins: [ReactDebugMixin],
+    propTypes: {
+        isModalActive: React.PropTypes.bool.isRequired,
+        isModalContentClipped: React.PropTypes.bool.isRequired,
+        handleToggleModal: React.PropTypes.func.isRequired,
+        isModalContentMax: React.PropTypes.bool
+    },
+    getDefaultProps: function() {
+        return {
+            isModalContentMax: false
+        }
+    },
     handleToggleModal: function(e) {
         var self = this;
         self.props.handleToggleModal();
-    },
-    handleEscKey:function(e) {
-        var self = this;
-        if (e.keyCode === 27 && self.props.isModalActive) {
-            e.preventDefault();
-            self.handleToggleModal(e);
-        }
     },
     componentWillMount:function() {
         var self = this;
@@ -27,7 +33,7 @@ var ModalParent = React.createClass({
     render: function() {
         var self = this,
             modalClass = self.props.isModalActive ? ' is-active' : '',
-            modalContentClass = self.props.isModalContentClipped ? ' is-clipped' : ''
+            modalContentClass = (self.props.isModalContentClipped ? ' is-clipped' : '') + (self.props.isModalContentMax ? ' is-max' : '')
         ;
         return (
             <div className={'wonderland-modal modal' + modalClass}>
@@ -38,7 +44,14 @@ var ModalParent = React.createClass({
                 <button className="wonderland-modal-close modal-close" onClick={self.handleToggleModal}></button>
             </div>
         );
-    }
+    },
+    handleEscKey:function(e) {
+        var self = this;
+        if (e.keyCode === 27 && self.props.isModalActive) { // 27 = Escape
+            e.preventDefault();
+            self.handleToggleModal(e);
+        }
+    },
 })
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
