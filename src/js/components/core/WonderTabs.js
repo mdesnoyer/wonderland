@@ -24,7 +24,7 @@ var WonderTabs = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            uuid: +(new Date()),
+            uuid: self.props.id || +(new Date()),
             tabs: self.props.tabs,
             selectedTab: self.props.selectedTab
         };
