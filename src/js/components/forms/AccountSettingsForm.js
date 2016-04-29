@@ -11,7 +11,7 @@ import AccountSettingsTab3 from '../tabs/AccountSettingsTab3';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsForm = React.createClass({
-    mixins: [Account],
+    mixins: [Account], // ReactDebugMixin
     render: function() {
         var self = this,
             tabs = [

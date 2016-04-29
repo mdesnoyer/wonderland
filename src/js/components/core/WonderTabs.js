@@ -29,12 +29,6 @@ var WonderTabs = React.createClass({
             selectedTab: self.props.selectedTab
         };
     },
-    componentWillReceiveProps: function(nextProps) {
-        this.setState({
-            tabs: nextProps.tabs,
-            selectedTab: nextProps.selectedTab
-        });
-    },
     render: function() {
         var self = this;
         return (
@@ -68,7 +62,7 @@ var WonderTabs = React.createClass({
                         }
                     </ul>
                 </nav>
-                <div>
+                <div className="wonderland-tabs-body">
                     <section className="container">
                         <div className="container">
                             {self.state.tabs[self.state.selectedTab].body}
