@@ -122,7 +122,9 @@ var Video = React.createClass({
         }
     },
     handleVideoOpenToggle: function(e) {
-        e.preventDefault();
+        if (e.target.type === 'text') { // hack
+            return false;
+        }
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen
