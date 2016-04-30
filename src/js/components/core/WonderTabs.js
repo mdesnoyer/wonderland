@@ -17,7 +17,6 @@ var WonderTabs = React.createClass({
         }
     },
     handleTabSwitch: function(e) {
-        e.preventDefault();
         var self = this;
         self.setState({
             selectedTab: e.target.attributes.href.value.substr(1) // remove the #

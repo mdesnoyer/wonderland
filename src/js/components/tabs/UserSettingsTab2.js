@@ -9,30 +9,33 @@ import SaveButton from '../buttons/SaveButton';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var AccountSettingsTab1 = React.createClass({
-	// mixins: [ReactDebugMixin],
+var UserSettingsTab2 = React.createClass({
+    // mixins: [ReactDebugMixin],
     propTypes: {
-        isLoading: React.PropTypes.bool,
-        defaultThumbnailId: React.PropTypes.string,
-        defaultWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        defaultHeight: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string])
+        isLoading: React.PropTypes.bool.isRequired,
+        username: React.PropTypes.string.isRequired,
+        firstName: React.PropTypes.string,
+        lastName: React.PropTypes.string,
+        title: React.PropTypes.string
     },
     getInitialState: function() {
         var self = this;
         return {
             isLoading: self.props.isLoading,
-            defaultThumbnailId: self.props.defaultThumbnailId,
-            defaultWidth: self.props.defaultWidth,
-            defaultHeight: self.props.defaultHeight
+            username: self.props.username,
+            firstName: self.props.firstName,
+            lastName: self.props.lastName,
+            title: self.props.title
         }  
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
         self.setState({
             isLoading: nextProps.isLoading,
-            defaultThumbnailId: nextProps.defaultThumbnailId,
-            defaultWidth: nextProps.defaultWidth,
-            defaultHeight: nextProps.defaultHeight
+            username: nextProps.username,
+            firstName: nextProps.firstName,
+            lastName: nextProps.lastName,
+            title: nextProps.title
         });
     },
     componentDidMount: function() {
@@ -61,14 +64,15 @@ var AccountSettingsTab1 = React.createClass({
         var self = this,
             options = {
                 data: {
-                    default_thumbnail_id: self.state.defaultThumbnailId,
-                    default_width: self.state.defaultWidth,
-                    default_height: self.state.defaultHeight
+                    username: self.state.username,
+                    first_name: self.state.firstName,
+                    last_name: self.state.lastName,
+                    title: self.state.title
                 }
             }
         ;
         E.clearErrors();
-        AJAX.doPut('', options)
+        AJAX.doPut('users', options)
             .then(function(json) {
                 if (self._isMounted) {
                     self.setState({
@@ -90,70 +94,69 @@ var AccountSettingsTab1 = React.createClass({
             })
         ;
     },
-    handleChangeDefaultThumbnailId(e) {
+    handleChangeFirstName(e) {
         var self = this;
         self.setState({
-            defaultThumbnailId: e.target.value
+            firstName: e.target.value
         })
     },
-    handleChangeDefaultWidth(e) {
+    handleChangeLastName(e) {
         var self = this;
         self.setState({
-            defaultWidth: e.target.value
+            lastName: e.target.value
         })
     },
-    handleChangeDefaultHeight(e) {
+    handleChangeTitle(e) {
         var self = this;
         self.setState({
-            defaultHeight: e.target.value
+            title: e.target.value
         })
     },
     render: function() {
         var self = this,
-            messageNeeded = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeeded = E.getErrorsCount() ? <Message header={'User Settings'} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    {messageNeeded}
-                    <label className="label">Default Thumbnail ID</label>
-                    <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <label className="label">First Name</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
-                            ref="defaultThumbnailId"
+                            ref="firstName"
                             className={'input'}
                             type="text"
-                            minLength="1"
-                            maxLength="2048"
-                            value={self.state.defaultThumbnailId}
+                            value={self.state.firstName}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultThumbnailId}
+                            onChange={self.handleChangeFirstName}
                         />
                     </p>
-                    <label className="label">Default Size (width x height)</label>
-                    <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <label className="label">Last Name</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
+                            ref="lastName"
                             className={'input'}
-                            type="number"
-                            step="1"
-                            min="1"
-                            max="8192"
-                            value={self.state.defaultWidth}
+                            type="text"
+                            value={self.state.lastName}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultWidth}
+                            onChange={self.handleChangeLastName}
                         />
+                    </p>
+                    <label className="label">Title</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
+                            ref="title"
                             className={'input'}
-                            type="number"
-                            step="1"
-                            min="1"
-                            max="8192"
-                            value={self.state.defaultHeight}
+                            type="text"
+                            value={self.state.title}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultHeight}
+                            onChange={self.handleChangeTitle}
                         />
                     </p>
                     <p className="has-text-centered">
-                        <SaveButton isLoading={self.state.isLoading} />
+                        <SaveButton
+                            isLoading={self.state.isLoading}
+                            isDisabled={true}
+                        />
                     </p>
                 </fieldset>
             </form>
@@ -163,6 +166,6 @@ var AccountSettingsTab1 = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AccountSettingsTab1;
+export default UserSettingsTab2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
