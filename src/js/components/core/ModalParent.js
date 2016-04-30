@@ -9,12 +9,13 @@ var ModalParent = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
         isModalActive: React.PropTypes.bool.isRequired,
-        isModalContentClipped: React.PropTypes.bool.isRequired,
+        isModalContentClipped: React.PropTypes.bool,
         handleToggleModal: React.PropTypes.func.isRequired,
         isModalContentMax: React.PropTypes.bool
     },
     getDefaultProps: function() {
         return {
+            isModalContentClipped: false,
             isModalContentMax: false
         }
     },

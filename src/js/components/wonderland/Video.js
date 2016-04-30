@@ -30,6 +30,46 @@ var Video = React.createClass({
             created: '',
         }
     },
+    fixThumbnails: function(rawThumbnails) {
+        var defaults = [],
+            customs = [],
+            neons = [],
+            nonNeons = []
+        ;
+        // Pass 1 - sort into `default`, `custom` and `neon`
+        rawThumbnails.map(function(rawThumbnail, i) {
+            switch (rawThumbnail.type) {
+                case 'neon':                    
+                    neons.push(rawThumbnail);
+                    break;
+                case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'default':
+                    defaults.push(rawThumbnail);
+                    break;
+                default:
+                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
+                    break;
+            }
+        });
+        // Pass 2 - sort `custom` by rank ASC
+        customs.sort(function(a, b) {
+            return a.rank - b.rank;
+        });
+        // Pass 3 - sort `neon` by neon_score DESC
+        neons.sort(function(a, b) {
+            return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+        });
+        // Pass 4 - assemble the output
+        nonNeons = customs.concat(defaults);
+        if (nonNeons.length > 0) {
+            return neons.concat(nonNeons[0]);
+        }
+        else {
+            return neons;
+        }
+    },
     getInitialState: function() {
         var self = this;
         return {
@@ -38,9 +78,7 @@ var Video = React.createClass({
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
-            sortedThumbnails: self.props.thumbnails.sort(function(a, b) {
-                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-            }),
+            sortedThumbnails: self.fixThumbnails(self.props.thumbnails),
             title: self.props.title,
             error: self.props.error,
             created: self.props.created,
@@ -108,7 +146,6 @@ var Video = React.createClass({
                     <VideoMain
                         forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
-                        videoStateMapping={self.state.videoStateMapping}
                         thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
@@ -159,9 +196,7 @@ var Video = React.createClass({
                         self.setState({
                             status: 200,
                             thumbnails: video.thumbnails,
-                            sortedThumbnails: video.thumbnails.sort(function(a, b) {
-                                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-                            }),
+                            sortedThumbnails: self.fixThumbnails(video.thumbnails),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
