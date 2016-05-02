@@ -1,13 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import AJAX from '../../modules/ajax';
 import ModalParent from '../core/ModalParent';
-import ImageModalChild from '../core/ImageModalChild';
+import ThumbnailModalChild from '../core/ThumbnailModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -15,10 +15,9 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
-        videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
@@ -33,7 +32,7 @@ var Thumbnail = React.createClass({
         thumbnailId: React.PropTypes.string.isRequired,
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
-        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string])
     },
     getInitialState: function () {
         var self = this;
@@ -64,14 +63,14 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-medium wonderland-thumbnail__score',
+            additionalClass = 'tag is-medium wonderland-thumbnail__score' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isBusy ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
-            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
+            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
             handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
@@ -94,8 +93,19 @@ var Thumbnail = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     {neonScore}
-                    <input className="wonderland-thumbnail__enabled" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
-                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
+                    <input
+                        className="wonderland-thumbnail__enabled"
+                        onChange={handleEnabledChangeHook}
+                        checked={self.state.isEnabled}
+                        type="checkbox"
+                        disabled={enabledDisabled}
+                    />
+                    <span
+                        onClick={self.handleToggleModal}
+                        className="wonderland-thumbnail__indicator -foreground"
+                    >
+                        <i className={'fa fa-' + enabledIndicator}></i>
+                    </span>
                     <ThumbBox
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
@@ -103,15 +113,15 @@ var Thumbnail = React.createClass({
                         handleToggleModal={self.handleToggleModal}
                         handleEnabledChange={handleEnabledChangeHook}
                         isServingEnabled={self.props.isServingEnabled}
+                        type={self.props.type}
                     />
                 </figcaption>
                 <ModalParent
                     isModalActive={self.state.isModalActive}
                     handleToggleModal={self.handleToggleModal}
-                    isModalContentClipped={true}
                     isModalContentMax={true}
                 >
-                    <ImageModalChild
+                    <ThumbnailModalChild
                         caption={caption}
                         strippedUrl={self.props.strippedUrl}
                         copyUrl={self.props.url}
@@ -127,6 +137,7 @@ var Thumbnail = React.createClass({
                         created={self.props.created}
                         updated={self.props.updated}
                         ctr={self.props.ctr}
+                        neonScore={neonScore}
                     />
                 </ModalParent>
             </figure>

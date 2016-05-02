@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -32,8 +32,9 @@ var AnalyzeVideoForm = React.createClass({
         return {
             accessToken: '',
             refreshToken: '',
-            mode: 'loading', // loading/disabled/silent/error
-            url: '',
+            mode: 'silent', // loading/disabled/silent/error
+            videoUrl: '',
+            optionalDefaultThumbnailUrl: '',
             optionalTitle: '',
             maxVideoCount: 10,
             currentVideoCount: self.props.videoCountServed
@@ -47,7 +48,6 @@ var AnalyzeVideoForm = React.createClass({
         AJAX.doGet('limits')
             .then(function(json) {
                 self.setState({
-                    isError: false,
                     currentVideoCount: json.video_posts,
                     maxVideoCount: json.max_video_posts,
                     mode: 'silent'
@@ -56,14 +56,13 @@ var AnalyzeVideoForm = React.createClass({
             .catch(function(err) {
                 E.checkForError(err.statusText, false);
                 self.setState({
-                    isError: true,
-                    mode: 'disabled'
+                    mode: 'error'
                 });
             });
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
+            messageNeeded = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
             buttonClassName,
             inputClassName
@@ -86,7 +85,7 @@ var AnalyzeVideoForm = React.createClass({
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium is-disabled';
             }
-            else if (!self.state.url && self.state.mode === 'silent') {
+            else if (!self.state.videoUrl && self.state.mode === 'silent') {
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium';
             }
@@ -104,10 +103,10 @@ var AnalyzeVideoForm = React.createClass({
                                 required
                                 className={inputClassName}
                                 type="url"
-                                ref="url"
-                                onChange={self.handleChangeUrl}
-                                value={self.state.url}
-                                placeholder={T.get('analyze.videoUrl')}
+                                ref="videoUrl"
+                                onChange={self.handleChangeVideoUrl}
+                                value={self.state.videoUrl}
+                                placeholder={T.get('analyzeVideo.videoUrl')}
                             />
                         </p>
                         <p className="control">
@@ -117,7 +116,17 @@ var AnalyzeVideoForm = React.createClass({
                                 ref="optionalTitle"
                                 onChange={self.handleChangeOptionalTitle}
                                 value={self.state.optionalTitle}
-                                placeholder={T.get('analyze.optionalTitle')}
+                                placeholder={T.get('analyzeVideo.optionalTitle')}
+                            />
+                        </p>
+                        <p className="control">
+                            <input
+                                className={inputClassName}
+                                type="url"
+                                ref="optionalDefaultThumbnailUrl"
+                                onChange={self.handleChangeOptionalDefaultThumbnailUrl}
+                                value={self.state.optionalDefaultThumbnailUrl}
+                                placeholder={T.get('analyzeVideo.optionalDefaultThumbnailUrl')}
                             />
                         </p>
                         <p className="has-text-centered">
@@ -131,10 +140,10 @@ var AnalyzeVideoForm = React.createClass({
         }
 
     },
-    handleChangeUrl: function(e) {
+    handleChangeVideoUrl: function(e) {
         var self = this;
         self.setState({
-            url: e.target.value
+            videoUrl: e.target.value
         });
     },
     handleChangeOptionalTitle: function(e) {
@@ -143,65 +152,81 @@ var AnalyzeVideoForm = React.createClass({
             optionalTitle: e.target.value
         });
     },
+    handleChangeOptionalDefaultThumbnailUrl: function(e) {
+        var self = this;
+        self.setState({
+            optionalDefaultThumbnailUrl: e.target.value
+        });
+    },
     resetForm: function() {
         var self = this;
         self.setState({
-            isError: false,
-            url: '',
-            optionalTitle: ''
+            mode: 'silent',
+            videoUrl: '',
+            optionalTitle: '',
+            optionalDefaultThumbnailUrl: ''
         });
     },
     handleSubmit: function (e) {
         var self = this,
-            url = this.refs.url.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim() || self.makeTitle()
+            videoUrl = this.refs.videoUrl.value.trim(),
+            optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            optionalDefaultThumbnailUrl = self.refs.optionalDefaultThumbnailUrl.value.trim()
         ;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, url);
-        self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle);
-        self.resetForm();
+        TRACKING.sendEvent(self, arguments, videoUrl);
+        self.setState({
+                mode: 'loading'
+            }, self.analyzeVideo(videoUrl, optionalTitle, optionalDefaultThumbnailUrl)
+        );
     },
-    makeTitle: function() {
-        var self = this;
-        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
-    },
-    analyzeVideo: function (url, optionalTitle) {
+    analyzeVideo: function (videoUrl, optionalTitle, optionalDefaultThumbnailUrl) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
                 data: {
                     external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(url),
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(videoUrl)),
                     title: optionalTitle
                 }
             }
         ;
+        if (optionalDefaultThumbnailUrl) {
+            options['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
+        }
         AJAX.doPost('videos', options)
             .then(function(json) {
                 self.setState({
-                    isError: false
+                    mode: 'silent'
                 });
                 if (self.props.postHook) {
                     self.props.postHook();
+                    self.resetForm();
                 }
                 else {
                     self.context.router.push('/video/' + videoId + '/');
                 }
             })
             .catch(function(err) {
-                if (err.status === 402) {
-                    E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
-                        '%limit': self.state.maxVideoCount,
-                        '@link': UTILS.CONTACT_EXTERNAL_URL
-                    }), false);
-                }
-                else {
-                    E.checkForError(err.statusText, false);
+                switch (err.status) {
+                    case 402:
+                        E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
+                            '%limit': self.state.maxVideoCount,
+                            '@link': UTILS.CONTACT_EXTERNAL_URL
+                        }), false);
+                        break;
+                    case 400:
+                        E.checkForError(T.get('copy.analyzeVideo.badRequest'), false);
+                        break;
+                    default:
+                        E.checkForError(JSON.parse(err.responseText).error.data, false);
+                        break;
                 }
                 self.setState({
-                    isError: true
+                    mode: 'error'
                 });
-            });
+            })
+        ;
     }
 });
 

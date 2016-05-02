@@ -1,13 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var FuzzyTime = React.createClass({
-    mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this;
         if (self.props.date) {

@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import ThumbBox from '../wonderland/ThumbBox';
 import ThumbnailInfoBox from '../wonderland/ThumbnailInfoBox';
 import UTILS from '../../modules/utils';
@@ -9,7 +9,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageModalChild = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         caption: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
@@ -26,6 +26,7 @@ var ImageModalChild = React.createClass({
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
         ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        neonScore: React.PropTypes.element.isRequired
     },
     render: function() {
         var self = this,
@@ -42,6 +43,7 @@ var ImageModalChild = React.createClass({
                             title={self.props.caption}
                         />
                         <figcaption className="wonderland-thumbnail__caption">
+                            {self.props.neonScore}
                             <span className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
                             <ThumbBox
                                 copyUrl={self.props.copyUrl}

@@ -58,6 +58,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.heading': 'Analyze Video',
             'copy.analyzeVideo.body': '',
             'copy.analyzeVideo.maxLimitHit': 'Whoops! You have hit your demo limit of %limit. Please <a href="@link">contact us</a> to buy more.',
+            'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
@@ -143,8 +144,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'reset.sendReset': 'Send Reset Instructions',
             'reset.message': 'Please Check your Email for Reset Instructions',
             //analyze page
-            'analyze.videoUrl': 'Video URL',
-            'analyze.optionalTitle': 'Optional Title',
+            'analyzeVideo.videoUrl': 'Video URL',
+            'analyzeVideo.optionalTitle': 'Optional Title',
+            'analyzeVideo.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             //navigation bar
 
             'nav.home': 'Home',

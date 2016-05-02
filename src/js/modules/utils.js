@@ -181,7 +181,7 @@ var UTILS = {
         }    
     },
     VERSION: '1.8',
-    NEON_SCORE_ENABLED: false,
+    NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
@@ -249,6 +249,9 @@ var UTILS = {
             '@appName': T.get('app.appName'),
             '@companyShortName': T.get('app.companyShortName')
         });
+    },
+    makeTitle: function() {
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit

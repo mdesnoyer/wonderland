@@ -1,13 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import ReactDebugMixin from 'react-debug-mixin';
+// import ReactDebugMixin from 'react-debug-mixin';
 import FuzzyTime from '../core/FuzzyTime';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ThumbnailInfoBox = React.createClass({
-	mixins: [ReactDebugMixin],
+	// mixins: [ReactDebugMixin],
     propTypes: {
         type: React.PropTypes.string.isRequired,
         frameNo: React.PropTypes.number
@@ -17,8 +17,8 @@ var ThumbnailInfoBox = React.createClass({
         return (
             <aside className="box">
                 <dl className="wonderland-dl">
-                    <dt className="wonderland-dt">Frame No.</dt>
-                        <dd className="wonderland-dd">{self.props.frameNo}</dd>
+                    <dt className={'wonderland-dt' + (self.props.frameNo > 0 ? '' : ' is-hidden')}>Frame No.</dt>
+                        <dd className={'wonderland-dd' + (self.props.frameNo > 0 ? '' : ' is-hidden')}>{self.props.frameNo}</dd>
                     <dt className="wonderland-dt">Type</dt>
                         <dd className="wonderland-dd">{self.props.type}</dd>
                     <dt className="wonderland-dt">Dimensions</dt>
