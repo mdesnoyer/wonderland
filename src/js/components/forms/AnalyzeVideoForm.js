@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -35,7 +35,7 @@ var AnalyzeVideoForm = React.createClass({
             mode: 'silent', // loading/disabled/silent/error
             videoUrl: '',
             optionalDefaultThumbnailUrl: '',
-            optionalTitle: '',
+            // optionalTitle: '',
             maxVideoCount: 10,
             currentVideoCount: self.props.videoCountServed
         };
@@ -111,7 +111,7 @@ var AnalyzeVideoForm = React.createClass({
                                 maxLength="512"
                             />
                         </p>
-                        <p className="control">
+                        <p className="control is-hidden">
                             <input
                                 className={inputClassName}
                                 type="text"
@@ -152,12 +152,12 @@ var AnalyzeVideoForm = React.createClass({
             videoUrl: e.target.value
         });
     },
-    handleChangeOptionalTitle: function(e) {
-        var self = this;
-        self.setState({
-            optionalTitle: e.target.value
-        });
-    },
+    // handleChangeOptionalTitle: function(e) {
+    //     var self = this;
+    //     self.setState({
+    //         optionalTitle: e.target.value
+    //     });
+    // },
     handleChangeOptionalDefaultThumbnailUrl: function(e) {
         var self = this;
         self.setState({
@@ -169,14 +169,15 @@ var AnalyzeVideoForm = React.createClass({
         self.setState({
             mode: 'silent',
             videoUrl: '',
-            optionalTitle: '',
+            // optionalTitle: '',
             optionalDefaultThumbnailUrl: ''
         });
     },
     handleSubmit: function (e) {
         var self = this,
             videoUrl = this.refs.videoUrl.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            // optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            optionalTitle = '',
             optionalDefaultThumbnailUrl = self.refs.optionalDefaultThumbnailUrl.value.trim()
         ;
         e.preventDefault();
@@ -193,7 +194,7 @@ var AnalyzeVideoForm = React.createClass({
                 data: {
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(videoUrl)),
-                    title: optionalTitle
+                    // title: optionalTitle
                 }
             }
         ;
