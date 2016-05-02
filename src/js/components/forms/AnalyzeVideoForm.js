@@ -192,7 +192,7 @@ var AnalyzeVideoForm = React.createClass({
             }
         ;
         if (optionalDefaultThumbnailUrl) {
-            options['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
+            options.data['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
         }
         AJAX.doPost('videos', options)
             .then(function(json) {
