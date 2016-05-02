@@ -34,6 +34,12 @@ var InputTextEdit = React.createClass({
         var self = this;
         self._isMounted = false;
     },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            value: nextProps.value
+        });
+    },
     render: function() {
         var self = this,
             controlClassName = '',
@@ -90,7 +96,7 @@ var InputTextEdit = React.createClass({
         var self = this;
         self.setState({
             mode: 'loading',
-            value: self.state.value || self.props.fallbackValue 
+            value: self.state.value || self.props.fallbackValue
         }, 
         self.putValue()
         );
