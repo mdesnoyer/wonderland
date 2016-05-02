@@ -27,7 +27,7 @@ var Video = React.createClass({
             thumbnails: [],
             title: 'Unknown',
             error: '',
-            created: '',
+            created: ''
         }
     },
     fixThumbnails: function(rawThumbnails) {
