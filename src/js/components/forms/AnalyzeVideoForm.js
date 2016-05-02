@@ -107,6 +107,8 @@ var AnalyzeVideoForm = React.createClass({
                                 onChange={self.handleChangeVideoUrl}
                                 value={self.state.videoUrl}
                                 placeholder={T.get('analyzeVideo.videoUrl')}
+                                minLength="1"
+                                maxLength="512"
                             />
                         </p>
                         <p className="control">
@@ -114,6 +116,8 @@ var AnalyzeVideoForm = React.createClass({
                                 className={inputClassName}
                                 type="text"
                                 ref="optionalTitle"
+                                minLength="1"
+                                maxLength="1024"
                                 onChange={self.handleChangeOptionalTitle}
                                 value={self.state.optionalTitle}
                                 placeholder={T.get('analyzeVideo.optionalTitle')}
@@ -127,6 +131,8 @@ var AnalyzeVideoForm = React.createClass({
                                 onChange={self.handleChangeOptionalDefaultThumbnailUrl}
                                 value={self.state.optionalDefaultThumbnailUrl}
                                 placeholder={T.get('analyzeVideo.optionalDefaultThumbnailUrl')}
+                                minLength="1"
+                                maxLength="512"
                             />
                         </p>
                         <p className="has-text-centered">

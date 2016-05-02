@@ -66,16 +66,31 @@ var SignInForm = React.createClass({
                             type="text"
                             required
                             ref="email"
+                            minLength="6" 
+                            maxLength="1024"
                             placeholder={T.get('email')}
                             defaultValue={SESSION.rememberedEmail()} 
                         />
                     </p>
                     <p className="control">
-                        <input className={inputClassName} type="password" required ref="password" placeholder={T.get('password')} />
+                        <input className={inputClassName}
+                            type="password"
+                            required
+                            ref="password"
+                            minLength="8"
+                            maxLength="64"
+                            placeholder={T.get('password')}
+                        />
                     </p>
                     <p className="control">
                         <label className="checkbox" htmlFor="isRememberMe">
-                            <input type="checkbox" className="wonderland-checkbox--checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} />
+                            <input type="checkbox"
+                                className="wonderland-checkbox--checkbox"
+                                ref="isRememberMe"
+                                id="isRememberMe"
+                                defaultValue={SESSION.rememberMe()}
+                                defaultChecked={SESSION.rememberMe()}
+                            />
                             {T.get('rememberMe')}
                         </label>
                     </p>

@@ -85,22 +85,21 @@ var IntegrationsForm = React.createClass({
                             
                             <label htmlFor="publisherId">{T.get('copy.integrations.types.brightcove.form.publisherId')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" value={self.state.publisherId} placeholder={T.get('copy.integrations.types.brightcove.form.publisherId')} />
+                                <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" minLength="1" maxLength="256" value={self.state.publisherId} placeholder={T.get('copy.integrations.types.brightcove.form.publisherId')} />
                                 <a className="button is-medium" data-target="brightcove-publisherId" onClick={self.openModal}>?</a>
                             </p>
                             
                             <label htmlFor="readToken">{T.get('copy.integrations.types.brightcove.form.readToken')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="readToken" id="readToken" value={self.state.readToken} placeholder={T.get('copy.integrations.types.brightcove.form.readToken')} />
+                                <input required className={inputClassName} type="text" ref="readToken" id="readToken" minLength="1" maxLength="512" value={self.state.readToken} placeholder={T.get('copy.integrations.types.brightcove.form.readToken')} />
                                 <a className="button is-medium" data-target="brightcove-readToken" onClick={self.openModal}>?</a>
                             </p>
                             
                             <label htmlFor="writeToken">{T.get('copy.integrations.types.brightcove.form.writeToken')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" value={self.state.writeToken} placeholder={T.get('copy.integrations.types.brightcove.form.writeToken')} />
+                                <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" minLength="1" maxLength="512" value={self.state.writeToken} placeholder={T.get('copy.integrations.types.brightcove.form.writeToken')} />
                                 <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
                             </p>
-                            
                             <div className="is-pulled-left">
                                 <button className={buttonClassName} type="cancel" onClick={self.handleCancel}>{T.get('cancel')}</button>
                             </div>
