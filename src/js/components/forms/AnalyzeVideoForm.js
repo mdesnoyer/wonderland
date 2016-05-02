@@ -35,7 +35,7 @@ var AnalyzeVideoForm = React.createClass({
             mode: 'silent', // loading/disabled/silent/error
             videoUrl: '',
             optionalDefaultThumbnailUrl: '',
-            // optionalTitle: '',
+            optionalTitle: '',
             maxVideoCount: 10,
             currentVideoCount: self.props.videoCountServed
         };
@@ -169,7 +169,7 @@ var AnalyzeVideoForm = React.createClass({
         self.setState({
             mode: 'silent',
             videoUrl: '',
-            // optionalTitle: '',
+            optionalTitle: '',
             optionalDefaultThumbnailUrl: ''
         });
     },
