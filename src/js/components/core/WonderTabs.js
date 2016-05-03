@@ -2,59 +2,40 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var WonderTabs = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
-        tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-        selectedTab: function(props) {
-            React.PropTypes.number.apply(React.PropTypes.number, arguments);
-            if (props.selectedTab >= props.tabs.length || props.selectedTab < 0) {
-                return new Error('Invalid `selectedTab` supplied to `WonderTabs`: selectedTab value of `' + props.selectedTab + '` does not exist');
-            }
-        }
-    },
-    getDefaultProps: function() {
-        return {
-            selectedTab: 0
-        };
+        tabs: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
-        var self = this;
         return {
-            uuid: self.props.id || +(new Date()),
-            tabs: self.props.tabs,
-            selectedTab: self.props.selectedTab
-        };
+            selectedTab: '',
+        }
+    },
+    handleTabSwitch: function(e) {
+        e.preventDefault();
+        var self = this;
+        self.setState({
+            selectedTab: e.target.attributes.href.value.substr(1) // remove the #
+        });
     },
     render: function() {
         var self = this;
         return (
             <div>
-                <nav className="wonderland-tabs tabs is-boxed">
+                <nav className="tabs is-boxed">
                     <ul>
                         {
-                            self.state.tabs.map(function(tab, i) {
-                                var className = self.state.selectedTab === i ? ['is-active'] : [];
-
-                                function handleClick(e) {
-                                    e.preventDefault();
-                                    if (i !== self.state.selectedTab && tab.disabled !== true) {
-                                        self.setState({
-                                            selectedTab: i
-                                        });
-                                    }
-                                }
-
-                                if (tab.disabled === true) {
-                                    className.push('is-disabled');
-                                }
+                            Object.keys(self.props.tabs).map(function(key, i) {
+                                var sluggedTab = UTILS.slugify(key);
                                 return (
-                                    <li key={self.state.uuid + '_tab' + i} className={className.join(' ')} onClick={handleClick}>
-                                        <a href="#">
-                                            {tab.label}
+                                    <li key={sluggedTab} className={((self.state.selectedTab === sluggedTab) || (self.state.selectedTab === '' && i ===0)) ? 'is-active' : ''}>
+                                        <a href={'#' + sluggedTab} onClick={self.handleTabSwitch}>
+                                            {key}
                                         </a>
                                     </li>
                                 );
@@ -62,12 +43,19 @@ var WonderTabs = React.createClass({
                         }
                     </ul>
                 </nav>
-                <div className="wonderland-tabs-body">
-                    <section className="container">
-                        <div className="container">
-                            {self.state.tabs[self.state.selectedTab].body}
-                        </div>
-                    </section>
+                <div>
+                    {
+                        Object.keys(self.props.tabs).map(function(key, i) {
+                            var sluggedTab = UTILS.slugify(key);
+                            return (
+                                <section key={sluggedTab} id={sluggedTab} className={((self.state.selectedTab === sluggedTab) || (self.state.selectedTab === '' && i ===0)) ? 'container' : 'container is-hidden'}>
+                                    <div className="container">
+                                        {self.props.tabs[key]}
+                                    </div>
+                                </section>
+                            );
+                        })
+                    }
                 </div>
             </div>
         );
