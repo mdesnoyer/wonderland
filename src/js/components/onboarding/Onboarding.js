@@ -11,6 +11,7 @@ import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import OnboardingButtons from './OnboardingButtons';
 import OnboardingSlide from './OnboardingSlide';
+import OnboardingInput from './OnboardingInput';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -96,6 +97,7 @@ var Onboarding = React.createClass({
                         </a>
                         <div className="column is-8">
                             <OnboardingSlide message={slides[self.state.slideProgress].message} stepMessageNumber={self.state.slideProgress}/>
+                            <OnboardingInput />
                             {buttons}
                         </div>
                         <a className="column is-2 button" onClick={self.handleNextClick}>
@@ -135,32 +137,3 @@ var Onboarding = React.createClass({
 export default Onboarding;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-
-
-
-
-
-//     slideOne: {
-//         message: "Please select which platform you use",
-        // buttons: {            
-        //     button1:{
-        //         name:"BrightCove",
-        //         action:"#"
-        //     }
-        // }
-//     },
-//     slideTwo:{
-//         message: "Do you use bright cove thumbnails ?",
-//         buttons: {            
-//             button1:{
-//                 name:"Yes",
-//                 action:"#"
-//             },
-//             button2:{
-//                 name:"No",
-//                 action:"#"
-//             }
-//         }
-//     }
-// }]

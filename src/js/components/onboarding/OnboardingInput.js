@@ -12,27 +12,19 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var OnboardingSlide = React.createClass({
-
+var OnboardingInput = React.createClass({
     render: function() {
         var self = this ;
         return (
-        	<div className="column tile is-parent">
-        	  <article className="tile is-child">
-        	    <p className="title">{'Step: ' + (self.props.stepMessageNumber + 1)}</p>
-        	    <p className="subtitle">{self.props.message}</p>
-        	  </article>
-        	</div>
+	        <p className="control">
+	  			<input className="input" type="text" placeholder="Text input" />
+			</p>
         );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default OnboardingSlide;
+export default OnboardingInput;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-
-
-

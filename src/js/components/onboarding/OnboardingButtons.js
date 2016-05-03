@@ -20,7 +20,7 @@ var OnboardingButtons = React.createClass({
         return (
             <ul className="control">
                 {Object.keys(buttons).map(function(button, idx) {
-                    return <li><a className="button is-primary is-large" href={buttons[button].action} key={idx}>{buttons[button].name}</a></li>
+                    return <li><a className="button is-primary is-medium" href={buttons[button].action} key={idx}>{buttons[button].name}</a></li>
                 }.bind(self))}
             </ul>
         );
