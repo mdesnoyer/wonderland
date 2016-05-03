@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
@@ -13,7 +13,7 @@ import OnboardingButtons from './OnboardingButtons';
 import OnboardingSlide from './OnboardingSlide';
 import OnboardingInput from './OnboardingInput';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Onboarding = React.createClass({
     // mixins: [Secured], // ReactDebugMixin
@@ -21,16 +21,17 @@ var Onboarding = React.createClass({
        return {
         slideProgress: 0,
         slideMax: 4,
-        slideMin: 0
-       } 
+        slideMin: 0,
+
+       }
     },
     render: function() {
-        var self = this; 
+        var self = this;
 
-        var slides = [ 
+        var slides = [
             {
                 message: "Please select which platform you use",
-                buttons: {            
+                buttons: {
                     button1:{
                         name:"BrightCove",
                         action:"#"
@@ -43,11 +44,11 @@ var Onboarding = React.createClass({
                         name:"No Platform",
                         action:"#"
                     }
-                } 
-            }, 
+                }
+            },
             {
                 message: "Please Enter Your BrightCove Tokens",
-                buttons: {            
+                buttons: {
                     button1:{
                         name:"Submit Tokens",
                         action:"#"
@@ -56,10 +57,10 @@ var Onboarding = React.createClass({
             },
             {
                 message: "Do you use bright cove thumbnails ?",
-                buttons: {            
+                buttons: {
                     button1:{
                         name:"Yes",
-                        action:"#"
+                        action: self.handleSubmit
                     },
                     button2:{
                         name:"No",
@@ -69,7 +70,7 @@ var Onboarding = React.createClass({
             },
             {
                 message: "Which Player Type do you Use?",
-                buttons: {            
+                buttons: {
                     button1:{
                         name:"Smart Player",
                         action:"#"
@@ -84,24 +85,28 @@ var Onboarding = React.createClass({
                 message: "Thanks For the INFO!!"
             }
         ];
-        var buttons = slides[self.state.slideProgress].buttons ? <OnboardingButtons buttonProps={slides[self.state.slideProgress].buttons}/> : ''; 
+        var buttons = slides[self.state.slideProgress].buttons ? <OnboardingButtons buttonProps={slides[self.state.slideProgress].buttons}/> : '';
+        var divStyle = self.state.slideProgress === 0 ? {display: 'none'} : {display: ''};
+        var divStyle2 = self.state.slideProgress === self.state.slideMax ? {display: 'none'} : {display: ''};
+        var divStyle3 = self.state.slideProgress === 1 ? {display: ''} : {display: 'none'};
         return (
             <div>
                 <div className="box container">
                     <progress className="progress is-small" value={self.calculateProgress()} max="100">15%</progress>
                     <div className="columns">
-                        <a className="column is-2 button" onClick={self.handlePreviousClick}>
-                            <span className="icon">
+                        <a className="column is-2"  onClick={self.handlePreviousClick}>
+                            <span className="icon is-large" style={divStyle}>
                               <i className="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
                             </span>
                         </a>
-                        <div className="column is-8">
+                        <form className="column is-8" onSubmit={this.handleSubmit}>
                             <OnboardingSlide message={slides[self.state.slideProgress].message} stepMessageNumber={self.state.slideProgress}/>
-                            <OnboardingInput />
+                            <OnboardingInput inputType="token" onChange={self.gatherChange} style={divStyle3} />
+                            <OnboardingInput inputType="token2" onChange={self.gatherChange} style={divStyle3} />
                             {buttons}
-                        </div>
-                        <a className="column is-2 button" onClick={self.handleNextClick}>
-                            <span className="icon">
+                        </form>
+                        <a className="column is-2" onClick={self.handleNextClick} style={divStyle2}>
+                            <span className="icon is-large">
                                 <i className="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
                             </span>
                         </a>
@@ -109,6 +114,22 @@ var Onboarding = React.createClass({
                 </div>
             </div>
         );
+    },
+    handleSubmit: function(e){
+        var self = this;
+        e.preventDefault();
+        self.setState(function(previousState,currentProps) {
+            return {slideProgress: previousState.slideProgress +1}
+        })
+        debugger
+    },
+    gatherChange: function(type, value) {
+        var self = this;
+        self.setState({
+            [type]:value
+        });
+        console.log(self.state[type])
+        console.log(self.state)
     },
     handleNextClick: function(){
         var self = this;
@@ -128,12 +149,12 @@ var Onboarding = React.createClass({
     },
     calculateProgress: function(){
         var self = this;
-        return (self.state.slideProgress / self.state.slideMax) * 100 
+        return (self.state.slideProgress / self.state.slideMax) * 100
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Onboarding;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
