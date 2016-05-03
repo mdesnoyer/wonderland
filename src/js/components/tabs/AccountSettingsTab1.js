@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Account from '../../mixins/Account';
 import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
@@ -9,35 +10,38 @@ import Message from '../wonderland/Message';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsTab1 = React.createClass({
-	// mixins: [ReactDebugMixin],
-    propTypes: {
-        isLoading: React.PropTypes.bool,
-        defaultThumbnailId: React.PropTypes.string,
-        defaultWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        defaultHeight: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string])
-    },
-    getInitialState: function() {
-        var self = this;
+    mixins: [Account], // ReactDebugMixin
+    getInitialState: function () {
         return {
-            isLoading: self.props.isLoading,
-            defaultThumbnailId: self.props.defaultThumbnailId,
-            defaultWidth: self.props.defaultWidth,
-            defaultHeight: self.props.defaultHeight
-        }  
-    },
-    componentWillReceiveProps: function(nextProps) {
-        var self = this;
-        self.setState({
-            isLoading: nextProps.isLoading,
-            defaultThumbnailId: nextProps.defaultThumbnailId,
-            defaultWidth: nextProps.defaultWidth,
-            defaultHeight: nextProps.defaultHeight
-        });
+            isLoading: true,
+            isError: false
+        };
     },
     componentDidMount: function() {
         var self = this;
         self._isSubmitted = false;
         self._isMounted = true;
+        self.getAccount()
+            .then(function (account) {
+                self.setState({
+                    isLoading: false,
+                    isError: false,
+                    defaultThumbnailId: account.defaultThumbnailId,
+                    defaultWidth: account.defaultWidth,
+                    defaultHeight: account.defaultHeight
+                });
+            })
+            .catch(function (err) {
+                E.raiseError(JSON.parse(err.responseText).error.message);
+                if (self._isMounted) {
+                    self.setState({
+                        isLoading: false,
+                        isError: true
+                    }, function() {
+                        self._isSubmitted = false;
+                    });
+                }
+            });
     },
     componentWillUnmount: function() {
         var self = this;
@@ -57,17 +61,9 @@ var AccountSettingsTab1 = React.createClass({
         }
     },
     doSubmit: function() {
-        var self = this,
-            options = {
-                data: {
-                    default_thumbnail_id: self.state.defaultThumbnailId,
-                    default_width: self.state.defaultWidth,
-                    default_height: self.state.defaultHeight
-                }
-            }
-        ;
+        var self = this;
         E.clearErrors();
-        AJAX.doPut('', options)
+        self.updateAccount(self.state)
             .then(function(json) {
                 if (self._isMounted) {
                     self.setState({
