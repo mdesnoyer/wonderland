@@ -47,6 +47,17 @@ git branch -d branchname
 git push origin --delete branchname
 ```
 
+### Pushing to Staging
+
+- Start a [new PR])https://github.com/neon-lab/wonderland/compare/staging...development)
+- Set the title to `development -> staging`
+- Eyeball that the changes are what has changed in `development` since last time you pushed to `staging`
+- Create PR
+- Ask someone to sanity check the PR
+- Once good, click `Merge`
+- Site should build on `staging` - please check Staging site for new changes
+- Gather short list of what has changed, share said list in `#wonderland` Slack channel
+
 ## DNS
 
 - [DNSimple](https://dnsimple.com)
