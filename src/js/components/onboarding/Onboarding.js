@@ -73,9 +73,8 @@ var Onboarding = React.createClass({
     gatherChange: function(type, value) {
         var self = this;
         self.setState({
-            data[type] = value
+            ["data"[type]]: value
         });
-        console.log(self.state.data)
     },
     handleNextClick: function(){
         var self = this;

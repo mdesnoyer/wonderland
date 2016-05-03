@@ -21,7 +21,7 @@ var OnboardingInputs = React.createClass({
         return (
             <p className="control">
                 {Object.keys(inputs).map(function(input, idx) {
-                    return <OnboardingInput className="button is-primary" inputType={self.props.inputType} onChange={self.props.onChange}key={idx} />
+                    return <OnboardingInput className="button is-primary" inputType={inputs[input].inputType} onChange={self.props.onChange}key={idx} />
                 }.bind(self))}
             </p>
         );
