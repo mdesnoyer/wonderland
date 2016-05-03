@@ -20,10 +20,16 @@ var OnboardingButtons = React.createClass({
         return (
             <ul className="control is-grouped">
                 {Object.keys(buttons).map(function(button, idx) {
-                    return <li><input className="button is-primary" type="Submit" value={buttons[button].name} key={idx} /></li>
+                    return <li><input className="button is-primary" type="Submit" value={buttons[button].name} onClick={self.clicked} key={idx} /></li>
                 }.bind(self))}
             </ul>
         );
+    },
+    clicked: function(e) {
+        var self = this;
+        if(self.props.onClick) {
+            self.props.onClick(e.target.value);
+        }
     }
 });
 

@@ -1,6 +1,7 @@
 
 const onboardingSlides = {
-    onboardSet:{ 
+    onboardSet:{
+    	introSlide: true,
         slideMax: 1,
         slideMin: 0,
     	slides:[{
@@ -11,7 +12,7 @@ const onboardingSlides = {
 	                    action:"#"
 	                },
 	                button2:{
-	                    name:"Other platform",
+	                    name:"Other Platform",
 	                    action:"#"
 	                },
 	                button3:{
@@ -22,11 +23,12 @@ const onboardingSlides = {
         }]
     },
     BrightCove:{
-        slideMax: 4,
+        slideMax: 3,
         slideMin: 0,
     	slides:[
 	        {
 	            message: "Please Enter Your BrightCove Tokens",
+	            step: 1,
 	            buttons: {
 	                button1:{
 	                    name:"Submit Tokens",
@@ -44,6 +46,7 @@ const onboardingSlides = {
 	        },
 	        {
 	            message: "Do you use bright cove thumbnails?",
+	            step: 2,
 	            buttons: {
 	                button1:{
 	                    name:"Yes",
@@ -57,6 +60,7 @@ const onboardingSlides = {
 	        },
 	        {
 	            message: "Which Player Type do you Use?",
+	            step: 3,
 	            buttons: {
 	                button1:{
 	                    name:"Smart Player",
@@ -69,10 +73,32 @@ const onboardingSlides = {
 	            }
 	        },
 	        {
-	            message: "Thanks For the INFO!!"
+	            message: "Thanks For the INFO!!",
+	            step:4
 	        }
 	    ]
+    },
+    "Other Platform": {
+	    slideMax: 1,
+	    slideMin: 0,
+		slides:[
+			{
+			message: "TODO",
+			step: 1
+			}
+		]
+    },
+    "No Platform": {
+	    slideMax: 1,
+	    slideMin: 0,
+		slides:[
+			{
+			message: "TODO",
+			step:1
+		}
+		]
     }
+
 }
 
 export default onboardingSlides

@@ -19,7 +19,7 @@ var OnboardingSlide = React.createClass({
         return (
         	<div className="column tile is-parent">
         	  <article className="tile is-child">
-        	    <p className="title">{'Step: ' + (self.props.stepMessageNumber + 1)}</p>
+        	    <p className="title">{self.props.step}</p>
         	    <p className="subtitle">{self.props.message}</p>
         	  </article>
         	</div>
