@@ -12,7 +12,7 @@ var VideosResults = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
-            additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')
+            additionalClass = 'table is-bordered is-striped' + (self.props.isLoading ? ' is-loading' : '')
         ;
         return (
             <table className={additionalClass}>
@@ -23,12 +23,12 @@ var VideosResults = React.createClass({
                     <tr>
                         <th><SearchBar {...self.props} /></th>
                     </tr>
-                </thead>
+                </thead>*/}
                 <tfoot>
                     <tr>
                         <th><NavigationBar {...self.props} /></th>
                     </tr>
-                </tfoot>*/}
+                </tfoot>
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
