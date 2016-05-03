@@ -19,6 +19,21 @@ var VideosPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    getInitialState: function () {
+        return {};
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.getAccount()
+            .then(function (account) {
+                self.setState({
+                    isServingEnabled: account.isServingEnabled
+                });
+            })
+            .catch(function (err) {
+                E.raiseError(JSON.parse(err.responseText).error.message);
+            });
+    },
     render: function() {
         var self = this,
             heading = T.get('copy.videosPage.heading'),

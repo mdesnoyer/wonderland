@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -33,7 +33,8 @@ var AnalyzeVideoForm = React.createClass({
             accessToken: '',
             refreshToken: '',
             mode: 'silent', // loading/disabled/silent/error
-            url: '',
+            videoUrl: '',
+            optionalDefaultThumbnailUrl: '',
             optionalTitle: '',
             maxVideoCount: 10,
             currentVideoCount: self.props.videoCountServed
@@ -84,7 +85,7 @@ var AnalyzeVideoForm = React.createClass({
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium is-disabled';
             }
-            else if (!self.state.url && self.state.mode === 'silent') {
+            else if (!self.state.videoUrl && self.state.mode === 'silent') {
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium';
             }
@@ -102,20 +103,36 @@ var AnalyzeVideoForm = React.createClass({
                                 required
                                 className={inputClassName}
                                 type="url"
-                                ref="url"
-                                onChange={self.handleChangeUrl}
-                                value={self.state.url}
-                                placeholder={T.get('analyze.videoUrl')}
+                                ref="videoUrl"
+                                onChange={self.handleChangeVideoUrl}
+                                value={self.state.videoUrl}
+                                placeholder={T.get('analyzeVideo.videoUrl')}
+                                minLength="1"
+                                maxLength="512"
+                            />
+                        </p>
+                        <p className="control is-hidden">
+                            <input
+                                className={inputClassName}
+                                type="text"
+                                ref="optionalTitle"
+                                minLength="1"
+                                maxLength="1024"
+                                onChange={self.handleChangeOptionalTitle}
+                                value={self.state.optionalTitle}
+                                placeholder={T.get('analyzeVideo.optionalTitle')}
                             />
                         </p>
                         <p className="control">
                             <input
                                 className={inputClassName}
-                                type="text"
-                                ref="optionalTitle"
-                                onChange={self.handleChangeOptionalTitle}
-                                value={self.state.optionalTitle}
-                                placeholder={T.get('analyze.optionalTitle')}
+                                type="url"
+                                ref="optionalDefaultThumbnailUrl"
+                                onChange={self.handleChangeOptionalDefaultThumbnailUrl}
+                                value={self.state.optionalDefaultThumbnailUrl}
+                                placeholder={T.get('analyzeVideo.optionalDefaultThumbnailUrl')}
+                                minLength="1"
+                                maxLength="512"
                             />
                         </p>
                         <p className="has-text-centered">
@@ -129,10 +146,10 @@ var AnalyzeVideoForm = React.createClass({
         }
 
     },
-    handleChangeUrl: function(e) {
+    handleChangeVideoUrl: function(e) {
         var self = this;
         self.setState({
-            url: e.target.value
+            videoUrl: e.target.value
         });
     },
     handleChangeOptionalTitle: function(e) {
@@ -141,39 +158,49 @@ var AnalyzeVideoForm = React.createClass({
             optionalTitle: e.target.value
         });
     },
+    handleChangeOptionalDefaultThumbnailUrl: function(e) {
+        var self = this;
+        self.setState({
+            optionalDefaultThumbnailUrl: e.target.value
+        });
+    },
     resetForm: function() {
         var self = this;
         self.setState({
-            url: '',
+            mode: 'silent',
+            videoUrl: '',
             optionalTitle: '',
-            mode: 'silent'
+            optionalDefaultThumbnailUrl: ''
         });
     },
     handleSubmit: function (e) {
         var self = this,
-            url = this.refs.url.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle()
+            videoUrl = this.refs.videoUrl.value.trim(),
+            // optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            optionalTitle = '',
+            optionalDefaultThumbnailUrl = self.refs.optionalDefaultThumbnailUrl.value.trim()
         ;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, url);
+        TRACKING.sendEvent(self, arguments, videoUrl);
         self.setState({
-            mode: 'loading'
-        },
-            self.analyzeVideo(UTILS.dropboxUrlFilter(url), optionalTitle)
+                mode: 'loading'
+            }, self.analyzeVideo(videoUrl, optionalTitle, optionalDefaultThumbnailUrl)
         );
-        
     },
-    analyzeVideo: function (url, optionalTitle) {
+    analyzeVideo: function (videoUrl, optionalTitle, optionalDefaultThumbnailUrl) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
                 data: {
                     external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(url),
-                    title: optionalTitle
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(videoUrl)),
+                    // title: optionalTitle
                 }
             }
         ;
+        if (optionalDefaultThumbnailUrl) {
+            options.data['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
+        }
         AJAX.doPost('videos', options)
             .then(function(json) {
                 self.setState({
@@ -188,19 +215,25 @@ var AnalyzeVideoForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                if (err.status === 402) {
-                    E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
-                        '%limit': self.state.maxVideoCount,
-                        '@link': UTILS.CONTACT_EXTERNAL_URL
-                    }), false);
-                }
-                else {
-                    E.checkForError(err.statusText, false);
+                switch (err.status) {
+                    case 402:
+                        E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
+                            '%limit': self.state.maxVideoCount,
+                            '@link': UTILS.CONTACT_EXTERNAL_URL
+                        }), false);
+                        break;
+                    case 400:
+                        E.checkForError(T.get('copy.analyzeVideo.badRequest'), false);
+                        break;
+                    default:
+                        E.checkForError(JSON.parse(err.responseText).error.data, false);
+                        break;
                 }
                 self.setState({
                     mode: 'error'
                 });
-            });
+            })
+        ;
     }
 });
 

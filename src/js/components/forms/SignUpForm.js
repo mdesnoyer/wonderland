@@ -58,33 +58,35 @@ var SignUpForm = React.createClass({
                 <fieldset>
                     {legendElement}
                     <p className="control is-grouped">
-                        <input className="input is-medium" type="text" ref="firstName" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" placeholder={T.get('lastName')} />
+                        <input className="input is-medium" type="text" ref="firstName" minLength="1" maxLength="256" placeholder={T.get('firstName')} />
+                        <input className="input is-medium" type="text" ref="lastName" minLength="1" maxLength="256" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="email" ref="email" placeholder={T.get('email')} />
+                        <input className="input is-medium" type="email" ref="email" minLength="6" maxLength="1024" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input is-medium"
                             type="password"
-                           
                             ref="passwordInitial"
+                            minLength="8" 
+                            maxLength="64" 
                             placeholder={T.get('password')}
                             onChange={self.handlePasswordInitialChange} 
                         />
                         <input className="input is-medium"
                             type="password"
-                           
                             ref="passwordConfirm"
+                            minLength="8"
+                            maxLength="64"
                             placeholder={T.get('confirm')}
                             onChange={self.handlePasswordConfirmChange} 
                         />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="company" placeholder={T.get('company')} />
+                        <input className="input is-medium" type="text" ref="company" minLength="1" maxLength="1024" placeholder={T.get('company')} />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="title" placeholder={T.get('title')} />
+                        <input className="input is-medium" type="text" ref="title" minLength="1" maxLength="32" placeholder={T.get('title')} />
                     </p>
                     <p className="control">
                         <label className="checkbox">

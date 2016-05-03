@@ -9,6 +9,7 @@
 }
 
 .wonderland-dd {
+    @include x-truncate;
     padding-bottom: 1em;
 }
 

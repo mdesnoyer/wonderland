@@ -17,10 +17,9 @@ var AccountSettingsTab1 = React.createClass({
             isError: false
         };
     },
-    componentDidMount: function() {
+    componentWillMount: function() {
         var self = this;
         self._isSubmitted = false;
-        self._isMounted = true;
         self.getAccount()
             .then(function (account) {
                 self.setState({
@@ -42,6 +41,10 @@ var AccountSettingsTab1 = React.createClass({
                     });
                 }
             });
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
     },
     componentWillUnmount: function() {
         var self = this;
@@ -117,6 +120,8 @@ var AccountSettingsTab1 = React.createClass({
                             ref="defaultThumbnailId"
                             className={'input'}
                             type="text"
+                            minLength="1"
+                            maxLength="2048"
                             value={self.state.defaultThumbnailId}
                             disabled={self.state.isLoading ? 'disabled' : ''}
                             onChange={self.handleChangeAccountId}
@@ -128,7 +133,7 @@ var AccountSettingsTab1 = React.createClass({
                             className={'input'}
                             type="number"
                             step="1"
-                            min="0"
+                            min="1"
                             max="8192"
                             value={self.state.defaultWidth}
                             disabled={self.state.isLoading ? 'disabled' : ''}
@@ -138,7 +143,7 @@ var AccountSettingsTab1 = React.createClass({
                             className={'input'}
                             type="number"
                             step="1"
-                            min="0"
+                            min="1"
                             max="8192"
                             value={self.state.defaultHeight}
                             disabled={self.state.isLoading ? 'disabled' : ''}
