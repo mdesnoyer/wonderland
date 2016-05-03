@@ -152,12 +152,12 @@ var AnalyzeVideoForm = React.createClass({
             videoUrl: e.target.value
         });
     },
-    // handleChangeOptionalTitle: function(e) {
-    //     var self = this;
-    //     self.setState({
-    //         optionalTitle: e.target.value
-    //     });
-    // },
+    handleChangeOptionalTitle: function(e) {
+        var self = this;
+        self.setState({
+            optionalTitle: e.target.value
+        });
+    },
     handleChangeOptionalDefaultThumbnailUrl: function(e) {
         var self = this;
         self.setState({
