@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -107,13 +107,17 @@ var AnalyzeVideoForm = React.createClass({
                                 onChange={self.handleChangeVideoUrl}
                                 value={self.state.videoUrl}
                                 placeholder={T.get('analyzeVideo.videoUrl')}
+                                minLength="1"
+                                maxLength="512"
                             />
                         </p>
-                        <p className="control">
+                        <p className="control is-hidden">
                             <input
                                 className={inputClassName}
                                 type="text"
                                 ref="optionalTitle"
+                                minLength="1"
+                                maxLength="1024"
                                 onChange={self.handleChangeOptionalTitle}
                                 value={self.state.optionalTitle}
                                 placeholder={T.get('analyzeVideo.optionalTitle')}
@@ -127,6 +131,8 @@ var AnalyzeVideoForm = React.createClass({
                                 onChange={self.handleChangeOptionalDefaultThumbnailUrl}
                                 value={self.state.optionalDefaultThumbnailUrl}
                                 placeholder={T.get('analyzeVideo.optionalDefaultThumbnailUrl')}
+                                minLength="1"
+                                maxLength="512"
                             />
                         </p>
                         <p className="has-text-centered">
@@ -170,7 +176,8 @@ var AnalyzeVideoForm = React.createClass({
     handleSubmit: function (e) {
         var self = this,
             videoUrl = this.refs.videoUrl.value.trim(),
-            optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            // optionalTitle = self.refs.optionalTitle.value.trim() || UTILS.makeTitle(),
+            optionalTitle = '',
             optionalDefaultThumbnailUrl = self.refs.optionalDefaultThumbnailUrl.value.trim()
         ;
         e.preventDefault();
@@ -187,12 +194,12 @@ var AnalyzeVideoForm = React.createClass({
                 data: {
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(videoUrl)),
-                    title: optionalTitle
+                    // title: optionalTitle
                 }
             }
         ;
         if (optionalDefaultThumbnailUrl) {
-            options['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
+            options.data['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
         }
         AJAX.doPost('videos', options)
             .then(function(json) {

@@ -2,7 +2,7 @@
 
 .wonderland-input-text-edit {
     background-color: transparent;
-    border: 1px solid transparent;
+    border: 1px solid $grey-lighter;
     box-shadow: none;
     &:focus {
         background-color: $white;

@@ -49,7 +49,7 @@ var VideoHeader = React.createClass({
                             idType="video_id"
                             valueId={self.props.videoId}
                             valueType="title"
-                            classStyle="title is-5" 
+                            classStyle="title is-5"
                         />
                     </div>
                 </div>
