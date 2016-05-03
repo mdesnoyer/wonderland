@@ -27,13 +27,63 @@ var Onboarding = React.createClass({
         var self = this; 
 
         var slides = [ 
-            {message: "Please select which platform you use"}, 
-            {message: "Please Enter Your BrightCove Tokens"},
-            {message: "Do you use bright cove thumbnails ?"},
-            {message: "Which Player Type do you Use?"},
-            {message: "Thanks For the INFO!!"}
-
-        ]
+            {
+                message: "Please select which platform you use",
+                buttons: {            
+                    button1:{
+                        name:"BrightCove",
+                        action:"#"
+                    },
+                    button2:{
+                        name:"Other platform",
+                        action:"#"
+                    },
+                    button3:{
+                        name:"No Platform",
+                        action:"#"
+                    }
+                } 
+            }, 
+            {
+                message: "Please Enter Your BrightCove Tokens",
+                buttons: {            
+                    button1:{
+                        name:"Submit Tokens",
+                        action:"#"
+                    }
+                }
+            },
+            {
+                message: "Do you use bright cove thumbnails ?",
+                buttons: {            
+                    button1:{
+                        name:"Yes",
+                        action:"#"
+                    },
+                    button2:{
+                        name:"No",
+                        action:"#"
+                    }
+                }
+            },
+            {
+                message: "Which Player Type do you Use?",
+                buttons: {            
+                    button1:{
+                        name:"Smart Player",
+                        action:"#"
+                    },
+                    button2:{
+                        name:"HTMl5 Player",
+                        action:"#"
+                    }
+                }
+            },
+            {
+                message: "Thanks For the INFO!!"
+            }
+        ];
+        var buttons = slides[self.state.slideProgress].buttons ? <OnboardingButtons buttonProps={slides[self.state.slideProgress].buttons}/> : ''; 
         return (
             <div>
                 <div className="box container">
@@ -45,8 +95,8 @@ var Onboarding = React.createClass({
                             </span>
                         </a>
                         <div className="column is-8">
-                            <OnboardingSlide message={slides[self.state.slideProgress].message}/>
-                            
+                            <OnboardingSlide message={slides[self.state.slideProgress].message} stepMessageNumber={self.state.slideProgress}/>
+                            {buttons}
                         </div>
                         <a className="column is-2 button" onClick={self.handleNextClick}>
                             <span className="icon">
@@ -93,12 +143,12 @@ export default Onboarding;
 
 //     slideOne: {
 //         message: "Please select which platform you use",
-//         buttons: {            
-//             button1:{
-//                 name:"BrightCove",
-//                 action:"#"
-//             }
-//         }
+        // buttons: {            
+        //     button1:{
+        //         name:"BrightCove",
+        //         action:"#"
+        //     }
+        // }
 //     },
 //     slideTwo:{
 //         message: "Do you use bright cove thumbnails ?",
