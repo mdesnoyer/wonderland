@@ -26,7 +26,7 @@ var Onboarding = React.createClass({
         slideProgress: 0,
         slideMax: OnboardingModule.onboardSet.slideMax,
         slideMin: OnboardingModule.onboardSet.slideMin,
-        data:{}
+        data:[]
        }
     },
     render: function() {
@@ -72,9 +72,13 @@ var Onboarding = React.createClass({
     },
     gatherChange: function(type, value) {
         var self = this;
+        debugger 
         self.setState({
-            ["data"[type]]: value
+
+            data: this.state.data.concat({[type]: value})
         });
+        debugger
+        console.log(self.state)
     },
     handleNextClick: function(){
         var self = this;
