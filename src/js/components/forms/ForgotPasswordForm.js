@@ -1,46 +1,50 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 var ForgotPasswordForm = React.createClass({
+	// mixins: [ReactDebugMixin],
     getInitialState: function() {
-    	return {
-    		isEmailMessageSent: false,
-    		isError: false
-    	}
+        return {
+            isEmailMessageSent: false,
+            isError: false
+        }
     },
     handleSubmit: function(e) { 
-    	e.preventDefault();
-    	this.setState({
+        e.preventDefault();
+        this.setState({
             isEmailMessageSent: true
         });
     },
-	render: function() {
-		if (this.state.isEmailMessageSent) {
+    render: function() {
+        if (this.state.isEmailMessageSent) {
             return (
-                    <Message header={T.get('reset.message')} body={<Link activeClassName="active" to="/signin/">{T.get('returnSignIn')}</Link>} />
+                    <Message header={T.get('reset.message')} body={<Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('returnSignIn')}</Link>} />
                 );
         }
         else {
             return (
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <legend className="subtitle is-5">{T.get('copy.forgotPassword.heading')}</legend>
+                        <legend className="title is-4">{T.get('copy.forgotPassword.heading')}</legend>
                         <p className="control">
-                            <input className="input is-medium" type="email" ref="email" placeholder={T.get('email')} />
-                        </p>
-                        <p className="is-text-centered">
+                            <input className="input is-medium" type="email" ref="email" minLength="6" maxLength="1024" placeholder={T.get('email')} />
+                        </p>  
+                            
+                        <p className="has-text-centered">
                             <button className="button is-medium is-primary" type="submit">{T.get('reset.sendReset')}</button>
                         </p>
                     </fieldset>
                 </form>
             );
         }
-	}
+    }
 })
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

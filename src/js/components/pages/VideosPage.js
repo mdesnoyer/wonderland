@@ -1,23 +1,44 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Videos from '../wonderland/Videos';
-import Secured from '../../mixins/secured';
+import Account from '../../mixins/Account';
+import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideosPage = React.createClass({
-    mixins: [Secured],
+	// mixins: [ReactDebugMixin],
+    mixins: [Secured, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    getInitialState: function () {
+        return {
+            isServingEnabled: null
+        };
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.getAccount()
+            .then(function (account) {
+                self.setState({
+                    isServingEnabled: account.isServingEnabled
+                });
+            })
+            .catch(function (err) {
+                E.raiseError(JSON.parse(err.responseText).error.message);
+            });
+    },
     render: function() {
-        var heading = T.get('copy.videosPage.heading'),
+        var self = this,
+            heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
                 // '@username': 'TODO'
             })
@@ -31,10 +52,10 @@ var VideosPage = React.createClass({
                 <section className="section">
                     <div className="container">
                         <h1 className="title is-2">{heading}</h1>
-                        <div className="content">
-                            {body}
-                        </div>
-                        <Videos />
+                        {body}
+                        <Videos
+                            isServingEnabled={self.state.isServingEnabled}
+                        />
                     </div>
                 </section>
                 <SiteFooter />

@@ -1,11 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import TutorialPanel from './TutorialPanel';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TutorialPanels = React.createClass({
+	// mixins: [ReactDebugMixin],
     propTypes: {
         panels: React.PropTypes.object.isRequired
     },
@@ -14,13 +16,13 @@ var TutorialPanels = React.createClass({
             panels = self.props.panels
         ;
         return (
-            <div className="section">
+            <aside className="container">
                 <div className="columns">
                     {Object.keys(panels).map(function(panel, idx) {
                         return <TutorialPanel key={idx} icon={panel} direction={panels[panel]}/>
                     }.bind(self))}
                 </div>
-            </div>
+            </aside>
         );
     }
 })

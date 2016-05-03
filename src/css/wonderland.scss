@@ -4,6 +4,35 @@
 
 @charset 'UTF-8';
 
+// Neon
+$curious-blue: #26a9e0;
+$flamingo: #f16122;
+$gray: #888;
+$silver-chalice: #aaa;
+$athens-gray: #edecee;
+$white: #fff;
+
+// Overrides
+$blue: $curious-blue;
+$orange: $flamingo;
+$grey-darker: $gray;
+$grey-dark: $gray;
+$grey: $silver-chalice;
+$grey-light: mix($silver-chalice, $athens-gray, 25%);
+$grey-lighter: $athens-gray;
+$family-sans-serif: "Open Sans", sans-serif;
+$primary: $blue;
+$red: $orange;
+$body-background: $white;
+$background: $white;
+
+@import '../../node_modules/bulma/sass/utilities/utilities';
+@import "../../node_modules/bulma/sass/utilities/variables";
+@import '../../node_modules/bulma/sass/base/base';
+@import '../../node_modules/bulma/sass/elements/elements';
+@import '../../node_modules/bulma/sass/components/components';
+@import '../../node_modules/bulma/sass/layout/layout';
+
 // 1. Configuration and helpers
 @import
     'abstracts/variables',
@@ -34,10 +63,13 @@
     'components/videos',
     'components/thumbbox',
     'components/slides',
-    'components/form',
+    'components/infobox',
+    'components/checkbox',
+    'components/modal',
     'components/xylophone',
     'components/banner',
-    'components/modal'
+    'components/inputtextedit',
+    'components/wondertabs'
 ;
 
 // 6. Page-specific styles

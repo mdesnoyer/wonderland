@@ -26,6 +26,15 @@ import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 import TermsPage from './components/pages/TermsPage';
+import IntegrationsPage from './components/pages/IntegrationsPage';
+import NewIntegrationPage from './components/pages/NewIntegrationPage';
+import IntegrationsBrightcovePage from './components/pages/IntegrationsBrightcovePage';
+import AccountSettingsPage from './components/pages/AccountSettingsPage';
+import UserSettingsPage from './components/pages/UserSettingsPage';
+import BillingPage from './components/pages/BillingPage';
+import TelemetryPage from './components/pages/TelemetryPage';
+import ApiPage from './components/pages/ApiPage';
+import NeonscopePage from './components/pages/NeonscopePage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -36,22 +45,33 @@ window.CONFIG = CONFIG;
 
 render((
     <Router history={browserHistory}>
-        <Redirect from='/' to='/signin/' />
+        {/* Routes should (where possible) use the DRY_NAV variable)
+        and END in a trailing slash */}
+        <Redirect from='/' to={UTILS.DRY_NAV.SIGNIN.URL} />
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to='/videos/' />
         <Route path="/" component={HomePage} />
-        <Route path="/signup/" component={SignUpPage} />
+        <Route path={UTILS.DRY_NAV.SIGNUP.URL} component={SignUpPage} />
         <Route path="/account/confirm" component={ConfirmAccountPage} />
         <Route path="/account/pending/" component={PendingAccountPage} />
         <Route path="/account/confirmed/" component={AccountConfirmedPage} />
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
-        <Route path="/signin/" component={SignInPage} />
+        <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
-        <Route path="/signout/" component={SignOutPage} />
+        <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
         <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
         <Route path="/video/:videoId/" component= {VideoPage} />
         <Route path="/terms/" component= {TermsPage} />
+        <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
+        <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
+        <Route path={UTILS.DRY_NAV.API.URL} component={ApiPage} />
+        <Route path={UTILS.DRY_NAV.NEONSCOPE.URL} component={NeonscopePage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS.URL} component={IntegrationsPage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS_NEW.URL} component={NewIntegrationPage} />
+        <Route path={UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component= {AccountSettingsPage} />
+        <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component= {UserSettingsPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));

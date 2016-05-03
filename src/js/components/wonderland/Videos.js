@@ -1,8 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
-import TutorialPanels from './TutorialPanels'
+import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
@@ -12,6 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
+	// mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -19,10 +21,9 @@ var Videos = React.createClass({
             videos: [],
             prevPage: '',
             nextPage: '',
-            videoCountServed: 0,
+            videoCountServed: -1,
             pageCount: 0,
             isBusy: false,
-            referrer: 0, // prev/next
             bonusSearchUrl: '' // used to hold the next/prev choice
         }  
     },
@@ -37,26 +38,38 @@ var Videos = React.createClass({
     },
     render: function() {
         var self = this,
-            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : ''
+            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : '',
+            panels = {
+                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
+                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
+                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
+            },
+            tutorialComponent = self.state.videoCountServed === 0 ? <section className="section"><TutorialPanels panels={panels}/></section> : ''
         ;
         return (
             <div>
-                <AnalyzeVideoForm
-                    postHook={self.doVideoSearch}
-                />
-                <VideosResults
-                    forceOpenFirstOverride={self.state.forceOpenFirstOverride}
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPage={self.state.prevPage}
-                    nextPage={self.state.nextPage}
-                    errorMessage={errorMessage}
-                    pageCount={self.state.pageCount}
-                    isBusy={self.state.isBusy}
-                    referrer={self.state.referrer}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
-                />
+                {tutorialComponent}
+                <section className="section">
+                    <AnalyzeVideoForm
+                        postHook={self.doVideoSearch}
+                        videoCountServed={self.state.videoCountServed}
+                    />
+                </section>
+                <section className="section">
+                    <VideosResults
+                        forceOpenFirstOverride={self.state.forceOpenFirstOverride}
+                        videos={self.state.videos}
+                        handleNewSearch={self.handleNewSearch}
+                        prevPage={self.state.prevPage}
+                        nextPage={self.state.nextPage}
+                        errorMessage={errorMessage}
+                        pageCount={self.state.pageCount}
+                        isBusy={self.state.isBusy}
+                        videoCountServed={self.state.videoCountServed}
+                        videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                        isServingEnabled={self.props.isServingEnabled}
+                    />
+                </section>
             </div>
         );
     },
@@ -96,16 +109,9 @@ var Videos = React.createClass({
                         isBusy: false
                     }, function() {
                         if (json.video_count === 0) {
-                            var newErrorMessageArray = self.state.errorMessageArray;
-                            if (self.state.referrer === 0) {
-                                newErrorMessageArray.push('No Videos');
-                            }
-                            else {
-                                newErrorMessageArray.push('You reached the end');
-                            }
                             self.setState({
-                                errorMessageArray: newErrorMessageArray,
-                                isError: true,
+                                errorMessageArray: [],
+                                isError: false,
                                 videos: [],
                                 prevPage: '',
                                 nextPage: '',

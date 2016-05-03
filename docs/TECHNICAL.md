@@ -34,7 +34,8 @@ Optional
 - Work on this branch, when your feature is complete, open a Pull Request against `development` (you may need to rebase) and assign to a Senior Engineer (or other person that is not you)
 - Make sure you can run `gulp live` against it and it builds
 - Make sure you can run `gulp debug` against it and it builds
-- Make sure there is a meaninful PR message
+- Make sure there is a meaningful PR message that references the ticket in question
+- Please put a link to the PR in the ticket
 - Title the Pull Request of the form - `Sensible Title #123`
 - Once signed off, the reviewer says merge, you can squash your branch into 1 commit and merge to `development`
 - Once development site is built, please test, it is your responsibility
@@ -46,6 +47,18 @@ git branch -d branchname
 git push origin --delete branchname
 ```
 
+### Pushing to Staging
+
+- Start a [new PR])https://github.com/neon-lab/wonderland/compare/staging...development)
+- Set the title to `development -> staging`
+- Check that the proposed changes are accurate (what has been merged to `development` since last time we pushed to `staging`)
+- Make a short note of these changes, e.g. `#1234 - Brief description of ticket / change / fix`
+- Create PR
+- Ask someone else to sanity check the PR
+- Once good, click `Merge`
+- Site should build on `staging` - please check Staging site for new changes
+- Post note in `#wonderland` Slack channel along with note that `development` has been pushed to `staging`
+
 ## DNS
 
 - [DNSimple](https://dnsimple.com)
@@ -54,7 +67,7 @@ git push origin --delete branchname
 
 ## API
 
-- API info is available at http://docs.neonv2.apiary.io/#; also useful is https://jsapi.apiary.io/apis/neonv2.apib (raw form)
+- API info is available at http://api.docs.neon-lab.com/
 
 ## Monitoring
 

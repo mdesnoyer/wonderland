@@ -1,23 +1,67 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import SiteNavigation from '../wonderland/SiteNavigation';
 import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteBanner = React.createClass({
+	// mixins: [ReactDebugMixin],
+    getInitialState: function() {
+        return {
+            displayName: ''
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData) {
+                        if (userData.first_name) {
+                            if (self._isMounted) {
+                                self.setState({
+                                    displayName: userData.first_name
+                                });
+                            }
+                        }
+                        else {
+                            if (self._isMounted) {
+                                self.setState({
+                                    displayName: userData.username
+                                });
+                            }
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
     render: function() {
         var self = this;
         return (
-            <header className="header is-dark wonderland-banner">
+            <header className="wonderland-banner wonderland-banner--header">
                 <div className="container">
-                    <div className="header-left">
-                        <a className="header-item" href="/" title="Go to the Home page">
-                            <img src="/img/logo-white.png" alt="Neon" title="Neon" />
-                        </a>
-                    </div>
-                    <SiteNavigation containerClass="header-right header-menu" isSignedIn={SESSION.active()} />
+                    <nav className="navbar wonderland-navbar is-fullwidth">
+                        <SiteNavigation side="left" isSignedIn={SESSION.active()} />
+                        <SiteNavigation displayName={self.state.displayName} side="right" isSignedIn={SESSION.active()} />
+                    </nav>
                 </div>
             </header>
         );

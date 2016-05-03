@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -12,19 +13,18 @@ const CONFIG = require('json../../../env/config.json');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteFooter = React.createClass({
+	// mixins: [ReactDebugMixin],
     render: function() {
         return (
-            <div>
-                <footer className="footer wonderland-banner">
-                    <div className="container">
-                        <div className="content is-text-centered">
-                            <p>{T.get('copy.copyright', {'@name': T.get('app.companyLongName')})}</p>
-                            <p><Link activeClassName="active" to="/terms/">{T.get('nav.terms')}</Link> | <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a></p>
-                            <p>{CONFIG.LABEL}</p>
-                        </div>
+            <footer className="footer wonderland-banner wonderland-banner--footer">
+                <div className="container">
+                    <div className="content has-text-centered">
+                        <p>{T.get('copy.copyright', {'@name': T.get('app.companyLongName')})}</p>
+                        <p><Link activeClassName="wonderland-active" to="/terms/">{T.get('nav.terms')}</Link> | <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a></p>
+                        <span dangerouslySetInnerHTML={{__html: '<!-- ' + T.get('app.appName') + ' v' + UTILS.VERSION + '.' + CONFIG.LABEL + ' -->'}} />
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
         );
     }
 });

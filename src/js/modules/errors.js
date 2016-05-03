@@ -1,17 +1,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 let E = {
-    errorMessageArray: [],
+    _errorMessageArray: [],
+    raiseError: function(errorMessage) {
+        var self = this;
+        self._errorMessageArray.push(errorMessage);
+    },
     checkForError: function(errorMessage, check) {
-        var messageIndex = (this.errorMessageArray.indexOf(errorMessage)),
-            isFound = (messageIndex > -1 ),
+        var messageIndex = (this._errorMessageArray.indexOf(errorMessage)),
+            isFound = (messageIndex > -1),
             isError = !check
         ;
         if (isError && !isFound) {
-            this.errorMessageArray.push(errorMessage);
+            this._errorMessageArray.push(errorMessage);
         }
         if (!isError && isFound) {
-            this.errorMessageArray.splice(messageIndex, 1);
+            this._errorMessageArray.splice(messageIndex, 1);
         }
         return check;
     },
@@ -31,10 +35,14 @@ let E = {
         }
     },
     getErrors: function() {
-        return this.errorMessageArray;
+        return this._errorMessageArray;
+    },
+    getErrorsCount: function() {
+        var self = this;
+        return self._errorMessageArray.length;
     },
     clearErrors: function() {
-        this.errorMessageArray.length = 0;
+        this._errorMessageArray.length = 0;
     }
 }
 

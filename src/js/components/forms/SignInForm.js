@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
 import AJAX from '../../modules/ajax';
 import UTILS from '../../modules/utils';
@@ -12,64 +13,108 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInForm = React.createClass({
+	// mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
+    getDefaultProps: function() {
+        return {
+            showLegend: true
         }
+    },
+    getInitialState: function() {
+        return {
+            isError: false,
+            isBusy: false
+        }  
     },
     componentDidMount: function() {
         var self = this;
+        self._isSubmitted = false;
         self._isMounted = true;
     },
     componentWillUnmount: function() {
         var self = this;
         self._isMounted = false;
-    },
-    getInitialState: function() {
-        return {
-            isError: false
-        }  
+        E.clearErrors();
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '';
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : '',
+            buttonClassName,
+            inputClassName
+        ;
+            if (self.state.isBusy) {
+                buttonClassName = 'button is-primary is-medium is-disabled is-loading';
+                inputClassName = 'input is-medium is-disabled';
+            }
+            else {
+                buttonClassName = 'button is-medium is-primary';
+                inputClassName = 'input is-medium';
+            }
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
-                    <legend className="subtitle is-5">{T.get('copy.signIn.heading')}</legend>
+                    {legendElement}                    
                     <p className="control">
-                        <input
-                            className="input is-medium"
+                        <input className={inputClassName}
                             type="text"
                             required
                             ref="email"
+                            minLength="6" 
+                            maxLength="1024"
                             placeholder={T.get('email')}
-                            defaultValue={SESSION.rememberedEmail()}
+                            defaultValue={SESSION.rememberedEmail()} 
                         />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="password" required ref="password" placeholder={T.get('password')} />
+                        <input className={inputClassName}
+                            type="password"
+                            required
+                            ref="password"
+                            minLength="8"
+                            maxLength="64"
+                            placeholder={T.get('password')}
+                        />
                     </p>
                     <p className="control">
-                        <label className="checkbox is-medium" htmlFor="isRememberMe">
-                            <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} />
+                        <label className="checkbox" htmlFor="isRememberMe">
+                            <input type="checkbox"
+                                className="wonderland-checkbox--checkbox"
+                                ref="isRememberMe"
+                                id="isRememberMe"
+                                defaultValue={SESSION.rememberMe()}
+                                defaultChecked={SESSION.rememberMe()}
+                            />
                             {T.get('rememberMe')}
                         </label>
                     </p>
-                    <p className="is-text-centered">
-                        <button className="button is-medium is-primary" type="submit">{T.get('signIn')}</button>
+                    <p className="has-text-centered">
+                        <button className={buttonClassName} type="submit">{T.get('signIn')}</button>
                     </p>
                 </fieldset>
             </form>
         );
     },
     handleSubmit: function (e) {
+        var self = this;
+        e.preventDefault();
+        if (!self._isSubmitted) {
+            self._isSubmitted = true; 
+            if (self._isMounted) {
+                self.setState({
+                    isError: false,
+                    isBusy:true
+                }, self.sendUserData());
+            }
+        }
+    },
+    sendUserData: function() {
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
             email = self.refs.email.value.trim(),
@@ -78,12 +123,6 @@ var SignInForm = React.createClass({
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)}
             ]
         ;
-        e.preventDefault();
-        if (self._isMounted) {
-            self.setState({
-                isError: false
-            });
-        }
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
@@ -96,22 +135,26 @@ var SignInForm = React.createClass({
                     }
                 })
                 .then(function (res) {
-                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
                     if (self._isMounted) {
+                        self._isSubmitted = false;
                         self.setState({
-                            isError: false
+                            isError: false,
+                            isBusy: false
                         });
                     }
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
-                    E.checkForError(err.statusText, false);
+                    E.checkForError('Sorry, we could not sign you in.', false);
                     if (self._isMounted) {
+                        self._isSubmitted = false;
                         self.setState({
-                            isError: true
+                            isError: true,
+                            isBusy: false
                         });
                     }
                 });
@@ -119,7 +162,8 @@ var SignInForm = React.createClass({
         else {
             if (self._isMounted) {
                 self.setState({
-                    isError: true
+                    isError: true,
+                    isBusy: false
                 });
             }
         }

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import T from './translation';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -138,16 +139,72 @@ var UTILS = {
     DRY_NAV: {
         DASHBOARD: {
             URL: '/dashboard/'
-        }
+        },
+        INTEGRATIONS: {
+            URL: '/integrations/'
+        },
+        INTEGRATIONS_NEW: {
+            URL: '/integrations/new/'
+        },
+        INTEGRATIONS_BRIGHTCOVE: {
+            URL: '/integrations/new/brightcove/'
+        },
+        SIGNUP: {
+            URL: '/signup/'
+        },
+        SIGNIN: {
+            URL: '/signin/'
+        },
+        SIGNOUT: {
+            URL: '/signout/'
+        },
+        ACCOUNTSETTINGS: {
+            URL: '/settings/account/'
+        },
+        USERSETTINGS: {
+            URL: '/settings/user/'
+        },
+        BILLING: {
+            URL: '/billing/'
+        },
+        TELEMETRY: {
+            URL: '/telemetry/'
+        },
+        API: {
+            URL: '/api/'
+        },
+        NEONSCOPE: {
+            URL: '/neonscope/'
+        },
+        VIDEOLIBRARY: {
+            URL: '/videos/'
+        }    
     },
-    NEON_SCORE_ENABLED: false,
-    CONTACT_EXTERNAL_URL: 'https://neon-lab.com/#contact',
+    VERSION: '1.8',
+    NEON_SCORE_ENABLED: true,
+    CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
     VIDEO_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
+    },
+    enabledDisabledIcon: function(enabled) {
+        return enabled ? 'check' : 'times';
+    },
+    // HT - https://gist.github.com/mathewbyrne/1280286
+    slugify: function(text) {
+        return text.toString().toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove undesired characters
+            .replace(/[\s_-]+/g, '-'); // Replace spaces, underscores, and hyphens with "-"
+    },
+    leadingZero: function(x) {
+        return (x < 10) ? ('0' + x) : x;
+    },
+    formatDuration: function(durationSeconds) {
+        var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
+        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -189,9 +246,12 @@ var UTILS = {
     },
     buildPageTitle: function(title) {
         return title + T.get('app.separator') + T.get('app.credit', {
-            '@app': T.get('app.appName'),
-            '@name': T.get('app.companyShortName')
+            '@appName': T.get('app.appName'),
+            '@companyShortName': T.get('app.companyShortName')
         });
+    },
+    makeTitle: function() {
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit
