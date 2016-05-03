@@ -12,26 +12,28 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var OnboardingInput = React.createClass({
+var OnboardingNav = React.createClass({
+
     render: function() {
         var self = this ;
         return (
-                <input className="input"
-                    onChange={this.changed}
-                    placeholder={self.props.inputType}
-                    style={self.props.style}
-                />
+        	<a className="column is-2" onClick={self.clicked}>
+        	    <span className="icon is-large">
+        	        <i className={self.props.icon} aria-hidden="true"></i>
+        	    </span>
+        	</a>
         );
     },
-    changed: function(e){
-        if(this.props.onChange) {
-            this.props.onChange(this.props.inputType, e.target.value);
+    clicked: function(e){
+        if(this.props.onClick) {
+            this.props.onClick(true);
         }
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default OnboardingInput;
+export default OnboardingNav;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+

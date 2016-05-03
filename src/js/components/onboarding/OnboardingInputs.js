@@ -9,29 +9,27 @@ import SiteFooter from '../wonderland/SiteFooter';
 import Integrations from '../wonderland/Integrations';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
+import OnboardingInput from './OnboardingInput';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var OnboardingInput = React.createClass({
+var OnboardingInputs = React.createClass({
+
     render: function() {
         var self = this ;
+        var inputs = self.props.inputProps;
         return (
-                <input className="input"
-                    onChange={this.changed}
-                    placeholder={self.props.inputType}
-                    style={self.props.style}
-                />
+            <p className="control">
+                {Object.keys(inputs).map(function(input, idx) {
+                    return <OnboardingInput className="button is-primary" inputType={self.props.inputType} key={idx} />
+                }.bind(self))}
+            </p>
         );
-    },
-    changed: function(e){
-        if(this.props.onChange) {
-            this.props.onChange(this.props.inputType, e.target.value);
-        }
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default OnboardingInput;
+export default OnboardingInputs;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
