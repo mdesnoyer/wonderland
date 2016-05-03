@@ -51,12 +51,13 @@ git push origin --delete branchname
 
 - Start a [new PR])https://github.com/neon-lab/wonderland/compare/staging...development)
 - Set the title to `development -> staging`
-- Eyeball that the changes are what has changed in `development` since last time you pushed to `staging`
+- Check that the proposed changes are accurate (what has been merged to `development` since last time we pushed to `staging`)
+- Make a short note of these changes, e.g. `#1234 - Brief description of ticket / change / fix`
 - Create PR
-- Ask someone to sanity check the PR
+- Ask someone else to sanity check the PR
 - Once good, click `Merge`
 - Site should build on `staging` - please check Staging site for new changes
-- Gather short list of what has changed, share said list in `#wonderland` Slack channel
+- Post note in `#wonderland` Slack channel along with note that `development` has been pushed to `staging`
 
 ## DNS
 
