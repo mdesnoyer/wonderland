@@ -12,7 +12,13 @@ var AccountSettingsTab3 = React.createClass({
     getInitialState: function () {
         return {
             isLoading: true,
-            isError: false
+            isError: false,
+            created: null,
+            updated: null,
+            accountName: null,
+            accountId: null,
+            isServingEnabled: null,
+            accountEmail: null
         };
     },
     componentDidMount: function() {

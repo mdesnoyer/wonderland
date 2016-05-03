@@ -14,7 +14,10 @@ var AccountSettingsTab1 = React.createClass({
     getInitialState: function () {
         return {
             isLoading: true,
-            isError: false
+            isError: false,
+            defaultThumbnailId: null,
+            defaultWidth: null,
+            defaultHeight: null
         };
     },
     componentWillMount: function() {

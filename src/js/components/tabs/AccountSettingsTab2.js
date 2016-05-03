@@ -11,7 +11,9 @@ var AccountSettingsTab2 = React.createClass({
     getInitialState: function () {
         return {
             isLoading: true,
-            isError: false
+            isError: false,
+            trackerAccountId: null,
+            stagingTrackerAccountId: null
         };
     },
     componentDidMount: function() {

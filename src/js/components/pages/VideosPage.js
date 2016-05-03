@@ -20,7 +20,9 @@ var VideosPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function () {
-        return {};
+        return {
+            isServingEnabled: null
+        };
     },
     componentWillMount: function() {
         var self = this;

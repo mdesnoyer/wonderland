@@ -21,7 +21,9 @@ var VideoPage = React.createClass({
         videoId: React.PropTypes.string
     },
     getInitialState: function () {
-        return {};
+        return {
+            isServingEnabled: null
+        };
     },
     componentWillMount: function() {
         var self = this;
