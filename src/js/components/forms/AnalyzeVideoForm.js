@@ -9,7 +9,6 @@ import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
 import E from '../../modules/errors';
-import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

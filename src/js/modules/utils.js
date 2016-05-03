@@ -182,6 +182,7 @@ var UTILS = {
     },
     VERSION: '1.8',
     NEON_SCORE_ENABLED: true,
+    DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
@@ -190,8 +191,11 @@ var UTILS = {
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    enabledDisabledIcon: function(enabled) {
-        return enabled ? 'check' : 'times';
+    enabledDisabledIcon: function(isEnabled) {
+        return isEnabled ? 'check' : 'times';
+    },
+    modalActiveIcon: function(isActive) {
+        return isActive ? 'search-plus' : 'search-minus';
     },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {

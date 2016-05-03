@@ -31,8 +31,7 @@ $transition: all 0.3333s;
     justify-content: space-around;
 }
 
-.wonderland-thumbbox__tool,
-.wonderland-thumbbox__tease {
+.wonderland-thumbbox__tool {
     line-height: 1;
     display: block;
 }
@@ -60,18 +59,5 @@ $transition: all 0.3333s;
         }
     }
  }
-
-.wonderland-thumbbox__tease {
-    color: $white;
-    transition: $transition;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 50%;
-    transform: translateY(-50%);
-    .wonderland-thumbnail:hover & { // hack
-        opacity: 0;
-    }
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

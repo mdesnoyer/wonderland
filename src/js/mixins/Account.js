@@ -1,5 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+import UTILS from '../modules/utils';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 function normalizeAccount(res) {
     return {
         // integration_ids
@@ -14,7 +18,7 @@ function normalizeAccount(res) {
         stagingTrackerAccountId: res.staging_tracker_account_id,
         accountEmail: res.email,
         accountName: res.customer_name,
-        isServingEnabled: res.serving_enabled ? !!res.serving_enabled : false
+        isServingEnabled: res.serving_enabled ? !!res.serving_enabled : UTILS.DEFAULT_SERVING_STATE
     };
 }
 
