@@ -8,7 +8,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Videos from '../wonderland/Videos';
 import Account from '../../mixins/Account';
-import AjaxMixin from '../../mixins/AjaxMixin';
+import AjaxMixin from '../../mixins/ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
