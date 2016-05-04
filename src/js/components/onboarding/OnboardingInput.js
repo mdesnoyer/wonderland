@@ -19,13 +19,12 @@ var OnboardingInput = React.createClass({
                 <input className="input"
                     onChange={this.changed}
                     placeholder={self.props.inputType}
-                    style={self.props.style}
-                />
+                    style={self.props.style} />
         );
     },
     changed: function(e){
         if(this.props.onChange) {
-            this.props.onChange(this.props.inputType, e.target.value);
+            this.props.onChange( e.target.value);
         }
     }
 });

@@ -14,7 +14,6 @@ import OnboardingInput from './OnboardingInput';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var OnboardingInputs = React.createClass({
-
     render: function() {
         var self = this ;
         var inputs = self.props.inputProps;

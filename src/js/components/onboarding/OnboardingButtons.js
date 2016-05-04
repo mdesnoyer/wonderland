@@ -13,14 +13,13 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var OnboardingButtons = React.createClass({
-
     render: function() {
         var self = this ;
         var buttons = self.props.buttonProps;
         return (
-            <ul className="control is-grouped">
+            <ul className="control">
                 {Object.keys(buttons).map(function(button, idx) {
-                    return <li><input className="button is-primary" type="Submit" value={buttons[button].name} onClick={self.clicked} key={idx} /></li>
+                    return <li><input className="button is-primary" value={buttons[button].name} onClick={self.clicked} key={idx} /></li>
                 }.bind(self))}
             </ul>
         );

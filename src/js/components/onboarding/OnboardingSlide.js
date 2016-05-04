@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
@@ -10,10 +10,9 @@ import Integrations from '../wonderland/Integrations';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var OnboardingSlide = React.createClass({
-
     render: function() {
         var self = this;
         return (
@@ -27,11 +26,11 @@ var OnboardingSlide = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default OnboardingSlide;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 

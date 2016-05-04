@@ -4,18 +4,13 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import SiteHeader from '../wonderland/SiteHeader';
-import SiteFooter from '../wonderland/SiteFooter';
-import Integrations from '../wonderland/Integrations';
 import Secured from '../../mixins/Secured';
-import T from '../../modules/translation';
 import OnboardingButtons from './OnboardingButtons';
 import OnboardingSlide from './OnboardingSlide';
 import OnboardingInput from './OnboardingInput';
 import OnboardingInputs from './OnboardingInputs';
 import OnboardingNav from './OnboardingNav';
 import OnboardingModule from './OnboardingModule';
-import update from 'react-addons-update';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,7 +18,7 @@ var Onboarding = React.createClass({
     // mixins: [Secured], // ReactDebugMixin
     getInitialState: function(){
        return {
-        presentationName: OnboardingModule.onboardSet,
+        onboardPath: OnboardingModule.onboardSet,
         slideProgress: 0,
         slideMax: OnboardingModule.onboardSet.slideMax,
         slideMin: OnboardingModule.onboardSet.slideMin,
@@ -32,9 +27,9 @@ var Onboarding = React.createClass({
     },
     render: function() {
         var self = this,
-            slides = self.state.presentationName.slides[self.state.slideProgress],
-            buttons = slides.buttons ? <OnboardingButtons buttonProps={slides.buttons} onChange={self.gatherChange} onClick={self.handleDetermineSlide} /> : '',
-            inputs = slides.inputs ? <OnboardingInputs inputProps={slides.inputs} onChange={self.gatherChange}/> : '',
+            slides = self.state.onboardPath.slides[self.state.slideProgress],
+            buttons = slides.buttons ? <OnboardingButtons buttonProps={slides.buttons} onClick={self.handleClick} /> : '',
+            inputs = slides.inputs ? <OnboardingInputs inputProps={slides.inputs} onChange={self.handleChange}/> : '',
             step = slides.step ? 'Step: ' + slides.step : ''
         ;
         return (
@@ -46,7 +41,7 @@ var Onboarding = React.createClass({
                         type="left"
                         progress={self.state.slideProgress}
                         barrier={self.state.slideMin}
-                        intro={self.state.presentationName.introSlide}
+                        intro={self.state.onboardPath.introSlide}
                     />
                     <section className="column is-8" >
                         <OnboardingSlide step={step} message={slides.message} />
@@ -59,18 +54,18 @@ var Onboarding = React.createClass({
                         onClick={self.handleNextClick}
                         type="right"
                         progress={self.state.slideProgress}
-                        intro={self.state.presentationName.introSlide}
+                        intro={self.state.onboardPath.introSlide}
                         barrier={self.state.slideMax}
                     />
                 </div>
             </div>
         );
     },
-    handleDetermineSlide: function(value){
+    handleClick: function(value){
         var self = this;
-        if (self.state.presentationName.introSlide){
+        if (self.state.onboardPath.introSlide){
              self.setState({
-                presentationName: OnboardingModule[value],
+                onboardPath: OnboardingModule[value],
                 slideMax: OnboardingModule[value].slideMax,
                 slideMin: OnboardingModule[value].slideMin,
                 dataTypes: OnboardingModule[value].dataTypes || ''
@@ -80,7 +75,6 @@ var Onboarding = React.createClass({
     handleSubmit: function(e){
         var self = this
         e.preventDefault();
-        debugger
         if (self.state.slideProgress === self.state.slideMax){
             self.ajaxData(self.gatherDataFromInputs());
         }
@@ -100,8 +94,7 @@ var Onboarding = React.createClass({
         }
         return data;
     },
-    gatherChange: function(type, value) {
-        debugger 
+    handleChange: function(type, value) {
         var self = this;
         self.setState({
             [type]:value
@@ -122,7 +115,7 @@ var Onboarding = React.createClass({
                 return {slideProgress: previousState.slideProgress -1}
             })
         }
-        else if (!self.state.presentationName.introSlide){
+        else if (!self.state.onboardPath.introSlide){
             self.setState(self.getInitialState());
         }
     },
