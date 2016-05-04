@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import UTILS from '../../modules/utils';
 // import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,7 +41,6 @@ var WonderTabs = React.createClass({
                                 var className = self.state.selectedTab === i ? ['is-active'] : [];
 
                                 function handleClick(e) {
-                                    e.preventDefault();
                                     if (i !== self.state.selectedTab && tab.disabled !== true) {
                                         self.setState({
                                             selectedTab: i
@@ -53,7 +53,7 @@ var WonderTabs = React.createClass({
                                 }
                                 return (
                                     <li key={self.state.uuid + '_tab' + i} className={className.join(' ')} onClick={handleClick}>
-                                        <a href="#">
+                                        <a href={'#' + UTILS.slugify(tab.label)}>
                                             {tab.label}
                                         </a>
                                     </li>

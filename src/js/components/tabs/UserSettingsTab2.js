@@ -78,6 +78,7 @@ var UserSettingsTab2 = React.createClass({
         E.clearErrors();
         AJAX.doPut('users', options)
             .then(function(json) {
+                SESSION.user(json);
                 if (self._isMounted) {
                     self.setState({
                         isLoading: false
@@ -159,7 +160,6 @@ var UserSettingsTab2 = React.createClass({
                     <p className="has-text-centered">
                         <SaveButton
                             isLoading={self.state.isLoading}
-                            isDisabled={true}
                         />
                     </p>
                 </fieldset>
