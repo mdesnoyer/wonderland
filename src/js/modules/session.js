@@ -70,7 +70,7 @@ var Session = {
         return !!this.state.accessToken;
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
-    user: function (userData) {
+    user: function(userData) {
         var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {

@@ -15,6 +15,7 @@ var AccountSettingsTab2 = React.createClass({
             isLoading: true,
             isError: false,
             trackerAccountId: '',
+            defaultThumbnailId: '',
             stagingTrackerAccountId: ''
         };
     },
@@ -48,6 +49,17 @@ var AccountSettingsTab2 = React.createClass({
                 <label className="label">{T.get('label.stagingTrackerAccountId')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.stagingTrackerAccountId} disabled />
+                </p>
+                <label className="label">{T.get('label.defaultThumbnailId')}</label>
+                <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <input
+                        className={'input'}
+                        type="text"
+                        minLength="1"
+                        maxLength="2048"
+                        value={self.state.defaultThumbnailId}
+                        disabled
+                    />
                 </p>
             </fieldset>
         );
