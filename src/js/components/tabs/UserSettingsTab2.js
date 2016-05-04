@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import E from '../../modules/errors';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
@@ -12,7 +12,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var UserSettingsTab2 = React.createClass({
-    mixins: [AJAX], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         var self = this;
         return {

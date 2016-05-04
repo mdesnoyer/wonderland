@@ -1,7 +1,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
@@ -11,7 +11,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

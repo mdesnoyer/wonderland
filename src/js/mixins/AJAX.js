@@ -1,28 +1,28 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import AJAXCore from '../modules/ajax';
+import AJAXModule from '../modules/ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var AJAX = {
+var AjaxMixin = {
     apiCalls: [],
     GET: function (url, options) {
-        var ret = AJAXCore.doGet(url, options);
+        var ret = AJAXModule.doGet(url, options);
         this.apiCalls.push(ret);
         return ret;
     },
     POST: function (url, options) {
-        var ret = AJAXCore.doPost(url, options);
+        var ret = AJAXModule.doPost(url, options);
         this.apiCalls.push(ret);
         return ret;
     },
     PUT: function (url, options) {
-        var ret = AJAXCore.doPut(url, options);
+        var ret = AJAXModule.doPut(url, options);
         this.apiCalls.push(ret);
         return ret;
     },
     API: function (url, options) {
-        var ret = AJAXCore.doApiCall(url, options);
+        var ret = AJAXModule.doApiCall(url, options);
         this.apiCalls.push(ret);
         return ret;
     },
@@ -35,6 +35,6 @@ var AJAX = {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AJAX;
+export default AjaxMixin;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

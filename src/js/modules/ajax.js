@@ -6,7 +6,7 @@ import SESSION from './session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AJAXCore = {
+var AJAXModule = {
     Session: null,
     getQueryParam: function(json) {
         return Object.keys(json).map(function (key) {
@@ -129,6 +129,6 @@ var AJAXCore = {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AJAXCore;
+export default AJAXModule;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -6,14 +6,14 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ConfirmAccountPage = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

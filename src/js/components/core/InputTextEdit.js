@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -10,7 +10,7 @@ const fadeTime = 1000;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var InputTextEdit = React.createClass({
-    mixins: [AJAX],
+    mixins: [AjaxMixin],
     proptypes: {
         valueDest: React.PropTypes.string.isRequired,
         value: React.PropTypes.string.isRequired,

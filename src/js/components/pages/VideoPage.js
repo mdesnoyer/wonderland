@@ -8,13 +8,13 @@ import Video from '../wonderland/Video';
 import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import Account from '../../mixins/Account';
-import AJAX from '../../mixins/AJAX';
+import AjaxMixin from '../../mixins/AjaxMixin';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var VideoPage = React.createClass({
-    mixins: [Secured, Account, AJAX], // ReactDebugMixin
+    mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
@@ -12,7 +12,7 @@ import ModalParent from '../core/ModalParent';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

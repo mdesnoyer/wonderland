@@ -5,7 +5,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import ModalParent from '../core/ModalParent';
 import ThumbnailModalChild from '../core/ThumbnailModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
@@ -15,7 +15,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
         index: React.PropTypes.number.isRequired,

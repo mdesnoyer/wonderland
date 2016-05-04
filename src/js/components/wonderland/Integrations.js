@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
@@ -11,7 +11,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Integrations = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

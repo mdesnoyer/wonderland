@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-    mixins: [AJAX], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

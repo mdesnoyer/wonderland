@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AJAX from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
@@ -13,7 +13,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInForm = React.createClass({
-	mixins: [AJAX], // ReactDebugMixin
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
