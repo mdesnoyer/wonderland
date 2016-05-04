@@ -18,7 +18,7 @@ var AccountSettingsForm = React.createClass({
                     body: <AccountSettingsTab1 />
                 },
                 {
-                    label: 'Tracker',
+                    label: 'IDs',
                     body: <AccountSettingsTab2 />
                 },
                 {

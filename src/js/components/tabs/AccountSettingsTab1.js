@@ -17,7 +17,6 @@ var AccountSettingsTab1 = React.createClass({
         return {
             isLoading: true,
             isError: false,
-            defaultThumbnailId: '',
             defaultWidth: 0,
             defaultHeight: 0
         };
@@ -31,7 +30,6 @@ var AccountSettingsTab1 = React.createClass({
                     self.setState({
                         isLoading: false,
                         isError: false,
-                        defaultThumbnailId: account.defaultThumbnailId,
                         defaultWidth: account.defaultWidth,
                         defaultHeight: account.defaultHeight
                     });
@@ -95,12 +93,6 @@ var AccountSettingsTab1 = React.createClass({
             })
         ;
     },
-    handleChangeDefaultThumbnailId(e) {
-        var self = this;
-        self.setState({
-            defaultThumbnailId: e.target.value
-        })
-    },
     handleChangeDefaultWidth(e) {
         var self = this;
         self.setState({
@@ -121,19 +113,6 @@ var AccountSettingsTab1 = React.createClass({
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
                     {messageNeeded}
-                    <label className="label">{T.get('label.defaultThumbnailId')}</label>
-                    <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
-                        <input
-                            ref="defaultThumbnailId"
-                            className={'input'}
-                            type="text"
-                            minLength="1"
-                            maxLength="2048"
-                            value={self.state.defaultThumbnailId}
-                            disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultThumbnailId}
-                        />
-                    </p>
                     <label className="label">{T.get('label.defaultSizeWidthXHeight')}</label>
                     <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                         <input
@@ -158,7 +137,9 @@ var AccountSettingsTab1 = React.createClass({
                         />
                     </p>
                     <p className="has-text-centered">
-                        <SaveButton isLoading={self.state.isLoading} />
+                        <SaveButton
+                            isLoading={self.state.isLoading}
+                        />
                     </p>
                 </fieldset>
             </form>
