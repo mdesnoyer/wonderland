@@ -13,11 +13,16 @@ var OnboardingButtons = React.createClass({
     render: function() {
         var self = this,
             buttons = self.props.buttonProps
-        ;
+        ; 
         return (
             <ul className="control">
                 {Object.keys(buttons).map(function(button, idx) {
-                    return <li key={idx} ><input className="button is-primary" type={buttons[button].type} value={buttons[button].name} data-response={buttons[button].response} onClick={self.clicked} /></li>
+                    return <li key={idx} ><input className="button is-primary"
+                                type={buttons[button].type}
+                                value={buttons[button].name}
+                                data-response={buttons[button].response}
+                                data-extracontent={buttons[button].extraContent} onClick={self.clicked} />
+                            </li>
                 }.bind(self))}
             </ul>
         );
@@ -27,8 +32,9 @@ var OnboardingButtons = React.createClass({
         if(self.props.onClick) {
             self.props.onClick(
                 e.target.value, 
-                e.target.dataset.response, 
-                e.target.type
+                e.target.dataset.response,                
+                e.target.type,
+                e.target.dataset.extracontent
             );
         }
     }

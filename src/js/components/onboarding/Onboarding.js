@@ -60,7 +60,7 @@ var Onboarding = React.createClass({
             </div>
         );
     },
-    handleClick: function(value, response, type){
+    handleClick: function(value, response, type, extraContent){
         var self = this;
         if (self.state.onboardPath.introSlide){
              self.setState({
@@ -71,6 +71,7 @@ var Onboarding = React.createClass({
              });
         }
         else if(type === "button"){
+            response = extraContent === "true" ? response.split(',') : response
             self.setState({
                 slideResponse: response
             })
