@@ -16,11 +16,11 @@ var OnboardingInputs = React.createClass({
             inputs = self.props.inputProps
         ;
         return (
-            <p className="control">
+            <fieldset className="control">
                 {Object.keys(inputs).map(function(input, idx) {
                     return <OnboardingInput className="button is-primary" inputType={inputs[input].inputType} onChange={self.props.onChange}key={idx} />
                 }.bind(self))}
-            </p>
+            </fieldset>
         );
     }
 });

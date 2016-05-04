@@ -16,11 +16,11 @@ var OnboardingSlide = React.createClass({
         ;
         if(message.constructor === Array) {
            displayMessage = (
-                <p className="content">
+                <div className="content">
                     {message.map(function(result) {
                         return <p>{result}</p>
                     })}
-                </p>
+                </div>
             );
         }
         else 

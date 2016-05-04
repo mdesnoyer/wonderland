@@ -93,7 +93,8 @@ const onboardingSlides = {
                         "3. For each player you want to add the plugin to:",
                         "a. Click Settings",
                         "b. In the resulting window and click “Plug-ins”",
-                        "c. Paste the Neon Plugin URL to URL ba d. Click “Add”"]
+                        "c. Paste the Neon Plugin URL to URL bar",
+                        "d. Click “Add”"]
                     }
                 }
             },
