@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
@@ -11,32 +12,34 @@ import SaveButton from '../buttons/SaveButton';
 
 var UserSettingsTab2 = React.createClass({
     // mixins: [ReactDebugMixin],
-    propTypes: {
-        isLoading: React.PropTypes.bool.isRequired,
-        username: React.PropTypes.string.isRequired,
-        firstName: React.PropTypes.string,
-        lastName: React.PropTypes.string,
-        title: React.PropTypes.string
-    },
     getInitialState: function() {
         var self = this;
         return {
-            isLoading: self.props.isLoading,
-            username: self.props.username,
-            firstName: self.props.firstName,
-            lastName: self.props.lastName,
-            title: self.props.title
+            isLoading: true,
+            username: '',
+            firstName: '',
+            lastName: '',
+            title: ''
         }  
     },
-    componentWillReceiveProps: function(nextProps) {
+    componentWillMount: function() {
         var self = this;
-        self.setState({
-            isLoading: nextProps.isLoading,
-            username: nextProps.username,
-            firstName: nextProps.firstName,
-            lastName: nextProps.lastName,
-            title: nextProps.title
-        });
+        SESSION.user()
+            .then(function(userData) {
+                self.setState({
+                    isLoading: false,
+                    username: userData.username,
+                    firstName: userData.first_name,
+                    lastName: userData.last_name,
+                    title: userData.title
+                })
+            })
+            .catch(function(err) {
+                self.setState({
+                    isLoading: false
+                })
+            })
+        ;
     },
     componentDidMount: function() {
         var self = this;

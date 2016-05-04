@@ -1,0 +1,9 @@
+.wonderland-tabs {
+    .is-disabled {
+        a {
+            color: $grey-light;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    }
+}
