@@ -23,18 +23,13 @@ const onboardingSlides = {
         }]
     },
     BrightCove:{
+    	inputTypes:["token1","token2"],
         slideMax: 3,
         slideMin: 0,
     	slides:[
 	        {
 	            message: "Please Enter Your BrightCove Tokens",
 	            step: 1,
-	            buttons: {
-	                button1:{
-	                    name:"Submit Tokens",
-	                    action:"#"
-	                }
-	            },
 	            inputs:{
 	            	input1:{
 	            		inputType: "token1"
@@ -50,7 +45,7 @@ const onboardingSlides = {
 	            buttons: {
 	                button1:{
 	                    name:"Yes",
-	                    action: self.handleSubmit
+	                    action: "#"
 	                },
 	                button2:{
 	                    name:"No",
@@ -64,11 +59,13 @@ const onboardingSlides = {
 	            buttons: {
 	                button1:{
 	                    name:"Smart Player",
-	                    action:"#"
+	                    action:"#",
+	                    inputType:"smart_player"
 	                },
 	                button2:{
 	                    name:"HTMl5 Player",
-	                    action:"#"
+	                    action:"#",
+	                    inputType:"html_player"
 	                }
 	            }
 	        },

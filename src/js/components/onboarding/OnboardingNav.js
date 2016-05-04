@@ -15,14 +15,19 @@ import T from '../../modules/translation';
 var OnboardingNav = React.createClass({
 
     render: function() {
-        var self = this ;
-        return (
-        	<a className="column is-2" onClick={self.clicked}>
-        	    <span className="icon is-large">
-        	        <i className={self.props.icon} aria-hidden="true"></i>
-        	    </span>
-        	</a>
-        );
+        var self = this
+        if((self.props.barrier === self.props.progress &&  self.props.intro) || (self.props.barrier > 0 && self.props.intro) || ( self.props.barrier > 0 && self.props.barrier === self.props.progress)) {
+            return <a className="column is-2"></a>;
+        }
+        else{
+            return (
+            	<a className="column is-2" onClick={self.clicked}>
+            	    <span className="icon is-large">
+            	        <i className={"fa fa-arrow-circle-o-" + self.props.type} aria-hidden="true"></i>
+            	    </span>
+            	</a>
+            );
+        }
     },
     clicked: function(e){
         if(this.props.onClick) {

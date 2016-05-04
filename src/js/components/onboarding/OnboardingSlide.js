@@ -15,7 +15,7 @@ import T from '../../modules/translation';
 var OnboardingSlide = React.createClass({
 
     render: function() {
-        var self = this ;
+        var self = this;
         return (
         	<div className="column tile is-parent">
         	  <article className="tile is-child">

@@ -15,6 +15,7 @@ import OnboardingInput from './OnboardingInput';
 import OnboardingInputs from './OnboardingInputs';
 import OnboardingNav from './OnboardingNav';
 import OnboardingModule from './OnboardingModule';
+import update from 'react-addons-update';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,13 +27,13 @@ var Onboarding = React.createClass({
         slideProgress: 0,
         slideMax: OnboardingModule.onboardSet.slideMax,
         slideMin: OnboardingModule.onboardSet.slideMin,
-        data:[]
+        dataTypes: OnboardingModule.onboardSet.dataTypes,
        }
     },
     render: function() {
         var self = this,
             slides = self.state.presentationName.slides[self.state.slideProgress],
-            buttons = slides.buttons ? <OnboardingButtons buttonProps={slides.buttons} onClick={self.handleDetermineSlide} /> : '',
+            buttons = slides.buttons ? <OnboardingButtons buttonProps={slides.buttons} onChange={self.gatherChange} onClick={self.handleDetermineSlide} /> : '',
             inputs = slides.inputs ? <OnboardingInputs inputProps={slides.inputs} onChange={self.gatherChange}/> : '',
             step = slides.step ? 'Step: ' + slides.step : ''
         ;
@@ -40,7 +41,13 @@ var Onboarding = React.createClass({
             <div className="box container">
                 <progress className="progress is-small" value={self.calculateProgress()} max="100">15%</progress>
                 <div className="columns">
-                    <OnboardingNav onClick={self.handlePreviousClick} icon="fa fa-arrow-circle-o-left"/>
+                    <OnboardingNav
+                        onClick={self.handlePreviousClick}
+                        type="left"
+                        progress={self.state.slideProgress}
+                        barrier={self.state.slideMin}
+                        intro={self.state.presentationName.introSlide}
+                    />
                     <section className="column is-8" >
                         <OnboardingSlide step={step} message={slides.message} />
                         <form onSubmit={this.handleSubmit}>
@@ -48,7 +55,13 @@ var Onboarding = React.createClass({
                             {buttons}
                         </form>
                     </section>
-                    <OnboardingNav onClick={self.handleNextClick} icon="fa fa-arrow-circle-o-right"/>
+                    <OnboardingNav
+                        onClick={self.handleNextClick}
+                        type="right"
+                        progress={self.state.slideProgress}
+                        intro={self.state.presentationName.introSlide}
+                        barrier={self.state.slideMax}
+                    />
                 </div>
             </div>
         );
@@ -59,33 +72,47 @@ var Onboarding = React.createClass({
              self.setState({
                 presentationName: OnboardingModule[value],
                 slideMax: OnboardingModule[value].slideMax,
-                slideMin: OnboardingModule[value].slideMin
+                slideMin: OnboardingModule[value].slideMin,
+                dataTypes: OnboardingModule[value].dataTypes || ''
              });
         }
     },
     handleSubmit: function(e){
-        var self = this;
+        var self = this
         e.preventDefault();
-        self.setState(function(previousState, currentProps) {
-            // return {slideProgress: previousState.slideProgress +1}
-        })
+        debugger
+        if (self.state.slideProgress === self.state.slideMax){
+            self.ajaxData(self.gatherDataFromInputs());
+        }
+    },
+    ajaxData: function(data){
+        console.log(data)
+        alert(data);
+    },
+    gatherDataFromInputs: function() {
+        var self = this,
+            data = {},
+            p = self.state.dataTypes
+        ;
+        for (var i = 0; i < p.length; i++) {
+            var dataType = p[i]
+            data[dataType] = self.state[dataType]
+        }
+        return data;
     },
     gatherChange: function(type, value) {
-        var self = this;
         debugger 
+        var self = this;
         self.setState({
-
-            data: this.state.data.concat({[type]: value})
+            [type]:value
         });
-        debugger
-        console.log(self.state)
     },
     handleNextClick: function(){
         var self = this;
         if (self.state.slideProgress < self.state.slideMax) {
             self.setState(function(previousState,currentProps) {
                 return {slideProgress: previousState.slideProgress + 1}
-            })
+            });
         }
     },
     handlePreviousClick: function(){
