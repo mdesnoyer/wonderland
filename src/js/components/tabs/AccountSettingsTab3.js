@@ -5,6 +5,7 @@ import React from 'react';
 import Account from '../../mixins/Account';
 import AJAX from '../../mixins/ajax';
 import moment from 'moment';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -14,12 +15,12 @@ var AccountSettingsTab3 = React.createClass({
         return {
             isLoading: true,
             isError: false,
-            created: null,
-            updated: null,
-            accountName: null,
-            accountId: null,
-            isServingEnabled: null,
-            accountEmail: null
+            created: '',
+            updated: '',
+            accountName: '',
+            accountId: '',
+            isServingEnabled: false,
+            accountEmail: ''
         };
     },
     componentDidMount: function() {
@@ -52,27 +53,27 @@ var AccountSettingsTab3 = React.createClass({
         ;
         return (       
             <fieldset>
-                <label className="label">Account Name</label>
+                <label className="label">{T.get('label.accountName')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                     <input className={'input'} type="text" value={self.state.accountName} disabled />
                 </p>
-                <label className="label">Account ID</label>
+                <label className="label">{T.get('label.accountId')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                       <input className={'input'} type="text" value={self.state.accountId} disabled />
                 </p>
-                <label className="label">Created</label>
+                <label className="label">{T.get('label.created')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={created} disabled />
                 </p>
-                <label className="label">Updated</label>
+                <label className="label">{T.get('label.updated')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={updated} disabled />
                 </p>
-                <label className="label">Serving Enabled</label>
+                <label className="label">{T.get('label.servingEnabled')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.isServingEnabled} disabled />
                 </p>
-                <label className="label">Account Email</label>
+                <label className="label">{T.get('label.accountEmail')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.accountEmail} disabled />
                 </p>

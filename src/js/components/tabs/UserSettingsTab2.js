@@ -2,41 +2,45 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var UserSettingsTab2 = React.createClass({
     // mixins: [ReactDebugMixin],
-    propTypes: {
-        isLoading: React.PropTypes.bool.isRequired,
-        username: React.PropTypes.string.isRequired,
-        firstName: React.PropTypes.string,
-        lastName: React.PropTypes.string,
-        title: React.PropTypes.string
-    },
     getInitialState: function() {
         var self = this;
         return {
-            isLoading: self.props.isLoading,
-            username: self.props.username,
-            firstName: self.props.firstName,
-            lastName: self.props.lastName,
-            title: self.props.title
+            isLoading: true,
+            username: '',
+            firstName: '',
+            lastName: '',
+            title: ''
         }  
     },
-    componentWillReceiveProps: function(nextProps) {
+    componentWillMount: function() {
         var self = this;
-        self.setState({
-            isLoading: nextProps.isLoading,
-            username: nextProps.username,
-            firstName: nextProps.firstName,
-            lastName: nextProps.lastName,
-            title: nextProps.title
-        });
+        SESSION.user()
+            .then(function(userData) {
+                self.setState({
+                    isLoading: false,
+                    username: userData.username,
+                    firstName: userData.first_name,
+                    lastName: userData.last_name,
+                    title: userData.title
+                })
+            })
+            .catch(function(err) {
+                self.setState({
+                    isLoading: false
+                })
+            })
+        ;
     },
     componentDidMount: function() {
         var self = this;
@@ -119,7 +123,7 @@ var UserSettingsTab2 = React.createClass({
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    <label className="label">First Name</label>
+                    <label className="label">{T.get('label.firstName')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="firstName"
@@ -130,7 +134,7 @@ var UserSettingsTab2 = React.createClass({
                             onChange={self.handleChangeFirstName}
                         />
                     </p>
-                    <label className="label">Last Name</label>
+                    <label className="label">{T.get('label.lastName')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="lastName"
@@ -141,7 +145,7 @@ var UserSettingsTab2 = React.createClass({
                             onChange={self.handleChangeLastName}
                         />
                     </p>
-                    <label className="label">Title</label>
+                    <label className="label">{T.get('label.title')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="title"

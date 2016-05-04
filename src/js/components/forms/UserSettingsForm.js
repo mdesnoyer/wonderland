@@ -12,59 +12,18 @@ import SESSION from '../../modules/session';
 
 var UserSettingsForm = React.createClass({
     // mixins: [ReactDebugMixin],
-    getInitialState: function() {
-        var self = this;
-        return {
-            isLoading: true,
-            username: '',
-            accessLevel: -1,
-            created: '',
-            updated: '',
-            firstName: '',
-            lastName: '',
-            title: ''
-        }  
-    },
-    componentWillMount: function() {
-        var self = this;
-        SESSION.user()
-            .then(function(userData) {
-                self.setState({
-                    isLoading: false,
-                    username: userData.username,
-                    accessLevel: userData.access_level,
-                    created: userData.created,
-                    updated: userData.updated,
-                    firstName: userData.first_name,
-                    lastName: userData.last_name,
-                    title: userData.title
-                })
-            })
-            .catch(function(err) {
-                self.setState({
-                    isLoading: false
-                })
-            })
-        ;
-    },
     render: function() {
         var self = this,
-            tabs = {
-                'User': <UserSettingsTab1
-                    isLoading={self.state.isLoading}
-                    username={self.state.username}
-                    accessLevel={self.state.accessLevel}
-                    created={self.state.created}
-                    updated={self.state.updated}
-                />,
-                'Personal': <UserSettingsTab2
-                    isLoading={self.state.isLoading}
-                    username={self.state.username}
-                    firstName={self.state.firstName}
-                    lastName={self.state.lastName}
-                    title={self.state.title}
-                />
-            }
+            tabs = [
+                {
+                    label: 'User',
+                    body: <UserSettingsTab1 />
+                },
+                {
+                    label: 'Personal',
+                    body: <UserSettingsTab2 />
+                }
+            ]
         ;
         return (
             <WonderTabs tabs={tabs} />
