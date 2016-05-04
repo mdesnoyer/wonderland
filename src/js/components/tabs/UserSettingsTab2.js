@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Account from '../../mixins/Account';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
@@ -10,46 +10,40 @@ import SaveButton from '../buttons/SaveButton';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var AccountSettingsTab1 = React.createClass({
-    mixins: [Account], // ReactDebugMixin
-    getInitialState: function () {
+var UserSettingsTab2 = React.createClass({
+    // mixins: [ReactDebugMixin],
+    getInitialState: function() {
+        var self = this;
         return {
             isLoading: true,
-            isError: false,
-            defaultThumbnailId: '',
-            defaultWidth: 0,
-            defaultHeight: 0
-        };
+            username: '',
+            firstName: '',
+            lastName: '',
+            title: ''
+        }  
     },
     componentWillMount: function() {
         var self = this;
-        self._isSubmitted = false;
-        self.getAccount()
-            .then(function (account) {
-                if (self._isMounted) {
-                    self.setState({
-                        isLoading: false,
-                        isError: false,
-                        defaultThumbnailId: account.defaultThumbnailId,
-                        defaultWidth: account.defaultWidth,
-                        defaultHeight: account.defaultHeight
-                    });
-                }
+        SESSION.user()
+            .then(function(userData) {
+                self.setState({
+                    isLoading: false,
+                    username: userData.username,
+                    firstName: userData.first_name,
+                    lastName: userData.last_name,
+                    title: userData.title
+                })
             })
-            .catch(function (err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
-                if (self._isMounted) {
-                    self.setState({
-                        isLoading: false,
-                        isError: true
-                    }, function() {
-                        self._isSubmitted = false;
-                    });
-                }
-            });
+            .catch(function(err) {
+                self.setState({
+                    isLoading: false
+                })
+            })
+        ;
     },
     componentDidMount: function() {
         var self = this;
+        self._isSubmitted = false;
         self._isMounted = true;
     },
     componentWillUnmount: function() {
@@ -70,9 +64,18 @@ var AccountSettingsTab1 = React.createClass({
         }
     },
     doSubmit: function() {
-        var self = this;
+        var self = this,
+            options = {
+                data: {
+                    username: self.state.username,
+                    first_name: self.state.firstName,
+                    last_name: self.state.lastName,
+                    title: self.state.title
+                }
+            }
+        ;
         E.clearErrors();
-        self.updateAccount(self.state)
+        AJAX.doPut('users', options)
             .then(function(json) {
                 if (self._isMounted) {
                     self.setState({
@@ -94,70 +97,69 @@ var AccountSettingsTab1 = React.createClass({
             })
         ;
     },
-    handleChangeDefaultThumbnailId(e) {
+    handleChangeFirstName(e) {
         var self = this;
         self.setState({
-            defaultThumbnailId: e.target.value
+            firstName: e.target.value
         })
     },
-    handleChangeDefaultWidth(e) {
+    handleChangeLastName(e) {
         var self = this;
         self.setState({
-            defaultWidth: e.target.value
+            lastName: e.target.value
         })
     },
-    handleChangeDefaultHeight(e) {
+    handleChangeTitle(e) {
         var self = this;
         self.setState({
-            defaultHeight: e.target.value
+            title: e.target.value
         })
     },
     render: function() {
         var self = this,
-            messageNeeded = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeeded = E.getErrorsCount() ? <Message header={'User Settings'} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    {messageNeeded}
-                    <label className="label">Default Thumbnail ID</label>
-                    <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <label className="label">First Name</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
-                            ref="defaultThumbnailId"
+                            ref="firstName"
                             className={'input'}
                             type="text"
-                            minLength="1"
-                            maxLength="2048"
-                            value={self.state.defaultThumbnailId}
+                            value={self.state.firstName}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultThumbnailId}
+                            onChange={self.handleChangeFirstName}
                         />
                     </p>
-                    <label className="label">Default Size (width x height)</label>
-                    <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <label className="label">Last Name</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
+                            ref="lastName"
                             className={'input'}
-                            type="number"
-                            step="1"
-                            min="1"
-                            max="8192"
-                            value={self.state.defaultWidth}
+                            type="text"
+                            value={self.state.lastName}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultWidth}
+                            onChange={self.handleChangeLastName}
                         />
+                    </p>
+                    <label className="label">Title</label>
+                    <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
+                            ref="title"
                             className={'input'}
-                            type="number"
-                            step="1"
-                            min="1"
-                            max="8192"
-                            value={self.state.defaultHeight}
+                            type="text"
+                            value={self.state.title}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeDefaultHeight}
+                            onChange={self.handleChangeTitle}
                         />
                     </p>
                     <p className="has-text-centered">
-                        <SaveButton isLoading={self.state.isLoading} />
+                        <SaveButton
+                            isLoading={self.state.isLoading}
+                            isDisabled={true}
+                        />
                     </p>
                 </fieldset>
             </form>
@@ -167,6 +169,6 @@ var AccountSettingsTab1 = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AccountSettingsTab1;
+export default UserSettingsTab2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
