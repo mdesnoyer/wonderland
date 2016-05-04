@@ -8,6 +8,7 @@ import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Secured from '../../mixins/Secured';
+import UserSettingsForm from '../forms/UserSettingsForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -22,9 +23,14 @@ var UserSettingsPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.userSettings.heading')}</h1>
-                        <div className="content">
-                            <p><span dangerouslySetInnerHTML={{__html: T.get('copy.userSettings.body')}} /></p>
+                        <div className="columns is-desktop">
+                            <div className="column is-half is-offset-one-quarter">
+                                <h1 className="title is-2">{T.get('copy.userSettings.heading')}</h1>
+                                <div className="content">
+                                    <p><span dangerouslySetInnerHTML={{__html: T.get('copy.userSettings.body')}} /></p>
+                                </div>
+                                <UserSettingsForm />
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -35,6 +35,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'action.previous': 'Previous',
             'action.next': 'Next',
+            'action.save': 'Save',
 
             rememberMe: 'Remember',
 
