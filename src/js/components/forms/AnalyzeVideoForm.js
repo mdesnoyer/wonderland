@@ -53,10 +53,21 @@ var AnalyzeVideoForm = React.createClass({
                 });
             })
             .catch(function(err) {
-                E.checkForError(err.statusText, false);
-                self.setState({
-                    mode: 'error'
-                });
+                // The 404 is used to indicate the account has no limits on it.
+                // This is a valid response from the Back end.
+                switch (err.status) {
+                    case 404:
+                        self.setState({
+                            mode: 'silent'
+                        })
+                        break;
+                    default:
+                        E.checkForError(err.statusText, false)
+                        self.setState({
+                            mode: 'error'
+                        })
+                        break;
+                }
             });
     },
     render: function() {
@@ -231,8 +242,7 @@ var AnalyzeVideoForm = React.createClass({
                 self.setState({
                     mode: 'error'
                 });
-            })
-        ;
+            });
     }
 });
 
