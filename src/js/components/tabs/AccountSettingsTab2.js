@@ -43,7 +43,6 @@ var AccountSettingsTab2 = React.createClass({
     componentWillUnmount: function() {
         var self = this;
         self._isMounted = false;
-        E.clearErrors();
     },
     render: function() {
         var self = this;
