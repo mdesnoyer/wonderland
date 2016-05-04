@@ -22,7 +22,7 @@ var VideoPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: null
+            isServingEnabled: false
         };
     },
     componentWillMount: function() {

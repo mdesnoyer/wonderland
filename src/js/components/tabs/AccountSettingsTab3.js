@@ -13,12 +13,12 @@ var AccountSettingsTab3 = React.createClass({
         return {
             isLoading: true,
             isError: false,
-            created: null,
-            updated: null,
-            accountName: null,
-            accountId: null,
-            isServingEnabled: null,
-            accountEmail: null
+            created: '',
+            updated: '',
+            accountName: '',
+            accountId: '',
+            isServingEnabled: false,
+            accountEmail: ''
         };
     },
     componentDidMount: function() {
