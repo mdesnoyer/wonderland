@@ -43,7 +43,7 @@ var Integrations = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'table is-striped' + (self.props.isBusy ? ' is-busy' : ''),
+            additionalClass = 'table is-striped' + (self.props.isLoading ? ' is-loading' : ''),
             messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (

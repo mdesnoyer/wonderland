@@ -19,11 +19,11 @@ var Videos = React.createClass({
             errorMessageArray: [],
             isError: false,
             videos: [],
-            prevPage: '',
-            nextPage: '',
+            prevPageAPICall: '',
+            nextPageAPICall: '',
             videoCountServed: -1,
-            pageCount: 0,
-            isBusy: false,
+            currentPage: 0,
+            isLoading: false,
             bonusSearchUrl: '' // used to hold the next/prev choice
         }  
     },
@@ -60,13 +60,13 @@ var Videos = React.createClass({
                         forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                         videos={self.state.videos}
                         handleNewSearch={self.handleNewSearch}
-                        prevPage={self.state.prevPage}
-                        nextPage={self.state.nextPage}
+                        prevPageAPICall={self.state.prevPageAPICall}
+                        nextPageAPICall={self.state.nextPageAPICall}
                         errorMessage={errorMessage}
-                        pageCount={self.state.pageCount}
-                        isBusy={self.state.isBusy}
+                        currentPage={self.state.currentPage}
+                        isLoading={self.state.isLoading}
                         videoCountServed={self.state.videoCountServed}
-                        videoCountRequested={UTILS.VIDEO_PAGE_SIZE}
+                        videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                         isServingEnabled={self.props.isServingEnabled}
                     />
                 </section>
@@ -89,14 +89,14 @@ var Videos = React.createClass({
             options = {
                 data: {
                     fields: UTILS.VIDEO_FIELDS,
-                    limit: UTILS.VIDEO_PAGE_SIZE
+                    limit: UTILS.RESULTS_PAGE_SIZE
                 }
             }
         ;
         self.setState({
-            isBusy: true,
+            isLoading: true,
             forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
-            pageCount: pageAdjustment ? (self.state.pageCount + pageAdjustment) : 1
+            currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             self.GET('videos/search' + self.state.bonusSearchUrl, options)
                 .then(function(json) {
@@ -106,15 +106,15 @@ var Videos = React.createClass({
                     self.setState({
                         videoCountServed: json.video_count,
                         bonusSearchUrl: '',
-                        isBusy: false
+                        isLoading: false
                     }, function() {
                         if (json.video_count === 0) {
                             self.setState({
                                 errorMessageArray: [],
                                 isError: false,
                                 videos: [],
-                                prevPage: '',
-                                nextPage: '',
+                                prevPageAPICall: '',
+                                nextPageAPICall: '',
                             });
                         }
                         else {
@@ -122,8 +122,8 @@ var Videos = React.createClass({
                                 errorMessageArray: [],
                                 isError: false,
                                 videos: json.videos,
-                                prevPage: json.prev_page,
-                                nextPage: json.next_page,
+                                prevPageAPICall: json.prev_page,
+                                nextPageAPICall: json.next_page,
                             });
                         }
                     });
@@ -137,11 +137,11 @@ var Videos = React.createClass({
                         errorMessageArray: newErrorMessageArray,
                         isError: true,
                         videos: [],
-                        prevPage: '',
-                        nextPage: '',
+                        prevPageAPICall: '',
+                        nextPageAPICall: '',
                         videoCountServed: 0,
                         bonusSearchUrl: '',
-                        isBusy: false
+                        isLoading: false
                     });
                 });
             });

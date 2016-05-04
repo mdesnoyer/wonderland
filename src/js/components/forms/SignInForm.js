@@ -28,7 +28,7 @@ var SignInForm = React.createClass({
     getInitialState: function() {
         return {
             isError: false,
-            isBusy: false
+            isLoading: false
         }  
     },
     componentDidMount: function() {
@@ -45,7 +45,7 @@ var SignInForm = React.createClass({
             buttonClassName,
             inputClassName
         ;
-            if (self.state.isBusy) {
+            if (self.state.isLoading) {
                 buttonClassName = 'button is-primary is-medium is-disabled is-loading';
                 inputClassName = 'input is-medium is-disabled';
             }
@@ -102,10 +102,10 @@ var SignInForm = React.createClass({
         var self = this;
         e.preventDefault();
         if (!self._isSubmitted) {
-            self._isSubmitted = true; 
+            self._isSubmitted = true;
             self.setState({
                 isError: false,
-                isBusy:true
+                isLoading:true
             }, self.sendUserData());
         }
     },
@@ -137,7 +137,7 @@ var SignInForm = React.createClass({
                     self._isSubmitted = false;
                     self.setState({
                         isError: false,
-                        isBusy: false
+                        isLoading: false
                     });
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
@@ -146,14 +146,14 @@ var SignInForm = React.createClass({
                     self._isSubmitted = false;
                     self.setState({
                         isError: true,
-                        isBusy: false
+                        isLoading: false
                     });
                 });
         }
         else {
             self.setState({
                 isError: true,
-                isBusy: false
+                isLoading: false
             });
         }
     }

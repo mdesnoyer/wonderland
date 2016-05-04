@@ -6,6 +6,7 @@ import Account from '../../mixins/Account';
 import E from '../../modules/errors';
 import AJAX from '../../mixins/ajax';
 import Message from '../wonderland/Message';
+import SaveButton from '../buttons/SaveButton';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -91,7 +92,7 @@ var AccountSettingsTab1 = React.createClass({
             })
         ;
     },
-    handleChangeAccountId(e) {
+    handleChangeDefaultThumbnailId(e) {
         var self = this;
         self.setState({
             defaultThumbnailId: e.target.value
@@ -127,7 +128,7 @@ var AccountSettingsTab1 = React.createClass({
                             maxLength="2048"
                             value={self.state.defaultThumbnailId}
                             disabled={self.state.isLoading ? 'disabled' : ''}
-                            onChange={self.handleChangeAccountId}
+                            onChange={self.handleChangeDefaultThumbnailId}
                         />
                     </p>
                     <label className="label">Default Size (width x height)</label>
@@ -154,12 +155,7 @@ var AccountSettingsTab1 = React.createClass({
                         />
                     </p>
                     <p className="has-text-centered">
-                        <button
-                            className={'button is-medium is-primary' + (self.state.isLoading ? ' is-loading' : '')}
-                            type="submit"
-                        >
-                            <i className="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Save
-                        </button>
+                        <SaveButton isLoading={self.state.isLoading} />
                     </p>
                 </fieldset>
             </form>
