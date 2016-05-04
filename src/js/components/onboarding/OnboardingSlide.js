@@ -17,8 +17,8 @@ var OnboardingSlide = React.createClass({
         if(message.constructor === Array) {
            displayMessage = (
                 <div className="content">
-                    {message.map(function(result) {
-                        return <p>{result}</p>
+                    {message.map(function(result, idx) {
+                        return <p key={idx}>{result}</p>
                     })}
                 </div>
             );
