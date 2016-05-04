@@ -71,7 +71,7 @@ var UserSettingsTab2 = React.createClass({
             }
         ;
         E.clearErrors();
-        this.PUT('users', options)
+        self.PUT('users', options)
             .then(function(json) {
                 self.setState({
                     isLoading: false
