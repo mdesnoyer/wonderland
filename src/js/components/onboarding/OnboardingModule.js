@@ -34,6 +34,13 @@ const onboardingSlides = {
                     input2: {
                         inputType: "token2"
                     }
+                },
+                buttons: {
+                    button1: {
+                        name: "Submit",
+                        type: "Submit",
+                        response: "TODO"
+                    }
                 }
             },
             {
@@ -41,12 +48,14 @@ const onboardingSlides = {
                 step: 2,
                 buttons: {
                     button1: {
-                        name:"Yes",
-                        action: "#"
+                        name: "Yes",
+                        type: "button",
+                        response: "TODO"
                     },
                     button2: {
-                        name:"No",
-                        action:"#"
+                        name: "No",
+                        type: "button",
+                        response: "TODO"
                     }
                 }
             },
@@ -55,10 +64,14 @@ const onboardingSlides = {
                 step: 3,
                 buttons: {
                     button1: {
-                        name:"Smart Player"
+                        name: "Smart Player",
+                        type: "button",
+                        response: "TODO"
                     },
                     button2: {
-                        name:"HTMl5 Player"
+                        name: "HTMl5 Player",
+                        type: "button",
+                        response: "TODO"
                     }
                 }
             },

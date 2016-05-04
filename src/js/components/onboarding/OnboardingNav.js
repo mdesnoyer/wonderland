@@ -2,21 +2,24 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Helmet from 'react-helmet';
-import UTILS from '../../modules/utils';
-import SiteHeader from '../wonderland/SiteHeader';
-import SiteFooter from '../wonderland/SiteFooter';
-import Integrations from '../wonderland/Integrations';
-import Secured from '../../mixins/Secured';
-import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var OnboardingNav = React.createClass({
-
+    propTypes: {
+        type: React.PropTypes.string.isRequired,
+        onClick: React.PropTypes.func.isRequired,
+        barrier: React.PropTypes.number.isRequired,
+        progress: React.PropTypes.number.isRequired,
+        intro: React.PropTypes.bool
+    },
     render: function() {
-        var self = this
-        if((self.props.barrier === self.props.progress &&  self.props.intro) || (self.props.barrier > 0 && self.props.intro) || ( self.props.barrier > 0 && self.props.barrier === self.props.progress)) {
+        var self = this,
+            isIntroSlideLeftArrow = self.props.barrier === self.props.progress &&  self.props.intro,
+            isIntroSlideRightArrow = self.props.barrier > 0 && self.props.intro,
+            isLastSlideRightArrow = self.props.barrier > 0 && self.props.barrier === self.props.progress
+        ;
+        if(isIntroSlideLeftArrow || isIntroSlideRightArrow || isLastSlideRightArrow) {
             return <a className="column is-2"></a>;
         }
         else{
@@ -29,7 +32,7 @@ var OnboardingNav = React.createClass({
             );
         }
     },
-    clicked: function(e){
+    clicked: function(e) {
         if(this.props.onClick) {
             this.props.onClick(true);
         }

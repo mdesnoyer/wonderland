@@ -2,24 +2,22 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Helmet from 'react-helmet';
-import UTILS from '../../modules/utils';
-import SiteHeader from '../wonderland/SiteHeader';
-import SiteFooter from '../wonderland/SiteFooter';
-import Integrations from '../wonderland/Integrations';
-import Secured from '../../mixins/Secured';
-import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var OnboardingButtons = React.createClass({
+    propTypes: {
+        buttonProps: React.PropTypes.object.isRequired,
+        onClick: React.PropTypes.func.isRequired
+    },
     render: function() {
-        var self = this ;
-        var buttons = self.props.buttonProps;
+        var self = this,
+            buttons = self.props.buttonProps
+        ;
         return (
             <ul className="control">
                 {Object.keys(buttons).map(function(button, idx) {
-                    return <li><input className="button is-primary" value={buttons[button].name} onClick={self.clicked} key={idx} /></li>
+                    return <li key={idx} ><input className="button is-primary" type={buttons[button].type} value={buttons[button].name} data-response={buttons[button].response} onClick={self.clicked} /></li>
                 }.bind(self))}
             </ul>
         );
@@ -27,7 +25,11 @@ var OnboardingButtons = React.createClass({
     clicked: function(e) {
         var self = this;
         if(self.props.onClick) {
-            self.props.onClick(e.target.value);
+            self.props.onClick(
+                e.target.value, 
+                e.target.dataset.response, 
+                e.target.type
+            );
         }
     }
 });

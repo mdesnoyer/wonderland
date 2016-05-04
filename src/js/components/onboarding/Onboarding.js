@@ -2,9 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import Secured from '../../mixins/Secured';
 import OnboardingButtons from './OnboardingButtons';
 import OnboardingSlide from './OnboardingSlide';
 import OnboardingInput from './OnboardingInput';
@@ -17,18 +15,19 @@ import OnboardingModule from './OnboardingModule';
 var Onboarding = React.createClass({
     // mixins: [Secured], // ReactDebugMixin
     getInitialState: function(){
-       return {
-        onboardPath: OnboardingModule.onboardSet,
-        slideProgress: 0,
-        slideMax: OnboardingModule.onboardSet.slideMax,
-        slideMin: OnboardingModule.onboardSet.slideMin,
-        dataTypes: OnboardingModule.onboardSet.dataTypes,
+        return {
+            onboardPath: OnboardingModule.onboardSet,
+            slideProgress: 0,
+            slideMax: OnboardingModule.onboardSet.slideMax,
+            slideMin: OnboardingModule.onboardSet.slideMin,
+            dataTypes: OnboardingModule.onboardSet.dataTypes,
+            slideResponse: false
        }
     },
     render: function() {
         var self = this,
             slides = self.state.onboardPath.slides[self.state.slideProgress],
-            buttons = slides.buttons ? <OnboardingButtons buttonProps={slides.buttons} onClick={self.handleClick} /> : '',
+            buttons = (slides.buttons && !self.state.slideResponse) ? <OnboardingButtons buttonProps={slides.buttons} onClick={self.handleClick} /> : '',
             inputs = slides.inputs ? <OnboardingInputs inputProps={slides.inputs} onChange={self.handleChange}/> : '',
             step = slides.step ? 'Step: ' + slides.step : ''
         ;
@@ -44,7 +43,7 @@ var Onboarding = React.createClass({
                         intro={self.state.onboardPath.introSlide}
                     />
                     <section className="column is-8" >
-                        <OnboardingSlide step={step} message={slides.message} />
+                        <OnboardingSlide step={step} message={self.state.slideResponse ? self.state.slideResponse : slides.message} />
                         <form onSubmit={this.handleSubmit}>
                             {inputs}
                             {buttons}
@@ -61,7 +60,7 @@ var Onboarding = React.createClass({
             </div>
         );
     },
-    handleClick: function(value){
+    handleClick: function(value, response, type){
         var self = this;
         if (self.state.onboardPath.introSlide){
              self.setState({
@@ -71,17 +70,21 @@ var Onboarding = React.createClass({
                 dataTypes: OnboardingModule[value].dataTypes || ''
              });
         }
-    },
-    handleSubmit: function(e){
-        var self = this
-        e.preventDefault();
-        if (self.state.slideProgress === self.state.slideMax){
-            self.ajaxData(self.gatherDataFromInputs());
+        else if(type === "button"){
+            self.setState({
+                slideResponse: response
+            })
         }
     },
+    handleSubmit: function(e){
+        var self = this;
+        e.preventDefault();
+        self.ajaxData(self.gatherDataFromInputs());
+    },
     ajaxData: function(data){
-        console.log(data)
-        alert(data);
+        var self = this;
+        alert("DATA MOCK SEND");
+        self.moveProgress(1);
     },
     gatherDataFromInputs: function() {
         var self = this,
@@ -103,25 +106,30 @@ var Onboarding = React.createClass({
     handleNextClick: function(){
         var self = this;
         if (self.state.slideProgress < self.state.slideMax) {
-            self.setState(function(previousState,currentProps) {
-                return {slideProgress: previousState.slideProgress + 1}
-            });
+            self.moveProgress(1);
         }
     },
     handlePreviousClick: function(){
         var self = this;
         if (self.state.slideProgress > self.state.slideMin) {
-            self.setState(function(previousState,currentProps) {
-                return {slideProgress: previousState.slideProgress -1}
-            })
+            self.moveProgress(-1);
         }
         else if (!self.state.onboardPath.introSlide){
             self.setState(self.getInitialState());
         }
     },
+    moveProgress: function(increment){
+        var self = this; 
+        self.setState(function(previousState,currentProps) {
+            return {
+                slideProgress: previousState.slideProgress + increment,
+                slideResponse: false
+            }
+        });
+    },
     calculateProgress: function(){
         var self = this;
-        return (self.state.slideProgress / self.state.slideMax) * 100
+        return (self.state.slideProgress / self.state.slideMax) * 100;
     }
 });
 
