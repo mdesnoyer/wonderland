@@ -23,26 +23,36 @@ var AccountSettingsTab3 = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
+        self._isMounted = true;
         self.getAccount()
             .then(function (account) {
-                self.setState({
-                    isLoading: false,
-                    isError: false,
-                    created: account.created,
-                    updated: account.updated,
-                    accountName: account.accountName,
-                    accountId: account.accountId,
-                    isServingEnabled: account.isServingEnabled,
-                    accountEmail: account.accountEmail
-                });
+                if (self._isMounted) {
+                    self.setState({
+                        isLoading: false,
+                        isError: false,
+                        created: account.created,
+                        updated: account.updated,
+                        accountName: account.accountName,
+                        accountId: account.accountId,
+                        isServingEnabled: account.isServingEnabled,
+                        accountEmail: account.accountEmail
+                    });
+                }
             })
             .catch(function (err) {
                 E.raiseError(JSON.parse(err.responseText).error.message);
-                self.setState({
-                    isLoading: false,
-                    isError: true
-                });
+                if (self._isMounted) {
+                    self.setState({
+                        isLoading: false,
+                        isError: true
+                    });
+                }
             });
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+        E.clearErrors();
     },
     render: function() {
         var self = this,
