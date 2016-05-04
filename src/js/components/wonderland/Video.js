@@ -82,7 +82,7 @@ var Video = React.createClass({
             title: self.props.title,
             error: self.props.error,
             created: self.props.created,
-            isBusy: false,
+            isLoading: false,
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
@@ -125,7 +125,7 @@ var Video = React.createClass({
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isLoading ? 'loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -183,7 +183,7 @@ var Video = React.createClass({
             return false;
         }
         self.setState({
-            isBusy: true
+            isLoading: true
         }, function() {
             AJAX.doGet('videos', options)
                 .then(function(json) {
@@ -206,19 +206,19 @@ var Video = React.createClass({
                             // updated
                             created: video.created,
                             error: video.error ? video.error : '',
-                            isBusy: false
+                            isLoading: false
                         });
                     }
                     else {
                         self.setState({
-                            isBusy: false
+                            isLoading: false
                         });
                     }
                 }).catch(function(err) {
                     self.setState({
                         status: err.status,
                         message: err.responseText,
-                        isBusy: false
+                        isLoading: false
                     }, function() {
                         clearInterval(self.timer);
                     });

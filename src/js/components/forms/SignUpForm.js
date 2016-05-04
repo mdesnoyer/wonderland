@@ -29,7 +29,7 @@ var SignUpForm = React.createClass({
             confirm: '',
             isError: false,
             isAgreementChecked: false,
-            isBusy: false
+            isLoading: false
         }
     },
     componentWillUnmount: function(e) {
@@ -46,7 +46,7 @@ var SignUpForm = React.createClass({
             copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'}),
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
-        if (!self.state.isAgreementChecked || self.state.isBusy) {
+        if (!self.state.isAgreementChecked || self.state.isLoading) {
              buttonClassName = 'button is-medium is-primary is-disabled';
         }
         else {
@@ -127,12 +127,12 @@ var SignUpForm = React.createClass({
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
         self.setState({ 
-            isBusy: true 
+            isLoading: true 
         });
         if (!E.checkForErrors(errorList)) {
                 self.setState({
                     isError: true,
-                    isBusy: false
+                    isLoading: false
                 });
         }
         else {
@@ -155,7 +155,7 @@ var SignUpForm = React.createClass({
                         self._isSubmitted = false; 
                         self.setState({
                             isError: false,
-                            isBusy: false
+                            isLoading: false
                         });
                         self.context.router.push('/account/pending/');
                     })
@@ -164,7 +164,7 @@ var SignUpForm = React.createClass({
                         self._isSubmitted = false;
                         self.setState({
                             isError: true,
-                            isBusy: false
+                            isLoading: false
                         });
                 });
             }
