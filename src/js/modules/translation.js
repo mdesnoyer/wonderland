@@ -189,7 +189,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.accountSettings': 'Account Settings',
             'nav.userSettings': 'User Settings',
 
-            //error messages
+            // Error messages
+
+            'warning.noMoreVideosHeader': 'Videos Warning',
+            'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',
+
             'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
             'error.unableToSignIn': 'Unable to Sign In',
