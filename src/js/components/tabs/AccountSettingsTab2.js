@@ -3,11 +3,12 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
+import AJAX from '../../mixins/ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsTab2 = React.createClass({
-    mixins: [Account], // ReactDebugMixin
+    mixins: [Account, AJAX], // ReactDebugMixin
     getInitialState: function () {
         return {
             isLoading: true,

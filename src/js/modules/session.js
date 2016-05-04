@@ -2,7 +2,7 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
-import AJAX from './ajax';
+import AJAXCore from './ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -41,7 +41,7 @@ var Session = {
     end: function() {
         var ret;
         if (this.state.accessToken) {
-            ret = AJAX.doPost('logout', {
+            ret = AJAXCore.doPost('logout', {
                 host: CONFIG.AUTH_HOST,
                 data: {
                     token: this.state.accessToken

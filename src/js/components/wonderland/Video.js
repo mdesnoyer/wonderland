@@ -7,7 +7,7 @@ import React from 'react';
 
 import Message from './Message';
 import UTILS from '../../modules/utils';
-import AJAX from '../../modules/ajax';
+import AJAX from '../../mixins/ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
@@ -91,7 +91,6 @@ var Video = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
-        self._isMounted = true;
         if (self.props.pingInterval) {
             self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL));
         }
@@ -101,7 +100,6 @@ var Video = React.createClass({
     },
     componentWillUnmount: function() {
         var self = this;
-        self._isMounted = false;
         clearInterval(self.timer);
     },
     render: function() {
@@ -185,11 +183,8 @@ var Video = React.createClass({
         self.setState({
             isBusy: true
         }, function() {
-            AJAX.doGet('videos', options)
+            self.GET('videos', options)
                 .then(function(json) {
-                    if (self._isMounted === false) {
-                        return;
-                    }
                     var video = json.videos[0];
                     if (video.state !== self.state.videoState) {
                         // Only bother if the state has changed
