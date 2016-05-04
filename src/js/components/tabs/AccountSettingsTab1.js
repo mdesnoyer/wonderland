@@ -25,13 +25,15 @@ var AccountSettingsTab1 = React.createClass({
         self._isSubmitted = false;
         self.getAccount()
             .then(function (account) {
-                self.setState({
-                    isLoading: false,
-                    isError: false,
-                    defaultThumbnailId: account.defaultThumbnailId,
-                    defaultWidth: account.defaultWidth,
-                    defaultHeight: account.defaultHeight
-                });
+                if (self._isMounted) {
+                    self.setState({
+                        isLoading: false,
+                        isError: false,
+                        defaultThumbnailId: account.defaultThumbnailId,
+                        defaultWidth: account.defaultWidth,
+                        defaultHeight: account.defaultHeight
+                    });
+                }
             })
             .catch(function (err) {
                 E.raiseError(JSON.parse(err.responseText).error.message);
