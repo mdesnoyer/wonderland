@@ -5,6 +5,7 @@ import React from 'react';
 import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 import moment from 'moment';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -46,19 +47,19 @@ var UserSettingsTab1 = React.createClass({
         ;
         return (
             <fieldset>
-                <label className="label">Username</label>
+                <label className="label">{T.get('label.username')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.username} disabled />
                 </p>
-                <label className="label is-hidden">Access Level</label>
+                <label className="label is-hidden">{T.get('label.accessLevel')}</label>
                 <p className={'control is-hidden' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.accessLevel} disabled />
                 </p>
-                <label className="label">Created</label>
+                <label className="label">{T.get('label.created')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={created} disabled />
                 </p>
-                <label className="label">Updated</label>
+                <label className="label">{T.get('label.updated')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={updated} disabled />
                 </p>

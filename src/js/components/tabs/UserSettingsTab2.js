@@ -7,6 +7,7 @@ import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -122,7 +123,7 @@ var UserSettingsTab2 = React.createClass({
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    <label className="label">First Name</label>
+                    <label className="label">{T.get('label.firstName')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="firstName"
@@ -133,7 +134,7 @@ var UserSettingsTab2 = React.createClass({
                             onChange={self.handleChangeFirstName}
                         />
                     </p>
-                    <label className="label">Last Name</label>
+                    <label className="label">{T.get('label.lastName')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="lastName"
@@ -144,7 +145,7 @@ var UserSettingsTab2 = React.createClass({
                             onChange={self.handleChangeLastName}
                         />
                     </p>
-                    <label className="label">Title</label>
+                    <label className="label">{T.get('label.title')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                         <input
                             ref="title"

@@ -7,6 +7,7 @@ import E from '../../modules/errors';
 import AJAX from '../../modules/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -120,7 +121,7 @@ var AccountSettingsTab1 = React.createClass({
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
                     {messageNeeded}
-                    <label className="label">Default Thumbnail ID</label>
+                    <label className="label">{T.get('label.defaultThumbnailId')}</label>
                     <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                         <input
                             ref="defaultThumbnailId"
@@ -133,7 +134,7 @@ var AccountSettingsTab1 = React.createClass({
                             onChange={self.handleChangeDefaultThumbnailId}
                         />
                     </p>
-                    <label className="label">Default Size (width x height)</label>
+                    <label className="label">{T.get('label.defaultSizeWidthXHeight')}</label>
                     <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                         <input
                             className={'input'}
