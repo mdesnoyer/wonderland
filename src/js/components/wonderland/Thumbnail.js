@@ -39,7 +39,7 @@ var Thumbnail = React.createClass({
         return {
             isEnabled: self.props.isEnabled,
             isModalActive: false,
-            isBusy: false
+            isLoading: false
         };
     },
     componentDidMount: function() {
@@ -65,7 +65,7 @@ var Thumbnail = React.createClass({
         var self = this,
             additionalClass = 'tag is-medium wonderland-thumbnail__score' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
-            enabledDisabled = self.state.isBusy ? 'disabled' : '',
+            enabledDisabled = self.state.isLoading ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
@@ -159,21 +159,21 @@ var Thumbnail = React.createClass({
             }
         ;
         self.setState({
-            isBusy: true,
+            isLoading: true,
             isEnabled: !self.state.isEnabled
         }, function() {
             AJAX.doPut('thumbnails', options)
                 .then(function(json) {
                     if (self._isMounted) {
                         self.setState({
-                            isBusy: false
+                            isLoading: false
                         });
                     }
                 })
                 .catch(function(err) {
                     if (self._isMounted) {
                         self.setState({
-                            isBusy: false,
+                            isLoading: false,
                             isEnabled: !self.state.isEnabled // put it back
                         });
                     }

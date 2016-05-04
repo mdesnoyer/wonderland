@@ -33,6 +33,9 @@ const _DEFAULT_LOCALE = 'en-US',
             save: 'Save',
             update: 'Update',
 
+            'action.previous': 'Previous',
+            'action.next': 'Next',
+
             rememberMe: 'Remember',
 
             'copy.signIn.title': 'Sign In',
