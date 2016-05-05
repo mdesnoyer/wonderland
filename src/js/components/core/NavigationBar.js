@@ -10,6 +10,7 @@ var NavigationBar = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool.isRequired,
+        alertMessage: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]),
         // These 2 props hold the API call to make to go to the Previous and
         // Next page
         prevPageAPICall: React.PropTypes.string.isRequired,
@@ -37,46 +38,59 @@ var NavigationBar = React.createClass({
     },
     render() {
         var self = this,
+            // Its quite simple here:
+            // - if we are loading, Prev and Next are disabled
+            // - if we are on page 1, Prev is disabled
+            // - if we don't have a Prev API Call, Prev is disabled
+            // - if we don't have a Next API Call, Next is disabled
+            // - if we bring back, less videos than we requested, we know we have run out, so Next is disabled
             prevDisabledAttribute = self.props.isLoading || (self.props.prevPageAPICall === '') || (self.props.currentPage === 1),
             nextDisabledAttribute = self.props.isLoading || (self.props.nextPageAPICall === '') || (self.props.videoCountServed < self.props.videoCountRequested),
             loadingClass = 'button is-primary is-medium' + (self.props.isLoading ? ' is-loading' : '')
         ;
+        // Edge Case - when we first hit the site, Virgin Mode
+        if ((self.props.prevPageAPICall === '') && (self.props.nextPageAPICall === '') && (self.props.currentPage === 1)) {
+            return false;
+        }
         return (
-            <nav className="navbar">
-                <div className="navbar-left">
-                    <div className="navbar-item">
-                        <button
-                            ref="prevButton"
-                            data-loc={self.props.prevPageAPICall}
-                            disabled={prevDisabledAttribute}
-                            className={loadingClass}
-                            onClick={self.handlePrevButton}
-                            title={T.get('action.previous')}
-                        >
-                            <i className="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                            &nbsp;{T.get('action.previous')}
-                        </button>
+            <div>
+                {self.props.alertMessage}
+                <nav className="navbar">
+                    <div className="navbar-left">
+                        <div className="navbar-item">
+                            <button
+                                ref="prevButton"
+                                data-loc={self.props.prevPageAPICall}
+                                disabled={prevDisabledAttribute}
+                                className={loadingClass}
+                                onClick={self.handlePrevButton}
+                                title={T.get('action.previous')}
+                            >
+                                <i className="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                &nbsp;{T.get('action.previous')}
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className="navbar-item has-text-centered">
-                    <p className="subtitle is-5">Page {self.props.currentPage}</p>
-                </div>
-                <div className="navbar-right">
-                    <div className="navbar-item">
-                        <button
-                            ref="nextButton"
-                            data-loc={self.props.nextPageAPICall}
-                            disabled={nextDisabledAttribute}
-                            className={loadingClass}
-                            onClick={self.handleNextButton}
-                            title={T.get('action.next')}
-                        >
-                            {T.get('action.next')}&nbsp;
-                            <i className="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                        </button>
+                    <div className="navbar-item has-text-centered">
+                        <p className="subtitle is-5">Page {self.props.currentPage}</p>
                     </div>
-                </div>
-            </nav>
+                    <div className="navbar-right">
+                        <div className="navbar-item">
+                            <button
+                                ref="nextButton"
+                                data-loc={self.props.nextPageAPICall}
+                                disabled={nextDisabledAttribute}
+                                className={loadingClass}
+                                onClick={self.handleNextButton}
+                                title={T.get('action.next')}
+                            >
+                                {T.get('action.next')}&nbsp;
+                                <i className="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         );
     },
     handleKeyEvent: function(e) {
