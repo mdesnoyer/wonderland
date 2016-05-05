@@ -6,7 +6,7 @@ import SESSION from './session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AJAX = {
+var AJAXModule = {
     Session: null,
     getQueryParam: function(json) {
         return Object.keys(json).map(function (key) {
@@ -22,7 +22,10 @@ var AJAX = {
         }).join('&');
     },
     doApiCall: function(url, options) {
-        var self = this;
+        var self = this,
+            promise,
+            ret
+        ;
         function fin(resolve, reject) {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
@@ -42,7 +45,9 @@ var AJAX = {
             _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
             reqwest(_options)
                 .then(function (res) {
-                    resolve(res);
+                    if (ret.isCanceled !== true) {
+                        options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
+                    }
                 })
                 .catch(function (err) {
                     var retryUrl = '';
@@ -56,33 +61,51 @@ var AJAX = {
                         })
                             .then(function (res) {
                                 self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                                fin(resolve, reject);
+                                if (ret.isCanceled !== true) {
+                                    fin(resolve, reject);
+                                }
                             })
                             .catch(function (err) {
                                 self.Session.end();
-                                reject(err);
+                                if (ret.isCanceled !== true) {
+                                    options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
+                                }
                             });
-                    } else {
-                        reject(err);
+                    } else if (ret.isCanceled !== true) {
+                        options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
                     }
                 });
         }
 
         self.Session = self.Session || SESSION;
 
-        return new Promise(function (resolve, reject) {
+        promise = new Promise(function (resolve, reject) {
             var authUrl = '',
-                err
-            ;
+                err;
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
-                fin(resolve, reject);
-            }
-            else {
-                err = new Error('Sorry, something went wrong.');
+                fin.call(self, resolve, reject);
+            } else {
+                err = new Error('Unauthorized');
                 err.status = 401;
                 reject(err);
             }
         });
+        ret = {
+            then: function (cb) {
+                promise.then(cb);
+                return this;
+            },
+            catch: function (cb) {
+                promise.catch(cb);
+                return this;
+            },
+            isCanceled: false,
+            cancel: function() {
+                this.isCanceled = true;
+            },
+            promise: promise
+        };
+        return ret;
     },
     doGet: function(url, options) {
         options = options || {};
@@ -106,6 +129,6 @@ var AJAX = {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AJAX;
+export default AJAXModule;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

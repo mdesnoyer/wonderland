@@ -6,14 +6,14 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ConfirmAccountPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -29,7 +29,7 @@ var ConfirmAccountPage = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        AJAX.doPost('accounts/verify', {
+        self.POST('accounts/verify', {
             host: CONFIG.AUTH_HOST,
             data: {
                 token: self.props.location.query.token

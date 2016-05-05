@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -10,6 +10,7 @@ const fadeTime = 1000;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var InputTextEdit = React.createClass({
+    mixins: [AjaxMixin],
     proptypes: {
         valueDest: React.PropTypes.string.isRequired,
         value: React.PropTypes.string.isRequired,
@@ -25,14 +26,6 @@ var InputTextEdit = React.createClass({
             value: self.props.value,
             mode: 'silent' // loading/success/error/silent
         }
-    },
-    componentDidMount: function() {
-        var self = this;
-        self._isMounted = true;
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
@@ -110,34 +103,30 @@ var InputTextEdit = React.createClass({
                 }
             }
         ;
-        AJAX.doPut(self.props.valueDest, options)
+        self.PUT(self.props.valueDest, options)
             .then(function(json) {
-                if (self._isMounted) {
-                    self.setState({
+                self.setState(
+                    {
                         mode: 'success'
                     }, 
                     self.fadeOutIcon()
-                    );
-                }
+                );
             })
             .catch(function(err) {
-                if (self._isMounted) {
-                    self.setState({
+                self.setState(
+                    {
                         mode: 'error'
                     }, 
                     self.fadeOutIcon()
-                    );
-                }
+                );
             });
     },
     fadeOutIcon: function() {
         var self = this; 
-        setTimeout(function(){
-            if (self._isMounted) {
-                self.setState({
-                    mode: 'silent'
-                });
-            }
+        setTimeout(function() {
+            self.setState({
+                mode: 'silent'
+            });
         }, fadeTime);
     }
 });

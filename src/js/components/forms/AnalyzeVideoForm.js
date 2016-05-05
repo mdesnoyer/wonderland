@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
@@ -14,7 +14,7 @@ import moment from 'moment';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-    // mixins: [ReactDebugMixin],
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -45,7 +45,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     componentWillMount: function(e) {
         var self = this;
-        AJAX.doGet('limits')
+        self.GET('limits')
             .then(function(json) {
                 self.setState({
                     currentVideoCount: json.video_posts,
@@ -201,7 +201,7 @@ var AnalyzeVideoForm = React.createClass({
         if (optionalDefaultThumbnailUrl) {
             options.data['default_thumbnail_url'] = UTILS.properEncodeURI(optionalDefaultThumbnailUrl);
         }
-        AJAX.doPost('videos', options)
+        self.POST('videos', options)
             .then(function(json) {
                 self.setState({
                     mode: 'silent'

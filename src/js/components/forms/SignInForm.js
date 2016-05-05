@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
@@ -13,7 +13,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignInForm = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -34,11 +34,8 @@ var SignInForm = React.createClass({
     componentDidMount: function() {
         var self = this;
         self._isSubmitted = false;
-        self._isMounted = true;
     },
     componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
         E.clearErrors();
     },
     render: function() {
@@ -105,13 +102,11 @@ var SignInForm = React.createClass({
         var self = this;
         e.preventDefault();
         if (!self._isSubmitted) {
-            self._isSubmitted = true; 
-            if (self._isMounted) {
-                self.setState({
-                    isError: false,
-                    isLoading:true
-                }, self.sendUserData());
-            }
+            self._isSubmitted = true;
+            self.setState({
+                isError: false,
+                isLoading:true
+            }, self.sendUserData());
         }
     },
     sendUserData: function() {
@@ -127,7 +122,7 @@ var SignInForm = React.createClass({
         //placeholder for error handling later 
         if (true) {
             TRACKING.sendEvent(self, arguments, email);
-            AJAX.doPost('authenticate', {
+            self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
                         username: email,
@@ -139,33 +134,27 @@ var SignInForm = React.createClass({
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
-                    if (self._isMounted) {
-                        self._isSubmitted = false;
-                        self.setState({
-                            isError: false,
-                            isLoading: false
-                        });
-                    }
+                    self._isSubmitted = false;
+                    self.setState({
+                        isError: false,
+                        isLoading: false
+                    });
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
                     E.checkForError('Sorry, we could not sign you in.', false);
-                    if (self._isMounted) {
-                        self._isSubmitted = false;
-                        self.setState({
-                            isError: true,
-                            isLoading: false
-                        });
-                    }
+                    self._isSubmitted = false;
+                    self.setState({
+                        isError: true,
+                        isLoading: false
+                    });
                 });
         }
         else {
-            if (self._isMounted) {
-                self.setState({
-                    isError: true,
-                    isLoading: false
-                });
-            }
+            self.setState({
+                isError: true,
+                isLoading: false
+            });
         }
     }
 });

@@ -8,6 +8,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Videos from '../wonderland/Videos';
 import Account from '../../mixins/Account';
+import AjaxMixin from '../../mixins/ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
@@ -15,7 +16,7 @@ import T from '../../modules/translation';
 
 var VideosPage = React.createClass({
 	// mixins: [ReactDebugMixin],
-    mixins: [Secured, Account],
+    mixins: [Secured, Account, AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

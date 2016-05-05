@@ -5,7 +5,7 @@ import React from 'react';
 import Message from './Message';
 import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
 import T from '../../modules/translation';
@@ -13,7 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -98,7 +98,7 @@ var Videos = React.createClass({
             forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
-            AJAX.doGet('videos/search' + self.state.bonusSearchUrl, options)
+            self.GET('videos/search' + self.state.bonusSearchUrl, options)
                 .then(function(json) {
                     if (!self._isMounted) {
                         return false;

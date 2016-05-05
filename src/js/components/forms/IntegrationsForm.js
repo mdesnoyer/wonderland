@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
@@ -12,7 +12,7 @@ import ModalParent from '../core/ModalParent';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -29,7 +29,7 @@ var IntegrationsForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (self.state.id) {
-            AJAX.doGet('integrations/' + self.state.provider, {
+            self.GET('integrations/' + self.state.provider, {
                 data: {
                     integration_id: self.state.id
                 }
@@ -217,10 +217,10 @@ var IntegrationsForm = React.createClass({
             break;
         }
         if (self.state.mode === 'adding') {
-            apiCall = AJAX.doPost('integrations/' + self.state.provider, options);
+            apiCall = self.POST('integrations/' + self.state.provider, options);
         } else {
             options.data.integration_id = self.state.id;
-            apiCall = AJAX.doPut('integrations/' + self.state.provider, options);
+            apiCall = self.PUT('integrations/' + self.state.provider, options);
         }
         apiCall
             .then(function(res) {
