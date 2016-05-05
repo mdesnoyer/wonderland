@@ -15,7 +15,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var Video = React.createClass({
-    // mixins: [ReactDebugMixin],
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string.isRequired
     },
