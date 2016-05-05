@@ -43,7 +43,8 @@ var SiteNavigation = React.createClass({
                 accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
                 userSettingsPage: <Link to={UTILS.DRY_NAV.USERSETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
                 integrationsPage: <Link to={UTILS.DRY_NAV.INTEGRATIONS.URL} title={T.get('nav.integrations')}>{T.get('nav.integrations')}</Link>,
-            },  
+                avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
+            },
             accountSettings = <span>
                                     <div className="wonderland-navbar__icon wonderland-navbar__icon--regular"><i className="fa fa-cog" aria-hidden="true" /></div>
                                     <ul className="box wonderland-navbar__subnav">
@@ -55,7 +56,7 @@ var SiteNavigation = React.createClass({
                                     </ul>
                                 </span>,
             userSettings = <span>
-                                <div className="wonderland-navbar__icon wonderland-navbar__icon--alternate"><i className="fa fa-user" aria-hidden="true" /></div>
+                                {items.avatar}
                                 <ul className="box wonderland-navbar__subnav">
                                     <li>{items.userSettingsPage}</li>
                                     <li>{items.billingPage}</li>

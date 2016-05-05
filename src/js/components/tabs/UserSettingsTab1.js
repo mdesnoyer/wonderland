@@ -6,6 +6,7 @@ import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 import moment from 'moment';
 import T from '../../modules/translation';
+import gravatar from 'gravatar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -19,6 +20,7 @@ var UserSettingsTab1 = React.createClass({
             accessLevel: -1,
             created: '',
             updated: '',
+            avatar: ''
         }  
     },
     componentWillMount: function() {
@@ -30,7 +32,8 @@ var UserSettingsTab1 = React.createClass({
                     username: userData.username,
                     accessLevel: userData.access_level,
                     created: userData.created,
-                    updated: userData.updated
+                    updated: userData.updated,
+                    avatar: gravatar.url(userData.username, {s: '200', d: 'identicon'})
                 })
             })
             .catch(function(err) {
@@ -62,6 +65,10 @@ var UserSettingsTab1 = React.createClass({
                 <label className="label">{T.get('label.updated')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={updated} disabled />
+                </p>
+                <label className="label">{T.get('label.avatar')}</label>
+                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
+                    <img src={self.state.avatar} alt={self.state.username} title={self.state.username} />
                 </p>
             </fieldset>
         )

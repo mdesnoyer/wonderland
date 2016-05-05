@@ -167,6 +167,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.stagingTrackerAccountId' : 'Staging Tracker Account ID',
             'label.accountName' : 'Account Name',
             'label.accountId' : 'Account ID',
+            'label.avatar' : 'Avatar',
             // Created
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
