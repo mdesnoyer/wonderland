@@ -33,6 +33,10 @@ const _DEFAULT_LOCALE = 'en-US',
             save: 'Save',
             update: 'Update',
 
+            'action.previous': 'Previous',
+            'action.next': 'Next',
+            'action.save': 'Save',
+
             rememberMe: 'Remember',
 
             'copy.signIn.title': 'Sign In',
@@ -148,6 +152,25 @@ const _DEFAULT_LOCALE = 'en-US',
             'analyzeVideo.optionalTitle': 'Optional Title',
             'analyzeVideo.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             //navigation bar
+
+            // Labels
+            'label.username' : 'Username',
+            'label.accessLevel' : 'Access Level',
+            'label.created' : 'Created',
+            'label.updated' : 'Updated',
+            'label.firstName' : 'First Name',
+            'label.lastName' : 'Last Name',
+            'label.title' : 'Title',
+            'label.defaultThumbnailId' : 'Default Thumbnail ID',
+            'label.defaultSizeWidthXHeight' : 'Default Size (width x height)',
+            'label.trackerAccountId' : 'Tracker Account ID',
+            'label.stagingTrackerAccountId' : 'Staging Tracker Account ID',
+            'label.accountName' : 'Account Name',
+            'label.accountId' : 'Account ID',
+            // Created
+            // Updated
+            'label.servingEnabled' : 'Serving Enabled',
+            'label.accountEmail' : 'Account Email',
 
             'nav.home': 'Home',
             'nav.terms': 'Terms',

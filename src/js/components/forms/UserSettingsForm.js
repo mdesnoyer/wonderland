@@ -2,28 +2,26 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Account from '../../mixins/Account';
 import WonderTabs from '../core/WonderTabs';
-import AccountSettingsTab1 from '../tabs/AccountSettingsTab1';
-import AccountSettingsTab2 from '../tabs/AccountSettingsTab2';
-import AccountSettingsTab3 from '../tabs/AccountSettingsTab3';
+import UserSettingsTab1 from '../tabs/UserSettingsTab1';
+import UserSettingsTab2 from '../tabs/UserSettingsTab2';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var AccountSettingsForm = React.createClass({
+var UserSettingsForm = React.createClass({
+    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
             tabs = [
                 {
-                    label: 'Basic',
-                    body: <AccountSettingsTab1 />
+                    label: 'User',
+                    body: <UserSettingsTab1 />
                 },
                 {
-                    label: 'IDs',
-                    body: <AccountSettingsTab2 />
-                },
-                {
-                    label: 'Account',
-                    body: <AccountSettingsTab3 />
+                    label: 'Personal',
+                    body: <UserSettingsTab2 />
                 }
             ]
         ;
@@ -35,6 +33,6 @@ var AccountSettingsForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default AccountSettingsForm;
+export default UserSettingsForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
