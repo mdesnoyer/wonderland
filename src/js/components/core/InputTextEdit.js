@@ -136,7 +136,7 @@ var InputTextEdit = React.createClass({
         setTimeout(function() {
             self.setState({
                 mode: 'silent'
-            });
+            })
         }, fadeTime);
     }
 });
