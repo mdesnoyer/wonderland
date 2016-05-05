@@ -82,30 +82,30 @@ var IntegrationsForm = React.createClass({
                         {messageNeeded}
                         <fieldset>
                             <legend className="subtitle is-5">{T.get('copy.integrations.types.brightcove.form.heading')}</legend>
-                            
+
                             <label htmlFor="publisherId">{T.get('copy.integrations.types.brightcove.form.publisherId')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" minLength="1" maxLength="256" value={self.state.publisherId} placeholder={T.get('copy.integrations.types.brightcove.form.publisherId')} />
                                 <a className="button is-medium" data-target="brightcove-publisherId" onClick={self.openModal}>?</a>
                             </p>
-                            
+
                             <label htmlFor="readToken">{T.get('copy.integrations.types.brightcove.form.readToken')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="readToken" id="readToken" minLength="1" maxLength="512" value={self.state.readToken} placeholder={T.get('copy.integrations.types.brightcove.form.readToken')} />
                                 <a className="button is-medium" data-target="brightcove-readToken" onClick={self.openModal}>?</a>
                             </p>
-                            
+
                             <label htmlFor="writeToken">{T.get('copy.integrations.types.brightcove.form.writeToken')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" minLength="1" maxLength="512" value={self.state.writeToken} placeholder={T.get('copy.integrations.types.brightcove.form.writeToken')} />
                                 <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
                             </p>
-                            <div className="is-pulled-left">
-                                <button className={buttonClassName} type="cancel" onClick={self.handleCancel}>{T.get('cancel')}</button>
-                            </div>
-                            <div className="is-pulled-right">
+                            <p className="is-pulled-left">
+                                <button className={buttonClassName} type="button" onClick={self.handleCancel}>{T.get('cancel')}</button>
+                            </p>
+                            <p className="is-pulled-right">
                                 <button className={buttonClassName} type="submit">{T.get(self.state.mode === 'adding' ? 'save' : 'update')}</button>
-                            </div>
+                            </p>
                         </fieldset>
                     </form>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-publisherId')} handleToggleModal={self.closeModal}>
@@ -182,7 +182,6 @@ var IntegrationsForm = React.createClass({
                 <Message body={messageNeeded} flavour="danger" />
             );
         }
-
     },
     openModal: function (e) {
         this.setState({
@@ -200,10 +199,23 @@ var IntegrationsForm = React.createClass({
     },
     handleSubmit: function (e) {
         var self = this,
+            mode = self.state.mode
+        ;
+        e.preventDefault();
+        self.setState({
+            mode: 'loading'
+        },
+            function(){
+                debugger 
+                self.sendIntegrationData(mode)
+            }
+        );
+    },
+    sendIntegrationData: function(mode) {
+        var self = this,
             options = {},
             apiCall
         ;
-        e.preventDefault();
         switch (self.state.provider) {
         case 'brightcove':
             options.data = {
@@ -216,7 +228,7 @@ var IntegrationsForm = React.createClass({
             // TODO: Read Ooyala form
             break;
         }
-        if (self.state.mode === 'adding') {
+        if (mode === 'adding') {
             apiCall = self.POST('integrations/' + self.state.provider, options);
         } else {
             options.data.integration_id = self.state.id;
@@ -224,11 +236,19 @@ var IntegrationsForm = React.createClass({
         }
         apiCall
             .then(function(res) {
-                self.context.router.push(UTILS.DRY_NAV.INTEGRATIONS.URL);
+                self.setState({
+                    isError: false,
+                    mode: mode
+                },
+                    function(){
+                        self.context.router.push(UTILS.DRY_NAV.INTEGRATIONS.URL);
+                    }
+                );
             }).catch(function(err) {
                 E.checkForError(err.statusText, false);
                 self.setState({
-                    isError: true
+                    isError: true,
+                    mode: mode
                 });
             });
     }
