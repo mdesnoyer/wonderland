@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import E from '../../modules/errors';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';

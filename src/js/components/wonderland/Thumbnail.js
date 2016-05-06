@@ -5,7 +5,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import ModalParent from '../core/ModalParent';
 import ThumbnailModalChild from '../core/ThumbnailModalChild';
 import ThumbBox from '../wonderland/ThumbBox';

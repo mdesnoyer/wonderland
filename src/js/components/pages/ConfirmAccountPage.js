@@ -6,7 +6,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
