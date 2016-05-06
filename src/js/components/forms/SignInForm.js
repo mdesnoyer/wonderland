@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';

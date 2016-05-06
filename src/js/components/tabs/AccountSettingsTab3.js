@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import moment from 'moment';
 import T from '../../modules/translation';
 
