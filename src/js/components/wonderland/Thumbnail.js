@@ -5,7 +5,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import ModalParent from '../core/ModalParent';
 import ThumbnailModalChild from '../core/ThumbnailModalChild';
 import ThumbBox from '../wonderland/ThumbBox';
@@ -15,7 +15,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
         index: React.PropTypes.number.isRequired,
@@ -55,11 +55,6 @@ var Thumbnail = React.createClass({
             };
             bufferImage.src = thumbnailImage.getAttribute('data-src');
         }
-        self._isMounted = true;
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
     },
     render: function() {
         var self = this,
@@ -162,21 +157,17 @@ var Thumbnail = React.createClass({
             isLoading: true,
             isEnabled: !self.state.isEnabled
         }, function() {
-            AJAX.doPut('thumbnails', options)
+            self.PUT('thumbnails', options)
                 .then(function(json) {
-                    if (self._isMounted) {
-                        self.setState({
-                            isLoading: false
-                        });
-                    }
+                    self.setState({
+                        isLoading: false
+                    });
                 })
                 .catch(function(err) {
-                    if (self._isMounted) {
-                        self.setState({
-                            isLoading: false,
-                            isEnabled: !self.state.isEnabled // put it back
-                        });
-                    }
+                    self.setState({
+                        isLoading: false,
+                        isEnabled: !self.state.isEnabled // put it back
+                    });
                 })
             ;
             })

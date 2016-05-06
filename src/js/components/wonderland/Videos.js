@@ -5,7 +5,7 @@ import React from 'react';
 import Message from './Message';
 import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import UTILS from '../../modules/utils';
 import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
 import T from '../../modules/translation';
@@ -13,7 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -24,7 +24,8 @@ var Videos = React.createClass({
             videoCountServed: -1,
             currentPage: 0,
             isLoading: false,
-            bonusSearchUrl: '' // used to hold the next/prev choice
+            pseudoPageUrl: '?', // used to hold the Prev / Next choice
+            previousPseudoPageUrl: '' // used to hold the Page before
         }  
     },
     componentDidMount: function() {
@@ -44,8 +45,19 @@ var Videos = React.createClass({
                 'upload': T.get('copy.analyzeVideoPanel.panel.2'),
                 'th-large': T.get('copy.analyzeVideoPanel.panel.3')
             },
-            tutorialComponent = self.state.videoCountServed === 0 ? <section className="section"><TutorialPanels panels={panels}/></section> : ''
+            tutorialComponent = self.state.videoCountServed === 0 ? <section className="section"><TutorialPanels panels={panels}/></section> : '',
+            prevPageAPICall = '',
+            alertMessage = ''
         ;
+        // Edge Case - when we hit a Next page with 0 results, limbo
+        if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
+            prevPageAPICall = self.state.previousPseudoPageUrl;
+            alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
+        }
+        else {
+            prevPageAPICall = self.state.prevPageAPICall;
+            alertMessage = '';
+        }
         return (
             <div>
                 {tutorialComponent}
@@ -60,9 +72,10 @@ var Videos = React.createClass({
                         forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                         videos={self.state.videos}
                         handleNewSearch={self.handleNewSearch}
-                        prevPageAPICall={self.state.prevPageAPICall}
+                        prevPageAPICall={prevPageAPICall}
                         nextPageAPICall={self.state.nextPageAPICall}
                         errorMessage={errorMessage}
+                        alertMessage={alertMessage}
                         currentPage={self.state.currentPage}
                         isLoading={self.state.isLoading}
                         videoCountServed={self.state.videoCountServed}
@@ -73,13 +86,14 @@ var Videos = React.createClass({
             </div>
         );
     },
-    handleNewSearch: function(bonusSearchUrl, pageAdjustment) {
+    handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;
         if (!self._isMounted) {
             return false;
         }
         self.setState({
-            bonusSearchUrl: '?' + bonusSearchUrl.split('?')[1]
+            previousPseudoPageUrl: self.state.pseudoPageUrl,
+            pseudoPageUrl: pseudoPageUrl
         }, function() {
             self.doVideoSearch(pageAdjustment, false);
         });
@@ -98,14 +112,14 @@ var Videos = React.createClass({
             forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
-            AJAX.doGet('videos/search' + self.state.bonusSearchUrl, options)
+            var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
+            self.GET('videos/search?' + _pseudoPageUrl, options)
                 .then(function(json) {
                     if (!self._isMounted) {
                         return false;
                     }
                     self.setState({
                         videoCountServed: json.video_count,
-                        bonusSearchUrl: '',
                         isLoading: false
                     }, function() {
                         if (json.video_count === 0) {
@@ -114,7 +128,7 @@ var Videos = React.createClass({
                                 isError: false,
                                 videos: [],
                                 prevPageAPICall: '',
-                                nextPageAPICall: '',
+                                nextPageAPICall: ''
                             });
                         }
                         else {
@@ -123,7 +137,7 @@ var Videos = React.createClass({
                                 isError: false,
                                 videos: json.videos,
                                 prevPageAPICall: json.prev_page,
-                                nextPageAPICall: json.next_page,
+                                nextPageAPICall: json.next_page
                             });
                         }
                     });
@@ -140,7 +154,8 @@ var Videos = React.createClass({
                         prevPageAPICall: '',
                         nextPageAPICall: '',
                         videoCountServed: 0,
-                        bonusSearchUrl: '',
+                        pseudoPageUrl: '?',
+                        previousPseudoPageUrl: '',
                         isLoading: false
                     });
                 });

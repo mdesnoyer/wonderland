@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
 import E from '../../modules/errors';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
@@ -12,7 +12,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var AccountSettingsTab1 = React.createClass({
-    mixins: [Account], // ReactDebugMixin
+    mixins: [Account, AjaxMixin], // ReactDebugMixin
     getInitialState: function () {
         return {
             isLoading: true,
@@ -26,14 +26,13 @@ var AccountSettingsTab1 = React.createClass({
         self._isSubmitted = false;
         self.getAccount()
             .then(function (account) {
-                if (self._isMounted) {
-                    self.setState({
-                        isLoading: false,
-                        isError: false,
-                        defaultWidth: account.defaultWidth,
-                        defaultHeight: account.defaultHeight
-                    });
-                }
+                self.setState({
+                    isLoading: false,
+                    isError: false,
+                    defaultThumbnailId: account.defaultThumbnailId,
+                    defaultWidth: account.defaultWidth,
+                    defaultHeight: account.defaultHeight
+                });
             })
             .catch(function (err) {
                 E.raiseError(JSON.parse(err.responseText).error.message);

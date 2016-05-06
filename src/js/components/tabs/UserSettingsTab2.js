@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import E from '../../modules/errors';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
@@ -12,7 +12,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var UserSettingsTab2 = React.createClass({
-    // mixins: [ReactDebugMixin],
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         var self = this;
         return {
@@ -45,23 +45,18 @@ var UserSettingsTab2 = React.createClass({
     componentDidMount: function() {
         var self = this;
         self._isSubmitted = false;
-        self._isMounted = true;
     },
     componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
         E.clearErrors();
     },
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
         if (!self._isSubmitted) {
-            self._isSubmitted = true; 
-            if (self._isMounted) {
-                self.setState({
-                    isLoading: true
-                }, self.doSubmit);
-            }
+            self._isSubmitted = true;
+            self.setState({
+                isLoading: true
+            }, self.doSubmit);
         }
     },
     doSubmit: function() {
@@ -76,26 +71,22 @@ var UserSettingsTab2 = React.createClass({
             }
         ;
         E.clearErrors();
-        AJAX.doPut('users', options)
+        self.PUT('users', options)
             .then(function(json) {
                 SESSION.user(json);
-                if (self._isMounted) {
-                    self.setState({
-                        isLoading: false
-                    }, function() {
-                        self._isSubmitted = false;
-                    });
-                }
+                self.setState({
+                    isLoading: false
+                }, function() {
+                    self._isSubmitted = false;
+                });
             })
             .catch(function(err) {
                 E.raiseError(JSON.parse(err.responseText).error.message);
-                if (self._isMounted) {
-                    self.setState({
-                        isLoading: false
-                    }, function() {
-                        self._isSubmitted = false;
-                    });
-                }
+                self.setState({
+                    isLoading: false
+                }, function() {
+                    self._isSubmitted = false;
+                });
             })
         ;
     },

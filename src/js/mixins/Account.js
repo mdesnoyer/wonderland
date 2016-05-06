@@ -1,9 +1,5 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-import AJAX from '../modules/ajax';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 function normalizeAccount(res) {
     return {
         // integration_ids
@@ -24,43 +20,26 @@ function normalizeAccount(res) {
 
 var Account = {
     getAccount: function() {
-        return new Promise(function (resolve, reject) {
-            AJAX.doGet('', {})
-                .then(function(res) {
-                    resolve(
-                        normalizeAccount(res)
-                    );
-                })
-                .catch(function (err) {
-                    reject(err);
-                });
+        return this.GET('', {
+            successHandler: normalizeAccount
         });
     },
     updateAccount: function (account) {
-        return new Promise(function (resolve, reject) {
-            var options = {
-                data: {
-                    default_thumbnail_id: account.defaultThumbnailId,
-                    tracker_account_id: account.trackerAccountId,
-                    account_id: account.accountId,
-                    default_width: account.defaultWidth,
-                    default_height: account.defaultHeight,
-                    staging_tracker_account_id: account.stagingTrackerAccountId,
-                    email: account.email,
-                    customer_name: account.accountName,
-                    serving_enabled: account.isServingEnabled
-                }
-            };
-            AJAX.doPut('', options)
-                .then(function(res) {
-                    resolve(
-                        normalizeAccount(res)
-                    );
-                })
-                .catch(function(err) {
-                    reject(err);
-                });
-        });
+        var options = {
+            successHandler: normalizeAccount,
+            data: {
+                default_thumbnail_id: account.defaultThumbnailId,
+                tracker_account_id: account.trackerAccountId,
+                account_id: account.accountId,
+                default_width: account.defaultWidth,
+                default_height: account.defaultHeight,
+                staging_tracker_account_id: account.stagingTrackerAccountId,
+                email: account.email,
+                customer_name: account.accountName,
+                serving_enabled: account.isServingEnabled
+            }
+        };
+        return this.PUT('', options);
     }
 };
 
