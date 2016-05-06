@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
+import BillingForm from '../forms/BillingForm';
 import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
@@ -26,6 +27,7 @@ var BillingPage = React.createClass({
                         <div className="content">
                             <p><span dangerouslySetInnerHTML={{__html: T.get('copy.billing.body')}} /></p>
                         </div>
+                        <BillingForm />
                     </div>
                 </section>
                 <SiteFooter />
