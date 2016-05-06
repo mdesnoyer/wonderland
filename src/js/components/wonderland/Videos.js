@@ -5,7 +5,7 @@ import React from 'react';
 import Message from './Message';
 import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
 import T from '../../modules/translation';
