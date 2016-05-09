@@ -205,9 +205,8 @@ var IntegrationsForm = React.createClass({
         self.setState({
             mode: 'loading'
         },
-            function(){
-                debugger 
-                self.sendIntegrationData(mode)
+            function() {
+                self.sendIntegrationData(mode);
             }
         );
     },
@@ -240,7 +239,7 @@ var IntegrationsForm = React.createClass({
                     isError: false,
                     mode: mode
                 },
-                    function(){
+                    function() {
                         self.context.router.push(UTILS.DRY_NAV.INTEGRATIONS.URL);
                     }
                 );
