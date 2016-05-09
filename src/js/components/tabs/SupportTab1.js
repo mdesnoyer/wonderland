@@ -15,7 +15,7 @@ var SupportTab1 = React.createClass({
                 <p>TODO</p>
                 <h3 className="title is-4">Video Analysis</h3>
                 <p>TODO</p>
-                <h3 className="title is-4">Automated A/B Testing & Analytics</h3>
+                <h3 className="title is-4">Automated A/B Testing &amp; Analytics</h3>
                 <p>TODO</p>
                 <h3 className="title is-4">Getting Started</h3>
                 <p>TODO</p>

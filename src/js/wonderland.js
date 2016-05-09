@@ -58,12 +58,12 @@ render((
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
-        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
+        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
         <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
-        <Route path="/video/:videoId/" component= {VideoPage} />
-        <Route path="/terms/" component= {TermsPage} />
+        <Route path="/video/:videoId/" component={VideoPage} />
+        <Route path="/terms/" component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
         <Route path={UTILS.DRY_NAV.API.URL} component={ApiPage} />
@@ -71,9 +71,9 @@ render((
         <Route path={UTILS.DRY_NAV.INTEGRATIONS.URL} component={IntegrationsPage} />
         <Route path={UTILS.DRY_NAV.INTEGRATIONS_NEW.URL} component={NewIntegrationPage} />
         <Route path={UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
-        <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component= {AccountSettingsPage} />
-        <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component= {UserSettingsPage} />
-        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component= {SupportPage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component={AccountSettingsPage} />
+        <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component={UserSettingsPage} />
+        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
