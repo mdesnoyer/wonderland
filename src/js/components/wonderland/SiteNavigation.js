@@ -50,7 +50,7 @@ var SiteNavigation = React.createClass({
                                     <ul className="box wonderland-navbar__subnav">
                                         <li>{items.accountSettingsPage}</li>
                                         <li>{items.integrationsPage}</li>
-                                        <li>{items.neonscopePage}</li>
+                                        {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
                                         <li>{items.apiPage}</li>
                                     </ul>
