@@ -17,7 +17,7 @@ var TutorialPanel = React.createClass({
             <div className="card column is-one-third">
                 <div className="card-content has-text-centered">
                     <div className="icon is-large">
-                        <i className={'fa fa-' + self.props.icon}></i>
+                        <i className={'fa fa-' + self.props.icon} aria-hidden="true"></i>
                     </div>
                     <div className="content">
                         <span dangerouslySetInnerHTML={{__html: self.props.direction}} />
