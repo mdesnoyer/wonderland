@@ -1,0 +1,44 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.wonderland-carousel {
+    position: relative;
+}
+
+.wonderland-carousel__items {
+}
+
+.wonderland-carousel__item {
+    display: none;
+    &.is-active {
+        display: block;
+    }
+}
+
+.wonderland-carousel__control-box {
+    display: flex;
+}
+
+.wonderland-carousel__controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.wonderland-carousel__control {
+    cursor: pointer;
+    &:hover {
+        color: $primary;
+    }
+    .fa {
+        font-size: 4vw;
+    }
+}
+
+.wonderland-carousel__control--prev {
+}
+
+.wonderland-carousel__control--next {
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

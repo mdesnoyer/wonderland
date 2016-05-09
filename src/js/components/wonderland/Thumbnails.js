@@ -6,9 +6,12 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import Thumbnail from './Thumbnail';
+import ThumbnailInfoBox from './ThumbnailInfoBox';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import Slide from './Slide';
+import ModalParent from '../core/ModalParent';
+import Carousel from '../core/Carousel';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -20,8 +23,40 @@ var Thumbnails = React.createClass({
         forceOpen: React.PropTypes.bool.isRequired,
         isServingEnabled: React.PropTypes.bool.isRequired
     },
-    render: function() {
+    getInitialState: function() {
         var self = this;
+        return {
+            isModalActive: false,
+            selectedItem: 0,
+            thumbnails: self.props.thumbnails
+        };
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            thumbnails: nextProps.thumbnails
+        });
+    },
+    handleEnabledChange: function(index) {
+        var self = this,
+            newThumbnails = self.state.thumbnails
+        ;
+        newThumbnails[index].enabled = !newThumbnails[index].enabled;
+        self.setState({
+            thumbnails: newThumbnails
+        });
+    },
+    handleToggleModal: function(selectedItem) {
+        var self = this;
+        self.setState({
+            isModalActive: !self.state.isModalActive,
+            selectedItem: selectedItem ? selectedItem : 0
+        });
+    },
+    render: function() {
+        var self = this,
+            thumbnailElements = []
+        ;
         if (self.props.videoState === 'processing') {
             return (
                 <div className="wonderland-slides container">
@@ -36,23 +71,18 @@ var Thumbnails = React.createClass({
             return (
                 <div className="columns is-multiline is-mobile">
                     {
-                        self.props.thumbnails.map(function(thumbnail, i) {
+                        self.state.thumbnails.map(function(thumbnail, i) {
                             var neonScoreData = UTILS.NEON_SCORE_ENABLED ? UTILS.getNeonScoreData(thumbnail.neon_score) : '',
                                 rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,
                                 cookedNeonScore = UTILS.NEON_SCORE_ENABLED ? neonScoreData.neonScore : 0,
-                                strippedUrl = UTILS.stripProtocol(thumbnail.url),
-                                frameNo = thumbnail.frameno || 0
-                            ;
-                            return (
-                                <div className="column is-half-mobile is-half-tablet is-one-third-desktop" key={thumbnail.thumbnail_id}>
-                                    <Thumbnail
+                                thumbnailElement = <Thumbnail
                                         index={i}
                                         isEnabled={thumbnail.enabled}
-                                        strippedUrl={strippedUrl}
+                                        strippedUrl={UTILS.stripProtocol(thumbnail.url)}
                                         url={thumbnail.url}
                                         rawNeonScore={rawNeonScore}
                                         cookedNeonScore={cookedNeonScore}
-                                        frameNo={frameNo}
+                                        frameNo={thumbnail.frameno || 0}
                                         type={thumbnail.type}
                                         forceOpen={self.props.forceOpen}
                                         isServingEnabled={self.props.isServingEnabled}
@@ -62,11 +92,61 @@ var Thumbnails = React.createClass({
                                         created={thumbnail.created}
                                         updated={thumbnail.updated}
                                         ctr={thumbnail.ctr}
+                                        handleToggleModal={self.handleToggleModal}
+                                        handleEnabledChange={self.handleEnabledChange}
+                                        isModalActive={self.state.isModalActive}
                                     />
+                            ;
+                            thumbnailElements.push(thumbnailElement);
+                            return (
+                                <div
+                                    className="column is-half-mobile is-half-tablet is-one-third-desktop"
+                                    key={thumbnail.thumbnail_id}
+                                >
+                                    {thumbnailElement}
                                 </div>
                             );
                         })
                     }
+                    <ModalParent
+                        isModalActive={self.state.isModalActive}
+                        handleToggleModal={self.handleToggleModal}
+                        isModalContentMax={true}
+                    >
+                        <Carousel
+                            selectedItem={self.state.selectedItem}
+                            isActive={self.state.isModalActive}
+                        >
+                            {
+                                self.state.thumbnails.map(function(thumbnail, i) {
+                                    return (
+                                        <div
+                                            className="box"
+                                            key={thumbnail.thumbnail_id}
+                                        >
+                                            <div className="columns">
+                                                <div className="column is-9">
+                                                    {thumbnailElements[i]}
+                                                </div>
+                                                <div className="column is-3">
+                                                    <ThumbnailInfoBox
+                                                        frameNo={thumbnail.frameno || 0}
+                                                        type={thumbnail.type}
+                                                        width={thumbnail.width}
+                                                        height={thumbnail.height}
+                                                        thumbnailId={thumbnail.thumbnailId}
+                                                        created={thumbnail.created}
+                                                        updated={thumbnail.updated}
+                                                        ctr={thumbnail.ctr}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </Carousel>
+                    </ModalParent>
                 </div>
             );
         }

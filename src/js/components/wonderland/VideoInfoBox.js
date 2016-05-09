@@ -10,7 +10,7 @@ var VideoInfoBox = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
         videoLink: React.PropTypes.string.isRequired,
-        duration: React.PropTypes.number.isRequired,
+        duration: React.PropTypes.number,
         url: React.PropTypes.string.isRequired
     },
     render: function() {
