@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
@@ -9,7 +9,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import InputTextEdit from '../core/InputTextEdit';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoHeader = React.createClass({
 	// mixins: [ReactDebugMixin],
@@ -19,7 +19,8 @@ var VideoHeader = React.createClass({
         title: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
-        created: React.PropTypes.string
+        created: React.PropTypes.string,
+        videoState: React.PropTypes.string.isRequired
     },
     render: function() {
         var self = this,
@@ -45,7 +46,8 @@ var VideoHeader = React.createClass({
                         <InputTextEdit
                             valueDest="videos"
                             value={self.props.title}
-                            fallbackValue={UTILS.makeTitle()}
+                            videoState={self.props.videoState}
+                            fallbackValue={T.get('copy.videosPage.VideoProcessMsg')}
                             idType="video_id"
                             valueId={self.props.videoId}
                             valueType="title"
@@ -69,8 +71,8 @@ var VideoHeader = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default VideoHeader;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
