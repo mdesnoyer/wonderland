@@ -40,6 +40,7 @@ var SiteNavigation = React.createClass({
                 telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
                 apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
                 neonscopePage: <Link to={UTILS.DRY_NAV.NEONSCOPE.URL} title={T.get('nav.neonscope')}>{T.get('nav.neonscope')}</Link>,
+                supportPage: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
                 userSettingsPage: <Link to={UTILS.DRY_NAV.USERSETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
                 integrationsPage: <Link to={UTILS.DRY_NAV.INTEGRATIONS.URL} title={T.get('nav.integrations')}>{T.get('nav.integrations')}</Link>,
@@ -53,6 +54,7 @@ var SiteNavigation = React.createClass({
                                         {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
                                         <li>{items.apiPage}</li>
+                                        <li>{items.supportPage}</li>
                                     </ul>
                                 </span>,
             userSettings = <span>

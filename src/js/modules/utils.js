@@ -164,6 +164,9 @@ var UTILS = {
         USERSETTINGS: {
             URL: '/settings/user/'
         },
+        SUPPORT: {
+            URL: '/support/'
+        },
         BILLING: {
             URL: '/billing/'
         },

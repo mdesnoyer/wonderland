@@ -35,6 +35,7 @@ import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import ApiPage from './components/pages/ApiPage';
 import NeonscopePage from './components/pages/NeonscopePage';
+import SupportPage from './components/pages/SupportPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -72,6 +73,7 @@ render((
         <Route path={UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component= {AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component= {UserSettingsPage} />
+        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component= {SupportPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
