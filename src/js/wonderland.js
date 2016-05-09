@@ -35,6 +35,7 @@ import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import ApiPage from './components/pages/ApiPage';
 import NeonscopePage from './components/pages/NeonscopePage';
+import SupportPage from './components/pages/SupportPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -57,21 +58,22 @@ render((
         <Route path="/account/forgot/" component={ForgotPasswordPage} />
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         { /*<Route path="/signin/force/" component={ForcePasswordChangePage} /> */}
-        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component= {DashboardPage} />
+        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
         <Route path="/analyze/video/" component={AnalyzeVideoPage} />
         <Route path="/videos/" component={VideosPage} />
-        <Route path="/video/:videoId/" component= {VideoPage} />
-        <Route path="/terms/" component= {TermsPage} />
+        <Route path="/video/:videoId/" component={VideoPage} />
+        <Route path="/terms/" component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
         <Route path={UTILS.DRY_NAV.API.URL} component={ApiPage} />
         <Route path={UTILS.DRY_NAV.NEONSCOPE.URL} component={NeonscopePage} />
-        <Route path={UTILS.DRY_NAV.INTEGRATIONS.URL} component={IntegrationsPage} />
-        <Route path={UTILS.DRY_NAV.INTEGRATIONS_NEW.URL} component={NewIntegrationPage} />
-        <Route path={UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
-        <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component= {AccountSettingsPage} />
-        <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component= {UserSettingsPage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={IntegrationsPage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component={AccountSettingsPage} />
+        <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component={UserSettingsPage} />
+        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));

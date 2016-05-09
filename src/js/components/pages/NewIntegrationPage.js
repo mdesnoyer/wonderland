@@ -17,7 +17,7 @@ var NewIntegrationPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     addBrightcove: function () {
-        this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL);
+        this.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
     },
     render: function() {
         return (
@@ -35,7 +35,7 @@ var NewIntegrationPage = React.createClass({
                         <div className="columns">
                             <div className="card column is-one-third">
                                 <div className="card-content has-text-centered">
-                                    <img src={T.get('copy.integrations.types.brightcove.img')} />
+                                    <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
                                     </div>

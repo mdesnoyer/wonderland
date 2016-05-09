@@ -21,14 +21,14 @@ var IntegrationsPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.integrations.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.plugins.title'))}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.integrations.heading')}</h1>
+                        <h1 className="title is-2">{T.get('copy.plugins.heading')}</h1>
                         <div className="content">
-                            {T.get('copy.integrations.body')}
+                            {T.get('copy.plugins.body')}
                         </div>
                         <Integrations />
                     </div>

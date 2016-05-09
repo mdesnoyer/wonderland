@@ -140,14 +140,14 @@ var UTILS = {
         DASHBOARD: {
             URL: '/dashboard/'
         },
-        INTEGRATIONS: {
-            URL: '/integrations/'
+        PLUGINS: {
+            URL: '/plugins/'
         },
-        INTEGRATIONS_NEW: {
-            URL: '/integrations/new/'
+        PLUGINS_NEW: {
+            URL: '/plugins/new/'
         },
-        INTEGRATIONS_BRIGHTCOVE: {
-            URL: '/integrations/new/brightcove/'
+        PLUGINS_BRIGHTCOVE: {
+            URL: '/plugins/new/brightcove/'
         },
         SIGNUP: {
             URL: '/signup/'
@@ -163,6 +163,12 @@ var UTILS = {
         },
         USERSETTINGS: {
             URL: '/settings/user/'
+        },
+        SUPPORT: {
+            URL: '/support/'
+        },
+        TERMS: {
+            URL: '/terms/'
         },
         BILLING: {
             URL: '/billing/'
@@ -182,7 +188,7 @@ var UTILS = {
     },
     VERSION: '1.8',
     NEON_SCORE_ENABLED: true,
-    DEFAULT_SERVING_STATE: false,
+    DEFAULT_SERVING_STATE: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     VIDEO_CHECK_INTERVAL: 10000, // 10s
