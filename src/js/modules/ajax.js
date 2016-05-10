@@ -21,6 +21,13 @@ var AJAXModule = {
             }
         }).join('&');
     },
+    handleApiError: function(err) {
+        try {
+            return JSON.parse(err.responseText).error;
+        } catch (e) {
+            return err;
+        }
+    },
     doApiCall: function(url, options) {
         var self = this,
             promise,
@@ -68,16 +75,19 @@ var AJAXModule = {
                             .catch(function (err) {
                                 self.Session.end();
                                 if (ret.isCanceled !== true) {
-                                    options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
+                                    options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
                                 }
                             });
                     } else if (ret.isCanceled !== true) {
-                        options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
+                        options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
                     }
                 });
         }
 
         self.Session = self.Session || SESSION;
+
+        // Default error handler
+        options.errorHandler = options.errorHandler || self.handleApiError;
 
         promise = new Promise(function (resolve, reject) {
             var authUrl = '',
@@ -85,9 +95,11 @@ var AJAXModule = {
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
                 fin.call(self, resolve, reject);
             } else {
-                err = new Error('Unauthorized');
-                err.status = 401;
-                reject(err);
+                // We're missing an account id, so simulate an "unauthorized" response from the server
+                reject({
+                    error: 'Unauthorized',
+                    code: 401
+                });
             }
         });
         ret = {
