@@ -46,7 +46,7 @@ var ConfirmAccountPage = React.createClass({
                 });
             }
             else {
-                self.handleError(JSON.parse(err.responseText).error.data, false);
+                self.raiseError(err);
                 self.setState({
                     isError: true
                 });

@@ -1,10 +1,37 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+function getType(val) {
+    if (val !== undefined) {
+        if (val == null) {
+            return '[object Null]';
+        }
+        var type = Object.prototype.toString.call(val);
+        if (type == Object.prototype.toString.call(0) && isNaN(val)) {
+            return '[object NaN]';
+        }
+        return type;
+    } else {
+        return '[object Undefined]';
+    }
+};
+
+const TYPES = {
+    er: getType(new Error()),
+    ob: getType({})
+};
+
 let E = {
     _errorMessageArray: [],
-    raiseError: function(errorMessage) {
+    raiseError: function(err) {
         var self = this;
-        self._errorMessageArray.push(errorMessage);
+        switch (getType(err)) {
+            case TYPES.er:
+            case TYPES.ob:
+                self.checkForError(err.message);
+                break;
+            default:
+                self.checkForError(errorMessage);
+        }
     },
     checkForError: function(errorMessage, check) {
         var messageIndex = (this._errorMessageArray.indexOf(errorMessage)),

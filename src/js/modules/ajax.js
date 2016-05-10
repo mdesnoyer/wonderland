@@ -21,6 +21,13 @@ var AJAXModule = {
             }
         }).join('&');
     },
+    handleApiError: function(err) {
+        try {
+            return JSON.parse(err.responseText).error;
+        } catch (e) {
+            return err;
+        }
+    },
     doApiCall: function(url, options) {
         var self = this,
             promise,
@@ -68,11 +75,11 @@ var AJAXModule = {
                             .catch(function (err) {
                                 self.Session.end();
                                 if (ret.isCanceled !== true) {
-                                    options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
+                                    options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
                                 }
                             });
                     } else if (ret.isCanceled !== true) {
-                        options.errorHandler ? resolve(options.errorHandler(err)) : resolve(err);
+                        options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
                     }
                 });
         }
@@ -85,20 +92,15 @@ var AJAXModule = {
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
                 fin.call(self, resolve, reject);
             } else {
-                err = new Error('Unauthorized');
-                err.status = 401;
-                reject(err);
+                // We're missing an account id, so simulate an "unauthorized" response from the server
+                err = {
+                    error: 'Unauthorized',
+                    code: 401
+                };
+                options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
             }
         });
         ret = {
-            then: function (cb) {
-                promise.then(cb);
-                return this;
-            },
-            catch: function (cb) {
-                promise.catch(cb);
-                return this;
-            },
             isCanceled: false,
             cancel: function() {
                 this.isCanceled = true;
@@ -111,18 +113,24 @@ var AJAXModule = {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPost: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPut: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     }
 };

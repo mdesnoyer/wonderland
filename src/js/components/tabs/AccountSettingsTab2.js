@@ -31,7 +31,7 @@ var AccountSettingsTab2 = React.createClass({
                 });
             })
             .catch(function (err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
+                E.raiseError(err);
                 self.setState({
                     isLoading: false,
                     isError: true

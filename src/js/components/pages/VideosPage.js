@@ -34,7 +34,7 @@ var VideosPage = React.createClass({
                 });
             })
             .catch(function (err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
+                E.raiseError(err);
             });
     },
     render: function() {
