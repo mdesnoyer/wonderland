@@ -80,11 +80,14 @@ var BillingForm = React.createClass({
             });
     },
     componentDidMount: function() {
-        var s = document.createElement('script');
-        this._isSubmitted = false;
-        s.id = 'stripeJs';
-        s.setAttribute('src', 'https://js.stripe.com/v2/');
-        document.body.appendChild(s);
+        var s;
+        if (!document.getElementById('stripeJs')) {
+            s = document.createElement('script');
+            this._isSubmitted = false;
+            s.id = 'stripeJs';
+            s.setAttribute('src', 'https://js.stripe.com/v2/');
+            document.body.appendChild(s);
+        }
     },
     handleFieldChange(e) {
         var data = {};
