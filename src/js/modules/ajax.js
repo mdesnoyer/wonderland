@@ -96,21 +96,14 @@ var AJAXModule = {
                 fin.call(self, resolve, reject);
             } else {
                 // We're missing an account id, so simulate an "unauthorized" response from the server
-                reject({
+                err = {
                     error: 'Unauthorized',
                     code: 401
-                });
+                };
+                options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
             }
         });
         ret = {
-            then: function (cb) {
-                promise.then(cb);
-                return this;
-            },
-            catch: function (cb) {
-                promise.catch(cb);
-                return this;
-            },
             isCanceled: false,
             cancel: function() {
                 this.isCanceled = true;
@@ -123,18 +116,24 @@ var AJAXModule = {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPost: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPut: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     }
 };

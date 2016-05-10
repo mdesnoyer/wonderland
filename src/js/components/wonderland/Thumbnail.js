@@ -5,9 +5,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import AjaxMixin from '../../mixins/ajax';
-import ModalParent from '../core/ModalParent';
-import ThumbnailModalChild from '../core/ThumbnailModalChild';
+import AjaxMixin from '../../mixins/Ajax';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -32,15 +30,23 @@ var Thumbnail = React.createClass({
         thumbnailId: React.PropTypes.string.isRequired,
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
-        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string])
+        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        handleToggleModal: React.PropTypes.func.isRequired,
+        handleEnabledChange: React.PropTypes.func.isRequired,
+        isModalActive: React.PropTypes.bool.isRequired
     },
     getInitialState: function () {
         var self = this;
         return {
             isEnabled: self.props.isEnabled,
-            isModalActive: false,
             isLoading: false
         };
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            isEnabled: nextProps.isEnabled
+        });
     },
     componentDidMount: function() {
         var self = this;
@@ -58,7 +64,7 @@ var Thumbnail = React.createClass({
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-medium wonderland-thumbnail__score' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
+            additionalClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__score' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isLoading ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
@@ -97,9 +103,9 @@ var Thumbnail = React.createClass({
                     />
                     <span
                         onClick={self.handleToggleModal}
-                        className="wonderland-thumbnail__indicator -foreground"
+                        className="wonderland-thumbnail__indicator"
                     >
-                        <i className={'fa fa-' + enabledIndicator}></i>
+                        <i className={'fa fa-' + enabledIndicator} aria-hidden="true"></i>
                     </span>
                     <ThumbBox
                         copyUrl={self.props.url}
@@ -109,40 +115,15 @@ var Thumbnail = React.createClass({
                         handleEnabledChange={handleEnabledChangeHook}
                         isServingEnabled={self.props.isServingEnabled}
                         type={self.props.type}
+                        isModalActive={self.props.isModalActive}
                     />
                 </figcaption>
-                <ModalParent
-                    isModalActive={self.state.isModalActive}
-                    handleToggleModal={self.handleToggleModal}
-                    isModalContentMax={true}
-                >
-                    <ThumbnailModalChild
-                        caption={caption}
-                        strippedUrl={self.props.strippedUrl}
-                        copyUrl={self.props.url}
-                        downloadUrl={self.props.url}
-                        isEnabled={self.state.isEnabled}
-                        handleEnabledChange={handleEnabledChangeHook}
-                        isServingEnabled={self.props.isServingEnabled}
-                        type={self.props.type}
-                        frameNo={self.props.frameNo}
-                        width={self.props.width}
-                        height={self.props.height}
-                        thumbnailId={self.props.thumbnailId}
-                        created={self.props.created}
-                        updated={self.props.updated}
-                        ctr={self.props.ctr}
-                        neonScore={neonScore}
-                    />
-                </ModalParent>
             </figure>
         );
     },
     handleToggleModal: function(e) {
         var self = this;
-        self.setState({
-            isModalActive: !self.state.isModalActive
-        });
+        self.props.handleToggleModal(self.props.index);
     },
     handleEnabledChange: function(e) {
         var self = this,
@@ -161,12 +142,16 @@ var Thumbnail = React.createClass({
                 .then(function(json) {
                     self.setState({
                         isLoading: false
+                    }, function() {
+                        self.props.handleEnabledChange(self.props.index)
                     });
                 })
                 .catch(function(err) {
                     self.setState({
                         isLoading: false,
                         isEnabled: !self.state.isEnabled // put it back
+                    }, function() {
+                        self.props.handleEnabledChange(self.props.index)
                     });
                 })
             ;

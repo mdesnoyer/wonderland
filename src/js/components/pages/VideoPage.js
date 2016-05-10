@@ -8,7 +8,7 @@ import Video from '../wonderland/Video';
 import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import Account from '../../mixins/Account';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

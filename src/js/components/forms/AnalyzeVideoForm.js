@@ -2,14 +2,13 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
 import E from '../../modules/errors';
-import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,10 +53,21 @@ var AnalyzeVideoForm = React.createClass({
                 });
             })
             .catch(function(err) {
-                E.checkForError(err.statusText, false);
-                self.setState({
-                    mode: 'error'
-                });
+                // The 404 is used to indicate the account has no limits on it.
+                // This is a valid response from the Back end.
+                switch (err.status) {
+                    case 404:
+                        self.setState({
+                            mode: 'silent'
+                        })
+                        break;
+                    default:
+                        E.raiseError(err);
+                        self.setState({
+                            mode: 'error'
+                        })
+                        break;
+                }
             });
     },
     render: function() {
@@ -226,14 +236,13 @@ var AnalyzeVideoForm = React.createClass({
                         E.checkForError(T.get('copy.analyzeVideo.badRequest'), false);
                         break;
                     default:
-                        E.checkForError(JSON.parse(err.responseText).error.data, false);
+                        E.raiseError(err);
                         break;
                 }
                 self.setState({
                     mode: 'error'
                 });
-            })
-        ;
+            });
     }
 });
 

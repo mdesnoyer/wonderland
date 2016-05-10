@@ -65,6 +65,15 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+.wonderland-navbar__avatar {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 .wonderland-navbar__icon {
     margin: ($maximum-nav-height * $smallest-ratio) 0;
     transition: color 0.3333s;

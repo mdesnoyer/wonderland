@@ -38,6 +38,7 @@
     "clipboard": "^1.5.10",
     "fnv-plus": "^1.2.12",
     "font-awesome": "^4.5.0",
+    "gravatar": "^1.5.2",
     "history": "1.12.5",
     "moment": "^2.12.0",
     "react": "^0.14.7",

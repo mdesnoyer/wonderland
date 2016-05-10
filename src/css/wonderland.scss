@@ -20,7 +20,7 @@ $grey-dark: $gray;
 $grey: $silver-chalice;
 $grey-light: mix($silver-chalice, $athens-gray, 25%);
 $grey-lighter: $athens-gray;
-$family-sans-serif: "Open Sans", sans-serif;
+$family-sans-serif: 'Roboto', sans-serif;
 $primary: $blue;
 $red: $orange;
 $body-background: $white;
@@ -69,7 +69,8 @@ $background: $white;
     'components/xylophone',
     'components/banner',
     'components/inputtextedit',
-    'components/wondertabs'
+    'components/wondertabs',
+    'components/carousel'
 ;
 
 // 6. Page-specific styles

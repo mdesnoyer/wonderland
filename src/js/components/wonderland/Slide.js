@@ -16,7 +16,7 @@ var Slide = React.createClass({
             return (
                 <div className="wonderland-slides-slide box is-fullwidth has-text-centered">
                     <p className="icon is-large ">
-                        <i className={'fa fa-' + self.props.icon}></i>
+                        <i className={'fa fa-' + self.props.icon} aria-hidden="true"></i>
                     </p>
                     <p><span dangerouslySetInnerHTML={{__html: self.props.slideContent}} /></p>
                 </div>

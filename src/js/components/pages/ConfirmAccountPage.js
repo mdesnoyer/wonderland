@@ -6,7 +6,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
@@ -46,7 +46,7 @@ var ConfirmAccountPage = React.createClass({
                 });
             }
             else {
-                self.handleError(JSON.parse(err.responseText).error.data, false);
+                self.raiseError(err);
                 self.setState({
                     isError: true
                 });

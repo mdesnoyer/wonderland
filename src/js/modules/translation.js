@@ -54,6 +54,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
 
             'copy.videosPage.title': 'Video Library',
+            'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
             // 'copy.videosPage.body': '@username, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
             'copy.videosPage.body': 'Welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
@@ -177,6 +178,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.stagingTrackerAccountId' : 'Staging Tracker Account ID',
             'label.accountName' : 'Account Name',
             'label.accountId' : 'Account ID',
+            'label.avatar' : 'Avatar',
             // Created
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
