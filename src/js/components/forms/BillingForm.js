@@ -1,10 +1,11 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import RadioGroup from 'react-radio-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -14,13 +15,30 @@ var BillingForm = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
+        var now = new Date(),
+            years = [],
+            month = now.getMonth() + 1
+        ;
+        // Show this and next 10 years (note: show this year even in Dec just in case)
+        while (years.length < 10) {
+            years.push(now.getFullYear() + years.length);
+        }
         return {
             isError: false,
             isLoading: true,
-            nameOnCard: '',
+            possibleYears: years,
             planType: 'demo',
-            account: false
-        }
+            address_line1: '',
+            address_line2: '',
+            address_city: '',
+            address_state: '',
+            address_zip: '',
+            name: '',
+            number: '',
+            exp_month: ('0' + (month === 12 ? 1 : month)).slice(-2), // next month; zero-padded
+            exp_year: now.getFullYear() + (month === 12 ? 1 : 0), // this year; or next if Dec
+            cvc: ''
+        };
     },
     componentWillUnmount: function() {
         E.clearErrors();
@@ -29,29 +47,32 @@ var BillingForm = React.createClass({
         var self = this;
         self.GET('billing/account')
             .then(function (res) {
-                if (res.status >= 200 && res.status < 300) {
-                    self.setState({
-                        isLoading: false,
-                        account: account,
-                        planType: 'demo',
-                        nameOnCard: ''
-                    });
-                } else {
-                    // On error (no account), default the nameOnCard to the current user's name
-                    SESSION.user()
-                        .then(function (user) {
-                            self.setState({
-                                isLoading: false,
-                                nameOnCard: user.first_name + ' ' + user.last_name
-                            });
-                        })
-                        .catch(function (err) {
-                            // no-op
-                        });
-                }
+                self.setState({
+                    isLoading: false,
+                    planType: 'demo',
+                    address_line1: res.address_line1,
+                    address_line2: res.address_line2,
+                    address_city: res.address_city,
+                    address_state: res.address_state,
+                    address_zip: res.address_zip,
+                    name: res.name,
+                    number: (res.brand === 'AMEX' ? '***********' : '************') + res.last4,
+                    exp_month: res.exp_month,
+                    exp_year: res.exp_year
+                });
             })
             .catch(function (err) {
-                E.checkForError(err, false);
+                // On error (no account), default the nameOnCard to the current user's name
+                return SESSION.user();
+            })
+            .then(function (user) {
+                self.setState({
+                    isLoading: false,
+                    name: user.first_name + ' ' + user.last_name
+                });
+            })
+            .catch(function (err) {
+                E.raiseError(err);
                 self.setState({
                     isLoading: false,
                     isError: true
@@ -59,18 +80,20 @@ var BillingForm = React.createClass({
             });
     },
     componentDidMount: function() {
-        var self = this,
-            s = document.createElement('script');
-        ;
-        self._isSubmitted = false;
-
+        var s = document.createElement('script');
+        this._isSubmitted = false;
+        s.id = 'stripeJs';
         s.setAttribute('src', 'https://js.stripe.com/v2/');
         document.body.appendChild(s);
     },
-    handleChangePlanType(e) {
-        var self = this;
-        self.setState({
-            planType: e.target.value
+    handleFieldChange(e) {
+        var data = {};
+        data[e.target.id] = e.target.value;
+        this.setState(data);
+    },
+    handlePlanTypeChange(val) {
+        this.setState({
+            planType: val
         });
     },
     render: function() {
@@ -78,21 +101,17 @@ var BillingForm = React.createClass({
             buttonClassName,
             inputClassName,
             selectClassName,
-            ccClassName = '',
             messageNeeded = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         if (self.state.isLoading) {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';
             inputClassName = 'input is-medium is-disabled';
-            selectClassName = 'select is-disabled';
+            selectClassName = 'select is-disabled is-loading';
         }
         else {
             buttonClassName = 'button is-medium is-primary';
             inputClassName = 'input is-medium';
             selectClassName = 'select';
-        }
-        if (self.state.planType === 'demo') {
-            ccClassName = 'is-hidden';
         }
         return (
             <form id="billingForm" onSubmit={self.handleSubmit}>
@@ -101,20 +120,35 @@ var BillingForm = React.createClass({
                     <legend className="title is-4">{T.get('copy.billing.heading')}</legend>
                     
                     <label htmlFor="planType">{T.get('copy.billing.form.planType')}</label>
-                    <p className="control is-grouped">
-                        <span className={selectClassName + ' is-fullwidth'}>
-                            <select
-                                ref="planType"
-                                id="planType"
-                                defaultValue={self.state.planType}
-                                onChange={self.handleChangePlanType}
-                            >
-                                <option value="demo">Demo</option>
-                                <option value="pro_monthly">Pro - Monthly</option>
-                                <option value="pro_yearly">Pro - Yearly</option>
-                            </select>
-                        </span>
-                    </p>
+                    <RadioGroup
+                        name="planType"
+                        id="planType"
+                        selectedValue={self.state.planType}
+                        onChange={self.handlePlanTypeChange}
+                    >
+                        {Radio => (
+                            <div>
+                                <p className="control">
+                                    <label className="radio">
+                                        <Radio value="demo" />
+                                        Demo
+                                    </label>
+                                </p>
+                                <p className="control">
+                                    <label className="radio">
+                                        <Radio value="pro_monthly" />
+                                        Pro - Monthly
+                                    </label>
+                                </p>
+                                <p className="control">
+                                    <label className="radio">
+                                        <Radio value="pro_yearly" />
+                                        Pro - Yearly
+                                    </label>
+                                </p>
+                            </div>
+                        )}
+                    </RadioGroup>
                     {(() => {
                         if (self.state.planType !== 'demo') {
                             return (
@@ -123,33 +157,108 @@ var BillingForm = React.createClass({
 
                                     <label htmlFor="address_line1">{T.get('copy.billing.form.billingAddress')}</label>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" required ref="address_line1" data-stripe="address_line1" placeholder={T.get('copy.billing.form.address')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="address_line1"
+                                            id="address_line1"
+                                            data-stripe="address_line1"
+                                            placeholder={T.get('copy.billing.form.address')}
+                                            defaultValue={self.state.address_line1}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" ref="address_line2" data-stripe="address_line2" placeholder={T.get('copy.billing.form.address')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            ref="address_line2"
+                                            id="address_line2"
+                                            data-stripe="address_line2"
+                                            placeholder={T.get('copy.billing.form.address')}
+                                            defaultValue={self.state.address_line2}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" required ref="address_city" data-stripe="address_city" placeholder={T.get('copy.billing.form.city')} />
-                                        <input className={inputClassName} type="text" required ref="address_state" data-stripe="address_state" placeholder={T.get('copy.billing.form.state')} />
-                                        <input className={inputClassName} type="text" required ref="address_zip" data-stripe="address_zip" placeholder={T.get('copy.billing.form.zip')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="address_city"
+                                            id="address_city"
+                                            data-stripe="address_city"
+                                            placeholder={T.get('copy.billing.form.city')}
+                                            defaultValue={self.state.address_city}
+                                            onChange={self.handleFieldChange}
+                                        />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="address_state"
+                                            id="address_state"
+                                            data-stripe="address_state"
+                                            placeholder={T.get('copy.billing.form.state')}
+                                            defaultValue={self.state.address_state}
+                                            onChange={self.handleFieldChange}
+                                        />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="address_zip"
+                                            id="address_zip"
+                                            data-stripe="address_zip"
+                                            placeholder={T.get('copy.billing.form.zip')}
+                                            defaultValue={self.state.address_zip}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
 
                                     <hr />
 
                                     <label htmlFor="nameOnCard">{T.get('copy.billing.form.nameOnCard')}</label>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" required ref="name" data-stripe="name" defaultValue={self.state.nameOnCard} placeholder={T.get('copy.billing.form.nameOnCard')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="name"
+                                            id="name"
+                                            data-stripe="name"
+                                            placeholder={T.get('copy.billing.form.nameOnCard')}
+                                            defaultValue={self.state.name}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
 
                                     <label htmlFor="cc_number">{T.get('copy.billing.form.ccNumber')}</label>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" required ref="number" data-stripe="number" placeholder={T.get('copy.billing.form.ccNumber')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            required
+                                            ref="number"
+                                            id="number"
+                                            data-stripe="number"
+                                            placeholder={T.get('copy.billing.form.ccNumber')}
+                                            defaultValue={self.state.number}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
 
                                     <label htmlFor="cc_exp_month">{T.get('copy.billing.form.ccExpiration')}</label>
                                     <p className="control is-grouped">
                                         <span className={selectClassName}>
-                                            <select ref="exp_month" data-stripe="exp_month">
+                                            <select
+                                                ref="exp_month"
+                                                id="exp_month"
+                                                data-stripe="exp_month"
+                                                defaultValue={self.state.exp_month}
+                                                onChange={self.handleFieldChange}
+                                            >
                                                 <option value="01">01</option>
                                                 <option value="02">02</option>
                                                 <option value="03">03</option>
@@ -165,24 +274,36 @@ var BillingForm = React.createClass({
                                             </select>
                                         </span>
                                         <span className={selectClassName}>
-                                            <select className={selectClassName} ref="exp_year" data-stripe="exp_year">
-                                                <option value="2016">16</option>
-                                                <option value="2018">18</option>
-                                                <option value="2019">19</option>
-                                                <option value="2020">20</option>
-                                                <option value="2021">21</option>
-                                                <option value="2022">22</option>
-                                                <option value="2023">23</option>
-                                                <option value="2024">24</option>
-                                                <option value="2025">25</option>
-                                                <option value="2026">26</option>
+                                            <select
+                                                className={selectClassName}
+                                                ref="exp_year"
+                                                id="exp_year"
+                                                data-stripe="exp_year"
+                                                defaultValue={self.state.exp_year}
+                                                onChange={self.handleFieldChange}
+                                            >
+                                                {(() => {
+                                                    return self.state.possibleYears.map(function (year) {
+                                                        return (
+                                                            <option value={year} key={year}>{(''+year).slice(-2)}</option>
+                                                        );
+                                                    });
+                                                })()}
                                             </select>
                                         </span>
                                     </p>
 
                                     <label htmlFor="cc_cvc">{T.get('copy.billing.form.ccCVC')}</label>
                                     <p className="control is-grouped">
-                                        <input className={inputClassName} type="text" ref="cvc" data-stripe="cvc" placeholder={T.get('copy.billing.form.ccCVC')} />
+                                        <input
+                                            className={inputClassName}
+                                            type="password"
+                                            ref="cvc"
+                                            id="cvc"
+                                            data-stripe="cvc"
+                                            placeholder={T.get('copy.billing.form.ccCVC')}
+                                            onChange={self.handleFieldChange}
+                                        />
                                     </p>
                                 </div>
                             );
@@ -215,6 +336,9 @@ var BillingForm = React.createClass({
                             self.handleStripeResponse
                         );
                     } catch (e) {
+                        // Error in Stripe config/read of form - log to console for debug
+                        console.error(e);
+                        // Return "unknown" error to user
                         E.checkForError(T.get('error.unknown'), false);
                         self._isSubmitted = false;
                         self.setState({
@@ -230,12 +354,17 @@ var BillingForm = React.createClass({
             apiCall
         ;
         if (data && data.error) {
+            // Handle stripe API error
             E.checkForError(data.error.message, false);
             self.setState({
+                isLoading: false,
                 isError: true
+            }, function () {
+                self._isSubmitted = false;
             });
         } else {
             if (self.state.planType === 'demo') {
+                // Only need to change subscription when a plan exists
                 if (self.state.account) {
                     apiCall = self.POST('billing/subscription', {
                         data: {
@@ -243,7 +372,7 @@ var BillingForm = React.createClass({
                         }
                     });
                 } else {
-                    // no-op
+                    // no-op; no current plan to remove
                     apiCall = new Promise(function (resolve) {
                         resolve();
                     });
@@ -273,7 +402,7 @@ var BillingForm = React.createClass({
                     }); 
                 })
                 .catch(function (err) {
-                    E.checkForError(err, false);
+                    E.raiseError(err);
                     self.setState({
                         isLoading: false,
                         isError: true
