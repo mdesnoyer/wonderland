@@ -9,20 +9,54 @@ import SESSION from '../../modules/session';
 import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
+import Account from '../../mixins/Account';
+import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignOutPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [Account, AjaxMixin],
+    getInitialState: function () {
+        return {
+            userName: 'Goodbye!'
+        };
+    },
     componentWillMount: function() {
+        var self = this,
+            displayName
+        ;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData) {
+                        if (userData.first_name) {
+                            displayName = userData.first_name;
+                        }
+                        else {
+                            displayName = userData.username
+                        }
+                        self.setState({
+                            userName: displayName
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
         SESSION.end()
             .catch(function (err) {
                 console.error(err);
             });
     },
     render: function() {
-        var heading = T.get('copy.signOut.heading', { 
-                // '@username': 'TODO'
+        var self = this,
+            heading = T.get('copy.signOut.heading', {
+                '@userName': self.state.userName
             }),
             body = T.get('copy.signOut.body', {
                 '@link': UTILS.DRY_NAV.SIGNIN.URL

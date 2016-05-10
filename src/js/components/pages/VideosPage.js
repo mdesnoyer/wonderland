@@ -11,6 +11,7 @@ import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -22,26 +23,43 @@ var VideosPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: false
+            isServingEnabled: false,
+            userName: 'Hello'
         };
     },
     componentWillMount: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    isServingEnabled: account.isServingEnabled
-                });
-            })
-            .catch(function (err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
-            });
+        var self = this,
+            displayName
+        ;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData) {
+                        if (userData.first_name) {
+                            displayName = userData.first_name;
+                        }
+                        else {
+                            displayName = userData.username
+                        }
+                        self.setState({
+                            userName: displayName
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
     },
     render: function() {
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                // '@username': 'TODO'
+                '@userName': self.state.userName
             })
         ;
         return (
