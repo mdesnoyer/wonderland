@@ -1,13 +1,13 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const fadeTime = 1000;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var InputTextEdit = React.createClass({
     mixins: [AjaxMixin],
@@ -18,13 +18,16 @@ var InputTextEdit = React.createClass({
         valueType: React.PropTypes.string.isRequired,
         idType: React.PropTypes.string.isRequired,
         valueId: React.PropTypes.string.isRequired,
-        classStyle: React.PropTypes.string
+        classStyle: React.PropTypes.string,
+        videoState: React.PropTypes.string
     },
     getInitialState: function() {
-        var self = this;
+        var self = this,
+            isProcessing = self.props.videoState === 'processing'
+        ;
         return {
-            value: self.props.value,
-            mode: 'silent' // loading/success/error/silent
+            value: isProcessing ? self.props.fallbackValue : self.props.value,
+            mode: isProcessing ? 'processing' : 'silent' // loading/success/error/silent/processing
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -33,12 +36,20 @@ var InputTextEdit = React.createClass({
             value: nextProps.value
         });
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        var self = this;
+        return nextState.value !== self.props.value;
+    },
     render: function() {
         var self = this,
             controlClassName = '',
-            iconType = ''
+            iconType
         ;
         switch(self.state.mode) {
+            case 'processing':
+                iconType = '';
+                controlClassName = ' is-disabled';
+                break;
             case 'success':
                 iconType = 'fa fa-check';
                 break;
@@ -47,15 +58,14 @@ var InputTextEdit = React.createClass({
                 break;
             case 'loading':
                 iconType = 'fa fa-cog fa-spin';
-                controlClassName = 'is-disabled';
                 break;
             case 'silent':
                 iconType = 'fa fa-pencil';
                 break;
         }
         return (
-            <div className={'control has-icon has-icon-right'}>
-                <input 
+            <div className={'control has-icon has-icon-right' + controlClassName}>
+                <input
                     className={self.props.classStyle + ' input wonderland-input-text-edit'}
                     type="text"
                     ref="inputElement"
@@ -72,7 +82,7 @@ var InputTextEdit = React.createClass({
         var self = this;
         self.blurProcess();
     },
-    handleChange(e) {
+    handleChange: function(e) {
         var self = this;
         self.setState({
             value: e.target.value
@@ -80,7 +90,7 @@ var InputTextEdit = React.createClass({
     },
     handleKeyDown: function(e) {
         var self = this;
-        //enter key == 13 
+        //enter key == 13
         if (e.keyCode == 13) {
             self.refs.inputElement.blur();
         }
@@ -89,8 +99,8 @@ var InputTextEdit = React.createClass({
         var self = this;
         self.setState({
             mode: 'loading',
-            value: self.state.value || self.props.fallbackValue
-        }, 
+            value: self.state.value
+        },
         self.putValue()
         );
     },
@@ -108,7 +118,7 @@ var InputTextEdit = React.createClass({
                 self.setState(
                     {
                         mode: 'success'
-                    }, 
+                    },
                     self.fadeOutIcon()
                 );
             })
@@ -116,24 +126,24 @@ var InputTextEdit = React.createClass({
                 self.setState(
                     {
                         mode: 'error'
-                    }, 
+                    },
                     self.fadeOutIcon()
                 );
             });
     },
     fadeOutIcon: function() {
-        var self = this; 
+        var self = this;
         setTimeout(function() {
             self.setState({
                 mode: 'silent'
-            });
+            })
         }, fadeTime);
     }
 });
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default InputTextEdit
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
