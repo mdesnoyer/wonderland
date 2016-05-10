@@ -11,25 +11,43 @@ import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
-import Secured from '../../mixins/Secured';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var SignOutPage = React.createClass({
-	mixins: [Secured, Account, AjaxMixin],
+	mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
-            username: 'Goodbye!'
+            userName: 'Goodbye!'
         };
     },
     componentWillMount: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    username: account.accountName
-                });
-            });
+        var self = this,
+            displayName
+        ;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData) {
+                        if (userData.first_name) {
+                            displayName = userData.first_name;
+                        }
+                        else {
+                            displayName = userData.username
+                        }
+                        self.setState({
+                            userName: displayName
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
         SESSION.end()
             .catch(function (err) {
                 console.error(err);
@@ -38,7 +56,7 @@ var SignOutPage = React.createClass({
     render: function() {
         var self = this,
             heading = T.get('copy.signOut.heading', {
-                '@username': self.state.username
+                '@userName': self.state.userName
             }),
             body = T.get('copy.signOut.body', {
                 '@link': UTILS.DRY_NAV.SIGNIN.URL
