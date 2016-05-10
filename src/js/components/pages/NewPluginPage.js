@@ -11,7 +11,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var IntegrationsNewPage = React.createClass({
+var NewPluginPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -23,19 +23,19 @@ var IntegrationsNewPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.integrations.new.title')}
+                    title={T.get('copy.new.plugin.title')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.integrations.new.heading')}</h1>
+                        <h1 className="title is-2">{T.get('copy.new.plugin.heading')}</h1>
                         <div className="content">
-                            {T.get('copy.integrations.new.body')}
+                            {T.get('copy.new.plugin.body')}
                         </div>
                         <div className="columns">
                             <div className="card column is-one-third">
                                 <div className="card-content has-text-centered">
-                                    <img src={T.get('copy.integrations.types.brightcove.img')} />
+                                    <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
                                     </div>
@@ -52,6 +52,6 @@ var IntegrationsNewPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default IntegrationsNewPage;
+export default NewPluginPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

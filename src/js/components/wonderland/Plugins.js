@@ -10,7 +10,7 @@ import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var Integrations = React.createClass({
+var Plugins = React.createClass({
 	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -19,20 +19,20 @@ var Integrations = React.createClass({
         return {
             errorMessageArray: [],
             isError: false,
-            integrations: []
+            plugins: []
         }  
     },
     componentWillMount: function() {
         var self = this,
             options = {
-                fields: ['integrations']
+                fields: ['plugins']
             }
         ;
         self.GET('', options)
             .then(function(res) {
                 self.setState({
                     isError: false,
-                    integrations: res.integrations || res.integration_ids || []
+                    plugins: res.plugins || res.plugin_ids || []
                 });
             }).catch(function(err) {
                 E.checkForError(err.statusText, false);
@@ -44,7 +44,7 @@ var Integrations = React.createClass({
     render: function() {
         var self = this,
             additionalClass = 'table is-striped' + (self.props.isLoading ? ' is-loading' : ''),
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
             <table className={additionalClass}>
@@ -53,22 +53,22 @@ var Integrations = React.createClass({
                 </caption>
                 <tbody>
                     {
-                        self.state.integrations.map(function(integration, i) {
+                        self.state.plugins.map(function(plugin, i) {
                             var configureClick = function() {
-                                    self.configure(integration);
+                                    self.configure(plugin);
                                 };
                             // TEMP UNTIL API IS READY
-                            integration = {
-                                integration_id: integration,
+                            plugin = {
+                                plugin_id: plugin,
                                 type: 'brightcove'
                             };
                             return (
-                                <tr key={integration.integration_id}>
+                                <tr key={plugin.plugin_id}>
                                     <td>
-                                        <img src={T.get('copy.integrations.types.' + integration.type + '.img')} />
+                                        <img src={T.get('copy.plugins.types.' + plugin.type + '.img')} />
                                     </td>
                                     <td>
-                                        {T.get('copy.integrations.types.' + integration.type + '.title')} - {integration.integration_id}
+                                        {T.get('copy.plugins.types.' + plugin.type + '.title')} - {plugin.plugin_id}
                                     </td>
                                     <td>
                                         <a className="button is-medium is-pulled-right" onClick={configureClick}>{T.get('configure')}</a>
@@ -88,18 +88,18 @@ var Integrations = React.createClass({
             </table>
         );
     },
-    configure: function(integration) {
-        this.context.router.push('/integrations/' + integration.type + '/?id=' + integration.integration_id);
+    configure: function(plugin) {
+        this.context.router.push('/plugins/' + plugin.type + '/?id=' + plugin.plugin_id);
     },
     addNew: function() {
         // this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_NEW.URL);
-        // Temp until there are more types of integrations
+        // Temp until there are more types of plugins
         this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL);
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default Integrations;
+export default Plugins;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -43,14 +43,14 @@ var SiteNavigation = React.createClass({
                 supportPage: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
                 userSettingsPage: <Link to={UTILS.DRY_NAV.USERSETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
-                integrationsPage: <Link to={UTILS.DRY_NAV.INTEGRATIONS.URL} title={T.get('nav.integrations')}>{T.get('nav.integrations')}</Link>,
+                pluginsPage: <Link to={UTILS.DRY_NAV.INTEGRATIONS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
                 avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
             },
             accountSettings = <span>
                                     <div className="wonderland-navbar__icon wonderland-navbar__icon--regular"><i className="fa fa-cog" aria-hidden="true" /></div>
                                     <ul className="box wonderland-navbar__subnav">
                                         <li>{items.accountSettingsPage}</li>
-                                        <li>{items.integrationsPage}</li>
+                                        <li>{items.pluginsPage}</li>
                                         {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
                                         <li>{items.apiPage}</li>

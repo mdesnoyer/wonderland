@@ -11,7 +11,7 @@ import ModalParent from '../core/ModalParent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var IntegrationsForm = React.createClass({
+var PluginsForm = React.createClass({
 	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -29,9 +29,9 @@ var IntegrationsForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (self.state.id) {
-            self.GET('integrations/' + self.state.provider, {
+            self.GET('plugins/' + self.state.provider, {
                 data: {
-                    integration_id: self.state.id
+                    plugin_id: self.state.id
                 }
             })
                 .then(function(res) {
@@ -64,7 +64,7 @@ var IntegrationsForm = React.createClass({
         var self = this,
             buttonClassName,
             inputClassName,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
         ;
         if (self.state.mode === 'loading') {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';
@@ -81,23 +81,23 @@ var IntegrationsForm = React.createClass({
                     <form onSubmit={self.handleSubmit}>
                         {messageNeeded}
                         <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.integrations.types.brightcove.form.heading')}</legend>
+                            <legend className="subtitle is-5">{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
                             
-                            <label htmlFor="publisherId">{T.get('copy.integrations.types.brightcove.form.publisherId')}</label>
+                            <label htmlFor="publisherId">{T.get('copy.plugins.types.brightcove.form.publisherId')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" minLength="1" maxLength="256" value={self.state.publisherId} placeholder={T.get('copy.integrations.types.brightcove.form.publisherId')} />
+                                <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" minLength="1" maxLength="256" value={self.state.publisherId} placeholder={T.get('copy.plugins.types.brightcove.form.publisherId')} />
                                 <a className="button is-medium" data-target="brightcove-publisherId" onClick={self.openModal}>?</a>
                             </p>
                             
-                            <label htmlFor="readToken">{T.get('copy.integrations.types.brightcove.form.readToken')}</label>
+                            <label htmlFor="readToken">{T.get('copy.plugins.types.brightcove.form.readToken')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="readToken" id="readToken" minLength="1" maxLength="512" value={self.state.readToken} placeholder={T.get('copy.integrations.types.brightcove.form.readToken')} />
+                                <input required className={inputClassName} type="text" ref="readToken" id="readToken" minLength="1" maxLength="512" value={self.state.readToken} placeholder={T.get('copy.plugins.types.brightcove.form.readToken')} />
                                 <a className="button is-medium" data-target="brightcove-readToken" onClick={self.openModal}>?</a>
                             </p>
                             
-                            <label htmlFor="writeToken">{T.get('copy.integrations.types.brightcove.form.writeToken')}</label>
+                            <label htmlFor="writeToken">{T.get('copy.plugins.types.brightcove.form.writeToken')}</label>
                             <p className="control is-grouped">
-                                <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" minLength="1" maxLength="512" value={self.state.writeToken} placeholder={T.get('copy.integrations.types.brightcove.form.writeToken')} />
+                                <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" minLength="1" maxLength="512" value={self.state.writeToken} placeholder={T.get('copy.plugins.types.brightcove.form.writeToken')} />
                                 <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
                             </p>
                             <div className="is-pulled-left">
@@ -217,10 +217,10 @@ var IntegrationsForm = React.createClass({
             break;
         }
         if (self.state.mode === 'adding') {
-            apiCall = self.POST('integrations/' + self.state.provider, options);
+            apiCall = self.POST('plugins/' + self.state.provider, options);
         } else {
-            options.data.integration_id = self.state.id;
-            apiCall = self.PUT('integrations/' + self.state.provider, options);
+            options.data.plugin_id = self.state.id;
+            apiCall = self.PUT('plugins/' + self.state.provider, options);
         }
         apiCall
             .then(function(res) {
@@ -236,6 +236,6 @@ var IntegrationsForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default IntegrationsForm;
+export default PluginsForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

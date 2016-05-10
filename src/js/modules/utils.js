@@ -141,13 +141,13 @@ var UTILS = {
             URL: '/dashboard/'
         },
         INTEGRATIONS: {
-            URL: '/integrations/'
+            URL: '/plugins/'
         },
         INTEGRATIONS_NEW: {
-            URL: '/integrations/new/'
+            URL: '/plugins/new/'
         },
         INTEGRATIONS_BRIGHTCOVE: {
-            URL: '/integrations/new/brightcove/'
+            URL: '/plugins/new/brightcove/'
         },
         SIGNUP: {
             URL: '/signup/'
