@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
+import PluginsForm from '../forms/PluginsForm';
 import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
@@ -11,36 +12,35 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var NewIntegrationPage = React.createClass({
+var PluginsBrightcovePage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    addBrightcove: function () {
-        this.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
+    getInitialState: function() {
+        return {
+            id: this.props.location.query.id
+        };
     },
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.new.integration.title')}
+                    title={T.get('copy.plugins.types.brightcove.title')}
                 />
                 <SiteHeader />
                 <section className="section">
-                    <div className="container">
-                        <h1 className="title is-2">{T.get('copy.new.integration.heading')}</h1>
-                        <div className="content">
-                            {T.get('copy.new.integration.body')}
-                        </div>
-                        <div className="columns">
-                            <div className="card column is-one-third">
-                                <div className="card-content has-text-centered">
-                                    <img src={T.get('copy.plugins.types.brightcove.img')} />
-                                    <div>
-                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
-                                    </div>
-                                </div>
-                            </div>
+                    <div className="columns is-desktop">
+                        <div className="column is-half is-offset-one-quarter">
+                            <h1 className="title is-2">
+                                <img src={T.get('copy.plugins.types.brightcove.img')} />
+                            </h1>
+                            <section className="container">
+                                <PluginsForm
+                                    provider="brightcove"
+                                    id={this.state.id}
+                                />
+                            </section>
                         </div>
                     </div>
                 </section>
@@ -52,6 +52,6 @@ var NewIntegrationPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default NewIntegrationPage;
+export default PluginsBrightcovePage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

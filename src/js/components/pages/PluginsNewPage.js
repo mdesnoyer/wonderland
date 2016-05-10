@@ -11,7 +11,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var IntegrationsNewPage = React.createClass({
+var PluginsNewPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -52,6 +52,6 @@ var IntegrationsNewPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default IntegrationsNewPage;
+export default PluginsNewPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

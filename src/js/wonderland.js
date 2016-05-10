@@ -26,9 +26,9 @@ import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 import TermsPage from './components/pages/TermsPage';
-import IntegrationsPage from './components/pages/IntegrationsPage';
-import NewIntegrationPage from './components/pages/NewIntegrationPage';
-import IntegrationsBrightcovePage from './components/pages/IntegrationsBrightcovePage';
+import PluginsPage from './components/pages/PluginsPage';
+import NewPluginPage from './components/pages/NewPluginPage';
+import PluginsBrightcovePage from './components/pages/PluginsBrightcovePage';
 import AccountSettingsPage from './components/pages/AccountSettingsPage';
 import UserSettingsPage from './components/pages/UserSettingsPage';
 import BillingPage from './components/pages/BillingPage';
@@ -68,12 +68,11 @@ render((
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
         <Route path={UTILS.DRY_NAV.API.URL} component={ApiPage} />
         <Route path={UTILS.DRY_NAV.NEONSCOPE.URL} component={NeonscopePage} />
-        <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={IntegrationsPage} />
-        <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
-        <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={PluginsPage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewPluginPage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={PluginsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component={UserSettingsPage} />
-        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
         <Route path="*" component={NotFoundPage} />
     </Router>
 ), document.querySelector('#wonderland'));
