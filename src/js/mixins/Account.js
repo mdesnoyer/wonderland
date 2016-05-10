@@ -24,6 +24,7 @@ function normalizeAccount(res) {
 
 var Account = {
     getAccount: function() {
+        debugger
         return this.GET('', {
             successHandler: normalizeAccount
         });

@@ -22,7 +22,8 @@ var VideosPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: false
+            isServingEnabled: false,
+            username: 'Hello'
         };
     },
     componentWillMount: function() {
@@ -30,7 +31,8 @@ var VideosPage = React.createClass({
         self.getAccount()
             .then(function (account) {
                 self.setState({
-                    isServingEnabled: account.isServingEnabled
+                    isServingEnabled: account.isServingEnabled,
+                    username: account.accountName
                 });
             })
             .catch(function (err) {
@@ -41,7 +43,7 @@ var VideosPage = React.createClass({
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                // '@username': 'TODO'
+                '@username': self.state.username
             })
         ;
         return (
