@@ -11,6 +11,7 @@ $gray: #888;
 $silver-chalice: #aaa;
 $athens-gray: #edecee;
 $white: #fff;
+$blackish: #121212;
 
 // Overrides
 $blue: $curious-blue;
@@ -68,9 +69,12 @@ $background: $white;
     'components/modal',
     'components/xylophone',
     'components/banner',
+    'components/navbar',
     'components/inputtextedit',
     'components/wondertabs',
-    'components/carousel'
+    'components/image',
+    'components/carousel',
+    'components/pre'
 ;
 
 // 6. Page-specific styles

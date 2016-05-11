@@ -44,7 +44,7 @@ var Integrations = React.createClass({
     render: function() {
         var self = this,
             additionalClass = 'table is-striped' + (self.props.isLoading ? ' is-loading' : ''),
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.integrations.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
             <table className={additionalClass}>
@@ -65,10 +65,10 @@ var Integrations = React.createClass({
                             return (
                                 <tr key={integration.integration_id}>
                                     <td>
-                                        <img src={T.get('copy.integrations.types.' + integration.type + '.img')} />
+                                        <img src={T.get('copy.plugins.types.' + integration.type + '.img')} />
                                     </td>
                                     <td>
-                                        {T.get('copy.integrations.types.' + integration.type + '.title')} - {integration.integration_id}
+                                        {T.get('copy.plugins.types.' + integration.type + '.title')} - {integration.integration_id}
                                     </td>
                                     <td>
                                         <a className="button is-medium is-pulled-right" onClick={configureClick}>{T.get('configure')}</a>
@@ -92,9 +92,9 @@ var Integrations = React.createClass({
         this.context.router.push('/integrations/' + integration.type + '/?id=' + integration.integration_id);
     },
     addNew: function() {
-        // this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_NEW.URL);
+        // this.context.router.push(UTILS.DRY_NAV.PLUGINS_NEW.URL);
         // Temp until there are more types of integrations
-        this.context.router.push(UTILS.DRY_NAV.INTEGRATIONS_BRIGHTCOVE.URL);
+        this.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
     }
 });
 
