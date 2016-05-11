@@ -142,6 +142,17 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze Button',
             'copy.analyzeVideoPanel.panel.3': 'View the Results',
 
+            'copy.type': 'Type',
+            'copy.dimensions': 'Dimensions',
+            'copy.thumbnailId': 'Thumbnail ID',
+            'copy.created' : 'Created',
+            'copy.updated' : 'Updated',
+            'copy.frameNo' : 'Frame <abbr title="Number">No.</abbr>',
+            'copy.ctr' : '<abbr title="Click Through Rate">CTR</abbr>',
+
+            'copy.unknown': 'Unknown',
+            'copy.na': 'N/A',
+
             returnSignIn: 'Return to Sign In',
             //password reset
             'reset.forgot':  'Forgot your password?',

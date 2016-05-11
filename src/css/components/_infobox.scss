@@ -6,6 +6,9 @@
 
 .wonderland-dt {
     font-weight: bold;
+    & > * {
+        font-weight: bold;
+    }
 }
 
 .wonderland-dd {
