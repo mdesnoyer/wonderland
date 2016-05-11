@@ -55,7 +55,7 @@ var AnalyzeVideoForm = React.createClass({
             .catch(function(err) {
                 // The 404 is used to indicate the account has no limits on it.
                 // This is a valid response from the Back end.
-                switch (err.status) {
+                switch (err.code) {
                     case 404:
                         self.setState({
                             mode: 'silent'
@@ -225,7 +225,7 @@ var AnalyzeVideoForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                switch (err.status) {
+                switch (err.code) {
                     case 402:
                         E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
                             '%limit': self.state.maxVideoCount,
