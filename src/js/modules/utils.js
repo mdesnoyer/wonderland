@@ -214,7 +214,7 @@ var UTILS = {
         return UTILS.makePercentage(rawCtr, 2);
     },
     makePercentage: function(rawNumber, decimalPlaces) {
-        return (rawNumber * 100).toFixed(decimalPlaces);
+        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
     },
     generateId: function() {
         var id = shortid.generate(),
