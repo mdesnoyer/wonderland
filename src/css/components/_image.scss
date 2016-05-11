@@ -1,17 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-.is-hidden {
-    display: none;
-}
-
-.is-shown {
-    display: block;
-}
-
-.TODO,
-.todo {
-    background-color: #f00;
-    color: #fff;
+.wonderland-image {
+    margin: 1em 0;
+    img {
+        border: 1px solid $grey-lighter;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

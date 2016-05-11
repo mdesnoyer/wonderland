@@ -1,23 +1,29 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+// Constants to compare types against
+const TYPES = {
+    er: getType(new Error()),
+    ob: getType({})
+};
+
+// Helper function to return a comparable string for the type of an object. Easier/cleaner than `typeof`, basically
 function getType(val) {
+    var type;
+    // Trap undefined as it will error
     if (val !== undefined) {
-        if (val == null) {
+        // handle null as not all browsers report it correctly
+        if (val === null) {
             return '[object Null]';
         }
-        var type = Object.prototype.toString.call(val);
-        if (type == Object.prototype.toString.call(0) && isNaN(val)) {
+        type = Object.prototype.toString.call(val);
+        // NaN will return as a Number; segment it out so it can be targetted
+        if (type === Object.prototype.toString.call(0) && isNaN(val)) {
             return '[object NaN]';
         }
         return type;
     } else {
         return '[object Undefined]';
     }
-};
-
-const TYPES = {
-    er: getType(new Error()),
-    ob: getType({})
 };
 
 let E = {
@@ -31,6 +37,7 @@ let E = {
                 break;
             default:
                 self.checkForError(errorMessage);
+                break;
         }
     },
     checkForError: function(errorMessage, check) {

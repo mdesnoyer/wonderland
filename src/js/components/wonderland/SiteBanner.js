@@ -53,8 +53,8 @@ var SiteBanner = React.createClass({
             <header className="wonderland-banner wonderland-banner--header">
                 <div className="container">
                     <nav className="navbar wonderland-navbar is-fullwidth">
-                        <SiteNavigation side="left" isSignedIn={SESSION.active()} />
-                        <SiteNavigation avatar={self.state.avatar} displayName={self.state.displayName} side="right" isSignedIn={SESSION.active()} />
+                        <SiteNavigation pos="left" isSignedIn={SESSION.active()} />
+                        <SiteNavigation pos="right" avatar={self.state.avatar} displayName={self.state.displayName} isSignedIn={SESSION.active()} />
                     </nav>
                 </div>
             </header>

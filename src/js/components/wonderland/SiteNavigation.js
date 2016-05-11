@@ -25,9 +25,12 @@ var SiteNavigation = React.createClass({
     },
     render: function() {
         var self = this,
+            itemClass = '',
             items = {
                 logo: <a className="wonderland-navbar__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
-                contact: <a className="wonderland-navbar__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                contactPageFancy: <a className="wonderland-navbar__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                termsPagePlain: <a href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>,
                 dashboard: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
                 analyzeVideo: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
@@ -40,9 +43,11 @@ var SiteNavigation = React.createClass({
                 telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
                 apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
                 neonscopePage: <Link to={UTILS.DRY_NAV.NEONSCOPE.URL} title={T.get('nav.neonscope')}>{T.get('nav.neonscope')}</Link>,
+                supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
+                supportPageFancy: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
                 userSettingsPage: <Link to={UTILS.DRY_NAV.USERSETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
-                integrationsPage: <Link to={UTILS.DRY_NAV.INTEGRATIONS.URL} title={T.get('nav.integrations')}>{T.get('nav.integrations')}</Link>,
+                integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
                 avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
             },
             accountSettings = <span>
@@ -54,6 +59,7 @@ var SiteNavigation = React.createClass({
                                         {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
                                         <li>{items.apiPage}</li>
+                                        <li>{items.supportPagePlain}</li>
                                     </ul>
                                 </span>,
             userSettings = <span>
@@ -64,39 +70,51 @@ var SiteNavigation = React.createClass({
                                 </ul>
                             </span>,
             constructedNav = [],
-            className = 'navbar-' + self.props.side
+            navClass = 'wonderland-navbar wonderland-navbar-' + self.props.pos + ' navbar-' + self.props.pos;
         ;
         if (self.state.isSignedIn) {
             // Signed In
-            if (self.props.side === 'left') {
+            if (self.props.pos === 'left') {
                 constructedNav.push(items.logo);
                 constructedNav.push(items.videos);
             }
-            if (self.props.side === 'right') {
+            if (self.props.pos === 'right') {
                 constructedNav.push(items.username);
                 constructedNav.push(userSettings);
                 constructedNav.push(accountSettings);
-                constructedNav.push(items.contact);
+                constructedNav.push(items.contactPageFancy);
             }
         }
         else {
             // Signed Out
-            if (self.props.side === 'left') {
+            if (self.props.pos === 'left') {
                 constructedNav.push(items.logo);
                 // constructedNav.push(items.forgotPassword);
             }
-            if (self.props.side === 'right') {
-                constructedNav.push(items.contact);
+            if (self.props.pos === 'right') {
+                constructedNav.push(items.contactPageFancy);
+                constructedNav.push(items.supportPageFancy);
                 constructedNav.push(items.signIn);
                 constructedNav.push(items.signUp);
             }
         }
+        if (self.props.pos === 'bottom') {
+            constructedNav.push(items.contactPagePlain);
+            constructedNav.push(items.supportPagePlain);
+            constructedNav.push(items.termsPagePlain);
+        }
+        if (self.props.pos === 'bottom') {
+            itemClass = 'wonderland-navbar-bottom__item';
+        }
+        else {
+            itemClass = 'wonderland-navbar__item navbar-item';
+        }
         return (
-            <div className={className}>
+            <div className={navClass}>
                 {
                     constructedNav.map(function(navbarItem, i) {
                         return (
-                            <div key={i} className="wonderland-navbar__item navbar-item">{navbarItem}</div>
+                            <div key={i} className={itemClass}>{navbarItem}</div>
                         );
                     })
                 }
