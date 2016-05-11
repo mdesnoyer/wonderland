@@ -26,6 +26,8 @@ var BillingForm = React.createClass({
         return {
             isError: false,
             isLoading: true,
+            stripeId: false,
+            addNewCard: false,
             possibleYears: years,
             planType: 'demo',
             address_line1: '',
@@ -47,36 +49,54 @@ var BillingForm = React.createClass({
         var self = this;
         self.GET('billing/account')
             .then(function (res) {
-                self.setState({
-                    isLoading: false,
-                    planType: 'demo',
-                    address_line1: res.address_line1,
-                    address_line2: res.address_line2,
-                    address_city: res.address_city,
-                    address_state: res.address_state,
-                    address_zip: res.address_zip,
-                    name: res.name,
-                    number: (res.brand === 'AMEX' ? '***********' : '************') + res.last4,
-                    exp_month: res.exp_month,
-                    exp_year: res.exp_year
-                });
+                var currentCard = false,
+                    currentSubscription = false
+                ;
+                if (res.sources && res.sources.data) {
+                    res.sources.data.some(function (card) {
+                        if (card.id === res.default_source) {
+                            currentCard = card;
+                            return true;
+                        }
+                    });
+                }
+                if (currentCard) {
+                    self.setState({
+                        isLoading: false,
+                        stripeId: res.id,
+                        planType: currentSubscription ? 'TODO' : 'demo',
+                        address_line1: currentCard.address_line1,
+                        address_line2: currentCard.address_line2,
+                        address_city: currentCard.address_city,
+                        address_state: currentCard.address_state,
+                        address_zip: currentCard.address_zip,
+                        name: currentCard.name,
+                        current_number: (currentCard.brand === 'AMEX' ? '***********' : '************') + currentCard.last4,
+                        current_exp_month: ('0' + currentCard.exp_month).slice(-2),
+                        current_exp_year: currentCard.exp_year
+                    });
+                } else {
+                    // Throw an error to push into the `catch` block below
+                    throw new Error('No card on file');
+                }
             })
             .catch(function (err) {
                 // On error (no account), default the nameOnCard to the current user's name
-                return SESSION.user();
-            })
-            .then(function (user) {
-                self.setState({
-                    isLoading: false,
-                    name: user.first_name + ' ' + user.last_name
-                });
-            })
-            .catch(function (err) {
-                E.raiseError(err);
-                self.setState({
-                    isLoading: false,
-                    isError: true
-                });
+                return SESSION.user()
+                    .then(function (user) {
+                        self.setState({
+                            isLoading: false,
+                            name: user.first_name + ' ' + user.last_name,
+                            addNewCard: true
+                        });
+                    })
+                    .catch(function (err) {
+                        E.raiseError(err);
+                        self.setState({
+                            isLoading: false,
+                            isError: true
+                        });
+                    });
             });
     },
     componentDidMount: function() {
@@ -89,15 +109,23 @@ var BillingForm = React.createClass({
             document.body.appendChild(s);
         }
     },
-    handleFieldChange(e) {
+    handleFieldChange: function(e) {
         var data = {};
         data[e.target.id] = e.target.value;
         this.setState(data);
     },
-    handlePlanTypeChange(val) {
+    handlePlanTypeChange: function(val) {
         this.setState({
             planType: val
         });
+    },
+    handleAddNewCardChange: function(e) {
+        this.setState({
+            addNewCard: e.target.value === '1'
+        });
+    },
+    handleNumberFocus: function(e) {
+        e.target.select();
     },
     render: function() {
         var self = this,
@@ -153,11 +181,61 @@ var BillingForm = React.createClass({
                         )}
                     </RadioGroup>
                     {(() => {
-                        if (self.state.planType !== 'demo') {
+                        if (self.state.planType !== 'demo' && self.state.stripeId) {
                             return (
                                 <div className="control">
                                     <hr />
-
+                                    <label className="radio">
+                                        <input
+                                            type="radio"
+                                            name="addNewCard"
+                                            value="0"
+                                            onChange={self.handleAddNewCardChange}
+                                            defaultChecked
+                                        />
+                                        {T.get('copy.billing.form.useCardOnFile')}
+                                    </label>
+                                    <p>
+                                        {self.state.name}
+                                    </p>
+                                    <p>
+                                        {self.state.address_line1}
+                                        {self.state.address_line2 ? '<br />' + self.state.address_line2 : ''}
+                                        <br />{self.state.address_city},&nbsp;{self.state.address_state}&nbsp;{self.state.address_zip}
+                                    </p>
+                                    <p>
+                                        {self.state.current_number}
+                                        <br />{self.state.current_exp_month}/{self.state.current_exp_year}
+                                    </p>
+                                </div>
+                            );
+                        }
+                    })()}
+                    {(() => {
+                        if (self.state.planType !== 'demo' && self.state.stripeId) {
+                            return (
+                                <p>
+                                    <label className="radio">
+                                        <input
+                                            type="radio"
+                                            name="addNewCard"
+                                            value="1"
+                                            onChange={self.handleAddNewCardChange}
+                                        />
+                                        {T.get('copy.billing.form.useNewCard')}
+                                    </label>
+                                </p>
+                            );
+                        } else {
+                            return (
+                                <hr />
+                            );
+                        }
+                    })()}
+                    {(() => {
+                        if (self.state.planType !== 'demo' && self.state.addNewCard) {
+                            return (
+                                <div className="control">
                                     <label htmlFor="address_line1">{T.get('copy.billing.form.billingAddress')}</label>
                                     <p className="control is-grouped">
                                         <input
@@ -248,6 +326,7 @@ var BillingForm = React.createClass({
                                             data-stripe="number"
                                             placeholder={T.get('copy.billing.form.ccNumber')}
                                             defaultValue={self.state.number}
+                                            onFocus={self.handleNumberFocus}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -331,6 +410,10 @@ var BillingForm = React.createClass({
             }, function () {
                 if (self.state.planType === 'demo') {
                     self.handleStripeResponse();
+                } else if (self.state.stripeId) {
+                    self.handleStripeResponse(200, {
+                        id: self.state.stripeId
+                    });
                 } else {
                     try {
                         window.Stripe.setPublishableKey(CONFIG.STRIPE_KEY);
@@ -399,7 +482,8 @@ var BillingForm = React.createClass({
                 .then(function () {
                     self.setState({
                         isLoading: false,
-                        isError: false
+                        isError: false,
+                        stripeId: data && data.id ? data.id : false
                     }, function () {
                         self._isSubmitted = false;
                     }); 
