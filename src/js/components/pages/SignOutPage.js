@@ -18,25 +18,25 @@ var SignOutPage = React.createClass({
 	mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
-            userName: 'Goodbye!'
+            username: ''
         };
     },
     componentWillMount: function() {
         var self = this,
-            displayName
+            username
         ;
         if (SESSION.active()) {
             SESSION.user()
                 .then(function(userData) {
                     if (userData) {
                         if (userData.first_name) {
-                            displayName = userData.first_name;
+                            username = userData.first_name;
                         }
                         else {
-                            displayName = userData.username
+                            username = userData.username
                         }
                         self.setState({
-                            userName: displayName
+                            username: username
                         });
                     }
                 })
@@ -56,7 +56,7 @@ var SignOutPage = React.createClass({
     render: function() {
         var self = this,
             heading = T.get('copy.signOut.heading', {
-                '@userName': self.state.userName
+                '@username': self.state.username
             }),
             body = T.get('copy.signOut.body', {
                 '@link': UTILS.DRY_NAV.SIGNIN.URL

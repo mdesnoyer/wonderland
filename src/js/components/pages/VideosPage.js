@@ -24,7 +24,7 @@ var VideosPage = React.createClass({
     getInitialState: function () {
         return {
             isServingEnabled: false,
-            userName: 'Hello'
+            username: ''
         };
     },
     componentWillMount: function() {
@@ -42,7 +42,7 @@ var VideosPage = React.createClass({
                             displayName = userData.username
                         }
                         self.setState({
-                            userName: displayName
+                            username: displayName
                         });
                     }
                 })
@@ -59,7 +59,7 @@ var VideosPage = React.createClass({
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                '@userName': self.state.userName
+                '@username': self.state.username
             })
         ;
         return (

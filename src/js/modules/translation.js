@@ -48,13 +48,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.body': 'Start making high-performance video thumbnails now! Create an account, below.',
 
             'copy.signOut.title': 'Sign Out',
-            'copy.signOut.heading': '@userName you are now signed out. Thanks for using Neon.',
+            'copy.signOut.heading': 'Goodbye @username, you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
 
             'copy.videosPage.title': 'Video Library',
             'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
-            'copy.videosPage.body': '@userName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.videosPage.body': 'Hello @username, welcome to your video library! You can add, analyze and view your Neon high-performance video thumbnails, below.',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
