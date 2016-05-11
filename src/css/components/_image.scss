@@ -1,8 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 .wonderland-image {
-    border: 1px solid $grey-lighter;
     margin: 1em 0;
+    img {
+        border: 1px solid $grey-lighter;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
