@@ -210,6 +210,12 @@ var UTILS = {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
         return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
+    formatCtr: function(rawCtr) {
+        return UTILS.makePercentage(rawCtr, 2);
+    },
+    makePercentage: function(rawNumber, decimalPlaces) {
+        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
+    },
     generateId: function() {
         var id = shortid.generate(),
             hash64 = fnv.hash(id + Date.now(), 128)
