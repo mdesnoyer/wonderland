@@ -140,14 +140,14 @@ var UTILS = {
         DASHBOARD: {
             URL: '/dashboard/'
         },
-        INTEGRATIONS: {
-            URL: '/integrations/'
+        PLUGINS: {
+            URL: '/plugins/'
         },
-        INTEGRATIONS_NEW: {
-            URL: '/integrations/new/'
+        PLUGINS_NEW: {
+            URL: '/plugins/new/'
         },
-        INTEGRATIONS_BRIGHTCOVE: {
-            URL: '/integrations/new/brightcove/'
+        PLUGINS_BRIGHTCOVE: {
+            URL: '/plugins/new/brightcove/'
         },
         SIGNUP: {
             URL: '/signup/'
@@ -163,6 +163,12 @@ var UTILS = {
         },
         USERSETTINGS: {
             URL: '/settings/user/'
+        },
+        SUPPORT: {
+            URL: '/support/'
+        },
+        TERMS: {
+            URL: '/terms/'
         },
         BILLING: {
             URL: '/billing/'
@@ -209,6 +215,12 @@ var UTILS = {
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
         return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+    },
+    formatCtr: function(rawCtr) {
+        return UTILS.makePercentage(rawCtr, 2);
+    },
+    makePercentage: function(rawNumber, decimalPlaces) {
+        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
     },
     generateId: function() {
         var id = shortid.generate(),
