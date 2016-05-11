@@ -62,7 +62,7 @@ var AnalyzeVideoForm = React.createClass({
                         })
                         break;
                     default:
-                        E.checkForError(err.statusText, false)
+                        E.raiseError(err);
                         self.setState({
                             mode: 'error'
                         })
@@ -236,7 +236,7 @@ var AnalyzeVideoForm = React.createClass({
                         E.checkForError(T.get('copy.analyzeVideo.badRequest'), false);
                         break;
                     default:
-                        E.checkForError(JSON.parse(err.responseText).error.data, false);
+                        E.raiseError(err);
                         break;
                 }
                 self.setState({

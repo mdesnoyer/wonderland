@@ -35,7 +35,7 @@ var AccountSettingsTab1 = React.createClass({
                 });
             })
             .catch(function (err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
+                E.raiseError(err);
                 if (self._isMounted) {
                     self.setState({
                         isLoading: false,
@@ -81,7 +81,7 @@ var AccountSettingsTab1 = React.createClass({
                 }
             })
             .catch(function(err) {
-                E.raiseError(JSON.parse(err.responseText).error.message);
+                E.raiseError(err);
                 if (self._isMounted) {
                     self.setState({
                         isLoading: false

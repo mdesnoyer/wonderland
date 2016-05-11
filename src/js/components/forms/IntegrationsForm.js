@@ -52,7 +52,7 @@ var IntegrationsForm = React.createClass({
                         break;
                     }
                 }).catch(function(err) {
-                    E.checkForError(err.statusText, false);
+                    E.raiseError(err);
                     self.setState({
                         isError: true,
                         mode: 'adding'
@@ -244,7 +244,7 @@ var IntegrationsForm = React.createClass({
                     }
                 );
             }).catch(function(err) {
-                E.checkForError(err.statusText, false);
+                E.raiseError(err);
                 self.setState({
                     isError: true,
                     mode: mode
