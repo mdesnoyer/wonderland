@@ -211,8 +211,8 @@ var Video = React.createClass({
                     }
                 }).catch(function(err) {
                     self.setState({
-                        status: err.status,
-                        message: err.responseText,
+                        status: err.code,
+                        error: err.message,
                         isLoading: false
                     }, function() {
                         clearInterval(self.timer);

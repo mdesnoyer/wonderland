@@ -39,7 +39,7 @@ var ConfirmAccountPage = React.createClass({
             self.context.router.push('/account/confirmed/');
         })
         .catch(function (err) {
-            if (err.status === 409) {
+            if (err.code === 409) {
                 self.handleError('It looks like you have already confirmed this account.', false);
                 self.setState({
                     isError: true
