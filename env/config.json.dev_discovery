@@ -1,5 +1,6 @@
 {
     LABEL: 'dev_discovery',
     AUTH_HOST: "https://test-auth.neon-lab.com/api/v2/",
-    API_HOST: "//test-services.neon-lab.com/api/v2/"
+    API_HOST: "//test-services.neon-lab.com/api/v2/",
+    STRIPE_KEY: 'pk_test_0joiKQtfUXEAn43El6pJI0k6'
 }

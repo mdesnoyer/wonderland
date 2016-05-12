@@ -54,6 +54,7 @@ var SiteNavigation = React.createClass({
                                     <div className="wonderland-navbar__icon wonderland-navbar__icon--regular"><i className="fa fa-cog" aria-hidden="true" /></div>
                                     <ul className="box wonderland-navbar__subnav">
                                         <li>{items.accountSettingsPage}</li>
+                                        <li>{items.billingPage}</li>
                                         <li>{items.integrationsPage}</li>
                                         {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
@@ -65,7 +66,6 @@ var SiteNavigation = React.createClass({
                                 {items.avatar}
                                 <ul className="box wonderland-navbar__subnav">
                                     <li>{items.userSettingsPage}</li>
-                                    <li>{items.billingPage}</li>
                                     <li>{items.signOut}</li>
                                 </ul>
                             </span>,

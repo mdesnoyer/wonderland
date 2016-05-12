@@ -94,6 +94,9 @@ var AJAXModule = {
 
         self.Session = self.Session || SESSION;
 
+        // Default error handler
+        options.errorHandler = options.errorHandler || self.handleApiError;
+
         promise = new Promise(function (resolve, reject) {
             var authUrl = '',
                 err;
