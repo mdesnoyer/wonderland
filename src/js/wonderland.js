@@ -42,7 +42,7 @@ import SupportPage from './components/pages/SupportPage';
 const CONFIG = require('json../../../env/config.json');
 window.CONFIG = CONFIG;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 render((
     <Router history={browserHistory}>

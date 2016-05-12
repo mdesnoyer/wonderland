@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-thumbnail {
     position: relative;
@@ -29,7 +29,7 @@
     bottom: 4%;
     right: 3%;
     background-color: $grey;
-    transition: all 1s;
+    transition: background-color, color 1s;
 }
 
 .wonderland-thumbnail__indicator {
@@ -59,7 +59,7 @@
     display: none;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-hero-thumbnail {
     width: 5em;
@@ -75,4 +75,4 @@
     }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
