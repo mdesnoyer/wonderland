@@ -31,6 +31,15 @@ var VideosPage = React.createClass({
         var self = this,
             displayName
         ;
+        self.getAccount()
+            .then(function(account) {
+                self.setState({
+                    isServingEnabled: account.isServingEnabled
+                }); 
+            })
+            .catch(function(err){
+                E.raiseError(JSON.parse(err.responseText).error.message);
+            });
         if (SESSION.active()) {
             SESSION.user()
                 .then(function(userData) {
