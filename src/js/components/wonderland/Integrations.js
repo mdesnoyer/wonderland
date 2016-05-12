@@ -20,7 +20,7 @@ var Integrations = React.createClass({
             errorMessageArray: [],
             isError: false,
             integrations: []
-        }  
+        }
     },
     componentWillMount: function() {
         var self = this,
@@ -32,6 +32,7 @@ var Integrations = React.createClass({
             .then(function(res) {
                 self.setState({
                     isError: false,
+                    accountId: res.account_id,
                     integrations: res.integrations || res.integration_ids || []
                 });
             }).catch(function(err) {
@@ -89,7 +90,7 @@ var Integrations = React.createClass({
         );
     },
     configure: function(integration) {
-        this.context.router.push('/integrations/' + integration.type + '/?id=' + integration.integration_id);
+        this.context.router.push('/' + this.state.accountId + '/integration/' + integration.type + '/' + integration.integration_id + '/')
     },
     addNew: function() {
         // this.context.router.push(UTILS.DRY_NAV.PLUGINS_NEW.URL);

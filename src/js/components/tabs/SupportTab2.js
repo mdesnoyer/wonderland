@@ -24,7 +24,7 @@ var SupportTab2 = React.createClass({
                 </ol>
                 <p>The easiest way to integrate your Neon account and your Brightcove account is by using Neon&rsquo;s plugins wizard, which you can access at any time by clicking on the Plugins tab and then &ldquo;Add Plugin&rdquo; in your Neon account. The wizard will guide you through the integration process step-by-step.</p>
                 <p>If you want more information about what&rsquo;s happening at each step, or if you want to manage your plugin settings without using the wizard, you can read the guide below.</p>
-                
+
                 <h3 className="title is-4">1. Link Your Brightcove Account</h3>
                 <p>To give Neon access to your Brightcove Video Cloud account, you&rsquo;ll need to have your Video Cloud Account ID and API authentication credentials on hand.</p>
 
@@ -111,7 +111,7 @@ var SupportTab2 = React.createClass({
                 <h3 className="title is-4">3. Enable Telemetry from Your Players</h3>
                 <p>During this step, you&rsquo;ll add the Neon Telemetry Player plugin to your video players. This will allow us to understand how your video thumbnails are performing on your site, optimize your thumbnails in real time, and provide you with analytics about your thumbnail performance.</p>
                 <p>You&rsquo;ll likely be using one of Brightcove&rsquo;s two types of players: the legacy <a href="https://support.brightcove.com/en/video-cloud/docs/delivering-video-html5-and-smart-players" rel="external">Smart Player</a> or the new <a href="https://support.brightcove.com/en/video-cloud/docs/what-new-brightcove-player" rel="external">Brightcove Player</a>. The process for installing the Neon plugin is different for each player.</p>
-                
+
                 <h4 className="title is-5">New Brightcove Player</h4>
                 <p>To add the Neon Telemetry Player plugin to your Brightcove players, visit the Brightcove plugin settings page in your Neon UI and answer &ldquo;yes&rdquo; to &ldquo;Do you use the new Brightcove Player?&rdquo;</p>
                 {/*<p className="TODO">TODO - insert picture</p>.*/}
@@ -138,10 +138,10 @@ var SupportTab2 = React.createClass({
 
                 <h3 className="title is-4">4. Enable Telemetry from Your Site</h3>
                 <p>Neon can receive telemetry from your players using the Neon Telemetry Player plugins for those players. Telemetry is the stream of data that tells us how users are interacting with your images and video, allowing us to ensure that your best images are always representing your content. The process for enabling telemetry for your players is covered in step 3 above. However, if you show thumbnails outside of your player, you must add the Neon Telemetry Tag to your site. If you&rsquo;re a Gallery customer, you must complete this step in order to get accurate data from Neon. If you have a self-managed site, you should complete this step if you show thumbnails outside of your player. For example, a common way to show thumbnails outside of your player is to show a video thumbnail on your homepage that, when clicked, takes the user to an article page that contains the video whose thumbnail was clicked on the homepage. You can find your customized tag in your Neon account by clicking the gear and selecting <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry</a>.</p>
-                
+
                 <h4 className="title is-5">Self-managed site</h4>
                 <p>Your <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> can be added to your site using any tag manager (e.g. <a href="http://tealium.com/" rel="external">Tealium</a>, <a href="https://www.google.com/analytics/tag-manager/" rel="external">Google Tag Manager</a>, etc), or by adding it directly to the pages on your site that contain video thumbnail images you want to optimize.</p>
-                
+
                 <h4 className="title is-5">Gallery</h4>
                 <p>To insert the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into your Gallery site:</p>
                 <ol>

@@ -145,7 +145,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.message.link.one': '<a href="@link">Neon Home</a>',
             'copy.message.link.two': '<a href="@link">Video Library</a>',
             'copy.message.link.three': '<a href="@link">Contact</a>',
-            
+
             'copy.plugins.types.brightcove.title': 'Brightcove',
             'copy.plugins.types.brightcove.img': '/img/brightcove.png',
             'copy.plugins.types.brightcove.form.heading': 'Plugin Settings',
@@ -156,6 +156,15 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideoPanel.panel.1': 'Find a video and paste the URL link Into the Analyze bar',
             'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze Button',
             'copy.analyzeVideoPanel.panel.3': 'View the Results',
+
+            //integrations
+            //brightcove
+            'copy.integration.bc.accountId': 'Account ID',
+            'copy.integration.bc.clientId': 'Client ID',
+            'copy.integration.bc.clientSecret': 'Client Secret',
+            'copy.integration.bc.yes': 'Yes',
+            'copy.integration.bc.no': 'No',
+            'copy.integration.bc.playerNotFound': 'No Players Found',
 
             'copy.type': 'Type',
             'copy.dimensions': 'Dimensions',
@@ -229,7 +238,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountCreationTempError': 'Account Creation is Currently In Development, Please Use Test Account',
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'I agree to Neon'+ String.fromCharCode(39) + 's <a href="@link">Terms and Conditions</a> of use.',
-            
+
             'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
             'copy.processingSlide.2': 'Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
             'copy.processingSlide.3': 'Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
