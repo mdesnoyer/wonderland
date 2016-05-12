@@ -490,7 +490,9 @@ var BillingForm = React.createClass({
                             month = now.getMonth() + 1
                         ;
                         // Reset form for new card potential
-                        self.refs.useCardOnFile.checked = true;
+                        if (self.refs.useCardOnFile) {
+                            self.refs.useCardOnFile.checked = true;
+                        }
                         self.setState({
                             isError: false,
                             stripeId: res && res.id ? res.id : false,

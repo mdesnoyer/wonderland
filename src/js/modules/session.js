@@ -46,7 +46,7 @@ var Session = {
                 data: {
                     token: this.state.accessToken
                 }
-            });
+            }).promise;
         }
         else {
             ret = new Promise(function (resolve, reject) {
