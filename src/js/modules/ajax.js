@@ -22,11 +22,19 @@ var AJAXModule = {
         }).join('&');
     },
     handleApiError: function(err) {
+        var ret;
         try {
-            return JSON.parse(err.responseText).error;
+            ret = JSON.parse(err.responseText).error;
+            if (!ret.code) {
+                ret.code = err.status || 500;
+            }
         } catch (e) {
-            return err;
+            ret = {
+                message: err.responseText,
+                code: err.status
+            };
         }
+        return ret;
     },
     doApiCall: function(url, options) {
         var self = this,
