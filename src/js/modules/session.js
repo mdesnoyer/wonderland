@@ -1,10 +1,10 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import cookie from 'react-cookie';
 import AjaxModule from './ajax';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
@@ -15,7 +15,7 @@ const accessTokenKey = 'at',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Session = {
     state: {
@@ -46,7 +46,7 @@ var Session = {
                 data: {
                     token: this.state.accessToken
                 }
-            });
+            }).promise;
         }
         else {
             ret = new Promise(function (resolve, reject) {
@@ -126,8 +126,8 @@ var Session = {
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Session;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

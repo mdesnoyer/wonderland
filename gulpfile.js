@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -26,7 +26,7 @@ var configSrc   = './env/config.json.' + env;
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function handleErrors() {
     var args = Array.prototype.slice.call(arguments);
@@ -37,7 +37,7 @@ function handleErrors() {
     this.emit('end'); // Keep gulp from hanging on this task
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function buildStyle(isUglified) {
     gulp.src('./src/css/**/*')
@@ -62,19 +62,19 @@ function buildStyle(isUglified) {
     ;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesDebug', function() {
     buildStyle(false);
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesLive', function() {
     buildStyle(true);
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('statics', function() {
     return gulp.src(staticsSrc)
@@ -84,7 +84,7 @@ gulp.task('statics', function() {
         }));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('clipboardJs', function() {
     return gulp.src('./node_modules/clipboard/dist/clipboard.min.js')
@@ -94,7 +94,7 @@ gulp.task('clipboardJs', function() {
         }));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('webfontJs', function() {
     return gulp.src('./src/js/vendor/google.webfont.js')
@@ -104,7 +104,7 @@ gulp.task('webfontJs', function() {
         }));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('config',['clean:config'] ,function() {
     return gulp.src(configSrc)
@@ -120,7 +120,7 @@ gulp.task('clean:config', function() {
         .pipe(clean());
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('redirects', function() {
     return gulp.src('./_redirects')
@@ -132,14 +132,14 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('./build/fonts/'));
 })
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('images', function() {
     gulp.src('./src/img/**')
         .pipe(gulp.dest('./build/img/'))
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('browser-sync', function() {
     browserSync({
@@ -157,7 +157,7 @@ gulp.task('browser-sync', function() {
     });
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function buildScript(file, watch) {
 
@@ -193,7 +193,7 @@ function buildScript(file, watch) {
     return rebundle();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('default', null, function() {
     gutil.log('Gulp is running - default');
@@ -216,4 +216,4 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'webfontJs', 'fonts', 
     return buildScript('wonderland.js', false);
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

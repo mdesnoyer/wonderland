@@ -92,7 +92,7 @@ var Video = React.createClass({
     componentDidMount: function() {
         var self = this;
         if (self.props.pingInterval) {
-            self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL));
+            self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL_BASE));
         }
         if (self.props.pingInitial) {
             setTimeout(self.pingVideo, 0);

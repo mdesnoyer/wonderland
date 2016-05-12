@@ -191,7 +191,7 @@ var UTILS = {
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
-    VIDEO_CHECK_INTERVAL: 10000, // 10s
+    VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     rando: function(num) {

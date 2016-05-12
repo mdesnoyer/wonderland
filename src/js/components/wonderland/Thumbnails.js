@@ -43,7 +43,8 @@ var Thumbnails = React.createClass({
         ;
         newThumbnails[index].enabled = !newThumbnails[index].enabled;
         self.setState({
-            thumbnails: newThumbnails
+            thumbnails: newThumbnails,
+            selectedItem: index
         });
     },
     handleToggleModal: function(selectedItem) {
