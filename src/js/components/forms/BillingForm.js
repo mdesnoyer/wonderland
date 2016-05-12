@@ -6,26 +6,19 @@ import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
 import RadioGroup from 'react-radio-group';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-function getCurrentCard(res) {
-    var currentCard;
-    if (res.sources && res.sources.data) {
-        res.sources.data.some(function (card) {
-            if (card.id === res.default_source) {
-                currentCard = card;
-                return true;
-            }
-        });
-    }
-    return currentCard;
-}
 
 var BillingForm = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
+    },
+    PLANTYPES: {
+        demo: 'demo',
+        pro_monthly: 'pro_monthly',
+        pro_yearly: 'pro_yearly'
     },
     getInitialState: function() {
         var now = new Date(),
@@ -50,13 +43,39 @@ var BillingForm = React.createClass({
             address_zip: '',
             name: '',
             number: '',
-            exp_month: ('0' + (month === 12 ? 1 : month)).slice(-2), // next month; zero-padded
+            exp_month: UTILS.leadingZero(month === 12 ? 1 : month + 1), // next month; zero-padded
             exp_year: now.getFullYear() + (month === 12 ? 1 : 0), // this year; or next if Dec
             cvc: ''
         };
     },
     componentWillUnmount: function() {
         E.clearErrors();
+    },
+    // Extracts the current card info from a Stripe response; else returns null
+    getCurrentCard: function(res) {
+        var currentCard;
+        if (res.sources && res.sources.data) {
+            res.sources.data.some(function (card) {
+                if (card.id === res.default_source) {
+                    currentCard = card;
+                    return true;
+                }
+            });
+        }
+        if (currentCard) {
+            return {
+                address_line1: currentCard.address_line1,
+                address_line2: currentCard.address_line2,
+                address_city: currentCard.address_city,
+                address_state: currentCard.address_state,
+                address_zip: currentCard.address_zip,
+                name: currentCard.name,
+                current_number: (currentCard.brand === 'AMEX' ? '***********' : '************') + currentCard.last4,
+                current_exp_month: UTILS.leadingZero(currentCard.exp_month),
+                current_exp_year: currentCard.exp_year
+            };
+        }
+        return null;
     },
     componentWillMount: function () {
         var self = this;
@@ -65,7 +84,7 @@ var BillingForm = React.createClass({
                 var currentCard = false,
                     currentSubscription = false
                 ;
-                currentCard = getCurrentCard(res);
+                currentCard = self.getCurrentCard(res);
                 if (res.subscriptions && res.subscriptions.data) {
                     res.subscriptions.data.some(function (subscription) {
                         if (subscription.plan && subscription.plan.id) {
@@ -75,20 +94,16 @@ var BillingForm = React.createClass({
                     });
                 }
                 if (currentCard) {
-                    self.setState({
-                        isLoading: false,
-                        stripeId: res.id,
-                        planType: currentSubscription || 'demo',
-                        address_line1: currentCard.address_line1,
-                        address_line2: currentCard.address_line2,
-                        address_city: currentCard.address_city,
-                        address_state: currentCard.address_state,
-                        address_zip: currentCard.address_zip,
-                        name: currentCard.name,
-                        current_number: (currentCard.brand === 'AMEX' ? '***********' : '************') + currentCard.last4,
-                        current_exp_month: ('0' + currentCard.exp_month).slice(-2),
-                        current_exp_year: currentCard.exp_year
-                    });
+                    self.setState(
+                        Object.assign(
+                            currentCard,
+                            {
+                                isLoading: false,
+                                stripeId: res.id,
+                                planType: currentSubscription || self.PLANTYPES.demo
+                            }
+                        )
+                    );
                 } else {
                     // Throw an error to push into the `catch` block below
                     throw new Error('No card on file');
@@ -99,7 +114,7 @@ var BillingForm = React.createClass({
                 return SESSION.user()
                     .then(function (user) {
                         self.setState({
-                            planType: 'demo',
+                            planType: self.PLANTYPES.demo,
                             isLoading: false,
                             name: user.first_name + ' ' + user.last_name,
                             addNewCard: true
@@ -108,7 +123,7 @@ var BillingForm = React.createClass({
                     .catch(function (err) {
                         E.raiseError(err);
                         self.setState({
-                            planType: 'demo',
+                            planType: self.PLANTYPES.demo,
                             isLoading: false,
                             isError: true
                         });
@@ -117,9 +132,9 @@ var BillingForm = React.createClass({
     },
     componentDidMount: function() {
         var s;
+        this._isSubmitted = false;
         if (!document.getElementById('stripeJs')) {
             s = document.createElement('script');
-            this._isSubmitted = false;
             s.id = 'stripeJs';
             s.setAttribute('src', 'https://js.stripe.com/v2/');
             document.body.appendChild(s);
@@ -177,19 +192,19 @@ var BillingForm = React.createClass({
                             <div>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value="demo" />
+                                        <Radio value={self.PLANTYPES.demo} />
                                         Demo (free for 10 videos)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value="pro_monthly" />
+                                        <Radio value={self.PLANTYPES.pro_monthly} />
                                         Pro ($995/month)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value="pro_yearly" />
+                                        <Radio value={self.PLANTYPES.pro_yearly} />
                                         Pro ($9,995/year)
                                     </label>
                                 </p>
@@ -197,52 +212,48 @@ var BillingForm = React.createClass({
                         )}
                     </RadioGroup>
                     {(() => {
-                        if (self.state.planType !== 'demo' && self.state.stripeId) {
+                        if (self.state.planType !== self.PLANTYPES.demo && self.state.stripeId) {
                             return (
-                                <div className="control">
-                                    <hr />
-                                    <label className="radio">
-                                        <input
-                                            type="radio"
-                                            name="addNewCard"
-                                            ref="useCardOnFile"
-                                            value="0"
-                                            onChange={self.handleAddNewCardChange}
-                                            defaultChecked
-                                        />
-                                        {T.get('copy.billing.form.useCardOnFile')}
-                                    </label>
+                                <div>
+                                    <div className="control">
+                                        <hr />
+                                        <label className="radio">
+                                            <input
+                                                type="radio"
+                                                name="addNewCard"
+                                                ref="useCardOnFile"
+                                                value="0"
+                                                onChange={self.handleAddNewCardChange}
+                                                defaultChecked
+                                            />
+                                            {T.get('copy.billing.form.useCardOnFile')}
+                                        </label>
+                                        <p>
+                                            {self.state.name}
+                                        </p>
+                                        <p>
+                                            {self.state.address_line1}
+                                            {self.state.address_line2 ? '<br />' + self.state.address_line2 : ''}
+                                            <br />{self.state.address_city},&nbsp;{self.state.address_state}&nbsp;{self.state.address_zip}
+                                        </p>
+                                        <p>
+                                            {self.state.current_number}
+                                            <br />{self.state.current_exp_month}/{self.state.current_exp_year}
+                                        </p>
+                                    </div>
                                     <p>
-                                        {self.state.name}
-                                    </p>
-                                    <p>
-                                        {self.state.address_line1}
-                                        {self.state.address_line2 ? '<br />' + self.state.address_line2 : ''}
-                                        <br />{self.state.address_city},&nbsp;{self.state.address_state}&nbsp;{self.state.address_zip}
-                                    </p>
-                                    <p>
-                                        {self.state.current_number}
-                                        <br />{self.state.current_exp_month}/{self.state.current_exp_year}
+                                        <label className="radio">
+                                            <input
+                                                type="radio"
+                                                name="addNewCard"
+                                                ref="useNewCard"
+                                                value="1"
+                                                onChange={self.handleAddNewCardChange}
+                                            />
+                                            {T.get('copy.billing.form.useNewCard')}
+                                        </label>
                                     </p>
                                 </div>
-                            );
-                        }
-                    })()}
-                    {(() => {
-                        if (self.state.planType !== 'demo' && self.state.stripeId) {
-                            return (
-                                <p>
-                                    <label className="radio">
-                                        <input
-                                            type="radio"
-                                            name="addNewCard"
-                                            ref="useNewCard"
-                                            value="1"
-                                            onChange={self.handleAddNewCardChange}
-                                        />
-                                        {T.get('copy.billing.form.useNewCard')}
-                                    </label>
-                                </p>
                             );
                         } else {
                             return (
@@ -251,7 +262,7 @@ var BillingForm = React.createClass({
                         }
                     })()}
                     {(() => {
-                        if (self.state.planType !== 'demo' && self.state.addNewCard) {
+                        if (self.state.planType !== self.PLANTYPES.demo && self.state.addNewCard) {
                             return (
                                 <div className="control">
                                     <label htmlFor="address_line1">{T.get('copy.billing.form.billingAddress')}</label>
@@ -420,7 +431,7 @@ var BillingForm = React.createClass({
             self.setState({
                 isLoading: true
             }, function () {
-                if (self.state.planType === 'demo') {
+                if (self.state.planType === self.PLANTYPES.demo) {
                     self.handleStripeResponse();
                 } else if (self.state.stripeId && !self.state.addNewCard) {
                     self.handleStripeResponse(200, {
@@ -461,7 +472,7 @@ var BillingForm = React.createClass({
                 self._isSubmitted = false;
             });
         } else {
-            if (self.state.planType === 'demo') {
+            if (self.state.planType === self.PLANTYPES.demo) {
                 // Only need to change subscription when a plan exists
                 if (self.state.stripeId) {
                     apiCall = self.POST('billing/subscription', {
@@ -485,7 +496,7 @@ var BillingForm = React.createClass({
                 })
                     .then(function (res) {
                         // Update view based on new CC data
-                        var currentCard = getCurrentCard(res),
+                        var currentCard = self.getCurrentCard(res),
                             now = new Date(),
                             month = now.getMonth() + 1
                         ;
@@ -493,24 +504,20 @@ var BillingForm = React.createClass({
                         if (self.refs.useCardOnFile) {
                             self.refs.useCardOnFile.checked = true;
                         }
-                        self.setState({
-                            isError: false,
-                            stripeId: res && res.id ? res.id : false,
-                            addNewCard: false,
-                            address_line1: currentCard.address_line1,
-                            address_line2: currentCard.address_line2,
-                            address_city: currentCard.address_city,
-                            address_state: currentCard.address_state,
-                            address_zip: currentCard.address_zip,
-                            name: currentCard.name,
-                            current_number: (currentCard.brand === 'AMEX' ? '***********' : '************') + currentCard.last4,
-                            current_exp_month: ('0' + currentCard.exp_month).slice(-2),
-                            current_exp_year: currentCard.exp_year,
-                            number: '',
-                            cvc: '',
-                            exp_month: ('0' + (month === 12 ? 1 : month)).slice(-2), // next month; zero-padded
-                            exp_year: now.getFullYear() + (month === 12 ? 1 : 0) // this year; or next if Dec
-                        });
+                        self.setState(
+                            Object.assign(
+                                currentCard,
+                                {
+                                    isError: false,
+                                    stripeId: res && res.id ? res.id : false,
+                                    addNewCard: false,
+                                    number: '',
+                                    cvc: '',
+                                    exp_month: UTILS.leadingZero(month === 12 ? 1 : month + 1), // next month; zero-padded
+                                    exp_year: now.getFullYear() + (month === 12 ? 1 : 0) // this year; or next if Dec
+                                }
+                            )
+                        );
                         // Still need to set/change the subscription
                         return self.POST('billing/subscription', {
                             data: {
