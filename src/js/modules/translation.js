@@ -80,7 +80,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.billing.title': 'Billing',
             'copy.billing.heading': 'Billing',
-            'copy.billing.body': 'TODO',
+            'copy.billing.body': 'Neon\'s tiered subscription plans enable you to get information about how Neon images are performing on your site, give you access to our A/B testing features, and allow you to process more video. Pro plans allow you to process up to 100 videos per month. If you\'re interested in automatically processing more than 100 videos per month, get in touch with us at <a href="mailto:sales@neon-lab.com?subject=Enterprise plans information request">sales@neon-lab.com</a> for information about our enterprise plans.<p>For more details on what\'s included at each level of subscription, refer to our <a href="https://neon-lab.com/pricing/" target="_blank">Pricing</a> page.</p>',
             'copy.billing.form.useCardOnFile': 'Use Card on File',
             'copy.billing.form.useNewCard': 'Use New Card',
             'copy.billing.form.planType': 'Plan Type',

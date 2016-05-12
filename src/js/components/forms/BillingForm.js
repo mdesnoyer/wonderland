@@ -9,6 +9,19 @@ import RadioGroup from 'react-radio-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+function getCurrentCard(res) {
+    var currentCard;
+    if (res.sources && res.sources.data) {
+        res.sources.data.some(function (card) {
+            if (card.id === res.default_source) {
+                currentCard = card;
+                return true;
+            }
+        });
+    }
+    return currentCard;
+}
+
 var BillingForm = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
@@ -29,7 +42,7 @@ var BillingForm = React.createClass({
             stripeId: false,
             addNewCard: false,
             possibleYears: years,
-            planType: 'demo',
+            planType: '',
             address_line1: '',
             address_line2: '',
             address_city: '',
@@ -52,10 +65,11 @@ var BillingForm = React.createClass({
                 var currentCard = false,
                     currentSubscription = false
                 ;
-                if (res.sources && res.sources.data) {
-                    res.sources.data.some(function (card) {
-                        if (card.id === res.default_source) {
-                            currentCard = card;
+                currentCard = getCurrentCard(res);
+                if (res.subscriptions && res.subscriptions.data) {
+                    res.subscriptions.data.some(function (subscription) {
+                        if (subscription.plan && subscription.plan.id) {
+                            currentSubscription = subscription.plan.id;
                             return true;
                         }
                     });
@@ -64,7 +78,7 @@ var BillingForm = React.createClass({
                     self.setState({
                         isLoading: false,
                         stripeId: res.id,
-                        planType: currentSubscription ? 'TODO' : 'demo',
+                        planType: currentSubscription || 'demo',
                         address_line1: currentCard.address_line1,
                         address_line2: currentCard.address_line2,
                         address_city: currentCard.address_city,
@@ -85,6 +99,7 @@ var BillingForm = React.createClass({
                 return SESSION.user()
                     .then(function (user) {
                         self.setState({
+                            planType: 'demo',
                             isLoading: false,
                             name: user.first_name + ' ' + user.last_name,
                             addNewCard: true
@@ -93,6 +108,7 @@ var BillingForm = React.createClass({
                     .catch(function (err) {
                         E.raiseError(err);
                         self.setState({
+                            planType: 'demo',
                             isLoading: false,
                             isError: true
                         });
@@ -162,19 +178,19 @@ var BillingForm = React.createClass({
                                 <p className="control">
                                     <label className="radio">
                                         <Radio value="demo" />
-                                        Demo
+                                        Demo (free for 10 videos)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
                                         <Radio value="pro_monthly" />
-                                        Pro - Monthly
+                                        Pro ($995/month)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
                                         <Radio value="pro_yearly" />
-                                        Pro - Yearly
+                                        Pro ($9,995/year)
                                     </label>
                                 </p>
                             </div>
@@ -189,6 +205,7 @@ var BillingForm = React.createClass({
                                         <input
                                             type="radio"
                                             name="addNewCard"
+                                            ref="useCardOnFile"
                                             value="0"
                                             onChange={self.handleAddNewCardChange}
                                             defaultChecked
@@ -219,6 +236,7 @@ var BillingForm = React.createClass({
                                         <input
                                             type="radio"
                                             name="addNewCard"
+                                            ref="useNewCard"
                                             value="1"
                                             onChange={self.handleAddNewCardChange}
                                         />
@@ -242,11 +260,10 @@ var BillingForm = React.createClass({
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="address_line1"
                                             id="address_line1"
                                             data-stripe="address_line1"
                                             placeholder={T.get('copy.billing.form.address')}
-                                            defaultValue={self.state.address_line1}
+                                            value={self.state.address_line1}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -254,11 +271,10 @@ var BillingForm = React.createClass({
                                         <input
                                             className={inputClassName}
                                             type="text"
-                                            ref="address_line2"
                                             id="address_line2"
                                             data-stripe="address_line2"
                                             placeholder={T.get('copy.billing.form.address')}
-                                            defaultValue={self.state.address_line2}
+                                            value={self.state.address_line2}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -267,33 +283,30 @@ var BillingForm = React.createClass({
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="address_city"
                                             id="address_city"
                                             data-stripe="address_city"
                                             placeholder={T.get('copy.billing.form.city')}
-                                            defaultValue={self.state.address_city}
+                                            value={self.state.address_city}
                                             onChange={self.handleFieldChange}
                                         />
                                         <input
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="address_state"
                                             id="address_state"
                                             data-stripe="address_state"
                                             placeholder={T.get('copy.billing.form.state')}
-                                            defaultValue={self.state.address_state}
+                                            value={self.state.address_state}
                                             onChange={self.handleFieldChange}
                                         />
                                         <input
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="address_zip"
                                             id="address_zip"
                                             data-stripe="address_zip"
                                             placeholder={T.get('copy.billing.form.zip')}
-                                            defaultValue={self.state.address_zip}
+                                            value={self.state.address_zip}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -306,11 +319,10 @@ var BillingForm = React.createClass({
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="name"
                                             id="name"
                                             data-stripe="name"
                                             placeholder={T.get('copy.billing.form.nameOnCard')}
-                                            defaultValue={self.state.name}
+                                            value={self.state.name}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -321,11 +333,11 @@ var BillingForm = React.createClass({
                                             className={inputClassName}
                                             type="text"
                                             required
-                                            ref="number"
+                                            autoComplete="off"
                                             id="number"
                                             data-stripe="number"
                                             placeholder={T.get('copy.billing.form.ccNumber')}
-                                            defaultValue={self.state.number}
+                                            value={self.state.number}
                                             onFocus={self.handleNumberFocus}
                                             onChange={self.handleFieldChange}
                                         />
@@ -335,10 +347,10 @@ var BillingForm = React.createClass({
                                     <p className="control is-grouped">
                                         <span className={selectClassName}>
                                             <select
-                                                ref="exp_month"
+                                                className={selectClassName}
                                                 id="exp_month"
                                                 data-stripe="exp_month"
-                                                defaultValue={self.state.exp_month}
+                                                value={self.state.exp_month}
                                                 onChange={self.handleFieldChange}
                                             >
                                                 <option value="01">01</option>
@@ -358,10 +370,9 @@ var BillingForm = React.createClass({
                                         <span className={selectClassName}>
                                             <select
                                                 className={selectClassName}
-                                                ref="exp_year"
                                                 id="exp_year"
                                                 data-stripe="exp_year"
-                                                defaultValue={self.state.exp_year}
+                                                value={self.state.exp_year}
                                                 onChange={self.handleFieldChange}
                                             >
                                                 {(() => {
@@ -380,10 +391,11 @@ var BillingForm = React.createClass({
                                         <input
                                             className={inputClassName}
                                             type="password"
-                                            ref="cvc"
+                                            autoComplete="off"
                                             id="cvc"
                                             data-stripe="cvc"
                                             placeholder={T.get('copy.billing.form.ccCVC')}
+                                            value={self.state.cvc}
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
@@ -410,7 +422,7 @@ var BillingForm = React.createClass({
             }, function () {
                 if (self.state.planType === 'demo') {
                     self.handleStripeResponse();
-                } else if (self.state.stripeId) {
+                } else if (self.state.stripeId && !self.state.addNewCard) {
                     self.handleStripeResponse(200, {
                         id: self.state.stripeId
                     });
@@ -451,39 +463,72 @@ var BillingForm = React.createClass({
         } else {
             if (self.state.planType === 'demo') {
                 // Only need to change subscription when a plan exists
-                if (self.state.account) {
+                if (self.state.stripeId) {
                     apiCall = self.POST('billing/subscription', {
                         data: {
                             plan_type: self.state.planType
                         }
                     });
                 } else {
-                    // no-op; no current plan to remove
+                    // no-op; no current plan to remove or add
                     apiCall = new Promise(function (resolve) {
                         resolve();
                     });
                 }
-            } else {
+            } else if (self.state.addNewCard === true) {
+                // Adding a new card AND changing the plan
                 // API calls have to be chainedv when planType != "demo"
                 apiCall = self.POST('billing/account', {
                     data: {
                         billing_token_ref: data.id
                     }
                 })
-                    .then(function () {
+                    .then(function (res) {
+                        // Update view based on new CC data
+                        var currentCard = getCurrentCard(res),
+                            now = new Date(),
+                            month = now.getMonth() + 1
+                        ;
+                        // Reset form for new card potential
+                        self.refs.useCardOnFile.checked = true;
+                        self.setState({
+                            isError: false,
+                            stripeId: res && res.id ? res.id : false,
+                            addNewCard: false,
+                            address_line1: currentCard.address_line1,
+                            address_line2: currentCard.address_line2,
+                            address_city: currentCard.address_city,
+                            address_state: currentCard.address_state,
+                            address_zip: currentCard.address_zip,
+                            name: currentCard.name,
+                            current_number: (currentCard.brand === 'AMEX' ? '***********' : '************') + currentCard.last4,
+                            current_exp_month: ('0' + currentCard.exp_month).slice(-2),
+                            current_exp_year: currentCard.exp_year,
+                            number: '',
+                            cvc: '',
+                            exp_month: ('0' + (month === 12 ? 1 : month)).slice(-2), // next month; zero-padded
+                            exp_year: now.getFullYear() + (month === 12 ? 1 : 0) // this year; or next if Dec
+                        });
+                        // Still need to set/change the subscription
                         return self.POST('billing/subscription', {
                             data: {
                                 plan_type: self.state.planType
                             }
                         });
                     });
+            } else {
+                // Just changing subscription type
+                apiCall = self.POST('billing/subscription', {
+                    data: {
+                        plan_type: self.state.planType
+                    }
+                });
             }
             apiCall
-                .then(function () {
+                .then(function (data) {
                     self.setState({
                         isLoading: false,
-                        isError: false,
-                        stripeId: data && data.id ? data.id : false
+                        isError: false
                     }, function () {
                         self._isSubmitted = false;
                     }); 
