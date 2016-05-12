@@ -99,7 +99,7 @@ var InputTextEdit = React.createClass({
         var self = this;
         self.setState({
             mode: 'loading',
-            value: self.state.value
+            value: self.state.value || self.props.fallbackValue
         },
         self.putValue()
         );

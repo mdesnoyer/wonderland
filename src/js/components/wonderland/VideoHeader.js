@@ -30,8 +30,8 @@ var VideoHeader = React.createClass({
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
-                <div className="navbar-left">
+            <nav className="wonderland-video__header navbar is-marginless columns" onClick={self.props.handleVideoOpenToggle}>
+                <div className="navbar-left column is-3">
                     <div className="navbar-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
@@ -42,20 +42,20 @@ var VideoHeader = React.createClass({
                             thumbnail={self.props.thumbnails[0]}
                         />
                     </div>
-                    <div className="navbar-item">
-                        <InputTextEdit
-                            valueDest="videos"
-                            value={self.props.title}
-                            videoState={self.props.videoState}
-                            fallbackValue={T.get('copy.videosPage.VideoProcessMsg')}
-                            idType="video_id"
-                            valueId={self.props.videoId}
-                            valueType="title"
-                            classStyle="title is-5"
-                        />
-                    </div>
                 </div>
-                <div className="navbar-right">
+                <div className="navbar-item column is-5">
+                    <InputTextEdit
+                        valueDest="videos"
+                        value={self.props.title}
+                        videoState={self.props.videoState}
+                        fallbackValue={T.get('copy.videosPage.VideoProcessMsg')}
+                        idType="video_id"
+                        valueId={self.props.videoId}
+                        valueType="title"
+                        classStyle="title is-5"
+                    />
+                </div>
+                <div className="navbar-right column is-4">
                     <div className="navbar-item">
                         <span className="subtitle is-6"><FuzzyTime date={self.props.created} /></span>
                     </div>
