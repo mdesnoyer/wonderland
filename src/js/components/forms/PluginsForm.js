@@ -11,7 +11,7 @@ import ModalParent from '../core/ModalParent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var IntegrationsForm = React.createClass({
+var PluginsForm = React.createClass({
 	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -82,19 +82,16 @@ var IntegrationsForm = React.createClass({
                         {messageNeeded}
                         <fieldset>
                             <legend className="subtitle is-5">{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
-
                             <label htmlFor="publisherId">{T.get('copy.plugins.types.brightcove.form.publisherId')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="publisherId" id="publisherId" minLength="1" maxLength="256" value={self.state.publisherId} placeholder={T.get('copy.plugins.types.brightcove.form.publisherId')} />
                                 <a className="button is-medium" data-target="brightcove-publisherId" onClick={self.openModal}>?</a>
                             </p>
-
                             <label htmlFor="readToken">{T.get('copy.plugins.types.brightcove.form.readToken')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="readToken" id="readToken" minLength="1" maxLength="512" value={self.state.readToken} placeholder={T.get('copy.plugins.types.brightcove.form.readToken')} />
                                 <a className="button is-medium" data-target="brightcove-readToken" onClick={self.openModal}>?</a>
                             </p>
-
                             <label htmlFor="writeToken">{T.get('copy.plugins.types.brightcove.form.writeToken')}</label>
                             <p className="control is-grouped">
                                 <input required className={inputClassName} type="text" ref="writeToken" id="writeToken" minLength="1" maxLength="512" value={self.state.writeToken} placeholder={T.get('copy.plugins.types.brightcove.form.writeToken')} />
@@ -255,6 +252,6 @@ var IntegrationsForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default IntegrationsForm;
+export default PluginsForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

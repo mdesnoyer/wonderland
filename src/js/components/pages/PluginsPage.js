@@ -6,13 +6,13 @@ import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import Integrations from '../wonderland/Integrations';
+import Plugins from '../wonderland/Plugins';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-var IntegrationsPage = React.createClass({
+var PluginsPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -30,7 +30,7 @@ var IntegrationsPage = React.createClass({
                         <div className="content">
                             {T.get('copy.plugins.body')}
                         </div>
-                        <Integrations />
+                        <Plugins />
                     </div>
                 </section>
                 <SiteFooter />
@@ -41,6 +41,6 @@ var IntegrationsPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-export default IntegrationsPage;
+export default PluginsPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
