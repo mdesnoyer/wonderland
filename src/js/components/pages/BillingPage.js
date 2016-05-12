@@ -22,6 +22,10 @@ var BillingPage = React.createClass({
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.billing.title'))}
+                    script={[{
+                        src: 'https://js.stripe.com/v2/',
+                        type: 'text/javascript'
+                    }]}
                 />
                 <SiteHeader />
                 <section className="section">

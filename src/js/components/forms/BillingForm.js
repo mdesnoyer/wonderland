@@ -131,14 +131,7 @@ var BillingForm = React.createClass({
             });
     },
     componentDidMount: function() {
-        var s;
         this._isSubmitted = false;
-        if (!document.getElementById('stripeJs')) {
-            s = document.createElement('script');
-            s.id = 'stripeJs';
-            s.setAttribute('src', 'https://js.stripe.com/v2/');
-            document.body.appendChild(s);
-        }
     },
     handleFieldChange: function(e) {
         var data = {};
@@ -151,6 +144,7 @@ var BillingForm = React.createClass({
         });
     },
     handleAddNewCardChange: function(e) {
+        // Inputs use a 1/0 value; convert it to tue/false in the state for easier use
         this.setState({
             addNewCard: e.target.value === '1'
         });
