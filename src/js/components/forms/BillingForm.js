@@ -31,6 +31,7 @@ var BillingForm = React.createClass({
         }
         return {
             isError: false,
+            isSuccess: false,
             isLoading: true,
             stripeId: false,
             addNewCard: false,
@@ -140,12 +141,14 @@ var BillingForm = React.createClass({
     },
     handlePlanTypeChange: function(val) {
         this.setState({
+            isSuccess: false,
             planType: val
         });
     },
     handleAddNewCardChange: function(e) {
         // Inputs use a 1/0 value; convert it to tue/false in the state for easier use
         this.setState({
+            isSuccess: false,
             addNewCard: e.target.value === '1'
         });
     },
@@ -157,7 +160,8 @@ var BillingForm = React.createClass({
             buttonClassName,
             inputClassName,
             selectClassName,
-            messageNeeded = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeeded = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> :
+                            self.state.isSuccess !== false ? <Message header={T.get('copy.billing.title') + ' ' + T.get('success')} body={self.state.isSuccess} flavour="success" /> : ''
         ;
         if (self.state.isLoading) {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';
@@ -430,6 +434,8 @@ var BillingForm = React.createClass({
             self._isSubmitted = true;
             E.clearErrors();
             self.setState({
+                isError: false,
+                isSuccess: false,
                 isLoading: true
             }, function () {
                 if (self.state.planType === self.PLANTYPES.demo) {
@@ -537,6 +543,7 @@ var BillingForm = React.createClass({
             apiCall
                 .then(function (data) {
                     self.setState({
+                        isSuccess: T.get('copy.billing.form.saveSuccess'),
                         isLoading: false,
                         isError: false
                     }, function () {
@@ -547,7 +554,8 @@ var BillingForm = React.createClass({
                     E.raiseError(err);
                     self.setState({
                         isLoading: false,
-                        isError: true
+                        isError: true,
+                        isSuccess: false
                     }, function () {
                         self._isSubmitted = false;
                     });
