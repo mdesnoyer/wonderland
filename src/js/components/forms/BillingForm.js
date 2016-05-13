@@ -162,12 +162,12 @@ var BillingForm = React.createClass({
         if (self.state.isLoading) {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';
             inputClassName = 'input is-medium is-disabled';
-            selectClassName = 'select is-disabled is-loading';
+            selectClassName = 'select is-medium is-disabled is-loading';
         }
         else {
             buttonClassName = 'button is-medium is-primary';
             inputClassName = 'input is-medium';
-            selectClassName = 'select';
+            selectClassName = 'select is-medium';
         }
         return (
             <form id="billingForm" onSubmit={self.handleSubmit}>
@@ -331,79 +331,84 @@ var BillingForm = React.createClass({
                                             onChange={self.handleFieldChange}
                                         />
                                     </p>
-
-                                    <label htmlFor="cc_number">{T.get('copy.billing.form.ccNumber')}</label>
-                                    <p className="control is-grouped">
-                                        <input
-                                            className={inputClassName}
-                                            type="text"
-                                            required
-                                            autoComplete="off"
-                                            id="number"
-                                            data-stripe="number"
-                                            placeholder={T.get('copy.billing.form.ccNumber')}
-                                            value={self.state.number}
-                                            onFocus={self.handleNumberFocus}
-                                            onChange={self.handleFieldChange}
-                                        />
-                                    </p>
-
-                                    <label htmlFor="cc_exp_month">{T.get('copy.billing.form.ccExpiration')}</label>
-                                    <p className="control is-grouped">
-                                        <span className={selectClassName}>
-                                            <select
-                                                className={selectClassName}
-                                                id="exp_month"
-                                                data-stripe="exp_month"
-                                                value={self.state.exp_month}
-                                                onChange={self.handleFieldChange}
-                                            >
-                                                <option value="01">01</option>
-                                                <option value="02">02</option>
-                                                <option value="03">03</option>
-                                                <option value="04">04</option>
-                                                <option value="05">05</option>
-                                                <option value="06">06</option>
-                                                <option value="07">07</option>
-                                                <option value="08">08</option>
-                                                <option value="09">09</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                        </span>
-                                        <span className={selectClassName}>
-                                            <select
-                                                className={selectClassName}
-                                                id="exp_year"
-                                                data-stripe="exp_year"
-                                                value={self.state.exp_year}
-                                                onChange={self.handleFieldChange}
-                                            >
-                                                {(() => {
-                                                    return self.state.possibleYears.map(function (year) {
-                                                        return (
-                                                            <option value={year} key={year}>{(''+year).slice(-2)}</option>
-                                                        );
-                                                    });
-                                                })()}
-                                            </select>
-                                        </span>
-                                    </p>
-
-                                    <label htmlFor="cc_cvc">{T.get('copy.billing.form.ccCVC')}</label>
-                                    <p className="control is-grouped">
-                                        <input
-                                            className={inputClassName}
-                                            type="password"
-                                            autoComplete="off"
-                                            id="cvc"
-                                            data-stripe="cvc"
-                                            placeholder={T.get('copy.billing.form.ccCVC')}
-                                            value={self.state.cvc}
-                                            onChange={self.handleFieldChange}
-                                        />
-                                    </p>
+                                    <div className="columns">
+                                        <div className="column is-half">
+                                            <label htmlFor="cc_number">{T.get('copy.billing.form.ccNumber')}</label>
+                                            <p className="control is-grouped">
+                                                <input
+                                                    className={inputClassName}
+                                                    type="text"
+                                                    required
+                                                    autoComplete="neon_number"
+                                                    id="number"
+                                                    data-stripe="number"
+                                                    placeholder={T.get('copy.billing.form.ccNumber')}
+                                                    value={self.state.number}
+                                                    onFocus={self.handleNumberFocus}
+                                                    onChange={self.handleFieldChange}
+                                                />
+                                            </p>
+                                        </div>
+                                        <div className="column">
+                                            <label htmlFor="cc_exp_month">{T.get('copy.billing.form.ccExpiration')}</label>
+                                            <p className="control is-grouped">
+                                                <span className={selectClassName}>
+                                                    <select
+                                                        className={selectClassName}
+                                                        id="exp_month"
+                                                        data-stripe="exp_month"
+                                                        value={self.state.exp_month}
+                                                        onChange={self.handleFieldChange}
+                                                    >
+                                                        <option value="01">01 - Jan</option>
+                                                        <option value="02">02 - Feb</option>
+                                                        <option value="03">03 - Mar</option>
+                                                        <option value="04">04 - Apr</option>
+                                                        <option value="05">05 - May</option>
+                                                        <option value="06">06 - Jun</option>
+                                                        <option value="07">07 - Jul</option>
+                                                        <option value="08">08 - Aug</option>
+                                                        <option value="09">09 - Sep</option>
+                                                        <option value="10">10 - Oct</option>
+                                                        <option value="11">11 - Nov</option>
+                                                        <option value="12">12 - Dec</option>
+                                                    </select>
+                                                </span>
+                                                <span className={selectClassName + ' is-fullwidth'}>
+                                                    <select
+                                                        className={selectClassName + ' is-fullwidth'}
+                                                        id="exp_year"
+                                                        data-stripe="exp_year"
+                                                        value={self.state.exp_year}
+                                                        onChange={self.handleFieldChange}
+                                                    >
+                                                        {(() => {
+                                                            return self.state.possibleYears.map(function (year) {
+                                                                return (
+                                                                    <option value={year} key={year}>{year}</option>
+                                                                );
+                                                            });
+                                                        })()}
+                                                    </select>
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div className="column">
+                                            <label htmlFor="cc_cvc">{T.get('copy.billing.form.ccCVC')}</label>
+                                            <p className="control is-grouped">
+                                                <input
+                                                    className={inputClassName}
+                                                    type="password"
+                                                    autoComplete="neon_cvc"
+                                                    id="cvc"
+                                                    data-stripe="cvc"
+                                                    placeholder={T.get('copy.billing.form.ccCVC')}
+                                                    value={self.state.cvc}
+                                                    onChange={self.handleFieldChange}
+                                                />
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             );
                         }
