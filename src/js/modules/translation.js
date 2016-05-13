@@ -134,7 +134,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
-            'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by <a href="@link">signing in now</a>. You are now ready to make your video thumbnails more clickable!',
+            'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by signing in now. You are now ready to make your video thumbnails more clickable!',
 
             'copy.plugins.title': 'Plugins',
             'copy.plugins.heading': 'Plugins',

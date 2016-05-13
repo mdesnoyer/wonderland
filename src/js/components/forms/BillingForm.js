@@ -542,13 +542,34 @@ var BillingForm = React.createClass({
             }
             apiCall
                 .then(function (data) {
-                    self.setState({
-                        isSuccess: T.get('copy.billing.form.saveSuccess'),
-                        isLoading: false,
-                        isError: false
-                    }, function () {
-                        self._isSubmitted = false;
-                    }); 
+                    if (data.id && data.id === 'canceled') {
+                        // This response indicates a downgrade; need to clear the current card
+                        self.setState({
+                            stripeId: false,
+                            addNewCard: true,
+                            address_line1: '',
+                            address_line2: '',
+                            address_city: '',
+                            address_state: '',
+                            address_zip: '',
+                            current_number: null,
+                            current_exp_month: null,
+                            current_exp_year: null,
+                            isSuccess: T.get('copy.billing.form.saveSuccess'),
+                            isLoading: false,
+                            isError: false
+                        }, function () {
+                            self._isSubmitted = false;
+                        });
+                    } else {
+                        self.setState({
+                            isSuccess: T.get('copy.billing.form.saveSuccess'),
+                            isLoading: false,
+                            isError: false
+                        }, function () {
+                            self._isSubmitted = false;
+                        });
+                    }
                 })
                 .catch(function (err) {
                     E.raiseError(err);

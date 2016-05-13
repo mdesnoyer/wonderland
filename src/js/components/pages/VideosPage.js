@@ -11,6 +11,7 @@ import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
+import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,7 +27,13 @@ var VideosPage = React.createClass({
         };
     },
     componentWillMount: function() {
-        var self = this;
+        var self = this,
+            signUpRef = cookie.load('signUpRef')
+        ;
+        if (signUpRef === 'bc') {
+            cookie.remove('signUpRef', { path: '/' });
+            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL); // TODO - need correct URL
+        }
         self.getAccount()
             .then(function (account) {
                 self.setState({

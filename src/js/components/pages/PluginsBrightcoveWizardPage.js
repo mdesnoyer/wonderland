@@ -4,32 +4,28 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
+import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
-import SignInForm from '../forms/SignInForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AccountConfirmedPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+var PluginsBrightcoveWizardPage = React.createClass({
+    mixins: [Secured], // ReactDebugMixin
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     render: function() {
-        var body = T.get('copy.accountConfirmed.body');
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.accountConfirmed.title'))}
+                    title={T.get('copy.plugins.types.brightcove.title')}
                 />
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                           <h1 className="title is-2">{T.get('copy.accountConfirmed.heading')}</h1>
-                            <div className="content">
-                                <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
-                                <p><em>{T.get('app.companySig')}</em></p>
-                            </div>
-                            <SignInForm />
                         </div>
                     </div>
                 </section>
@@ -41,6 +37,6 @@ var AccountConfirmedPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default AccountConfirmedPage;
+export default PluginsBrightcoveWizardPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
