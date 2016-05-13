@@ -14,10 +14,7 @@ import SignInForm from '../forms/SignInForm';
 var AccountConfirmedPage = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
-        var body = T.get('copy.accountConfirmed.body', {
-                '@link': UTILS.DRY_NAV.SIGNIN.URL
-            })
-        ;
+        var body = T.get('copy.accountConfirmed.body');
         return (
             <div>
                 <Helmet
