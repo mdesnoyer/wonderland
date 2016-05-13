@@ -246,7 +246,7 @@ var BillingForm = React.createClass({
                                                 onChange={self.handleAddNewCardChange}
                                                 disabled={self.state.isLoading}
                                             />
-                                            {T.get('copy.billing.form.useNewCard')}
+                                            {T.get('copy.billing.form.changeCard')}
                                         </label>
                                     </p>
                                 </div>
@@ -280,7 +280,7 @@ var BillingForm = React.createClass({
                                             type="text"
                                             id="address_line2"
                                             data-stripe="address_line2"
-                                            placeholder={T.get('copy.billing.form.address')}
+                                            placeholder={T.get('copy.billing.form.address2')}
                                             value={self.state.address_line2}
                                             onChange={self.handleFieldChange}
                                         />
