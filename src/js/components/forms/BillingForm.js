@@ -186,19 +186,19 @@ var BillingForm = React.createClass({
                             <div>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value={self.PLANTYPES.demo} />
+                                        <Radio value={self.PLANTYPES.demo} disabled={self.state.isLoading} />
                                         Demo (free for 10 videos)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value={self.PLANTYPES.pro_monthly} />
+                                        <Radio value={self.PLANTYPES.pro_monthly} disabled={self.state.isLoading} />
                                         Pro ($995/month)
                                     </label>
                                 </p>
                                 <p className="control">
                                     <label className="radio">
-                                        <Radio value={self.PLANTYPES.pro_yearly} />
+                                        <Radio value={self.PLANTYPES.pro_yearly} disabled={self.state.isLoading} />
                                         Pro ($9,995/year)
                                     </label>
                                 </p>
@@ -219,6 +219,7 @@ var BillingForm = React.createClass({
                                                 value="0"
                                                 onChange={self.handleAddNewCardChange}
                                                 defaultChecked
+                                                disabled={self.state.isLoading}
                                             />
                                             {T.get('copy.billing.form.useCardOnFile')}
                                         </label>
@@ -243,6 +244,7 @@ var BillingForm = React.createClass({
                                                 ref="useNewCard"
                                                 value="1"
                                                 onChange={self.handleAddNewCardChange}
+                                                disabled={self.state.isLoading}
                                             />
                                             {T.get('copy.billing.form.useNewCard')}
                                         </label>
