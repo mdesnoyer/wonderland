@@ -404,7 +404,7 @@ var BillingForm = React.createClass({
                                             <p className="control is-grouped">
                                                 <input
                                                     className={inputClassName}
-                                                    type="password"
+                                                    type="text"
                                                     autoComplete="neon_cvc"
                                                     id="cvc"
                                                     data-stripe="cvc"
