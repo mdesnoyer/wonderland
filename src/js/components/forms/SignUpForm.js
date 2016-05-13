@@ -47,7 +47,7 @@ var SignUpForm = React.createClass({
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
         if (!self.state.isAgreementChecked || self.state.isLoading) {
-             buttonClassName = 'button is-medium is-primary is-disabled';
+             buttonClassName = 'button is-medium is-primary is-disabled is-loading';
         }
         else {
              buttonClassName = 'button is-medium is-primary';
@@ -128,14 +128,15 @@ var SignUpForm = React.createClass({
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
-        self.setState({ 
+        self.setState({
+            isError: false,
             isLoading: true 
         });
         if (!E.checkForErrors(errorList)) {
-                self.setState({
-                    isError: true,
-                    isLoading: false
-                });
+            self.setState({
+                isError: true,
+                isLoading: false
+            });
         }
         else {
             if (!self._isSubmitted) {
