@@ -14,7 +14,8 @@ import T from '../../modules/translation';
 var SignUpPage = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
-        var heading = T.get('copy.signUp.heading'),
+        var self = this,
+            heading = T.get('copy.signUp.heading'),
             body = T.get('copy.signUp.body')
         ;
         return (
@@ -31,7 +32,10 @@ var SignUpPage = React.createClass({
                                 <div className="content">
                                     <p>{body}</p>
                                 </div>
-                                <SignUpForm showLegend={false} />
+                                <SignUpForm
+                                    showLegend={false}
+                                    signUpRef={self.props.location.query.ref}
+                                />
                             </div>
                         </div>
                     </div>
