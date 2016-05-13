@@ -47,7 +47,7 @@ var SignUpForm = React.createClass({
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
         if (!self.state.isAgreementChecked || self.state.isLoading) {
-             buttonClassName = 'button is-medium is-primary is-disabled';
+             buttonClassName = 'button is-medium is-primary is-disabled is-loading';
         }
         else {
              buttonClassName = 'button is-medium is-primary';
@@ -58,16 +58,17 @@ var SignUpForm = React.createClass({
                 <fieldset>
                     {legendElement}
                     <p className="control is-grouped">
-                        <input className="input is-medium" type="text" ref="firstName" minLength="1" maxLength="256" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" minLength="1" maxLength="256" placeholder={T.get('lastName')} />
+                        <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
+                        <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="email" ref="email" minLength="6" maxLength="1024" placeholder={T.get('email')} />
+                        <input className="input is-medium" type="email" ref="email" required minLength="6" maxLength="1024" placeholder={T.get('email')} />
                     </p>
                     <p className="control is-grouped">
                         <input className="input is-medium"
                             type="password"
                             ref="passwordInitial"
+                            required
                             minLength="8" 
                             maxLength="64" 
                             placeholder={T.get('password')}
@@ -76,6 +77,7 @@ var SignUpForm = React.createClass({
                         <input className="input is-medium"
                             type="password"
                             ref="passwordConfirm"
+                            required
                             minLength="8"
                             maxLength="64"
                             placeholder={T.get('confirm')}
@@ -83,10 +85,10 @@ var SignUpForm = React.createClass({
                         />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="company" minLength="1" maxLength="1024" placeholder={T.get('company')} />
+                        <input className="input is-medium" type="text" ref="company" required minLength="1" maxLength="1024" placeholder={T.get('company')} />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="text" ref="title" minLength="1" maxLength="32" placeholder={T.get('title')} />
+                        <input className="input is-medium" type="text" ref="title" required minLength="1" maxLength="32" placeholder={T.get('title')} />
                     </p>
                     <p className="control">
                         <label className="checkbox">
@@ -126,14 +128,15 @@ var SignUpForm = React.createClass({
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
-        self.setState({ 
+        self.setState({
+            isError: false,
             isLoading: true 
         });
         if (!E.checkForErrors(errorList)) {
-                self.setState({
-                    isError: true,
-                    isLoading: false
-                });
+            self.setState({
+                isError: true,
+                isLoading: false
+            });
         }
         else {
             if (!self._isSubmitted) {
@@ -160,7 +163,7 @@ var SignUpForm = React.createClass({
                         self.context.router.push('/account/pending/');
                     })
                     .catch(function (err) {
-                        E.checkForError(T.get('copy.accountCreationTempError'), false)
+                        E.raiseError(err);
                         self._isSubmitted = false;
                         self.setState({
                             isError: true,
