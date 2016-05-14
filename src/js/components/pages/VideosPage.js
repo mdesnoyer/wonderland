@@ -32,7 +32,7 @@ var VideosPage = React.createClass({
         ;
         if (signUpRef === 'bc') {
             cookie.remove('signUpRef', { path: '/' });
-            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL); // TODO - need correct URL
+            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL);
         }
         self.getAccount()
             .then(function (account) {
