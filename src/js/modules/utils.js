@@ -182,6 +182,12 @@ var UTILS = {
         API: {
             URL: '/support/#api'
         },
+        SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
+            URL: '/support/#brightcove-plugin-guide'
+        },
+        SUPPORT_CUSTOM_PLUGIN_GUIDE: {
+            URL: '/support/#custom-plugin-guide'
+        },
         NEONSCOPE: {
             URL: '/neonscope/'
         },

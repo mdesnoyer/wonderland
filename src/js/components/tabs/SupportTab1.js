@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,7 +41,7 @@ var SupportTab1 = React.createClass({
             </ol>
 
             <p>For a more automated video upload and processing experience, you can integrate your backend systems directly with Neon&rsquo;s. This allows us to automatically analyze each of your videos, run A/B testing, and provide analytics.</p>
-            <p>If you are a Brightcove customer, then you can use the Brightcove Plugin to integrate in just a few steps. Otherwise, please see our custom integration guide.</p>
+            <p>If you are a Brightcove customer, then you can use the <a href={UTILS.DRY_NAV.SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE.URL}>Brightcove Plugin</a> to integrate in just a few steps. Otherwise, please see our <a href={UTILS.DRY_NAV.SUPPORT_CUSTOM_PLUGIN_GUIDE.URL}>Custom Plugin Guide</a>.</p>
             
             <h3 className="title is-4">What&rsquo;s happening under the hood?</h3>
 
@@ -76,14 +77,14 @@ var SupportTab1 = React.createClass({
                 <img src="/img/support/overview/6-ctr.png" alt="" title="" />
             </figure>
 
-            <p>To perform the A/B testing, we serve images directly to your users and then collect telemetry, or data from your site, about how they interact with those images. Enabling this requires two steps:</p>
+            <p>To perform the A/B testing, we serve images directly to your users and then collect <a href={UTILS.DRY_NAV.TELEMETRY.URL}>telemetry</a>, or data from your site, about how they interact with those images. Enabling this requires two steps:</p>
 
             <ol>
                 <li>Inserting our serving URLs onto your site in place of the images currently there. These serving URLs point to our image serving platform, which determines which image each user will see. It will then issue a 302 redirect to the actual image sitting on a CDN.</li>
                 <li>Inserting our telemetry tag on your site. Our telemetry tag is a one-line Javascript snippet that will asynchronously send telemetry back to our servers about how a user interacts with the imagery.</li>
             </ol>
             
-            <p>For more details on enabling the A/B testing and realtime analytics, see the Brightcove plugin or Custom Integration guide.</p>
+            <p>For more details on enabling the A/B testing and realtime analytics, see the <a href={UTILS.DRY_NAV.SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE.URL}>Brightcove Plugin</a> or <a href={UTILS.DRY_NAV.SUPPORT_CUSTOM_PLUGIN_GUIDE.URL}>Custom Plugin Guide</a>.</p>
 
             </section>
         );
