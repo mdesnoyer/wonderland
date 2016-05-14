@@ -188,9 +188,6 @@ var UTILS = {
         SUPPORT_CUSTOM_PLUGIN_GUIDE: {
             URL: '/support/#custom-plugin-guide'
         },
-        NEONSCOPE: {
-            URL: '/neonscope/'
-        },
         VIDEOLIBRARY: {
             URL: '/videos/'
         }    
