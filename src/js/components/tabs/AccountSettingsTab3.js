@@ -69,9 +69,9 @@ var AccountSettingsTab3 = React.createClass({
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={updated} disabled />
                 </p>
-                <label className="label">{T.get('label.servingEnabled')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.isServingEnabled} disabled />
+                <label className="is-hidden label">{T.get('label.servingEnabled')}</label>
+                <p className={'is-hidden control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
+                    <input className={'is-hidden input'} type="text" value={self.state.isServingEnabled} disabled />
                 </p>
                 <label className="label">{T.get('label.accountEmail')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
