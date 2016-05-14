@@ -108,7 +108,7 @@ var Video = React.createClass({
                 T.get('copy.message.line.one'),
                 T.get('copy.message.line.two'),
                 T.get('copy.message.link.one', {'@link': UTILS.CORP_EXTERNAL_URL}),
-                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEOLIBRARY.URL}),
+                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEO_LIBRARY.URL}),
                 T.get('copy.message.link.three', {'@link': UTILS.CONTACT_EXTERNAL_URL})
             ]
         ;
