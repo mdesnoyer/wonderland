@@ -34,7 +34,7 @@ var SupportPage = React.createClass({
                     body: <SupportTab3 />
                 },
                 {
-                    label: 'Reference',
+                    label: 'API',
                     body: <SupportTab4 />
                 },
                 {

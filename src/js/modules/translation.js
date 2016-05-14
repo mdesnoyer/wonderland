@@ -166,7 +166,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.thumbnailId': 'Thumbnail ID',
             'copy.created' : 'Created',
             'copy.updated' : 'Updated',
-            'copy.frameNo' : 'Frame <abbr title="Number">No.</abbr>',
+            'copy.frame' : 'Frame',
             'copy.ctr' : '<abbr title="Click Through Rate">CTR</abbr>',
 
             'copy.unknown': 'Unknown',
