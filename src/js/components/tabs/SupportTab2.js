@@ -146,9 +146,9 @@ var SupportTab2 = React.createClass({
                 <p>To insert the Telemetry Tag into your Gallery site:</p>
                 <ol>
                     <li>Log in to your Brightcove Account</li>
-                    <li>Navigate to your Gallery settings</li>
-                    <li>Select &ldquo;Header&rdquo;</li>
-                    <li>Paste the Telemetry Tag into the Custom Header HTML field</li>
+                    <li>Navigate to your <a href="https://studio.brightcove.com/products/videocloud/gallery#settings" rel="external">Gallery settings</a></li>
+                    <li>Select &ldquo;Settings&rdquo;</li>
+                    <li>Paste the Telemetry Tag into the &ldquo;Custom Footer HTML&rdquo; field</li>
                 </ol>
             </section>
         );
