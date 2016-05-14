@@ -180,7 +180,7 @@ var UTILS = {
             URL: '/telemetry/'
         },
         API: {
-            URL: '/api/'
+            URL: '/support/#api'
         },
         NEONSCOPE: {
             URL: '/neonscope/'
