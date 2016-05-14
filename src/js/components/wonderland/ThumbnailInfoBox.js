@@ -59,7 +59,7 @@ var ThumbnailInfoBox = React.createClass({
                 <dl className="wonderland-dl">
                     <dt
                         className={'wonderland-dt' + (self.props.frameNo > 0 ? '' : ' is-hidden')}
-                        dangerouslySetInnerHTML={{__html: T.get('copy.frameNo')}}
+                        dangerouslySetInnerHTML={{__html: T.get('copy.frame')}}
                     />
                         <dd className={'wonderland-dd' + (self.props.frameNo > 0 ? '' : ' is-hidden')}>
                             {self.props.frameNo}
@@ -68,8 +68,8 @@ var ThumbnailInfoBox = React.createClass({
                         <dd className="wonderland-dd">{self.props.type}</dd>
                     <dt className="wonderland-dt">{T.get('copy.dimensions')}</dt>
                         <dd className="wonderland-dd">{self.props.width}x{self.props.height}</dd>
-                    <dt className="wonderland-dt">{T.get('copy.thumbnailId')}</dt>
-                        <dd className="wonderland-dd">{self.props.thumbnailId}</dd>
+                    <dt className="is-hidden wonderland-dt">{T.get('copy.thumbnailId')}</dt>
+                        <dd className="is-hidden wonderland-dd">{self.props.thumbnailId}</dd>
                     <dt className="wonderland-dt">{T.get('copy.created')}</dt>
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.created} />

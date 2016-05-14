@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -76,7 +77,7 @@ var SupportTab3 = React.createClass({
 
                 <h4 className="title is-5">Sending Your Own Beacons</h4>
 
-                <p>If your site does not conform to the requirements for the standard Neon Telemetry Tag, then you can also send beacons describing the events of your user as he/she moves through your site and interacts with imagery. The specifications for the beacons are available in the API reference manual.</p>
+                <p>If your site does not conform to the requirements for the standard Neon Telemetry Tag, then you can also send beacons describing the events of your user as he/she moves through your site and interacts with imagery. The specifications for the beacons are available in the <a href={UTILS.DRY_NAV.API.URL}>API reference manual</a>.</p>
                 
                 <h4 className="title is-5">Events Collected</h4>
                 

@@ -34,8 +34,6 @@ import AccountSettingsPage from './components/pages/AccountSettingsPage';
 import UserSettingsPage from './components/pages/UserSettingsPage';
 import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
-import ApiPage from './components/pages/ApiPage';
-import NeonscopePage from './components/pages/NeonscopePage';
 import SupportPage from './components/pages/SupportPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -67,8 +65,6 @@ render((
         <Route path="/terms/" component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
-        <Route path={UTILS.DRY_NAV.API.URL} component={ApiPage} />
-        <Route path={UTILS.DRY_NAV.NEONSCOPE.URL} component={NeonscopePage} />
         <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={IntegrationsPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL} component={PluginsBrightcoveWizardPage} />

@@ -30,11 +30,11 @@ var SupportPage = React.createClass({
                     body: <SupportTab2 />
                 },
                 {
-                    label: 'Custom Integration Guide',
+                    label: 'Custom Plugin Guide',
                     body: <SupportTab3 />
                 },
                 {
-                    label: 'Reference',
+                    label: 'API',
                     body: <SupportTab4 />
                 },
                 {

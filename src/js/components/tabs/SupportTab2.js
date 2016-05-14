@@ -137,18 +137,18 @@ var SupportTab2 = React.createClass({
                 </ol>
 
                 <h3 className="title is-4">4. Enable Telemetry from Your Site</h3>
-                <p>Neon can receive telemetry from your players using the Neon Telemetry Player plugins for those players. Telemetry is the stream of data that tells us how users are interacting with your images and video, allowing us to ensure that your best images are always representing your content. The process for enabling telemetry for your players is covered in step 3 above. However, if you show thumbnails outside of your player, you must add the Neon Telemetry Tag to your site. If you&rsquo;re a Gallery customer, you must complete this step in order to get accurate data from Neon. If you have a self-managed site, you should complete this step if you show thumbnails outside of your player. For example, a common way to show thumbnails outside of your player is to show a video thumbnail on your homepage that, when clicked, takes the user to an article page that contains the video whose thumbnail was clicked on the homepage. You can find your customized tag in your Neon account by clicking the gear and selecting Telemetry.</p>
+                <p>Neon can receive telemetry from your players using the Neon Telemetry Player plugins for those players. Telemetry is the stream of data that tells us how users are interacting with your images and video, allowing us to ensure that your best images are always representing your content. The process for enabling telemetry for your players is covered in step 3 above. However, if you show thumbnails outside of your player, you must add the Neon Telemetry Tag to your site. If you&rsquo;re a Gallery customer, you must complete this step in order to get accurate data from Neon. If you have a self-managed site, you should complete this step if you show thumbnails outside of your player. For example, a common way to show thumbnails outside of your player is to show a video thumbnail on your homepage that, when clicked, takes the user to an article page that contains the video whose thumbnail was clicked on the homepage. You can find your customized tag in your Neon account by clicking the gear and selecting <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry</a>.</p>
                 
                 <h4 className="title is-5">Self-managed site</h4>
-                <p>Your Telemetry Tag can be added to your site using any tag manager (e.g. <a href="http://tealium.com/" rel="external">Tealium</a>, <a href="https://www.google.com/analytics/tag-manager/" rel="external">Google Tag Manager</a>, etc), or by adding it directly to the pages on your site that contain video thumbnail images you want to optimize.</p>
+                <p>Your <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> can be added to your site using any tag manager (e.g. <a href="http://tealium.com/" rel="external">Tealium</a>, <a href="https://www.google.com/analytics/tag-manager/" rel="external">Google Tag Manager</a>, etc), or by adding it directly to the pages on your site that contain video thumbnail images you want to optimize.</p>
                 
                 <h4 className="title is-5">Gallery</h4>
-                <p>To insert the Telemetry Tag into your Gallery site:</p>
+                <p>To insert the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into your Gallery site:</p>
                 <ol>
                     <li>Log in to your Brightcove Account</li>
-                    <li>Navigate to your Gallery settings</li>
-                    <li>Select &ldquo;Header&rdquo;</li>
-                    <li>Paste the Telemetry Tag into the Custom Header HTML field</li>
+                    <li>Navigate to your <a href="https://studio.brightcove.com/products/videocloud/gallery#settings" rel="external">Gallery settings</a></li>
+                    <li>Select &ldquo;Settings&rdquo;</li>
+                    <li>Paste the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into the &ldquo;Custom Footer HTML&rdquo; field</li>
                 </ol>
             </section>
         );

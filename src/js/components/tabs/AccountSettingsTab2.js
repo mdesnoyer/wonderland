@@ -50,10 +50,10 @@ var AccountSettingsTab2 = React.createClass({
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.stagingTrackerAccountId} disabled />
                 </p>
-                <label className="label">{T.get('label.defaultThumbnailId')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                <label className="is-hidden label">{T.get('label.defaultThumbnailId')}</label>
+                <p className={'is-hidden control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                     <input
-                        className={'input'}
+                        className={'is-hidden input'}
                         type="text"
                         minLength="1"
                         maxLength="2048"

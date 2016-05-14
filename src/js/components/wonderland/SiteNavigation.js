@@ -42,7 +42,6 @@ var SiteNavigation = React.createClass({
                 billingPage: <Link to={UTILS.DRY_NAV.BILLING.URL} title={T.get('nav.billing')}>{T.get('nav.billing')}</Link>,
                 telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
                 apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
-                neonscopePage: <Link to={UTILS.DRY_NAV.NEONSCOPE.URL} title={T.get('nav.neonscope')}>{T.get('nav.neonscope')}</Link>,
                 supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 supportPageFancy: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
@@ -56,7 +55,6 @@ var SiteNavigation = React.createClass({
                                         <li>{items.accountSettingsPage}</li>
                                         <li>{items.billingPage}</li>
                                         <li>{items.integrationsPage}</li>
-                                        {/*<li>{items.neonscopePage}</li>*/}
                                         <li>{items.telemetryPage}</li>
                                         <li>{items.apiPage}</li>
                                         <li>{items.supportPagePlain}</li>

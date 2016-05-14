@@ -180,10 +180,13 @@ var UTILS = {
             URL: '/telemetry/'
         },
         API: {
-            URL: '/api/'
+            URL: '/support/#api'
         },
-        NEONSCOPE: {
-            URL: '/neonscope/'
+        SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
+            URL: '/support/#brightcove-plugin-guide'
+        },
+        SUPPORT_CUSTOM_PLUGIN_GUIDE: {
+            URL: '/support/#custom-plugin-guide'
         },
         VIDEOLIBRARY: {
             URL: '/videos/'
