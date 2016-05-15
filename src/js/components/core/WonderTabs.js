@@ -30,6 +30,28 @@ var WonderTabs = React.createClass({
             selectedTab: self.props.selectedTab
         };
     },
+    componentWillMount: function() {
+        var self = this;
+        self.handleNewHash();
+        window.addEventListener('hashchange', self.handleNewHash, false);
+    },
+    handleNewHash: function() {
+        var self = this,
+            selectedTab = self.state.selectedTab,
+            hash = window.location.hash.split('#')[1]
+        ;
+        self.state.tabs.map(function(tab, i) {
+            var tabSlug = UTILS.slugify(tab.label);
+            if (tabSlug === hash) {
+                selectedTab = i;
+            }
+        });
+        self.setState({
+            selectedTab: selectedTab
+        }, function() {
+            window.scroll(0, 0);
+        });
+    },
     render: function() {
         var self = this;
         return (
@@ -38,7 +60,9 @@ var WonderTabs = React.createClass({
                     <ul>
                         {
                             self.state.tabs.map(function(tab, i) {
-                                var className = self.state.selectedTab === i ? ['is-active'] : [];
+                                var tabClass = self.state.selectedTab === i ? ['is-active'] : [],
+                                    tabSlug = UTILS.slugify(tab.label)
+                                ;
 
                                 function handleClick(e) {
                                     if (i !== self.state.selectedTab && tab.disabled !== true) {
@@ -49,11 +73,11 @@ var WonderTabs = React.createClass({
                                 }
 
                                 if (tab.disabled === true) {
-                                    className.push('is-disabled');
+                                    tabClass.push('is-disabled');
                                 }
                                 return (
-                                    <li key={self.state.uuid + '_tab' + i} className={className.join(' ')} onClick={handleClick}>
-                                        <a href={'#' + UTILS.slugify(tab.label)}>
+                                    <li key={self.state.uuid + '_tab' + i} className={tabClass.join(' ')} onClick={handleClick}>
+                                        <a href={'#' + tabSlug}>
                                             {tab.label}
                                         </a>
                                     </li>
@@ -63,11 +87,7 @@ var WonderTabs = React.createClass({
                     </ul>
                 </nav>
                 <div className="wonderland-tabs-body">
-                    <section className="container">
-                        <div className="container">
-                            {self.state.tabs[self.state.selectedTab].body}
-                        </div>
-                    </section>
+                    {self.state.tabs[self.state.selectedTab].body}
                 </div>
             </div>
         );
