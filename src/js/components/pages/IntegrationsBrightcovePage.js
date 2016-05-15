@@ -21,6 +21,11 @@ var IntegrationsBrightcovePage = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    componentWillMount: function() {
+        var self = this
+        ;
+        self.refreshNeonAccountInfo();
+    },
     getInitialState: function() {
         var self = this,
             params = self.props.routeParams,

@@ -99,7 +99,7 @@ var Integrations = React.createClass({
         );
     },
     configure: function(integration) {
-        this.context.router.push('/' + this.state.accountId + '/integration/' + integration.type + '/' + integration.integration_id + '/')
+        this.context.router.push('/integration/' + integration.type + '/' + integration.integration_id + '/')
     },
     addNew: function() {
         // this.context.router.push(UTILS.DRY_NAV.PLUGINS_NEW.URL);

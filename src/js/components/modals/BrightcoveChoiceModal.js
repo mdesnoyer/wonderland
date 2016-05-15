@@ -14,12 +14,6 @@ var BrightcoveChoiceModal = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [AjaxMixin, Account],
-    componentWillMount: function() {
-        var self = this
-        ;
-        self.refreshNeonAccountInfo();
-    },
     render: function() {
         var self = this;
         return (
@@ -29,7 +23,7 @@ var BrightcoveChoiceModal = React.createClass({
                 </h1>
                 <div className="content has-text-centered columns">
                     <div className={'column is-6'} onClick={self.handleGalleryClick}>
-                        <img src="https://img.brightcove.com/homepage/promo-gallery-logo.png" alt="" title=""  />
+                        <img src="/img/support/promogallerylogo.png" alt="" title=""  />
                     </div>
                     <div className={'column is-6'} onClick={self.handleBrightcoveClick}>
                         <img src="/img/brightcove.png" alt="" title="" />
@@ -40,24 +34,13 @@ var BrightcoveChoiceModal = React.createClass({
     },
     handleGalleryClick: function() {
         var self = this;
-            self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + self.state.accountId + '/gallery/');
+            self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'gallery/');
 
     },
     handleBrightcoveClick: function() {
         var self = this;
-            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + self.state.accountId + '/nongallery/');
+            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + self.state.accountId + 'nongallery/');
 
-    },
-    refreshNeonAccountInfo: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    accountId: account.accountId
-                })
-            })
-            .catch(function (err) {
-            });
     }
 });
 
