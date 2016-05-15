@@ -69,6 +69,7 @@ render((
         <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL} component={PluginsBrightcoveWizardPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
+        <Route path="/:accountId/integration/brightcove/:integrationId/" component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.ACCOUNTSETTINGS.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.USERSETTINGS.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />

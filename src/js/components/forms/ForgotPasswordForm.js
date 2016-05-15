@@ -16,7 +16,7 @@ var ForgotPasswordForm = React.createClass({
             isError: false
         }
     },
-    handleSubmit: function(e) { 
+    handleSubmit: function(e) {
         e.preventDefault();
         this.setState({
             isEmailMessageSent: true
@@ -35,8 +35,7 @@ var ForgotPasswordForm = React.createClass({
                         <legend className="title is-4">{T.get('copy.forgotPassword.heading')}</legend>
                         <p className="control">
                             <input className="input is-medium" type="email" ref="email" minLength="6" maxLength="1024" placeholder={T.get('email')} />
-                        </p>  
-                            
+                        </p>
                         <p className="has-text-centered">
                             <button className="button is-medium is-primary" type="submit">{T.get('reset.sendReset')}</button>
                         </p>
@@ -49,6 +48,6 @@ var ForgotPasswordForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ForgotPasswordForm 
+export default ForgotPasswordForm
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

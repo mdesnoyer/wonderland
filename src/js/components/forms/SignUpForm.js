@@ -66,10 +66,6 @@ var SignUpForm = React.createClass({
                 {messageNeeded}
                 <fieldset>
                     {legendElement}
-                    <p className="control is-grouped">
-                        <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
-                    </p>
                     <p className="control">
                         <input className="input is-medium" type="email" ref="email" required minLength="6" maxLength="1024" placeholder={T.get('email')} />
                     </p>
@@ -78,10 +74,10 @@ var SignUpForm = React.createClass({
                             type="password"
                             ref="passwordInitial"
                             required
-                            minLength="8" 
-                            maxLength="64" 
+                            minLength="8"
+                            maxLength="64"
                             placeholder={T.get('password')}
-                            onChange={self.handlePasswordInitialChange} 
+                            onChange={self.handlePasswordInitialChange}
                         />
                         <input className="input is-medium"
                             type="password"
@@ -90,8 +86,12 @@ var SignUpForm = React.createClass({
                             minLength="8"
                             maxLength="64"
                             placeholder={T.get('confirm')}
-                            onChange={self.handlePasswordConfirmChange} 
+                            onChange={self.handlePasswordConfirmChange}
                         />
+                    </p>
+                    <p className="control is-grouped">
+                        <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
+                        <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
                     </p>
                     <p className="control">
                         <input className="input is-medium" type="text" ref="company" required minLength="1" maxLength="1024" placeholder={T.get('company')} />
@@ -139,7 +139,7 @@ var SignUpForm = React.createClass({
         TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
         self.setState({
             isError: false,
-            isLoading: true 
+            isLoading: true
         });
         if (!E.checkForErrors(errorList)) {
             self.setState({
@@ -164,7 +164,7 @@ var SignUpForm = React.createClass({
                         data: userDataObject
                     })
                     .then(function (account) {
-                        self._isSubmitted = false; 
+                        self._isSubmitted = false;
                         self.setState({
                             isError: false,
                             isLoading: false
@@ -180,7 +180,7 @@ var SignUpForm = React.createClass({
                         });
                 });
             }
-        }   
+        }
     }
 });
 
