@@ -8,9 +8,9 @@ import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
-import BrightCoveAccountIdModal from '../modals/BrightCoveAccountIdModal';
+import BrightcoveAccountIdModal from '../modals/BrightcoveAccountIdModal';
 import BrightcoveClientIdModal from '../modals/BrightcoveClientIdModal';
-import BrightCoveClientSecretModal from '../modals/BrightCoveClientSecretModal';
+import BrightcoveClientSecretModal from '../modals/BrightcoveClientSecretModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -137,13 +137,13 @@ var IntegrationsForm = React.createClass({
                         </fieldset>
                     </form>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-publisherId')} handleToggleModal={self.closeModal}>
-                        <BrightCoveAccountIdModal />
+                        <BrightcoveAccountIdModal />
                     </ModalParent>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-client-id')} handleToggleModal={self.closeModal}>
                         <BrightcoveClientIdModal />
                     </ModalParent>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-clientSecret')} handleToggleModal={self.closeModal}>
-                        <BrightCoveClientSecretModal />
+                        <BrightcoveClientSecretModal />
                     </ModalParent>
                 </div>
             );

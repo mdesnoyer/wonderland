@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var BrightCoveAccountIdModal = React.createClass({
+var BrightcoveAccountIdModal = React.createClass({
     render: function() {
         return (
             <section className="box is-desktop has-text-centered">
@@ -25,6 +25,6 @@ var BrightCoveAccountIdModal = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default BrightCoveAccountIdModal;
+export default BrightcoveAccountIdModal;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
