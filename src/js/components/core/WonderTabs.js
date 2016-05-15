@@ -37,17 +37,17 @@ var WonderTabs = React.createClass({
     },
     handleNewHash: function() {
         var self = this,
-            sti = self.state.selectedTab,
+            selectedTab = self.state.selectedTab,
             hash = window.location.hash.split('#')[1]
         ;
         self.state.tabs.map(function(tab, i) {
             var tabSlug = UTILS.slugify(tab.label);
             if (tabSlug === hash) {
-                sti = i;
+                selectedTab = i;
             }
         });
         self.setState({
-            selectedTab: sti
+            selectedTab: selectedTab
         }, function() {
             window.scroll(0, 0);
         });
