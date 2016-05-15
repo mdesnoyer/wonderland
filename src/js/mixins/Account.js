@@ -6,7 +6,7 @@ import UTILS from '../modules/utils';
 
 function normalizeAccount(res) {
     return {
-        // integration_ids
+        integrationIds: res.integration_ids,
         // users
         defaultThumbnailId: res.default_thumbnail_id,
         trackerAccountId: res.tracker_account_id,

@@ -38,7 +38,7 @@ var InputTextEdit = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         var self = this;
-        return nextState.value !== self.props.value;
+        return nextState.value !== (null || self.props.fallbackValue);
     },
     render: function() {
         var self = this,

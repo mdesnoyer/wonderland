@@ -202,7 +202,7 @@ var Video = React.createClass({
                             created: video.created,
                             error: video.error ? video.error : '',
                             isLoading: false
-                        });
+                        })
                     }
                     else {
                         self.setState({
