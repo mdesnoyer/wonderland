@@ -108,7 +108,7 @@ var Video = React.createClass({
                 T.get('copy.message.line.one'),
                 T.get('copy.message.line.two'),
                 T.get('copy.message.link.one', {'@link': UTILS.CORP_EXTERNAL_URL}),
-                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEOLIBRARY.URL}),
+                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEO_LIBRARY.URL}),
                 T.get('copy.message.link.three', {'@link': UTILS.CONTACT_EXTERNAL_URL})
             ]
         ;
@@ -123,7 +123,7 @@ var Video = React.createClass({
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isLoading ? 'loading' : ''),
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small' + (self.state.isLoading ? ' is-loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -135,7 +135,6 @@ var Video = React.createClass({
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
                         title={self.state.title}
-                        videoLink={videoLink}
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
@@ -174,9 +173,10 @@ var Video = React.createClass({
                 }
             }
         ;
-        // If the video is 'serving' or 'failed', its going nowhere, so don't
-        // bother checking
-        if (self.state.videoState === 'serving' || self.state.videoState === 'failed' || self.state.videoState === 'processed') {
+        // If the video is 'serving' or 'processed' its going nowhere, so don't
+        // bother checking. There is a known latency issue in Back End, #1103.
+        // We still need to poll 'failed'.
+        if (self.state.videoState === 'serving' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
         }

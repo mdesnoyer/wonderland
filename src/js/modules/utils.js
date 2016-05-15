@@ -137,6 +137,9 @@ var UTILS = {
         }
     },
     DRY_NAV: {
+        HOME: {
+            URL: '/'
+        },
         DASHBOARD: {
             URL: '/dashboard/'
         },
@@ -161,10 +164,10 @@ var UTILS = {
         SIGNOUT: {
             URL: '/signout/'
         },
-        ACCOUNTSETTINGS: {
+        ACCOUNT_SETTINGS: {
             URL: '/settings/account/'
         },
-        USERSETTINGS: {
+        USER_SETTINGS: {
             URL: '/settings/user/'
         },
         SUPPORT: {
@@ -188,7 +191,7 @@ var UTILS = {
         SUPPORT_CUSTOM_PLUGIN_GUIDE: {
             URL: '/support/#custom-plugin-guide'
         },
-        VIDEOLIBRARY: {
+        VIDEO_LIBRARY: {
             URL: '/videos/'
         }    
     },

@@ -16,11 +16,12 @@ var VideoHeader = React.createClass({
     propTypes: {
         handleVideoOpenToggle: React.PropTypes.func.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
+        videoState: React.PropTypes.string.isRequired,
         title: React.PropTypes.string,
+        additionalClass: React.PropTypes.string.isRequired,
         videoId: React.PropTypes.string.isRequired,
-        thumbnails: React.PropTypes.array.isRequired,
         created: React.PropTypes.string,
-        videoState: React.PropTypes.string.isRequired
+        thumbnails: React.PropTypes.array.isRequired
     },
     render: function() {
         var self = this,
