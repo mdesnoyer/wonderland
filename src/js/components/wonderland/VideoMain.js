@@ -10,6 +10,7 @@ import VideoInfoBox from './VideoInfoBox';
 var VideoMain = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
+        videoId: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
         messageNeeded: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]).isRequired,
         thumbnails: React.PropTypes.array.isRequired,
@@ -35,6 +36,7 @@ var VideoMain = React.createClass({
                             videoState={self.props.videoState}
                             forceOpen={self.props.forceOpen}
                             isServingEnabled={self.props.isServingEnabled}
+                            videoId={self.props.videoId}
                         />
                     </div>
                     <aside className="column is-12-mobile is-2-desktop">

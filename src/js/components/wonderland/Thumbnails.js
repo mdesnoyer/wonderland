@@ -12,15 +12,17 @@ import UTILS from '../../modules/utils';
 import Slide from './Slide';
 import ModalParent from '../core/ModalParent';
 import Carousel from '../core/Carousel';
+import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnails = React.createClass({
-	// mixins: [ReactDebugMixin],
+	mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
+        videoId: React.PropTypes.string.isRequired,
         isServingEnabled: React.PropTypes.bool.isRequired
     },
     getInitialState: function() {
@@ -28,7 +30,8 @@ var Thumbnails = React.createClass({
         return {
             isModalActive: false,
             selectedItem: 0,
-            thumbnails: self.props.thumbnails
+            thumbnails: self.props.thumbnails,
+            thumbnailsStats: {}
         };
     },
     componentWillReceiveProps: function(nextProps) {
@@ -36,6 +39,35 @@ var Thumbnails = React.createClass({
         self.setState({
             thumbnails: nextProps.thumbnails
         });
+        if (nextProps.forceOpen === true && nextProps.forceOpen !== self.props.forceOpen) {
+            self.GET('statistics/thumbnails', {
+                data: {
+                    video_id: self.props.videoId,
+                    // Comma-separated string of fields to return. Can include
+                    // serving_frac (the fraction of traffic seeing this
+                    // thumbnail), ctr (the click-through rate), impressions
+                    // (the number of impressions), conversions (the number
+                    // of conversions), created, and updated.
+                    fields: ['thumbnail_id', 'ctr']
+                }
+            })
+            .then(function(json) {
+                var parsedThumbnailsStats = {};
+                json.statistics.map(function(thumbnail, i) {
+                    parsedThumbnailsStats[thumbnail.thumbnail_id] = {
+                        ctr: thumbnail.ctr
+                    };
+                });
+                self.setState({
+                    thumbnailsStats: parsedThumbnailsStats
+                });
+            })
+            .catch(function(err) {
+                // If this errors, we don't want to shout it. It can just
+                // gracefully not work.
+                console.log(err);
+            });
+        }
     },
     handleEnabledChange: function(index) {
         var self = this,
@@ -137,7 +169,7 @@ var Thumbnails = React.createClass({
                                                         thumbnailId={thumbnail.thumbnail_id}
                                                         created={thumbnail.created}
                                                         updated={thumbnail.updated}
-                                                        ctr={thumbnail.ctr}
+                                                        thumbnailStats={self.state.thumbnailsStats[thumbnail.thumbnail_id]}
                                                     />
                                                 </div>
                                             </div>

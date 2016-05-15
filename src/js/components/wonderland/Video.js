@@ -141,6 +141,7 @@ var Video = React.createClass({
                         thumbnails={self.state.sortedThumbnails}
                     />
                     <VideoMain
+                        videoId={self.state.videoId}
                         forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
                         thumbnails={self.state.sortedThumbnails}
