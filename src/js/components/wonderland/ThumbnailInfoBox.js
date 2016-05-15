@@ -18,39 +18,23 @@ var ThumbnailInfoBox = React.createClass({
         height: React.PropTypes.number,
         thumbnailId: React.PropTypes.string,
         created: React.PropTypes.string.isRequired,
-        updated: React.PropTypes.string.isRequired
+        updated: React.PropTypes.string.isRequired,
+        thumbnailStats: React.PropTypes.object
     },
     getInitialState: function() {
         return({
             ctr: T.get('copy.unknown')
         })
     },
-    componentWillMount: function() {
-        var self = this,
-            options = {
-                data: {
-                    thumbnail_id: self.props.thumbnailId,
-                    // Comma-separated string of fields to return. Can include
-                    // serving_frac (the fraction of traffic seeing this
-                    // thumbnail), ctr (the click-through rate), impressions
-                    // (the number of impressions), conversions (the number
-                    // of conversions), created, and updated.
-                    fields: 'ctr'
-                }
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        if (nextProps.thumbnailStats && nextProps.thumbnailStats.hasOwnProperty('ctr')) {
+            if (nextProps.thumbnailStats.ctr !== self.state.ctr) {
+                self.setState({
+                    ctr: nextProps.thumbnailStats.ctr
+                });
             }
-        ;
-        self.GET('statistics/thumbnails', options)
-        .then(function(json) {
-            var ctr = json.statistics[0].ctr; 
-            self.setState({
-                ctr: ctr ? UTILS.formatCtr(ctr) : T.get('copy.na')
-            });
-        })
-        .catch(function(err) {
-            // If this errors, we don't want to shout it. It can just
-            // gracefully not work.
-            console.log(err);
-        });
+        }
     },
     render: function() {
         var self = this;
@@ -82,7 +66,7 @@ var ThumbnailInfoBox = React.createClass({
                         className="wonderland-dt"
                         dangerouslySetInnerHTML={{__html: T.get('copy.ctr')}}
                     />
-                        <dd className="wonderland-dd">{self.state.ctr}</dd>
+                        <dd className="wonderland-dd">{UTILS.formatCtr(self.state.ctr)}</dd>
                 </dl>
             </aside>
         );
