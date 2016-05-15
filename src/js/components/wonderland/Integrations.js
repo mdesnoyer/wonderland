@@ -7,6 +7,9 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import ModalParent from '../core/ModalParent';
+import BrightcoveChoiceModal from '../modals/BrightcoveChoiceModal';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +22,8 @@ var Integrations = React.createClass({
         return {
             errorMessageArray: [],
             isError: false,
-            integrations: []
+            integrations: [],
+            activeModal: false
         }
     },
     componentWillMount: function() {
@@ -48,6 +52,7 @@ var Integrations = React.createClass({
             messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
+        <div>
             <table className={additionalClass}>
                 <caption>
                     {messageNeeded}
@@ -82,11 +87,15 @@ var Integrations = React.createClass({
                 <tfoot>
                     <tr>
                         <th colSpan="3">
-                            <a className="button is-primary is-medium is-pulled-right" onClick={self.addNew}>{T.get('add')}</a>
+                            <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>{T.get('add')}</a>
                         </th>
                     </tr>
                 </tfoot>
             </table>
+            <ModalParent isModalActive={self.state.activeModal} handleToggleModal={self.closeModal}>
+                <BrightcoveChoiceModal />
+            </ModalParent>
+        </div>
         );
     },
     configure: function(integration) {
@@ -96,7 +105,19 @@ var Integrations = React.createClass({
         // this.context.router.push(UTILS.DRY_NAV.PLUGINS_NEW.URL);
         // Temp until there are more types of integrations
         this.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
-    }
+    },
+    openModal: function (e) {
+        var self = this;
+        self.setState({
+            activeModal: true
+        });
+    },
+    closeModal: function () {
+        var self = this;
+        self.setState({
+            activeModal: false
+        });
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -23,16 +23,19 @@ var IntegrationsBrightcovePage = React.createClass({
     },
     getInitialState: function() {
         var self = this,
-            params = self.props.routeParams
+            params = self.props.routeParams,
+            usesGallery
         ;
-        if (Object.keys(params).length === 0 && params.constructor === Object){
+        if (params.usesGallery){
+            usesGallery = params.usesGallery === 'gallery' ? true : false;
             return {
                 formMode: 'add',
+                accountId: params.accountId,
                 integrationType: 'brightcove',
                 integrationId: '',
                 dataToProps:'',
                 playerArray:'',
-                usesGallery: false
+                usesGallery: usesGallery
             };
         }
         else {
@@ -84,6 +87,7 @@ var IntegrationsBrightcovePage = React.createClass({
                                     publisherId= {self.state.publisherId}
                                     clientSecret={self.state.clientSecret}
                                     refreshFormMode={self.refreshFormMode}
+                                    usesGallery={self.state.usesGallery}
                                 />
                                     <RadioInputForm
                                         usesGallery={self.state.usesGallery}
