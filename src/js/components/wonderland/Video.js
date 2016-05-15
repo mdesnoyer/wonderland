@@ -173,9 +173,9 @@ var Video = React.createClass({
                 }
             }
         ;
-        // If the video is 'serving' or, its going nowhere, so don't
-        // bother checking. There is a known latency issue in Back
-        // End, #1103. We still need to poll 'failed'.
+        // If the video is 'serving' or 'processed' its going nowhere, so don't
+        // bother checking. There is a known latency issue in Back End, #1103.
+        // We still need to poll 'failed'.
         if (self.state.videoState === 'serving' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
