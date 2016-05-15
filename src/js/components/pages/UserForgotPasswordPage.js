@@ -11,7 +11,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var ForgotPasswordPage = React.createClass({
+var UserForgotPasswordPage = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
         return (
@@ -39,6 +39,6 @@ var ForgotPasswordPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ForgotPasswordPage;
+export default UserForgotPasswordPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -150,7 +150,8 @@ gulp.task('browser-sync', function() {
             // https://github.com/bripkens/connect-history-api-fallback#rewrites
             rewrites: [{
                 from: /\/video\/.*/, to: '/index.html',
-                from: /\/account\/confirm\/.*/, to: '/index.html'
+                from: /\/account\/confirm\/.*/, to: '/index.html',
+                from: /\/user\/reset\/token\/.*/, to: '/index.html',
             }]
         })],
         ghostMode: false
