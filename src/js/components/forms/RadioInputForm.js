@@ -84,23 +84,25 @@ var RadioInputForm = React.createClass({
             }
         return (
             <div className={"box" + usesGallery}>
-                <div className="columns container is-fluid">
-                    <span className="column is-4">
-                        {question}
-                    </span>
-                    <div className="column is-6 has-text-centered">
-                        <RadioGroup className={"control is-grouped" + formModeDisable} name={self.props.radioType} selectedValue={self.state.isActive} onChange={self.handleChange}>
+                <div className="columns container">
+                    <div className="column is-5">
+                    <legend className="subtitle is-5">
+                            {question}
+                        </legend>
+                    </div>
+                    <div className="column is-5 has-text-centered radioinput-radio-button">
+                        <RadioGroup className={"control columns is-fluid is-grouped" + formModeDisable} name={self.props.radioType} selectedValue={self.state.isActive} onChange={self.handleChange}>
                           {Radio => (
                             <div>
-                              <Radio className={formModeDisable} value={true} />{T.get('copy.integration.bc.yes')}
-                              <Radio className={formModeDisable} value={false} />{T.get('copy.integration.bc.no')}
+                              <Radio className={'column is-2' + formModeDisable} value={true} />{T.get('copy.integration.bc.yes')}
+                              <Radio className={'column is-2' + formModeDisable} value={false} />{T.get('copy.integration.bc.no')}
                             </div>
                           )}
                         </RadioGroup>
                     </div>
-                    <span className="column is-2 is-pulled-right">
+                    <div className="column is-2 radioinput-modalbutton">
                         <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
-                    </span>
+                    </div>
                     <ModalParent isModalActive={(self.state.activeModal)} handleToggleModal={self.closeModal}>
                         {modalToShow}
                     </ModalParent>
