@@ -34,7 +34,9 @@ var BillingPage = React.createClass({
                         <div className="content">
                             <p><span dangerouslySetInnerHTML={{__html: T.get('copy.billing.body')}} /></p>
                         </div>
-                        <BillingForm />
+                        <BillingForm
+                            showLegend={false}
+                        />
                     </div>
                 </section>
                 <SiteFooter />
