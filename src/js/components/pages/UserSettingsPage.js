@@ -26,9 +26,6 @@ var UserSettingsPage = React.createClass({
                         <div className="columns is-desktop">
                             <div className="column is-half is-offset-one-quarter">
                                 <h1 className="title is-2">{T.get('copy.userSettings.heading')}</h1>
-                                <div className="content">
-                                    <p><span dangerouslySetInnerHTML={{__html: T.get('copy.userSettings.body')}} /></p>
-                                </div>
                                 <UserSettingsForm />
                             </div>
                         </div>
