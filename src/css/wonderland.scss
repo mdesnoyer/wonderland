@@ -4,6 +4,28 @@
 
 @charset 'UTF-8';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// http://chir.ag/projects/name-that-color/
+
+// Primary
+$colour-mine-shaft: #3d3d3d;
+$colour-gray-chateau: #95a1ab;
+$colour-dusty-gray: #989898;
+$colour-silver-chalice: #aaa;
+
+$colour-burning-orange: #ff6b31;
+
+// Secondary
+$colour-gallery: #ebebeb;
+$colour-alabaster: #f7f7f7;
+$colour-alto: #ddd;
+$colour-regent-gray: #84929d;
+
+// Tertiary
+$colour-pacific-blue: #0094ce;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // Neon
 $curious-blue: #26a9e0;
 $flamingo: #f16122;
@@ -13,19 +35,24 @@ $athens-gray: #edecee;
 $white: #fff;
 $blackish: #121212;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // Overrides
-$blue: $curious-blue;
-$orange: $flamingo;
-$grey-darker: $gray;
-$grey-dark: $gray;
-$grey: $silver-chalice;
-$grey-light: mix($silver-chalice, $athens-gray, 25%);
-$grey-lighter: $athens-gray;
 $family-sans-serif: 'Roboto', sans-serif;
+
+$blue: $colour-pacific-blue;
+$orange: $colour-burning-orange;
+
+$grey-darker: $colour-mine-shaft;
+$grey-dark: $colour-dusty-gray;
+$grey: $silver-chalice;
+$grey-light: $colour-alto;
+$grey-lighter: $colour-gallery;
+
 $primary: $blue;
 $red: $orange;
-$body-background: $white;
-$background: $white;
+$body-background: $colour-alabaster;
+$background: $colour-alabaster;
 
 @import '../../node_modules/bulma/sass/utilities/utilities';
 @import "../../node_modules/bulma/sass/utilities/variables";
@@ -69,6 +96,7 @@ $background: $white;
     'components/modal',
     'components/xylophone',
     'components/banner',
+    'components/toggle',
     'components/navbar',
     'components/inputtextedit',
     'components/wondertabs',
