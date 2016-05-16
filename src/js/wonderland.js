@@ -72,6 +72,7 @@ render((
         <Route path="/video/:videoId/" component={VideoPage} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
+
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />

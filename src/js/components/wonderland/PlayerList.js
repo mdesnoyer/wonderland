@@ -54,7 +54,7 @@ var PlayerList = React.createClass({
             }
             return (
                     <div className="box">
-                        <table className={"table is-bordered is-striped is-narrow has-text-centered"}>
+                        <table className={"table is-bordered is-striped is-narrow"}>
                             <thead>
                                 <tr>
                                     <th>Player</th>
