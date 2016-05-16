@@ -36,7 +36,7 @@ var SupportTab3 = React.createClass({
     "callback_url" : "http://myserver.com/neon"
 }`}</code></pre>
 
-                <p>Additional options for this call are detailed in the <a href="http://api.docs.neon-lab.com/#!/videos/post_account_id_videos" rel="external">reference manual</a>.</p>
+                <p>Additional options for this call are detailed in the <a href="http://api.docs.neon-lab.com/cmsapiv2_public.html#!/videos/post_account_id_videos" rel="external">reference manual</a>.</p>
                 <p>When the video is has finished, a PUT request will be sent to callback_url. Details about the callbacks are available in the callbacks section below.</p>
 
                 <h3 className="title is-4">2. Image Serving</h3>
