@@ -211,18 +211,28 @@ var IntegrationsForm = React.createClass({
         ;
         switch (self.state.provider) {
         case 'brightcove':
+            if(self.props.formMode === 'add'){
+                options.data = {
+                    publisher_id: self.refs.publisherId.value.trim(),
+                    application_client_id: self.refs.clientId.value.trim(),
+                    application_client_secret: self.refs.clientSecret.value.trim(),
+                    uses_bc_gallery: self.props.usesGallery
+                };
+            }
+            else{
                 options.data = {
                     publisher_id: self.refs.publisherId.value.trim(),
                     application_client_id: self.refs.clientId.value.trim(),
                     application_client_secret: self.refs.clientSecret.value.trim()
                 };
+            }
             break;
         case 'ooyala':
             // TODO: Read Ooyala form
             break;
         }
         if (formMode === 'add') {
-            options.uses_bc_gallery = self.props.usesGallery,
+            options.uses_bc_gallery = self.props.usesGallery;
             apiCall = self.POST('integrations/' + self.state.provider, options);
         } else {
             options.data.integration_id = self.state.integrationId;
@@ -230,6 +240,7 @@ var IntegrationsForm = React.createClass({
         }
         apiCall
             .then(function(res) {
+                debugger
                 self.setState({
                     isError: false,
                     formMode: 'update'

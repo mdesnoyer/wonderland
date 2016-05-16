@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
@@ -18,26 +18,9 @@ var BrightcoveClientIdModal = React.createClass({
                         <li>Click &ldquo;Register New Application&rdquo;</li>
                         <li>Enter &ldquo;Neon&rdquo; in the name field</li>
                         <li>Select the following permissions:
-                            <ul>
-                                <li>CMS
-                                    <ul>
-                                        <li>Notifications</li>
-                                        <li>Video Read</li>
-                                        <li>Video Read/Write</li>
-                                    </ul>
-                                </li>
-                                <li>Players
-                                    <ul>
-                                        <li>Read</li>
-                                        <li>Read/Write</li>
-                                    </ul>
-                                </li>
-                                <li>Dynamic Ingest
-                                    <ul>
-                                        <li>Create</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <div className='box'>
+                            <img src="/img/BCpermission.png" alt="" title="" />
+                        </div>
                         </li>
                         <li>Click &ldquo;Save&rdquo;</li>
                         <li>A window will appear with your Client ID and Client Secret. Copy these values into the Neon plugin configuration page, which you can access by clicking on the gear in your Neon account and selecting Plugins.</li>

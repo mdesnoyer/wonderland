@@ -35,12 +35,10 @@ var BrightcoveChoiceModal = React.createClass({
     handleGalleryClick: function() {
         var self = this;
             self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'gallery/');
-
     },
     handleBrightcoveClick: function() {
         var self = this;
             self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'nongallery/');
-
     }
 });
 
