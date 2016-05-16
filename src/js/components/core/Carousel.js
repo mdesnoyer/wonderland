@@ -1,8 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import T from '../../modules/translation';
 // import ReactDebugMixin from 'react-debug-mixin';
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -80,11 +80,11 @@ var Carousel = React.createClass({
                 </ol>
                 <nav className="box wonderland-carousel__control-box">
                     <ul className="wonderland-carousel__controls">
-                        <li onClick={self.handleClickPrevious} className="wonderland-carousel__control wonderland-carousel__control--previous">
+                        <li title={T.get('action.previous')} onClick={self.handleClickPrevious} className="wonderland-carousel__control wonderland-carousel__control--previous">
                             <i className="fa fa-chevron-circle-left" aria-hidden="true"></i>
                         </li>
                         <li>Item {self.state.selectedItem + 1} of {self.state.total}</li>
-                        <li onClick={self.handleClickNext} className="wonderland-carousel__control wonderland-carousel__control--next">
+                        <li title={T.get('action.next')} onClick={self.handleClickNext} className="wonderland-carousel__control wonderland-carousel__control--next">
                             <i className="fa fa-chevron-circle-right" aria-hidden="true"></i>
                         </li>
                     </ul>
