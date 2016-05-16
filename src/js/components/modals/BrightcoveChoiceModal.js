@@ -17,28 +17,26 @@ var BrightcoveChoiceModal = React.createClass({
     render: function() {
         var self = this;
         return (
-            <section className="box is-desktop has-text-centered message is-primary">
+            <section className="box is-desktop">
                 <h1 className="title is-4">
-                    Which type of Brightcove Account do you have?
+                    Which type of Brightcove account do you have?
                 </h1>
-                <div className="content has-text-centered columns">
-                    <div className={'column is-6 box'} onClick={self.handleGalleryClick}>
-                        <img src="/img/gallerylogo.png" alt="" title=""  />
-                    </div>
-                    <div className={'column is-6 box'} onClick={self.handleBrightcoveClick}>
-                        <img src="/img/brightcove.png" alt="" title="" />
-                    </div>
+                <div className={'box wonderland-brick'} onClick={self.handleGalleryClick}>
+                    <img src="/img/gallerylogo.png" alt="" title=""  />
+                </div>
+                <div className={'box wonderland-brick'} onClick={self.handleBrightcoveClick}>
+                    <img src="/img/videocloudlogo.png" alt="" title="" />
                 </div>
             </section>
         );
     },
     handleGalleryClick: function() {
         var self = this;
-            self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'gallery/');
+        self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'gallery/');
     },
     handleBrightcoveClick: function() {
         var self = this;
-            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'nongallery/');
+        self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'videocloud/');
     }
 });
 
