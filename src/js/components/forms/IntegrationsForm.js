@@ -240,7 +240,6 @@ var IntegrationsForm = React.createClass({
         }
         apiCall
             .then(function(res) {
-                debugger
                 self.setState({
                     isError: false,
                     formMode: 'update'
