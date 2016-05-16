@@ -15,6 +15,14 @@ var BillingForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes: {
+        showLegend: React.PropTypes.bool.isRequired
+    },
+    getDefaultProps: function() {
+        return {
+            showLegend: true
+        }
+    },
     PLANTYPES: {
         demo: 'demo',
         pro_monthly: 'pro_monthly',
@@ -157,6 +165,7 @@ var BillingForm = React.createClass({
     },
     render: function() {
         var self = this,
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.billing.heading')}</legend> : '',
             buttonClassName,
             inputClassName,
             selectClassName,
@@ -177,9 +186,9 @@ var BillingForm = React.createClass({
             <form id="billingForm" onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>
-                    <legend className="title is-4">{T.get('copy.billing.heading')}</legend>
+                    {legendElement}
                     
-                    <label htmlFor="planType">{T.get('copy.billing.form.planType')}</label>
+                    <label className="label" htmlFor="planType">{T.get('copy.billing.form.planType')}</label>
                     <RadioGroup
                         name="planType"
                         id="planType"
