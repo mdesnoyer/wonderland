@@ -28,7 +28,9 @@ var IntegrationsPage = React.createClass({
                         <div className="content">
                             {T.get('copy.plugins.body')}
                         </div>
-                        <Integrations />
+                        <Integrations
+                            pop={window.location.hash === '#pop'}
+                        />
                     </div>
                 </section>
                 <SiteFooter />
