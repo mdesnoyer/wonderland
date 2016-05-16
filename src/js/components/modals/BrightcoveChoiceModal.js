@@ -17,15 +17,18 @@ var BrightcoveChoiceModal = React.createClass({
     render: function() {
         var self = this;
         return (
-            <section className="box is-desktop">
+            <section className="is-desktop has-text-centered box">
+
                 <h1 className="title is-4">
                     Which type of Brightcove account do you have?
                 </h1>
-                <div className={'box wonderland-brick'} onClick={self.handleGalleryClick}>
-                    <img src="/img/gallerylogo.png" alt="" title=""  />
-                </div>
-                <div className={'box wonderland-brick'} onClick={self.handleBrightcoveClick}>
-                    <img src="/img/videocloudlogo.png" alt="" title="" />
+                <div className="content has-text-centered columns">
+                    <div className={'column box is-6 choiceModal'} onClick={self.handleGalleryClick}>
+                        <img src="/img/gallerylogo2.png" alt="" title="" />
+                    </div>
+                    <div className={'column box is-6 box choiceModal'} onClick={self.handleBrightcoveClick}>
+                        <img src="/img/gallerylogo.png" alt="" title=""  />
+                    </div>
                 </div>
             </section>
         );
