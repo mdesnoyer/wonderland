@@ -22,10 +22,10 @@ var BrightcoveChoiceModal = React.createClass({
                     Which type of Brightcove Account do you have?
                 </h1>
                 <div className="content has-text-centered columns">
-                    <div className={'column is-6'} onClick={self.handleGalleryClick}>
-                        <img src="/img/support/promogallerylogo.png" alt="" title=""  />
+                    <div className={'column is-6 box'} onClick={self.handleGalleryClick}>
+                        <img src="/img/gallerylogo.png" alt="" title=""  />
                     </div>
-                    <div className={'column is-6'} onClick={self.handleBrightcoveClick}>
+                    <div className={'column is-6 box'} onClick={self.handleBrightcoveClick}>
                         <img src="/img/brightcove.png" alt="" title="" />
                     </div>
                 </div>
@@ -35,12 +35,10 @@ var BrightcoveChoiceModal = React.createClass({
     handleGalleryClick: function() {
         var self = this;
             self.context.router.push( UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'gallery/');
-
     },
     handleBrightcoveClick: function() {
         var self = this;
-            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + self.state.accountId + 'nongallery/');
-
+            self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + 'nongallery/');
     }
 });
 
