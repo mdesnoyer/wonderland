@@ -89,8 +89,8 @@ $smallest-ratio: 0.191;
 }
 
 .wonderland-navbar__icon--regular {
-    background-color: hotpink;
     color: $grey-lighter;
+    transition: all 0.3333s;
     &:focus,
     &:hover,
     &:active {
@@ -99,13 +99,7 @@ $smallest-ratio: 0.191;
 }
 
 .wonderland-navbar__icon--alternate {
-    background-color: $white;
-    color: $grey;
-    &:focus,
-    &:hover,
-    &:active {
-        color: $orange;
-    }
+    background-color: $grey-light;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,6 +110,7 @@ $smallest-ratio: 0.191;
     line-height: $maximum-nav-height;
     color: $white;
     font-style: normal;
+    transition: color 0.3333s;
     &:link,
     &:visited {
         color: $grey-light; 
@@ -154,6 +149,7 @@ $smallest-ratio: 0.191;
         a {
             display: block;
             padding: $smaller-ratio * 1em;
+            transition: all 0.3333s;
             &:link,
             &:visited {
                 background-color: $white;
