@@ -1,12 +1,20 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-.wonderland-modal {
-}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-modal-content {
     &.is-clipped {
         overflow: hidden;
     }
+    &.is-max {
+        @media screen and (min-width: $tablet) {
+            width: 90%;
+        }
+        @media screen and (min-width: $desktop) {
+            // empty
+        }
+        @media screen and (min-width: $widescreen) {
+            width: $widescreen * 0.9;
+        }
+    }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

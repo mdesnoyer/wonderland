@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import reqwest from 'reqwest';
@@ -6,7 +6,7 @@ import SESSION from './session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AJAX = {
+var AJAXModule = {
     Session: null,
     getQueryParam: function(json) {
         return Object.keys(json).map(function (key) {
@@ -21,8 +21,26 @@ var AJAX = {
             }
         }).join('&');
     },
+    handleApiError: function(err) {
+        var ret;
+        try {
+            ret = JSON.parse(err.responseText).error;
+            if (!ret.code) {
+                ret.code = err.status || 500;
+            }
+        } catch (e) {
+            ret = {
+                message: err.responseText,
+                code: err.status
+            };
+        }
+        return ret;
+    },
     doApiCall: function(url, options) {
-        var self = this;
+        var self = this,
+            promise,
+            ret
+        ;
         function fin(resolve, reject) {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
@@ -42,7 +60,9 @@ var AJAX = {
             _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
             reqwest(_options)
                 .then(function (res) {
-                    resolve(res);
+                    if (ret.isCanceled !== true) {
+                        options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
+                    }
                 })
                 .catch(function (err) {
                     var retryUrl = '';
@@ -56,56 +76,78 @@ var AJAX = {
                         })
                             .then(function (res) {
                                 self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                                fin(resolve, reject);
+                                if (ret.isCanceled !== true) {
+                                    fin(resolve, reject);
+                                }
                             })
                             .catch(function (err) {
                                 self.Session.end();
-                                reject(err);
+                                if (ret.isCanceled !== true) {
+                                    options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
+                                }
                             });
-                    } else {
-                        reject(err);
+                    } else if (ret.isCanceled !== true) {
+                        options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
                     }
                 });
         }
 
         self.Session = self.Session || SESSION;
 
-        return new Promise(function (resolve, reject) {
+        // Default error handler
+        options.errorHandler = options.errorHandler || self.handleApiError;
+
+        promise = new Promise(function (resolve, reject) {
             var authUrl = '',
-                err
-            ;
+                err;
             if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
-                fin(resolve, reject);
-            }
-            else {
-                err = new Error('Sorry, something went wrong.');
-                err.status = 401;
-                reject(err);
+                fin.call(self, resolve, reject);
+            } else {
+                // We're missing an account id, so simulate an "unauthorized" response from the server
+                err = {
+                    error: 'Unauthorized',
+                    code: 401
+                };
+                options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
             }
         });
+        ret = {
+            isCanceled: false,
+            cancel: function() {
+                this.isCanceled = true;
+            },
+            promise: promise
+        };
+        return ret;
     },
     doGet: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPost: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
     doPut: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
+        // Default error handler
+        options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default AJAX;
+export default AJAXModule;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

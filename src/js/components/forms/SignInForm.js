@@ -1,17 +1,19 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignInForm = React.createClass({
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -25,55 +27,89 @@ var SignInForm = React.createClass({
     },
     getInitialState: function() {
         return {
-            isError: false
+            isError: false,
+            isLoading: false
         }  
     },
     componentDidMount: function() {
         var self = this;
-        self._isMounted = true;
+        self._isSubmitted = false;
     },
     componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
         E.clearErrors();
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" />  : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : ''
+            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : '',
+            buttonClassName,
+            inputClassName
         ;
+            if (self.state.isLoading) {
+                buttonClassName = 'button is-primary is-medium is-disabled is-loading';
+                inputClassName = 'input is-medium is-disabled';
+            }
+            else {
+                buttonClassName = 'button is-medium is-primary';
+                inputClassName = 'input is-medium';
+            }
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeeded}
                 <fieldset>  
                     {legendElement}                    
                     <p className="control">
-                        <input
-                            className="input is-medium"
+                        <input className={inputClassName}
                             type="text"
                             required
                             ref="email"
+                            minLength="6" 
+                            maxLength="1024"
                             placeholder={T.get('email')}
-                            defaultValue={SESSION.rememberedEmail()}
+                            defaultValue={SESSION.rememberedEmail()} 
                         />
                     </p>
                     <p className="control">
-                        <input className="input is-medium" type="password" required ref="password" placeholder={T.get('password')} />
+                        <input className={inputClassName}
+                            type="password"
+                            required
+                            ref="password"
+                            minLength="8"
+                            maxLength="64"
+                            placeholder={T.get('password')}
+                        />
                     </p>
                     <p className="control">
-                        <label className="checkbox is-medium" htmlFor="isRememberMe">
-                            <input className="checkbox" type="checkbox" ref="isRememberMe" id="isRememberMe" defaultValue={SESSION.rememberMe()} defaultChecked={SESSION.rememberMe()} />
+                        <label className="checkbox" htmlFor="isRememberMe">
+                            <input type="checkbox"
+                                className="wonderland-checkbox--checkbox"
+                                ref="isRememberMe"
+                                id="isRememberMe"
+                                defaultValue={SESSION.rememberMe()}
+                                defaultChecked={SESSION.rememberMe()}
+                            />
                             {T.get('rememberMe')}
                         </label>
                     </p>
-                    <p className="is-text-centered">
-                        <button className="button is-medium is-primary" type="submit">{T.get('signIn')}</button>
+                    <p className="has-text-centered">
+                        <button className={buttonClassName} type="submit">{T.get('signIn')}</button>
                     </p>
                 </fieldset>
             </form>
         );
     },
     handleSubmit: function (e) {
+        var self = this;
+        e.preventDefault();
+        if (!self._isSubmitted) {
+            self._isSubmitted = true;
+            self.setState({
+                isError: false,
+                isLoading:true
+            }, self.sendUserData());
+        }
+    },
+    sendUserData: function() {
         var self = this,
             isRememberMe = self.refs.isRememberMe.checked,
             email = self.refs.email.value.trim(),
@@ -82,17 +118,11 @@ var SignInForm = React.createClass({
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)}
             ]
         ;
-        e.preventDefault();
-        if (self._isMounted) {
-            self.setState({
-                isError: false
-            });
-        }
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later 
         if (true) {
             TRACKING.sendEvent(self, arguments, email);
-            AJAX.doPost('authenticate', {
+            self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
                         username: email,
@@ -104,34 +134,33 @@ var SignInForm = React.createClass({
                     if (SESSION.rememberMe(isRememberMe)) {
                         SESSION.rememberedEmail(email);
                     }
-                    if (self._isMounted) {
-                        self.setState({
-                            isError: false
-                        });
-                    }
+                    self._isSubmitted = false;
+                    self.setState({
+                        isError: false,
+                        isLoading: false
+                    });
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 })
                 .catch(function (err) {
                     E.checkForError('Sorry, we could not sign you in.', false);
-                    if (self._isMounted) {
-                        self.setState({
-                            isError: true
-                        });
-                    }
+                    self._isSubmitted = false;
+                    self.setState({
+                        isError: true,
+                        isLoading: false
+                    });
                 });
         }
         else {
-            if (self._isMounted) {
-                self.setState({
-                    isError: true
-                });
-            }
+            self.setState({
+                isError: true,
+                isLoading: false
+            });
         }
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SignInForm;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

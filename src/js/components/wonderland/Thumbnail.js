@@ -1,12 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import AJAX from '../../modules/ajax';
-import ModalParent from '../core/ModalParent';
-import ImageModalChild from '../core/ImageModalChild';
+import AjaxMixin from '../../mixins/Ajax';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -14,27 +13,40 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
+	mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
-        videoStateMapping: React.PropTypes.string.isRequired,
         index: React.PropTypes.number.isRequired,
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         cookedNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired,
         type: React.PropTypes.string.isRequired,
-        frameNo: React.PropTypes.number.isRequired,
-        thumbnailId: React.PropTypes.string.isRequired,
+        frameNo: React.PropTypes.number,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
-        isAccountServingEnabled: React.PropTypes.bool.isRequired
+        isServingEnabled: React.PropTypes.bool.isRequired,
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        thumbnailId: React.PropTypes.string.isRequired,
+        created: React.PropTypes.string.isRequired,
+        updated: React.PropTypes.string.isRequired,
+        ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        handleToggleModal: React.PropTypes.func.isRequired,
+        handleEnabledChange: React.PropTypes.func.isRequired,
+        isModalActive: React.PropTypes.bool.isRequired
     },
     getInitialState: function () {
         var self = this;
         return {
             isEnabled: self.props.isEnabled,
-            isModalActive: false,
-            isBusy: false
+            isLoading: false
         };
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            isEnabled: nextProps.isEnabled
+        });
     },
     componentDidMount: function() {
         var self = this;
@@ -49,23 +61,18 @@ var Thumbnail = React.createClass({
             };
             bufferImage.src = thumbnailImage.getAttribute('data-src');
         }
-        self._isMounted = true;
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
     },
     render: function() {
         var self = this,
-            additionalClass = 'tag is-' + (self.state.isEnabled ? self.props.videoStateMapping : 'disabled') + ' is-medium wonderland-thumbnail__score',
+            additionalClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__score' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
-            enabledDisabled = self.state.isBusy ? 'disabled' : '',
+            enabledDisabled = self.state.isLoading ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClassName = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled'),
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
-            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
-            handleEnabledChangeHook = self.props.isAccountServingEnabled ? self.handleEnabledChange : function() { return false; }
+            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={additionalClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
+            handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
             <figure
@@ -87,43 +94,36 @@ var Thumbnail = React.createClass({
                 />
                 <figcaption className="wonderland-thumbnail__caption">
                     {neonScore}
-                    <input className="wonderland-thumbnail__enabled is-medium" onChange={handleEnabledChangeHook} checked={self.state.isEnabled} type="checkbox" disabled={enabledDisabled} />
-                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -background"><i className="fa fa-circle"></i></span>
-                    <span onClick={self.handleToggleModal} className="wonderland-thumbnail__indicator -foreground"><i className={'fa fa-' + enabledIndicator}></i></span>
+                    <input
+                        className="wonderland-thumbnail__enabled"
+                        onChange={handleEnabledChangeHook}
+                        checked={self.state.isEnabled}
+                        type="checkbox"
+                        disabled={enabledDisabled}
+                    />
+                    <span
+                        onClick={self.handleToggleModal}
+                        className="wonderland-thumbnail__indicator"
+                    >
+                        <i className={'fa fa-' + enabledIndicator} aria-hidden="true"></i>
+                    </span>
                     <ThumbBox
                         copyUrl={self.props.url}
                         downloadUrl={self.props.url}
                         isEnabled={self.state.isEnabled}
                         handleToggleModal={self.handleToggleModal}
                         handleEnabledChange={handleEnabledChangeHook}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
+                        type={self.props.type}
+                        isModalActive={self.props.isModalActive}
                     />
                 </figcaption>
-                <ModalParent
-                    isModalActive={self.state.isModalActive}
-                    handleToggleModal={self.handleToggleModal}
-                    isModalContentClipped={true}
-                >
-                    <ImageModalChild
-                        caption={caption}
-                        strippedUrl={self.props.strippedUrl}
-                        copyUrl={self.props.url}
-                        downloadUrl={self.props.url}
-                        isEnabled={self.state.isEnabled}
-                        handleEnabledChange={handleEnabledChangeHook}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
-                        type={self.props.type}
-                        frameNo={self.props.frameNo}
-                    />
-                </ModalParent>
             </figure>
         );
     },
     handleToggleModal: function(e) {
         var self = this;
-        self.setState({
-            isModalActive: !self.state.isModalActive
-        });
+        self.props.handleToggleModal(self.props.index);
     },
     handleEnabledChange: function(e) {
         var self = this,
@@ -135,25 +135,26 @@ var Thumbnail = React.createClass({
             }
         ;
         self.setState({
-            isBusy: true,
+            isLoading: true,
             isEnabled: !self.state.isEnabled
         }, function() {
-            AJAX.doPut('thumbnails', options)
+            self.PUT('thumbnails', options)
                 .then(function(json) {
-                    if (self._isMounted) {
-                        self.setState({
-                            isBusy: false
-                        });
-                    }
+                    self.setState({
+                        isLoading: false
+                    }, function() {
+                        self.props.handleEnabledChange(self.props.index)
+                    });
                 })
                 .catch(function(err) {
-                    if (self._isMounted) {
-                        self.setState({
-                            isBusy: false,
-                            isEnabled: !self.state.isEnabled // put it back
-                        });
-                    }
-                });
+                    self.setState({
+                        isLoading: false,
+                        isEnabled: !self.state.isEnabled // put it back
+                    }, function() {
+                        self.props.handleEnabledChange(self.props.index)
+                    });
+                })
+            ;
             })
         ;
     }

@@ -1,10 +1,12 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var NewsFlash = React.createClass({
+	// mixins: [ReactDebugMixin],
     propTypes: {
         isActive: React.PropTypes.bool
     },
@@ -17,7 +19,7 @@ var NewsFlash = React.createClass({
         var self = this;
         if (self.props.isActive) {
             return (
-                <div className="notification is-danger is-marginless is-text-centered">
+                <div className="notification is-danger is-marginless has-text-centered">
                     {this.props.message}
                 </div>
             );
@@ -28,8 +30,8 @@ var NewsFlash = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default NewsFlash;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

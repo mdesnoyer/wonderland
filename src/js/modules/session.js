@@ -1,10 +1,10 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import cookie from 'react-cookie';
-import AJAX from './ajax';
+import AjaxModule from './ajax';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
@@ -15,7 +15,7 @@ const accessTokenKey = 'at',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Session = {
     state: {
@@ -41,12 +41,12 @@ var Session = {
     end: function() {
         var ret;
         if (this.state.accessToken) {
-            ret = AJAX.doPost('logout', {
+            ret = AjaxModule.doPost('logout', {
                 host: CONFIG.AUTH_HOST,
                 data: {
                     token: this.state.accessToken
                 }
-            });
+            }).promise;
         }
         else {
             ret = new Promise(function (resolve, reject) {
@@ -70,7 +70,7 @@ var Session = {
         return !!this.state.accessToken;
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
-    user: function (userData) {
+    user: function(userData) {
         var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {
@@ -126,8 +126,8 @@ var Session = {
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Session;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

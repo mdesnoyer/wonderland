@@ -32,3 +32,8 @@ If in doubt, defer to the code. If still in doubt, ask.
     text-align: center;
 }
 ```
+
+## Editors
+
+- Sublime Text 3.0 is the preferred editor but you are fre to use your own.
+- `Convert Indentations to Spaces` and `Indent using Spaces` and `Spaces: 4` are your friends in Sublime and there is a file in the root `Neon.sublime-project` which takes care of a lot of these.

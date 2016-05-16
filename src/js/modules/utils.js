@@ -137,8 +137,23 @@ var UTILS = {
         }
     },
     DRY_NAV: {
+        HOME: {
+            URL: '/'
+        },
         DASHBOARD: {
             URL: '/dashboard/'
+        },
+        PLUGINS: {
+            URL: '/plugins/'
+        },
+        PLUGINS_NEW: {
+            URL: '/plugins/new/'
+        },
+        PLUGINS_BRIGHTCOVE: {
+            URL: '/plugins/new/brightcove/'
+        },
+        PLUGINS_BRIGHTCOVE_WIZARD: {
+            URL: '/plugins/new/brightcove/wizard/'
         },
         SIGNUP: {
             URL: '/signup/'
@@ -148,20 +163,60 @@ var UTILS = {
         },
         SIGNOUT: {
             URL: '/signout/'
-        }
+        },
+        ACCOUNT_SETTINGS: {
+            URL: '/settings/account/'
+        },
+        USER_SETTINGS: {
+            URL: '/settings/user/'
+        },
+        SUPPORT: {
+            URL: '/support/'
+        },
+        TERMS: {
+            URL: '/terms/'
+        },
+        BILLING: {
+            URL: '/billing/'
+        },
+        TELEMETRY: {
+            URL: '/telemetry/'
+        },
+        API: {
+            URL: '/support/#api'
+        },
+        SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
+            URL: '/support/#brightcove-plugin-guide'
+        },
+        SUPPORT_CUSTOM_PLUGIN_GUIDE: {
+            URL: '/support/#custom-plugin-guide'
+        },
+        VIDEO_LIBRARY: {
+            URL: '/videos/'
+        }    
     },
-    VERSION: '1.7',
-    NEON_SCORE_ENABLED: false,
+    VERSION: '1.8',
+    NEON_SCORE_ENABLED: true,
+    DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
-    VIDEO_CHECK_INTERVAL: 10000, // 10s
-    VIDEO_PAGE_SIZE: 10,
+    VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
+    RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    enabledDisabledIcon: function(enabled) {
-        return enabled ? 'check' : 'times';
+    enabledDisabledIcon: function(isEnabled) {
+        return isEnabled ? 'check' : 'times';
+    },
+    modalActiveIcon: function(isActive) {
+        return isActive ? 'search-plus' : 'search-minus';
+    },
+    // HT - https://gist.github.com/mathewbyrne/1280286
+    slugify: function(text) {
+        return text.toString().toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove undesired characters
+            .replace(/[\s_-]+/g, '-'); // Replace spaces, underscores, and hyphens with "-"
     },
     leadingZero: function(x) {
         return (x < 10) ? ('0' + x) : x;
@@ -169,6 +224,12 @@ var UTILS = {
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
         return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+    },
+    formatCtr: function(rawCtr) {
+        return UTILS.makePercentage(rawCtr, 2);
+    },
+    makePercentage: function(rawNumber, decimalPlaces) {
+        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -210,9 +271,12 @@ var UTILS = {
     },
     buildPageTitle: function(title) {
         return title + T.get('app.separator') + T.get('app.credit', {
-            '@app': T.get('app.appName'),
-            '@name': T.get('app.companyShortName')
+            '@appName': T.get('app.appName'),
+            '@companyShortName': T.get('app.companyShortName')
         });
+    },
+    makeTitle: function() {
+        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
         // (?=.*\d) ==== at least one digit

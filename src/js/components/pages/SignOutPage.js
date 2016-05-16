@@ -1,6 +1,7 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -9,9 +10,10 @@ import T from '../../modules/translation';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignOutPage = React.createClass({
+	// mixins: [ReactDebugMixin],
     componentWillMount: function() {
         SESSION.end()
             .catch(function (err) {
@@ -34,7 +36,7 @@ var SignOutPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             <h1 className="title is-2">{heading}</h1>
                             <div className="content">
                                 <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
@@ -49,8 +51,8 @@ var SignOutPage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SignOutPage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

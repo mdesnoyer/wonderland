@@ -1,17 +1,19 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ConfirmAccountPage = React.createClass({
+	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -27,7 +29,7 @@ var ConfirmAccountPage = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        AJAX.doPost('accounts/verify', {
+        self.POST('accounts/verify', {
             host: CONFIG.AUTH_HOST,
             data: {
                 token: self.props.location.query.token
@@ -37,14 +39,14 @@ var ConfirmAccountPage = React.createClass({
             self.context.router.push('/account/confirmed/');
         })
         .catch(function (err) {
-            if (err.status === 409) {
+            if (err.code === 409) {
                 self.handleError('It looks like you have already confirmed this account.', false);
                 self.setState({
                     isError: true
                 });
             }
             else {
-                self.handleError(JSON.parse(err.responseText).error.data, false);
+                self.raiseError(err);
                 self.setState({
                     isError: true
                 });
@@ -53,7 +55,7 @@ var ConfirmAccountPage = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" />  : '',
+            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : '',
             body1 = T.get('copy.confirmAccount.body.1'),
             body2 = T.get('copy.confirmAccount.body.2', {
                 '@link': UTILS.CONTACT_EXTERNAL_URL
@@ -67,7 +69,7 @@ var ConfirmAccountPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             {messageNeeded}
                             <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
                             <div className="content">
@@ -83,8 +85,8 @@ var ConfirmAccountPage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default ConfirmAccountPage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

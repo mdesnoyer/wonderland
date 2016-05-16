@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import Video from './Video';
 import NavigationBar from '../core/NavigationBar';
 import SearchBar from '../core/SearchBar';
@@ -8,9 +9,10 @@ import SearchBar from '../core/SearchBar';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosResults = React.createClass({
+	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
-            additionalClass = 'table is-bordered is-striped' + (self.props.isBusy ? ' is-busy' : '')
+            additionalClass = 'table is-bordered is-striped' + (self.props.isLoading ? ' is-loading' : '')
         ;
         return (
             <table className={additionalClass}>
@@ -21,12 +23,12 @@ var VideosResults = React.createClass({
                     <tr>
                         <th><SearchBar {...self.props} /></th>
                     </tr>
-                </thead>
+                </thead>*/}
                 <tfoot>
                     <tr>
                         <th><NavigationBar {...self.props} /></th>
                     </tr>
-                </tfoot>*/}
+                </tfoot>
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
@@ -48,7 +50,7 @@ var VideosResults = React.createClass({
                                             // publish_date
                                             // updated
                                             created={video.created}
-                                            isAccountServingEnabled={self.props.isAccountServingEnabled}
+                                            isServingEnabled={self.props.isServingEnabled}
                                         />
                                     </td>
                                 </tr>

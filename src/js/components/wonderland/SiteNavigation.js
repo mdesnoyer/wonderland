@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -8,6 +9,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
+	// mixins: [ReactDebugMixin],
     getDefaultProps: function() {
         var self = this;
         return {
@@ -23,54 +25,94 @@ var SiteNavigation = React.createClass({
     },
     render: function() {
         var self = this,
+            itemClass = '',
             items = {
-                logo: <a  href="/" title="Go to the Home page"><img className="wonderland-logo" src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
-                contact: <a className="" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
-                blank: <span>&nbsp;&nbsp;&nbsp;</span>,
-                dashboard: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
-                analyzeVideo: <Link activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
-                videos: <Link activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
-                avatar: <span className="wonderland-avatar"><i className="fa fa-user" aria-hidden="true" /></span>,
-                signUp: <Link className="button is-danger" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
-                forgotPassword: <Link activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
-                signIn: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
-                signOut: <Link activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
-                username: <span className="un">{self.props.displayName}</span>
+                logo: <a className="wonderland-navbar__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
+                contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                contactPageFancy: <a className="wonderland-navbar__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                termsPagePlain: <a href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>,
+                dashboard: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
+                analyzeVideo: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
+                videos: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
+                signUp: <Link className="wonderland-navbar__button button is-danger" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
+                forgotPassword: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
+                signIn: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
+                signOut: <Link to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
+                username: <em className="wonderland-navbar__text">{self.props.displayName}</em>,
+                billingPage: <Link to={UTILS.DRY_NAV.BILLING.URL} title={T.get('nav.billing')}>{T.get('nav.billing')}</Link>,
+                telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
+                apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
+                supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
+                supportPageFancy: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
+                accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNT_SETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
+                userSettingsPage: <Link to={UTILS.DRY_NAV.USER_SETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
+                integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
+                avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
             },
+            accountSettings = <span>
+                                    <div className="wonderland-navbar__icon wonderland-navbar__icon--regular"><i className="fa fa-cog" aria-hidden="true" /></div>
+                                    <ul className="box wonderland-navbar__subnav">
+                                        <li>{items.accountSettingsPage}</li>
+                                        <li>{items.billingPage}</li>
+                                        <li>{items.integrationsPage}</li>
+                                        <li>{items.telemetryPage}</li>
+                                        <li>{items.apiPage}</li>
+                                        <li>{items.supportPagePlain}</li>
+                                    </ul>
+                                </span>,
+            userSettings = <span>
+                                {items.avatar}
+                                <ul className="box wonderland-navbar__subnav">
+                                    <li>{items.userSettingsPage}</li>
+                                    <li>{items.signOut}</li>
+                                </ul>
+                            </span>,
             constructedNav = [],
-            className = 'navbar-' + self.props.side
+            navClass = 'wonderland-navbar wonderland-navbar-' + self.props.pos + ' navbar-' + self.props.pos;
         ;
         if (self.state.isSignedIn) {
-            if (self.props.side === 'left') {
+            // Signed In
+            if (self.props.pos === 'left') {
                 constructedNav.push(items.logo);
-                constructedNav.push(items.blank);
                 constructedNav.push(items.videos);
             }
-            if (self.props.side === 'right') {
+            if (self.props.pos === 'right') {
                 constructedNav.push(items.username);
-                constructedNav.push(items.avatar);
-                constructedNav.push(items.signOut);
-                constructedNav.push(items.contact);
+                constructedNav.push(userSettings);
+                constructedNav.push(accountSettings);
+                constructedNav.push(items.contactPageFancy);
             }
         }
         else {
-            if (self.props.side === 'left') {
+            // Signed Out
+            if (self.props.pos === 'left') {
                 constructedNav.push(items.logo);
-                constructedNav.push(items.blank);
                 // constructedNav.push(items.forgotPassword);
             }
-            if (self.props.side === 'right') {
-                constructedNav.push(items.contact);
+            if (self.props.pos === 'right') {
+                constructedNav.push(items.contactPageFancy);
+                constructedNav.push(items.supportPageFancy);
                 constructedNav.push(items.signIn);
                 constructedNav.push(items.signUp);
             }
         }
+        if (self.props.pos === 'bottom') {
+            constructedNav.push(items.contactPagePlain);
+            constructedNav.push(items.supportPagePlain);
+            constructedNav.push(items.termsPagePlain);
+        }
+        if (self.props.pos === 'bottom') {
+            itemClass = 'wonderland-navbar-bottom__item';
+        }
+        else {
+            itemClass = 'wonderland-navbar__item navbar-item';
+        }
         return (
-            <div className={className}>
+            <div className={navClass}>
                 {
                     constructedNav.map(function(navbarItem, i) {
                         return (
-                            <div key={i} className="wonderland-navbar-item navbar-item">{navbarItem}</div>
+                            <div key={i} className={itemClass}>{navbarItem}</div>
                         );
                     })
                 }

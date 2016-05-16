@@ -1,21 +1,48 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Videos from '../wonderland/Videos';
 import Account from '../../mixins/Account';
-import Secured from '../../mixins/secured';
+import AjaxMixin from '../../mixins/Ajax';
+import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
+import cookie from 'react-cookie';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosPage = React.createClass({
-    mixins: [Secured, Account],
+	// mixins: [ReactDebugMixin],
+    mixins: [Secured, Account, AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function () {
+        return {
+            isServingEnabled: false
+        };
+    },
+    componentWillMount: function() {
+        var self = this,
+            signUpRef = cookie.load('signUpRef')
+        ;
+        if (signUpRef === 'bc') {
+            cookie.remove('signUpRef', { path: '/' });
+            self.context.router.push(UTILS.DRY_NAV.PLUGINS.URL + '#pop');
+        }
+        self.getAccount()
+            .then(function (account) {
+                self.setState({
+                    isServingEnabled: account.isServingEnabled
+                });
+            })
+            .catch(function (err) {
+                E.raiseError(err);
+            });
     },
     render: function() {
         var self = this,
@@ -35,7 +62,7 @@ var VideosPage = React.createClass({
                         <h1 className="title is-2">{heading}</h1>
                         {body}
                         <Videos
-                            isAccountServingEnabled={self.state.isAccountServingEnabled}
+                            isServingEnabled={self.state.isServingEnabled}
                         />
                     </div>
                 </section>
@@ -45,8 +72,8 @@ var VideosPage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default VideosPage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

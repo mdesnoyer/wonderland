@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-dl {
 
@@ -6,9 +6,13 @@
 
 .wonderland-dt {
     font-weight: bold;
+    & > * {
+        font-weight: bold;
+    }
 }
 
 .wonderland-dd {
+    @include x-truncate;
     padding-bottom: 1em;
 }
 
@@ -16,4 +20,4 @@
     padding-bottom: 0;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

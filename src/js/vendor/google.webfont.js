@@ -1,7 +1,7 @@
 
 WebFontConfig = {
     google: {
-        families: ['Open+Sans:400:latin']
+        families: ['Roboto::latin']
     }
 };
 (function(d) {

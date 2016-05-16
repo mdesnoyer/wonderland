@@ -1,16 +1,18 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
-import moment from 'moment';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ThumbBox = React.createClass({
+	// mixins: [ReactDebugMixin],
     propTypes: {
         copyUrl: React.PropTypes.string.isRequired,
         downloadUrl: React.PropTypes.string.isRequired,
         isEnabled: React.PropTypes.bool.isRequired,
+        isModalActive: React.PropTypes.bool.isRequired,
         handleToggleModal: React.PropTypes.func,
         handleEnabledChange: React.PropTypes.func.isRequired
     },
@@ -23,22 +25,11 @@ var ThumbBox = React.createClass({
         var self = this,
             toggleModalButton = '',
             enabledIndicator = UTILS.enabledDisabledIcon(!self.props.isEnabled), // we want the opposite
-            enabledTooltip = self.props.isAccountServingEnabled ? (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail') : 'Serving is Disabled for this Account',
-            enabledDisabledClass = self.props.isAccountServingEnabled ? '' : ' -disabled'
+            modalIndicator = UTILS.modalActiveIcon(!self.props.isModalActive),
+            enabledTooltip = self.props.isServingEnabled ? (!self.props.isEnabled ? 'Enable this Thumbnail' : 'Disable this Thumbnail') : 'Serving is Disabled for this Account',
+            enabledDisabledClass = self.props.isServingEnabled ? '' : ' -disabled',
+            modalClass = self.props.handleToggleModal ? '' : ' -disabled'
         ;
-        if (self.props.handleToggleModal) {
-            toggleModalButton = function() {
-                return (
-                    <span
-                        className="icon wonderland-thumbbox__tool"
-                        onClick={self.props.handleToggleModal}
-                        title="View this Thumbnail larger"
-                    >
-                        <i className="fa fa-search-plus" aria-hidden="true"></i>
-                    </span>
-                );
-            }();
-        }
         return (
             <aside className="wonderland-thumbbox">
                 <div className="wonderland-thumbbox__tools">
@@ -66,18 +57,21 @@ var ThumbBox = React.createClass({
                     >
                         <i className="fa fa-download" aria-hidden="true"></i>
                     </a>
-                    {toggleModalButton}
+                    <span
+                        className={'icon wonderland-thumbbox__tool' + modalClass}
+                        onClick={self.props.handleToggleModal}
+                        title="View this Thumbnail larger"
+                    >
+                        <i className={'fa fa-' + modalIndicator} aria-hidden="true"></i>
+                    </span>
                 </div>
-                <span className="wonderland-thumbbox__tease" title="Expand">
-                    <i className="fa fa-caret-right" aria-hidden="true"></i>
-                </span>
             </aside>
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default ThumbBox;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

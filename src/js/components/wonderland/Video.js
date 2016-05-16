@@ -1,19 +1,21 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import Message from './Message';
 import UTILS from '../../modules/utils';
-import AJAX from '../../modules/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Video = React.createClass({
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string.isRequired
     },
@@ -25,7 +27,47 @@ var Video = React.createClass({
             thumbnails: [],
             title: 'Unknown',
             error: '',
-            created: '',
+            created: ''
+        }
+    },
+    fixThumbnails: function(rawThumbnails) {
+        var defaults = [],
+            customs = [],
+            neons = [],
+            nonNeons = []
+        ;
+        // Pass 1 - sort into `default`, `custom` and `neon`
+        rawThumbnails.map(function(rawThumbnail, i) {
+            switch (rawThumbnail.type) {
+                case 'neon':
+                    neons.push(rawThumbnail);
+                    break;
+                case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'default':
+                    defaults.push(rawThumbnail);
+                    break;
+                default:
+                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
+                    break;
+            }
+        });
+        // Pass 2 - sort `custom` by rank ASC
+        customs.sort(function(a, b) {
+            return a.rank - b.rank;
+        });
+        // Pass 3 - sort `neon` by neon_score DESC
+        neons.sort(function(a, b) {
+            return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+        });
+        // Pass 4 - assemble the output
+        nonNeons = customs.concat(defaults);
+        if (nonNeons.length > 0) {
+            return neons.concat(nonNeons[0]);
+        }
+        else {
+            return neons;
         }
     },
     getInitialState: function() {
@@ -36,13 +78,11 @@ var Video = React.createClass({
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
-            sortedThumbnails: self.props.thumbnails.sort(function(a, b) {
-                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-            }),
+            sortedThumbnails: self.fixThumbnails(self.props.thumbnails),
             title: self.props.title,
             error: self.props.error,
             created: self.props.created,
-            isBusy: false,
+            isLoading: false,
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
@@ -51,9 +91,8 @@ var Video = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
-        self._isMounted = true;
         if (self.props.pingInterval) {
-            self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL));
+            self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL_BASE));
         }
         if (self.props.pingInitial) {
             setTimeout(self.pingVideo, 0);
@@ -61,11 +100,18 @@ var Video = React.createClass({
     },
     componentWillUnmount: function() {
         var self = this;
-        self._isMounted = false;
         clearInterval(self.timer);
     },
     render: function() {
-        var self = this;
+        var self = this,
+            fourZeroFourMessageArray = [
+                T.get('copy.message.line.one'),
+                T.get('copy.message.line.two'),
+                T.get('copy.message.link.one', {'@link': UTILS.CORP_EXTERNAL_URL}),
+                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEO_LIBRARY.URL}),
+                T.get('copy.message.link.three', {'@link': UTILS.CONTACT_EXTERNAL_URL})
+            ]
+        ;
         if (self.state.status === 401) {
             return (
                 <Message header={self.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
@@ -73,11 +119,11 @@ var Video = React.createClass({
         }
         if (self.state.status === 404) {
             return (
-                <Message header={self.state.status} body="Could not find Video" flavour="danger" />
+                <Message header={self.state.status} body={fourZeroFourMessageArray} flavour="danger" />
             );
         }
         if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small is-' + (self.state.isBusy ? 'loading' : ''),
+            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small' + (self.state.isLoading ? ' is-loading' : ''),
                 messageNeeded = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
                 videoLink = '/video/' + self.state.videoId + '/',
                 videoSizeClass = 'video video--' + self.state.size
@@ -89,30 +135,31 @@ var Video = React.createClass({
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
                         title={self.state.title}
-                        videoLink={videoLink}
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
                         thumbnails={self.state.sortedThumbnails}
                     />
                     <VideoMain
+                        videoId={self.state.videoId}
                         forceOpen={self.state.forceOpen}
                         messageNeeded={messageNeeded}
-                        videoStateMapping={self.state.videoStateMapping}
                         thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
                         videoLink={videoLink}
                         duration={self.state.duration}
                         created={self.state.created}
                         url={self.state.url}
-                        isAccountServingEnabled={self.props.isAccountServingEnabled}
+                        isServingEnabled={self.props.isServingEnabled}
                     />
                 </div>
             );
         }
     },
     handleVideoOpenToggle: function(e) {
-        e.preventDefault();
+        if (e.target.type === 'text') { // hack
+            return false;
+        }
         var self = this;
         self.setState({
             forceOpen: !self.state.forceOpen
@@ -127,29 +174,25 @@ var Video = React.createClass({
                 }
             }
         ;
-        // If the video is 'serving' or 'failed', its going nowhere, so don't
-        // bother checking
-        if (self.state.videoState === 'serving' || self.state.videoState === 'failed' || self.state.videoState === 'processed') {
+        // If the video is 'serving' or 'processed' its going nowhere, so don't
+        // bother checking. There is a known latency issue in Back End, #1103.
+        // We still need to poll 'failed'.
+        if (self.state.videoState === 'serving' || self.state.videoState === 'processed') {
             clearInterval(self.timer);
             return false;
         }
         self.setState({
-            isBusy: true
+            isLoading: true
         }, function() {
-            AJAX.doGet('videos', options)
+            self.GET('videos', options)
                 .then(function(json) {
-                    if (self._isMounted === false) {
-                        return;
-                    }
                     var video = json.videos[0];
                     if (video.state !== self.state.videoState) {
                         // Only bother if the state has changed
                         self.setState({
                             status: 200,
                             thumbnails: video.thumbnails,
-                            sortedThumbnails: video.thumbnails.sort(function(a, b) {
-                                return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
-                            }),
+                            sortedThumbnails: self.fixThumbnails(video.thumbnails),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
@@ -159,19 +202,19 @@ var Video = React.createClass({
                             // updated
                             created: video.created,
                             error: video.error ? video.error : '',
-                            isBusy: false
-                        });
+                            isLoading: false
+                        })
                     }
                     else {
                         self.setState({
-                            isBusy: false
+                            isLoading: false
                         });
                     }
                 }).catch(function(err) {
                     self.setState({
-                        status: err.status,
-                        message: err.responseText,
-                        isBusy: false
+                        status: err.code,
+                        error: err.message,
+                        isLoading: false
                     }, function() {
                         clearInterval(self.timer);
                     });
@@ -181,8 +224,8 @@ var Video = React.createClass({
     },
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Video;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,34 +1,38 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import TimeAgoWrapper from '../core/TimeAgoWrapper';
+// import ReactDebugMixin from 'react-debug-mixin';
+import FuzzyTime from '../core/FuzzyTime';
 import Xylophone from '../core/Xylophone';
 import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import InputTextEdit from '../core/InputTextEdit';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoHeader = React.createClass({
+	// mixins: [ReactDebugMixin],
     propTypes: {
         handleVideoOpenToggle: React.PropTypes.func.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
+        videoState: React.PropTypes.string.isRequired,
         title: React.PropTypes.string,
+        additionalClass: React.PropTypes.string.isRequired,
         videoId: React.PropTypes.string.isRequired,
-        thumbnails: React.PropTypes.array.isRequired,
-        created: React.PropTypes.string
+        created: React.PropTypes.string,
+        thumbnails: React.PropTypes.array.isRequired
     },
     render: function() {
         var self = this,
-            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>,
-            toggleButton = <a className="button is-medium" onClick={self.props.handleVideoOpenToggle}>{toggleButtonContent}</a>,
+            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-circle-up" aria-hidden="true"></i> : <i className="fa fa-chevron-circle-down" aria-hidden="true"></i>,
+            toggleButton = <a className="wonderland-toggle button is-medium">{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            displayTitle = self.props.title,
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless" onClick={self.props.handleVideoOpenToggle}>
-                <div className="navbar-left">
+            <nav className="wonderland-video__header navbar is-marginless columns" onClick={self.props.handleVideoOpenToggle}>
+                <div className="navbar-left column is-3">
                     <div className="navbar-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
@@ -39,13 +43,22 @@ var VideoHeader = React.createClass({
                             thumbnail={self.props.thumbnails[0]}
                         />
                     </div>
-                    <div className="navbar-item">
-                        <h2 className="title is-5" title={self.props.videoId}>{displayTitle}</h2>
-                    </div>
                 </div>
-                <div className="navbar-right">
+                <div className="navbar-item column is-5">
+                    <InputTextEdit
+                        valueDest="videos"
+                        value={self.props.title}
+                        videoState={self.props.videoState}
+                        fallbackValue={T.get('copy.videosPage.VideoProcessMsg')}
+                        idType="video_id"
+                        valueId={self.props.videoId}
+                        valueType="title"
+                        classStyle="title is-5"
+                    />
+                </div>
+                <div className="navbar-right column is-4">
                     <div className="navbar-item">
-                        <span className="subtitle is-6"><TimeAgoWrapper date={self.props.created} /></span>
+                        <span className="subtitle is-6"><FuzzyTime date={self.props.created} /></span>
                     </div>
                     <div className="navbar-item">
                         {xylophone}
@@ -59,8 +72,8 @@ var VideoHeader = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default VideoHeader;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

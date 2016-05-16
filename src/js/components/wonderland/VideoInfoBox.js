@@ -1,14 +1,16 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoInfoBox = React.createClass({
+	// mixins: [ReactDebugMixin],
     propTypes: {
         videoLink: React.PropTypes.string.isRequired,
-        duration: React.PropTypes.number.isRequired,
+        duration: React.PropTypes.number,
         url: React.PropTypes.string.isRequired
     },
     render: function() {
@@ -30,8 +32,8 @@ var VideoInfoBox = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default VideoInfoBox;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

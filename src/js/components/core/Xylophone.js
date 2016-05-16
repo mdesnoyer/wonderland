@@ -1,11 +1,13 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Xylophone = React.createClass({
+	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this;
         return (
@@ -21,41 +23,36 @@ var Xylophone = React.createClass({
                 </div>
                 {
                     self.props.thumbnails.map(function(thumbnail, i) {
-                        if (thumbnail.type != 'random' && thumbnail.type !='centerframe') {
-                            var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
-                                inlineStyle = {'height': neonScoreData.neonScore + '%'}
-                            ;
-                            var rating;
-                            // 0 - 59 : red
-                            // 60 - 84 : yellow
-                            // 85 - 99 : green
-                            if (neonScoreData.neonScore < 60) {
-                                rating = 'bad';
-                            }
-                            else if (neonScoreData.neonScore < 85) {
-                                rating = 'ok';
-                            }
-                            else {
-                                rating = 'good';
-                            }
-                            var className = 'wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled');
-                            return (
-                                <div
-                                    className="wonderland-xylophone__slot"
-                                    key={thumbnail.thumbnail_id}
-                                >
-                                    <div
-                                        style={inlineStyle}
-                                        className={className}
-                                        title={'Neonscore of ' + neonScoreData.neonScore}
-                                    >
-                                    </div>
-                                </div>
-                            );
+                        var neonScoreData = UTILS.getNeonScoreData(thumbnail.neon_score),
+                            inlineStyle = {'height': neonScoreData.neonScore + '%'}
+                        ;
+                        var rating;
+                        // 0 - 59 : red
+                        // 60 - 84 : yellow
+                        // 85 - 99 : green
+                        if (neonScoreData.neonScore < 60) {
+                            rating = 'bad';
+                        }
+                        else if (neonScoreData.neonScore < 85) {
+                            rating = 'ok';
                         }
                         else {
-                            return false;
+                            rating = 'good';
                         }
+                        var className = 'wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled');
+                        return (
+                            <div
+                                className="wonderland-xylophone__slot"
+                                key={thumbnail.thumbnail_id}
+                            >
+                                <div
+                                    style={inlineStyle}
+                                    className={className}
+                                    title={'Neonscore of ' + neonScoreData.neonScore}
+                                >
+                                </div>
+                            </div>
+                        );
                     })
                 }
             </div>
@@ -63,8 +60,8 @@ var Xylophone = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default Xylophone;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

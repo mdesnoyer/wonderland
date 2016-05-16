@@ -1,6 +1,7 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+// import ReactDebugMixin from 'react-debug-mixin';
 import {Link} from 'react-router';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
@@ -11,9 +12,10 @@ import UTILS from '../../modules/utils';
 import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignInPage = React.createClass({
+	// mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -33,7 +35,7 @@ var SignInPage = React.createClass({
                 <SiteHeader />
                 <section className="section">
                     <div className="columns is-desktop">
-                        <div className="column is-half is-offset-quarter">
+                        <div className="column is-half is-offset-one-quarter">
                             <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
                             <div className="content">
                                 {/*<p>{T.get('copy.signIn.body')}</p>*/}
@@ -49,8 +51,8 @@ var SignInPage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SignInPage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

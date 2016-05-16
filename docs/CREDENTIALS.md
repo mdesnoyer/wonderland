@@ -18,7 +18,13 @@
 - PASSWORD = '4ERDWIlupafI'
 - ACCOUNT_ID = 'gvs3vytvg20ozp78rolqmdfa'
 
-## (Test) Fox
+## (Production) Fox
+
+*be aware, live customer data*
 
 - admin_fox
 - U7oMUyFefoEV1Wn1
+
+## Testing Billing (Stripe)
+
+- Testable cards can be found here: https://stripe.com/docs/testing#cards
