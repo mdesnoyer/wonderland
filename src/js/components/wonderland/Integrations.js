@@ -9,12 +9,12 @@ import T from '../../modules/translation';
 import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveChoiceModal from '../modals/BrightcoveChoiceModal';
-
+import Account from '../../mixins/Account';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Integrations = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+mixins: [AjaxMixin, Account], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -36,24 +36,23 @@ var Integrations = React.createClass({
         }
     },
     componentWillMount: function() {
-        var self = this,
-            options = {
-                fields: ['integrations']
-            }
+        var self = this;
+        self.getAccount()
+            .then(function(account) {
+                self.GET('integrations')
+                    .then(function(json) {
+                        self.setState({
+                            integrations: json.integrations
+                        })
+                    })
+                    .catch(function (err) {
+                    })
+                ;
+            })
+            .catch(function (err) {
+                console.log(err);
+            })
         ;
-        self.GET('', options)
-            .then(function(res) {
-                self.setState({
-                    isError: false,
-                    accountId: res.account_id,
-                    integrations: res.integrations || res.integration_ids || []
-                });
-            }).catch(function(err) {
-                E.raiseError(err);
-                self.setState({
-                    isError: true
-                });
-            });
     },
     render: function() {
         var self = this,
@@ -70,12 +69,7 @@ var Integrations = React.createClass({
                     {
                         self.state.integrations.map(function(integration, i) {
                             var configureClick = function() {
-                                    self.configure(integration);
-                                };
-                            // TEMP UNTIL API IS READY
-                            integration = {
-                                integration_id: integration,
-                                type: 'brightcove'
+                                self.configure(integration);
                             };
                             return (
                                 <tr key={integration.integration_id}>
@@ -126,7 +120,7 @@ var Integrations = React.createClass({
         self.setState({
             activeModal: false
         });
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
