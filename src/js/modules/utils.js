@@ -228,6 +228,9 @@ var UTILS = {
     formatCtr: function(rawCtr) {
         return UTILS.makePercentage(rawCtr, 2);
     },
+    formatServingFrac: function(rawServingFrac) {
+        return UTILS.makePercentage(rawServingFrac, 2);
+    },
     makePercentage: function(rawNumber, decimalPlaces) {
         return (rawNumber * 100).toFixed(decimalPlaces) + '%';
     },

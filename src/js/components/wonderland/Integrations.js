@@ -90,7 +90,11 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
                 <tfoot>
                     <tr>
                         <th colSpan="3">
-                            <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>{T.get('add')}</a>
+                            <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>
+                                <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                                &nbsp;
+                                {T.get('add')}
+                            </a>
                         </th>
                     </tr>
                 </tfoot>
