@@ -37,11 +37,11 @@ var SignUpForm = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-        }
         if (self.props.signUpRef) {
             cookie.save('signUpRef', self.props.signUpRef, { path: '/' });
+        }
+        if (SESSION.active()) {
+            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
     },
     componentWillUnmount: function(e) {
