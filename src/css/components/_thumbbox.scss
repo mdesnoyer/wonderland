@@ -5,7 +5,7 @@ $transition: all 0.3333s;
 .wonderland-thumbbox {
     position: absolute;
     top: 0;
-    background-color: $orange;
+    background-color: rgba($orange, 0.88);
     width: 10%;
     height: 100%;
     overflow: hidden;
@@ -14,12 +14,6 @@ $transition: all 0.3333s;
     text-align: center;
     .wonderland-thumbnail:hover & { // hack
         transform: translateX(0);
-    }
-    .modal & {
-        transform: none;
-        .wonderland-thumbnail:hover & { // hack
-            transform: none;
-        }
     }
 }
 
@@ -40,15 +34,15 @@ $transition: all 0.3333s;
     width: 100%;
     cursor: pointer;
     transition: $transition;
-    color: rgba($white, 0.7777);
+    color: rgba($white, 0.69);
     &:hover {
         color: $white;
     }
     &.-disabled {
-        color: rgba($white, 0.2);
+        color: rgba($white, 0.31);
         cursor: not-allowed;
         &:hover {
-            color: rgba($white, 0.2);
+            color: rgba($white, 0.31);
         }
     }
     .fa {

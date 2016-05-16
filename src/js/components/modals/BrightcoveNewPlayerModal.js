@@ -8,8 +8,8 @@ var BrightcoveNewPlayerModal = React.createClass({
     render: function() {
         return (
             <section className="box is-desktop">
-            <h1 className="title is-5">Do you use the new Brightcove Player?</h1>
-            <p>In order to allow us to understand how your thumbnail images are performing in your new Brightcove Players, please select &ldquo;enable&rdquo; for all players you&rsquo;d like to track in this list.</p>
+                <h1 className="title is-5">Do you use the new Brightcove Player?</h1>
+                <p>If you use the new Brightcove HTML5 player, click "yes" and then enable the Neon plugin for each player you would like to receive analytics from.</p>
             </section>
         );
     }

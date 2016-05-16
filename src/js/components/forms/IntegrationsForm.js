@@ -25,7 +25,7 @@ var IntegrationsForm = React.createClass({
         clientSecret: React.PropTypes.string,
         formMode: React.PropTypes.string.isRequired,
         provider: React.PropTypes.string.isRequired,
-        integrationId: React.PropTypes.string.isRequired,
+        integrationId: React.PropTypes.string,
         refreshFormMode: React.PropTypes.func.isRequired
     },
     getInitialState: function() {
@@ -143,7 +143,7 @@ var IntegrationsForm = React.createClass({
                         <BrightcoveClientIdModal />
                     </ModalParent>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-clientSecret')} handleToggleModal={self.closeModal}>
-                        <BrightcoveClientSecretModal />
+                        <BrightcoveClientIdModal />
                     </ModalParent>
                 </div>
             );
@@ -211,17 +211,28 @@ var IntegrationsForm = React.createClass({
         ;
         switch (self.state.provider) {
         case 'brightcove':
-            options.data = {
-                publisher_id: self.refs.publisherId.value.trim(),
-                application_client_id: self.refs.clientId.value.trim(),
-                application_client_secret: self.refs.clientSecret.value.trim()
-            };
+            if(self.props.formMode === 'add'){
+                options.data = {
+                    publisher_id: self.refs.publisherId.value.trim(),
+                    application_client_id: self.refs.clientId.value.trim(),
+                    application_client_secret: self.refs.clientSecret.value.trim(),
+                    uses_bc_gallery: self.props.usesGallery
+                };
+            }
+            else{
+                options.data = {
+                    publisher_id: self.refs.publisherId.value.trim(),
+                    application_client_id: self.refs.clientId.value.trim(),
+                    application_client_secret: self.refs.clientSecret.value.trim()
+                };
+            }
             break;
         case 'ooyala':
             // TODO: Read Ooyala form
             break;
         }
         if (formMode === 'add') {
+            options.uses_bc_gallery = self.props.usesGallery;
             apiCall = self.POST('integrations/' + self.state.provider, options);
         } else {
             options.data.integration_id = self.state.integrationId;

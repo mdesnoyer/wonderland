@@ -1,5 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$transition: all 0.3333s;
+
 .wonderland-carousel {
     position: relative;
 }
@@ -27,6 +29,7 @@
 
 .wonderland-carousel__control {
     cursor: pointer;
+    transition: $transition;
     &:hover {
         color: $primary;
     }

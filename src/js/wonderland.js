@@ -55,7 +55,7 @@ render((
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
-        
+
         <Route path={UTILS.DRY_NAV.SIGNUP.URL} component={SignUpPage} />
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
@@ -80,13 +80,15 @@ render((
         <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE_WIZARD.URL} component={PluginsBrightcoveWizardPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
-        <Route path="/:accountId/integration/brightcove/:integrationId/" component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
+        <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
+        <Route path="/integration/brightcove/:integrationId/" component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_SETTINGS.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.USER_SETTINGS.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
 
         <Route path="*" component={NotFoundPage} />
-        
+
     </Router>
 ), document.querySelector('#wonderland'));
 
