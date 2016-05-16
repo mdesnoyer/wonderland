@@ -1,0 +1,11 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-toggle {
+    color: $grey-darker;
+    transition: all 0.2s;
+    &:hover {
+        color: $orange;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
