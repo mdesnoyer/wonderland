@@ -79,8 +79,7 @@ var AnalyzeVideoForm = React.createClass({
         ;
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             var body = T.get('copy.analyzeVideo.maxLimitHit', {
-                '%limit': self.state.maxVideoCount,
-                '@link': UTILS.CONTACT_EXTERNAL_URL
+                '@link': UTILS.DRY_NAV.BILLING.URL
             });
             return (
                 <Message header={T.get('copy.analyzeVideo.heading')} body={body} flavour="danger" />
@@ -228,8 +227,7 @@ var AnalyzeVideoForm = React.createClass({
                 switch (err.code) {
                     case 402:
                         E.checkForError(T.get('copy.analyzeVideo.maxLimitHit', {
-                            '%limit': self.state.maxVideoCount,
-                            '@link': UTILS.CONTACT_EXTERNAL_URL
+                            '@link': UTILS.DRY_NAV.BILLING.URL
                         }), false);
                         break;
                     case 400:
