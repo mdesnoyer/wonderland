@@ -70,7 +70,8 @@ var IntegrationsBrightcovePage = React.createClass({
         return nextState !== nextProps;
     },
     render: function() {
-        var self = this;
+        var self = this
+        ;
         return (
             <div>
                 <Helmet
@@ -108,19 +109,14 @@ var IntegrationsBrightcovePage = React.createClass({
                                         accountId={self.state.accountId}
                                         formMode={self.state.formMode}
                                         integrationId={self.state.integrationId}
-                                    />
-                                    <PlayerList
-                                        playerArray={self.state.playerArray}
                                         accountId={self.state.publisherId}
-                                        integrationId={self.state.integrationId}
+                                        changePlayerState={self.changePlayerState}
                                     />
-                                    <RadioInputForm
-                                        radioType="uses_bc_smart_player"
-                                        isActive={self.state.dataToProps.uses_bc_smart_player}
-                                        accountId={self.state.accountId}
-                                        formMode={self.state.formMode}
-                                        integrationId={self.state.integrationId}
-                                    />
+                                        <PlayerList
+                                            playerArray={self.state.playerArray}
+                                            accountId={self.state.publisherId}
+                                            integrationId={self.state.integrationId}
+                                        />
                             </section>
                         </div>
                     </div>
@@ -135,7 +131,7 @@ var IntegrationsBrightcovePage = React.createClass({
             [type]:value
         });
     },
-    refreshFormMode: function(integrationId){
+    refreshFormMode: function(integrationId) {
         var self = this;
             self.setState({
                 formMode: 'update',
@@ -146,7 +142,7 @@ var IntegrationsBrightcovePage = React.createClass({
                 }
             );
     },
-    refreshBrightCoveInfo: function(){
+    refreshBrightCoveInfo: function() {
         var self = this;
         self.GET('integrations/' + self.state.integrationType, {
             data: {
@@ -162,12 +158,12 @@ var IntegrationsBrightcovePage = React.createClass({
                 clientSecret: res.application_client_secret,
                 dataToProps: res
             },
-                function(){
+                function() {
                     self.refreshBrightCovePlayers();
                 }
             )
         })
-        .catch(function(err){
+        .catch(function(err) {
         });
     },
     refreshBrightCovePlayers: function() {
