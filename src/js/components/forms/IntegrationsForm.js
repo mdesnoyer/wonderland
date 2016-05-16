@@ -143,7 +143,7 @@ var IntegrationsForm = React.createClass({
                         <BrightcoveClientIdModal />
                     </ModalParent>
                     <ModalParent isModalActive={(self.state.activeModal === 'brightcove-clientSecret')} handleToggleModal={self.closeModal}>
-                        <BrightcoveClientSecretModal />
+                        <BrightcoveClientIdModal />
                     </ModalParent>
                 </div>
             );
