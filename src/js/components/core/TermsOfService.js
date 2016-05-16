@@ -85,7 +85,7 @@ var TermsOfService = React.createClass({
                         <p>Please visit our Privacy Policy to understand how Neon Labs collects and uses personal information.DMCA The Digital Millennium Copyright Act of 1998 (the &ldquo;DMCA&rdquo;) provides recourse for copyright owners who believe that material appearing on the Internet infringes their rights under U.S. copyright law. Neon Labs will promptly process and investigate notices of alleged infringement and will take appropriate actions under the DMCA and other applicable intellectual property laws with respect to any alleged or actual infringement. A notification of claimed copyright infringement should be emailed to Neon Labs&rsquo;s Copyright Agent at copyright@neon-lab.com (subject line: &ldquo;DMCA&rdquo; Takedown Request&rdquo;). You may also contact us by mail or facsimile at:</p>
                     <blockquote>
                         <p>Attention: Copyright Agent </p>
-                        <p>Neon Labs, Inc. </p>
+                        <p>Neon Labs, Inc.</p>
                         <p>156 2nd Street </p>
                         <p>San Francisco, CA 94105 </p>
                     </blockquote>
