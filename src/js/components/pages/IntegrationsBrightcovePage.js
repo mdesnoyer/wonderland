@@ -31,8 +31,8 @@ var IntegrationsBrightcovePage = React.createClass({
             params = self.props.routeParams,
             usesGallery
         ;
-        if (params.usesGallery){
-            usesGallery = params.usesGallery === 'gallery' ? true : false;
+        if (params.usesGallery) {
+            usesGallery = (params.usesGallery === 'gallery');
             return {
                 formMode: 'add',
                 accountId: params.accountId,
