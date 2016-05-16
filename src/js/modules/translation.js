@@ -63,7 +63,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
             'copy.analyzeVideo.body': '',
-            'copy.analyzeVideo.maxLimitHit': 'Whoops! You have hit your demo limit of %limit. Please <a href="@link">contact us</a> to buy more.',
+            'copy.analyzeVideo.maxLimitHit': 'You’ve hit your video upload limit. Increase your limit on the <a href="@link">Billing page</a> in just a few clicks.',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',
