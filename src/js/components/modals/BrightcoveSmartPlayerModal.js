@@ -24,12 +24,12 @@ var BrightcoveSmartPlayerModal = React.createClass({
                             </ol>
                         </li>
                     </ol>
-                    <figure className="image wonderland-image">
+                    {/*<figure className="image wonderland-image">
                         <img src="/img/brightcoveNewPlayerModal.png" alt="" title="" />
-                    </figure>
+                    </figure>*/}
 
                     {/*<p>(note, where will the Telemetry URL appear during this flow? Will they be able to copy the URL on the page where they clicked the question mark to open this modal? point 1 above can be updated with this information.)</p>*/}
-                    {/*<p>(also note, you might want to change the text of the question on the main plugins page to say something like "Do you use the legacy Smart Player?” and in smaller text below it: “If you do, please follow these instructions to add the Neon Telemetry Player Plugin to your players: [link to legacy player instructions in the brightcove guide on our support page]</p>*/}
+                    {/*<p>(also note, you might want to change the text of the question on the main plugins page to say something like "Do you use the legacy Smart Player?&rdquo; and in smaller text below it: &ldquo;If you do, please follow these instructions to add the Neon Telemetry Player Plugin to your players: [link to legacy player instructions in the brightcove guide on our support page]</p>*/}
                 </div>
             </section>
         );
