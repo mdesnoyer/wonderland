@@ -110,15 +110,9 @@ var IntegrationsBrightcovePage = React.createClass({
                                         integrationId={self.state.integrationId}
                                     />
                                     <PlayerList
+                                        isActive={self.state.dataToProps.uses_bc_videojs_player}
                                         playerArray={self.state.playerArray}
                                         accountId={self.state.publisherId}
-                                        integrationId={self.state.integrationId}
-                                    />
-                                    <RadioInputForm
-                                        radioType="uses_bc_smart_player"
-                                        isActive={self.state.dataToProps.uses_bc_smart_player}
-                                        accountId={self.state.accountId}
-                                        formMode={self.state.formMode}
                                         integrationId={self.state.integrationId}
                                     />
                             </section>

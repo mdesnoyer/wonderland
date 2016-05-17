@@ -39,7 +39,7 @@ var Thumbnails = React.createClass({
         self.setState({
             thumbnails: nextProps.thumbnails
         });
-        if (nextProps.forceOpen === true && nextProps.forceOpen !== self.props.forceOpen) {
+        if (nextProps.forceOpen) {
             self.GET('statistics/thumbnails', {
                 data: {
                     video_id: self.props.videoId,
@@ -48,14 +48,19 @@ var Thumbnails = React.createClass({
                     // thumbnail), ctr (the click-through rate), impressions
                     // (the number of impressions), conversions (the number
                     // of conversions), created, and updated.
-                    fields: ['thumbnail_id', 'ctr']
+                    fields: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated']
                 }
             })
             .then(function(json) {
                 var parsedThumbnailsStats = {};
                 json.statistics.map(function(thumbnail, i) {
                     parsedThumbnailsStats[thumbnail.thumbnail_id] = {
-                        ctr: thumbnail.ctr
+                        ctr: thumbnail.ctr,
+                        servingFrac: thumbnail.serving_frac,
+                        impressions: thumbnail.impressions,
+                        conversions: thumbnail.conversions,
+                        created: thumbnail.created,
+                        updated: thumbnail.updated
                     };
                 });
                 self.setState({

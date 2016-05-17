@@ -37,7 +37,10 @@ var IntegrationsNewPage = React.createClass({
                                 <div className="card-content has-text-centered">
                                     <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
-                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
+                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>
+                                            <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                                            &nbsp;
+                                            {T.get('add')}</a>
                                     </div>
                                 </div>
                             </div>
