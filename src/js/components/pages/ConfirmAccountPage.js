@@ -36,7 +36,7 @@ var ConfirmAccountPage = React.createClass({
             }
         })
         .then(function (res) {
-            self.context.router.push('/account/confirmed/');
+            self.context.router.push(UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL);
         })
         .catch(function (err) {
             if (err.code === 409) {
