@@ -24,11 +24,18 @@
     // empty
 }
 
-.wonderland-thumbnail__score {
+.wonderland-thumbnail__neonscore {
     position: absolute;
     bottom: 4%;
     right: 3%;
     background-color: $grey;
+    transition: background-color, color 1s;
+}
+
+.wonderland-thumbnail__default-stamp {
+    position: absolute;
+    top: 4%;
+    right: 3%;
     transition: background-color, color 1s;
 }
 
@@ -56,6 +63,7 @@
 }
 
 .wonderland-thumbnail__enabled {
+    // This is the ACTUAL checkbox
     display: none;
 }
 
