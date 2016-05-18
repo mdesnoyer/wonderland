@@ -85,11 +85,11 @@ var ThumbnailInfoBox = React.createClass({
                         </tr>
                         <tr>
                             <td>Conversions</td>
-                            <td>{self.state.conversions.toLocaleString() || 0}</td>
+                            <td>{self.state.conversions || 0}</td>
                         </tr>
                         <tr>
                             <td>Impressions</td>
-                            <td>{self.state.impressions.toLocaleString() || 0}</td>
+                            <td>{self.state.impressions || 0}</td>
                         </tr>
                         <tr>
                             <td>Created</td>
