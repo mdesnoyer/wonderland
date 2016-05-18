@@ -44,8 +44,8 @@ var SiteNavigation = React.createClass({
                 apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
                 supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
                 supportPageFancy: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
-                accountSettingsPage: <Link to={UTILS.DRY_NAV.ACCOUNT_SETTINGS.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
-                userSettingsPage: <Link to={UTILS.DRY_NAV.USER_SETTINGS.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
+                accountSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
+                userSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_USER.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
                 integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
                 avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
             },

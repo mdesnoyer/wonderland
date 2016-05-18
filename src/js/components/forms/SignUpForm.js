@@ -38,7 +38,7 @@ var SignUpForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (self.props.signUpRef && !SESSION.active()) {
-            cookie.save('signUpRef', self.props.signUpRef, { path: '/' });
+            cookie.save('signUpRef', self.props.signUpRef, { path: UTILS.COOKIE_DEFAULT_PATH });
         }
         if (SESSION.active()) {
             self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
@@ -55,7 +55,7 @@ var SignUpForm = React.createClass({
         var self = this,
             buttonClassName,
             messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
-            copyTerms = T.get('copy.agreeTerms', {'@link': '/terms/'}),
+            copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
         if (!self.state.isAgreementChecked || self.state.isLoading) {
@@ -172,7 +172,7 @@ var SignUpForm = React.createClass({
                             isError: false,
                             isLoading: false
                         });
-                        self.context.router.push('/account/pending/');
+                        self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
                     })
                     .catch(function (err) {
                         E.raiseError(err);

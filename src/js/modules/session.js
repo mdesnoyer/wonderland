@@ -3,6 +3,7 @@
 import React from 'react';
 import cookie from 'react-cookie';
 import AjaxModule from './ajax';
+import UTILS from './utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +13,7 @@ const accessTokenKey = 'at',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
     userKey = 'user_info',
-    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years
+    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,9 +32,9 @@ var Session = {
             accountId: accountId,
             user: user || this.state.user
         };
-        cookie.save(accessTokenKey, accessToken, { path: '/' });
-        cookie.save(refreshTokenKey, refreshToken, { path: '/' });
-        cookie.save(accountIdKey, accountId, { path: '/' });
+        cookie.save(accessTokenKey, accessToken, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.save(refreshTokenKey, refreshToken, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.save(accountIdKey, accountId, { path: UTILS.COOKIE_DEFAULT_PATH });
         if (user) {
             localStorage.setItem(userKey, JSON.stringify(user));
         }
@@ -53,9 +54,9 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, { path: '/' });
-        cookie.remove(refreshTokenKey, { path: '/' });
-        cookie.remove(accountIdKey, { path: '/' });
+        cookie.remove(accessTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.remove(refreshTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.remove(accountIdKey, { path: UTILS.COOKIE_DEFAULT_PATH });
         localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,
@@ -97,13 +98,13 @@ var Session = {
         if (bool !== undefined) {
             if (bool) {
                 cookie.save(rememberMeKey, (!!bool ? 1 : 0), {
-                    path: '/',
+                    path: UTILS.COOKIE_DEFAULT_PATH,
                     maxAge: COOKIE_MAX_AGE
                 });
             }
             else {
-                cookie.remove(rememberMeKey, {path: '/'});
-                cookie.remove(rememberedEmailKey, {path: '/'});
+                cookie.remove(rememberMeKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+                cookie.remove(rememberedEmailKey, {path: UTILS.COOKIE_DEFAULT_PATH});
             }
         }
         else {
@@ -115,7 +116,7 @@ var Session = {
     rememberedEmail: function(email) {
         if (email) {
             cookie.save(rememberedEmailKey, email, {
-                path: '/',
+                path: UTILS.COOKIE_DEFAULT_PATH,
                 maxAge: COOKIE_MAX_AGE
             });
         }

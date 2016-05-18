@@ -14,6 +14,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
+    COOKIE_DEFAULT_PATH = '/',
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
         { modelScore: 0.155, emoji: '❓' },
@@ -164,10 +165,10 @@ var UTILS = {
         SIGNOUT: {
             URL: '/signout/'
         },
-        ACCOUNT_SETTINGS: {
+        SETTINGS_ACCOUNT: {
             URL: '/settings/account/'
         },
-        USER_SETTINGS: {
+        SETTINGS_USER: {
             URL: '/settings/user/'
         },
         SUPPORT: {
@@ -176,11 +177,23 @@ var UTILS = {
         TERMS: {
             URL: '/terms/'
         },
+        ACCOUNT_PENDING: {
+            URL: '/account/pending/'
+        },
+        ACCOUNT_CONFIRMED: {
+            URL: '/account/confirmed/'
+        },
+        ACCOUNT_CONFIRM: {
+            URL: '/account/confirm/'
+        },
         BILLING: {
             URL: '/billing/'
         },
         TELEMETRY: {
             URL: '/telemetry/'
+        },
+        USER_FORGOT: {
+            URL: '/user/forgot/'
         },
         API: {
             URL: '/support/#api'
@@ -193,7 +206,10 @@ var UTILS = {
         },
         VIDEO_LIBRARY: {
             URL: '/videos/'
-        }    
+        },
+        VIDEO_ANALYZE: {
+            URL: '/video/analyze/'
+        }
     },
     VERSION: '1.8',
     NEON_SCORE_ENABLED: true,
@@ -239,6 +255,13 @@ var UTILS = {
             hash64 = fnv.hash(id + Date.now(), 128)
         ;
         return hash64.str();
+    },
+    // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
+    isValidDate: function(d) {
+        if (Object.prototype.toString.call(d) !== '[object Date]') {
+            return false;
+        }
+        return !isNaN(d.getTime());
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
