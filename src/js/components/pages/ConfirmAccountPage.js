@@ -54,6 +54,7 @@ var ConfirmAccountPage = React.createClass({
         });
     },
     render: function() {
+        debugger
         var self = this,
             messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : '',
             body1 = T.get('copy.confirmAccount.body.1'),
