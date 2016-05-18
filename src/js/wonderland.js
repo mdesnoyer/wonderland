@@ -50,8 +50,8 @@ render((
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
 
-        <Redirect from='/' to={UTILS.DRY_NAV.SIGNIN.URL} />
-        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to='/videos/' />
+        <Redirect from={UTILS.DRY_NAV.HOME.URL} to={UTILS.DRY_NAV.SIGNIN.URL} />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
@@ -60,15 +60,15 @@ render((
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
 
-        <Route path="/account/confirm" component={ConfirmAccountPage} />
-        <Route path="/account/pending/" component={PendingAccountPage} />
-        <Route path="/account/confirmed/" component={AccountConfirmedPage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRM.URL} component={ConfirmAccountPage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
 
-        <Route path="/user/forgot/" component={UserForgotPasswordPage} />
+        <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPasswordPage} />
         <Route path="/user/reset/token/:token/username/:username/" component={UserResetPasswordPage} />
 
-        <Route path="/video/analyze/" component={AnalyzeVideoPage} />
-        <Route path="/videos/" component={VideosPage} />
+        <Route path={UTILS.DRY_NAV.VIDEO_ANALYZE.URL} component={AnalyzeVideoPage} />
+        <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
         <Route path="/video/:videoId/" component={VideoPage} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
@@ -83,8 +83,8 @@ render((
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
         <Route path="/integration/brightcove/:integrationId/" component={IntegrationsBrightcovePage} />
-        <Route path={UTILS.DRY_NAV.ACCOUNT_SETTINGS.URL} component={AccountSettingsPage} />
-        <Route path={UTILS.DRY_NAV.USER_SETTINGS.URL} component={UserSettingsPage} />
+        <Route path={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} component={AccountSettingsPage} />
+        <Route path={UTILS.DRY_NAV.SETTINGS_USER.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
 
         <Route path="*" component={NotFoundPage} />
