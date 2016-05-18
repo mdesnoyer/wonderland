@@ -3,7 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import moment from 'moment';
-import UTILS from '../../modules/UTILS';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
