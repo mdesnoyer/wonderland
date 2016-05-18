@@ -11,6 +11,7 @@ import TutorialPanels from '../wonderland/TutorialPanels';
 import IntegrationNotification from '../core/IntegrationNotification';
 import E from '../../modules/errors';
 import Account from '../../mixins/Account';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -157,7 +158,9 @@ var AnalyzeVideoForm = React.createClass({
                         </p>
                         <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
-                                <i className="fa fa-cloud-upload" aria-hidden="true"></i>&nbsp;{T.get('analyze')}
+                                <Icon type="cloud-upload" />
+                                &nbsp;
+                                {T.get('analyze')}
                             </button>
                         </p>
                     </fieldset>

@@ -21,7 +21,7 @@ var AccountConfirmedPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.accountConfirmed.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                            <h1 className="title is-2">{T.get('copy.accountConfirmed.heading')}</h1>

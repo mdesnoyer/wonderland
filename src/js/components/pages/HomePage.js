@@ -19,7 +19,7 @@ var HomePage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                             <p>TODO</p>

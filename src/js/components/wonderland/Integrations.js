@@ -10,6 +10,7 @@ import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveChoiceModal from '../modals/BrightcoveChoiceModal';
 import Account from '../../mixins/Account';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -91,7 +92,7 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
                     <tr>
                         <th colSpan="3">
                             <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>
-                                <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                                <Icon type="plus-circle" />
                                 &nbsp;
                                 {T.get('add')}
                             </a>

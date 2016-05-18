@@ -53,7 +53,7 @@ var Videos = React.createClass({
                 'upload': T.get('copy.analyzeVideoPanel.panel.2'),
                 'th-large': T.get('copy.analyzeVideoPanel.panel.3')
             },
-            tutorialComponent = self.state.videoCountServed === 0 ? <section className="section"><TutorialPanels panels={panels}/></section> : '',
+            tutorialComponent = self.state.videoCountServed === 0 ? <section className="wonderland-section section"><TutorialPanels panels={panels}/></section> : '',
             prevPageAPICall = '',
             alertMessage = ''
         ;
@@ -69,13 +69,13 @@ var Videos = React.createClass({
         return (
             <div>
                 {tutorialComponent}
-                <section className="section">
+                <section className="wonderland-section section">
                     <AnalyzeVideoForm
                         postHook={self.doVideoSearch}
                         videoCountServed={self.state.videoCountServed}
                     />
                 </section>
-                <section id="results" className="section">
+                <section id="results" className="wonderland-section section">
                     <VideosResults
                         forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                         videos={self.state.videos}

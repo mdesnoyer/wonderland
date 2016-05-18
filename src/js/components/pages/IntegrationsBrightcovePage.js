@@ -77,7 +77,7 @@ var IntegrationsBrightcovePage = React.createClass({
                     title={T.get('copy.plugins.types.brightcove.title')}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                             <h1 className="title is-2">

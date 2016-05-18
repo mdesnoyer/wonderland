@@ -3,6 +3,7 @@
 import React from 'react';
 import T from '../../modules/translation';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,8 +30,9 @@ var SaveButton = React.createClass({
                 className={baseClass + loadingClass + disabledClass}
                 type="submit"
             >
-                <i className="fa fa-floppy-o" aria-hidden="true"></i>
-                &nbsp;{T.get('action.save')}
+                <Icon type="floppy-o" />
+                &nbsp;
+                {T.get('action.save')}
             </button>
         );
     }

@@ -5,6 +5,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -50,7 +51,9 @@ var SiteNavigation = React.createClass({
                 avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
             },
             accountSettings = <span>
-                                    <div className="wonderland-navbar__icon wonderland-navbar__icon--regular"><i className="fa fa-cog" aria-hidden="true" /></div>
+                                    <div className="wonderland-navbar__icon wonderland-navbar__icon--regular">
+                                        <Icon type="cog" />
+                                    </div>
                                     <ul className="box wonderland-navbar__subnav">
                                         <li>{items.accountSettingsPage}</li>
                                         <li>{items.billingPage}</li>

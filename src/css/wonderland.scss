@@ -51,7 +51,6 @@ $grey-lighter: $colour-gallery;
 
 $primary: $blue;
 $red: $orange;
-$body-background: $colour-alabaster;
 $background: $colour-alabaster;
 
 @import '../../node_modules/bulma/sass/utilities/utilities';
@@ -95,14 +94,17 @@ $background: $colour-alabaster;
     'components/checkbox',
     'components/modal',
     'components/xylophone',
+    'components/section',
     'components/brick',
     'components/banner',
     'components/toggle',
+    'components/icon',
     'components/navbar',
     'components/inputtextedit',
     'components/wondertabs',
     'components/image',
     'components/carousel',
+    'components/hud',
     'components/pre'
 ;
 
