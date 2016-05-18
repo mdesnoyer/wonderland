@@ -37,6 +37,14 @@ var Videos = React.createClass({
         var self = this;
         self._isMounted = false;
     },
+    componentWillUpdate: function(nextProps, nextState) {
+        if (nextState.isLoading === false) {
+            var target = document.getElementById('results');
+            if (target) {
+                target.scrollIntoView();
+            }
+        }
+    },
     render: function() {
         var self = this,
             errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : '',
@@ -67,7 +75,7 @@ var Videos = React.createClass({
                         videoCountServed={self.state.videoCountServed}
                     />
                 </section>
-                <section className="section">
+                <section id="results" className="section">
                     <VideosResults
                         forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                         videos={self.state.videos}
@@ -92,6 +100,7 @@ var Videos = React.createClass({
             return false;
         }
         self.setState({
+            isLoading: true,
             previousPseudoPageUrl: self.state.pseudoPageUrl,
             pseudoPageUrl: pseudoPageUrl
         }, function() {
@@ -118,29 +127,28 @@ var Videos = React.createClass({
                     if (!self._isMounted) {
                         return false;
                     }
-                    self.setState({
-                        videoCountServed: json.video_count,
-                        isLoading: false
-                    }, function() {
-                        if (json.video_count === 0) {
-                            self.setState({
-                                errorMessageArray: [],
-                                isError: false,
-                                videos: [],
-                                prevPageAPICall: '',
-                                nextPageAPICall: ''
-                            });
-                        }
-                        else {
-                            self.setState({
-                                errorMessageArray: [],
-                                isError: false,
-                                videos: json.videos,
-                                prevPageAPICall: json.prev_page,
-                                nextPageAPICall: json.next_page
-                            });
-                        }
-                    });
+                    if (json.video_count === 0) {
+                        self.setState({
+                            videoCountServed: json.video_count,
+                            isLoading: false,
+                            errorMessageArray: [],
+                            isError: false,
+                            videos: [],
+                            prevPageAPICall: '',
+                            nextPageAPICall: ''
+                        });
+                    }
+                    else {
+                        self.setState({
+                            videoCountServed: json.video_count,
+                            isLoading: false,
+                            errorMessageArray: [],
+                            isError: false,
+                            videos: json.videos,
+                            prevPageAPICall: json.prev_page,
+                            nextPageAPICall: json.next_page
+                        });
+                    }
                 }).catch(function(err) {
                     if (self._isMounted) {
                         return false;
@@ -159,7 +167,8 @@ var Videos = React.createClass({
                         isLoading: false
                     });
                 });
-            });
+            })
+        ;
     },
 });
 
