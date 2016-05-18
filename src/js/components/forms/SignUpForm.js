@@ -37,7 +37,7 @@ var SignUpForm = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (self.props.signUpRef) {
+        if (self.props.signUpRef && !SESSION.active()) {
             cookie.save('signUpRef', self.props.signUpRef, { path: '/' });
         }
         if (SESSION.active()) {
