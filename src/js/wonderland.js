@@ -24,8 +24,8 @@ import DashboardPage from './components/pages/DashboardPage';
 import PendingAccountPage from './components/pages/PendingAccountPage';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
-import UserResetPasswordPage from './components/pages/UserResetPasswordPage';
-import UserForgotPasswordPage from './components/pages/UserForgotPasswordPage';
+import UserResetPage from './components/pages/UserResetPage';
+import UserForgotPage from './components/pages/UserForgotPage';
 import TermsPage from './components/pages/TermsPage';
 import IntegrationsPage from './components/pages/IntegrationsPage';
 import NewIntegrationPage from './components/pages/NewIntegrationPage';
@@ -64,8 +64,8 @@ render((
         <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
 
-        <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPasswordPage} />
-        <Route path="/user/reset/token/:token/username/:username/" component={UserResetPasswordPage} />
+        <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPage} />
+        <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />
 
         <Route path={UTILS.DRY_NAV.VIDEO_ANALYZE.URL} component={AnalyzeVideoPage} />
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />

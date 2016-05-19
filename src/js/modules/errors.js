@@ -77,6 +77,9 @@ let E = {
     },
     clearErrors: function() {
         this._errorMessageArray.length = 0;
+    },
+    isErrors: function() {
+        return this._errorMessageArray.length > 0;
     }
 }
 

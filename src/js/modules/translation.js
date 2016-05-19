@@ -94,7 +94,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.userReset.title': 'Reset Password',
             'copy.userReset.heading': 'Reset Password',
             'copy.userReset.body': 'Enter your new password.',
-            'copy.userReset.instructions': 'Passwords must be at least eight characters long and include one number and one special character.',
 
             'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign in</a>.',
             'copy.userReset.error': 'Something went wrong. <a href="@link">Try again</a>?',
