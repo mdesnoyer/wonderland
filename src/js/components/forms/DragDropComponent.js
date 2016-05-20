@@ -15,8 +15,8 @@ var DragDropComponent = React.createClass({
         render: function () {
             return (
                 <div>
-                    <Dropzone onDrop={this.onDrop}>
-                        <div>Try dropping some files here, or click to select files to upload.</div>
+                    <Dropzone className="Dragdrop" onDrop={this.onDrop}>
+                        Try dropping some files here, or click to select files to upload.
                     </Dropzone>
                 </div>
             );
