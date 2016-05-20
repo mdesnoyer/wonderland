@@ -20,7 +20,15 @@ var TermsPage = React.createClass({
                 <section className="section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <DragDropComponent />
+                            <div className="columns">
+                                <div className="box column is-8 container is-fluid">
+                                        <p className="control has-addons">
+                                            <input className="input" placeholder="Enter your the image URL" />
+                                            <a className="button is-success">Analyze</a>
+                                        </p>
+                                    <DragDropComponent />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
