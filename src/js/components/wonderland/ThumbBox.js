@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,14 +41,14 @@ var ThumbBox = React.createClass({
                         onClick={self.handleCopyUrlClick}
                         data-clipboard-text={self.props.copyUrl}
                     >
-                        <i className="fa fa-files-o" aria-hidden="true"></i>
+                        <Icon type="files-o" />
                     </span>
                     <span
                         title={enabledTooltip}
                         className={'icon wonderland-thumbbox__tool' + enabledDisabledClass}
                         onClick={self.props.handleEnabledChange}
                     >
-                        <i className={'fa fa-' + enabledIndicator} aria-hidden="true"></i>
+                        <Icon type={enabledIndicator} />
                     </span>
                     <a
                         href={self.props.downloadUrl}
@@ -55,14 +56,14 @@ var ThumbBox = React.createClass({
                         className="icon wonderland-thumbbox__tool"
                         title="Download this Thumbnail"
                     >
-                        <i className="fa fa-download" aria-hidden="true"></i>
+                        <Icon type="download" />
                     </a>
                     <span
                         className={'icon wonderland-thumbbox__tool' + modalClass}
                         onClick={self.props.handleToggleModal}
                         title="View this Thumbnail larger"
                     >
-                        <i className={'fa fa-' + modalIndicator} aria-hidden="true"></i>
+                        <Icon type={modalIndicator} />
                     </span>
                 </div>
             </aside>

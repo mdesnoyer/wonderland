@@ -2,10 +2,8 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import UTILS from '../../modules/utils';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -34,7 +32,7 @@ var HeroThumbnail = React.createClass({
         else {
             return (
                 <span className="wonderland-hero-thumbnail-dummy has-text-centered">
-                    <i className="fa fa-picture-o" aria-hidden="true"></i>
+                    <Icon type="picture-o" />
                 </span>
             );
         }

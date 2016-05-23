@@ -57,7 +57,7 @@ var VideosPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="container">
                         <h1 className="title is-2">{heading}</h1>
                         {body}

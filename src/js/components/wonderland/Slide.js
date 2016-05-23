@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,8 +16,8 @@ var Slide = React.createClass({
         var self = this;  
             return (
                 <div className="wonderland-slides-slide box is-fullwidth has-text-centered">
-                    <p className="icon is-large ">
-                        <i className={'fa fa-' + self.props.icon} aria-hidden="true"></i>
+                    <p className="icon is-large">
+                        <Icon type={self.props.icon} />
                     </p>
                     <p><span dangerouslySetInnerHTML={{__html: self.props.slideContent}} /></p>
                 </div>

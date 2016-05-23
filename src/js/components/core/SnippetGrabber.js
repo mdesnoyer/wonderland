@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -34,7 +35,7 @@ var SnippetGrabber = React.createClass({
                     <textarea className="textarea"></textarea>
                     <p className={"has-text-centered" + hasSnippetTextArea}>
                         <button className="button is-medium is-primary" type="submit">
-                            <i className="fa fa-files-o" aria-hidden="true"></i>
+                            <Icon type="files-o" />
                         </button>
                     </p>
                 </div>

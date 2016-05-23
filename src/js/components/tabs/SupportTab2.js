@@ -42,26 +42,9 @@ var SupportTab2 = React.createClass({
                     <li>Click &ldquo;Register New Application&rdquo;</li>
                     <li>Enter &ldquo;Neon&rdquo; in the name field</li>
                     <li>Select the following permissions:
-                        <ul>
-                            <li>CMS
-                                <ul>
-                                    <li>Notifications</li>
-                                    <li>Video Read</li>
-                                    <li>Video Read/Write</li>
-                                </ul>
-                            </li>
-                            <li>Players
-                                <ul>
-                                    <li>Read</li>
-                                    <li>Read/Write</li>
-                                </ul>
-                            </li>
-                            <li>Dynamic Ingest
-                                <ul>
-                                    <li>Create</li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <figure className='image wonderland-image'>
+                            <img src="/img/brightcovepermissions.png" alt="" title="" />
+                        </figure>
                     </li>
                     <li>Click &ldquo;Save&rdquo;</li>
                     <li>A window will appear with your Client ID and Client Secret. Copy these values into the Neon plugin configuration page, which you can access by clicking on the gear in your Neon account and selecting Plugins.</li>
@@ -123,14 +106,14 @@ var SupportTab2 = React.createClass({
                 <ol>
                     <li>Visit the Plugin page in your Neon UI</li>
                     <li>Answer &ldquo;yes&rdquo; to &ldquo;Do you use the Smart Player?&rdquo;</li>
-                    <li>Copy the Neon Telemetry Player URL to the plugin</li>
+                    <li>Copy the Neon Smart Player Plugin URL.</li>
                     <li>Log in to your Brightcove Account</li>
                     <li>Go to <a href="https://videocloud.brightcove.com/publishing" rel="external">https://videocloud.brightcove.com/publishing</a></li>
                     <li>For each player you want to add the plugin to
                         <ol>
                             <li>Click Settings</li>
                             <li>In the resulting window, click &ldquo;Plug-ins&rdquo;</li>
-                            <li>Paste the Neon Telemetry Plugin URL to URL bar</li>
+                            <li>Paste the Neon Smart Player Plugin URL into the URL bar.</li>
                             <li>Click &ldquo;Add&rdquo;</li>
                         </ol>
                     </li>

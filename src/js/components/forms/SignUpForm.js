@@ -58,8 +58,11 @@ var SignUpForm = React.createClass({
             copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
-        if (!self.state.isAgreementChecked || self.state.isLoading) {
-             buttonClassName = 'button is-medium is-primary is-disabled is-loading';
+        if (!self.state.isAgreementChecked) {
+             buttonClassName = 'button is-medium is-primary is-disabled';
+        }
+        else if (self.state.isLoading) {
+            buttonClassName = 'button is-medium is-primary is-disabled is-loading';
         }
         else {
              buttonClassName = 'button is-medium is-primary';
@@ -95,12 +98,6 @@ var SignUpForm = React.createClass({
                     <p className="control is-grouped">
                         <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
                         <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
-                    </p>
-                    <p className="control">
-                        <input className="input is-medium" type="text" ref="company" required minLength="1" maxLength="1024" placeholder={T.get('company')} />
-                    </p>
-                    <p className="control">
-                        <input className="input is-medium" type="text" ref="title" required minLength="1" maxLength="32" placeholder={T.get('title')} />
                     </p>
                     <p className="control">
                         <label className="checkbox">
@@ -155,12 +152,10 @@ var SignUpForm = React.createClass({
                 self._isSubmitted = true;
                 userDataObject = {
                     email: this.refs.email.value.trim(),
-                    customer_name: this.refs.company.value.trim(),
                     admin_user_username: this.refs.email.value.trim(),
                     admin_user_password: this.refs.passwordInitial.value.trim(),
                     admin_user_first_name: this.refs.firstName.value.trim(),
-                    admin_user_last_name: this.refs.lastName.value.trim(),
-                    admin_user_title: this.refs.title.value.trim()
+                    admin_user_last_name: this.refs.lastName.value.trim()
                 };
                 self.POST('accounts', {
                         host: CONFIG.AUTH_HOST,
@@ -174,7 +169,7 @@ var SignUpForm = React.createClass({
                         });
                         self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
                     })
-                    .catch(function (err) {
+                    .catch(function (err) { 
                         E.raiseError(err);
                         self._isSubmitted = false;
                         self.setState({

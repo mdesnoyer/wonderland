@@ -169,6 +169,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.integration.bc.yes': 'Yes',
             'copy.integration.bc.no': 'No',
             'copy.integration.bc.playerNotFound': 'No Players Found',
+            'copy.integration.manualswitch': "You are currently use a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.",
 
             'copy.type': 'Type',
             'copy.dimensions': 'Dimensions',

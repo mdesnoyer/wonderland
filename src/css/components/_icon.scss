@@ -1,0 +1,12 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.fa-neon {
+    width: 39 / 49 * 1em; // magic number - size of SVG
+    height: 1em;
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background: url('/img/mark-aaa.svg');
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
