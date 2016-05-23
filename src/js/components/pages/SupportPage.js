@@ -49,7 +49,7 @@ var SupportPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.support.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="container">
                         <h1 className="title is-2">{T.get('copy.support.heading')}</h1>
                         <WonderTabs tabs={tabs} />

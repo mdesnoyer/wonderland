@@ -22,7 +22,7 @@ var DashboardPage = React.createClass({
                     title={UTILS.buildPageTitle('Dashboard')}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                             TODO - DashboardPage

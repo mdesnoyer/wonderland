@@ -68,7 +68,7 @@ var ConfirmAccountPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                             {messageNeeded}

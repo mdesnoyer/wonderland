@@ -2,6 +2,7 @@
 
 import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,7 +75,7 @@ var InputTextEdit = React.createClass({
                     value={self.state.value}
                     onKeyDown={self.handleKeyDown}
                 />
-                <i className={iconType} aria-hidden="true"></i>
+                <Icon type={iconType} />
             </div>
         );
     },

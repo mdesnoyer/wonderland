@@ -2,13 +2,12 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import AjaxMixin from '../../mixins/Ajax';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import Icon from '../core/Icon';
+import Hud from './Hud';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -33,7 +32,8 @@ var Thumbnail = React.createClass({
         ctr: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
         handleToggleModal: React.PropTypes.func.isRequired,
         handleEnabledChange: React.PropTypes.func.isRequired,
-        isModalActive: React.PropTypes.bool.isRequired
+        isModalActive: React.PropTypes.bool.isRequired,
+        thumbnailStats: React.PropTypes.object
     },
     getInitialState: function () {
         var self = this;
@@ -72,56 +72,62 @@ var Thumbnail = React.createClass({
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
             figureClass = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled') + ' -' + self.props.type,
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
-            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={neonScoreClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : '',
-            defaultStamp = (self.props.type === 'default') ? <span className={defaultStampClass} title={'Default'}><i className="fa fa-image" aria-hidden="true"></i></span> : '',
+            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={neonScoreClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : false,
+            defaultStamp = (self.props.type === 'default') ? <span className={defaultStampClass} title={'Default'}><Icon type="image" /></span> : false,
             handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
-            <figure
-                className={figureClass}
-                data-raw-neonscore={self.props.rawNeonScore}
-                data-cooked-neonscore={self.props.cookedNeonScore}
-                data-type={self.props.type}
-                data-enabled={self.state.isEnabled}
-                data-thumbnail-id={self.props.thumbnailId}
-            >
-                <img
-                    ref="thumbnailImage"
-                    className={'wonderland-thumbnail__image -' + self.props.type}
-                    src={src}
-                    data-src={dataSrc}
-                    alt={caption}
-                    title={caption}
-                    onClick={self.handleToggleModal}
-                />
-                <figcaption className="wonderland-thumbnail__caption">
-                    {neonScore}
-                    {defaultStamp}
-                    <input
-                        className="wonderland-thumbnail__enabled"
-                        onChange={handleEnabledChangeHook}
-                        checked={self.state.isEnabled}
-                        type="checkbox"
-                        disabled={enabledDisabled}
-                    />
-                    <span
+            <div className="box">
+                <figure
+                    className={figureClass}
+                    data-raw-neonscore={self.props.rawNeonScore}
+                    data-cooked-neonscore={self.props.cookedNeonScore}
+                    data-type={self.props.type}
+                    data-enabled={self.state.isEnabled}
+                    data-thumbnail-id={self.props.thumbnailId}
+                >
+                    <img
+                        ref="thumbnailImage"
+                        className={'wonderland-thumbnail__image -' + self.props.type}
+                        src={src}
+                        data-src={dataSrc}
+                        alt={caption}
+                        title={caption}
                         onClick={self.handleToggleModal}
-                        className="wonderland-thumbnail__indicator"
-                    >
-                        <i className={'fa fa-' + enabledIndicator} aria-hidden="true"></i>
-                    </span>
-                    <ThumbBox
-                        copyUrl={self.props.url}
-                        downloadUrl={self.props.url}
-                        isEnabled={self.state.isEnabled}
-                        handleToggleModal={self.handleToggleModal}
-                        handleEnabledChange={handleEnabledChangeHook}
-                        isServingEnabled={self.props.isServingEnabled}
-                        type={self.props.type}
-                        isModalActive={self.props.isModalActive}
                     />
-                </figcaption>
-            </figure>
+                    <figcaption className="wonderland-thumbnail__caption">
+                        {/*neonScore*/}
+                        {defaultStamp}
+                        <input
+                            className="wonderland-thumbnail__enabled"
+                            onChange={handleEnabledChangeHook}
+                            checked={self.state.isEnabled}
+                            type="checkbox"
+                            disabled={enabledDisabled}
+                        />
+                        <span
+                            onClick={self.handleToggleModal}
+                            className="wonderland-thumbnail__indicator"
+                        >
+                            <Icon type={enabledIndicator} />
+                        </span>
+                        <ThumbBox
+                            copyUrl={self.props.url}
+                            downloadUrl={self.props.url}
+                            isEnabled={self.state.isEnabled}
+                            handleToggleModal={self.handleToggleModal}
+                            handleEnabledChange={handleEnabledChangeHook}
+                            isServingEnabled={self.props.isServingEnabled}
+                            type={self.props.type}
+                            isModalActive={self.props.isModalActive}
+                        />
+                    </figcaption>
+                </figure>
+                <Hud
+                    stats={self.props.thumbnailStats}
+                    cookedNeonScore={self.props.cookedNeonScore}
+                />
+            </div>
         );
     },
     handleToggleModal: function(e) {

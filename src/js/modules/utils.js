@@ -14,6 +14,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
+    NA_STRING = 'n/a',
     COOKIE_DEFAULT_PATH = '/',
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -258,10 +259,7 @@ var UTILS = {
     },
     // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
     isValidDate: function(d) {
-        if (Object.prototype.toString.call(d) !== '[object Date]') {
-            return false;
-        }
-        return !isNaN(d.getTime());
+        return !isNaN(Date.parse(d));
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
@@ -290,7 +288,7 @@ var UTILS = {
         }
         else {
             return {
-                neonScore: UNKNOWN_STRING,
+                neonScore: NA_STRING,
                 emoji: UNKNOWN_EMOJI
             };
         }

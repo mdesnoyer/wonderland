@@ -70,37 +70,37 @@ var ThumbnailInfoBox = React.createClass({
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.updated} />
                         </dd>
-                    <dt className="wonderland-dt">Statistics</dt>
+                    {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
 
-                <table className="table is-bordered is-striped is-narrow">
+                {/*<table className="table is-bordered is-striped is-narrow">
                     <tbody>
                         <tr>
                             <th dangerouslySetInnerHTML={{__html: T.get('copy.ctr')}} />
-                            <td>{UTILS.formatCtr(self.state.ctr)}</td>
+                            <td>{self.state.ctr}</td>
                         </tr>
                         <tr>
-                            <th>Serving<br />Fraction</th>
-                            <td>{UTILS.formatServingFrac(self.state.servingFrac)}</td>
+                            <th>Serving Fraction</th>
+                            <td>{self.state.servingFrac}</td>
                         </tr>
                         <tr>
                             <td>Conversions</td>
-                            <td>{self.state.conversions || 0}</td>
+                            <td>{self.state.conversions}</td>
                         </tr>
                         <tr>
                             <td>Impressions</td>
-                            <td>{self.state.impressions || 0}</td>
+                            <td>{self.state.impressions}</td>
                         </tr>
                         <tr>
                             <td>Created</td>
-                            <td><FuzzyTime date={self.state.statsCreated} /></td>
+                            <td>{self.state.statsCreated}</td>
                         </tr>
                         <tr>
                             <td>Updated</td>
-                            <td><FuzzyTime date={self.state.statsUpdated} /></td>
+                            <td>{self.state.statsUpdated}</td>
                         </tr>
                     </tbody>
-                </table>
+                </table>*/}
             </aside>
         );
     }
