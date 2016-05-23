@@ -184,7 +184,7 @@ var UTILS = {
             URL: '/account/confirmed/'
         },
         ACCOUNT_CONFIRM: {
-            URL: '/account/confirm/'
+            URL: '/account/confirm' // needs to have no trailing slash
         },
         BILLING: {
             URL: '/billing/'
