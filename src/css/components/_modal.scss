@@ -1,9 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-modal-content {
-    &.is-clipped {
-        overflow: hidden;
-    }
     &.is-max {
         @media screen and (min-width: $tablet) {
             width: 90%;

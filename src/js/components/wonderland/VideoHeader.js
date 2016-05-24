@@ -32,20 +32,20 @@ var VideoHeader = React.createClass({
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
         ;
         return (
-            <nav className="wonderland-video__header navbar is-marginless columns" onClick={self.props.handleVideoOpenToggle}>
-                <div className="navbar-left column is-3">
-                    <div className="navbar-item">
+            <nav className="wonderland-video__header level is-marginless columns" onClick={self.props.handleVideoOpenToggle}>
+                <div className="level-left column is-3">
+                    <div className="level-item">
                         <a className={self.props.additionalClass} title={self.props.videoState}>
                             {videoTranslatedState}
                         </a>
                     </div>
-                    <div className="navbar-item">
+                    <div className="level-item">
                         <HeroThumbnail
                             thumbnail={self.props.thumbnails[0]}
                         />
                     </div>
                 </div>
-                <div className="navbar-item column is-5">
+                <div className="level-item column is-5">
                     <InputTextEdit
                         valueDest="videos"
                         value={self.props.title}
@@ -57,14 +57,14 @@ var VideoHeader = React.createClass({
                         classStyle="title is-5"
                     />
                 </div>
-                <div className="navbar-right column is-4">
-                    <div className="navbar-item">
+                <div className="level-right column is-4">
+                    <div className="level-item">
                         <span className="subtitle is-6"><FuzzyTime date={self.props.created} /></span>
                     </div>
-                    <div className="navbar-item">
+                    <div className="level-item">
                         {xylophone}
                     </div>
-                    <div className="navbar-item">
+                    <div className="level-item">
                         {toggleButton}
                     </div>
                 </div>
