@@ -46,7 +46,7 @@ var VideoPage = React.createClass({
                     title={UTILS.buildPageTitle('Video')}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="container">
                         <Video
                             videoId={self.props.params.videoId}

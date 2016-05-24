@@ -40,7 +40,8 @@ var IntegrationsBrightcovePage = React.createClass({
                 integrationId: '',
                 dataToProps:'',
                 playerArray:'',
-                usesGallery: usesGallery
+                usesGallery: usesGallery,
+                usesPlaylist: false
             };
         }
         else {
@@ -51,11 +52,12 @@ var IntegrationsBrightcovePage = React.createClass({
                 integrationId: params.integrationId,
                 dataToProps:'',
                 playerArray:'',
-                usesGallery: false
+                usesGallery: false,
+                usesPlaylist: ''
             }
         }
     },
-    componentWillMount: function(){
+    componentWillMount: function() {
         var self = this;
         switch(self.state.formMode) {
             case 'add':
@@ -66,18 +68,21 @@ var IntegrationsBrightcovePage = React.createClass({
             break;
         }
     },
-    shouldComponentUpdate: function(nextState, nextProps){
+    shouldComponentUpdate: function(nextState, nextProps) {
         return nextState !== nextProps;
     },
     render: function() {
-        var self = this;
+        var self = this,
+            hidePlayList
+        ;
+        hidePlayList = self.state.usesPlaylist ? '' : 'is-hidden'; 
         return (
             <div>
                 <Helmet
                     title={T.get('copy.plugins.types.brightcove.title')}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
                             <h1 className="title is-2">
@@ -108,19 +113,16 @@ var IntegrationsBrightcovePage = React.createClass({
                                         accountId={self.state.accountId}
                                         formMode={self.state.formMode}
                                         integrationId={self.state.integrationId}
+                                        refreshFormMode={self.refreshFormMode}
                                     />
-                                    <PlayerList
-                                        playerArray={self.state.playerArray}
-                                        accountId={self.state.publisherId}
-                                        integrationId={self.state.integrationId}
-                                    />
-                                    <RadioInputForm
-                                        radioType="uses_bc_smart_player"
-                                        isActive={self.state.dataToProps.uses_bc_smart_player}
-                                        accountId={self.state.accountId}
-                                        formMode={self.state.formMode}
-                                        integrationId={self.state.integrationId}
-                                    />
+                                    <div className={hidePlayList}>
+                                        <PlayerList
+                                            isActive={self.state.dataToProps.uses_bc_videojs_player}
+                                            playerArray={self.state.playerArray}
+                                            accountId={self.state.publisherId}
+                                            integrationId={self.state.integrationId}
+                                        />
+                                    </div>
                             </section>
                         </div>
                     </div>
@@ -135,18 +137,18 @@ var IntegrationsBrightcovePage = React.createClass({
             [type]:value
         });
     },
-    refreshFormMode: function(integrationId){
+    refreshFormMode: function(integrationId) {
         var self = this;
             self.setState({
                 formMode: 'update',
                 integrationId: integrationId
             },
-                function(){
+                function() {
                     self.refreshBrightCoveInfo();
                 }
             );
     },
-    refreshBrightCoveInfo: function(){
+    refreshBrightCoveInfo: function() {
         var self = this;
         self.GET('integrations/' + self.state.integrationType, {
             data: {
@@ -155,19 +157,20 @@ var IntegrationsBrightcovePage = React.createClass({
             }
         })
         .then(function(res) {
-              self.setState({
+            self.setState({
                 usesGallery: res.uses_bc_gallery,
+                usesPlaylist: res.uses_bc_videojs_player,
                 publisherId: res.publisher_id,
                 clientId: res.application_client_id,
                 clientSecret: res.application_client_secret,
                 dataToProps: res
             },
-                function(){
+                function() {
                     self.refreshBrightCovePlayers();
                 }
             )
         })
-        .catch(function(err){
+        .catch(function(err) {
         });
     },
     refreshBrightCovePlayers: function() {
@@ -182,7 +185,7 @@ var IntegrationsBrightcovePage = React.createClass({
                 playerArray: res.players
             })
         })
-        .catch(function(err){
+        .catch(function(err) {
         });
     },
     refreshNeonAccountInfo: function() {

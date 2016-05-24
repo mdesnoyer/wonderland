@@ -8,6 +8,7 @@ import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import InputTextEdit from '../core/InputTextEdit';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,7 +26,7 @@ var VideoHeader = React.createClass({
     },
     render: function() {
         var self = this,
-            toggleButtonContent = self.props.forceOpen ? <i className="fa fa-chevron-circle-up" aria-hidden="true"></i> : <i className="fa fa-chevron-circle-down" aria-hidden="true"></i>,
+            toggleButtonContent = self.props.forceOpen ? <Icon type="chevron-circle-up" /> : <Icon type="chevron-circle-down" />,
             toggleButton = <a className="wonderland-toggle button is-medium">{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''

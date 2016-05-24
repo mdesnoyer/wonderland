@@ -2,6 +2,7 @@
 
 import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,19 +27,19 @@ var InputTextEdit = React.createClass({
             isProcessing = self.props.videoState === 'processing'
         ;
         return {
-            value: isProcessing ? self.props.fallbackValue : self.props.value,
+            value: (self.props.value === null) ? self.props.fallbackValue : self.props.value,
             mode: isProcessing ? 'processing' : 'silent' // loading/success/error/silent/processing
         }
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        self.setState({
-            value: nextProps.value
-        });
+            self.setState({
+                value: nextProps.value
+            });
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         var self = this;
-        return nextState.value !== (null || self.props.fallbackValue);
+        return ((self.state.mode === 'processing' && nextProps.value !== self.props.value) || ( self.state.mode !== 'processing' && nextState.value !== self.props.value));
     },
     render: function() {
         var self = this,
@@ -74,7 +75,7 @@ var InputTextEdit = React.createClass({
                     value={self.state.value}
                     onKeyDown={self.handleKeyDown}
                 />
-                <i className={iconType} aria-hidden="true"></i>
+                <Icon type={iconType} />
             </div>
         );
     },
@@ -101,7 +102,9 @@ var InputTextEdit = React.createClass({
             mode: 'loading',
             value: self.state.value || self.props.fallbackValue
         },
-        self.putValue()
+            function() {
+                self.putValue()
+        }
         );
     },
     putValue: function() {

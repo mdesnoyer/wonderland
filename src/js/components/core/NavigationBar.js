@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -66,7 +67,7 @@ var NavigationBar = React.createClass({
                                 onClick={self.handlePrevButton}
                                 title={T.get('action.previous')}
                             >
-                                <i className="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                <Icon type="chevron-circle-left" />
                                 &nbsp;{T.get('action.previous')}
                             </button>
                         </div>
@@ -85,7 +86,7 @@ var NavigationBar = React.createClass({
                                 title={T.get('action.next')}
                             >
                                 {T.get('action.next')}&nbsp;
-                                <i className="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                <Icon type="chevron-circle-right" />
                             </button>
                         </div>
                     </div>

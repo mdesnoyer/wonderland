@@ -52,7 +52,7 @@ var RadioInputForm = React.createClass({
     },
     shouldComponentUpdate: function(nextState, nextProps){
         var self = this;
-        return nextProps !== self.props
+        return ((nextProps.isActive !== self.props.isActive) || (nextState.activeModal !== self.state.activeModal))
     },
     render: function() {
         var self = this,
@@ -84,21 +84,23 @@ var RadioInputForm = React.createClass({
             }
         return (
             <div className={"box" + usesGallery}>
-                <div className="columns container is-fluid">
-                    <span className="column is-4">
-                        {question}
+                <div className="columns container">
+                    <span className="column is-5">
+                    <h1 className="subtitle is-6">{question}</h1>
                     </span>
-                    <div className="column is-6 has-text-centered">
-                        <RadioGroup className={"control is-grouped" + formModeDisable} name={self.props.radioType} selectedValue={self.state.isActive} onChange={self.handleChange}>
+                    <div className="column is-4 has-text-centered radio-buttons">
+                        <RadioGroup className={'columns' + formModeDisable} name={self.props.radioType} selectedValue={self.state.isActive} onChange={self.handleChange}>
                           {Radio => (
                             <div>
-                              <Radio className={formModeDisable} value={true} />{T.get('copy.integration.bc.yes')}
-                              <Radio className={formModeDisable} value={false} />{T.get('copy.integration.bc.no')}
+                             <label>{T.get('copy.integration.bc.yes')}</label>
+                              <Radio className={formModeDisable + ' column is-1'} value={true} />
+                              <label>{T.get('copy.integration.bc.no')}</label>
+                              <Radio className={formModeDisable + ' column is-1'} value={false} />
                             </div>
                           )}
                         </RadioGroup>
                     </div>
-                    <span className="column is-2 is-pulled-right">
+                    <span className="column is-3 radio-modal-button has-text-right">
                         <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
                     </span>
                     <ModalParent isModalActive={(self.state.activeModal)} handleToggleModal={self.closeModal}>
@@ -122,13 +124,13 @@ var RadioInputForm = React.createClass({
                     }
                 })
                 .then(function(res) {
+                    self.props.refreshFormMode(self.state.integrationId);
                 })
                 .catch(function(err) {
                     console.log(err);
                 });
-            }
-        )
-            },
+        });
+    },
     openModal: function (e) {
         this.setState({
             activeModal: true
@@ -138,7 +140,7 @@ var RadioInputForm = React.createClass({
         this.setState({
             activeModal: false
         });
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

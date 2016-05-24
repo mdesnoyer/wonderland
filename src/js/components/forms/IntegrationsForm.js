@@ -242,7 +242,8 @@ var IntegrationsForm = React.createClass({
             .then(function(res) {
                 self.setState({
                     isError: false,
-                    formMode: 'update'
+                    formMode: 'update',
+                    integrationId: res.integration_id
                 },
                     function() {
                         if(formMode === 'add'){

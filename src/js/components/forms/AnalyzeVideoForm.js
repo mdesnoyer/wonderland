@@ -8,12 +8,15 @@ import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
 import TutorialPanels from '../wonderland/TutorialPanels';
+import IntegrationNotification from '../core/IntegrationNotification';
 import E from '../../modules/errors';
+import Account from '../../mixins/Account';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AnalyzeVideoForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin, Account], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -36,7 +39,8 @@ var AnalyzeVideoForm = React.createClass({
             optionalDefaultThumbnailUrl: '',
             optionalTitle: '',
             maxVideoCount: 10,
-            currentVideoCount: self.props.videoCountServed
+            currentVideoCount: self.props.videoCountServed,
+            isFormHidden: false
         };
     },
     componentWillUnmount: function(e) {
@@ -44,6 +48,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     componentWillMount: function(e) {
         var self = this;
+        self.checkForPlugins();
         self.GET('limits')
             .then(function(json) {
                 self.setState({
@@ -75,8 +80,12 @@ var AnalyzeVideoForm = React.createClass({
             messageNeeded = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
             buttonClassName,
-            inputClassName
+            inputClassName,
+            formHiddenClass,
+            promptHiddenClass
         ;
+            formHiddenClass = self.state.isFormHidden ? ' is-hidden' : '';
+            promptHiddenClass = !self.state.isFormHidden ? 'is-hidden' : '';
         if (self.state.currentVideoCount >= self.state.maxVideoCount) {
             var body = T.get('copy.analyzeVideo.maxLimitHit', {
                 '@link': UTILS.DRY_NAV.BILLING.URL
@@ -105,7 +114,10 @@ var AnalyzeVideoForm = React.createClass({
             return (
                 <form onSubmit={self.handleSubmit}>
                     {messageNeeded}
-                    <fieldset>
+                    <div className={promptHiddenClass}>
+                        <IntegrationNotification toggeleOpen={self.toggeleOpen} />
+                    </div>
+                    <fieldset className={formHiddenClass}>
                         {legendElement}
                         <p className="control">
                             <input
@@ -146,14 +158,15 @@ var AnalyzeVideoForm = React.createClass({
                         </p>
                         <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
-                                <i className="fa fa-cloud-upload" aria-hidden="true"></i>&nbsp;{T.get('analyze')}
+                                <Icon type="cloud-upload" />
+                                &nbsp;
+                                {T.get('analyze')}
                             </button>
                         </p>
                     </fieldset>
                 </form>
             );
         }
-
     },
     handleChangeVideoUrl: function(e) {
         var self = this;
@@ -241,6 +254,38 @@ var AnalyzeVideoForm = React.createClass({
                     mode: 'error'
                 });
             });
+    },
+    checkForPlugins: function() {
+        var self = this;
+        self.getAccount()
+            .then(function(account) {
+                self.GET('integrations')
+                    .then(function(json) {
+                       if (json.integration_count > 0) {
+                            self.setState({
+                                isFormHidden: true
+                            });
+                       }
+                       else {
+                            self.setState({
+                                isFormHidden: false
+                            });
+                       } 
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+                ;
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    },
+    toggeleOpen: function() {
+        var self = this; 
+        self.setState({
+            isFormHidden: false
+        });
     }
 });
 

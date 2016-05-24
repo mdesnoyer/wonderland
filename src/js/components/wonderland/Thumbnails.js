@@ -9,6 +9,7 @@ import Thumbnail from './Thumbnail';
 import ThumbnailInfoBox from './ThumbnailInfoBox';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import FuzzyTime from '../core/FuzzyTime';
 import Slide from './Slide';
 import ModalParent from '../core/ModalParent';
 import Carousel from '../core/Carousel';
@@ -39,7 +40,7 @@ var Thumbnails = React.createClass({
         self.setState({
             thumbnails: nextProps.thumbnails
         });
-        if (nextProps.forceOpen === true && nextProps.forceOpen !== self.props.forceOpen) {
+        if (nextProps.forceOpen) {
             self.GET('statistics/thumbnails', {
                 data: {
                     video_id: self.props.videoId,
@@ -48,14 +49,19 @@ var Thumbnails = React.createClass({
                     // thumbnail), ctr (the click-through rate), impressions
                     // (the number of impressions), conversions (the number
                     // of conversions), created, and updated.
-                    fields: ['thumbnail_id', 'ctr']
+                    fields: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated']
                 }
             })
             .then(function(json) {
                 var parsedThumbnailsStats = {};
                 json.statistics.map(function(thumbnail, i) {
                     parsedThumbnailsStats[thumbnail.thumbnail_id] = {
-                        ctr: thumbnail.ctr
+                        ctr: UTILS.formatCtr(thumbnail.ctr),
+                        servingFrac: UTILS.formatServingFrac(thumbnail.serving_frac),
+                        impressions: thumbnail.impressions || 0,
+                        conversions: thumbnail.conversions || 0,
+                        created: <FuzzyTime date={thumbnail.created} />,
+                        updated: <FuzzyTime date={thumbnail.updated} />
                     };
                 });
                 self.setState({
@@ -98,7 +104,7 @@ var Thumbnails = React.createClass({
                     <Slide slideContent={T.get('copy.processingSlide.3')} icon="trophy" />
                     <Slide slideContent={T.get('copy.processingSlide.4')} icon="picture-o" />
                 </div>
-            );
+            )
         }
         else {
             return (
@@ -127,6 +133,7 @@ var Thumbnails = React.createClass({
                                         handleToggleModal={self.handleToggleModal}
                                         handleEnabledChange={self.handleEnabledChange}
                                         isModalActive={self.state.isModalActive}
+                                        thumbnailStats={self.state.thumbnailsStats[thumbnail.thumbnail_id]}
                                     />
                             ;
                             thumbnailElements.push(thumbnailElement);

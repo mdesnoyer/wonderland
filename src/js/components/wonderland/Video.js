@@ -207,6 +207,7 @@ var Video = React.createClass({
                     }
                     else {
                         self.setState({
+                            title: video.title,
                             isLoading: false
                         });
                     }

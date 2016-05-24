@@ -21,7 +21,7 @@ var AccountSettingsPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.accountSettings.title'))}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="container">
                         <div className="columns is-desktop">
                             <div className="column is-half is-offset-one-quarter">

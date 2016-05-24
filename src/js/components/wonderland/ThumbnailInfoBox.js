@@ -23,17 +23,25 @@ var ThumbnailInfoBox = React.createClass({
     },
     getInitialState: function() {
         return({
-            ctr: T.get('copy.unknown')
+            ctr: T.get('copy.unknown'),
+            servingFrac: T.get('copy.unknown'),
+            impressions: T.get('copy.unknown'),
+            conversions: T.get('copy.unknown'),
+            statsCreated: T.get('copy.unknown'),
+            statsUpdated: T.get('copy.unknown')
         })
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        if (nextProps.thumbnailStats && nextProps.thumbnailStats.hasOwnProperty('ctr')) {
-            if (nextProps.thumbnailStats.ctr !== self.state.ctr) {
-                self.setState({
-                    ctr: nextProps.thumbnailStats.ctr
-                });
-            }
+        if (nextProps.thumbnailStats) {
+            self.setState({
+                ctr: nextProps.thumbnailStats.ctr,
+                servingFrac: nextProps.thumbnailStats.servingFrac,
+                impressions: nextProps.thumbnailStats.impressions,
+                conversions: nextProps.thumbnailStats.conversions,
+                statsCreated: nextProps.thumbnailStats.created,
+                statsUpdated: nextProps.thumbnailStats.updated
+            });
         }
     },
     render: function() {
@@ -62,12 +70,37 @@ var ThumbnailInfoBox = React.createClass({
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.updated} />
                         </dd>
-                    <dt
-                        className="wonderland-dt"
-                        dangerouslySetInnerHTML={{__html: T.get('copy.ctr')}}
-                    />
-                        <dd className="wonderland-dd">{UTILS.formatCtr(self.state.ctr)}</dd>
+                    {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
+
+                {/*<table className="table is-bordered is-striped is-narrow">
+                    <tbody>
+                        <tr>
+                            <th dangerouslySetInnerHTML={{__html: T.get('copy.ctr')}} />
+                            <td>{self.state.ctr}</td>
+                        </tr>
+                        <tr>
+                            <th>Serving Fraction</th>
+                            <td>{self.state.servingFrac}</td>
+                        </tr>
+                        <tr>
+                            <td>Conversions</td>
+                            <td>{self.state.conversions}</td>
+                        </tr>
+                        <tr>
+                            <td>Impressions</td>
+                            <td>{self.state.impressions}</td>
+                        </tr>
+                        <tr>
+                            <td>Created</td>
+                            <td>{self.state.statsCreated}</td>
+                        </tr>
+                        <tr>
+                            <td>Updated</td>
+                            <td>{self.state.statsUpdated}</td>
+                        </tr>
+                    </tbody>
+                </table>*/}
             </aside>
         );
     }

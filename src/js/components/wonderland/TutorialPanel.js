@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,7 +18,7 @@ var TutorialPanel = React.createClass({
             <div className="card column is-one-third">
                 <div className="card-content has-text-centered">
                     <div className="icon is-large">
-                        <i className={'fa fa-' + self.props.icon} aria-hidden="true"></i>
+                        <Icon type={self.props.icon} />
                     </div>
                     <div className="content">
                         <span dangerouslySetInnerHTML={{__html: self.props.direction}} />

@@ -551,7 +551,7 @@ var BillingForm = React.createClass({
             }
             apiCall
                 .then(function (data) {
-                    if (data.id && data.id === 'canceled') {
+                    if (data && data.id === 'canceled') {
                         // This response indicates a downgrade; need to clear the current card
                         self.setState({
                             stripeId: false,

@@ -8,6 +8,7 @@ import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,7 +27,7 @@ var NewIntegrationPage = React.createClass({
                     title={T.get('copy.new.integration.title')}
                 />
                 <SiteHeader />
-                <section className="section">
+                <section className="wonderland-section section">
                     <div className="container">
                         <h1 className="title is-2">{T.get('copy.new.integration.heading')}</h1>
                         <div className="content">
@@ -37,7 +38,11 @@ var NewIntegrationPage = React.createClass({
                                 <div className="card-content has-text-centered">
                                     <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
-                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>{T.get('add')}</a>
+                                        <a className="button is-primary is-medium" onClick={this.addBrightcove}>
+                                            <Icon type="plus-circle" />
+                                            &nbsp;
+                                            {T.get('add')}
+                                        </a>
                                     </div>
                                 </div>
                             </div>
