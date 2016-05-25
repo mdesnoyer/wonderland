@@ -9,5 +9,28 @@
         border-color: $primary;
     }
  }
+ .wonderland-input-text-edit__container {
+    i {
+        opacity: 0.0;
+    }
+    &:focus {
+        i {
+            opacity: 1.0;
+            border-left: 1px solid $colour-pacific-blue;
+        }
+    }
+    &:hover {
+        i {
+            opacity: 1.0;
+            border-left: 1px solid $colour-silver-chalice;
+        }
+    }
+    &:active {
+        i {
+            opacity: 1.0;
+            border-left: 1px solid $colour-pacific-blue;
+        }
+    }
+ }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

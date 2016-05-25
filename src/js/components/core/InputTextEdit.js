@@ -65,7 +65,7 @@ var InputTextEdit = React.createClass({
                 break;
         }
         return (
-            <div className={'control has-icon has-icon-right' + controlClassName}>
+            <div className={'wonderland-input-text-edit__container control has-icon has-icon-right' + controlClassName}>
                 <input
                     className={self.props.classStyle + ' input wonderland-input-text-edit'}
                     type="text"
