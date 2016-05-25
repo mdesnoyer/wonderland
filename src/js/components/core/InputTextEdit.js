@@ -43,29 +43,34 @@ var InputTextEdit = React.createClass({
     },
     render: function() {
         var self = this,
-            controlClassName = '',
-            iconType
+            controlDisable = '',
+            iconType,
+            loadingStyle = self.state.mode === 'loading' ? '-is-loading' : ''
         ;
         switch(self.state.mode) {
             case 'processing':
                 iconType = '';
-                controlClassName = ' is-disabled';
+                controlDisable = ' is-disabled';
                 break;
             case 'success':
                 iconType = 'fa fa-check';
+                
                 break;
             case 'error':
                 iconType = 'fa fa-times';
+                
                 break;
             case 'loading':
                 iconType = 'fa fa-cog fa-spin';
+                
                 break;
             case 'silent':
                 iconType = 'fa fa-pencil';
+                
                 break;
         }
         return (
-            <div className={'wonderland-input-text-edit__container control has-icon has-icon-right' + controlClassName}>
+            <div className={'wonderland-input-text-edit__container' + loadingStyle + ' control has-icon has-icon-right' + controlDisable}>
                 <input
                     className={self.props.classStyle + ' input wonderland-input-text-edit'}
                     type="text"
