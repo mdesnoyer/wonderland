@@ -79,7 +79,7 @@ var Carousel = React.createClass({
                         })
                     }
                 </ol>
-                <nav className="box wonderland-carousel__control-box">
+                <nav className="box wonderland-box wonderland-carousel__control-box">
                     <ul className="wonderland-carousel__controls">
                         <li title={T.get('action.previous')} onClick={self.handleClickPrevious} className="wonderland-carousel__control wonderland-carousel__control--previous">
                             <Icon type="chevron-circle-left" />

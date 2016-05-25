@@ -18,7 +18,7 @@ var VideoInfoBox = React.createClass({
             niceDuration = UTILS.formatDuration(self.props.duration)
         ;
         return (
-            <aside className="box">
+            <aside className="box wonderland-box">
                 <dl className="wonderland-dl">
                     <dt className="wonderland-dt">Duration</dt>
                         <dd className="wonderland-dd">{niceDuration}</dd>

@@ -1,0 +1,17 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-box {
+    position: relative;
+    padding-bottom: 10px;
+    &.-alt {
+        background: repeating-linear-gradient(
+            45deg,
+            $white,
+            $white 10px,
+            rgba($orange, 0.1) 10px,
+            rgba($orange, 0.1) 20px
+        );
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

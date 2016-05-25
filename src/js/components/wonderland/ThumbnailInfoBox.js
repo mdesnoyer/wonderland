@@ -47,7 +47,7 @@ var ThumbnailInfoBox = React.createClass({
     render: function() {
         var self = this;
         return (
-            <aside className="box">
+            <aside className="box wonderland-box">
                 <dl className="wonderland-dl">
                     <dt
                         className={'wonderland-dt' + (self.props.frameNo > 0 ? '' : ' is-hidden')}

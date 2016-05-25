@@ -7,7 +7,7 @@ import React from 'react';
 var BrightcoveThumbnailModal = React.createClass({
     render: function() {
         return (
-            <section className="box hero is-desktop">
+            <section className="box wonderland-box hero is-desktop">
                 <div className="hero-body">
                     <div className="container">
                         <h1 className="title is-4">Do you use the Brightcove Media API to determine which thumbnails are shown on your site?</h1>
