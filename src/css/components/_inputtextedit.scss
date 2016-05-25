@@ -11,32 +11,13 @@
  }
  .wonderland-input-text-edit__container {
     i {
-        opacity: 0.0;
+        opacity: 0;
     }
-    &:focus {
+    &:focus, &:hover, &:active, &.-is-loading {
         i {
             opacity: 1.0;
-            border-left: 1px solid $colour-pacific-blue;
         }
-    }
-    &:hover {
-        i {
-            opacity: 1.0;
-            border-left: 1px solid $colour-silver-chalice;
-        }
-    }
-    &:active {
-        i {
-            opacity: 1.0;
-            border-left: 1px solid $colour-pacific-blue;
-        }
-    }
- }
-.wonderland-input-text-edit__container-is-loading {
-    i {
-        opacity: 1.0;
-        border-left-style: none; 
-    }
+    } 
  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

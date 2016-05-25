@@ -45,7 +45,7 @@ var InputTextEdit = React.createClass({
         var self = this,
             controlDisable = '',
             iconType,
-            loadingStyle = self.state.mode === 'loading' ? '-is-loading' : '';
+            loadingStyle = '';
         ;
         switch(self.state.mode) {
             case 'processing':
@@ -54,19 +54,18 @@ var InputTextEdit = React.createClass({
                 break;
             case 'success':
                 iconType = 'fa fa-check';
-                
+                loadingStyle = '-is-loading';       
                 break;
             case 'error':
                 iconType = 'fa fa-times';
-                
+                loadingStyle = '-is-loading';
                 break;
             case 'loading':
                 iconType = 'fa fa-cog fa-spin';
-                
+                loadingStyle = '-is-loading';
                 break;
             case 'silent':
-                iconType = 'fa fa-pencil';
-                
+                iconType = 'fa fa-pencil';                
                 break;
         }
         return (
