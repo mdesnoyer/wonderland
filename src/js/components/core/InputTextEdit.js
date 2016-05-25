@@ -65,7 +65,7 @@ var InputTextEdit = React.createClass({
                 loadingStyle = '-is-loading';
                 break;
             case 'silent':
-                iconType = 'fa fa-pencil';                
+                iconType = 'fa fa-pencil';
                 break;
         }
         return (
