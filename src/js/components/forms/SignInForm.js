@@ -77,7 +77,7 @@ var SignInForm = React.createClass({
                             ref="password"
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('password')}
+                            placeholder={T.get('copy.passwordInitial')}
                         />
                     </p>
                     <p className="control">
