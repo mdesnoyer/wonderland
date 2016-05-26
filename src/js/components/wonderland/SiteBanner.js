@@ -34,15 +34,9 @@ var SiteBanner = React.createClass({
                     if (userData) {
                         // https://en.gravatar.com/site/implement/images/
                         avatar = gravatar.url(userData.username, {s: '60', d: 'identicon'});
-                        if (userData.first_name) {
-                            displayName = userData.first_name;
-                        }
-                        else {
-                            displayName = userData.username
-                        }
                         if (self._isMounted) {
                             self.setState({
-                                displayName: displayName,
+                                displayName: userData.displayName,
                                 avatar: avatar
                             });
                         }

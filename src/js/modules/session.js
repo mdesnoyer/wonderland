@@ -90,6 +90,9 @@ var Session = {
                     return reject(e);
                 }
             }
+            if (userData && (userData.first_name || userData.username)) {
+                userData.displayName = userData.first_name || userData.username;
+            }
             resolve(userData);
         });
     },
