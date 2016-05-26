@@ -45,8 +45,9 @@ var AJAXModule = {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
-            if (_options.host !== CONFIG.AUTH_HOST) {
-                _options.data.token = self.Session.state.accessToken;
+            if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
+                _options.headers = _options.headers || {};
+                _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
             }
             if (_options.method === 'GET') {
                 _url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(_options.data);
@@ -67,9 +68,12 @@ var AJAXModule = {
                 .catch(function (err) {
                     var retryUrl = '';
                     if (_options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
-                        retryUrl = CONFIG.AUTH_HOST + 'refresh_token?token=' + self.Session.state.refreshToken;
+                        retryUrl = CONFIG.AUTH_HOST + 'refresh_token';
                         reqwest({
                             url: retryUrl,
+                            headers: {
+                                Authorization: 'Bearer ' + self.Session.state.refreshToken
+                            },
                             method: 'POST',
                             crossDomain: true,
                             type: 'json'
