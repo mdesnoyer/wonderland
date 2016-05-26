@@ -53,7 +53,7 @@ var PlayerList = React.createClass({
                 players = <tr><td>{T.get('copy.integration.bc.playerNotFound')}</td><td></td></tr>
             }
             return (
-                    <div className="box">
+                    <div className="box wonderland-box">
                         <h1 className="subtitle is-6">Select which Brightcove HTML5 players to enable:</h1>
                         <table className={"table is-bordered is-striped is-narrow has-text-centered"}>
                             <thead>

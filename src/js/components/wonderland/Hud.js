@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,18 +20,18 @@ var Hud = React.createClass({
         if (self.props.stats) {
             return (
                 <ul className="wonderland-hud">
-                    <li><Icon type="pie-chart" title="Serving Fraction" />&nbsp;{self.props.stats.servingFrac}</li>
-                    <li><Icon type="eye" title="Impressions" />&nbsp;{self.props.stats.impressions}</li>
-                    <li><Icon type="hand-pointer-o" title="Conversions" />&nbsp;{self.props.stats.conversions}</li>
-                    <li><Icon type="bullseye" title="CTR" />&nbsp;{self.props.stats.ctr}</li>
-                    {neonScore}
+                    <li className="wonderland-hud__item"><Icon type="pie-chart" title="Serving Fraction" />&nbsp;{self.props.stats.servingFrac}</li>
+                    <li className="wonderland-hud__item"><Icon type="eye" title="Impressions" />&nbsp;{self.props.stats.impressions}</li>
+                    <li className="wonderland-hud__item"><Icon type="hand-pointer-o" title="Conversions" />&nbsp;{self.props.stats.conversions}</li>
+                    <li className="wonderland-hud__item"><Icon type="bullseye" title="CTR" />&nbsp;{self.props.stats.ctr}</li>
+                    {/*neonScore*/}
                 </ul>
             );
         }
         else {
             return (
                 <ul className="wonderland-hud">
-                    <li>Loading&hellip;</li>
+                    <li>{T.get('copy.loading')}</li>
                 </ul>
             );
         }

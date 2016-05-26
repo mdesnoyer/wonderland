@@ -54,21 +54,25 @@ var SiteNavigation = React.createClass({
                                     <div className="wonderland-navbar__icon wonderland-navbar__icon--regular">
                                         <Icon type="cog" />
                                     </div>
-                                    <ul className="box wonderland-navbar__subnav">
-                                        <li>{items.accountSettingsPage}</li>
-                                        <li>{items.billingPage}</li>
-                                        <li>{items.integrationsPage}</li>
-                                        <li>{items.telemetryPage}</li>
-                                        <li>{items.apiPage}</li>
-                                        <li>{items.supportPagePlain}</li>
-                                    </ul>
+                                    <nav className="wonderland-navbar__subnav">
+                                        <ul className="box wonderland-box is-paddingless">
+                                            <li>{items.accountSettingsPage}</li>
+                                            <li>{items.billingPage}</li>
+                                            <li>{items.integrationsPage}</li>
+                                            <li>{items.telemetryPage}</li>
+                                            <li>{items.apiPage}</li>
+                                            <li>{items.supportPagePlain}</li>
+                                        </ul>
+                                    </nav>
                                 </span>,
             userSettings = <span>
                                 {items.avatar}
-                                <ul className="box wonderland-navbar__subnav">
-                                    <li>{items.userSettingsPage}</li>
-                                    <li>{items.signOut}</li>
-                                </ul>
+                                    <nav className="wonderland-navbar__subnav">
+                                        <ul className="box wonderland-box is-paddingless">
+                                            <li>{items.userSettingsPage}</li>
+                                            <li>{items.signOut}</li>
+                                        </ul>
+                                    </nav>
                             </span>,
             constructedNav = [],
             navClass = 'wonderland-navbar wonderland-navbar-' + self.props.pos + ' navbar-' + self.props.pos;

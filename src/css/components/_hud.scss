@@ -1,12 +1,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .wonderland-hud {
-    font-size: 0.9em;
     margin-top: 0.618em;
+    font-size: 0.9em;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: $silver-chalice;
+    color: $grey-dark;
+    .fa {
+        font-size: 1em; // hack
+    }
+}
+
+.wonderland-hud__item {
+    line-height: 1;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

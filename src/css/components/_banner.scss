@@ -143,6 +143,7 @@ $smallest-ratio: 0.191;
         bottom: 100%;
         content: '';
         transform: translateX(-50%);
+        z-index: 2222;
     }
     li {
         min-width: 10em;

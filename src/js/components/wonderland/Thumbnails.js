@@ -160,7 +160,7 @@ var Thumbnails = React.createClass({
                                 self.state.thumbnails.map(function(thumbnail, i) {
                                     return (
                                         <div
-                                            className="box"
+                                            className="box wonderland-box"
                                             key={thumbnail.thumbnail_id}
                                         >
                                             <div className="columns">

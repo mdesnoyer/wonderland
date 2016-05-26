@@ -7,7 +7,7 @@ import React from 'react';
 var BrightcoveSmartPlayerModal = React.createClass({
     render: function() {
         return (
-            <section className="box is-desktop">
+            <section className="box wonderland-box is-desktop">
                 <div className="content">
                     <h1 className="title is-4">Legacy Smart Player</h1>
                     <p>To configure a legacy Smart Player, you must add the Neon Telemetry Player URL to each player in your Brightcove account.</p>

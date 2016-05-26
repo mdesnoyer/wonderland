@@ -17,7 +17,7 @@ var BrightcoveChoiceModal = React.createClass({
     render: function() {
         var self = this;
         return (
-            <section className="box is-desktop">
+            <section className="box wonderland-box is-desktop">
                 <h1 className="title is-4">
                     Which type of Brightcove account do you have?
                 </h1>

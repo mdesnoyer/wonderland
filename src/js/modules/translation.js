@@ -33,6 +33,9 @@ const _DEFAULT_LOCALE = 'en-US',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
+            
+            'copy.loading': 'Loading' + String.fromCharCode(8230),
+            'copy.currentThumbnail': 'Current Thumbnail',
 
             'action.previous': 'Previous',
             'action.next': 'Next',

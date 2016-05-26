@@ -57,9 +57,9 @@ var Video = React.createClass({
         customs.sort(function(a, b) {
             return a.rank - b.rank;
         });
-        // Pass 3 - sort `neon` by neon_score DESC
+        // Pass 3 - sort `neon` by rank ASC
         neons.sort(function(a, b) {
-            return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
+            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
         });
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
