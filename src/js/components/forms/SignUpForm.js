@@ -82,7 +82,7 @@ var SignUpForm = React.createClass({
                             required
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('passwordInitial')}
+                            placeholder={T.get('copy.passwordInitial')}
                             onChange={self.handlePasswordInitialChange}
                         />
                         <input className="input is-medium"
@@ -91,7 +91,7 @@ var SignUpForm = React.createClass({
                             required
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('passwordConfirm')}
+                            placeholder={T.get('copy.passwordConfirm')}
                             onChange={self.handlePasswordConfirmChange}
                         />
                     </p>
