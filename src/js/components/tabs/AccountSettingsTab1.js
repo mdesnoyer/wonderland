@@ -106,7 +106,7 @@ var AccountSettingsTab1 = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : false
         ;
         return (
             <form onSubmit={self.handleSubmit}>

@@ -40,8 +40,8 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : '',
+            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false,
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : false,
             buttonClassName,
             inputClassName
         ;

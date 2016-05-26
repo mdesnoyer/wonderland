@@ -77,8 +77,8 @@ var AnalyzeVideoForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
+            messageNeededComponent = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false,
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : false,
             buttonClassName,
             inputClassName,
             formHiddenClass,

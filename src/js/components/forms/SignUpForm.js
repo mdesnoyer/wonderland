@@ -54,9 +54,9 @@ var SignUpForm = React.createClass({
     render: function() {
         var self = this,
             buttonClassName,
-            messageNeededComponent = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
+            messageNeededComponent = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : false,
             copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : false
          ;
         if (!self.state.isAgreementChecked) {
              buttonClassName = 'button is-medium is-primary is-disabled';
