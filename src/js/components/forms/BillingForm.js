@@ -166,9 +166,9 @@ var BillingForm = React.createClass({
     render: function() {
         var self = this,
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.billing.heading')}</legend> : false,
-            buttonClassName,
-            inputClassName,
-            selectClassName,
+            buttonClassName = '',
+            inputClassName = '',
+            selectClassName = '',
             messageNeededComponent = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> :
                             self.state.isSuccess !== false ? <Message header={T.get('copy.billing.title') + ' ' + T.get('success')} body={self.state.isSuccess} flavour="success" /> : false
         ;
