@@ -77,7 +77,7 @@ var AnalyzeVideoForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
+            messageNeededComponent = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
             buttonClassName,
             inputClassName,
@@ -113,7 +113,7 @@ var AnalyzeVideoForm = React.createClass({
             }
             return (
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeeded}
+                    {messageNeededComponent}
                     <div className={promptHiddenClass}>
                         <IntegrationNotification toggeleOpen={self.toggeleOpen} />
                     </div>

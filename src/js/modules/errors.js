@@ -36,7 +36,7 @@ let E = {
                 self.checkForError(err.message);
                 break;
             default:
-                self.checkForError(errorMessage);
+                self.checkForError(err);
                 break;
         }
     },

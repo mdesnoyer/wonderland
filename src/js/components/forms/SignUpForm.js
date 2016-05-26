@@ -54,7 +54,7 @@ var SignUpForm = React.createClass({
     render: function() {
         var self = this,
             buttonClassName,
-            messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
+            messageNeededComponent = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
             copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
             legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
          ;
@@ -69,7 +69,7 @@ var SignUpForm = React.createClass({
         }
         return (
             <form onSubmit={self.handleSubmit}>
-                {messageNeeded}
+                {messageNeededComponent}
                 <fieldset>
                     {legendElement}
                     <p className="control">

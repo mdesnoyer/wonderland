@@ -58,13 +58,13 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
     render: function() {
         var self = this,
             additionalClass = 'table is-striped' + (self.props.isLoading ? ' is-loading' : ''),
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
         ;
         return (
         <div>
             <table className={additionalClass}>
                 <caption>
-                    {messageNeeded}
+                    {messageNeededComponent}
                 </caption>
                 <tbody>
                     {
