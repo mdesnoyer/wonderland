@@ -60,6 +60,7 @@ var SignInForm = React.createClass({
                     {legendElement}                    
                     <p className="control">
                         <input className={inputClassName}
+                            name="email"
                             type="text"
                             required
                             ref="email"
@@ -71,6 +72,7 @@ var SignInForm = React.createClass({
                     </p>
                     <p className="control">
                         <input className={inputClassName}
+                            name="password"
                             type="password"
                             required
                             ref="password"
