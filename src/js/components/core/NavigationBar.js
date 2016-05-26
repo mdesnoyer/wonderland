@@ -68,7 +68,7 @@ var NavigationBar = React.createClass({
                                 title={T.get('action.previous')}
                             >
                                 <Icon type="chevron-circle-left" />
-                                &nbsp;{T.get('action.previous')}
+                                {T.get('action.previous')}
                             </button>
                         </div>
                     </div>
@@ -85,7 +85,7 @@ var NavigationBar = React.createClass({
                                 onClick={self.handleNextButton}
                                 title={T.get('action.next')}
                             >
-                                {T.get('action.next')}&nbsp;
+                                {T.get('action.next')}
                                 <Icon type="chevron-circle-right" />
                             </button>
                         </div>

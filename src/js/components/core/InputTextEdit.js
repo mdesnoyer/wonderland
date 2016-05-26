@@ -75,7 +75,10 @@ var InputTextEdit = React.createClass({
                     value={self.state.value}
                     onKeyDown={self.handleKeyDown}
                 />
-                <Icon type={iconType} />
+                <Icon
+                    type={iconType}
+                    nowrap={true}
+                />
             </div>
         );
     },

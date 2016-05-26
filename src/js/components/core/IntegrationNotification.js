@@ -2,7 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
-
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,7 +21,7 @@ var IntegrationNotification = React.createClass({
                 <div className="level-right column is-3">
                     <div className="level-item has-text-centered">
                         <a className="wonderland-toggle button is-medium" onClick={self.toggleOpen}>
-                            <i className="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                            <Icon type="chevron-circle-down" />
                         </a>
                     </div>
                 </div>

@@ -93,7 +93,6 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
                         <th colSpan="3">
                             <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>
                                 <Icon type="plus-circle" />
-                                &nbsp;
                                 {T.get('add')}
                             </a>
                         </th>
