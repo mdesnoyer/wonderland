@@ -54,7 +54,7 @@ var SiteNavigation = React.createClass({
                                     <div className="wonderland-level__icon wonderland-level__icon--regular">
                                         <Icon type="cog" />
                                     </div>
-                                    <nav className="wonderland-navbar__subnav">
+                                    <nav className="wonderland-level__subnav">
                                         <ul className="box wonderland-box is-paddingless">
                                             <li>{items.accountSettingsPage}</li>
                                             <li>{items.billingPage}</li>
@@ -67,7 +67,7 @@ var SiteNavigation = React.createClass({
                                 </span>,
             userSettings = <span>
                                 {items.avatar}
-                                    <nav className="wonderland-navbar__subnav">
+                                    <nav className="wonderland-level__subnav">
                                         <ul className="box wonderland-box is-paddingless">
                                             <li>{items.userSettingsPage}</li>
                                             <li>{items.signOut}</li>
