@@ -14,6 +14,8 @@ var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
 var gulpif = require('gulp-if');
 var clean = require('gulp-clean');
+var concatCss = require('gulp-concat-css');
+var merge = require('merge-stream');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -40,37 +42,38 @@ function handleErrors() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function buildStyle(isUglified) {
-    gulp.src('./src/css/**/*')
+    gutil.log('buildStyle');
+    var bulmaStream = gulp.src('./node_modules/bulma/css/bulma.min.css');
+    var fontAwesomeStream = gulp.src('./node_modules/font-awesome/css/font-awesome.min.css');
+    var sassStream = gulp.src('./src/css/**/*')
         .pipe(sass()) // Using gulp-sass
-        .pipe(gulpif(isUglified, uglifycss()))
+    ;
+    var mergedStream = merge(bulmaStream, fontAwesomeStream, sassStream)
+        .pipe(concatCss('wonderland.css', {
+            rebaseUrls: false
+        }))
+        .pipe(gulpif(isUglified, uglifycss({
+            uglyComments: true
+        })))
         .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
             stream: true
         }))
     ;
-    gulp.src('./node_modules/bulma/css/bulma.min.css')
-        .pipe(gulp.dest('./build/css'))
-        .pipe(reload({
-            stream: true
-        }))
-    ;
-    gulp.src('./node_modules/font-awesome/css/font-awesome.min.css')
-        .pipe(gulp.dest('./build/css'))
-        .pipe(reload({
-            stream: true
-        }))
-    ;
+    return mergedStream;   
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesDebug', function() {
+    gutil.log('stylesDebug');
     buildStyle(false);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesLive', function() {
+    gutil.log('stylesLive');
     buildStyle(true);
 });
 
