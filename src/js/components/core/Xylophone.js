@@ -28,7 +28,7 @@ var Xylophone = React.createClass({
                         ;
                         var rating;
                         // 0 - 59 : red
-                        // 60 - 84 : yellow
+                        // 60 - 84 : orange
                         // 85 - 99 : green
                         if (neonScoreData.neonScore < 60) {
                             rating = 'bad';
