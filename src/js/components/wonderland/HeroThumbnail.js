@@ -32,7 +32,10 @@ var HeroThumbnail = React.createClass({
         else {
             return (
                 <span className="wonderland-hero-thumbnail-dummy has-text-centered">
-                    <Icon type="picture-o" />
+                    <Icon
+                        type="picture-o"
+                        nowrap={true}
+                    />
                 </span>
             );
         }

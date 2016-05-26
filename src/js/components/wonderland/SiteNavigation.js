@@ -52,7 +52,10 @@ var SiteNavigation = React.createClass({
             },
             accountSettings = <span>
                                     <div className="wonderland-level__icon wonderland-level__icon--regular">
-                                        <Icon type="cog" />
+                                        <Icon
+                                            type="cog"
+                                            nowrap={true}
+                                        />
                                     </div>
                                     <nav className="wonderland-level__subnav">
                                         <ul className="box wonderland-box is-paddingless">
