@@ -40,7 +40,6 @@ var IntegrationsNewPage = React.createClass({
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>
                                             <Icon type="plus-circle" />
-                                            &nbsp;
                                             {T.get('add')}</a>
                                     </div>
                                 </div>

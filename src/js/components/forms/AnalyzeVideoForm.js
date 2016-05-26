@@ -159,7 +159,6 @@ var AnalyzeVideoForm = React.createClass({
                         <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
                                 <Icon type="cloud-upload" />
-                                &nbsp;
                                 {T.get('analyze')}
                             </button>
                         </p>

@@ -9,6 +9,7 @@ import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,7 +93,10 @@ var SignInForm = React.createClass({
                         </label>
                     </p>
                     <p className="has-text-centered">
-                        <button className={buttonClassName} type="submit">{T.get('signIn')}</button>
+                        <button className={buttonClassName} type="submit">
+                            <Icon type="sign-in" />
+                            {T.get('signIn')}
+                        </button>
                     </p>
                 </fieldset>
             </form>

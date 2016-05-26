@@ -31,7 +31,6 @@ var SaveButton = React.createClass({
                 type="submit"
             >
                 <Icon type="floppy-o" />
-                &nbsp;
                 {T.get('action.save')}
             </button>
         );
