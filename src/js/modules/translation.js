@@ -236,7 +236,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',
 
             'error.unknown': 'An unknown error has occurred.',
-            'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',
+            'error.passwordFormatInvalid': 'Passwords must be at least eight characters.',
             'error.passwordMatchInvalid': 'Password does not match the confirm password.',
             'error.unableToSignIn': 'Unable to Sign In',
             //copy + marketing
