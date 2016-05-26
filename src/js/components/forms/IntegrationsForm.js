@@ -69,7 +69,7 @@ var IntegrationsForm = React.createClass({
         switch (self.state.provider) {
         case 'brightcove':
             return (
-                <div className="box">
+                <div className="box wonderland-box">
                     <form onSubmit={self.handleSubmit}>
                         {messageNeeded}
                         <fieldset>

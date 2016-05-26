@@ -52,6 +52,7 @@ $grey-lighter: $colour-gallery;
 $primary: $blue;
 $red: $orange;
 $background: $colour-alabaster;
+$black: $blackish;
 
 @import '../../node_modules/bulma/sass/utilities/utilities';
 @import "../../node_modules/bulma/sass/utilities/variables";
@@ -100,6 +101,7 @@ $background: $colour-alabaster;
     'components/toggle',
     'components/icon',
     'components/level',
+    'components/box',
     'components/inputtextedit',
     'components/wondertabs',
     'components/image',
