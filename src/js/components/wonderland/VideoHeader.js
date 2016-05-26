@@ -29,7 +29,7 @@ var VideoHeader = React.createClass({
             toggleButtonContent = self.props.forceOpen ? <Icon type="chevron-circle-up" /> : <Icon type="chevron-circle-down" />,
             toggleButton = <a className="wonderland-toggle button is-medium">{toggleButtonContent}</a>,
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : ''
+            xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : false
         ;
         return (
             <nav className="wonderland-video__header level is-marginless columns" onClick={self.props.handleVideoOpenToggle}>

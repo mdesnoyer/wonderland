@@ -56,7 +56,7 @@ var IntegrationsForm = React.createClass({
         var self = this,
             buttonClassName,
             inputClassName,
-            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
+            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false;
         ;
         if (self.state.formMode === 'loading') {
             buttonClassName = 'button is-primary is-disabled is-loading';
