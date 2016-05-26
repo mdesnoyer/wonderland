@@ -73,7 +73,8 @@ var AnalyzeVideoForm = React.createClass({
                         })
                         break;
                 }
-            });
+            })
+        ;
     },
     render: function() {
         var self = this,
