@@ -10,6 +10,7 @@ import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
 import Icon from '../core/Icon';
+import {Link} from 'react-router';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -82,18 +83,23 @@ var SignInForm = React.createClass({
                             placeholder={T.get('copy.passwordInitial')}
                         />
                     </p>
-                    <p className="control">
-                        <label className="checkbox" htmlFor="isRememberMe">
-                            <input type="checkbox"
-                                className="wonderland-checkbox--checkbox"
-                                ref="isRememberMe"
-                                id="isRememberMe"
-                                defaultValue={SESSION.rememberMe()}
-                                defaultChecked={SESSION.rememberMe()}
-                            />
-                            {T.get('rememberMe')}
-                        </label>
-                    </p>
+                    <div className="columns">
+                        <div className="column is-6">
+                            <label className="checkbox" htmlFor="isRememberMe">
+                                <input type="checkbox"
+                                    className="wonderland-checkbox--checkbox"
+                                    ref="isRememberMe"
+                                    id="isRememberMe"
+                                    defaultValue={SESSION.rememberMe()}
+                                    defaultChecked={SESSION.rememberMe()}
+                                />
+                                {T.get('rememberMe')}
+                            </label>
+                        </div>
+                        <div className="column is-6 ">
+                            <Link className="is-pulled-right" activeClassName="wonderland-active" to={UTILS.DRY_NAV.USER_FORGOT.URL}>{T.get('nav.forgotUser')}</Link>
+                        </div>
+                    </div>
                     <p className="has-text-centered">
                         <button className={buttonClassName} type="submit">
                             <Icon type="sign-in" />
