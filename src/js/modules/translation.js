@@ -95,7 +95,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.userReset.heading': 'Reset Password',
             'copy.userReset.body': 'Enter your new password.',
 
-            'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign in</a>.',
+            'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign In</a>.',
             'copy.userReset.error': 'Something went wrong. <a href="@link">Try again</a>?',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
