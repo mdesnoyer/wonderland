@@ -24,7 +24,7 @@ var IntegrationsNewPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.plugins.new.title')}
+                    title={UTILS.buildPageTitle(T.get('copy.plugins.new.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">

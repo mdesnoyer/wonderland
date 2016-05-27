@@ -4,6 +4,7 @@ import React from 'react';
 import T from '../../modules/translation';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -81,11 +82,19 @@ var Carousel = React.createClass({
                 </ol>
                 <nav className="box wonderland-box wonderland-carousel__control-box">
                     <ul className="wonderland-carousel__controls">
-                        <li title={T.get('action.previous')} onClick={self.handleClickPrevious} className="wonderland-carousel__control wonderland-carousel__control--previous">
+                        <li
+                            onClick={self.handleClickPrevious}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--previous', 'top')}
+                            aria-label={T.get('action.previous')}
+                        >
                             <Icon type="chevron-circle-left" />
                         </li>
                         <li>Item {self.state.selectedItem + 1} of {self.state.total}</li>
-                        <li title={T.get('action.next')} onClick={self.handleClickNext} className="wonderland-carousel__control wonderland-carousel__control--next">
+                        <li
+                            onClick={self.handleClickNext}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--next', 'top')}
+                            aria-label={T.get('action.next')}
+                        >
                             <Icon type="chevron-circle-right" />
                         </li>
                     </ul>

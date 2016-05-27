@@ -26,9 +26,10 @@ var SiteNavigation = React.createClass({
     },
     render: function() {
         var self = this,
+            signedInAs = T.get('copy.signedInAs', {'@user': self.props.displayName}),
             itemClass = '',
             items = {
-                logo: <a className="wonderland-level__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
+                logo: <a className="wonderland-level__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt={T.get('app.companyShortName')} title={T.get('app.companyShortName')} /></a>,
                 contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
                 contactPageFancy: <a className="wonderland-level__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
                 termsPagePlain: <a href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>,
@@ -39,15 +40,15 @@ var SiteNavigation = React.createClass({
                 signIn: <Link className="wonderland-level__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
                 signOut: <Link to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
                 username: <em className="wonderland-level__text">{self.props.displayName}</em>,
-                billingPage: <Link to={UTILS.DRY_NAV.BILLING.URL} title={T.get('nav.billing')}>{T.get('nav.billing')}</Link>,
-                telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
-                apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
-                supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
-                supportPageFancy: <Link className="wonderland-level__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
-                accountSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
-                userSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_USER.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
-                integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
-                avatar: <img className="wonderland-level__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
+                billingPage: <Link to={UTILS.DRY_NAV.BILLING.URL}>{T.get('nav.billing')}</Link>,
+                telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL}>{T.get('nav.telemetry')}</Link>,
+                apiPage: <Link to={UTILS.DRY_NAV.API.URL}>{T.get('nav.api')}</Link>,
+                supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL}>{T.get('nav.support')}</Link>,
+                supportPageFancy: <Link className="wonderland-level__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL}>{T.get('nav.support')}</Link>,
+                accountSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL}>{T.get('nav.accountSettings')}</Link>,
+                userSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_USER.URL}>{T.get('nav.userSettings')}</Link>,
+                integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL}>{T.get('nav.plugins')}</Link>,
+                avatar: <img className="wonderland-level__avatar" src={self.props.avatar} alt={signedInAs} title={signedInAs} />
             },
             accountSettings = <span>
                                     <div className="wonderland-level__icon wonderland-level__icon--regular">
@@ -77,7 +78,7 @@ var SiteNavigation = React.createClass({
                                     </nav>
                             </span>,
             constructedNav = [],
-            navClass = 'wonderland-level wonderland-level-' + self.props.pos + ' level-' + self.props.pos;
+            navClass = 'wonderland-level wonderland-level-' + self.props.pos + ' level-' + self.props.pos
         ;
         if (self.state.isSignedIn) {
             // Signed In
@@ -134,5 +135,3 @@ var SiteNavigation = React.createClass({
 export default SiteNavigation;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-

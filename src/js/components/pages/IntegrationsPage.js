@@ -20,7 +20,9 @@ var IntegrationsPage = React.createClass({
     render: function() {
         return (
             <div>
-                <Helmet title={UTILS.buildPageTitle(T.get('copy.plugins.title'))}/>
+                <Helmet
+                    title={UTILS.buildPageTitle(T.get('copy.plugins.title'))}
+                />
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">

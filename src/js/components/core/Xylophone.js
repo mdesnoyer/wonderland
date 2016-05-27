@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -39,7 +40,6 @@ var Xylophone = React.createClass({
                         else {
                             rating = 'good';
                         }
-                        var className = 'wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled');
                         return (
                             <div
                                 className="wonderland-xylophone__slot"
@@ -47,8 +47,10 @@ var Xylophone = React.createClass({
                             >
                                 <div
                                     style={inlineStyle}
-                                    className={className}
-                                    title={'Neonscore of ' + neonScoreData.neonScore}
+                                    className={UTILS.buildTooltipClass('wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled'), 'left')}
+                                    aria-label={T.get('copy.neonScoreEquals', {
+                                        '@neonscore': neonScoreData.neonScore
+                                    })}
                                 >
                                 </div>
                             </div>
