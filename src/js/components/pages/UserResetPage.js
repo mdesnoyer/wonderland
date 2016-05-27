@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import ForgotPasswordForm from '../forms/ForgotPasswordForm';
+import UserResetForm from '../forms/UserResetForm';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
@@ -11,23 +11,29 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var UserForgotPasswordPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+var UserResetPage = React.createClass({
+    // mixins: [ReactDebugMixin],
     render: function() {
+        var self = this;
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.forgotPassword.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.userReset.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.forgotPassword.heading')}</h1>
+                            <h1 className="title is-2">{T.get('copy.userReset.heading')}</h1>
                             <div className="content">
-                                <p>{T.get('copy.forgotPassword.body')}</p>
+                                <p>
+                                    {T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}
+                                </p>
                             </div>
-                            <ForgotPasswordForm />
+                            <UserResetForm
+                                showLegend={false}
+                                {...self.props}
+                            />
                         </div>
                     </div>
                 </section>
@@ -39,6 +45,6 @@ var UserForgotPasswordPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UserForgotPasswordPage;
+export default UserResetPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

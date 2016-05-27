@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import ForgotPasswordForm from '../forms/ForgotPasswordForm';
+import UserForgotForm from '../forms/UserForgotForm';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
@@ -11,25 +11,25 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var UserResetPasswordPage = React.createClass({
-    // mixins: [ReactDebugMixin],
+var UserForgotPage = React.createClass({
+	// mixins: [ReactDebugMixin],
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.resetPassword.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.userForgot.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.resetPassword.heading')}</h1>
+                            <h1 className="title is-2">{T.get('copy.userForgot.heading')}</h1>
                             <div className="content">
-                                <p>{T.get('copy.resetPassword.body')}</p>
+                                <p>{T.get('copy.userForgot.body')}</p>
                             </div>
-                            TODO - FORM GOES HERE<br />
-                            USERNAME<br />
-                            NEW PASSWORD<br />
+                            <UserForgotForm
+                                showLegend={false}
+                            />
                         </div>
                     </div>
                 </section>
@@ -41,6 +41,6 @@ var UserResetPasswordPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UserResetPasswordPage;
+export default UserForgotPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

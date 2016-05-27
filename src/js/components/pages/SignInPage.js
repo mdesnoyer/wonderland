@@ -2,7 +2,6 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import {Link} from 'react-router';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -41,7 +40,6 @@ var SignInPage = React.createClass({
                                 {/*<p>{T.get('copy.signIn.body')}</p>*/}
                             </div>
                             <SignInForm showLegend={false} />
-                            {/*<Link activeClassName="wonderland-active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
                         </div>
                     </div>
                 </section>

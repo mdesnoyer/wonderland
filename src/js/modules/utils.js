@@ -196,6 +196,9 @@ var UTILS = {
         USER_FORGOT: {
             URL: '/user/forgot/'
         },
+        USER_RESET: {
+            URL: '/user/reset/'
+        },
         API: {
             URL: '/support/#api'
         },
@@ -212,7 +215,7 @@ var UTILS = {
             URL: '/video/analyze/'
         }
     },
-    VERSION: '1.9',
+    VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',

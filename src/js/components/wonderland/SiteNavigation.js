@@ -36,7 +36,6 @@ var SiteNavigation = React.createClass({
                 analyzeVideo: <Link className="wonderland-level__text" activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
                 videos: <Link className="wonderland-level__text" activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
                 signUp: <Link className="wonderland-level__button button is-danger" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
-                forgotPassword: <Link className="wonderland-level__text" activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
                 signIn: <Link className="wonderland-level__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
                 signOut: <Link to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
                 username: <em className="wonderland-level__text">{self.props.displayName}</em>,
@@ -97,7 +96,6 @@ var SiteNavigation = React.createClass({
             // Signed Out
             if (self.props.pos === 'left') {
                 constructedNav.push(items.logo);
-                // constructedNav.push(items.forgotPassword);
             }
             if (self.props.pos === 'right') {
                 constructedNav.push(items.contactPageFancy);
