@@ -19,7 +19,7 @@ var ImageUpload = React.createClass({
         }
     },
     render: function() {
-        var self = this; 
+        var self = this;
         return (
             <div>
                 <div className="box Drop-Container">
@@ -28,13 +28,15 @@ var ImageUpload = React.createClass({
                         <form className="control" onSubmit={self.handleSubmit}>
                             <input className="input is-large" placeholder="URL" onChange={self.handleUrlChange} />
                             <div className="columns">
-                                <DragDropComponent />
+                                <div className="column is-6 is-offset-3">
+                                    <DragDropComponent />
+                                </div>
                             </div>
                         <div className="columns">
-                            <button className="Drop-Button button is-large column is-4 is-offset-2" type="submit" >
-                                <span className="icon"><i className="fa fa-angle-left"></i></span>
+                            <button className="Drop-Button button is-large column is-5 is-offset-1" type="submit" >
+                                <span className="icon is-medium"><i className="fa fa-angle-left"></i></span>
                             </button>
-                            <button className="Drop-Button button is-large column is-4" type="submit" >Analyze</button>
+                            <button className="Drop-Button button is-large column is-5" type="submit" >Analyze</button>
                         </div>
                     </form>
                 </div>
@@ -45,7 +47,7 @@ var ImageUpload = React.createClass({
         var self = this;
         self.setState({
             url: e.target.value
-        }) 
+        })
     },
     handleSubmit: function() {
       var self = this;
