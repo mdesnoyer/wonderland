@@ -65,19 +65,22 @@ var Thumbnail = React.createClass({
     render: function() {
         var self = this,
             neonScoreClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__neonscore' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
-            defaultStampClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__default-stamp' + (self.state.isEnabled ? ' is-danger' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isLoading ? 'disabled' : '',
             src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
             dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
+            boxClass = 'box wonderland-box' + (self.props.type === 'default' ? ' -alt' : ''),
+            rubricClass = 'wonderland-thumbnail__rubric' + (self.props.type === 'default' ? '' : ' is-hidden'),
             figureClass = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled') + ' -' + self.props.type,
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
-            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={neonScoreClass} title={T.get('neonScore')}>{self.props.cookedNeonScore}</span> : false,
-            defaultStamp = (self.props.type === 'default') ? <span className={defaultStampClass} title={'Default'}><Icon type="image" /></span> : false,
+            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={neonScoreClass} title={T.get('neonScore')}><Icon type="neon" />{self.props.cookedNeonScore}</span> : false,
             handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
-            <div className="box">
+            <div className={boxClass}>
+                <small className={rubricClass}>
+                    {T.get('copy.currentThumbnail')}
+                </small>
                 <figure
                     className={figureClass}
                     data-raw-neonscore={self.props.rawNeonScore}
@@ -96,8 +99,7 @@ var Thumbnail = React.createClass({
                         onClick={self.handleToggleModal}
                     />
                     <figcaption className="wonderland-thumbnail__caption">
-                        {/*neonScore*/}
-                        {defaultStamp}
+                        {neonScore}
                         <input
                             className="wonderland-thumbnail__enabled"
                             onChange={handleEnabledChangeHook}

@@ -110,7 +110,7 @@ var UserSettingsTab2 = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = E.getErrorsCount() ? <Message header={'User Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = E.getErrorsCount() ? <Message header={'User Settings'} body={E.getErrors()} flavour="danger" /> : false
         ;
         return (
             <form onSubmit={self.handleSubmit}>

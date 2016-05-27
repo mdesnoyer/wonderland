@@ -54,9 +54,8 @@ var ConfirmAccountPage = React.createClass({
         });
     },
     render: function() {
-        debugger
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : '',
+            messageNeededComponent = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : false,
             body1 = T.get('copy.confirmAccount.body.1'),
             body2 = T.get('copy.confirmAccount.body.2', {
                 '@link': UTILS.CONTACT_EXTERNAL_URL
@@ -71,7 +70,7 @@ var ConfirmAccountPage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            {messageNeeded}
+                            {messageNeededComponent}
                             <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
                             <div className="content">
                                 <p>{body1}</p>

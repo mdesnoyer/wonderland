@@ -73,12 +73,13 @@ var AnalyzeVideoForm = React.createClass({
                         })
                         break;
                 }
-            });
+            })
+        ;
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : '',
+            messageNeededComponent = self.state.mode === 'error' ? <Message header={T.get('copy.analyzeVideo.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false,
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.analyzeVideo.heading')}</legend> : false,
             buttonClassName,
             inputClassName,
             formHiddenClass,
@@ -113,7 +114,7 @@ var AnalyzeVideoForm = React.createClass({
             }
             return (
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeeded}
+                    {messageNeededComponent}
                     <div className={promptHiddenClass}>
                         <IntegrationNotification toggeleOpen={self.toggeleOpen} />
                     </div>
@@ -159,7 +160,6 @@ var AnalyzeVideoForm = React.createClass({
                         <p className="has-text-centered">
                             <button className={buttonClassName} type="submit">
                                 <Icon type="cloud-upload" />
-                                &nbsp;
                                 {T.get('analyze')}
                             </button>
                         </p>

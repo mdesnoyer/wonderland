@@ -212,7 +212,7 @@ var UTILS = {
             URL: '/video/analyze/'
         }
     },
-    VERSION: '1.8',
+    VERSION: '1.9',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
@@ -303,10 +303,8 @@ var UTILS = {
         return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
-        // (?=.*\d) ==== at least one digit
-        // (?=.*\W) === at least one special symbol
-        // {8} === length is at least 8
-        var re = /(?=.*\d)(?=.*\W).{8}/
+        // .{,8} === length is at least 8
+        var re = /.{8,}/
         return re.test(password);
     },
     isPasswordConfirm: function(state) {

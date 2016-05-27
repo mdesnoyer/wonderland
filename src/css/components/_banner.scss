@@ -34,13 +34,13 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar {
+.wonderland-level {
     height: $maximum-nav-height;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__item {
+.wonderland-level__item {
     margin-right: 2em !important;
     height: $maximum-nav-height;
     display: flex;
@@ -49,13 +49,13 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__logo {
+.wonderland-level__logo {
     margin: ($maximum-nav-height * $smallest-ratio) 0;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__logo {
+.wonderland-level__logo {
     display: block;
     img {
         width: auto;
@@ -65,7 +65,7 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__avatar {
+.wonderland-level__avatar {
     margin: ($maximum-nav-height * $smallest-ratio) 0;
     border-radius: 50%;
     width: $maximum-nav-height * $smaller-ratio;
@@ -74,7 +74,7 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__icon {
+.wonderland-level__icon {
     margin: ($maximum-nav-height * $smallest-ratio) 0;
     transition: color 0.3333s;
     border-radius: 50%;
@@ -88,7 +88,7 @@ $smallest-ratio: 0.191;
     }
 }
 
-.wonderland-navbar__icon--regular {
+.wonderland-level__icon--regular {
     color: $grey-lighter;
     transition: all 0.3333s;
     &:focus,
@@ -98,13 +98,13 @@ $smallest-ratio: 0.191;
     }
 }
 
-.wonderland-navbar__icon--alternate {
+.wonderland-level__icon--alternate {
     background-color: $grey-light;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__text {
+.wonderland-level__text {
     height: $maximum-nav-height;    
     display: block;
     line-height: $maximum-nav-height;
@@ -127,7 +127,7 @@ $smallest-ratio: 0.191;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.wonderland-navbar__subnav {
+.wonderland-level__subnav {
     display: none;
     position: absolute;
     z-index: 1111;
@@ -143,6 +143,7 @@ $smallest-ratio: 0.191;
         bottom: 100%;
         content: '';
         transform: translateX(-50%);
+        z-index: 2222;
     }
     li {
         min-width: 10em;
@@ -165,8 +166,8 @@ $smallest-ratio: 0.191;
     }
 }
 
-.wonderland-navbar__item:hover {
-    .wonderland-navbar__subnav {
+.wonderland-level__item:hover {
+    .wonderland-level__subnav {
         display: block;
     }
 }

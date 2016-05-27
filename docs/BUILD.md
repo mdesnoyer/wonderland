@@ -14,7 +14,8 @@
 -- Environment configs are stored in `./env/`
 -- File name format is `config.json.<env name>`
 -- `--env=<env name>` can then be used to run the new environment config
--- `config.json` is the current running environment (NOTE: config.json is not in source control and is built to `./env/`
+-- `config.json` is the current running environment
+-- NOTE: config.json is not in source control and is built to `./env/`
 
 ## Hosting
 

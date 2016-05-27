@@ -106,12 +106,12 @@ var AccountSettingsTab1 = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : false
         ;
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    {messageNeeded}
+                    {messageNeededComponent}
                     <label className="label">{T.get('label.defaultSizeWidthXHeight')}</label>
                     <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                         <input

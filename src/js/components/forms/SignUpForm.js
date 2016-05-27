@@ -54,9 +54,9 @@ var SignUpForm = React.createClass({
     render: function() {
         var self = this,
             buttonClassName,
-            messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
+            messageNeededComponent = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : false,
             copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : false
          ;
         if (!self.state.isAgreementChecked) {
              buttonClassName = 'button is-medium is-primary is-disabled';
@@ -69,7 +69,7 @@ var SignUpForm = React.createClass({
         }
         return (
             <form onSubmit={self.handleSubmit}>
-                {messageNeeded}
+                {messageNeededComponent}
                 <fieldset>
                     {legendElement}
                     <p className="control">
@@ -82,7 +82,7 @@ var SignUpForm = React.createClass({
                             required
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('password')}
+                            placeholder={T.get('copy.passwordInitial')}
                             onChange={self.handlePasswordInitialChange}
                         />
                         <input className="input is-medium"
@@ -91,7 +91,7 @@ var SignUpForm = React.createClass({
                             required
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('confirm')}
+                            placeholder={T.get('copy.passwordConfirm')}
                             onChange={self.handlePasswordConfirmChange}
                         />
                     </p>

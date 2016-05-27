@@ -9,6 +9,7 @@ import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,8 +41,8 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '',
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : '',
+            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false,
+            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : false,
             buttonClassName,
             inputClassName
         ;
@@ -55,11 +56,12 @@ var SignInForm = React.createClass({
             }
         return (
             <form onSubmit={self.handleSubmit}>
-                {messageNeeded}
+                {messageNeededComponent}
                 <fieldset>  
                     {legendElement}                    
                     <p className="control">
                         <input className={inputClassName}
+                            name="email"
                             type="text"
                             required
                             ref="email"
@@ -71,12 +73,13 @@ var SignInForm = React.createClass({
                     </p>
                     <p className="control">
                         <input className={inputClassName}
+                            name="password"
                             type="password"
                             required
                             ref="password"
                             minLength="8"
                             maxLength="64"
-                            placeholder={T.get('password')}
+                            placeholder={T.get('copy.passwordInitial')}
                         />
                     </p>
                     <p className="control">
@@ -92,7 +95,10 @@ var SignInForm = React.createClass({
                         </label>
                     </p>
                     <p className="has-text-centered">
-                        <button className={buttonClassName} type="submit">{T.get('signIn')}</button>
+                        <button className={buttonClassName} type="submit">
+                            <Icon type="sign-in" />
+                            {T.get('signIn')}
+                        </button>
                     </p>
                 </fieldset>
             </form>

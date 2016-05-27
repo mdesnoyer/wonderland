@@ -1,5 +1,7 @@
 # Style Guide
 
+This document is very much work in progress, please help and if in doubt, lets talk about it.
+
 ## Language
 
 - `Sign Up`, `Sign In`, `Sign Out` to be used in code to standardise how we talk about this process
@@ -22,6 +24,8 @@
 If in doubt, defer to the code. If still in doubt, ask.
 
 ## Sass / CSS
+
+[CSS Guidelines](http://cssguidelin.es/) is a good place to start.
 
 - 1 line per selector
 

@@ -47,18 +47,19 @@ var Videos = React.createClass({
     },
     render: function() {
         var self = this,
-            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : '',
+            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : false,
             panels = {
                 'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
                 'upload': T.get('copy.analyzeVideoPanel.panel.2'),
                 'th-large': T.get('copy.analyzeVideoPanel.panel.3')
             },
-            tutorialComponent = self.state.videoCountServed === 0 ? <section className="wonderland-section section"><TutorialPanels panels={panels}/></section> : '',
+            tutorialComponent = self.state.videoCountServed === 0 ? <section className="wonderland-section section"><TutorialPanels panels={panels}/></section> : false,
             prevPageAPICall = '',
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
         if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
+            tutorialComponent = false;
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
         }

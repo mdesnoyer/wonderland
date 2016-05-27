@@ -34,15 +34,9 @@ var SiteBanner = React.createClass({
                     if (userData) {
                         // https://en.gravatar.com/site/implement/images/
                         avatar = gravatar.url(userData.username, {s: '60', d: 'identicon'});
-                        if (userData.first_name) {
-                            displayName = userData.first_name;
-                        }
-                        else {
-                            displayName = userData.username
-                        }
                         if (self._isMounted) {
                             self.setState({
-                                displayName: displayName,
+                                displayName: userData.displayName,
                                 avatar: avatar
                             });
                         }
@@ -62,7 +56,7 @@ var SiteBanner = React.createClass({
         return (
             <header className="wonderland-banner wonderland-banner--header">
                 <div className="container">
-                    <nav className="navbar wonderland-navbar is-fullwidth">
+                    <nav className="level wonderland-level is-fullwidth">
                         <SiteNavigation pos="left" isSignedIn={SESSION.active()} />
                         <SiteNavigation pos="right" avatar={self.state.avatar} displayName={self.state.displayName} isSignedIn={SESSION.active()} />
                     </nav>

@@ -12,7 +12,7 @@ var VideoMain = React.createClass({
     propTypes: {
         videoId: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
-        messageNeeded: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]).isRequired,
+        messageNeededComponent: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]).isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         videoState: React.PropTypes.string.isRequired,
         videoLink: React.PropTypes.string.isRequired,
@@ -30,7 +30,7 @@ var VideoMain = React.createClass({
                 <br />
                 <div className="columns is-desktop">
                     <div className="column is-12-mobile is-10-desktop">
-                        {self.props.messageNeeded}
+                        {self.props.messageNeededComponent}
                         <Thumbnails
                             thumbnails={self.props.thumbnails}
                             videoState={self.props.videoState}

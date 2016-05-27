@@ -18,8 +18,6 @@ const _DEFAULT_LOCALE = 'en-US',
             lastName: 'Last Name',
             accountId: 'Account ID',
             email: 'Email',
-            password: 'Password',
-            confirm: 'Confirm',
             title: 'Title',
             company: 'Company',
             error: 'Error',
@@ -27,26 +25,30 @@ const _DEFAULT_LOCALE = 'en-US',
             signUp: 'Sign Up',
             signIn: 'Sign In',
             confirmAccount: 'Confirm Account',
-            confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
+            confirmedAccount: 'Your account is confirmed. Please sign in to continue.',
             configure: 'Configure',
             add: 'Add',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
+            
+            'copy.loading': 'Loading' + String.fromCharCode(8230),
+            'copy.currentThumbnail': 'Current Thumbnail',
 
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
+            'action.resetPassword': 'Reset Password',
 
             rememberMe: 'Remember',
 
             'copy.signIn.title': 'Sign In',
-            'copy.signIn.heading': 'Welcome to Neon! Sign In Below',
-            'copy.signIn.body': 'Sign in using the form below.',
+            'copy.signIn.heading': 'Welcome to Neon',
+            'copy.signIn.body': 'Sign in below.',
 
             'copy.signUp.title': 'Sign Up for Neon',
             'copy.signUp.heading': 'Sign Up for Neon',
-            'copy.signUp.body': 'Start making high-performance video thumbnails now! Create an account, below.',
+            'copy.signUp.body': 'See your high-performance thumbnails now. Get started by creating an account.',
 
             'copy.signOut.title': 'Sign Out',
             // TODO - needs @username to work
@@ -58,7 +60,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
             // 'copy.videosPage.body': '@username, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
-            'copy.videosPage.body': 'Welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.videosPage.body': 'See your high-performance thumbnails now. Get started by creating an account.',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
@@ -75,13 +77,29 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.forgotPassword.title': 'Forgot Password',
-            'copy.forgotPassword.heading': 'Forgot Password',
-            'copy.forgotPassword.body': 'Please enter your email address below to start the password reset process.',
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-            'copy.resetPassword.title': 'Reset Password',
-            'copy.resetPassword.heading': 'Reset Password',
-            'copy.resetPassword.body': 'TODO', // TODO
+            'copy.passwordInitial': 'Password',
+            'copy.passwordConfirm': 'Confirm Password',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            'copy.userForgot.title': 'Forgot Password',
+            'copy.userForgot.heading': 'Forgot Password',
+            'copy.userForgot.body': 'Enter your email address below to receive an email with password reset instructions.',
+
+            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour.',
+            'copy.userForgot.error': 'TODO',
+
+            'copy.userReset.title': 'Reset Password',
+            'copy.userReset.heading': 'Reset Password',
+            'copy.userReset.body': 'Enter your new password.',
+            'copy.userReset.instructions': 'Passwords must be at least eight characters long and include one number and one special character.',
+
+            'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign in</a>.',
+            'copy.userReset.error': 'Something went wrong. <a href="@link">Try again</a>?',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
             'copy.billing.title': 'Billing',
             'copy.billing.heading': 'Billing',
@@ -124,17 +142,17 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
             'copy.pendingAccount.body.1': 'Almost there! Get ready to start creating higher performing video thumbnails.',
-            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your Spam folders.',
+            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
             'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
 
             'copy.confirmAccount.title': 'Confirm Account',
             'copy.confirmAccount.heading': 'Confirm Account',
-            'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
-            'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
+            'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails.',
+            'copy.confirmAccount.body.2': 'Please look for an email to verify your account. If you don&rsquo;t see it within 30 minutes, please <a href="@link" rel="external">contact us</a>.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
-            'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by signing in now. You are now ready to make your video thumbnails more clickable!',
+            'copy.accountConfirmed.body': 'Thanks for creating a Neon account. Your account is confirmed, so you can start your free demo by signing in now.',
 
             'copy.plugins.title': 'Plugins',
             'copy.plugins.heading': 'Plugins',
@@ -157,9 +175,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.plugins.types.brightcove.form.readToken': 'Read Token (with URL Access)',
             'copy.plugins.types.brightcove.form.writeToken': 'Write Token',
 
-            'copy.analyzeVideoPanel.panel.1': 'Find a video and paste the URL link Into the Analyze bar',
-            'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze Button',
-            'copy.analyzeVideoPanel.panel.3': 'View the Results',
+            'copy.analyzeVideoPanel.panel.1': 'To see your top thumbnails, paste a video URL into the Analyze field.',
+            'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze button.',
+            'copy.analyzeVideoPanel.panel.3': 'View your results.',
 
             //integrations
             //brightcove
@@ -169,7 +187,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.integration.bc.yes': 'Yes',
             'copy.integration.bc.no': 'No',
             'copy.integration.bc.playerNotFound': 'No Players Found',
-            'copy.integration.manualswitch': "You are currently use a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.",
+            'copy.integration.manualswitch': 'You are currently using a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.',
 
             'copy.type': 'Type',
             'copy.dimensions': 'Dimensions',
@@ -177,17 +195,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.created' : 'Created',
             'copy.updated' : 'Updated',
             'copy.frame' : 'Frame',
-            'copy.ctr' : '<abbr title="Click Through Rate">CTR</abbr>',
+            'copy.ctr' : '<abbr title="Clickthrough Rate">CTR</abbr>',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
 
             returnSignIn: 'Return to Sign In',
-            //password reset
-            'reset.forgot':  'Forgot your password?',
-            'reset.passwordReset': 'Password Reset',
-            'reset.sendReset': 'Send Reset Instructions',
-            'reset.message': 'Please Check your Email for Reset Instructions',
+
             //analyze page
             'analyzeVideo.videoUrl': 'Video URL',
             'analyzeVideo.optionalTitle': 'Optional Title',
@@ -218,6 +232,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
+            'nav.forgotUser': 'Forgot Password?',
             'nav.signOut': 'Sign Out',
             'nav.videoLibrary': 'Video Library',
             'nav.analyze': 'Analyze',
@@ -232,19 +247,19 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Error messages
 
-            'warning.noMoreVideosHeader': 'Videos Warning',
+            'warning.noMoreVideosHeader': 'Videos',
             'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',
 
             'error.unknown': 'An unknown error has occurred.',
-            'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',
-            'error.passwordMatchInvalid': 'Password does not match the confirm password.',
+            'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
+            'error.passwordMatchInvalid': 'Passwords don&rsquo;t match.',
             'error.unableToSignIn': 'Unable to Sign In',
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'I agree to Neon\u2019s <a href="@link">Terms and Conditions</a> of use.',
 
             'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
-            'copy.processingSlide.2': 'Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
+            'copy.processingSlide.2': 'Please be patient–it takes about the same amount of time for Neon to analyze your video as it takes for you to watch it.',
             'copy.processingSlide.3': 'Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
             // TODO 'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results. You will also get an email from Neon when your thumbnails are ready.',
             'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',

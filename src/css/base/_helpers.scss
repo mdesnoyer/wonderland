@@ -1,11 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.is-hidden {
-    display: none;
+.is-paddingless {
+    padding: 0 !important;
 }
 
 .is-shown {
     display: block;
+}
+
+.is-fullwidth {
+    width: 100%;
 }
 
 .TODO,

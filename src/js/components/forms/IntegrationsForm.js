@@ -56,7 +56,7 @@ var IntegrationsForm = React.createClass({
         var self = this,
             buttonClassName,
             inputClassName,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
+            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false;
         ;
         if (self.state.formMode === 'loading') {
             buttonClassName = 'button is-primary is-disabled is-loading';
@@ -69,9 +69,9 @@ var IntegrationsForm = React.createClass({
         switch (self.state.provider) {
         case 'brightcove':
             return (
-                <div className="box">
+                <div className="box wonderland-box">
                     <form onSubmit={self.handleSubmit}>
-                        {messageNeeded}
+                        {messageNeededComponent}
                         <fieldset>
                             <legend className="subtitle is-5">{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
 
@@ -151,9 +151,9 @@ var IntegrationsForm = React.createClass({
             // TODO: Ooyala form
             return false;
         default:
-            messageNeeded = 'Unknown Provider: ' + self.state.provider;
+            messageNeededComponent = 'Unknown Provider: ' + self.state.provider;
             return (
-                <Message body={messageNeeded} flavour="danger" />
+                <Message body={messageNeededComponent} flavour="danger" />
             );
         }
     },

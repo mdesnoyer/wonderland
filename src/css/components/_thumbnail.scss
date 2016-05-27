@@ -20,23 +20,29 @@
     }
 }
 
+.wonderland-thumbnail__rubric {
+    display: block;
+    position: absolute;
+    top: 0.1em;
+    left: 0;
+    width: 100%;
+    color: $orange;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 0.9em;
+}
+
 .wonderland-thumbnail__caption {
     // empty
 }
 
 .wonderland-thumbnail__neonscore {
     position: absolute;
-    bottom: 4%;
+    top: 4%;
     right: 3%;
     background-color: $grey;
     transition: background-color, color 1s;
-}
-
-.wonderland-thumbnail__default-stamp {
-    position: absolute;
-    top: 4%;
-    right: 3%;
-    transition: background-color, color 1s;
+    color: $white;
 }
 
 .wonderland-thumbnail__indicator {
@@ -75,7 +81,6 @@
 }
 
 .wonderland-hero-thumbnail-dummy {
-    text-align: center;
     color: $grey-light;
     height: auto;
     .fa {

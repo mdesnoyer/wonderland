@@ -1,1 +1,0 @@
-The XML files in this directory can be opened at https://www.draw.io/

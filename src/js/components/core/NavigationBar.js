@@ -56,9 +56,9 @@ var NavigationBar = React.createClass({
         return (
             <div>
                 {self.props.alertMessage}
-                <nav className="navbar">
-                    <div className="navbar-left">
-                        <div className="navbar-item">
+                <nav className="level">
+                    <div className="level-left">
+                        <div className="level-item">
                             <button
                                 ref="prevButton"
                                 data-loc={self.props.prevPageAPICall}
@@ -68,15 +68,15 @@ var NavigationBar = React.createClass({
                                 title={T.get('action.previous')}
                             >
                                 <Icon type="chevron-circle-left" />
-                                &nbsp;{T.get('action.previous')}
+                                {T.get('action.previous')}
                             </button>
                         </div>
                     </div>
-                    <div className="navbar-item has-text-centered">
+                    <div className="level-item has-text-centered">
                         <p className="subtitle is-5">Page {self.props.currentPage}</p>
                     </div>
-                    <div className="navbar-right">
-                        <div className="navbar-item">
+                    <div className="level-right">
+                        <div className="level-item">
                             <button
                                 ref="nextButton"
                                 data-loc={self.props.nextPageAPICall}
@@ -85,7 +85,7 @@ var NavigationBar = React.createClass({
                                 onClick={self.handleNextButton}
                                 title={T.get('action.next')}
                             >
-                                {T.get('action.next')}&nbsp;
+                                {T.get('action.next')}
                                 <Icon type="chevron-circle-right" />
                             </button>
                         </div>

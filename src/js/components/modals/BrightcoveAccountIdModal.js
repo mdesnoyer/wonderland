@@ -7,7 +7,7 @@ import React from 'react';
 var BrightcoveAccountIdModal = React.createClass({
     render: function() {
         return (
-            <section className="box hero is-light is-bold is-desktop">
+            <section className="box wonderland-box hero is-light is-bold is-desktop">
                 <div className="hero-body">
                     <div className="container">
                         <h1 className="title is-4">
