@@ -22,14 +22,21 @@ var ImageUpload = React.createClass({
         var self = this; 
         return (
             <div>
-                <div className="columns">
-                    <div className="box column is-8 container is-fluid">
-                        <form className="control has-addons" onSubmit={self.handleSubmit} >
-                            <input className="input" placeholder="Enter DropBox URL Here" onChange={self.handleUrlChange} />
-                            <button className="button is-primary" type="submit" >Analyze</button>
-                        </form>
-                        <DragDropComponent />
-                    </div>
+                <div className="box Drop-Container">
+                    <p className="subtitle is-3">Photo Source</p>
+                    <p className="subtitle is-5">Please paste a link to your DropBox folder.</p>
+                        <form className="control" onSubmit={self.handleSubmit}>
+                            <input className="input is-large" placeholder="URL" onChange={self.handleUrlChange} />
+                            <div className="columns">
+                                <DragDropComponent />
+                            </div>
+                        <div className="columns">
+                            <button className="Drop-Button button is-large column is-4 is-offset-2" type="submit" >
+                                <span className="icon"><i className="fa fa-angle-left"></i></span>
+                            </button>
+                            <button className="Drop-Button button is-large column is-4" type="submit" >Analyze</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         );
