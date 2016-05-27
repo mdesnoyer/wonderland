@@ -101,7 +101,7 @@ var UserResetForm = React.createClass({
             case 'loading':
                 break;
             case 'success':
-                messageNeededComponent = <div><Message header={T.get('copy.userReset.heading')} body={T.get('copy.userReset.success')} flavour="success" /><SignInForm showLegend={true} /></div>;
+                messageNeededComponent = <div><Message header={T.get('copy.userReset.heading')} body={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} flavour="success" /><SignInForm showLegend={true} /></div>;
                 break;
         }
         return(
