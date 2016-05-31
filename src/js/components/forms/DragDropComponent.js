@@ -9,16 +9,46 @@ import Account from '../../mixins/Account';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var DragDropComponent = React.createClass({
+        getInitialState: function() {
+            var self = this;
+            return {
+                mode: 'silent' //silent/error/sucess/error/
+            }
+        },
         onDrop: function (files) {
+            var self = this;
+            self.setState({
+                mode: 'loading'
+            },
+                self.sendFiles(files)
+            ) 
+        },
+        sendFiles: function(files) {
             files.forEach((file)=> {
-                alert(file.name)
-            });
+                    alert(file.name)
+                })
         },
         render: function () {
+            var self = this,
+                DropzoneContents
+            ; 
+
+            switch(self.state.mode){
+                case 'silent':
+                    DropzoneContents = 'Try dropping some files here, or click to select files to upload.';
+                    break;
+                case 'loading':
+                    DropzoneContents = (
+                        <span className="icon">
+                            <i className="fa fa-cog fa-spin"></i>
+                        </span>
+                    );
+                break;
+            }
             return (
                 <div>
                     <Dropzone className="Dragdrop box" activeClassName="Dragdrop-active" onDrop={this.onDrop}>
-                        Try dropping some files here, or click to select files to upload.
+                        {DropzoneContents}
                     </Dropzone>
                 </div>
             );

@@ -15,30 +15,46 @@ var ImageUpload = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            url:''
+            url:'',
+            mode: 'silent' //silent/error/sucess/error/
         }
     },
     render: function() {
-        var self = this;
+        var self = this,
+            elementStyle = ''
+        ;
+        switch(self.state.mode) {
+            case 'loading':
+                elementStyle = ' is-loading is-disabled';
+                break;
+            case 'silent':
+                break;
+            case 'success':
+                break;
+            case 'error': 
+                break;
+        }
         return (
-            <div>
-                <div className="box Drop-Container">
+                <div className={"box Drop-Container"}>
                     <p className="subtitle is-3">Photo Source</p>
                     <p className="subtitle is-5">Please paste a link to your DropBox folder.</p>
-                        <form className="control" onSubmit={self.handleSubmit}>
-                            <input className="input is-large" placeholder="URL" onChange={self.handleUrlChange} />
-                            
-                                    <DragDropComponent />
-                            
+                        <form className={"control" + elementStyle} onSubmit={self.handleSubmit}>
+                            <input 
+                                className="Drop-Input input is-large"
+                                ref='url' 
+                                placeholder="URL" 
+                                value={self.state.url}
+                                onChange={self.handleUrlChange}
+                            />
+                            <DragDropComponent />
                             <div className="Drop-Button-container">
-                            <button className="Drop-Button button is-large  " type="submit" >
-                                <span className="icon is-medium"><i className="fa fa-angle-left"></i></span>
-                            </button>
-                            <button className="Drop-Button button is-large " type="submit" >Analyze</button>
+                                <button className="Drop-Button button is-large">
+                                    <span className="icon is-medium"><i className="fa fa-angle-left"></i></span>
+                                </button>
+                                <button className="Drop-Button button is-large " type="submit" >Analyze</button>
                             </div>
                     </form>
                 </div>
-            </div>
         );
     },
     handleUrlChange: function(e) {
@@ -47,8 +63,22 @@ var ImageUpload = React.createClass({
             url: e.target.value
         })
     },
-    handleSubmit: function() {
+    handleSubmit: function(e) {
       var self = this;
+      e.preventDefault();
+      self.setState({
+        mode: 'loading'
+        },
+        function() {
+            self.sendUrl()
+        }
+      )
+    },
+    sendUrl: function() {
+        var self = this,
+            urlTosend = self.refs.url.value
+        ; 
+        //AJAX to Server for DROPBOX URL
     }
 });
 
