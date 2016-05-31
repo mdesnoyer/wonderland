@@ -6,6 +6,7 @@ import T from '../../modules/translation';
 import FuzzyTime from '../core/FuzzyTime';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
+import ShareSection from '../core/ShareSection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -72,6 +73,7 @@ var ThumbnailInfoBox = React.createClass({
                         </dd>
                     {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
+                <ShareSection />
 
                 {/*<table className="table is-bordered is-striped is-narrow">
                     <tbody>
