@@ -18,7 +18,7 @@ var BrightcoveAccountIdModal = React.createClass({
                             <p>You can locate your Video Cloud Account ID on the <a rel="external" href="https://studio.brightcove.com/products/videocloud/admin/accountsettings">Account Information</a> page in your Brightcove account. Your Account ID will look similar to this:
                             </p>
                             <figure className="image wonderland-image box">
-                                <img src="/img/support/brightcove/1-account-id.png" alt="" title=""/>
+                                <img src="/img/support/brightcove/1-account-id.png" />
                             </figure>
                         </div>
                     </div>

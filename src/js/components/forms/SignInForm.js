@@ -31,7 +31,7 @@ var SignInForm = React.createClass({
         return {
             isError: false,
             isLoading: false
-        }  
+        }
     },
     componentDidMount: function() {
         var self = this;
@@ -58,18 +58,18 @@ var SignInForm = React.createClass({
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeededComponent}
-                <fieldset>  
-                    {legendElement}                    
+                <fieldset>
+                    {legendElement}
                     <p className="control">
                         <input className={inputClassName}
                             name="email"
                             type="text"
                             required
                             ref="email"
-                            minLength="6" 
+                            minLength="6"
                             maxLength="1024"
                             placeholder={T.get('email')}
-                            defaultValue={SESSION.rememberedEmail()} 
+                            defaultValue={SESSION.rememberedEmail()}
                         />
                     </p>
                     <p className="control">
@@ -101,7 +101,10 @@ var SignInForm = React.createClass({
                         </div>
                     </div>
                     <p className="has-text-centered">
-                        <button className={buttonClassName} type="submit">
+                        <button
+                            className={buttonClassName}
+                            type="submit"
+                        >
                             <Icon type="sign-in" />
                             {T.get('signIn')}
                         </button>
@@ -131,7 +134,7 @@ var SignInForm = React.createClass({
             ]
         ;
         // if (!E.checkForErrors(errorList)) {
-        //placeholder for error handling later 
+        //placeholder for error handling later
         if (true) {
             TRACKING.sendEvent(self, arguments, email);
             self.POST('authenticate', {
