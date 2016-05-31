@@ -27,17 +27,15 @@ var ImageUpload = React.createClass({
                     <p className="subtitle is-5">Please paste a link to your DropBox folder.</p>
                         <form className="control" onSubmit={self.handleSubmit}>
                             <input className="input is-large" placeholder="URL" onChange={self.handleUrlChange} />
-                            <div className="columns">
-                                <div className="column is-6 is-offset-3">
+                            
                                     <DragDropComponent />
-                                </div>
-                            </div>
-                        <div className="columns">
-                            <button className="Drop-Button button is-large column is-5 is-offset-1" type="submit" >
+                            
+                            <div className="Drop-Button-container">
+                            <button className="Drop-Button button is-large  " type="submit" >
                                 <span className="icon is-medium"><i className="fa fa-angle-left"></i></span>
                             </button>
-                            <button className="Drop-Button button is-large column is-5" type="submit" >Analyze</button>
-                        </div>
+                            <button className="Drop-Button button is-large " type="submit" >Analyze</button>
+                            </div>
                     </form>
                 </div>
             </div>
