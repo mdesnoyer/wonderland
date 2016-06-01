@@ -54,12 +54,12 @@ $red: $orange;
 $background: $colour-alabaster;
 $black: $blackish;
 
-@import '../../node_modules/bulma/sass/utilities/utilities';
-@import "../../node_modules/bulma/sass/utilities/variables";
-@import '../../node_modules/bulma/sass/base/base';
-@import '../../node_modules/bulma/sass/elements/elements';
-@import '../../node_modules/bulma/sass/components/components';
-@import '../../node_modules/bulma/sass/layout/layout';
+@import '../../../node_modules/bulma/sass/utilities/utilities';
+@import '../../../node_modules/bulma/sass/utilities/variables';
+@import '../../../node_modules/bulma/sass/base/base';
+@import '../../../node_modules/bulma/sass/elements/elements';
+@import '../../../node_modules/bulma/sass/components/components';
+@import '../../../node_modules/bulma/sass/layout/layout';
 
 // 1. Configuration and helpers
 @import
