@@ -26,7 +26,6 @@ var ShareSection = React.createClass({
             <div className='columns container'>
                 <FacebookShareButton
                     url={shareUrl}
-                    title={'I scored a '+ self.props.score +' with Neon!'}
                     className={'column is-3 share-section-icon-color'}
                     >
                     <FacebookIcon
