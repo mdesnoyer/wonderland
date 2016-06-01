@@ -169,6 +169,7 @@ var Thumbnails = React.createClass({
                                                 </div>
                                                 <div className="column is-3">
                                                     <ThumbnailInfoBox
+                                                        url={thumbnail.url}
                                                         frameNo={thumbnail.frameno || 0}
                                                         type={thumbnail.type}
                                                         width={thumbnail.width}
