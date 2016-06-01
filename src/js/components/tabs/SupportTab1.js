@@ -24,18 +24,18 @@ var SupportTab1 = React.createClass({
                 <li>Log in to your Neon account.</li>
                 <li>Paste a URL that links to a video stored online into the Video URL field.
                     <figure className="image wonderland-image">
-                        <img src="/img/support/overview/1-video-url.png" alt="" title=""  />
+                        <img src="/img/support/overview/1-video-url.png" />
                     </figure>
                 </li>
                 <li>Click &ldquo;Analyze&rdquo;. You can optionally include a URL to a default video thumbnail that you&rsquo;d like to associate with this video in your Neon account.</li>
                 <li>Neon&rsquo;s software will analyze your video to surface the most engaging thumbnails. This process takes about the length of the video. You can navigate away from your Neon account and check back later without affecting the process. You can also choose to analyze additional videos during this time.</li>
                 <li>Your Neon account will show the top thumbnails for each video when your videos have finished processing. You can now download images by clicking on the &ldquo;download image&rdquo; icon next to your image.
                     <figure className="image wonderland-image">
-                        <img src="/img/support/overview/2-download-image.png" alt="" title="" />
+                        <img src="/img/support/overview/2-download-image.png" />
                     </figure>
                     You can also copy the static link to your images by clicking on the &ldquo;copy image URL&rdquo; icon next to your image in your Neon account.
                     <figure className="image wonderland-image">
-                        <img src="/img/support/overview/3-copy-image-url.png" alt="" title="" />
+                        <img src="/img/support/overview/3-copy-image-url.png" />
                     </figure>
                 </li>
             </ol>
@@ -56,13 +56,13 @@ var SupportTab1 = React.createClass({
             <p>If you have integrated your Brightcove account or other image platform, you can indicate which images you would like to exclude from image serving in your Neon account. Simply click on the image you&rsquo;d like to disable, then click the X on the left sidebar on the image.</p>
 
             <figure className="image wonderland-image">
-                <img src="/img/support/overview/4-how-to-disable.png" alt="" title="" />
+                <img src="/img/support/overview/4-how-to-disable.png" />
             </figure>
 
             <p>A disabled image will have an X over the image.</p>
 
             <figure className="image wonderland-image">
-                <img src="/img/support/overview/5-disabled.png" alt="" title="" />
+                <img src="/img/support/overview/5-disabled.png" />
             </figure>
 
             <p>If you&rsquo;d like to re-enable a disabled image, simply click on the checkmark on the left sidebar of the image. The orange X over the image should disappear, and the image will now be served alongside your other enabled images for that video.</p>
@@ -74,7 +74,7 @@ var SupportTab1 = React.createClass({
             <p>You can see this data in realtime by clicking on any image in your Neon account that is currently or has previously been live on your site. The clickthrough rate (CTR) will be listed on the right side of the image panel.</p>
 
             <figure className="image wonderland-image">
-                <img src="/img/support/overview/6-ctr.png" alt="" title="" />
+                <img src="/img/support/overview/6-ctr.png" />
             </figure>
 
             <p>To perform the A/B testing, we serve images directly to your users and then collect <a href={UTILS.DRY_NAV.TELEMETRY.URL}>telemetry</a>, or data from your site, about how they interact with those images. Enabling this requires two steps:</p>

@@ -25,7 +25,7 @@ var BrightcoveSmartPlayerModal = React.createClass({
                         </li>
                     </ol>
                     {/*<figure className="image wonderland-image">
-                        <img src="/img/brightcoveNewPlayerModal.png" alt="" title="" />
+                        <img src="/img/brightcoveNewPlayerModal.png" />
                     </figure>*/}
 
                     {/*<p>(note, where will the Telemetry URL appear during this flow? Will they be able to copy the URL on the page where they clicked the question mark to open this modal? point 1 above can be updated with this information.)</p>*/}

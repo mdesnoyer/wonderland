@@ -96,8 +96,22 @@ var SignUpForm = React.createClass({
                         />
                     </p>
                     <p className="control is-grouped">
-                        <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
+                        <input
+                            className="input is-medium"
+                            type="text" ref="firstName"
+                            required
+                            minLength="1"
+                            maxLength="256"
+                            placeholder={T.get('firstName')}
+                        />
+                        <input
+                            className="input is-medium"
+                            type="text"
+                            ref="lastName"
+                            minLength="1"
+                            maxLength="256"
+                            placeholder={T.get('lastName')}
+                        />
                     </p>
                     <p className="control">
                         <label className="checkbox">
@@ -123,13 +137,14 @@ var SignUpForm = React.createClass({
         });
     },
     handleAgreementChange: function(e) {
-        this.setState({
-            isAgreementChecked: !this.state.isAgreementChecked
+        var self = this;
+        self.setState({
+            isAgreementChecked: !self.state.isAgreementChecked
         });
     },
     handleSubmit: function (e) {
         var self = this,
-            userDataObject,
+            userDataObject = {},
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
                 {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
@@ -151,12 +166,15 @@ var SignUpForm = React.createClass({
             if (!self._isSubmitted) {
                 self._isSubmitted = true;
                 userDataObject = {
-                    email: this.refs.email.value.trim(),
-                    admin_user_username: this.refs.email.value.trim(),
-                    admin_user_password: this.refs.passwordInitial.value.trim(),
-                    admin_user_first_name: this.refs.firstName.value.trim(),
-                    admin_user_last_name: this.refs.lastName.value.trim()
+                    email: self.refs.email.value.trim(),
+                    admin_user_username: self.refs.email.value.trim(),
+                    admin_user_password: self.refs.passwordInitial.value.trim(),
+                    admin_user_first_name: self.refs.firstName.value.trim(),
                 };
+                // Only add the last name if it exists #1194
+                if (self.refs.lastName.value.trim()) {
+                    userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
+                }
                 self.POST('accounts', {
                         host: CONFIG.AUTH_HOST,
                         data: userDataObject
@@ -169,7 +187,7 @@ var SignUpForm = React.createClass({
                         });
                         self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
                     })
-                    .catch(function (err) { 
+                    .catch(function (err) {
                         E.raiseError(err);
                         self._isSubmitted = false;
                         self.setState({

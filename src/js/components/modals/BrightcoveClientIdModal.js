@@ -20,7 +20,7 @@ var BrightcoveClientIdModal = React.createClass({
                                 <li>Enter &ldquo;Neon&rdquo; in the name field</li>
                                 <li>Select the following permissions:
                                     <div className='box'>
-                                        <img src="/img/brightcovepermissions.png" alt="" title="" />
+                                        <img src="/img/brightcovepermissions.png" />
                                     </div>
                                 </li>
                                 <li>Click &ldquo;Save&rdquo;</li>

@@ -71,9 +71,10 @@ var AJAXModule = {
                         retryUrl = CONFIG.AUTH_HOST + 'refresh_token';
                         reqwest({
                             url: retryUrl,
-                            headers: {
-                                Authorization: 'Bearer ' + self.Session.state.refreshToken
-                            },
+                            data: JSON.stringify({
+                                token : self.Session.state.refreshToken
+                            }),
+                            contentType: 'application/json',
                             method: 'POST',
                             crossDomain: true,
                             type: 'json'
