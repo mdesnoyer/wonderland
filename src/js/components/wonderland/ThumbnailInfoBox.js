@@ -6,6 +6,7 @@ import T from '../../modules/translation';
 import FuzzyTime from '../core/FuzzyTime';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
+import ShareSection from '../core/ShareSection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +20,9 @@ var ThumbnailInfoBox = React.createClass({
         thumbnailId: React.PropTypes.string,
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
-        thumbnailStats: React.PropTypes.object
+        thumbnailStats: React.PropTypes.object,
+        url: React.PropTypes.string,
+        cookedNeonScore: React.PropTypes.string
     },
     getInitialState: function() {
         return({
@@ -69,6 +72,10 @@ var ThumbnailInfoBox = React.createClass({
                     <dt className="wonderland-dt">{T.get('copy.updated')}</dt>
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.updated} />
+                        </dd>
+                    <dt className="wonderland-dt">Share</dt>
+                        <dd className="wonderland-dt">
+                            <ShareSection url={self.props.url} score={self.props.cookedNeonScore} />
                         </dd>
                     {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
