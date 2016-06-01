@@ -46,7 +46,7 @@ var ShareSection = React.createClass({
                 </TwitterShareButton>
                 <LinkedinShareButton
                     url={shareUrl}
-                    title={"I scored a "+ self.props.score +" with Neon!"}
+                    title={'I scored a '+ self.props.score +' with Neon!'}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <LinkedinIcon
