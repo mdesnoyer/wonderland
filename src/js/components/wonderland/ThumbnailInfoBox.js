@@ -20,7 +20,8 @@ var ThumbnailInfoBox = React.createClass({
         thumbnailId: React.PropTypes.string,
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
-        thumbnailStats: React.PropTypes.object
+        thumbnailStats: React.PropTypes.object,
+        url: React.PropTypes.string
     },
     getInitialState: function() {
         return({
@@ -73,7 +74,7 @@ var ThumbnailInfoBox = React.createClass({
                         </dd>
                     {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
-                <ShareSection />
+                <ShareSection url={self.props.url}/>
 
                 {/*<table className="table is-bordered is-striped is-narrow">
                     <tbody>
