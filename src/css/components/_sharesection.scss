@@ -1,0 +1,15 @@
+.share-section-circle-svg {
+    fill: white;
+    width: 32px;
+    height: 32px;
+}
+.share-section-div-circle-svg {
+    width: 32px;
+    height: 32px;
+}
+.share-section-icon-color {
+    cursor: pointer;
+    &:hover {
+        fill: black;
+        }
+}

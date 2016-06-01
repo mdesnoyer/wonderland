@@ -21,7 +21,8 @@ var ThumbnailInfoBox = React.createClass({
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
         thumbnailStats: React.PropTypes.object,
-        url: React.PropTypes.string
+        url: React.PropTypes.string,
+        cookedNeonScore: React.PropTypes.string
     },
     getInitialState: function() {
         return({
@@ -72,9 +73,12 @@ var ThumbnailInfoBox = React.createClass({
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.updated} />
                         </dd>
+                    <dt className="wonderland-dt">Share</dt>
+                        <dd className="wonderland-dt">
+                            <ShareSection url={self.props.url} score={self.props.cookedNeonScore} />
+                        </dd>
                     {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
-                <ShareSection url={self.props.url}/>
 
                 {/*<table className="table is-bordered is-striped is-narrow">
                     <tbody>
