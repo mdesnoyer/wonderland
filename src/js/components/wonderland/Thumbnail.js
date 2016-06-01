@@ -65,6 +65,7 @@ var Thumbnail = React.createClass({
         }
     },
     render: function() {
+        debugger
         var self = this,
             neonScoreClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__neonscore' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
