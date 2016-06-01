@@ -36,6 +36,7 @@ import UserSettingsPage from './components/pages/UserSettingsPage';
 import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import SupportPage from './components/pages/SupportPage';
+import XXPage from './xx/XXPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,7 +75,6 @@ render((
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
-        <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
 
         <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={IntegrationsPage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_NEW.URL} component={NewIntegrationPage} />
@@ -86,6 +86,8 @@ render((
         <Route path={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.SETTINGS_USER.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
+
+        <Route path="/xx/" component={XXPage} />
 
         <Route path="*" component={NotFoundPage} />
 

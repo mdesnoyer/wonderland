@@ -43,12 +43,14 @@ function handleErrors() {
 
 function buildStyle(isUglified) {
     gutil.log('buildStyle');
-    var bulmaStream = gulp.src('./node_modules/bulma/css/bulma.min.css');
     var fontAwesomeStream = gulp.src('./node_modules/font-awesome/css/font-awesome.min.css');
-    var sassStream = gulp.src('./src/css/**/*')
+    var sassStream = gulp.src('./src/css/neon/**/*')
         .pipe(sass()) // Using gulp-sass
     ;
-    var mergedStream = merge(bulmaStream, fontAwesomeStream, sassStream)
+    var xxStream = gulp.src('./src/css/xx/**/*')
+        .pipe(sass()) // Using gulp-sass (can change to PostCSS if faster)
+    ;
+    var mergedStream = merge(fontAwesomeStream, sassStream, xxStream)
         .pipe(concatCss('wonderland.css', {
             rebaseUrls: false
         }))
