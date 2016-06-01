@@ -31,7 +31,7 @@ var SupportTab2 = React.createClass({
                 <h4 className="title is-5">Brightcove Video Cloud Account ID</h4>
                 <p>You can locate your Video Cloud Account ID on the <a rel="external" href="https://studio.brightcove.com/products/videocloud/admin/accountsettings">Account Information</a> page in your Brightcove account. Your Account ID will look similar to this:</p>
                 <figure className="image wonderland-image">
-                    <img src="/img/support/brightcove/1-account-id.png" alt="" title="" />
+                    <img src="/img/support/brightcove/1-account-id.png" />
                 </figure>
                 <p>Enter your Account ID into the plugins page in your Neon account. You can access this page by clicking on the gear and then Plugins in your Neon account.</p>
                 {/*<p className="TODO">TODO - add screenshot here when UI is updated</p>*/}
@@ -43,7 +43,7 @@ var SupportTab2 = React.createClass({
                     <li>Enter &ldquo;Neon&rdquo; in the name field</li>
                     <li>Select the following permissions:
                         <figure className='image wonderland-image'>
-                            <img src="/img/brightcovepermissions.png" alt="" title="" />
+                            <img src="/img/brightcovepermissions.png" />
                         </figure>
                     </li>
                     <li>Click &ldquo;Save&rdquo;</li>

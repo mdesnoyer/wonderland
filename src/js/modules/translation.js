@@ -31,7 +31,7 @@ const _DEFAULT_LOCALE = 'en-US',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
-            
+
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -77,12 +77,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.userForgot.title': 'Forgot Password',
             'copy.userForgot.heading': 'Forgot Password',
@@ -98,7 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign In</a>.',
             'copy.userReset.error': 'Something went wrong. <a href="@link">Try again</a>?',
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.billing.title': 'Billing',
             'copy.billing.heading': 'Billing',
@@ -226,6 +226,18 @@ const _DEFAULT_LOCALE = 'en-US',
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.servingFraction': 'Serving Fraction',
+            'copy.impressions': 'Impressions',
+            'copy.conversions': 'Conversions',
+            'copy.ctr': 'CTR',
+            'copy.neonScoreEquals': 'NeonScore of @neonscore',
+            'copy.bestThumbnail': 'Best Thumbnail',
+            'copy.signedInAs': 'Signed In as @user',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'nav.home': 'Home',
             'nav.terms': 'Terms',
