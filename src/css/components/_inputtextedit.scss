@@ -9,5 +9,31 @@
         border-color: $primary;
     }
  }
+ .wonderland-input-text-edit__container {
+    .wonderland-icon-bitmap {
+        opacity: 0;
+    }
+    &:focus{
+        .wonderland-icon-bitmap {
+            opacity: 1.0;
+        }
+    }
+    &:hover{
+        .wonderland-icon-bitmap {
+            opacity: 1.0;
+        }
+    }
+    &:active{
+        .wonderland-icon-bitmap {
+            opacity: 1.0;
+        }
+    }
+    &.-is-loading {
+        .wonderland-icon-bitmap {
+            opacity: 1.0;
+        }
+    } 
+ }
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

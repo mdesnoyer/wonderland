@@ -24,12 +24,12 @@ var Icon = React.createClass({
         // Wrapper around Font Awesome
         if (self.props.nowrap) {
             return (
-                <i className={'fa fa-' + self.props.type} aria-hidden="true" title={self.props.title}></i>
+                <i className={'wonderland-icon-bitmap fa fa-' + self.props.type} aria-hidden="true" title={self.props.title}></i>
             );
         }
         else {
             return (
-                <span className="icon wonderland-icon"><i className={'fa fa-' + self.props.type} aria-hidden="true" title={self.props.title}></i></span>
+                <span className="icon wonderland-icon"><i className={'wonderland-icon-bitmap fa fa-' + self.props.type} aria-hidden="true" title={self.props.title}></i></span>
             );
         }
     }
