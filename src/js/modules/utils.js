@@ -264,6 +264,10 @@ var UTILS = {
     isValidDate: function(d) {
         return !isNaN(Date.parse(d));
     },
+    buildTooltipClass: function(existingClass, position) {
+        // https://github.com/chinchang/hint.css
+        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
+    },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
         returnValue = returnValue.replace('www.dropbox.com', 'dl.dropboxusercontent.com');

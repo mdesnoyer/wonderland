@@ -75,11 +75,11 @@ var IntegrationsBrightcovePage = React.createClass({
         var self = this,
             hidePlayList
         ;
-        hidePlayList = self.state.usesPlaylist ? '' : 'is-hidden'; 
+        hidePlayList = self.state.usesPlaylist ? '' : 'is-hidden';
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.plugins.types.brightcove.title')}
+                    title={UTILS.buildPageTitle(T.get('copy.plugins.types.brightcove.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
