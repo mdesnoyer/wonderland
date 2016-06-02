@@ -65,7 +65,7 @@ var NavigationBar = React.createClass({
                                 data-loc={self.props.prevPageAPICall}
                                 disabled={prevDisabledAttribute}
                                 onClick={self.handlePrevButton}
-                                className={UTILS.buildTooltipClass(loadingClass, 'top')}
+                                className={UTILS.buildTooltipClass(loadingClass, 'right')}
                                 aria-label={T.get('action.previous')}
                             >
                                 <Icon type="chevron-circle-left" />
@@ -83,7 +83,7 @@ var NavigationBar = React.createClass({
                                 data-loc={self.props.nextPageAPICall}
                                 disabled={nextDisabledAttribute}
                                 onClick={self.handleNextButton}
-                                className={UTILS.buildTooltipClass(loadingClass, 'top')}
+                                className={UTILS.buildTooltipClass(loadingClass, 'left')}
                                 aria-label={T.get('action.next')}
                             >
                                 {T.get('action.next')}

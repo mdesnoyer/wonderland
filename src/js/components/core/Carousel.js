@@ -84,7 +84,7 @@ var Carousel = React.createClass({
                     <ul className="wonderland-carousel__controls">
                         <li
                             onClick={self.handleClickPrevious}
-                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--previous', 'top')}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--previous', 'right')}
                             aria-label={T.get('action.previous')}
                         >
                             <Icon type="chevron-circle-left" />
@@ -92,7 +92,7 @@ var Carousel = React.createClass({
                         <li>Item {self.state.selectedItem + 1} of {self.state.total}</li>
                         <li
                             onClick={self.handleClickNext}
-                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--next', 'top')}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--next', 'left')}
                             aria-label={T.get('action.next')}
                         >
                             <Icon type="chevron-circle-right" />

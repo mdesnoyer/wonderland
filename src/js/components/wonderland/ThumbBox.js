@@ -35,8 +35,8 @@ var ThumbBox = React.createClass({
             <aside className="wonderland-thumbbox">
                 <div className="wonderland-thumbbox__tools">
                     <span
-                        aria-label="Copy the URL of this Thumbnail"
-                        className={UTILS.buildTooltipClass('icon wonderland-thumbbox__tool', 'right')}
+                        title="Copy the URL of this Thumbnail"
+                        className="icon wonderland-thumbbox__tool"
                         ref="copyUrl"
                         onClick={self.handleCopyUrlClick}
                         data-clipboard-text={self.props.copyUrl}

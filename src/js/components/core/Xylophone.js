@@ -47,7 +47,7 @@ var Xylophone = React.createClass({
                             >
                                 <div
                                     style={inlineStyle}
-                                    className={UTILS.buildTooltipClass('wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled'), 'left')}
+                                    className={UTILS.buildTooltipClass('wonderland-xylophone__bar is-' + rating + (thumbnail.enabled ? '' : ' is-disabled'), 'top')}
                                     aria-label={T.get('copy.neonScoreEquals', {
                                         '@neonscore': neonScoreData.neonScore
                                     })}
