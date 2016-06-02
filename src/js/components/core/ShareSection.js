@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import SocialIcon from 'react-social-icons';
 import {ShareButtons, generateShareIcon} from 'react-share';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,6 +26,8 @@ var ShareSection = React.createClass({
             <div className='columns container'>
                 <FacebookShareButton
                     url={shareUrl}
+                    quote='Checkout This Image from Neon Labs!'
+                    appId='184484190795'
                     className={'column is-3 share-section-icon-color'}
                     >
                     <FacebookIcon
@@ -54,11 +55,8 @@ var ShareSection = React.createClass({
                         size={32}
                         round />
                 </LinkedinShareButton>
-
                 <a href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + self.props.url} target="_top">
-
                     <div className="column is-3">
-                    <SocialIcon url="http://jaketrent.com" network="tumblr" />
                         <div className="share-section-div-circle-svg">
                             <svg viewBox="0 0 64 64" className="share-section-circle-svg">
                                 <g><circle cx="32" cy="32" r="31" style={customColorBackground}></circle></g>
@@ -67,7 +65,6 @@ var ShareSection = React.createClass({
                         </div>
                     </div>
                 </a>
-            <SocialIcon url="http://jaketrent.com" network="tumblr" />
             </div>
         )
     }
