@@ -10,6 +10,7 @@ import UTILS from '../../modules/utils';
 
 var Carousel = React.createClass({
     // mixins: [ReactDebugMixin],
+    _prevKeyDown: '',
     propTypes: {
         selectedItem: React.PropTypes.number.isRequired,
         isActive: React.PropTypes.bool.isRequired
@@ -56,10 +57,18 @@ var Carousel = React.createClass({
                 isActive: nextProps.isActive
             }, function() {
                 if (self.state.isActive) {
+                    // Store an existing one if we got it, its a bit hacky but
+                    // it does the trick.
+                    if (document.body.onkeydown) {
+                        self._prevKeyDown = document.body.onkeydown;
+                    }
                     document.body.onkeydown = self.handleKeyEvent;
                 }
                 else {
-                    document.body.onkeydown = '';
+                    // If we stored something, put it back.
+                    if (self._prevKeyDown) {
+                        document.body.onkeydown = self._prevKeyDown;
+                    }
                 }
             });
         }
