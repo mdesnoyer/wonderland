@@ -21,7 +21,7 @@ var AnalyzeVideoPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.analyzeVideo.title')}
+                    title={UTILS.buildPageTitle(T.get('copy.analyzeVideo.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">

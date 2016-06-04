@@ -41,6 +41,7 @@
     "fnv-plus": "^1.2.12",
     "font-awesome": "^4.6.1",
     "gravatar": "^1.5.2",
+    "hint.css": "^2.3.0",
     "history": "^1.12.5",
     "moment": "^2.13.0",
     "react": "^0.14.8",

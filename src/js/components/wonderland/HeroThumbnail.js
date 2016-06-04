@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 import Icon from '../core/Icon';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +20,7 @@ var HeroThumbnail = React.createClass({
         ;
         if (self.props.thumbnail) {
             src = UTILS.stripProtocol(self.props.thumbnail.url);
-            caption = 'Best Thumbnail';
+            caption = T.get('copy.bestThumbnail');
             return (
                 <img
                     className="wonderland-hero-thumbnail"

@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import Icon from '../core/Icon';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,8 +64,8 @@ var NavigationBar = React.createClass({
                                 ref="prevButton"
                                 data-loc={self.props.prevPageAPICall}
                                 disabled={prevDisabledAttribute}
-                                className={loadingClass}
                                 onClick={self.handlePrevButton}
+                                className={loadingClass}
                                 title={T.get('action.previous')}
                             >
                                 <Icon type="chevron-circle-left" />
@@ -81,8 +82,8 @@ var NavigationBar = React.createClass({
                                 ref="nextButton"
                                 data-loc={self.props.nextPageAPICall}
                                 disabled={nextDisabledAttribute}
-                                className={loadingClass}
                                 onClick={self.handleNextButton}
+                                className={loadingClass}
                                 title={T.get('action.next')}
                             >
                                 {T.get('action.next')}

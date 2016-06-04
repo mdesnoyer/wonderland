@@ -4,11 +4,13 @@ import React from 'react';
 import T from '../../modules/translation';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Carousel = React.createClass({
     // mixins: [ReactDebugMixin],
+    _prevKeyDown: '',
     propTypes: {
         selectedItem: React.PropTypes.number.isRequired,
         isActive: React.PropTypes.bool.isRequired
@@ -55,10 +57,18 @@ var Carousel = React.createClass({
                 isActive: nextProps.isActive
             }, function() {
                 if (self.state.isActive) {
+                    // Store an existing one if we got it, its a bit hacky but
+                    // it does the trick.
+                    if (document.body.onkeydown) {
+                        self._prevKeyDown = document.body.onkeydown;
+                    }
                     document.body.onkeydown = self.handleKeyEvent;
                 }
                 else {
-                    document.body.onkeydown = '';
+                    // If we stored something, put it back.
+                    if (self._prevKeyDown) {
+                        document.body.onkeydown = self._prevKeyDown;
+                    }
                 }
             });
         }
@@ -81,11 +91,19 @@ var Carousel = React.createClass({
                 </ol>
                 <nav className="box wonderland-box wonderland-carousel__control-box">
                     <ul className="wonderland-carousel__controls">
-                        <li title={T.get('action.previous')} onClick={self.handleClickPrevious} className="wonderland-carousel__control wonderland-carousel__control--previous">
+                        <li
+                            onClick={self.handleClickPrevious}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--previous', 'right')}
+                            aria-label={T.get('action.previous')}
+                        >
                             <Icon type="chevron-circle-left" />
                         </li>
                         <li>Item {self.state.selectedItem + 1} of {self.state.total}</li>
-                        <li title={T.get('action.next')} onClick={self.handleClickNext} className="wonderland-carousel__control wonderland-carousel__control--next">
+                        <li
+                            onClick={self.handleClickNext}
+                            className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--next', 'left')}
+                            aria-label={T.get('action.next')}
+                        >
                             <Icon type="chevron-circle-right" />
                         </li>
                     </ul>
