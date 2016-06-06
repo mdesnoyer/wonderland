@@ -31,7 +31,7 @@ var VideosPage = React.createClass({
             signUpRef = cookie.load('signUpRef')
         ;
         if (signUpRef === 'bc') {
-            cookie.remove('signUpRef', { path: '/' });
+            cookie.remove('signUpRef', {path: UTILS.COOKIE_DEFAULT_PATH});
             self.context.router.push(UTILS.DRY_NAV.PLUGINS.URL + '#pop');
         }
         self.getAccount()

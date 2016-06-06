@@ -59,6 +59,7 @@ var AJAXModule = {
                 _options.contentType = 'application/json';
             }
             _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
+            _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
@@ -67,7 +68,7 @@ var AJAXModule = {
                 })
                 .catch(function (err) {
                     var retryUrl = '';
-                    if (_options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
+                    if (_options.shouldRetry === true && _options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
                         retryUrl = CONFIG.AUTH_HOST + 'refresh_token';
                         reqwest({
                             url: retryUrl,

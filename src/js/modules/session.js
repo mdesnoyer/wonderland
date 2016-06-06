@@ -10,9 +10,11 @@ import UTILS from './utils';
 const accessTokenKey = 'at',
     refreshTokenKey = 'rt',
     accountIdKey ='actId',
+    masqueradeAccountIdKey ='msqactId',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
     userKey = 'user_info',
+    signUpRefKey = 'signUpRef',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
 ;
 
@@ -23,21 +25,53 @@ var Session = {
         accessToken: cookie.load(accessTokenKey),
         refreshToken: cookie.load(refreshTokenKey),
         accountId: cookie.load(accountIdKey),
+        masqueradeAccountIdKey: undefined,
         user: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
-        this.state = {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state = {
             accessToken: accessToken,
             refreshToken: refreshToken,
             accountId: accountId,
-            user: user || this.state.user
+            user: user || self.state.user
         };
-        cookie.save(accessTokenKey, accessToken, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.save(refreshTokenKey, refreshToken, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.save(accountIdKey, accountId, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.save(accessTokenKey, accessToken, cookiePath);
+        cookie.save(refreshTokenKey, refreshToken, cookiePath);
+        cookie.save(accountIdKey, accountId, cookiePath);
         if (user) {
             localStorage.setItem(userKey, JSON.stringify(user));
         }
+    },
+    setAccountId: function(accountId) {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state.accountId = accountId;
+        cookie.save(accountIdKey, accountId, {
+            path: UTILS.COOKIE_DEFAULT_PATH
+        });
+    },
+    setMasqueradeAccountId: function(masqueradeAccountId) {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state.masqueradeAccountId = masqueradeAccountId;
+        cookie.save(masqueradeAccountIdKey, masqueradeAccountId, {
+            path: UTILS.COOKIE_DEFAULT_PATH
+        });
+    },
+    getMasqueradeAccountId: function() {
+        var self = this;
+        return self.state.masqueradeAccountId;
     },
     end: function() {
         var ret;
@@ -54,14 +88,17 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.remove(refreshTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.remove(accountIdKey, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.remove(accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(signUpRefKey, {path: UTILS.COOKIE_DEFAULT_PATH}); // it does get deleted elsewhere but lets make sure
         localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
+            masqueradeAccountId: undefined,
             user: undefined
         };
         return ret;

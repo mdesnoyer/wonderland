@@ -23,9 +23,10 @@ function normalizeAccount(res) {
 }
 
 var Account = {
-    getAccount: function() {
+    getAccount: function(shouldRetry) {
         return this.GET('', {
-            successHandler: normalizeAccount
+            successHandler: normalizeAccount,
+            shouldRetry: shouldRetry
         });
     },
     updateAccount: function (account) {

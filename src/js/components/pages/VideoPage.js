@@ -36,7 +36,8 @@ var VideoPage = React.createClass({
             })
             .catch(function (err) {
                 E.raiseError(err);
-            });
+            })
+        ;
     },
     render: function() {
         var self = this;

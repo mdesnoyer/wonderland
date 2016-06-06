@@ -38,6 +38,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
+            'action.set': 'Set',
             'action.resetPassword': 'Reset Password',
 
             rememberMe: 'Remember',
@@ -257,6 +258,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.userSettings': 'User Settings',
 
             // Error messages
+
+            'error.invalidAccountId': 'Naughty naughty. This Account Id is not valid. Please try again.',
 
             'warning.noMoreVideosHeader': 'Videos',
             'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',

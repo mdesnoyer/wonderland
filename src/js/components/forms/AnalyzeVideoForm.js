@@ -279,7 +279,8 @@ var AnalyzeVideoForm = React.createClass({
             })
             .catch(function (err) {
                 console.log(err);
-            });
+            })
+        ;
     },
     toggeleOpen: function() {
         var self = this; 

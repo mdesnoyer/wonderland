@@ -17,7 +17,6 @@ var UserSettingsTab1 = React.createClass({
         return {
             isLoading: true,
             username: '',
-            accessLevel: -1,
             created: '',
             updated: '',
             avatar: ''
@@ -30,7 +29,6 @@ var UserSettingsTab1 = React.createClass({
                 self.setState({
                     isLoading: false,
                     username: userData.username,
-                    accessLevel: userData.access_level,
                     created: userData.created,
                     updated: userData.updated,
                     avatar: gravatar.url(userData.username, {s: '200', d: 'identicon'})
@@ -53,10 +51,6 @@ var UserSettingsTab1 = React.createClass({
                 <label className="label">{T.get('label.username')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={self.state.username} disabled />
-                </p>
-                <label className="label is-hidden">{T.get('label.accessLevel')}</label>
-                <p className={'control is-hidden' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.accessLevel} disabled />
                 </p>
                 <label className="label">{T.get('label.created')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
