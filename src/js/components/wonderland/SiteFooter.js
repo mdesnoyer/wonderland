@@ -9,10 +9,6 @@ import SiteNavigation from '../wonderland/SiteNavigation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const CONFIG = require('json../../../env/config.json');
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 var SiteFooter = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
