@@ -40,7 +40,7 @@ import XXPage from './xx/XXPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const CONFIG = require('json../../../env/config.json');
+const CONFIG = require('../../env/config.json');
 window.CONFIG = CONFIG;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
