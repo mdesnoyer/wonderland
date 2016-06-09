@@ -51,9 +51,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.body': 'See your high-performance thumbnails now. Get started by creating an account.',
 
             'copy.signOut.title': 'Sign Out',
-            // TODO - needs @username to work
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
-            // 'copy.signOut.heading': 'You are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
 
             'copy.videosPage.title': 'Video Library',
