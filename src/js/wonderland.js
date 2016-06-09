@@ -18,7 +18,7 @@ import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import AnalyzeVideoPage from './components/pages/AnalyzeVideoPage';
 import VideosPage from './components/pages/VideosPage';
-import VideoPage from './components/pages/VideoPage';
+import VideoPageOwner from './components/pages/VideoPageOwner';
 import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
 import PendingAccountPage from './components/pages/PendingAccountPage';
@@ -70,7 +70,7 @@ render((
 
         <Route path={UTILS.DRY_NAV.VIDEO_ANALYZE.URL} component={AnalyzeVideoPage} />
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
-        <Route path="/video/:videoId/" component={VideoPage} />
+        <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />

@@ -242,6 +242,46 @@ var UTILS = {
     modalActiveIcon: function(isActive) {
         return isActive ? 'search-plus' : 'search-minus';
     },
+    fixThumbnails: function(rawThumbnails) {
+        var defaults = [],
+            customs = [],
+            neons = [],
+            nonNeons = []
+        ;
+        // Pass 1 - sort into `default`, `custom` and `neon`
+        rawThumbnails.map(function(rawThumbnail, i) {
+            switch (rawThumbnail.type) {
+                case 'neon':
+                    neons.push(rawThumbnail);
+                    break;
+                case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'default':
+                    defaults.push(rawThumbnail);
+                    break;
+                default:
+                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
+                    break;
+            }
+        });
+        // Pass 2 - sort `custom` by rank ASC
+        customs.sort(function(a, b) {
+            return a.rank - b.rank;
+        });
+        // Pass 3 - sort `neon` by rank ASC
+        neons.sort(function(a, b) {
+            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
+        });
+        // Pass 4 - assemble the output
+        nonNeons = customs.concat(defaults);
+        if (nonNeons.length > 0) {
+            return neons.concat(nonNeons[0]);
+        }
+        else {
+            return neons;
+        }
+    },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {
         return text.toString().toLowerCase()

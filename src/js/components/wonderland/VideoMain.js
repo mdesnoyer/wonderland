@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Thumbnails from './Thumbnails';
 import VideoInfoBox from './VideoInfoBox';
+import VideoSharer from './VideoSharer';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +20,8 @@ var VideoMain = React.createClass({
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
-        isServingEnabled: React.PropTypes.bool.isRequired
+        isServingEnabled: React.PropTypes.bool.isRequired,
+        shareToken: React.PropTypes.string.isRequired
     },
     render: function() {
         var self = this,
@@ -44,6 +46,10 @@ var VideoMain = React.createClass({
                             videoLink={self.props.videoLink}
                             duration={self.props.duration}
                             url={self.props.url}
+                        />
+                        <VideoSharer
+                            shareToken={self.props.shareToken}
+                            videoId={self.props.videoId}
                         />
                     </aside>
                 </div>
