@@ -39,7 +39,7 @@ var VideosPage = React.createClass({
         self.getAccount()
             .then(function (account) {
                 self.setState({
-                    isServingEnabled: account.isServingEnabled,
+                    isServingEnabled: account.isServingEnabled
                 });
             })
             .catch(function (err) {
@@ -49,7 +49,7 @@ var VideosPage = React.createClass({
             .then(function(userData) {
                 if (userData) {
                     self.setState({
-                        displayName: userData.displayName,
+                        displayName: userData.displayName
                     });
                 }
             })
