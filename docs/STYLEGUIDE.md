@@ -37,6 +37,8 @@ If in doubt, defer to the code. If still in doubt, ask.
 }
 ```
 
+- We avoid inline styles wherever possible
+
 ## Editors
 
 - Sublime Text 3.0 is the preferred editor but you are fre to use your own.
