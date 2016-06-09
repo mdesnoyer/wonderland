@@ -14,15 +14,39 @@ import UTILS from '../../modules/utils';
 
 var SignOutPage = React.createClass({
 	// mixins: [ReactDebugMixin],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function() {
+        return {
+            displayName: ''
+        }
+    },
     componentWillMount: function() {
-        SESSION.end()
-            .catch(function (err) {
-                console.error(err);
-            });
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    self.setState({
+                        displayName: userData.displayName
+                    }, function() {
+                        SESSION.end();
+                    });
+                })
+                .catch(function(err) {
+                    console.error(err);
+                })
+            ;
+        }
+        else {
+            // Play nice, transport the user to the Sign In page
+            self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+        }
     },
     render: function() {
-        var heading = T.get('copy.signOut.heading', { 
-                // '@username': 'TODO'
+        var self = this,
+            heading = T.get('copy.signOut.heading', {
+                '@displayName': self.state.displayName
             }),
             body = T.get('copy.signOut.body', {
                 '@link': UTILS.DRY_NAV.SIGNIN.URL
