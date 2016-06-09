@@ -28,14 +28,6 @@ var VideosPage = React.createClass({
             displayName: ''
         };
     },
-    componentDidMount: function() {
-        var self = this;
-        self._isMounted = true;
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
-    },
     componentWillMount: function() {
         var self = this,
             signUpRef = cookie.load('signUpRef')
@@ -53,32 +45,22 @@ var VideosPage = React.createClass({
             .catch(function (err) {
                 E.raiseError(err);
             });
-
-        if (SESSION.active()) {
-            SESSION.user()
-                .then(function(userData) {
-                    if (userData) {
-                        if (self._isMounted) {
-                            self.setState({
-                                displayName: userData.displayName,
-                            });
-                        }
-                    }
-                })
-                .catch(function(err) {
-                    console.log(err);
-                })
-            ;
-        }
-        else {
-            // Do nothing
-        }
+        SESSION.user()
+            .then(function(userData) {
+                self.setState({
+                    displayName: userData.displayName,
+                });
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+        ;
     },
     render: function() {
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                '@username' : self.state.displayName
+                '@displayName' : self.state.displayName
             })
         ;
         return (

@@ -59,7 +59,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videosPage.title': 'Video Library',
             'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
-            'copy.videosPage.body': '@username, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.videosPage.body': '@displayName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
