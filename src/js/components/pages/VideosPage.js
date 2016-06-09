@@ -47,9 +47,11 @@ var VideosPage = React.createClass({
             });
         SESSION.user()
             .then(function(userData) {
-                self.setState({
-                    displayName: userData.displayName,
-                });
+                if (userData) {
+                    self.setState({
+                        displayName: userData.displayName,
+                    });
+                }
             })
             .catch(function(err) {
                 console.log(err);
