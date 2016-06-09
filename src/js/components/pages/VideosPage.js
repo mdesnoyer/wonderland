@@ -12,6 +12,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import cookie from 'react-cookie';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,7 +24,8 @@ var VideosPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: false
+            isServingEnabled: false,
+            displayName: ''
         };
     },
     componentWillMount: function() {
@@ -43,12 +45,24 @@ var VideosPage = React.createClass({
             .catch(function (err) {
                 E.raiseError(err);
             });
+        SESSION.user()
+            .then(function(userData) {
+                if (userData) {
+                    self.setState({
+                        displayName: userData.displayName
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+        ;
     },
     render: function() {
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                // '@username': 'TODO'
+                '@displayName' : self.state.displayName
             })
         ;
         return (
