@@ -15,6 +15,7 @@ import Icon from '../core/Icon';
 var VideoHeader = React.createClass({
     // mixins: [ReactDebugMixin],
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         handleVideoOpenToggle: React.PropTypes.func,
         showVideoOpenToggle: React.PropTypes.bool.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,

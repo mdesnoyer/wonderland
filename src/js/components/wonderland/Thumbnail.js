@@ -15,6 +15,7 @@ import Hud from './Hud';
 var Thumbnail = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         isEnabled: React.PropTypes.bool.isRequired,
         index: React.PropTypes.number.isRequired,
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
@@ -130,6 +131,7 @@ var Thumbnail = React.createClass({
                     </figcaption>
                 </figure>
                 <Hud
+                    isGuest={self.props.isGuest}
                     stats={self.props.thumbnailStats}
                     cookedNeonScore={self.props.cookedNeonScore}
                 />

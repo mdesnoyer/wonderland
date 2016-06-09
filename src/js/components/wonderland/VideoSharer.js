@@ -13,8 +13,10 @@ import Message from '../wonderland/Message';
 var VideoSharer = React.createClass({
     mixins: [AjaxMixin, Account], // ReactDebugMixin
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         shareToken: React.PropTypes.string.isRequired,
-        videoId: React.PropTypes.string.isRequired
+        videoId: React.PropTypes.string.isRequired,
+        accountId: React.PropTypes.string
     },
     getInitialState: function() {
         var self = this;
@@ -22,6 +24,7 @@ var VideoSharer = React.createClass({
             mode: 'silent', // silent/loading/error/success/bonus
             shareToken: self.props.shareToken,
             videoId: self.props.videoId,
+            accountId: self.props.accountId,
             shareUrl: '',
             shortUrl: ''
         }
@@ -32,7 +35,7 @@ var VideoSharer = React.createClass({
     componentWillUpdate: function(nextProps, nextState) {
         var self = this;
         if ((self.state.mode !== nextState.mode) && (nextState.mode === 'loading')) {
-            self.generateShareUrl()
+            self.generateShareUrl();
         }
     },
     componentWillUnmount: function(e) {
@@ -59,7 +62,7 @@ var VideoSharer = React.createClass({
                 break;
             case 'success':
                 // /share/video/:videoId/account/:accountId/token/:token/
-                urlToDisplay = window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/';
+                urlToDisplay = self.state.shareUrl;
                 controlClass = 'control';
                 break;
             case 'bonus':
@@ -103,21 +106,27 @@ var VideoSharer = React.createClass({
             mode: 'loading'
         });
     },
+    assembleShareUrl: function(videoId, accountId, shareToken) {
+        return window.location.origin + '/share/video/' + videoId + '/account/' + accountId + '/token/' + shareToken + '/'
+    },
     generateShareUrl: function() {
         var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    accountId: account.accountId,
-                }, function() {
-                    // We now have the accountId and the videoId, lets check
-                    // the shareToken
-                    if (self.state.shareToken) {
-                        self.setState({
-                            mode: 'success'
-                        });  
-                    }
-                    else {
+        if (self.props.isGuest) {
+            // We already know all the info from the URL
+            self.setState({
+                mode: 'success',
+                shareUrl: self.assembleShareUrl(self.state.videoId, self.state.accountId, self.state.shareToken)
+            }, function() {
+                UTILS.shortenUrl(self.state.shareUrl, self.handleUrl);
+            });
+        }
+        else {
+            // We need to go get it...
+            self.getAccount()
+                .then(function (account) {
+                    self.setState({
+                        accountId: account.accountId,
+                    }, function() {
                         self.GET('videos/share', {
                             data: {
                                 video_id: self.state.videoId
@@ -126,7 +135,8 @@ var VideoSharer = React.createClass({
                             .then(function(json) {
                                 self.setState({
                                     mode: 'success',
-                                    shareToken: json.share_token
+                                    shareToken: json.share_token,
+                                    shareUrl: self.assembleShareUrl(self.state.videoId, self.state.accountId, json.share_token)
                                 }, function() {
                                     UTILS.shortenUrl(self.state.shareUrl, self.handleUrl);
                                 });
@@ -160,17 +170,17 @@ var VideoSharer = React.createClass({
                                 }
                             })
                         ;
-                    }
-                });
-            })
-            .catch(function (err) {
-                console.log(err);
-                E.raiseError(err);
-                self.setState({
-                    mode: 'error'
-                });
-            })
-        ;
+                    });
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    E.raiseError(err);
+                    self.setState({
+                        mode: 'error'
+                    });
+                })
+            ;
+        }
     },
     handleUrl: function(response) {
         var self = this;

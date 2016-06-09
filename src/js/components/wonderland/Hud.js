@@ -11,13 +11,14 @@ import T from '../../modules/translation';
 var Hud = React.createClass({
     // mixins: [ReactDebugMixin],
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         stats: React.PropTypes.object
     },
     render: function() {
-        var self = this
-            //,
-            //neonScore = UTILS.NEON_SCORE_ENABLED ? <li><Icon type="neon" title="Neonscore" />{self.props.cookedNeonScore}</li> : false
-        ;
+        var self = this;
+        if (self.props.isGuest) {
+            return false;
+        }
         if (self.props.stats) {
             return (
                 <ul className="wonderland-hud">
