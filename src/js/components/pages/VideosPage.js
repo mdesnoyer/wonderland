@@ -12,6 +12,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import cookie from 'react-cookie';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,8 +24,17 @@ var VideosPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: false
+            isServingEnabled: false,
+            displayName: ''
         };
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
     },
     componentWillMount: function() {
         var self = this,
@@ -37,18 +47,38 @@ var VideosPage = React.createClass({
         self.getAccount()
             .then(function (account) {
                 self.setState({
-                    isServingEnabled: account.isServingEnabled
+                    isServingEnabled: account.isServingEnabled,
                 });
             })
             .catch(function (err) {
                 E.raiseError(err);
             });
+
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    if (userData) {
+                        if (self._isMounted) {
+                            self.setState({
+                                displayName: userData.displayName,
+                            });
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+        else {
+            // Do nothing
+        }
     },
     render: function() {
         var self = this,
             heading = T.get('copy.videosPage.heading'),
             body = T.get('copy.videosPage.body', {
-                // '@username': 'TODO'
+                '@username' : self.state.displayName
             })
         ;
         return (
