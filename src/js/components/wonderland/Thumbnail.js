@@ -111,7 +111,10 @@ var Thumbnail = React.createClass({
                             onClick={self.handleToggleModal}
                             className="wonderland-thumbnail__indicator"
                         >
-                            <Icon type={enabledIndicator} />
+                            <Icon
+                                type={enabledIndicator}
+                                nowrap={true}
+                            />
                         </span>
                         <ThumbBox
                             copyUrl={self.props.url}

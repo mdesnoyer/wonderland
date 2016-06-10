@@ -34,7 +34,7 @@ var AnalyzeVideoForm = React.createClass({
         return {
             accessToken: '',
             refreshToken: '',
-            mode: 'silent', // loading/disabled/silent/error
+            mode: 'quiet', // loading/disabled/quiet/error
             videoUrl: '',
             optionalDefaultThumbnailUrl: '',
             optionalTitle: '',
@@ -54,7 +54,7 @@ var AnalyzeVideoForm = React.createClass({
                 self.setState({
                     currentVideoCount: json.video_posts,
                     maxVideoCount: json.max_video_posts,
-                    mode: 'silent'
+                    mode: 'quiet'
                 });
             })
             .catch(function(err) {
@@ -63,7 +63,7 @@ var AnalyzeVideoForm = React.createClass({
                 switch (err.code) {
                     case 404:
                         self.setState({
-                            mode: 'silent'
+                            mode: 'quiet'
                         })
                         break;
                     default:
@@ -104,7 +104,7 @@ var AnalyzeVideoForm = React.createClass({
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium is-disabled';
             }
-            else if (!self.state.videoUrl && self.state.mode === 'silent') {
+            else if (!self.state.videoUrl && self.state.mode === 'quiet') {
                 buttonClassName = 'button is-medium is-primary is-disabled';
                 inputClassName = 'input is-medium';
             }
@@ -189,7 +189,7 @@ var AnalyzeVideoForm = React.createClass({
     resetForm: function() {
         var self = this;
         self.setState({
-            mode: 'silent',
+            mode: 'quiet',
             videoUrl: '',
             optionalTitle: '',
             optionalDefaultThumbnailUrl: ''
@@ -226,7 +226,7 @@ var AnalyzeVideoForm = React.createClass({
         self.POST('videos', options)
             .then(function(json) {
                 self.setState({
-                    mode: 'silent'
+                    mode: 'quiet'
                 });
                 if (self.props.postHook) {
                     self.props.postHook();

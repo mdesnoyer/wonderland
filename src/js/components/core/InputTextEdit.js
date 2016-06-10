@@ -28,7 +28,7 @@ var InputTextEdit = React.createClass({
         ;
         return {
             value: (self.props.value === null) ? self.props.fallbackValue : self.props.value,
-            mode: isProcessing ? 'processing' : 'silent' // loading/success/error/silent/processing
+            mode: isProcessing ? 'processing' : 'quiet' // loading/success/error/quiet/processing
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -60,7 +60,7 @@ var InputTextEdit = React.createClass({
             case 'loading':
                 iconType = 'fa fa-cog fa-spin';
                 break;
-            case 'silent':
+            case 'quiet':
                 iconType = 'fa fa-pencil';
                 break;
         }
@@ -141,7 +141,7 @@ var InputTextEdit = React.createClass({
         var self = this;
         setTimeout(function() {
             self.setState({
-                mode: 'silent'
+                mode: 'quiet'
             })
         }, fadeTime);
     }
