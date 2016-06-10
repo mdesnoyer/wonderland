@@ -121,6 +121,16 @@ var UNKNOWN_STRING = '?',
 ;
 
 var UTILS = {
+    ACCESS_LEVEL: {
+        NONE: 0,
+        READ: 1 << 0,
+        UPDATE: 1 << 1,
+        CREATE: 1 << 2,
+        DELETE: 1 << 3,
+        ACCOUNT_EDITOR: 1 << 4,
+        INTERNAL_ONLY_USER: 1 << 5,
+        GLOBAL_ADMIN: 1 << 6,
+    },
     VIDEO_STATE: {
         unknown: {
             mapping: 'dark'
@@ -240,6 +250,9 @@ var UTILS = {
     },
     leadingZero: function(x) {
         return (x < 10) ? ('0' + x) : x;
+    },
+    hasAccessLevel: function(userAccessLevel, accessLevelToCheck) {
+        return userAccessLevel & accessLevelToCheck;
     },
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds

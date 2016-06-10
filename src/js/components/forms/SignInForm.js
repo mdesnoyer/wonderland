@@ -11,6 +11,8 @@ import T from '../../modules/translation';
 import E from '../../modules/errors';
 import Icon from '../core/Icon';
 import {Link} from 'react-router';
+import ModalParent from '../core/ModalParent';
+import AccountMasqueradeModal from '../wonderland/AccountMasqueradeModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,6 +32,7 @@ var SignInForm = React.createClass({
     getInitialState: function() {
         return {
             isError: false,
+            isModalActive: false,
             isLoading: false
         }
     },
@@ -56,62 +59,80 @@ var SignInForm = React.createClass({
                 inputClassName = 'input is-medium';
             }
         return (
-            <form onSubmit={self.handleSubmit}>
-                {messageNeededComponent}
-                <fieldset>
-                    {legendElement}
-                    <p className="control">
-                        <input className={inputClassName}
-                            name="email"
-                            type="text"
-                            required
-                            ref="email"
-                            minLength="6"
-                            maxLength="1024"
-                            placeholder={T.get('email')}
-                            defaultValue={SESSION.rememberedEmail()}
-                        />
-                    </p>
-                    <p className="control">
-                        <input className={inputClassName}
-                            name="password"
-                            type="password"
-                            required
-                            ref="password"
-                            minLength="8"
-                            maxLength="64"
-                            placeholder={T.get('copy.passwordInitial')}
-                        />
-                    </p>
-                    <div className="columns">
-                        <div className="column is-6">
-                            <label className="checkbox" htmlFor="isRememberMe">
-                                <input type="checkbox"
-                                    className="wonderland-checkbox--checkbox"
-                                    ref="isRememberMe"
-                                    id="isRememberMe"
-                                    defaultValue={SESSION.rememberMe()}
-                                    defaultChecked={SESSION.rememberMe()}
-                                />
-                                {T.get('rememberMe')}
-                            </label>
+            <div>
+                <form onSubmit={self.handleSubmit}>
+                    {messageNeededComponent}
+                    <fieldset>
+                        {legendElement}
+                        <p className="control">
+                            <input className={inputClassName}
+                                name="email"
+                                type="text"
+                                required
+                                ref="email"
+                                minLength="6"
+                                maxLength="1024"
+                                placeholder={T.get('email')}
+                                defaultValue={SESSION.rememberedEmail()}
+                            />
+                        </p>
+                        <p className="control">
+                            <input className={inputClassName}
+                                name="password"
+                                type="password"
+                                required
+                                ref="password"
+                                minLength="8"
+                                maxLength="64"
+                                placeholder={T.get('copy.passwordInitial')}
+                            />
+                        </p>
+                        <div className="columns">
+                            <div className="column is-6">
+                                <label className="checkbox" htmlFor="isRememberMe">
+                                    <input type="checkbox"
+                                        className="wonderland-checkbox--checkbox"
+                                        ref="isRememberMe"
+                                        id="isRememberMe"
+                                        defaultValue={SESSION.rememberMe()}
+                                        defaultChecked={SESSION.rememberMe()}
+                                    />
+                                    {T.get('rememberMe')}
+                                </label>
+                            </div>
+                            <div className="column is-6 ">
+                                <Link className="is-pulled-right" activeClassName="wonderland-active" to={UTILS.DRY_NAV.USER_FORGOT.URL}>{T.get('nav.forgotUser')}</Link>
+                            </div>
                         </div>
-                        <div className="column is-6 ">
-                            <Link className="is-pulled-right" activeClassName="wonderland-active" to={UTILS.DRY_NAV.USER_FORGOT.URL}>{T.get('nav.forgotUser')}</Link>
-                        </div>
-                    </div>
-                    <p className="has-text-centered">
-                        <button
-                            className={buttonClassName}
-                            type="submit"
-                        >
-                            <Icon type="sign-in" />
-                            {T.get('signIn')}
-                        </button>
-                    </p>
-                </fieldset>
-            </form>
+                        <p className="has-text-centered">
+                            <button
+                                className={buttonClassName}
+                                type="submit"
+                            >
+                                <Icon type="sign-in" />
+                                {T.get('signIn')}
+                            </button>
+                        </p>
+                    </fieldset>
+                </form>
+                <ModalParent
+                    isModalActive={self.state.isModalActive}
+                    handleToggleModal={self.handleToggleModal}
+                    isModalContentMax={false}
+                >
+                    <AccountMasqueradeModal />
+                </ModalParent>
+            </div>
         );
+    },
+    handleToggleModal: function() {
+        var self = this;
+        self.setState({
+            isModalActive: false
+        }, function() {
+            SESSION.end();
+            self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+        });
     },
     handleSubmit: function (e) {
         var self = this;
@@ -146,15 +167,24 @@ var SignInForm = React.createClass({
                 })
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
-                    if (SESSION.rememberMe(isRememberMe)) {
-                        SESSION.rememberedEmail(email);
-                    }
                     self._isSubmitted = false;
-                    self.setState({
-                        isError: false,
-                        isLoading: false
-                    });
-                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                    if (typeof(res.account_ids[0]) === 'undefined') {
+                        self.setState({
+                            isModalActive: true,
+                            isError: false,
+                            isLoading: false
+                        });
+                    }
+                    else {
+                        if (SESSION.rememberMe(isRememberMe)) {
+                            SESSION.rememberedEmail(email);
+                        }
+                        self.setState({
+                            isError: false,
+                            isLoading: false
+                        });
+                        self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                    }
                 })
                 .catch(function (err) {
                     E.checkForError('Sorry, we could not sign you in.', false);
