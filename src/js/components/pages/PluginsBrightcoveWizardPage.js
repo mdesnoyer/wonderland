@@ -13,9 +13,6 @@ import T from '../../modules/translation';
 
 var PluginsBrightcoveWizardPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     render: function() {
         return (
             <div>

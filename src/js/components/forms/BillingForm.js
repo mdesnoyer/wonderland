@@ -12,9 +12,6 @@ import UTILS from '../../modules/utils';
 
 var BillingForm = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     propTypes: {
         showLegend: React.PropTypes.bool.isRequired
     },

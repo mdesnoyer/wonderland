@@ -18,9 +18,6 @@ import Account from '../../mixins/Account';
 
 var IntegrationsBrightcovePage = React.createClass({
     mixins: [Secured, AjaxMixin, Account], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     componentWillMount: function() {
         var self = this
         ;
