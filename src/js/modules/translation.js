@@ -38,6 +38,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
+            'action.set': 'Set',
             'action.resetPassword': 'Reset Password',
 
             rememberMe: 'Remember',
@@ -51,16 +52,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.body': 'See your high-performance thumbnails now. Get started by creating an account.',
 
             'copy.signOut.title': 'Sign Out',
-            // TODO - needs @username to work
-            // 'copy.signOut.heading': '@username you are now signed out. Thanks for using Neon.',
-            'copy.signOut.heading': 'You are now signed out. Thanks for using Neon.',
+            'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
 
             'copy.videosPage.title': 'Video Library',
             'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
-            // 'copy.videosPage.body': '@username, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
-            'copy.videosPage.body': 'See your high-performance thumbnails now. Get started by creating an account.',
+            'copy.videosPage.body': '@displayName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
@@ -257,6 +255,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.userSettings': 'User Settings',
 
             // Error messages
+
+            'error.invalidAccountId': 'Naughty naughty. This Account Id is not valid. Please try again.',
 
             'warning.noMoreVideosHeader': 'Videos',
             'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',

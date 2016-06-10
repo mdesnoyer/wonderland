@@ -5,6 +5,9 @@ This document is very much work in progress, please help and if in doubt, lets t
 ## Language
 
 - `Sign Up`, `Sign In`, `Sign Out` to be used in code to standardise how we talk about this process
+- We use the terms `Owner` and `Guest` to refer to ownership of a Video.
+  - If a User (Signed In OR Signed Out) is viewing their own Video, they are the `Owner`.
+  - If a User (Signed In OR Signed Out) is viewing another User's Video then they are a `Guest`
 
 ## Javascript
 
@@ -36,6 +39,8 @@ If in doubt, defer to the code. If still in doubt, ask.
     text-align: center;
 }
 ```
+
+- We avoid inline styles wherever possible
 
 ## Editors
 

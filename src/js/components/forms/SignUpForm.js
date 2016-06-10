@@ -38,7 +38,7 @@ var SignUpForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (self.props.signUpRef && !SESSION.active()) {
-            cookie.save('signUpRef', self.props.signUpRef, { path: UTILS.COOKIE_DEFAULT_PATH });
+            cookie.save('signUpRef', self.props.signUpRef, {path: UTILS.COOKIE_DEFAULT_PATH});
         }
         if (SESSION.active()) {
             self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);

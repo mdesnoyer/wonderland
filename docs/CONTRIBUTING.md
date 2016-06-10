@@ -9,7 +9,7 @@
 
 - When working on feature, cut a branch from `development`, give it a sensible name, e.g. `eh-123` where EH is your initials and 123 is the ticket number OR `eh-new-feature-thing`.
 - Try to keep (where possible) to *One Ticket = One Branch = One Pull Request*, we'd rather have two or three smaller pieces of work than one behemoth. This also makes reverting and finding problems WAY easier.
-- Work on this branch, when your feature is complete, open a Pull Request against `development` (you may need to rebase) and assign to a Senior Engineer (or other person that is not you).
+- Work on this branch, when your feature is complete, open a Pull Request against `development` (you may need to rebase, see below) and assign to a Senior Neon Engineer.
 - Make sure you can run `gulp live` against it and it builds.
 - Make sure you can run `gulp debug` against it and it builds.
 - Title the Pull Request of the form - `Sensible Title #123`.
@@ -25,6 +25,10 @@
 git branch -d branchname
 git push origin --delete branchname
 ```
+
+### Rebasing
+
+- TODO
 
 ## Development -> Staging
 

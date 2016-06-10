@@ -14,9 +14,6 @@ import T from '../../modules/translation';
 
 var IntegrationsPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     render: function() {
         return (
             <div>

@@ -22,9 +22,6 @@ import SnippetGrabber from '../core/SnippetGrabber';
 
 var RadioInputForm = React.createClass({
     mixins: [AjaxMixin, Account], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     propTypes: {
         isActive: React.PropTypes.bool,
         formMode: React.PropTypes.string,
@@ -117,7 +114,7 @@ var RadioInputForm = React.createClass({
             isActive: e
         },  function(){
                 self.PUT('integrations/brightcove', {
-                    data:{
+                    data: {
                         integration_id: self.state.integrationId,
                         account_id: self.state.accountId,
                         [self.props.radioType]: e

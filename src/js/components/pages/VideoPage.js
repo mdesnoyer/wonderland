@@ -15,9 +15,6 @@ import UTILS from '../../modules/utils';
 
 var VideoPage = React.createClass({
     mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     propTypes: {
         videoId: React.PropTypes.string
     },
@@ -36,7 +33,8 @@ var VideoPage = React.createClass({
             })
             .catch(function (err) {
                 E.raiseError(err);
-            });
+            })
+        ;
     },
     render: function() {
         var self = this;
