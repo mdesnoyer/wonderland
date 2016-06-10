@@ -15,9 +15,6 @@ import UTILS from '../../modules/utils';
 
 var VideoPage = React.createClass({
     mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     propTypes: {
         videoId: React.PropTypes.string
     },

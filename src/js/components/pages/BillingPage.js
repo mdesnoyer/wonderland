@@ -14,9 +14,6 @@ import Secured from '../../mixins/Secured';
 
 var BillingPage = React.createClass({
     mixins: [Secured], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     render: function() {
         return (
             <div>

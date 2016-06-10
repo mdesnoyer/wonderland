@@ -44,7 +44,8 @@ var AccountSettingsTab3 = React.createClass({
                     isLoading: false,
                     isError: true
                 });
-            });
+            })
+        ;
     },
     render: function() {
         var self = this,
