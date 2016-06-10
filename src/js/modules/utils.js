@@ -213,6 +213,9 @@ var UTILS = {
         },
         VIDEO_ANALYZE: {
             URL: '/video/analyze/'
+        },
+        URL_SHORTENER: {
+            URL: '/urlshortener/'
         }
     },
     VERSION: '1.9.1',

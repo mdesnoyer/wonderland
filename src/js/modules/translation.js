@@ -31,6 +31,7 @@ const _DEFAULT_LOCALE = 'en-US',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
+            url: 'URL',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -39,6 +40,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.next': 'Next',
             'action.save': 'Save',
             'action.resetPassword': 'Reset Password',
+            'action.shortenURL': 'Shorten URL',
 
             rememberMe: 'Remember',
 
@@ -233,6 +235,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.urlShortener.title': 'URL Shortener',
+            'copy.urlShortener.heading': 'URL Shortener',
+            'copy.urlShortener.body': 'Enter a Neon URL below to recieve a shortened URL',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
