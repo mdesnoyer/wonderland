@@ -32,6 +32,7 @@ const _DEFAULT_LOCALE = 'en-US',
             save: 'Save',
             update: 'Update',
             url: 'URL',
+            copy: 'Copy',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -241,6 +242,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.urlShortener.title': 'URL Shortener',
             'copy.urlShortener.heading': 'URL Shortener',
             'copy.urlShortener.body': 'Enter a Neon URL below to recieve a shortened URL',
+            'copy.urlShortener.messageHeading': 'URL Shortener Error',
+            'copy.urlShortener.messageBody': 'Must be an external URL.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

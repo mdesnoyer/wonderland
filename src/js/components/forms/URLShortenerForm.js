@@ -5,6 +5,7 @@ import React from 'react';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import reqwest from 'reqwest';
+import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,6 +18,11 @@ var URLShortenerForm = React.createClass({
     },
     componentWillUnmount: function(e) {
         E.clearErrors();
+    },
+     componentDidMount: function() {
+        var self = this,
+            c = new Clipboard(self.refs.copyUrl)
+        ;
     },
     handleSubmit: function(e) {
         var self = this;
@@ -35,10 +41,17 @@ var URLShortenerForm = React.createClass({
                 }
             })
             .then(function(response) {
-                self.setState({
-                    mode: 'success',
-                    shortURL: response.data.url
-                });
+                if (response.status_code === 500) {
+                    self.setState({
+                        mode: 'error'
+                    });
+                }
+                else {
+                    self.setState({
+                        mode: 'success',
+                        shortURL: response.data.url
+                    });
+                }
             })
             .fail(function(error) {
                 console.log(error);
@@ -49,21 +62,27 @@ var URLShortenerForm = React.createClass({
         });
     },
     render: function() {
-        var self = this;
+        var self = this,
+            messageNeededComponent = false;
+        if (self.state.mode === 'error') {
+            messageNeededComponent = <Message header={T.get('copy.urlShortener.messageHeading')} body={T.get('copy.urlShortener.messageBody')} flavour="danger" />
+        }
         return (
             <div>
                 <form onSubmit={self.handleSubmit}>
+                    {messageNeededComponent}
                     <fieldset>
                         <p className={'control is-' + self.state.mode}>
-                            <input
-                                className={'input is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
+                            <textarea
+                                className={'textarea is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
                                 type="url"
                                 ref="url"
                                 required
                                 minLength="6"
                                 maxLength="1024"
                                 placeholder={T.get('url')}
-                            />
+                            >
+                            </textarea>
                         </p>
                         <p className="has-text-centered">
                             <button
@@ -73,11 +92,29 @@ var URLShortenerForm = React.createClass({
                                 {T.get('action.shortenURL')}
                             </button>
                         </p>
+
+
+                        <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
+                            <output
+                                className="input small"
+                                type="url"
+                                readOnly
+                                value={self.state.shortURL}
+                            />
+
+                            <button
+                                className="button small"
+                                type="button"
+                                ref="copyUrl"
+                                onClick={self.handleCopyUrlClick}
+                                data-clipboard-text={self.state.shortURL}
+                            >
+                                {T.get('copy')}
+                            </button>
+                        </p>
+
                     </fieldset>
                 </form>
-                <p className={'content' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
-                    <a href={self.state.shortURL}>{self.state.shortURL}</a>
-                </p>
             </div>
         );
     }
