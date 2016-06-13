@@ -19,8 +19,8 @@ var ShareSection = React.createClass({
         debugger
         //the variables below are used to make the formatting consistent with the React Share package
         var self = this,
-            shareUrl = 'https://neon-lab.com/',
-            title = 'Check out this Neon Image Collection!' ,
+            shareUrl = 'https://localhost:3000/video/6qycdbn2b8cvsvcv7xed0mjie/',
+            title = 'Check out this Neon Score of ' + self.props.score + '!' ,
             customColorBackground = {fill:'#aaa'}
         ;
         return (
@@ -46,7 +46,7 @@ var ShareSection = React.createClass({
                 </TwitterShareButton>
                 <LinkedinShareButton
                     url={shareUrl}
-                    title={"Hey friends and colleague of Linkedin check out this neon Image!"}
+                    title={"Hey friends and colleague play of Linkedin check out this neon Image!"}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <LinkedinIcon
@@ -54,7 +54,7 @@ var ShareSection = React.createClass({
                         size={32}
                         round />
                 </LinkedinShareButton>
-                <a href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + shareUrl} target="_top">
+                <a href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + self.props.url} target="_top">
                     <div className="column is-3">
                         <div className="share-section-div-circle-svg">
                             <svg viewBox="0 0 64 64" className="share-section-circle-svg">
