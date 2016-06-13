@@ -73,10 +73,6 @@ var ThumbnailInfoBox = React.createClass({
                         <dd className="wonderland-dd">
                             <FuzzyTime date={self.props.updated} />
                         </dd>
-                    <dt className="wonderland-dt">Share</dt>
-                        <dd className="wonderland-dt">
-                            <ShareSection url={self.props.url} score={self.props.cookedNeonScore} />
-                        </dd>
                     {/*<dt className="wonderland-dt">Statistics</dt>*/}
                 </dl>
 

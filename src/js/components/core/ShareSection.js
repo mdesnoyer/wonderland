@@ -16,18 +16,17 @@ const LinkedinIcon = generateShareIcon('linkedin');
 
 var ShareSection = React.createClass({
     render: function() {
+        debugger
         //the variables below are used to make the formatting consistent with the React Share package
         var self = this,
-            shareUrl = self.props.url,
-            title = 'Check out this Neon Score of ' + self.props.score + '!' ,
+            shareUrl = 'https://neon-lab.com/',
+            title = 'Check out this Neon Image Collection!' ,
             customColorBackground = {fill:'#aaa'}
         ;
         return (
             <div className='columns container'>
                 <FacebookShareButton
                     url={shareUrl}
-                    quote='Checkout This Image from Neon Labs!'
-                    appId='184484190795'
                     className={'column is-3 share-section-icon-color'}
                     >
                     <FacebookIcon
@@ -37,7 +36,7 @@ var ShareSection = React.createClass({
                 </FacebookShareButton>
                 <TwitterShareButton
                     url={shareUrl}
-                    title={'Thanks @neon, you rock, you got me a ' + self.props.score + '!'}
+                    title={'Thanks @neon, you rock!'}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <TwitterIcon
@@ -47,7 +46,7 @@ var ShareSection = React.createClass({
                 </TwitterShareButton>
                 <LinkedinShareButton
                     url={shareUrl}
-                    title={"I scored a "+ self.props.score +" with Neon!"}
+                    title={"Hey friends and colleague of Linkedin check out this neon Image!"}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <LinkedinIcon
@@ -55,7 +54,7 @@ var ShareSection = React.createClass({
                         size={32}
                         round />
                 </LinkedinShareButton>
-                <a href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + self.props.url} target="_top">
+                <a href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + shareUrl} target="_top">
                     <div className="column is-3">
                         <div className="share-section-div-circle-svg">
                             <svg viewBox="0 0 64 64" className="share-section-circle-svg">
