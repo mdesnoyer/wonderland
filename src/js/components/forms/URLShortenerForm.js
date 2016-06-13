@@ -2,27 +2,53 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import E from '../../modules/errors';
-import AjaxMixin from '../../mixins/Ajax';
-import Icon from '../core/Icon';
-import SESSION from '../../modules/session';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var URLShortenerForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
-            mode: 'quiet' // quiet|error|loading|success
+            mode: 'quiet', // quiet|error|loading|success
+            shortURL: ''
         }
+    },
+    componentWillUnmount: function(e) {
+        E.clearErrors();
     },
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        console.log('clicked');
+        self.setState({
+            mode: 'loading'
+        }, function() {
+            reqwest({
+                url: 'https://api-ssl.bitly.com/v3/shorten',
+                method: 'GET',
+                type: 'jsonp',
+                data: {
+                    longUrl: self.refs.url.value,
+                    access_token: UTILS.BITLY_ACCESS_TOKEN,
+                    domain: 'bit.ly'
+                }
+            })
+            .then(function(response) {
+                self.setState({
+                    mode: 'success',
+                    shortURL: response.data.url
+                });
+            })
+            .fail(function(error) {
+                console.log(error);
+                self.setState({
+                    mode: 'error'
+                });
+            })
+
+
+        });
     },
     render: function() {
         var self = this;
