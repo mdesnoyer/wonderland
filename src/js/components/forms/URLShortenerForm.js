@@ -35,6 +35,7 @@ var URLShortenerForm = React.createClass({
                 }
             })
             .then(function(response) {
+                self.postShortUrl(response.data.url);
                 self.setState({
                     mode: 'success',
                     shortURL: response.data.url
@@ -46,36 +47,42 @@ var URLShortenerForm = React.createClass({
                     mode: 'error'
                 });
             })
-
-
         });
+    },
+    postShortUrl: function(url) {
+        console.log(url);
     },
     render: function() {
         var self = this;
         return (
-            <form onSubmit={self.handleSubmit}>
-                <fieldset>
-                    <p className={'control is-' + self.state.mode}>
-                        <input
-                            className={'input is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                            type="url"
-                            ref="url"
-                            required
-                            minLength="6"
-                            maxLength="1024"
-                            placeholder={T.get('url')}
-                        />
-                    </p>
-                    <p className="has-text-centered">
-                        <button
-                            className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                            type="submit"
-                        >
-                            {T.get('action.shortenURL')}
-                        </button>
-                    </p>
-                </fieldset>
-            </form>
+            <div>
+                <form onSubmit={self.handleSubmit}>
+                    <fieldset>
+                        <p className={'control is-' + self.state.mode}>
+                            <input
+                                className={'input is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
+                                type="url"
+                                ref="url"
+                                required
+                                minLength="6"
+                                maxLength="1024"
+                                placeholder={T.get('url')}
+                            />
+                        </p>
+                        <p className="has-text-centered">
+                            <button
+                                className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
+                                type="submit"
+                            >
+                                {T.get('action.shortenURL')}
+                            </button>
+                        </p>
+                    </fieldset>
+                </form>
+                <p className={'content' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
+                    <a href={self.state.shortURL}>{self.state.shortURL}</a>
+                </p>
+            </div>
         );
     }
 })
