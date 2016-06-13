@@ -70,17 +70,8 @@ var PlayerList = React.createClass({
                                 {players}
                             </tbody>
                         </table>
-                        <p className="control">
-                            <button className="button is-primary" onClick={self.clicked}>Refresh</button>
-                        </p>
                     </div>
             );
-    },
-    clicked: function() {
-      var self = this;
-        if(self.props.refreshBrightCovePlayers) {
-            self.props.refreshBrightCovePlayers();
-        }
     }
 });
 
