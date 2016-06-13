@@ -35,7 +35,6 @@ var URLShortenerForm = React.createClass({
                 }
             })
             .then(function(response) {
-                self.postShortUrl(response.data.url);
                 self.setState({
                     mode: 'success',
                     shortURL: response.data.url
@@ -48,9 +47,6 @@ var URLShortenerForm = React.createClass({
                 });
             })
         });
-    },
-    postShortUrl: function(url) {
-        console.log(url);
     },
     render: function() {
         var self = this;
