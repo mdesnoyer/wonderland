@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import ShareSection from '../core/ShareSection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -38,6 +39,10 @@ var VideoInfoBox = React.createClass({
                         <dd className="wonderland-dd">{self.props.experimentState}</dd>
                     {winnerDefTerm}
                         {winnerDescTerm}
+                    <dt className="wonderland-dt">Share</dt>
+                        <dd className="wonderland-dt">
+                            <ShareSection url={self.props.videoLink} score={self.props.cookedNeonScore} />
+                        </dd>
                 </dl>
             </aside>
         );
