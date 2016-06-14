@@ -34,3 +34,12 @@
 - Acct Id: 2294876105001
 - Client Id: ffa5d64b-c0b9-4b3b-b688-573b83cd219f
 - client Secret: LIYY5gus0LDX96Wly-hhb1eQ0b4xpHmivf_aADGllXdCyD6m93TY8HoiEHJFTh_J1lNTmYRYQ22Fg-bZaGZGVQ
+
+## Bit.ly Account
+
+*Do not share outside Neon*
+
+- USERNAME = 'neonlabs'
+- EMAIL = 'ops@neon-lab.com'
+- PASSWORD = 'vKUbn7PK8jTtTWSh'
+- ACCESS_TOKEN = 'c9f66d34107cef477d4d1eaca40b911f6f39377e'
