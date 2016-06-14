@@ -241,9 +241,9 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.urlShortener.title': 'URL Shortener',
             'copy.urlShortener.heading': 'URL Shortener',
-            'copy.urlShortener.body': 'Enter a Neon URL below to recieve a shortened URL',
+            'copy.urlShortener.body': 'Enter a Neon URL below to receive a shortened URL',
             'copy.urlShortener.messageHeading': 'URL Shortener Error',
-            'copy.urlShortener.messageBody': 'Please enter a valid, external URL.',
+            'copy.urlShortener.messageBody': 'Please enter a valid, external URL e.g. http://somewhere.com/something/',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

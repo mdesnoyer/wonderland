@@ -6,6 +6,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import reqwest from 'reqwest';
 import Message from '../wonderland/Message';
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,10 +17,7 @@ var URLShortenerForm = React.createClass({
             shortURL: ''
         }
     },
-    componentWillUnmount: function(e) {
-        E.clearErrors();
-    },
-     componentDidMount: function() {
+    componentDidMount: function() {
         var self = this,
             c = new Clipboard(self.refs.copyUrl)
         ;
@@ -35,7 +33,7 @@ var URLShortenerForm = React.createClass({
                 method: 'GET',
                 type: 'jsonp',
                 data: {
-                    longUrl: self.refs.url.value,
+                    longUrl: self.refs.url.value.trim(),
                     access_token: UTILS.BITLY_ACCESS_TOKEN,
                     domain: 'bit.ly'
                 }
@@ -63,7 +61,8 @@ var URLShortenerForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = false;
+            messageNeededComponent = false
+        ;
         if (self.state.mode === 'error') {
             messageNeededComponent = <Message header={T.get('copy.urlShortener.messageHeading')} body={T.get('copy.urlShortener.messageBody')} flavour="danger" />
         }
@@ -84,11 +83,12 @@ var URLShortenerForm = React.createClass({
                             >
                             </textarea>
                         </p>
-                        <p className="control has-addons has-addons-centered">
+                        <p className="has-text-centered">
                             <button
                                 className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
                                 type="submit"
                             >
+                                <Icon type="compress" />
                                 {T.get('action.shortenURL')}
                             </button>
                         </p>
@@ -104,10 +104,9 @@ var URLShortenerForm = React.createClass({
                             />
 
                             <button
-                                className="button small"
+                                className="button small is-primary"
                                 type="button"
                                 ref="copyUrl"
-                                onClick={self.handleCopyUrlClick}
                                 data-clipboard-text={self.state.shortURL}
                             >
                                 {T.get('copy')}

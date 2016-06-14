@@ -42,3 +42,4 @@
 - USERNAME = 'neonlabs'
 - EMAIL = 'ops@neon-lab.com'
 - PASSWORD = 'vKUbn7PK8jTtTWSh'
+- ACCESS_TOKEN = 'c9f66d34107cef477d4d1eaca40b911f6f39377e'
