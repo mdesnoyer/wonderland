@@ -11,6 +11,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -124,6 +125,7 @@ var VideoOwner = React.createClass({
             return false;
         }
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.url);
         self.setState({
             forceOpen: !self.state.forceOpen
         });

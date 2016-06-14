@@ -2,6 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
 import UTILS from '../../modules/utils';
@@ -37,12 +38,14 @@ var Carousel = React.createClass({
     },
     handleClickPrevious: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.items[self.state.selectedItem]);
         self.setState({
             selectedItem: (self.state.selectedItem === 0) ? (self.state.total - 1) : (self.state.selectedItem - 1)
         });
     },
     handleClickNext: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.items[self.state.selectedItem]);
         self.setState({
             selectedItem: (self.state.selectedItem === self.state.total - 1) ? (0) : (self.state.selectedItem + 1)
         });

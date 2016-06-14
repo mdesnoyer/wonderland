@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import Icon from '../core/Icon';
 import UTILS from '../../modules/utils';
 
@@ -108,10 +109,12 @@ var NavigationBar = React.createClass({
     },
     handlePrevButton: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.currentPage);
         self.doPrev();
     },
     handleNextButton: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.currentPage);
         self.doNext();
     },
     doPrev: function() {
