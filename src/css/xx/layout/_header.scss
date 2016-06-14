@@ -1,0 +1,48 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxHeader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    max-width: $page-max-width;
+    min-width: $page-min-width;
+    height: 87px;
+    margin: 0 auto;
+    padding: 0 $gutter-width;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxNav {
+    position: absolute;
+    right: $gutter-width;
+    bottom: -2px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.xxNav-item {
+    float: left;
+    padding-left: 30px;
+}
+
+.xxNav-anchor {
+    color: $base-color;
+
+    &:hover {
+        color: $secondary-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxLogo {
+    position: absolute;
+    width: 120px;
+    height: 50px;
+    bottom: 0;
+    left: $gutter-width;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

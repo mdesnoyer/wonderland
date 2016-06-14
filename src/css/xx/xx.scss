@@ -1,7 +1,42 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Based on http://sass-guidelin.es/#the-7-1-pattern
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxComponent {
-    background-color: #f00;
-}
+@charset 'UTF-8';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// 1. Configuration and helpers
+@import
+    'abstracts/variables',
+    'abstracts/mixins'
+;
+
+// 2. Vendors
+@import
+    '../../../node_modules/normalize.css/normalize.css'
+;
+
+// 3. Base stuff
+@import
+    'base/reset',
+    'base/fonts',
+    'base/typography',
+    'base/global'
+;
+
+// 4. Layout-related sections
+@import
+    'layout/page',
+    'layout/header'
+;
+
+// 5. Components
+@import
+    'components/thumbnail',
+    'components/collection'
+;
+
+// 6. Page-specific styles
+// @import
+    // 'pages/home';
