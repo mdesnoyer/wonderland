@@ -84,7 +84,7 @@ var URLShortenerForm = React.createClass({
                             >
                             </textarea>
                         </p>
-                        <p className="has-text-centered">
+                        <p className="control has-addons has-addons-centered">
                             <button
                                 className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
                                 type="submit"
@@ -97,8 +97,9 @@ var URLShortenerForm = React.createClass({
                         <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
                             <output
                                 className="input small"
-                                type="url"
+                                type="text"
                                 readOnly
+                                refs="outputUrl"
                                 value={self.state.shortURL}
                             />
 
