@@ -157,7 +157,7 @@ gulp.task('browser-sync', function() {
             rewrites: [{
                 from: /\/video\/.*/, to: '/index.html',
                 from: /\/account\/confirm\/.*/, to: '/index.html',
-                from: /\/user\/reset\/token\/.*/, to: '/index.html',
+                from: /\/user\/reset\/token\/.*/, to: '/index.html'
             }]
         })],
         ghostMode: false

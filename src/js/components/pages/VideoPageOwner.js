@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-import Video from '../wonderland/Video';
+import VideoOwner from '../wonderland/VideoOwner';
 import Secured from '../../mixins/Secured';
 import Helmet from 'react-helmet';
 import Account from '../../mixins/Account';
@@ -13,7 +13,10 @@ import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var VideoPage = React.createClass({
+var VideoPageOwner = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string
@@ -46,7 +49,7 @@ var VideoPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <Video
+                        <VideoOwner
                             videoId={self.props.params.videoId}
                             pingInitial={true}
                             pingInterval={true}
@@ -63,6 +66,6 @@ var VideoPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default VideoPage;
+export default VideoPageOwner;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
