@@ -437,16 +437,16 @@ var BillingForm = React.createClass({
         var self = this
         ;
         e.preventDefault();
+        SESSION.user()
+            .then(function(userData) {
+                TRACKING.sendEvent(self, arguments, userData.username);
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+        ;
         if (!self._isSubmitted) {
             self._isSubmitted = true;
-            SESSION.user()
-                .then(function(userData) {
-                    TRACKING.sendEvent(self, arguments, userData.username);
-                })
-                .catch(function(err) {
-                    console.error(err);
-                })
-            ;
             E.clearErrors();
             self.setState({
                 isError: false,

@@ -7,6 +7,7 @@ import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveAccountIdModal from '../modals/BrightcoveAccountIdModal';
