@@ -12,11 +12,13 @@ var VideoInfoBox = React.createClass({
     // mixins: [ReactDebugMixin],
     propTypes: {
         isGuest: React.PropTypes.bool.isRequired,
-        videoLink: React.PropTypes.string,
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         experimentState: React.PropTypes.string.isRequired,
-        winnerThumbnail: React.PropTypes.string
+        winnerThumbnail: React.PropTypes.string,
+        videoLink: React.PropTypes.string.isRequired,
+        shareToken: React.PropTypes.string.isRequired,
+        videoId: React.PropTypes.string.isRequired
     },
     render: function() {
         var self = this,
@@ -41,7 +43,7 @@ var VideoInfoBox = React.createClass({
                         {winnerDescTerm}
                     <dt className="wonderland-dt">Share</dt>
                         <dd className="wonderland-dt">
-                            <ShareSection url={self.props.videoLink} score={self.props.cookedNeonScore} />
+                            <ShareSection shareToken={self.props.shareToken} videoId={self.props.videoId} />
                         </dd>
                 </dl>
             </aside>

@@ -21,8 +21,7 @@ var ThumbnailInfoBox = React.createClass({
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
         thumbnailStats: React.PropTypes.object,
-        url: React.PropTypes.string,
-        cookedNeonScore: React.PropTypes.string
+        url: React.PropTypes.string
     },
     getInitialState: function() {
         return({
