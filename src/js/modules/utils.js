@@ -226,7 +226,7 @@ var UTILS = {
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
-    BITLY_ACCESS_TOKEN: '1aea4e030020a1ce9a4b23afab68e14b77bab7d4',
+    BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
