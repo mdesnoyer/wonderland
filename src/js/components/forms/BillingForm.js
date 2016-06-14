@@ -4,6 +4,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 import RadioGroup from 'react-radio-group';
 import UTILS from '../../modules/utils';
@@ -438,6 +439,14 @@ var BillingForm = React.createClass({
         e.preventDefault();
         if (!self._isSubmitted) {
             self._isSubmitted = true;
+            SESSION.user()
+                .then(function(userData) {
+                    TRACKING.sendEvent(self, arguments, userData.username);
+                })
+                .catch(function(err) {
+                    console.error(err);
+                })
+            ;
             E.clearErrors();
             self.setState({
                 isError: false,

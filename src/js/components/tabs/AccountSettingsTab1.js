@@ -8,6 +8,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,6 +65,14 @@ var AccountSettingsTab1 = React.createClass({
                 self.setState({
                     isLoading: true
                 }, self.doSubmit);
+                SESSION.user()
+                    .then(function(userData) {
+                        TRACKING.sendEvent(self, arguments, userData.username);
+                    })
+                    .catch(function(err) {
+                        console.error(err);
+                    })
+                ;
             }
         }
     },
