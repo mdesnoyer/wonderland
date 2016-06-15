@@ -36,9 +36,9 @@ var ContactForm = React.createClass({
                 <p className="control">
                   <textarea className="textarea"></textarea>
                 </p>
-                <div className="Drop-Button-container">
-                    <button className="Drop-Button button is-large">Back</button>
-                    <button className="Drop-Button button is-large " type="submit" >Send</button>
+                <div className="container">
+                    <button className="button is-large">Back</button>
+                    <button className="button is-large" type="submit" >Send</button>
                 </div>
             </form>
         );

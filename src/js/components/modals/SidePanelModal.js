@@ -4,7 +4,8 @@ import React from 'react';
 import ContactForm from '../forms/ContactForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+//Desgin Documents want this on the side hence the name
+//currently no styling done
 var SidePanelModal = React.createClass({
     render: function() {
         return (
