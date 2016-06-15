@@ -18,29 +18,28 @@ var ContactForm = React.createClass({
         ;
         initialForm = (
             <form onSubmit={self.handleSubmit}>
-                <h1 className="title">TODO CONTACT MESSAGE</h1>
+                <div className="content">
+                    <h5>CONTACT US</h5>
+                    <h1 className="title">Want to find out more?</h1>
+                    <p>Nulla efficitur eleifend nisi, sit amet bibendum sapien fringilla ac. Mauris euismod metus a tellus laoreet, at elementum ex efficitur.</p>
+                    <p>Maecenas eleifend sollicitudin dui, faucibus sollicitudin augue cursus non. Ut finibus eleifend arcu ut vehicula.</p>
+                </div>
                 <label className="label">YOUR NAME</label>
-                <p className="control has-icon">
+                <p className="control">
                     <input className="input" type="text" />
-                    <i className="fa fa-user"></i>
                 </p>
                 <label className="label">YOUR EMAIL</label>
-                <p className="control has-icon">
+                <p className="control">
                     <input className="input" type="email" />
-                    <i className="fa fa-phone"></i>
                 </p>
                 <label className="label">MESSAGE</label>
                 <p className="control">
-                  <textarea class="textarea" placeholder="Textarea"></textarea>
+                  <textarea className="textarea"></textarea>
                 </p>
-                <p className="is-text-centered">
-                    <button className="button is-success">
-                        TODO CONTACT BUTTON
-                    </button>
-                    <button className="button is-success">
-                        TODO CONTACT BUTTON
-                    </button>
-                </p>
+                <div className="Drop-Button-container">
+                    <button className="Drop-Button button is-large">Back</button>
+                    <button className="Drop-Button button is-large " type="submit" >Send</button>
+                </div>
             </form>
         );
         successForm = (
