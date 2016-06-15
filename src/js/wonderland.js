@@ -18,7 +18,7 @@ import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import AnalyzeVideoPage from './components/pages/AnalyzeVideoPage';
 import VideosPage from './components/pages/VideosPage';
-import VideoPage from './components/pages/VideoPage';
+import VideoPageOwner from './components/pages/VideoPageOwner';
 import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
 import PendingAccountPage from './components/pages/PendingAccountPage';
@@ -36,6 +36,7 @@ import UserSettingsPage from './components/pages/UserSettingsPage';
 import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import SupportPage from './components/pages/SupportPage';
+import URLShortenerPage from './components/pages/URLShortenerPage';
 import XXPage from './xx/XXPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,7 +71,7 @@ render((
 
         <Route path={UTILS.DRY_NAV.VIDEO_ANALYZE.URL} component={AnalyzeVideoPage} />
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
-        <Route path="/video/:videoId/" component={VideoPage} />
+        <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} />
@@ -86,6 +87,8 @@ render((
         <Route path={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.SETTINGS_USER.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
+
+        <Route path={UTILS.DRY_NAV.URL_SHORTENER.URL} component={URLShortenerPage} />
 
         <Route path="/xx/" component={XXPage} />
 

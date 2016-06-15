@@ -15,11 +15,12 @@ import Icon from '../core/Icon';
 var VideoHeader = React.createClass({
 	// mixins: [ReactDebugMixin],
     propTypes: {
-        handleVideoOpenToggle: React.PropTypes.func.isRequired,
+        handleVideoOpenToggle: React.PropTypes.func,
+        showVideoOpenToggle: React.PropTypes.bool.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
         videoState: React.PropTypes.string.isRequired,
         title: React.PropTypes.string,
-        additionalClass: React.PropTypes.string.isRequired,
+        additionalClass: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
         thumbnails: React.PropTypes.array.isRequired
@@ -27,7 +28,7 @@ var VideoHeader = React.createClass({
     render: function() {
         var self = this,
             toggleButtonContent = self.props.forceOpen ? <Icon type="chevron-circle-up" nowrap={true} /> : <Icon type="chevron-circle-down" nowrap={true} />,
-            toggleButton = <a className="wonderland-toggle button is-medium">{toggleButtonContent}</a>,
+            toggleButton = (self.props.showVideoOpenToggle ? <a className="wonderland-toggle button is-medium">{toggleButtonContent}</a> : false),
             videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
             xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : false
         ;

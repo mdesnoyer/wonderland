@@ -223,8 +223,12 @@ var UTILS = {
         },
         VIDEO_ANALYZE: {
             URL: '/video/analyze/'
+        },
+        URL_SHORTENER: {
+            URL: '/shorturl/'
         }
     },
+    TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,
@@ -233,6 +237,7 @@ var UTILS = {
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
+    BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -241,6 +246,46 @@ var UTILS = {
     },
     modalActiveIcon: function(isActive) {
         return isActive ? 'search-plus' : 'search-minus';
+    },
+    fixThumbnails: function(rawThumbnails) {
+        var defaults = [],
+            customs = [],
+            neons = [],
+            nonNeons = []
+        ;
+        // Pass 1 - sort into `default`, `custom` and `neon`
+        rawThumbnails.map(function(rawThumbnail, i) {
+            switch (rawThumbnail.type) {
+                case 'neon':
+                    neons.push(rawThumbnail);
+                    break;
+                case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'default':
+                    defaults.push(rawThumbnail);
+                    break;
+                default:
+                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
+                    break;
+            }
+        });
+        // Pass 2 - sort `custom` by rank ASC
+        customs.sort(function(a, b) {
+            return a.rank - b.rank;
+        });
+        // Pass 3 - sort `neon` by rank ASC
+        neons.sort(function(a, b) {
+            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
+        });
+        // Pass 4 - assemble the output
+        nonNeons = customs.concat(defaults);
+        if (nonNeons.length > 0) {
+            return neons.concat(nonNeons[0]);
+        }
+        else {
+            return neons;
+        }
     },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {

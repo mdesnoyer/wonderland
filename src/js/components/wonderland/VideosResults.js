@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Video from './Video';
+import VideoOwner from './VideoOwner';
 import NavigationBar from '../core/NavigationBar';
 import SearchBar from '../core/SearchBar';
 
@@ -36,7 +36,7 @@ var VideosResults = React.createClass({
                             return (
                                 <tr key={video.video_id}>
                                     <td>
-                                        <Video
+                                        <VideoOwner
                                             videoId={video.video_id}
                                             pingInitial={false}
                                             pingInterval={true}

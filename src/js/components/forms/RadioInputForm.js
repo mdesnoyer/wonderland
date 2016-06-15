@@ -69,7 +69,7 @@ var RadioInputForm = React.createClass({
                 case 'uses_bc_smart_player':
                     question =  "Do you use the legacy Smart player?";
                     modalToShow = <BrightcoveSmartPlayerModal />;
-                    snippetGrabber = <SnippetGrabber isActive={self.state.isActive}/>;
+                    snippetGrabber = <SnippetGrabber isActive={self.state.isActive} />;
                     usesGallery = '';
                     break;
                 case 'uses_bc_videojs_player':

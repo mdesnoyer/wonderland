@@ -31,6 +31,8 @@ const _DEFAULT_LOCALE = 'en-US',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
+            url: 'URL',
+            copy: 'Copy',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -40,6 +42,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.save': 'Save',
             'action.set': 'Set',
             'action.resetPassword': 'Reset Password',
+            'action.shortenURL': 'Shorten URL',
 
             rememberMe: 'Remember',
 
@@ -234,6 +237,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.urlShortener.title': 'URL Shortener',
+            'copy.urlShortener.heading': 'URL Shortener',
+            'copy.urlShortener.body': 'Enter a Neon URL below to receive a shortened URL',
+            'copy.urlShortener.messageHeading': 'URL Shortener Error',
+            'copy.urlShortener.messageBody': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

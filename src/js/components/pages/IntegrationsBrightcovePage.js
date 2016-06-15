@@ -96,30 +96,38 @@ var IntegrationsBrightcovePage = React.createClass({
                                     refreshFormMode={self.refreshFormMode}
                                     usesGallery={self.state.usesGallery}
                                 />
-                                    <RadioInputForm
-                                        usesGallery={self.state.usesGallery}
-                                        radioType="uses_bc_thumbnail_api"
-                                        isActive={self.state.dataToProps.uses_bc_thumbnail_api}
-                                        accountId={self.state.accountId}
-                                        formMode={self.state.formMode}
-                                        integrationId={self.state.integrationId}
-                                    />
-                                    <RadioInputForm
-                                        radioType="uses_bc_videojs_player"
+                                <RadioInputForm
+                                    usesGallery={self.state.usesGallery}
+                                    radioType="uses_bc_smart_player"
+                                    isActive={self.state.dataToProps.uses_bc_smart_player}
+                                    accountId={self.state.accountId}
+                                    formMode={self.state.formMode}
+                                    integrationId={self.state.integrationId}
+                                />
+                                <RadioInputForm
+                                    usesGallery={self.state.usesGallery}
+                                    radioType="uses_bc_thumbnail_api"
+                                    isActive={self.state.dataToProps.uses_bc_thumbnail_api}
+                                    accountId={self.state.accountId}
+                                    formMode={self.state.formMode}
+                                    integrationId={self.state.integrationId}
+                                />
+                                <RadioInputForm
+                                    radioType="uses_bc_videojs_player"
+                                    isActive={self.state.dataToProps.uses_bc_videojs_player}
+                                    accountId={self.state.accountId}
+                                    formMode={self.state.formMode}
+                                    integrationId={self.state.integrationId}
+                                    refreshFormMode={self.refreshFormMode}
+                                />
+                                <div className={hidePlayList}>
+                                    <PlayerList
                                         isActive={self.state.dataToProps.uses_bc_videojs_player}
-                                        accountId={self.state.accountId}
-                                        formMode={self.state.formMode}
+                                        playerArray={self.state.playerArray}
+                                        accountId={self.state.publisherId}
                                         integrationId={self.state.integrationId}
-                                        refreshFormMode={self.refreshFormMode}
                                     />
-                                    <div className={hidePlayList}>
-                                        <PlayerList
-                                            isActive={self.state.dataToProps.uses_bc_videojs_player}
-                                            playerArray={self.state.playerArray}
-                                            accountId={self.state.publisherId}
-                                            integrationId={self.state.integrationId}
-                                        />
-                                    </div>
+                                </div>
                             </section>
                         </div>
                     </div>
@@ -160,6 +168,7 @@ var IntegrationsBrightcovePage = React.createClass({
                 publisherId: res.publisher_id,
                 clientId: res.application_client_id,
                 clientSecret: res.application_client_secret,
+                accountId: res.account_id,
                 dataToProps: res
             },
                 function() {

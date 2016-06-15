@@ -14,7 +14,7 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var Video = React.createClass({
+var VideoOwner = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string.isRequired
@@ -30,46 +30,6 @@ var Video = React.createClass({
             created: ''
         }
     },
-    fixThumbnails: function(rawThumbnails) {
-        var defaults = [],
-            customs = [],
-            neons = [],
-            nonNeons = []
-        ;
-        // Pass 1 - sort into `default`, `custom` and `neon`
-        rawThumbnails.map(function(rawThumbnail, i) {
-            switch (rawThumbnail.type) {
-                case 'neon':
-                    neons.push(rawThumbnail);
-                    break;
-                case 'custom':
-                    customs.push(rawThumbnail);
-                    break;
-                case 'default':
-                    defaults.push(rawThumbnail);
-                    break;
-                default:
-                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
-                    break;
-            }
-        });
-        // Pass 2 - sort `custom` by rank ASC
-        customs.sort(function(a, b) {
-            return a.rank - b.rank;
-        });
-        // Pass 3 - sort `neon` by rank ASC
-        neons.sort(function(a, b) {
-            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
-        });
-        // Pass 4 - assemble the output
-        nonNeons = customs.concat(defaults);
-        if (nonNeons.length > 0) {
-            return neons.concat(nonNeons[0]);
-        }
-        else {
-            return neons;
-        }
-    },
     getInitialState: function() {
         var self = this;
         return {
@@ -78,10 +38,11 @@ var Video = React.createClass({
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
-            sortedThumbnails: self.fixThumbnails(self.props.thumbnails),
+            sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails),
             title: self.props.title,
-            error: self.props.error,
             created: self.props.created,
+            error: self.props.error,
+            shareToken: '',
             isLoading: false,
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
@@ -139,6 +100,7 @@ var Video = React.createClass({
                         videoId={self.state.videoId}
                         created={self.state.created}
                         thumbnails={self.state.sortedThumbnails}
+                        showVideoOpenToggle={true}
                     />
                     <VideoMain
                         videoId={self.state.videoId}
@@ -151,6 +113,7 @@ var Video = React.createClass({
                         created={self.state.created}
                         url={self.state.url}
                         isServingEnabled={self.props.isServingEnabled}
+                        shareToken={self.state.shareToken}
                     />
                 </div>
             );
@@ -192,16 +155,17 @@ var Video = React.createClass({
                         self.setState({
                             status: 200,
                             thumbnails: video.thumbnails,
-                            sortedThumbnails: self.fixThumbnails(video.thumbnails),
+                            sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
+                            error: video.error ? video.error : '',
                             duration: video.duration,
                             url: video.url,
+                            shareToken: video.share_token ? video.shareToken : '',
                             // publish_date
                             // updated
                             created: video.created,
-                            error: video.error ? video.error : '',
                             isLoading: false
                         })
                     }
@@ -227,6 +191,6 @@ var Video = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default Video;
+export default VideoOwner;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
