@@ -35,7 +35,6 @@ var URLShortenerForm = React.createClass({
                 data: {
                     longUrl: self.refs.url.value.trim(),
                     access_token: UTILS.BITLY_ACCESS_TOKEN,
-                    domain: 'bit.ly'
                 }
             })
             .then(function(response) {
