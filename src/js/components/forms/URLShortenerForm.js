@@ -34,8 +34,7 @@ var URLShortenerForm = React.createClass({
                 type: 'jsonp',
                 data: {
                     longUrl: self.refs.url.value.trim(),
-                    access_token: UTILS.BITLY_ACCESS_TOKEN,
-                    domain: 'bit.ly'
+                    access_token: UTILS.BITLY_ACCESS_TOKEN
                 }
             })
             .then(function(response) {
@@ -97,7 +96,7 @@ var URLShortenerForm = React.createClass({
                         <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
                             <output
                                 className="input small"
-                                type="text"
+                                type="url"
                                 readOnly
                                 refs="outputUrl"
                                 value={self.state.shortURL}
