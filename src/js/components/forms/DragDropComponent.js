@@ -9,6 +9,7 @@ import Account from '../../mixins/Account';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var DragDropComponent = React.createClass({
+        mixins: [AjaxMixin, Account],
         getInitialState: function() {
             var self = this;
             return {
@@ -20,19 +21,35 @@ var DragDropComponent = React.createClass({
             self.setState({
                 mode: 'loading'
             },
-                self.sendFiles(files)
+                self.formatData(files)
             ) 
         },
-        sendFiles: function(files) {
+        formatData: function(files) {
+            var self = this;
+            let formData = new FormData();
             files.forEach((file)=> {
-                    alert(file.name)
-                })
+                formData.append('file', file)
+            })
+            self.sendFiles(formData)
+        },
+        sendFiles: function(formData) {
+            var self = this,
+                options = {
+                    formData
+                }
+            ;
+            self.POST('thumbnails/', options)
+                 .then(function(res) {
+                    debugger 
+                 })
+                 .catch(function(err) {
+                    debugger 
+                 })
         },
         render: function () {
             var self = this,
                 DropzoneContents
             ; 
-
             switch(self.state.mode){
                 case 'silent':
                     DropzoneContents = 'Try dropping some files here, or click to select files to upload.';
@@ -47,7 +64,7 @@ var DragDropComponent = React.createClass({
             }
             return (
                 <div>
-                    <Dropzone className="Dragdrop box" activeClassName="Dragdrop-active" onDrop={this.onDrop}>
+                    <Dropzone className="Dragdrop box" activeClassName="Dragdrop-active" encType="multipart/form-data" onDrop={this.onDrop}>
                         {DropzoneContents}
                     </Dropzone>
                 </div>
