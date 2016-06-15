@@ -40,3 +40,10 @@ Optional
 - ops@neon-lab.com
 - Neon-lab1
 - https://my.pingdom.com/dashboard
+
+## Bit.ly/Hover Branded Domain Set Up
+- Login to hover.com
+- Your Account > Domains > DNS
+- Set two A records to 67.199.248.12 and 67.199.248.13
+- Set CNAME record to cname.bitly.com
+- Verify on Bit.ly > Your Account > Setting > Advanced Settings

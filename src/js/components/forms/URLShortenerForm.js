@@ -96,7 +96,7 @@ var URLShortenerForm = React.createClass({
                         <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
                             <output
                                 className="input small"
-                                type="text"
+                                type="url"
                                 readOnly
                                 refs="outputUrl"
                                 value={self.state.shortURL}
