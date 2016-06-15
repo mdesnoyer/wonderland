@@ -2,6 +2,7 @@
 
 import T from './translation';
 import moment from 'moment';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -378,6 +379,25 @@ var UTILS = {
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
+    },
+    shortenUrl: function(url, f) {
+        var self = this;
+        reqwest({
+            url: 'https://api-ssl.bitly.com/v3/shorten',
+            method: 'GET',
+            type: 'jsonp',
+            data: {
+                longUrl: url,
+                access_token: self.BITLY_ACCESS_TOKEN
+            }
+        })
+        .then(function(response) {
+            f(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+            f(error);
+        })
     }
 };
 

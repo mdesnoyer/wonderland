@@ -23,7 +23,7 @@ var VideoSharer = React.createClass({
             shareToken: self.props.shareToken,
             videoId: self.props.videoId,
             shareUrl: '',
-            shortUrl: '' // TODO
+            shortUrl: ''
         }
     },
     componentWillMount: function() {
@@ -128,7 +128,7 @@ var VideoSharer = React.createClass({
                                     mode: 'success',
                                     shareToken: json.share_token
                                 }, function() {
-                                    // TODO URL Shorten - bitly
+                                    UTILS.shortenUrl(self.state.shareUrl, self.handleUrl);
                                 });
                             })
                             .catch(function(err) {
@@ -171,6 +171,15 @@ var VideoSharer = React.createClass({
                 });
             })
         ;
+    },
+    handleUrl: function(response) {
+        var self = this;
+        if (response.status_code === 200) {
+            self.setState({
+                mode: 'bonus',
+                shortUrl: response.data.url
+            });
+        }
     }
 });
 
