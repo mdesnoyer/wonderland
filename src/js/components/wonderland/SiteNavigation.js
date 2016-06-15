@@ -6,6 +6,8 @@ import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import Icon from '../core/Icon';
+import ModalParent from '../core/ModalParent';
+import SidePanelModal from '../modals/SidePanelModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,7 +23,8 @@ var SiteNavigation = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isSignedIn: self.props.isSignedIn
+            isSignedIn: self.props.isSignedIn,
+            activeModal: false
         }
     },
     render: function() {
@@ -30,8 +33,10 @@ var SiteNavigation = React.createClass({
             itemClass = '',
             items = {
                 logo: <a className="wonderland-level__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt={T.get('app.companyShortName')} title={T.get('app.companyShortName')} /></a>,
-                contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
-                contactPageFancy: <a className="wonderland-level__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                // contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                // contactPageFancy: <a className="wonderland-level__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
+                contactPagePlain: <a className="wonderland-level__text" data-target="brightcove-client-id" onClick={self.openModal}>Contact</a>,
+                contactPageFancy: <a className="wonderland-level__text" data-target="brightcove-client-id" onClick={self.openModal}>Contact</a>,
                 termsPagePlain: <a href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>,
                 dashboard: <Link className="wonderland-level__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
                 analyzeVideo: <Link className="wonderland-level__text" activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
@@ -125,9 +130,24 @@ var SiteNavigation = React.createClass({
                         );
                     })
                 }
+                <ModalParent isModalActive={self.state.activeModal} handleToggleModal={self.closeModal}>
+                    <SidePanelModal />
+                </ModalParent>
             </div>
         );
-    }
+    },
+    openModal: function (e) {
+        var self = this;
+        self.setState({
+            activeModal: e.target.dataset.target
+        });
+    },
+    closeModal: function () {
+        var self = this;
+        self.setState({
+            activeModal: false
+        });
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
