@@ -5,7 +5,6 @@ import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
-import TRACKING from '../../modules/tracking';
 import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 import E from '../../modules/errors';
@@ -198,14 +197,6 @@ var IntegrationsForm = React.createClass({
             formMode = self.state.formMode
         ;
         e.preventDefault();
-        SESSION.user()
-            .then(function(userData) {
-                TRACKING.sendEvent(self, arguments, userData.username);
-            })
-            .catch(function(err) {
-                console.error(err);
-            })
-        ;
         self.setState({
             formMode: 'loading'
         }, function() {
