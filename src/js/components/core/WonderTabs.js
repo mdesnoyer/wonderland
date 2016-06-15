@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 // import ReactDebugMixin from 'react-debug-mixin';
 
@@ -66,6 +67,7 @@ var WonderTabs = React.createClass({
 
                                 function handleClick(e) {
                                     if (i !== self.state.selectedTab && tab.disabled !== true) {
+                                        TRACKING.sendEvent(self, arguments, self.state.uuid);
                                         self.setState({
                                             selectedTab: i
                                         });
