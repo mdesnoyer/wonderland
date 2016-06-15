@@ -1,0 +1,20 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionFilters {
+    @include clearfix;
+    @include all-caps-title;
+
+    padding: 22px 0 8px;
+}
+
+.xxCollectionFilters-title {
+    float: left;
+    color: $secondary-color;
+}
+
+.xxCollectionFilters-value {
+    float: left;
+    padding: 0 0 0 10px;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

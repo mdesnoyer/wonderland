@@ -5,3 +5,12 @@ $base-type: normal 18px/1.5 $sans-serif-family;
 $title-type: normal 25px/1.28 $serif-family;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@mixin all-caps-title {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

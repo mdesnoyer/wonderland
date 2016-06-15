@@ -33,8 +33,11 @@
 
 // 5. Components
 @import
+    'components/lift',
     'components/thumbnail',
-    'components/collection'
+    'components/collection',
+    'components/collection-filters',
+    'components/collection-images'
 ;
 
 // 6. Page-specific styles

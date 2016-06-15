@@ -1,0 +1,40 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxLift {
+    padding: 25px 0 0;
+}
+
+.xxLift-title {
+    float: left;
+    padding: 0 20px 0 0;
+    color: $accent-color;
+    font-size: 31px;
+    font-weight: 100;
+    line-height: 1;
+}
+
+.xxLift-chart {
+    float: left;
+    width: 50%;
+    margin: 4px 0 0;
+}
+
+.xxLift-chartLine {
+    height: 7px;
+    background: $accent-color;
+
+    &--original {
+        background: $tertiary-color;
+    }
+
+    & + & {
+        margin: 7px 0 0;
+    }
+}
+
+.xxLift-text {
+    clear: both;
+    padding: 12px 0 0;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
