@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
@@ -33,6 +34,7 @@ var UserForgotForm = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
+        TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
         self.setState({
             mode: 'loading'
         }, function() {

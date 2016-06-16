@@ -8,6 +8,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -52,6 +53,7 @@ var UserSettingsTab2 = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
+        TRACKING.sendEvent(self, arguments, self.state.username);
         if (!self._isSubmitted) {
             self._isSubmitted = true;
             self.setState({

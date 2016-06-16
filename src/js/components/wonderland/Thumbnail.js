@@ -6,6 +6,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import Icon from '../core/Icon';
 import Hud from './Hud';
 
@@ -137,6 +138,7 @@ var Thumbnail = React.createClass({
     },
     handleToggleModal: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.url);
         self.props.handleToggleModal(self.props.index);
     },
     handleEnabledChange: function(e) {
