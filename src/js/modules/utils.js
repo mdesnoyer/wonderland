@@ -2,6 +2,7 @@
 
 import T from './translation';
 import moment from 'moment';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -238,6 +239,7 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
+    BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -378,6 +380,25 @@ var UTILS = {
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
+    },
+    shortenUrl: function(url, callback) {
+        var self = this;
+        reqwest({
+            url: self.BITLY_SHORTEN_URL,
+            method: 'GET',
+            type: 'jsonp',
+            data: {
+                longUrl: url,
+                access_token: self.BITLY_ACCESS_TOKEN
+            }
+        })
+        .then(function(response) {
+            callback(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+            callback(error);
+        })
     }
 };
 
