@@ -2,6 +2,7 @@
 
 import React from 'react';
 import SESSION from '../../modules/Session';
+import T from '../../modules/Translation';
 import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13,10 +14,11 @@ var VideoLift = React.createClass({
     },
     getInitialState: function() {
         return {
+            mode: 'quiet', // quiet|error|loading|success
             lift: 0
         };
     },
-    getLift: function() {
+    componentWillMount: function() {
         var self = this,
             account_id = SESSION.state.accountId,
             base_id = '',
@@ -40,21 +42,35 @@ var VideoLift = React.createClass({
         .then(function(json) {
             console.log('working');
             // self.setState({
-            //     lift: json.lift * 100
+            //     lift: json.lift * 100,
             // });
         })
         .catch(function(error) {
             console.log(error);
+            self.setState({
+                mode: 'error'
+            });
         });
     },
     render: function() {
-        var self = this;
-
-        self.getLift();
-
+        var self = this,
+            liftDisplay
+        ;
+        switch(self.state.mode) {
+            case 'quiet':
+                break;
+            case 'error':
+                liftDisplay = T.get('label.lift') + ' ' + T.get('copy.na');
+                break;
+            case 'loading':
+                break;
+            case 'success':
+                liftDisplay = self.state.lift + '% ' + T.get('label.lift');
+                break;
+        }
         return (
             <aside className="box wonderland-box">
-                <p>{self.state.lift}% Lift</p>
+                <p>{liftDisplay}</p>
             </aside>
         );
     }
