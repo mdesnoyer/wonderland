@@ -29,16 +29,23 @@ var DragDropComponent = React.createClass({
         formatData: function(files) {
             var self = this,
                 formData = new FormData(),
-                url = self.createUrl()
-                ;
+                url = self.createUrl(),
+                headers = self.createHeaders()
+            ;
+
             debugger
             files.forEach((file)=> {
                 formData.append('file', file)
             })
+
+            formData.append('Authorization', 'Bearer ' + SESSION.state.accessToken)
+
+            ///send ajax data 
             debugger
             reqwest({
               url: url,
-              method: 'post',
+              method: 'POST',
+              content_type: 'multipart/form-data',
               crossOrigin: true,
               processData : true,
               data : formData
@@ -53,22 +60,11 @@ var DragDropComponent = React.createClass({
 
         },
         createUrl: function() {
-            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/' + 'token=' + SESSION.state.accessToken + '/'
-            
+            console.log(CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/')
+            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
         },
-        sendFiles: function(formData) {
-            // var self = this,
-            //     options = {
-            //         formData
-            //     }
-            // ;
-            // self.POST('thumbnails/', options)
-            //      .then(function(res) {
-            //         debugger
-            //      })
-            //      .catch(function(err) {
-            //         debugger
-            //      })
+        createHeaders: function(){
+
         },
         render: function () {
             var self = this,
