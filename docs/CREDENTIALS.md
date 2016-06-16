@@ -43,3 +43,11 @@
 - EMAIL = 'ops@neon-lab.com'
 - PASSWORD = 'vKUbn7PK8jTtTWSh'
 - ACCESS_TOKEN = 'c9f66d34107cef477d4d1eaca40b911f6f39377e'
+
+## Hover Account
+
+*Do not share outside Neon*
+
+- USERNAME = 'neonlab'
+- EMAIL = 'holler@neon'
+- PASSWORD = 'yMPJR4oV8MXVZY'
