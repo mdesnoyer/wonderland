@@ -40,8 +40,7 @@ var DragDropComponent = React.createClass({
               url: url,
               method: 'post',
               crossOrigin: true,
-              processData : false,
-              contentType: JSON,
+              processData : true,
               data : formData
             })
             .then(res => {
@@ -54,8 +53,8 @@ var DragDropComponent = React.createClass({
 
         },
         createUrl: function() {
-            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'
-            // token=' + SESSION.state.accessToken + '/'
+            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/' + 'token=' + SESSION.state.accessToken + '/'
+            
         },
         sendFiles: function(formData) {
             // var self = this,
