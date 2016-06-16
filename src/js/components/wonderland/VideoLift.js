@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import SESSION from '../../modules/Session';
 import T from '../../modules/Translation';
 import AjaxMixin from '../../mixins/Ajax';
 
@@ -20,9 +19,9 @@ var VideoLift = React.createClass({
     },
     componentWillMount: function() {
         var self = this,
-            account_id = SESSION.state.accountId,
             base_id = '',
-            thumbnail_ids = ''
+            thumbnail_ids = '',
+            avgLift = 0
         ;
         self.props.thumbnails.forEach(function(thumbnail) {
             if (thumbnail.type === 'neon') {
@@ -31,19 +30,23 @@ var VideoLift = React.createClass({
                 base_id = thumbnail.thumbnail_id;
             }
         });
-        self.GET('/' + account_id + '/statistics/estimated_lift', {
-            host: CONFIG.AUTH_HOST,
+        self.GET('statistics/estimated_lift', {
             data: {
-                account_id: account_id,
                 base_id: base_id,
                 thumbnail_ids: thumbnail_ids
             }
         })
         .then(function(json) {
-            console.log('working');
-            // self.setState({
-            //     lift: json.lift * 100,
-            // });
+            json.lift.forEach(function(thumbnail) {
+                if (thumbnail.lift) {
+                    avgLift += thumbnail.lift;
+                }
+            });
+            avgLift = avgLift / json.lift.length;
+            self.setState({
+                mode: 'success',
+                lift: parseInt(avgLift * 100)
+            });
         })
         .catch(function(error) {
             console.log(error);
