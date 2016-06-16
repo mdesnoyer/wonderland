@@ -9,7 +9,7 @@ import VideoSharer from './VideoSharer';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoMain = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         videoId: React.PropTypes.string.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,

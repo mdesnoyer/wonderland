@@ -12,7 +12,7 @@ import Hud from './Hud';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         isEnabled: React.PropTypes.bool.isRequired,
         index: React.PropTypes.number.isRequired,

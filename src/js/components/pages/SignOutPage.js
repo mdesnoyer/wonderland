@@ -13,7 +13,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignOutPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

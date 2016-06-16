@@ -17,7 +17,7 @@ import AccountMasqueradeModal from '../wonderland/AccountMasqueradeModal';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignInForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

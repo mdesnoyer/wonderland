@@ -9,7 +9,7 @@ import gravatar from 'gravatar';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteBanner = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             displayName: ''

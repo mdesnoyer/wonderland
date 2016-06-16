@@ -17,7 +17,7 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     mixins: [Secured, Account, AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired

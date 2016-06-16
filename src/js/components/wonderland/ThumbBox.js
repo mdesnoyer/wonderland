@@ -8,7 +8,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ThumbBox = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         copyUrl: React.PropTypes.string.isRequired,
         downloadUrl: React.PropTypes.string.isRequired,

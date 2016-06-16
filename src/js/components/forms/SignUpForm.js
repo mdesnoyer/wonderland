@@ -12,7 +12,7 @@ import cookie from 'react-cookie';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

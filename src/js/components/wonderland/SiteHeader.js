@@ -10,7 +10,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteHeader = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var newsFlashMessage = T.get('copy.newsFlashMessage');
         return (

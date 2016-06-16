@@ -13,7 +13,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],

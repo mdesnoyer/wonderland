@@ -7,7 +7,7 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Message = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
             message = self.props.body,
