@@ -16,6 +16,7 @@ var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     NA_STRING = 'n/a',
     COOKIE_DEFAULT_PATH = '/',
+    // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
         { modelScore: 0.155, emoji: '❓' },
@@ -212,7 +213,7 @@ var UTILS = {
             URL: '/video/analyze/'
         }
     },
-    VERSION: '1.9',
+    VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
@@ -271,19 +272,11 @@ var UTILS = {
         return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");
     },
     getNeonScoreData: function(score) {
-        if (score && !isNaN(score) && (score > 0)) {
-            var neonScoresLength = NEONSCORES.length;
-            for (var i = 0; i < neonScoresLength; i++) {
-                if (score < NEONSCORES[i].modelScore) {
-                    return {
-                        neonScore: i - 1,
-                        emoji: NEONSCORES[i - 1].emoji
-                    };
-                }
-            }
+        // Back End now does math - #1253
+        if (score && !isNaN(score) && (score >= 0)) {
             return {
-                neonScore: i - 1,
-                emoji: NEONSCORES[i - 1].emoji
+                neonScore: score,
+                emoji: NEONSCORES[score].emoji
             };
         }
         else {
