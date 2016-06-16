@@ -6,6 +6,8 @@ import Dropzone from 'react-dropzone'
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import Account from '../../mixins/Account';
+import reqwest from 'reqwest';
+import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var DragDropComponent = React.createClass({
@@ -13,7 +15,7 @@ var DragDropComponent = React.createClass({
         getInitialState: function() {
             var self = this;
             return {
-                mode: 'silent' //silent/error/sucess/error/
+                mode: 'silent', //silent/error/sucess/error/
             }
         },
         onDrop: function (files) {
@@ -22,34 +24,57 @@ var DragDropComponent = React.createClass({
                 mode: 'loading'
             },
                 self.formatData(files)
-            ) 
+            )
         },
         formatData: function(files) {
-            var self = this;
-            let formData = new FormData();
+            var self = this,
+                formData = new FormData(),
+                url = self.createUrl()
+                ;
+            debugger
             files.forEach((file)=> {
                 formData.append('file', file)
             })
-            self.sendFiles(formData)
+            debugger
+            reqwest({
+              url: url,
+              method: 'post',
+              crossOrigin: true,
+              processData : false,
+              contentType: JSON,
+              data : formData
+            })
+            .then(res => {
+                console.log(res);
+                debugger
+            }).catch(err => {
+                console.log(err);
+                debugger
+            });
+
+        },
+        createUrl: function() {
+            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'
+            // token=' + SESSION.state.accessToken + '/'
         },
         sendFiles: function(formData) {
-            var self = this,
-                options = {
-                    formData
-                }
-            ;
-            self.POST('thumbnails/', options)
-                 .then(function(res) {
-                    debugger 
-                 })
-                 .catch(function(err) {
-                    debugger 
-                 })
+            // var self = this,
+            //     options = {
+            //         formData
+            //     }
+            // ;
+            // self.POST('thumbnails/', options)
+            //      .then(function(res) {
+            //         debugger
+            //      })
+            //      .catch(function(err) {
+            //         debugger
+            //      })
         },
         render: function () {
             var self = this,
                 DropzoneContents
-            ; 
+            ;
             switch(self.state.mode){
                 case 'silent':
                     DropzoneContents = 'Try dropping some files here, or click to select files to upload.';
