@@ -4,6 +4,8 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import BrightcoveAccountIdContent from '../static/BrightcoveAccountIdContent';
+import BrightcoveClientIdContent from '../static/BrightcoveClientIdContent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -28,28 +30,11 @@ var SupportTab2 = React.createClass({
                 <h3 className="title is-4">1. Link Your Brightcove Account</h3>
                 <p>To give Neon access to your Brightcove Video Cloud account, you&rsquo;ll need to have your Video Cloud Account ID and API authentication credentials on hand.</p>
 
-                <h4 className="title is-5">Brightcove Video Cloud Account ID</h4>
-                <p>You can locate your Video Cloud Account ID on the <a rel="external" href="https://studio.brightcove.com/products/videocloud/admin/accountsettings">Account Information</a> page in your Brightcove account. Your Account ID will look similar to this:</p>
-                <figure className="image wonderland-image">
-                    <img src="/img/support/brightcove/1-account-id.png" />
-                </figure>
+                <BrightcoveAccountIdContent />
                 <p>Enter your Account ID into the plugins page in your Neon account. You can access this page by clicking on the gear and then Plugins in your Neon account.</p>
                 {/*<p className="TODO">TODO - add screenshot here when UI is updated</p>*/}
 
-                <h4 className="title is-5">Brightcove Video Cloud API Authentication Credentials</h4>
-                <p>In order to set up your API authentication credentials, go to the <a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings" rel="external">API Authentication</a> page in your Brightcove account.</p>
-                <ol>
-                    <li>Click &ldquo;Register New Application&rdquo;</li>
-                    <li>Enter &ldquo;Neon&rdquo; in the name field</li>
-                    <li>Select the following permissions:
-                        <figure className='image wonderland-image'>
-                            <img src="/img/brightcovepermissions.png" />
-                        </figure>
-                    </li>
-                    <li>Click &ldquo;Save&rdquo;</li>
-                    <li>A window will appear with your Client ID and Client Secret. Copy these values into the Neon plugin configuration page, which you can access by clicking on the gear in your Neon account and selecting Plugins.</li>
-                </ol>
-                <p>For more information about managing your API authentication in Brightcove, see Brightcove&rsquo;s documentation <a href="https://support.brightcove.com/en/video-cloud/docs/managing-api-authentication-credentials" rel="external">here</a>.</p>
+                <BrightcoveClientIdContent />
 
                 <h4 className="title is-5">Why do we need these permissions?</h4>
                 <p>In order to provide you with the best service, Neon needs access to the following permissions in your Brightcove account:</p>
