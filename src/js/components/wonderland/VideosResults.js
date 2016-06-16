@@ -12,7 +12,8 @@ var VideosResults = React.createClass({
 	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
-            additionalClass = 'table is-bordered' + (self.props.isLoading ? ' is-loading' : '') + ((self.props.videoCountServed <= 0) ? ' is-hidden' : '')
+            additionalClass = 'table is-bordered' + (self.props.isLoading ? ' is-loading' : '') 
+            + ((self.props.videoCountServed === 0 && self.props.alertMessage === '') ? ' is-hidden' : '')
         ;
         return (
             <table className={additionalClass}>
