@@ -23,7 +23,6 @@ var ShareSection = React.createClass({
     propTypes: {
         shareToken: React.PropTypes.string.isRequired,
         videoId: React.PropTypes.string.isRequired,
-
     },
     getInitialState: function() {
         var self = this;
@@ -31,7 +30,6 @@ var ShareSection = React.createClass({
             mode: 'silent', // silent/loading/error/success/bonus
             shareToken: self.props.shareToken,
             videoId: self.props.videoId,
-            shareUrl: '',
             shortUrl: '' // TODO
         }
     },
@@ -42,8 +40,8 @@ var ShareSection = React.createClass({
     render: function() {
         //the variables below are used to make the formatting consistent with the React Share package
         var self = this,
-            urlToDisplay = window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/',
-            title = 'Check out this Awesome NEON IMAGE!' ,
+            urlToDisplay = self.determineUrl(),
+            title = 'Check out this Awesome NEON IMAGE!',
             customColorBackground = {fill:'#aaa'}
         ;
         return (
@@ -91,9 +89,6 @@ var ShareSection = React.createClass({
             </div>
         )
     },
-    handleMouseEnter: function(e) {
-        debugger 
-    },
     generateShareUrl: function() {
         var self = this;
         self.getAccount()
@@ -101,8 +96,6 @@ var ShareSection = React.createClass({
                 self.setState({
                     accountId: account.accountId,
                 }, function() {
-                    // We now have the accountId and the videoId, lets check
-                    // the shareToken
                         self.GET('videos/share', {
                             data: {
                                 video_id: self.state.videoId
@@ -110,10 +103,12 @@ var ShareSection = React.createClass({
                         })
                             .then(function(json) {
                                 self.setState({
-                                    shareToken: json.share_token
-                                }, function() {
-                                    // TODO URL Shorten - bitly
-                                });
+                                    shareToken: json.share_token,
+                                },
+                                    function(){
+                                        self.shortenUrlWithBitly()
+                                    }
+                                );
                             })
                             .catch(function(err) {
                                 console.log(err);
@@ -123,6 +118,28 @@ var ShareSection = React.createClass({
             .catch(function (err) {
                 console.log(err);
             });
+    },
+    returnLongUrl: function() {
+        //return long form url for initial processing OR if bitly fails
+        var self = this;
+        return window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/'        
+    },
+    shortenUrlWithBitly: function() {
+        //Shorten Long form with bitly UTILITY
+        var self = this
+        UTILS.shortenUrl(self.returnLongUrl(), self.handleUrlCallback)
+        // function below to test bitly until loginless is complete
+        // UTILS.shortenUrl('https://development-app.neon-lab.com/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/', self.handleUrlCallback)
+    },
+    handleUrlCallback: function(response) {
+        //if Bitly response OK then update set state of shortURL
+        var self = this;
+        response.status_code === 200 && self.setState({shortUrl: response.data.url});
+    },
+    determineUrl: function() {
+        // logic to determine if URL should be set to short or long URL 
+        var self = this;
+        return self.state.shortUrl !== '' ? self.state.shortUrl : self.returnLongUrl()
     }
 });
 
