@@ -41,7 +41,8 @@ var URLShortenerForm = React.createClass({
         }
         else {
             self.setState({
-                mode: 'error'
+                mode: 'error',
+                shortUrl: ''
             });
         }
     },
