@@ -6,6 +6,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import BrightcoveAccountIdContent from '../static/BrightcoveAccountIdContent';
 import BrightcoveClientIdContent from '../static/BrightcoveClientIdContent';
+import BrightcoveSmartPlayerContent from '../static/BrightcoveSmartPlayerContent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -87,22 +88,8 @@ var SupportTab2 = React.createClass({
                 {/*<p className="TODO">TODO insert picture from our UI</p>*/}
 
                 <h4 className="title is-5">Legacy Smart Player</h4>
-                <p>To configure a legacy Smart Player, you must add the Neon Telemetry Player URL to each player in your Brightcove account.</p>
-                <ol>
-                    <li>Visit the Plugin page in your Neon UI</li>
-                    <li>Answer &ldquo;yes&rdquo; to &ldquo;Do you use the Smart Player?&rdquo;</li>
-                    <li>Copy the Neon Smart Player Plugin URL.</li>
-                    <li>Log in to your Brightcove Account</li>
-                    <li>Go to <a href="https://videocloud.brightcove.com/publishing" rel="external">https://videocloud.brightcove.com/publishing</a></li>
-                    <li>For each player you want to add the plugin to
-                        <ol>
-                            <li>Click Settings</li>
-                            <li>In the resulting window, click &ldquo;Plug-ins&rdquo;</li>
-                            <li>Paste the Neon Smart Player Plugin URL into the URL bar.</li>
-                            <li>Click &ldquo;Add&rdquo;</li>
-                        </ol>
-                    </li>
-                </ol>
+                <p>To configure a legacy Smart Player, you must add the Neon Telemetry Player URL to each player in your Brightcove account. Visit the Plugin page in your Neon UI and answer &ldquo;yes&rdquo; to &ldquo;Do you use the Smart Player?&rdquo;</p>
+                <BrightcoveSmartPlayerContent />
 
                 <h3 className="title is-4">4. Enable Telemetry from Your Site</h3>
                 <p>Neon can receive telemetry from your players using the Neon Telemetry Player plugins for those players. Telemetry is the stream of data that tells us how users are interacting with your images and video, allowing us to ensure that your best images are always representing your content. The process for enabling telemetry for your players is covered in step 3 above. However, if you show thumbnails outside of your player, you must add the Neon Telemetry Tag to your site. If you&rsquo;re a Gallery customer, you must complete this step in order to get accurate data from Neon. If you have a self-managed site, you should complete this step if you show thumbnails outside of your player. For example, a common way to show thumbnails outside of your player is to show a video thumbnail on your homepage that, when clicked, takes the user to an article page that contains the video whose thumbnail was clicked on the homepage. You can find your customized tag in your Neon account by clicking the gear and selecting <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry</a>.</p>
