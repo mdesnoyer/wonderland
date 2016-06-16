@@ -10,7 +10,6 @@ import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveAccountIdModal from '../modals/BrightcoveAccountIdModal';
 import BrightcoveClientIdModal from '../modals/BrightcoveClientIdModal';
-import BrightcoveClientSecretModal from '../modals/BrightcoveClientSecretModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
