@@ -6,7 +6,7 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ModalParent = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         isModalActive: React.PropTypes.bool.isRequired,
         isModalContentClipped: React.PropTypes.bool,

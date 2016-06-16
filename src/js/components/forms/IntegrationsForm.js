@@ -15,7 +15,7 @@ import BrightcoveClientSecretModal from '../modals/BrightcoveClientSecretModal';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

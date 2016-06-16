@@ -9,7 +9,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var NavigationBar = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool.isRequired,
         alertMessage: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]),

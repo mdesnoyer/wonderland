@@ -12,7 +12,7 @@ import SignInForm from '../forms/SignInForm';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountConfirmedPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var body = T.get('copy.accountConfirmed.body');
         return (

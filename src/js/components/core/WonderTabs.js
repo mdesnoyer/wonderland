@@ -7,7 +7,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var WonderTabs = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         selectedTab: function(props) {

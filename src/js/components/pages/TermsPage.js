@@ -12,7 +12,7 @@ import TermsOfService from '../core/TermsOfService'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TermsPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         return (
             <div>

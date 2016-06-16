@@ -13,7 +13,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoHeader = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         handleVideoOpenToggle: React.PropTypes.func,
         showVideoOpenToggle: React.PropTypes.bool.isRequired,

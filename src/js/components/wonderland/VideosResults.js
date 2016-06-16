@@ -9,7 +9,7 @@ import SearchBar from '../core/SearchBar';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosResults = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
             additionalClass = 'table is-bordered' + (self.props.isLoading ? ' is-loading' : '') + ((self.props.videoCountServed <= 0) ? ' is-hidden' : '')

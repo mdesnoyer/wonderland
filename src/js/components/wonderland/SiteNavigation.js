@@ -10,7 +10,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     getDefaultProps: function() {
         var self = this;
         return {

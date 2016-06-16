@@ -18,7 +18,7 @@ import AjaxMixin from '../../mixins/Ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnails = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoState: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
