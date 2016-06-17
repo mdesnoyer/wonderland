@@ -20,16 +20,19 @@ var VideoLift = React.createClass({
     componentWillMount: function() {
         var self = this,
             base_id = '',
-            thumbnail_ids = '',
-            avgLift = 0
+            thumbnail_ids
         ;
         self.props.thumbnails.forEach(function(thumbnail) {
-            if (thumbnail.type === 'neon') {
-                thumbnail_ids += thumbnail.thumbnail_id + ',';
+            if (thumbnail.type === 'neon' && thumbnail.rank === 0) { // default top thumbnail
+                thumbnail_ids = thumbnail.thumbnail_id + ',';
             } else {
                 base_id = thumbnail.thumbnail_id;
             }
         });
+        self.setLift(thumbnail_ids, base_id);
+    },
+    setLift: function(thumbnail_ids, base_id) {
+        var self = this;
         self.GET('statistics/estimated_lift', {
             data: {
                 base_id: base_id,
@@ -37,16 +40,17 @@ var VideoLift = React.createClass({
             }
         })
         .then(function(json) {
-            json.lift.forEach(function(thumbnail) {
-                if (thumbnail.lift) {
-                    avgLift += thumbnail.lift;
-                }
-            });
-            avgLift = avgLift / json.lift.length;
-            self.setState({
-                mode: 'success',
-                lift: parseInt(avgLift * 100)
-            });
+            if (json.lift[1].lift === null) {
+                self.setState({
+                    mode: 'error'
+                });
+            }
+            else {
+                self.setState({
+                    mode: 'success',
+                    lift: parseInt(json.lift[1].lift * 100)
+                });
+            }
         })
         .catch(function(error) {
             console.log(error);
