@@ -58,7 +58,10 @@ var AJAXModule = {
                 _options.type = 'json';
                 _options.contentType = 'application/json';
             }
-            _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
+
+            var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
+            _options.url = _options.host + (_options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
+            
             _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)
                 .then(function (res) {
@@ -104,19 +107,9 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || self.handleApiError;
 
         promise = new Promise(function (resolve, reject) {
-            var authUrl = '',
-                err;
-            if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
-                fin.call(self, resolve, reject);
-            } else {
-                // We're missing an account id, so simulate an "unauthorized" response from the server
-                err = {
-                    error: 'Unauthorized',
-                    code: 401
-                };
-                options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
-            }
+            fin.call(self, resolve, reject);
         });
+
         ret = {
             isCanceled: false,
             cancel: function() {

@@ -93,6 +93,7 @@ var VideoOwner = React.createClass({
             return (
                 <div className={videoSizeClass}>
                     <VideoHeader
+                        isGuest={false}
                         handleVideoOpenToggle={self.handleVideoOpenToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
@@ -104,6 +105,7 @@ var VideoOwner = React.createClass({
                         showVideoOpenToggle={true}
                     />
                     <VideoMain
+                        isGuest={false}
                         videoId={self.state.videoId}
                         forceOpen={self.state.forceOpen}
                         messageNeededComponent={messageNeededComponent}

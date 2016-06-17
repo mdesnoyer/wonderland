@@ -239,6 +239,7 @@ var UTILS = {
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
+    THUMBNAIL_FIELDS: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     rando: function(num) {
@@ -321,9 +322,9 @@ var UTILS = {
         ;
         return hash64.str();
     },
-    // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
     isValidDate: function(d) {
-        return !isNaN(Date.parse(d));
+        var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
+        return !isNaN(Date.parse(niceDate));
     },
     buildTooltipClass: function(existingClass, position) {
         // https://github.com/chinchang/hint.css
