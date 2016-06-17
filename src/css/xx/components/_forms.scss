@@ -66,6 +66,32 @@
     position: relative;
     color: $tertiary-color;
     line-height: 43px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 17px;
+        right: 18px;
+        z-index: 10;
+        width: 1px;
+        height: 10px;
+        background: #d8d8d8;
+        transform: rotate(-45deg);
+        transform-origin: 50% 100%;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+
+    &.is-open {
+        z-index: 100;
+
+        &::before, &::after {
+            top: 19px;
+            transform-origin: 50% 0;
+        }
+    }
 }
 
 .xxSelect-label {
@@ -74,12 +100,15 @@
     padding: 0 10px;
     cursor: pointer;
     user-select: none;
+
+    .has-value > & {
+        color: $secondary-color;
+    }
 }
 
 .xxSelect-dropdown {
     position: absolute;
     top: 0;
-    z-index: 101;
     width: 100%;
     background: #fff;
 
@@ -90,7 +119,7 @@
 
 .xxSelect-option {
     user-select: none;
-    height: 43px;
+    height: 44px;
     padding: 1px 11px 0;
     cursor: pointer;
 
@@ -98,9 +127,14 @@
         background: #f0f0f0;
     }
 
+    &.is-selected {
+        color: $secondary-color;
+    }
+
     &--label {
-        cursor: default;
+        height: 45px;
         border-bottom: 1px solid #e0e0e0;
+        cursor: default;
 
         &:hover {
             background: #fff;

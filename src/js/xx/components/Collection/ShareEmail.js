@@ -24,17 +24,15 @@ export default class XXShareEmail extends React.Component {
     }
 
     render() {
-        const {
-            updateField,
-            props: { setActiveContent },
-            state: { from, recipient, message }
-        } = this;
+        const { updateField } = this;
+        const { setActiveContent } = this.props;
+        const { from, recipient, message } = this.state;
 
         const isValid = from && recipient && message;
 
         const sendClassName = ['xxButton', 'xxButton--highlight'];
         if (isValid) {
-            sendClassName.push('is-active');
+            sendClassName.push('xxButton--important');
         }
 
         return (

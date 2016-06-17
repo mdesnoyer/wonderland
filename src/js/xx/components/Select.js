@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -8,6 +9,7 @@ export default class XXSelect extends React.Component {
     constructor(props) {
         super(props);
 
+        this.selectOption = this.selectOption.bind(this);
         this.toggleOpen = this.toggleOpen.bind(this);
 
         this.state = {
@@ -15,8 +17,25 @@ export default class XXSelect extends React.Component {
         };
     }
 
+    selectOption(option) {
+        this.props.onSelect(option);
+
+        document.documentElement.removeEventListener('click', this.toggleOpen);
+        this.setState({
+            isOpen: false,
+        });
+    }
+
     toggleOpen(e) {
-        e.preventDefault();
+        if (this.state.isOpen && ReactDOM.findDOMNode(this).contains(e.target)) {
+            return true;
+        }
+
+        if (!this.state.isOpen) {
+            document.documentElement.addEventListener('click', this.toggleOpen);
+        } else {
+            document.documentElement.removeEventListener('click', this.toggleOpen);
+        }
 
         this.setState({
             isOpen: !this.state.isOpen,
@@ -24,7 +43,8 @@ export default class XXSelect extends React.Component {
     }
 
     render() {
-        const { label, options, value, onSelect } = this.props;
+        const { selectOption } = this;
+        const { label, options, value } = this.props;
         const { isOpen } = this.state;
 
         const currentValue = options.find(option => option.key === value);
@@ -32,6 +52,9 @@ export default class XXSelect extends React.Component {
         const className = ['xxSelect'];
         if (isOpen) {
             className.push('is-open');
+        }
+        if (currentValue) {
+            className.push('has-value');
         }
 
         return (
@@ -48,8 +71,11 @@ export default class XXSelect extends React.Component {
                             {
                                 options.map(option => (
                                     <li
-                                        className="xxSelect-option"
+                                        className={
+                                            `xxSelect-option${option.key === value ? ' is-selected' : ''}`
+                                        }
                                         key={option.key}
+                                        onClick={e => selectOption(option.key)}
                                     >{option.value}</li>
                                 ))
                             }
