@@ -145,7 +145,7 @@ var SiteNavigation = React.createClass({
         self.setState({
             activeModal: false
         });
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
