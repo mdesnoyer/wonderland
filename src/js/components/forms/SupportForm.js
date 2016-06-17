@@ -78,28 +78,26 @@ var SupportForm = React.createClass({
             options = self.dataMaker('support')
         ;
         debugger 
-        // self.POST('email/', options)
-        //     .then(function(res){ 
-        //         self.sendConfirmationEmail(options) 
-        //     })
-        //     .catch(function(err){
-        //         console.log(err)
-        //     })
-        self.sendConfirmationEmail();
+        self.POST('email/', options)
+            .then(function(res){ 
+                self.sendConfirmationEmail() 
+            })
+            .catch(function(err){
+                console.log(err)
+            })
 
     },
     sendConfirmationEmail: function(){
         var self = this,
-            options = self.dataMaker('confirm')
+            optionsNew = self.dataMaker('confirm')
         ;
-        debugger 
-        // self.POST('email/', optionsNew)
-        //     .then(function(res){
-        //         debugger 
-        //     })
-        //     .catch(function(err){
-        //         debugger 
-        //     })
+        self.POST('email/', optionsNew)
+            .then(function(res){
+                debugger 
+            })
+            .catch(function(err){
+                debugger 
+            })
     },
     dataMaker: function(emailType) {
         var self = this,
@@ -117,17 +115,19 @@ var SupportForm = React.createClass({
                 slug = 'support-email'; 
             break;
         }
-        data = {data: {
+        data = {
+            data: {
                     subject: "Neon Support Email",
                     // to_email_address: 'support@neon-lab.com',
                     to_email_address: email,
-                    template_slug: 'support-email-admin',
+                    template_slug: slug,
                     template_args:{
                         "first_name": self.refs.firstName.value.trim(),
                         "contact_email": self.refs.contactEmail.value.trim(),
                         "support_message": self.refs.supportMessage.value.trim()
                     }
-                }}
+                }
+        }
         return data; 
     }
 })
