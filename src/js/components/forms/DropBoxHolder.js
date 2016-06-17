@@ -27,7 +27,8 @@ var DropBoxHolder = React.createClass({
                 	self.sendDropBoxUrl(urls)
             	})
             },
-            multiselect: true
+            linkType: "direct",
+            extensions: ['.jpeg', '.jpg', '.png', '.gif', '.bmp']
     	};
         button = Dropbox.createChooseButton(options);
             if (document.getElementById("dropBoxSDK")){
@@ -48,11 +49,12 @@ var DropBoxHolder = React.createClass({
     sendDropBoxUrl: function(urls) {
         var self = this,
             options = {
-            	url: UTILS.properEncodeURI(urls[0].thumbnailLink)
+                data:{
+                    url: urls[0].link
+                }
             }
     	;
-    	
-    	debugger 
+        // url: UTILS.properEncodeURI(urls[0].link)
 		self.POST('thumbnails', options)
     		 .then(function(res) {
     		 	debugger 
