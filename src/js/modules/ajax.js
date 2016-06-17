@@ -63,7 +63,6 @@ var AJAXModule = {
             _options.url = _options.host + (_options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
             
             _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
-            debugger
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {

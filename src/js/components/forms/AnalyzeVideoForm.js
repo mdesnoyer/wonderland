@@ -227,6 +227,7 @@ var AnalyzeVideoForm = React.createClass({
         }
         self.POST('videos', options)
             .then(function(json) {
+                debugger 
                 self.setState({
                     mode: 'quiet'
                 });
