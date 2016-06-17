@@ -85,7 +85,7 @@
     }
 
     &.is-open {
-        z-index: 100;
+        z-index: 99999;
 
         &::before, &::after {
             top: 19px;
