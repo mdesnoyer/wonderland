@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var ContactForm = React.createClass({
+var SupportForm = React.createClass({
     getInitialState: function() {
         return {
             isSubmited: false
@@ -19,7 +19,7 @@ var ContactForm = React.createClass({
         initialForm = (
             <form onSubmit={self.handleSubmit}>
                 <div className="content">
-                    <h5>CONTACT US</h5>
+                    <h5>Need our Assistance?</h5>
                     <h1 className="title">Want to find out more?</h1>
                     <p>Nulla efficitur eleifend nisi, sit amet bibendum sapien fringilla ac. Mauris euismod metus a tellus laoreet, at elementum ex efficitur.</p>
                     <p>Maecenas eleifend sollicitudin dui, faucibus sollicitudin augue cursus non. Ut finibus eleifend arcu ut vehicula.</p>
@@ -32,7 +32,7 @@ var ContactForm = React.createClass({
                 <p className="control">
                     <input className="input" type="email" />
                 </p>
-                <label className="label">MESSAGE</label>
+                <label className="label">ISSUE</label>
                 <p className="control">
                   <textarea className="textarea"></textarea>
                 </p>
@@ -73,6 +73,6 @@ var ContactForm = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ContactForm;
+export default SupportForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
