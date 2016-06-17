@@ -36,7 +36,7 @@ export default class XXCollection extends React.Component {
     render() {
         let content = (
             <XXCollectionInfo
-                title={this.props.title}
+                {...this.props}
                 setActiveContent={this.setActiveContent}
             />
         );

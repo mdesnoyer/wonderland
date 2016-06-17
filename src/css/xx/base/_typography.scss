@@ -7,6 +7,7 @@ $base-type: normal 18px/27px $sans-serif-family;
 @mixin all-caps-title {
     font-size: 12px;
     font-weight: bold;
+    letter-spacing: 1px;
     line-height: 1;
     text-transform: uppercase;
 }

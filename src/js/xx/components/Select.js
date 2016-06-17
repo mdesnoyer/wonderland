@@ -27,23 +27,25 @@ export default class XXSelect extends React.Component {
     }
 
     toggleOpen(e) {
-        if (this.state.isOpen && ReactDOM.findDOMNode(this).contains(e.target)) {
+        const { isOpen } = this.state;
+
+        if (isOpen && ReactDOM.findDOMNode(this).contains(e.target)) {
             return true;
         }
 
-        if (!this.state.isOpen) {
+        if (!isOpen) {
             document.documentElement.addEventListener('click', this.toggleOpen);
         } else {
             document.documentElement.removeEventListener('click', this.toggleOpen);
         }
 
         this.setState({
-            isOpen: !this.state.isOpen,
+            isOpen: !isOpen,
         });
     }
 
     render() {
-        const { selectOption } = this;
+        const { selectOption, toggleOpen } = this;
         const { label, options, value } = this.props;
         const { isOpen } = this.state;
 
@@ -59,7 +61,7 @@ export default class XXSelect extends React.Component {
 
         return (
             <div className={className.join(' ')}>
-                <div className="xxSelect-label" onClick={this.toggleOpen}>
+                <div className="xxSelect-label" onClick={toggleOpen}>
                     {currentValue ? currentValue.value : label}
                 </div>
                 {

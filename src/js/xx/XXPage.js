@@ -35,6 +35,12 @@ export default class XXPage extends React.Component {
                 </div>
 
                 <XXCollection
+                    hasFilters
+                    title="Santa Cruz man wins Mavericks
+                        big wave surf competition"
+                />
+
+                <XXCollection
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"
                 />

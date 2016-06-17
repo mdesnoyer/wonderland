@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import XXCollectionFilters from './Filters';
 import XXLift from '../Lift';
 import XXCollectionActions from './Actions';
 
@@ -9,7 +10,7 @@ import XXCollectionActions from './Actions';
 
 export default class XXCollection extends React.Component {
     render() {
-        const { title, setActiveContent } = this.props;
+        const { hasFilters, title, setActiveContent } = this.props;
 
         return (
             <div>
@@ -24,10 +25,16 @@ export default class XXCollection extends React.Component {
                     <span>Refilter</span>
                 </a>
 
-                <div className="xxCollectionFilters">
-                    <strong className="xxCollectionFilters-title">Filters</strong>
-                    <span className="xxCollectionFilters-value">None</span>
-                </div>
+                {
+                    hasFilters ? (
+                        <XXCollectionFilters />
+                    ) : (
+                        <div className="xxCollectionFilters">
+                            <strong className="xxCollectionFilters-title">Filters</strong>
+                            <span className="xxCollectionFilters-value">None</span>
+                        </div>
+                    )
+                }
 
                 <XXLift />
 

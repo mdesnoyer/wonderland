@@ -3,6 +3,7 @@
 .xxCollectionFilterToggle {
     float: right;
     position: relative;
+    z-index: 10;
     top: 14px;
     color: $accent-color;
 
@@ -55,17 +56,88 @@
     @include clearfix;
     @include all-caps-title;
 
-    padding: 22px 0 8px;
+    position: relative;
+    margin: 14px 0 0;
+    padding: 4px 0;
 }
 
-.xxCollectionFilters-title {
+.xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
     float: left;
+    padding: 4px 10px 4px 0;
     color: $secondary-color;
+
+    .has-dropdown > & {
+        cursor: pointer;
+    }
 }
 
 .xxCollectionFilters-value {
     float: left;
-    padding: 0 0 0 10px;
+    position: relative;
+    padding: 4px 0;
+    color: $tertiary-color;
+
+    .has-dropdown > & {
+        padding-right: 52px;
+        cursor: pointer;
+
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 29px;
+            z-index: 100000;
+            width: 1px;
+            height: 10px;
+            background: #d8d8d8;
+            transform: rotate(-45deg);
+            transform-origin: 50% 100%;
+        }
+
+        &::after {
+            transform: rotate(45deg);
+        }
+    }
+
+    .is-open > & {
+        &::before, &::after {
+            top: 7px;
+            pointer-events: none;
+            transform-origin: 50% 0%;
+        }
+    }
+}
+
+.xxCollectionFilters-dropdown {
+    position: absolute;
+    width: auto;
+    top: -8px;
+    left: -16px;
+    z-index: 99999;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+    background: #fff;
+}
+
+.xxCollectionFilters-version {
+    height: 44px;
+    padding: 0 52px 0 16px;
+    cursor: pointer;
+    line-height: 44px;
+    white-space: nowrap;
+
+    &:hover {
+        background: #f0f0f0;
+    }
+}
+
+.xxCollectionFilters-versionTitle {
+    padding-top: 0;
+    padding-bottom: 0;
+    color: transparent;
+
+    .is-selected > & {
+        color: $secondary-color;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
