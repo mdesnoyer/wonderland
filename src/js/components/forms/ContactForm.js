@@ -67,7 +67,7 @@ var ContactForm = React.createClass({
         );
     },
     sendContactEmail: function (){
-        debugger 
+        //TODO
     }
 })
 

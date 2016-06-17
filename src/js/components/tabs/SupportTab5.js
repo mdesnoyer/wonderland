@@ -20,10 +20,9 @@ var SupportTab5 = React.createClass({
         return (
             <section className="content">
                 <h2 className="title is-3">Contact Support</h2>
-                <p>Have a question? You can get in touch with us at <a href="mailto:support@neon-lab.com">support@neon-lab.com</a></p>
                 <a className="button is-large" data-target="contact-modal" onClick={self.openModal}>{T.get('nav.contact')}</a>,
             	<ModalParent isModalActive={self.state.activeModal === 'contact-modal'} handleToggleModal={self.closeModal}>
-            	    <SidePanelModal />
+            	    <SidePanelModal type="support" />
             	</ModalParent>
             </section>
         );

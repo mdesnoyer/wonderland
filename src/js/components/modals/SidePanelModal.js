@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ContactForm from '../forms/ContactForm';
+import SupportForm from '../forms/SupportForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //Desgin Documents want this on the side hence the name
@@ -17,15 +18,22 @@ var SidePanelModal = React.createClass({
         }
     },
     render: function() {
-        var self = this; 
-        switch(self.state.type){
-            case: 
+        var self = this,
+            modalContent
+        ; 
+        switch(self.state.type){ 
+            case 'support':
+            modalContent = <SupportForm />
+            break;
+            case 'contact':
+            modalContent = <ContactForm />
+            break;
         }
         return (
             <section className="box wonderland-box hero is-desktop">
                 <div className="hero-body">
                     <div className="container">
-                        <ContactForm />
+                        {modalContent}
                     </div>
                 </div>
             </section>
