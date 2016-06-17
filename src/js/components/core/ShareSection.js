@@ -122,7 +122,7 @@ var ShareSection = React.createClass({
     returnLongUrl: function() {
         //return long form url for initial processing OR if bitly fails
         var self = this;
-        return window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/'        
+        return window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/'
     },
     shortenUrlWithBitly: function() {
         //Shorten Long form with bitly UTILITY
