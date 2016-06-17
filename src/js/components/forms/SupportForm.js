@@ -14,9 +14,6 @@ var SupportForm = React.createClass({
             isSubmited: false
         }
     },
-    componentDidUpdate(){
-        var self = this; 
-    },
     render: function() {
         var self = this,
             successForm,
@@ -64,39 +61,30 @@ var SupportForm = React.createClass({
     handleSubmit: function(e) {
         var self = this; 
         e.preventDefault();
-        //TODO CRM SETUP
-        self.setState({
-            // isSubmited: true
-        },
-            function(){
-                self.sendSupportEmail()
-            }
-        );
+        self.sendSupportEmail()
     },
-    sendSupportEmail: function (){
+    sendSupportEmail: function () {
         var self = this,
             options = self.dataMaker('support')
         ;
-        debugger 
         self.POST('email/', options)
-            .then(function(res){ 
+            .then(function(res) { 
                 self.sendConfirmationEmail() 
             })
-            .catch(function(err){
+            .catch(function(err) {
                 console.log(err)
             })
-
     },
-    sendConfirmationEmail: function(){
+    sendConfirmationEmail: function() {
         var self = this,
             optionsNew = self.dataMaker('confirm')
         ;
         self.POST('email/', optionsNew)
             .then(function(res){
-                debugger 
+                self.setState({isSubmited: true})
             })
             .catch(function(err){
-                debugger 
+                console.log(err)
             })
     },
     dataMaker: function(emailType) {
@@ -107,7 +95,7 @@ var SupportForm = React.createClass({
         ;
         switch(emailType) {
             case 'support':
-                email = 'caulfield@neon-lab.com';
+                email = 'support@neon-lab.com';
                 slug =  'support-email-admin';
             break; 
             case 'confirm':
@@ -118,7 +106,6 @@ var SupportForm = React.createClass({
         data = {
             data: {
                     subject: "Neon Support Email",
-                    // to_email_address: 'support@neon-lab.com',
                     to_email_address: email,
                     template_slug: slug,
                     template_args:{
@@ -132,45 +119,8 @@ var SupportForm = React.createClass({
     }
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default SupportForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
