@@ -20,7 +20,7 @@ var VideoLift = React.createClass({
     componentWillMount: function() {
         var self = this,
             base_id = '',
-            thumbnail_ids
+            thumbnail_ids = ''
         ;
         self.props.thumbnails.forEach(function(thumbnail) {
             if (thumbnail.type === 'neon' && thumbnail.rank === 0) { // default top thumbnail
