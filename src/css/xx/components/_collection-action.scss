@@ -1,0 +1,26 @@
+.xxCollectionAction {
+    p {
+        margin: 0 0 20px;
+    }
+
+    .xxTitle {
+        margin-top: -5px;
+    }
+}
+
+.xxCollectionAction-buttons {
+    @include clearfix;
+
+    position: absolute;
+    bottom: 40px;
+    width: calc((99.99% - #{$gutter-width}) * 1/3 - #{$gutter-width});
+
+    .xxButton {
+        width: calc((99.99% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+        float: left;
+
+        + .xxButton {
+            float: right;
+        }
+    }
+}

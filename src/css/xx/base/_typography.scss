@@ -1,8 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$base-type: normal 18px/1.5 $sans-serif-family;
-
-$title-type: normal 25px/1.28 $serif-family;
+$base-type: normal 18px/27px $sans-serif-family;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,6 +9,14 @@ $title-type: normal 25px/1.28 $serif-family;
     font-weight: bold;
     line-height: 1;
     text-transform: uppercase;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTitle {
+    margin: 0 0 12px;
+    color: $secondary-color;
+    font: normal 33px/48px $serif-family;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -3,16 +3,26 @@
 import React from 'react';
 
 import XXLift from '../Lift';
+import XXCollectionActions from './Actions';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var XXCollectionInfo = React.createClass({
-    render: function() {
+export default class XXCollection extends React.Component {
+    render() {
+        const { title, setActiveContent } = this.props;
+
         return (
             <div>
                 <h1 className="xxCollection-title">
-                    {this.props.title}
+                    {title}
                 </h1>
+
+                <a
+                    href=""
+                    className="xxCollectionFilterToggle"
+                    onClick={e => setActiveContent('refilter', e)}>
+                    <span>Refilter</span>
+                </a>
 
                 <div className="xxCollectionFilters">
                     <strong className="xxCollectionFilters-title">Filters</strong>
@@ -20,13 +30,11 @@ var XXCollectionInfo = React.createClass({
                 </div>
 
                 <XXLift />
+
+                <XXCollectionActions setActiveContent={setActiveContent} />
             </div>
         );
     }
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default XXCollectionInfo;
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

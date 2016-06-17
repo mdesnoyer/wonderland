@@ -4,35 +4,29 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const componentName = 'xxThumbnail';
+export default ({ href, score, size, src }) => {
+    const Tag = href ? 'a' : 'div';
 
-var XXThumbnail = React.createClass({
-    render: function() {
-        const { href, score, size, src } = this.props;
-
-        const Tag = href ? 'a' : 'div';
-
-        const className = [componentName];
-        if (size) {
-            className.push(`${componentName}--${size}`);
-        }
-        if (score < 60) {
-            className.push(`${componentName}--lowScore`);
-        }
-
-        return (
-            <Tag href={href} className={className.join(' ')} data-score={score}>
-                <img
-                    className={`${componentName}-image`}
-                    src={src}
-                />
-            </Tag>
-        );
+    const className = ['xxThumbnail'];
+    if (size) {
+        className.push(`xxThumbnail--${size}`);
     }
-});
+    if (score < 60) {
+        className.push(`xxThumbnail--lowScore`);
+    }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default XXThumbnail;
+    return (
+        <Tag
+            href={href}
+            className={className.join(' ')}
+            data-score={score}
+        >
+            <img
+                className="xxThumbnail-image"
+                src={src}
+            />
+        </Tag>
+    );
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

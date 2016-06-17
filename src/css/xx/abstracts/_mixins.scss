@@ -1,7 +1,15 @@
 @mixin clearfix {
   &::after {
     clear: both;
-    content: "";
+    content: '';
     display: table;
   }
+}
+
+@mixin font-awesome($character) {
+    content: unquote("\"\\#{$character}\"");
+    font-family: FontAwesome;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 }

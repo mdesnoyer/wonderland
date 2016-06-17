@@ -6,24 +6,34 @@ import XXThumbnail from '../Thumbnail';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var XXCollectionImages = React.createClass({
-    getInitialState: function() {
-        return {
+export default class XXCollectionImages extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.toggleLowScoresVisibility = this.toggleLowScoresVisibility.bind(this);
+
+        this.state = {
             showLowScores: false,
         };
-    },
-    toggleLowScoresVisibility: function(e) {
+    }
+
+    toggleLowScoresVisibility(e) {
         e.preventDefault();
 
         this.setState({
             showLowScores: !this.state.showLowScores,
         });
-    },
-    render: function() {
+    }
+
+    render() {
+        const { showLowScores } = this.state;
+
         return (
             <div className="xxCollectionImages">
                 <div className="xxCollectionImages-featured">
-                    <h2 className="xxCollection-subtitle">Default Thumbnail</h2>
+                    <h2 className="xxCollection-subtitle">
+                        Default Thumbnail
+                    </h2>
                     <XXThumbnail
                         score={49}
                         size="large"
@@ -67,11 +77,17 @@ var XXCollectionImages = React.createClass({
                         score={60}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                     />
-                    <strong className="xxCollectionImages-allAnchor" onClick={this.toggleLowScoresVisibility}>
-                        <span>View Low Scores</span>
+                    <strong
+                        className="xxCollectionImages-allAnchor"
+                        onClick={this.toggleLowScoresVisibility}
+                    >
+                        <span>
+                            {`${showLowScores ? 'Hide' : 'View'} Low Scores`}
+                        </span>
                     </strong>
                     {
-                        this.state.showLowScores ? (
+                        showLowScores ? (
+                            /* This wrapper div is actually unnecessary */
                             <div>
                                 <XXThumbnail
                                     href="#"
@@ -103,21 +119,6 @@ var XXCollectionImages = React.createClass({
                                     score={43}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                 />
-                                <XXThumbnail
-                                    href="#"
-                                    score={42}
-                                    src="/img/xx/temporary/thumbnail-1.jpg"
-                                />
-                                <XXThumbnail
-                                    href="#"
-                                    score={40}
-                                    src="/img/xx/temporary/thumbnail-1.jpg"
-                                />
-                                <XXThumbnail
-                                    href="#"
-                                    score={33}
-                                    src="/img/xx/temporary/thumbnail-1.jpg"
-                                />
                             </div>
                         ) : null
                     }
@@ -125,7 +126,7 @@ var XXCollectionImages = React.createClass({
             </div>
         );
     }
-});
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

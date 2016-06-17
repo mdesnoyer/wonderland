@@ -1,5 +1,56 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+.xxCollectionFilterToggle {
+    float: right;
+    position: relative;
+    top: 14px;
+    color: $accent-color;
+
+    span {
+        position: absolute;
+        top: 7px;
+        right: 100%;
+        margin: 0 12px 0 0;
+        color: rgba($base-color, 0);
+        font-size: 14px;
+        line-height: 1;
+        pointer-events: none;
+        transition: color .2s ease-in-out;
+    }
+
+    &::after {
+        @include font-awesome('f021');
+
+        display: block;
+        box-sizing: border-box;
+        width: 27px;
+        height: 27px;
+        border-radius: 100%;
+        border: 1px solid $accent-color;
+        background: #fff;
+        font-size: 15px;
+        line-height: 26px;
+        text-align: center;
+        transform: rotate(-60deg);
+        transform-origin: 50% 50%;
+        transition: transform .2s ease-in-out, color .2s ease-in-out;
+    }
+
+    &:hover {
+        span {
+            color: $base-color;
+        }
+
+        &::after {
+            background: $accent-color;
+            color: #fff;
+            transform: rotate(0deg);
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .xxCollectionFilters {
     @include clearfix;
     @include all-caps-title;

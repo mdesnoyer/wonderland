@@ -3,6 +3,7 @@
 .xxCollection {
     @include clearfix;
 
+    position: relative;
     margin: 0 0 20px;
     padding: 30px $gutter-width 40px;
     background: #fff;
@@ -10,7 +11,17 @@
 
 .xxCollection-title {
     color: $secondary-color;
-    font: $title-type;
+    font: normal 25px/32px $serif-family;
+
+    .xxCollection--video &::after {
+        @include font-awesome('f03d');
+
+        position: relative;
+        top: -2px;
+        margin: 0 0 0 10px;
+        color: #ccc;
+        font-size: 12px;
+    }
 }
 
 .xxCollection-subtitle {

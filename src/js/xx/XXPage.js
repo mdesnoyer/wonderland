@@ -6,8 +6,8 @@ import XXCollection from './components/Collection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var XXPage = React.createClass({
-    render: function() {
+export default class XXPage extends React.Component {
+    render() {
         return (
             <div className="xxPage">
                 <div className="xxHeader">
@@ -45,10 +45,6 @@ var XXPage = React.createClass({
             </div>
         );
     }
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default XXPage;
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -33,11 +33,15 @@
 
 // 5. Components
 @import
+    'components/forms',
     'components/lift',
     'components/thumbnail',
     'components/collection',
+    'components/collection-action',
+    'components/collection-actions',
     'components/collection-filters',
-    'components/collection-images'
+    'components/collection-images',
+    'components/collection-share'
 ;
 
 // 6. Page-specific styles
