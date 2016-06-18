@@ -9,8 +9,8 @@ import XXCollection from './components/Collection';
 export default class XXPage extends React.Component {
     render() {
         return (
-            <div className="xxPage">
-                <div className="xxHeader">
+            <main className="xxPage">
+                <header className="xxHeader">
                     <img className="xxLogo" src="/img/xx/logo.svg" />
 
                     <nav className="xxNav">
@@ -32,7 +32,7 @@ export default class XXPage extends React.Component {
                             </li>
                         </ul>
                     </nav>
-                </div>
+                </header>
 
                 <XXCollection
                     hasFilters
@@ -48,7 +48,7 @@ export default class XXPage extends React.Component {
                 <XXCollection
                     title="Thursday evening at Daniel’s"
                 />
-            </div>
+        </main>
         );
     }
 };
