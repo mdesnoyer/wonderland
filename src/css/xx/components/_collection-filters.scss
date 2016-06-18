@@ -179,7 +179,8 @@
     top: 50%;
     right: 0;
     left: 0;
-    max-width: $page-max-width;
+    width: $page-max-width;
+    max-width: 100%;
     min-width: $page-min-width;
     margin: 0 auto;
     transform: translateY(-55%);

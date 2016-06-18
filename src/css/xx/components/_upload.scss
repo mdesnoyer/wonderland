@@ -73,7 +73,8 @@ $upload-button-offset: 35px;
     bottom: $upload-button-offset + ($upload-button-size - 1px) / 2;
     right: $gutter-width;
     left: $gutter-width;
-    max-width: $page-max-width;
+    width: $page-max-width;
+    max-width: calc(100% - #{$gutter-width} * 2);
     margin: 0 auto;
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
