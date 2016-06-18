@@ -18,11 +18,6 @@ import Account from '../../mixins/Account';
 
 var IntegrationsBrightcovePage = React.createClass({
     mixins: [Secured, AjaxMixin, Account], // ReactDebugMixin
-    componentWillMount: function() {
-        var self = this
-        ;
-        self.refreshNeonAccountInfo();
-    },
     getInitialState: function() {
         var self = this,
             params = self.props.routeParams,

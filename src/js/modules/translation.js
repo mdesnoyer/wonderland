@@ -233,7 +233,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.servingFraction': 'Serving Fraction',
             'copy.impressions': 'Impressions',
             'copy.conversions': 'Conversions',
-            'copy.ctr': 'CTR',
             'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
@@ -310,8 +309,9 @@ const _DEFAULT_LOCALE = 'en-US',
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function _getLocale() {
-    var locale = navigator.language.split('-');
-    locale = locale[1] ? `${locale[0]}-${locale[1].toUpperCase()}` : navigator.language;
+    var language = navigator.language || navigator.userLanguage;
+    var locale = language.split('-');
+    locale = locale[1] ? `${locale[0]}-${locale[1].toUpperCase()}` : language;
     return locale;
 }
 
