@@ -3,6 +3,7 @@
 import React from 'react';
 
 import XXCollection from './components/Collection';
+import XXUpload from './components/Upload';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -32,6 +33,8 @@ export default class XXPage extends React.Component {
                             </li>
                         </ul>
                     </nav>
+
+                    <XXUpload />
                 </header>
 
                 <XXCollection
