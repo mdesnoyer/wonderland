@@ -6,7 +6,7 @@ import XXSelect from '../Select';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var optionsGender = [
+const optionsGender = [
     {
         key: 'f',
         value: 'Female',
@@ -17,7 +17,7 @@ var optionsGender = [
     },
 ];
 
-var optionsAge = [
+const optionsAge = [
     {
         key: 1,
         value: 'Under 18',

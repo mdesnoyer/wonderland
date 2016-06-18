@@ -6,6 +6,7 @@ import XXCollectionInfo from './Info';
 import XXCollectionImages from './Images';
 
 import XXCollectionRefilter from './Refilter';
+import XXCollectionRefilterReady from './RefilterReady';
 import XXCollectionShareEmail from './ShareEmail';
 import XXCollectionShareLink from './ShareLink';
 import XXCollectionDelete from './Delete';
@@ -34,13 +35,14 @@ export default class XXCollection extends React.Component {
     }
 
     render() {
+        const { setActiveContent } = this;
         const { activeContent } = this.state;
 
         let content = (
             <XXCollectionInfo
                 {...this.props}
                 activeContent={activeContent}
-                setActiveContent={this.setActiveContent}
+                setActiveContent={setActiveContent}
             />
         );
 
@@ -48,28 +50,28 @@ export default class XXCollection extends React.Component {
             case 'refilter':
                 content = (
                     <XXCollectionRefilter
-                        setActiveContent={this.setActiveContent}
+                        setActiveContent={setActiveContent}
                     />
                 );
                 break;
             case 'email':
                 content = (
                     <XXCollectionShareEmail
-                        setActiveContent={this.setActiveContent}
+                        setActiveContent={setActiveContent}
                     />
                 );
                 break;
             case 'share':
                 content = (
                     <XXCollectionShareLink
-                        setActiveContent={this.setActiveContent}
+                        setActiveContent={setActiveContent}
                     />
                 );
                 break;
             case 'delete':
                 content = (
                     <XXCollectionDelete
-                        setActiveContent={this.setActiveContent}
+                        setActiveContent={setActiveContent}
                     />
                 );
                 break;
@@ -82,6 +84,14 @@ export default class XXCollection extends React.Component {
                 </div>
 
                 <XXCollectionImages />
+
+                {
+                    activeContent === 'refilter-finished' ? (
+                        <XXCollectionRefilterReady
+                            setActiveContent={setActiveContent}
+                        />
+                    ) : null
+                }
             </article>
         );
     }

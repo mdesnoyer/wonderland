@@ -1,3 +1,21 @@
+@mixin filters-arrow {
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        right: 29px;
+        width: 1px;
+        height: 10px;
+        background: $bg-tertiary-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 100%;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionFilterToggle {
@@ -61,7 +79,7 @@
             border-bottom-left-radius: 14px;
             margin: 0;
             padding: 1px 0 0 18px;
-            background: #f0f0f0;
+            background: $bg-secondary-color;
             color: $tertiary-color;
             line-height: 26px;
         }
@@ -103,30 +121,16 @@
     padding: 4px 0;
 
     .has-dropdown > & {
+        @include filters-arrow;
+
         padding-right: 52px;
         cursor: pointer;
-
-        &::before, &::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            right: 29px;
-            z-index: 100000;
-            width: 1px;
-            height: 10px;
-            background: #d8d8d8;
-            transform: rotate(-45deg);
-            transform-origin: 50% 100%;
-        }
-
-        &::after {
-            transform: rotate(45deg);
-        }
     }
 
     .is-open > & {
         &::before, &::after {
             top: 7px;
+            z-index: 100000;
             pointer-events: none;
             transform-origin: 50% 0%;
         }
@@ -151,7 +155,7 @@
     white-space: nowrap;
 
     &:hover {
-        background: #f0f0f0;
+        background: $bg-secondary-color;
     }
 }
 
@@ -162,6 +166,63 @@
 
     .is-selected > & {
         color: $secondary-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionFiltersHint {
+    @include clearfix;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    max-width: $page-max-width;
+    min-width: $page-min-width;
+    margin: 0 auto;
+    transform: translateY(-55%);
+}
+
+.xxCollectionFiltersHint-arrow {
+    @include filters-arrow;
+
+    float: right;
+    position: relative;
+    width: 89px;
+    height: 89px;
+    border-radius: 89px;
+    border: 1px solid $base-color;
+    margin-right: 115px;
+    background: #fff;
+
+    &::before, &::after {
+        top: 39px;
+        right: 43px;
+    }
+}
+
+.xxCollectionFiltersHint-label {
+    @include all-caps-title;
+
+    clear: right;
+    float: right;
+    position: relative;
+    width: 319px;
+    padding: 230px 0 0;
+    color: $secondary-color;
+    text-align: center;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 1px;
+        height: 202px;
+        margin: 0 auto;
+        background: $base-color;
     }
 }
 

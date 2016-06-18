@@ -17,7 +17,7 @@ export default class XXCollectionInfo extends React.Component {
         };
 
         if (props.activeContent === 'refilter-processing') {
-            this.state.time = 30;
+            this.state.time = 15;
         }
     }
 
@@ -38,7 +38,7 @@ export default class XXCollectionInfo extends React.Component {
                 this.handleCountdown();
             }, 1000);
         } else {
-            this.props.setActiveContent('');
+            this.props.setActiveContent('refilter-finished');
         }
     }
 
@@ -73,7 +73,7 @@ export default class XXCollectionInfo extends React.Component {
                 }
 
                 {
-                    hasFilters ? (
+                    hasFilters || ['has-filters', 'refilter-finished'].indexOf(activeContent) >= 0 ? (
                         <XXCollectionFilters />
                     ) : (
                         <div className="xxCollectionFilters">
