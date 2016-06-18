@@ -59,6 +59,7 @@
     position: relative;
     margin: 14px 0 0;
     padding: 4px 0;
+    color: $tertiary-color;
 }
 
 .xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
@@ -75,7 +76,6 @@
     float: left;
     position: relative;
     padding: 4px 0;
-    color: $tertiary-color;
 
     .has-dropdown > & {
         padding-right: 52px;

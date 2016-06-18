@@ -12,8 +12,8 @@ export default class XXShareEmail extends React.Component {
 
         this.state = {
             from: '',
-            recipient: '',
-            message: '',
+            // recipient: '',
+            // message: '',
         };
     }
 
@@ -26,9 +26,9 @@ export default class XXShareEmail extends React.Component {
     render() {
         const { updateField } = this;
         const { setActiveContent } = this.props;
-        const { from, recipient, message } = this.state;
+        const { from/*, recipient, message*/ } = this.state;
 
-        const isValid = from && recipient && message;
+        const isValid = from/* && recipient && message*/;
 
         const sendClassName = ['xxButton', 'xxButton--highlight'];
         if (isValid) {
@@ -38,6 +38,10 @@ export default class XXShareEmail extends React.Component {
         return (
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">Email</h2>
+                <p>
+                    Volutpat libero sapien, vel pellentesque ex porttitor eu.
+                    Morbi semper pharetra dui, et volutpat mi varius eu.
+                </p>
                 <div className="xxFormField">
                     <label
                         className="xxLabel"
@@ -52,7 +56,7 @@ export default class XXShareEmail extends React.Component {
                         onChange={e => updateField('from', e.target.value)}
                     />
                 </div>
-                <div className="xxFormField">
+                {/*<div className="xxFormField">
                     <label
                         className="xxLabel"
                         htmlFor="xx-email-recipient"
@@ -78,7 +82,7 @@ export default class XXShareEmail extends React.Component {
                         value={message}
                         onChange={e => updateField('message', e.target.value)}
                     ></textarea>
-                </div>
+                </div>*/}
                 <div className="xxCollectionAction-buttons">
                     <button
                         className="xxButton"
