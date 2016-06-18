@@ -89,6 +89,7 @@
             background: $accent-color;
             color: #fff;
             transform: rotate(0deg);
+            animation: rotate 2s infinite linear;
         }
     }
 }
