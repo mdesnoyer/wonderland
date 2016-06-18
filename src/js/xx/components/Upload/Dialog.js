@@ -73,7 +73,7 @@ export default class XXUploadDialog extends React.Component {
         const { updateField } = this;
         const { url, gender, age } = this.state;
 
-        const { isValid } = url && gender && age;
+        const isValid = !!url;
 
         return (
             <section className="xxUploadDialog">
