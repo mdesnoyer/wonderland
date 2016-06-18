@@ -34,14 +34,17 @@ export default class XXCollection extends React.Component {
     }
 
     render() {
+        const { activeContent } = this.state;
+
         let content = (
             <XXCollectionInfo
                 {...this.props}
+                activeContent={activeContent}
                 setActiveContent={this.setActiveContent}
             />
         );
 
-        switch (this.state.activeContent) {
+        switch (activeContent) {
             case 'refilter':
                 content = (
                     <XXCollectionRefilter

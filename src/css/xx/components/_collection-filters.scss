@@ -48,6 +48,31 @@
             transform: rotate(0deg);
         }
     }
+
+    &--countdown {
+        cursor: default;
+
+        span {
+            width: 70px;
+            height: 27px;
+            top: 0;
+            right: 14px;
+            border-top-left-radius: 14px;
+            border-bottom-left-radius: 14px;
+            margin: 0;
+            padding: 1px 0 0 18px;
+            background: #f0f0f0;
+            color: $tertiary-color;
+            line-height: 26px;
+        }
+
+        &::after {
+            z-index: 100;
+            background: $accent-color;
+            color: #fff;
+            transform: rotate(0deg);
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

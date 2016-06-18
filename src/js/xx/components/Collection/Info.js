@@ -8,9 +8,45 @@ import XXCollectionActions from './Actions';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class XXCollection extends React.Component {
+export default class XXCollectionInfo extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            time: 0,
+        };
+
+        if (props.activeContent === 'refilter-processing') {
+            this.state.time = 30;
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.activeContent === 'refilter-processing') {
+            this.handleCountdown();
+        }
+    }
+
+    handleCountdown() {
+        const { time } = this.state;
+
+        if (time > 0) {
+            setTimeout(() => {
+                this.setState({
+                    time: time - 1,
+                });
+                this.handleCountdown();
+            }, 1000);
+        } else {
+            this.props.setActiveContent('');
+        }
+    }
+
     render() {
-        const { hasFilters, title, setActiveContent } = this.props;
+        const { hasFilters, title, activeContent, setActiveContent } = this.props;
+        const { time } = this.state;
+
+        const renderedTime = `${Math.floor(time / 60)}:${time % 60 > 9 ? time % 60 : (`0${time % 60}`)}`;
 
         return (
             <div>
@@ -18,12 +54,23 @@ export default class XXCollection extends React.Component {
                     {title}
                 </h1>
 
-                <a
-                    href=""
-                    className="xxCollectionFilterToggle"
-                    onClick={e => setActiveContent('refilter', e)}>
-                    <span>Refilter</span>
-                </a>
+                {
+                    activeContent === 'refilter-processing' ? (
+                        <a
+                            href=""
+                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+                            onClick={e => e.preventDefault()}>
+                            <span>{renderedTime}</span>
+                        </a>
+                    ) : (
+                        <a
+                            href=""
+                            className="xxCollectionFilterToggle"
+                            onClick={e => setActiveContent('refilter', e)}>
+                            <span>Refilter</span>
+                        </a>
+                    )
+                }
 
                 {
                     hasFilters ? (

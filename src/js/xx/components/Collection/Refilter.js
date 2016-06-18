@@ -115,6 +115,7 @@ export default class XXRefilter extends React.Component {
                         disabled={!isValid}
                         className={applyClassName.join(' ')}
                         type="button"
+                        onClick={isValid ? (e => setActiveContent('refilter-processing', e)) : null}
                     >Apply</button>
                 </div>
             </div>
