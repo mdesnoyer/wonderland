@@ -11,6 +11,7 @@ export default class XXUpload extends React.Component {
         super(props);
 
         this.toggleOpen = this.toggleOpen.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
 
         this.state = {
             isOpen: false,
@@ -22,6 +23,14 @@ export default class XXUpload extends React.Component {
 
         this.setState({
             isOpen: !this.state.isOpen,
+        });
+    }
+
+    handleUpload() {
+        this.props.onSubmit();
+
+        this.setState({
+            isOpen: false,
         });
     }
 
@@ -44,7 +53,7 @@ export default class XXUpload extends React.Component {
                 {
                     isOpen ? (
                         <div className="xxOverlay">
-                            <XXUploadDialog />
+                            <XXUploadDialog onSubmit={this.handleUpload} />
                         </div>
                     ) : null
                 }

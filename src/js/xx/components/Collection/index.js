@@ -11,6 +11,8 @@ import XXCollectionShareEmail from './ShareEmail';
 import XXCollectionShareLink from './ShareLink';
 import XXCollectionDelete from './Delete';
 
+import XXCollectionProcessingReady from './ProcessingReady';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default class XXCollection extends React.Component {
@@ -22,6 +24,10 @@ export default class XXCollection extends React.Component {
         this.state = {
             activeContent: null,
         };
+
+        if (props.isProcessingReady) {
+            this.state.isProcessingReady = true;
+        }
     }
 
     setActiveContent(content, e) {
@@ -36,7 +42,7 @@ export default class XXCollection extends React.Component {
 
     render() {
         const { setActiveContent } = this;
-        const { activeContent } = this.state;
+        const { activeContent, isProcessingReady } = this.state;
 
         let content = (
             <XXCollectionInfo
@@ -89,6 +95,14 @@ export default class XXCollection extends React.Component {
                     activeContent === 'refilter-finished' ? (
                         <XXCollectionRefilterReady
                             setActiveContent={setActiveContent}
+                        />
+                    ) : null
+                }
+
+                {
+                    isProcessingReady ? (
+                        <XXCollectionProcessingReady
+                            onClick={() => this.setState({ isProcessingReady: false })}
                         />
                     ) : null
                 }

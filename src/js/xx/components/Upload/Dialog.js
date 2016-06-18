@@ -71,6 +71,7 @@ export default class XXUploadDialog extends React.Component {
 
     render() {
         const { updateField } = this;
+        const { onSubmit } = this.props;
         const { url, gender, age } = this.state;
 
         const isValid = !!url;
@@ -114,6 +115,7 @@ export default class XXUploadDialog extends React.Component {
                         disabled={!isValid}
                         className="xxButton xxButton--important"
                         type="button"
+                        onClick={isValid ? onSubmit : null}
                     >Submit</button>
                 </div>
             </section>
