@@ -5,8 +5,8 @@
     top: 0;
     right: 0;
     left: 0;
-    max-width: $page-max-width;
-    min-width: $page-min-width;
+    max-width: $page-max-width + 2 * $gutter-width;
+    min-width: $page-min-width + 2 * $gutter-width;
     height: 87px;
     margin: 0 auto;
     padding: 0 $gutter-width;
