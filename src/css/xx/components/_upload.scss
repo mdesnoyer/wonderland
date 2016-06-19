@@ -17,7 +17,7 @@ $upload-button-offset: 35px;
     position: fixed;
     bottom: $upload-button-offset;
     right: 50%;
-    z-index: 5000;
+    z-index: 500;
     width: $upload-button-size;
     height: $upload-button-size;
     border-radius: 100%;
@@ -54,6 +54,7 @@ $upload-button-offset: 35px;
     }
 
     .is-open > & {
+        z-index: 5000;
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         background: $quaternary-color;
         transform: rotate(-45deg);

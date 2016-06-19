@@ -1,0 +1,29 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Used for overlay pages to deal with scrollbar clashing
+
+.has-overlay {
+    overflow-y: hidden;
+
+    #wonderland {
+        overflow-y: scroll;
+    }
+
+    .xxPage {
+        overflow-y: hidden;
+        height: calc(100vh - 222px);
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPageOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 50%;
+    min-height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    background: #fff;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

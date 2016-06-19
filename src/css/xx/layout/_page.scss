@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxPage {
+    box-sizing: content-box;
     max-width: $page-max-width;
     min-width: $page-min-width;
     margin: 0 auto;

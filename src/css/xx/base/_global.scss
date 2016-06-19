@@ -1,6 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 body {
+    overflow-x: auto;
+    overflow-y: scroll;
     background: $bg-color;
     color: $base-color;
     font: $base-type;
@@ -9,6 +11,10 @@ body {
 a {
     text-decoration: none;
     transition: color .2s ease-in-out;
+}
+
+#wonderland {
+    min-width: $page-min-width + $gutter-width * 2;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

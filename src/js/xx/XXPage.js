@@ -5,6 +5,27 @@ import React from 'react';
 import XXCollection from './components/Collection';
 import XXUpload from './components/Upload';
 import XXCollectionProcessing from './components/Collection/Processing';
+import XXPageOverlay from './components/PageOverlay';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+const navItems = [
+    {
+        id: 'learn-more',
+        name: 'Learn More',
+        component: null,
+    },
+    {
+        id: 'contact-us',
+        name: 'Contact Us',
+        component: null,
+    },
+    {
+        id: 'sign-up',
+        name: 'Sign Up',
+        component: null,
+    },
+];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -13,6 +34,7 @@ export default class XXPage extends React.Component {
         super(props);
 
         this.updateStage = this.updateStage.bind(this);
+        this.handleNavClick = this.handleNavClick.bind(this);
 
         this.state = {
             stage: '',
@@ -25,6 +47,12 @@ export default class XXPage extends React.Component {
         });
     }
 
+    handleNavClick(id, e) {
+        e.preventDefault();
+
+        this.updateStage(id);
+    }
+
     render() {
         const { stage } = this.state;
 
@@ -35,26 +63,58 @@ export default class XXPage extends React.Component {
 
                     <nav className="xxNav">
                         <ul>
-                            <li className="xxNav-item">
-                                <a href="" className="xxNav-anchor">
-                                    Learn More
-                                </a>
-                            </li>
-                            <li className="xxNav-item">
-                                <a href="" className="xxNav-anchor">
-                                    Contact Us
-                                </a>
-                            </li>
-                            <li className="xxNav-item">
-                                <a href="" className="xxNav-anchor">
-                                    Sign Up
-                                </a>
-                            </li>
+                            {
+                                navItems.map(navItem => {
+                                    const navItemClassName = ['xxNav-item'];
+                                    if (navItem.id === stage) {
+                                        navItemClassName.push('is-active');
+                                    }
+
+                                    return (
+                                        <li
+                                            className={navItemClassName.join(' ')}
+                                            key={navItem.id}
+                                        >
+                                            <a
+                                                href=""
+                                                className="xxNav-anchor"
+                                                onClick={e => this.handleNavClick(navItem.id, e)}
+                                            >
+                                                {navItem.name}
+                                            </a>
+                                        </li>
+                                    );
+                                })
+                            }
                         </ul>
                     </nav>
 
                     <XXUpload onSubmit={() => this.updateStage('processing')} />
                 </header>
+
+                {
+                    stage === 'learn-more' ? (
+                        <XXPageOverlay
+                            onClose={() => this.updateStage('')}
+                        />
+                    ) : null
+                }
+
+                {
+                    stage === 'contact-us' ? (
+                        <XXPageOverlay
+                            onClose={() => this.updateStage('')}
+                        />
+                    ) : null
+                }
+
+                {
+                    stage === 'sign-up' ? (
+                        <XXPageOverlay
+                            onClose={() => this.updateStage('')}
+                        />
+                    ) : null
+                }
 
                 {
                     stage === 'processing' ? (
