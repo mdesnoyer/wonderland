@@ -37,7 +37,7 @@ var VideoInfoBox = React.createClass({
                     <dt className="wonderland-dt">{T.get('copy.analyzeVideo.experimentState')}</dt>
                         <dd className="wonderland-dd">{self.props.experimentState}</dd>
                     {winnerDefTerm}
-                    {winnerDescTerm}
+                        {winnerDescTerm}
                 </dl>
             </aside>
         );

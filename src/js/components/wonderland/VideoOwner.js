@@ -49,7 +49,7 @@ var VideoOwner = React.createClass({
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
             url: self.props.url || '',
-            experimentState: 'Unknown',
+            experimentState: T.get('copy.unknown'),
             winnerThumbnail: ''
         }
     },
