@@ -129,18 +129,6 @@ var SiteNavigation = React.createClass({
                 }
             </div>
         );
-    },
-    openModal: function (e) {
-        var self = this;
-        self.setState({
-            activeModal: e.target.dataset.target
-        });
-    },
-    closeModal: function () {
-        var self = this;
-        self.setState({
-            activeModal: false
-        });
     }
 });
 
