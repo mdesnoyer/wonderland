@@ -12,7 +12,6 @@ import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
-import cookie from 'react-cookie';
 import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -30,13 +29,7 @@ var VideosPage = React.createClass({
         };
     },
     componentWillMount: function() {
-        var self = this,
-            signUpRef = cookie.load('signUpRef')
-        ;
-        if (signUpRef === 'bc') {
-            cookie.remove('signUpRef', {path: UTILS.COOKIE_DEFAULT_PATH});
-            self.context.router.push(UTILS.DRY_NAV.PLUGINS.URL + '#pop');
-        }
+        var self = this;
         self.getAccount()
             .then(function (account) {
                 self.setState({

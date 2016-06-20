@@ -1,0 +1,4 @@
+# Cookies
+- `SESSION`
+- `SignUpForm`
+- `VideosPage`
