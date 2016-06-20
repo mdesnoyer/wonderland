@@ -19,24 +19,24 @@ var VideoLift = React.createClass({
     },
     componentWillMount: function() {
         var self = this,
-            base_id = '',
-            thumbnail_ids = ''
+            baseId = '',
+            thumbnailIds = ''
         ;
         self.props.thumbnails.forEach(function(thumbnail) {
             if (thumbnail.type === 'neon' && thumbnail.rank === 0) { // default top thumbnail
-                thumbnail_ids = thumbnail.thumbnail_id + ',';
+                thumbnailIds = thumbnail.thumbnail_id + ',';
             } else {
-                base_id = thumbnail.thumbnail_id;
+                baseId = thumbnail.thumbnail_id;
             }
         });
-        self.setLift(thumbnail_ids, base_id);
+        self.setLift(thumbnailIds, baseId);
     },
-    setLift: function(thumbnail_ids, base_id) {
+    setLift: function(thumbnailIds, baseId) {
         var self = this;
         self.GET('statistics/estimated_lift', {
             data: {
-                base_id: base_id,
-                thumbnail_ids: thumbnail_ids
+                base_id: baseId,
+                thumbnail_ids: thumbnailIds
             }
         })
         .then(function(json) {
