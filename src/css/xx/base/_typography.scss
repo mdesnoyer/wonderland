@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$base-type: normal 18px/27px $sans-serif-family;
+$base-type: normal #{$default-font-size} / #{$default-vertical-rhythm} $sans-serif-family;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -18,6 +18,13 @@ $base-type: normal 18px/27px $sans-serif-family;
     margin: 0 0 7px;
     color: $secondary-color;
     font: normal 33px/48px $serif-family;
+}
+
+.xxSubtitle {
+    @include all-caps-title;
+
+    margin: 0 0 9px;
+    color: $tertiary-color;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

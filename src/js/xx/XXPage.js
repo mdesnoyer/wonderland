@@ -6,6 +6,10 @@ import XXCollection from './components/Collection';
 import XXUpload from './components/Upload';
 import XXCollectionProcessing from './components/Collection/Processing';
 import XXPageOverlay from './components/PageOverlay';
+import XXLearnMore from './components/LearnMore';
+import XXContactUs from './components/ContactUs';
+import XXSignUp from './components/SignUp';
+import XXAccount from './components/Account';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -13,17 +17,29 @@ const navItems = [
     {
         id: 'learn-more',
         name: 'Learn More',
-        component: null,
     },
     {
         id: 'contact-us',
         name: 'Contact Us',
-        component: null,
     },
     {
         id: 'sign-up',
         name: 'Sign Up',
-        component: null,
+    },
+];
+
+const navItemsLoggedIn = [
+    {
+        id: 'learn-more',
+        name: 'Learn More',
+    },
+    {
+        id: 'contact-us',
+        name: 'Contact Us',
+    },
+    {
+        id: 'account',
+        name: 'Account',
     },
 ];
 
@@ -56,6 +72,8 @@ export default class XXPage extends React.Component {
     render() {
         const { stage } = this.state;
 
+        const currentNavItems = ['has-account', 'account'].indexOf(stage) >= 0 ? navItemsLoggedIn : navItems;
+
         return (
             <main className="xxPage">
                 <header className="xxHeader">
@@ -64,7 +82,7 @@ export default class XXPage extends React.Component {
                     <nav className="xxNav">
                         <ul>
                             {
-                                navItems.map(navItem => {
+                                currentNavItems.map(navItem => {
                                     const navItemClassName = ['xxNav-item'];
                                     if (navItem.id === stage) {
                                         navItemClassName.push('is-active');
@@ -94,25 +112,33 @@ export default class XXPage extends React.Component {
 
                 {
                     stage === 'learn-more' ? (
-                        <XXPageOverlay
-                            onClose={() => this.updateStage('')}
-                        />
+                        <XXPageOverlay onClose={() => this.updateStage('')}>
+                            <XXLearnMore />
+                        </XXPageOverlay>
                     ) : null
                 }
 
                 {
                     stage === 'contact-us' ? (
-                        <XXPageOverlay
-                            onClose={() => this.updateStage('')}
-                        />
+                        <XXPageOverlay onClose={() => this.updateStage('')}>
+                            <XXContactUs onClose={() => this.updateStage('')} />
+                        </XXPageOverlay>
                     ) : null
                 }
 
                 {
                     stage === 'sign-up' ? (
-                        <XXPageOverlay
-                            onClose={() => this.updateStage('')}
-                        />
+                        <XXPageOverlay onClose={() => this.updateStage('')}>
+                            <XXSignUp onClose={stage => this.updateStage(stage)} />
+                        </XXPageOverlay>
+                    ) : null
+                }
+
+                {
+                    stage === 'account' ? (
+                        <XXPageOverlay onClose={() => this.updateStage('')}>
+                            <XXAccount onClose={stage => this.updateStage(stage)} />
+                        </XXPageOverlay>
                     ) : null
                 }
 

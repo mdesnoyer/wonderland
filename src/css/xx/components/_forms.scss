@@ -50,6 +50,10 @@
     &[readonly] {
         color: $tertiary-color;
     }
+
+    &[type=password] {
+        letter-spacing: 2px;
+    }
 }
 
 .xxTextArea {
@@ -165,6 +169,28 @@
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxFormButtons {
+    @include clearfix;
+
+    margin: 25px 0 14px;
+    line-height: 45px;
+
+    .xxButton {
+        float: left;
+
+        + .xxButton {
+            margin-left: $gutter-width;
+        }
+    }
+}
+
+.xxFormButtons-anchor {
+    float: right;
+    position: relative;
+    top: 2px;
+    font-size: 14px;
+}
 
 .xxButton {
     display: block;
