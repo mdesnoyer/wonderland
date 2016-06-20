@@ -61,7 +61,7 @@ var SupportForm = React.createClass({
     handleSubmit: function(e) {
         var self = this; 
         e.preventDefault();
-        self.sendSupportEmail()
+        self.sendSupportEmail();
     },
     sendSupportEmail: function () {
         var self = this,

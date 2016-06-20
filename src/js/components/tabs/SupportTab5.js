@@ -4,7 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import ModalParent from '../core/ModalParent';
-import SidePanelModal from '../modals/SidePanelModal';
+import EmailModal from '../modals/EmailModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -22,7 +22,7 @@ var SupportTab5 = React.createClass({
                 <h2 className="title is-3">Contact Support</h2>
                 <a className="button is-large" data-target="contact-modal" onClick={self.openModal}>{T.get('nav.contact')}</a>,
             	<ModalParent isModalActive={self.state.activeModal === 'contact-modal'} handleToggleModal={self.closeModal}>
-            	    <SidePanelModal type="support" />
+            	    <EmailModal type="support" />
             	</ModalParent>
             </section>
         );

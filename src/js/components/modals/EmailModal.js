@@ -1,13 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ContactForm from '../forms/ContactForm';
 import SupportForm from '../forms/SupportForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //Desgin Documents want this on the side hence the name
 //currently no styling done
-var SidePanelModal = React.createClass({
+var EmailModal = React.createClass({
     proptypes: {
         type: React.PropTypes.string.isRequired
     },
@@ -25,9 +24,6 @@ var SidePanelModal = React.createClass({
             case 'support':
             modalContent = <SupportForm />
             break;
-            case 'contact':
-            modalContent = <ContactForm />
-            break;
         }
         return (
             <section className="box wonderland-box hero is-desktop">
@@ -43,6 +39,6 @@ var SidePanelModal = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default SidePanelModal;
+export default EmailModal;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
