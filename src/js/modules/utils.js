@@ -240,6 +240,7 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
     THUMBNAIL_FIELDS: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated'],
+    VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     rando: function(num) {
