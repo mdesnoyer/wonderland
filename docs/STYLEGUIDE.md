@@ -34,6 +34,11 @@ If in doubt, defer to the code. If still in doubt, ask.
 - BEM style where possible
 - lowercase, use hyphens to separate
 - Prefix numbers with leading zeroes, e.g. `0.2` rather than `.2`
+- Avoid negative margins
+- Use ems (relative units) wherever possible
+- avoid the use of magic numbers, http://csswizardry.com/2012/11/code-smells-in-css/ has a good section on it
+- have a `z-index` plan, randomly using values can be dangerous and cause future headaches
+- `box-sizing: border-box` should be the default globally
 
 ```
 .awesome,
