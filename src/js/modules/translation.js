@@ -240,6 +240,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signedInAs': 'Signed In as @user',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            'copy.share.linkedin':'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.facebook':'@neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.twitter':'@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.urlShortener.title': 'URL Shortener',
             'copy.urlShortener.heading': 'URL Shortener',

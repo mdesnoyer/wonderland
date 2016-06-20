@@ -6,6 +6,7 @@ import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Account from '../../mixins/Account';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const {
@@ -27,10 +28,9 @@ var ShareSection = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            mode: 'silent', // silent/loading/error/success/bonus
             shareToken: self.props.shareToken,
             videoId: self.props.videoId,
-            shortUrl: '' // TODO
+            shortUrl: ''
         }
     },
     componentWillMount: function() {
@@ -38,7 +38,6 @@ var ShareSection = React.createClass({
         self.generateShareUrl();
     },
     render: function() {
-        //the variables below are used to make the formatting consistent with the React Share package
         var self = this,
             urlToDisplay = self.determineUrl(),
             title = 'Check out this Awesome NEON IMAGE!',
@@ -49,7 +48,7 @@ var ShareSection = React.createClass({
                 <FacebookShareButton
                     onMouseEnter={self.handleMouseEnter}
                     url={urlToDisplay}
-                    title={'I LOVE NEON LABS FACEBOOK !'}
+                    title={T.get('copy.share.facebook')}
                     className={'column is-3 share-section-icon-color'}
                     >
                     <FacebookIcon
@@ -60,7 +59,7 @@ var ShareSection = React.createClass({
                 </FacebookShareButton>
                 <TwitterShareButton
                     url={urlToDisplay}
-                    title={'Thanks @neon, you rock!'}
+                    title={T.get('copy.share.twitter')}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <TwitterIcon
@@ -70,7 +69,7 @@ var ShareSection = React.createClass({
                 </TwitterShareButton>
                 <LinkedinShareButton
                     url={urlToDisplay}
-                    title={"Hey friends and colleagues, check out NEON!!!"}
+                    title={T.get('copy.share.linkedin')}
                     className={'column is-3 share-section-icon-color'}
                      >
                     <LinkedinIcon
@@ -78,14 +77,6 @@ var ShareSection = React.createClass({
                         size={32}
                         round />
                 </LinkedinShareButton>
-                <a  className="column is-3 share-section-icon-color" href={"mailto:?to=&subject=Check%20out%20this%20Neon%20Image&body="+ title + " Link: " + urlToDisplay} target="_top">
-                        <div className="share-section-div-circle-svg">
-                            <svg viewBox="0 0 64 64" className="share-section-circle-svg">
-                                <g><circle cx="32" cy="32" r="31" style={customColorBackground}></circle></g>
-                                <g><path d="M17,22v20h30V22H17z M41.1,25L32,32.1L22.9,25H41.1z M20,39V26.6l12,9.3l12-9.3V39H20z"></path></g>
-                            </svg>
-                    </div>
-                </a>
             </div>
         )
     },
