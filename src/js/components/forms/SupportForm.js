@@ -27,7 +27,7 @@ var SupportForm = React.createClass({
                 </div>
                 <label className="label">YOUR NAME</label>
                 <p className="control">
-                    <input className="input" type="text" ref="firstName" />
+                    <input className="input" type="text" ref="firstName" required />
                 </p>
                 <label className="label">YOUR EMAIL</label>
                 <p className="control">
