@@ -21,13 +21,9 @@ var VideoInfoBox = React.createClass({
             niceDuration = UTILS.formatDuration(self.props.duration),
             videoLinkClass = (self.props.videoLink ? '' : ' is-hidden'),
             durationClass = (self.props.duration === 0 ? ' is-hidden' : ''),
-            winnerDefTerm = ''
+            winnerDefTerm = (self.props.winnerThumbnail ? <span><dt className="wonderland-dt">Winner ID</dt>
+                <dd className="wonderland-dd">{self.props.winnerThumbnail}</dd></span> : '')
         ;
-        if (self.props.winnerThumbnail) {
-            winnerDefTerm = <span><dt className="wonderland-dt">Winner ID</dt>
-                <dd className="wonderland-dd">{self.props.winnerThumbnail}</dd></span>
-            ;
-        }
         return (
             <aside className="box wonderland-box">
                 <dl className="wonderland-dl">
