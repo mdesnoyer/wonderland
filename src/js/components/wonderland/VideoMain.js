@@ -58,12 +58,6 @@ var VideoMain = React.createClass({
                             videoId={self.props.videoId}
                             accountId={self.props.accountId}
                         />
-                        <VideoSharer
-                            isGuest={self.props.isGuest}
-                            shareToken={self.props.shareToken}
-                            videoId={self.props.videoId}
-                            accountId={self.props.accountId}
-                        />
                     </aside>
                 </div>
             </div>
