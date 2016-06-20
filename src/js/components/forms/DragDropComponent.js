@@ -35,7 +35,7 @@ var DragDropComponent = React.createClass({
 
             debugger
             files.forEach((file)=> {
-                formData.append('file', file)
+                formData.append('upload', file)
             })
 
             formData.append('Authorization', 'Bearer ' + SESSION.state.accessToken)
@@ -44,10 +44,11 @@ var DragDropComponent = React.createClass({
             debugger
             reqwest({
               url: url,
+              headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
               method: 'POST',
-              content_type: 'multipart/form-data',
+              contentype: 'multipart/form-data',
               crossOrigin: true,
-              processData : true,
+              processData : false,
               data : formData
             })
             .then(res => {
@@ -61,10 +62,12 @@ var DragDropComponent = React.createClass({
         },
         createUrl: function() {
             console.log(CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/')
+            debugger 
             return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
         },
         createHeaders: function(){
-
+            // var 
+            // options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken
         },
         render: function () {
             var self = this,
