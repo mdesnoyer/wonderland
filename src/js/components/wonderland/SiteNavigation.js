@@ -22,8 +22,7 @@ var SiteNavigation = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isSignedIn: self.props.isSignedIn,
-            activeModal: false
+            isSignedIn: self.props.isSignedIn
         }
     },
     render: function() {
