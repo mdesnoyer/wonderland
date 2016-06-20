@@ -48,7 +48,9 @@ var VideoOwner = React.createClass({
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
-            url: self.props.url || ''
+            url: self.props.url || '',
+            experimentState: '',
+            winnerThumbnail: ''
         }
     },
     componentDidMount: function() {
@@ -117,6 +119,8 @@ var VideoOwner = React.createClass({
                         url={self.state.url}
                         isServingEnabled={self.props.isServingEnabled}
                         shareToken={self.state.shareToken}
+                        experimentState={self.state.experimentState}
+                        winnerThumbnail={self.state.winnerThumbnail}
                     />
                 </div>
             );
@@ -128,9 +132,6 @@ var VideoOwner = React.createClass({
         }
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.url);
-
-
-
         if (!self.state.forceOpen) {
             self.setState({
                 isLoading: true
@@ -142,10 +143,10 @@ var VideoOwner = React.createClass({
                     }
                 })
                 .then(function(json) {
-                    console.log(json.statistics[0]);
-                    // set video props
                     self.setState({
-                        isLoading: false,
+                        experimentState: json.statistics[0].experiment_state,
+                        winnerThumbnail: json.statistics[0].winnerThumbnail,
+                        isLoading: false
                     });
                 }).catch(function(err) {
                     console.log(err);
@@ -157,9 +158,6 @@ var VideoOwner = React.createClass({
                 });
             });
         }
-
-
-
         self.setState({
             forceOpen: !self.state.forceOpen
         });

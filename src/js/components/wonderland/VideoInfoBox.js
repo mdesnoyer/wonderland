@@ -12,14 +12,22 @@ var VideoInfoBox = React.createClass({
         isGuest: React.PropTypes.bool.isRequired,
         videoLink: React.PropTypes.string,
         duration: React.PropTypes.number.isRequired,
-        url: React.PropTypes.string.isRequired
+        url: React.PropTypes.string.isRequired,
+        experimentState: React.PropTypes.string.isRequired,
+        winnerThumbnail: React.PropTypes.string
     },
     render: function() {
         var self = this,
             niceDuration = UTILS.formatDuration(self.props.duration),
             videoLinkClass = (self.props.videoLink ? '' : ' is-hidden'),
-            durationClass = (self.props.duration === 0 ? ' is-hidden' : '')
+            durationClass = (self.props.duration === 0 ? ' is-hidden' : ''),
+            winnerDefTerm = ''
         ;
+        if (self.props.winnerThumbnail) {
+            winnerDefTerm = <span><dt className="wonderland-dt">Winner ID</dt>
+                <dd className="wonderland-dd">{self.props.winnerThumbnail}</dd></span>
+            ;
+        }
         return (
             <aside className="box wonderland-box">
                 <dl className="wonderland-dl">
@@ -29,6 +37,9 @@ var VideoInfoBox = React.createClass({
                         <dd className="wonderland-dd"><a href={self.props.url} rel="external">Link</a></dd>
                     <dt className={'wonderland-dt' + videoLinkClass}>Direct</dt>
                         <dd className={'wonderland-dd' + videoLinkClass}><a href={self.props.videoLink}>Link</a></dd>
+                    <dt className="wonderland-dt">Exp. State</dt>
+                        <dd className="wonderland-dd">{self.props.experimentState}</dd>
+                    {winnerDefTerm}
                 </dl>
             </aside>
         );

@@ -23,7 +23,9 @@ var VideoMain = React.createClass({
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
         isServingEnabled: React.PropTypes.bool.isRequired,
-        shareToken: React.PropTypes.string.isRequired
+        shareToken: React.PropTypes.string.isRequired,
+        experimentState: React.PropTypes.string,
+        winnerThumbnail: React.PropTypes.string
     },
     render: function() {
         var self = this,
@@ -50,6 +52,8 @@ var VideoMain = React.createClass({
                             videoLink={self.props.videoLink}
                             duration={self.props.duration}
                             url={self.props.url}
+                            experimentState={self.props.experimentState}
+                            winnerThumbnail={self.props.winnerThumbnail}
                         />
                         <VideoSharer
                             isGuest={self.props.isGuest}
