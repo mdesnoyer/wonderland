@@ -25,8 +25,6 @@ var SupportForm = React.createClass({
                 <div className="content">
                     <h5>Support</h5>
                     <h1 className="title">What can we help you with?</h1>
-                    <p>Nulla efficitur eleifend nisi, sit amet bibendum sapien fringilla ac. Mauris euismod metus a tellus laoreet, at elementum ex efficitur.</p>
-                    <p>Maecenas eleifend sollicitudin dui, faucibus sollicitudin augue cursus non. Ut finibus eleifend arcu ut vehicula.</p>
                 </div>
                 <label className="label">YOUR NAME</label>
                 <p className="control">
