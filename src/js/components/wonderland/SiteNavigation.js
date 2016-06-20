@@ -6,7 +6,6 @@ import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import Icon from '../core/Icon';
-import ModalParent from '../core/ModalParent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
