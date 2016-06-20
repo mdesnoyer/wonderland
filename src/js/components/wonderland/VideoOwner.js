@@ -49,7 +49,7 @@ var VideoOwner = React.createClass({
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
             url: self.props.url || '',
-            experimentState: '',
+            experimentState: 'Unknown',
             winnerThumbnail: ''
         }
     },
@@ -139,7 +139,7 @@ var VideoOwner = React.createClass({
                 self.GET('statistics/videos', {
                     data: {
                         video_id: self.state.videoId,
-                        fields: ['experiment_state', 'winner_thumbnail', 'created', 'updated']
+                        fields: UTILS.VIDEO_STATS_FIELDS
                     }
                 })
                 .then(function(json) {

@@ -68,6 +68,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.body': '',
             'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your video upload limit. Increase your limit on the <a href="@link">Billing page</a> in just a few clicks.',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
+            'copy.analyzeVideo.experimentState' : 'Exp. State',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
