@@ -128,6 +128,38 @@ var VideoOwner = React.createClass({
         }
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.url);
+
+
+
+        if (!self.state.forceOpen) {
+            self.setState({
+                isLoading: true
+            }, function() {
+                self.GET('statistics/videos', {
+                    data: {
+                        video_id: self.state.videoId,
+                        fields: ['experiment_state', 'winner_thumbnail', 'created', 'updated']
+                    }
+                })
+                .then(function(json) {
+                    console.log(json.statistics[0]);
+                    // set video props
+                    self.setState({
+                        isLoading: false,
+                    });
+                }).catch(function(err) {
+                    console.log(err);
+                    self.setState({
+                        status: err.code,
+                        error: err.message,
+                        isLoading: false,
+                    });
+                });
+            });
+        }
+
+
+
         self.setState({
             forceOpen: !self.state.forceOpen
         });
