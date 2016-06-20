@@ -23,7 +23,6 @@ var SupportForm = React.createClass({
         initialForm = (
             <form onSubmit={self.handleSubmit}>
                 <div className="content">
-                    <h5>Support</h5>
                     <h1 className="title">What can we help you with?</h1>
                 </div>
                 <label className="label">YOUR NAME</label>
@@ -39,7 +38,6 @@ var SupportForm = React.createClass({
                   <textarea className="textarea" ref="supportMessage" required></textarea>
                 </p>
                 <div className="container">
-                    <button className="button is-large">Back</button>
                     <button className="button is-large" type="submit" >Send</button>
                 </div>
             </form>
