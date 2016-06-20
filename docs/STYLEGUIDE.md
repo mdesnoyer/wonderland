@@ -33,6 +33,7 @@ If in doubt, defer to the code. If still in doubt, ask.
 - 1 line per selector
 - BEM style where possible
 - lowercase, use hyphens to separate
+- Prefix numbers with leading zeroes, e.g. `0.2` rather than `.2`
 
 ```
 .awesome,
