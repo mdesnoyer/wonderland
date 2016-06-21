@@ -11,43 +11,35 @@ var SupportForm = React.createClass({
     mixins: [AjaxMixin, Account],
     getInitialState: function() {
         return {
-            isSubmited: false
+            isSubmitted: false
         }
     },
     render: function() {
         var self = this,
-            successForm,
-            initialForm,
-            formContent
-        ;
-        initialForm = (
-            <form onSubmit={self.handleSubmit}>
-                <div className="content">
-                    <h1 className="title">What can we help you with?</h1>
-                </div>
-                <label className="label">YOUR NAME</label>
-                <p className="control">
-                    <input className="input" type="text" ref="firstName" required />
-                </p>
-                <label className="label">YOUR EMAIL</label>
-                <p className="control">
-                    <input className="input" type="email" ref="contactEmail" required/>
-                </p>
-                <label className="label">ISSUE</label>
-                <p className="control">
-                  <textarea className="textarea" ref="supportMessage" required></textarea>
-                </p>
-                <div className="container">
-                    <button className="button is-large" type="submit" >Send</button>
-                </div>
-            </form>
-        );
-        successForm = (
-            <div>
-                <h1 className="title">TODO CONTACT THANK YOU</h1>
-            </div>
-        );
-        formContent = self.state.isSubmited ? successForm : initialForm
+            initialForm = ( 
+                <form onSubmit={self.handleSubmit} className={'support-form'}>
+                    <div className="content">
+                        <h1 className="title">What can we help you with?</h1>
+                    </div>
+                    <label className="label">your name</label>
+                    <p className="control">
+                        <input className="input" type="text" ref="firstName" required />
+                    </p>
+                    <label className="label">your email</label>
+                    <p className="control">
+                        <input className="input" type="email" ref="contactEmail" required/>
+                    </p>
+                    <label className="label">issue</label>
+                    <p className="control">
+                      <textarea className="textarea" ref="supportMessage" required></textarea>
+                    </p>
+                    <div className="container">
+                        <button className="button is-large" type="submit" >Send</button>
+                    </div>
+                </form>
+            ),
+            successForm = <h1 className="title">TODO CONTACT THANK YOU</h1>,
+            formContent = self.state.isSubmitted ? successForm : initialForm
         return (
             <div>
                 {formContent}
@@ -63,7 +55,7 @@ var SupportForm = React.createClass({
         var self = this,
             options = self.dataMaker('support')
         ;
-        self.POST('email/', options)
+        self.POST('email', options)
             .then(function(res) { 
                 self.sendConfirmationEmail() 
             })
@@ -75,9 +67,9 @@ var SupportForm = React.createClass({
         var self = this,
             optionsNew = self.dataMaker('confirm')
         ;
-        self.POST('email/', optionsNew)
+        self.POST('email', optionsNew)
             .then(function(res){
-                self.setState({isSubmited: true})
+                self.setState({isSubmitted: true})
             })
             .catch(function(err){
                 console.log(err)
@@ -91,17 +83,17 @@ var SupportForm = React.createClass({
         ;
         switch(emailType) {
             case 'support':
-                email = 'support@neon-lab.com';
-                slug =  'support-email-admin';
+                email = UTILS.SUPPORT_EMAIL;
+                slug =  UTILS.SUPPORT_MANDRILL_SLUG;
             break; 
             case 'confirm':
                 email = self.refs.contactEmail.value.trim();
-                slug = 'support-email'; 
+                slug = UTILS.CONFIRM_MANDRILL_SLUG;
             break;
         }
         data = {
             data: {
-                    subject: "Neon Support Email",
+                    subject: 'Neon Support Email',
                     to_email_address: email,
                     template_slug: slug,
                     template_args:{
