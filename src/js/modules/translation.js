@@ -249,6 +249,12 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            'copy.cookie.title': 'Cookie Report',
+            'copy.cookie.heading': 'Cookie Report',
+            'copy.cookie.body': 'Listed below is the visibility status of each cookie',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
             'nav.home': 'Home',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',

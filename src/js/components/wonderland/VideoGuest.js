@@ -41,7 +41,7 @@ var VideoGuest = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
-        cookie.save('viewShare', self.props.shareToken, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.save('footprintCookieViewShare', '', {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
             mode: 'loading'
         }, function() {

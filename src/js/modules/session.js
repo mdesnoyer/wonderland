@@ -14,6 +14,8 @@ const accessTokenKey = 'at',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
     userKey = 'user_info',
+    viewShareKey = 'footprintCookieViewShare',
+    analyzeVideoKey = 'footprintCookieAnalyzeVideo',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
 ;
 

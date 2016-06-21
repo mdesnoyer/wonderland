@@ -228,6 +228,9 @@ var UTILS = {
         },
         URL_SHORTENER: {
             URL: '/shorturl/'
+        },
+        COOKIE: {
+            URL: '/cookie/'
         }
     },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
