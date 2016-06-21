@@ -20,31 +20,15 @@ const optionsGender = [
 const optionsAge = [
     {
         key: 1,
-        value: 'Under 18',
+        value: '18-34',
     },
     {
         key: 2,
-        value: '18-24',
+        value: '35-59',
     },
     {
         key: 3,
-        value: '25-34',
-    },
-    {
-        key: 4,
-        value: '35-44',
-    },
-    {
-        key: 5,
-        value: '45-54',
-    },
-    {
-        key: 6,
-        value: '55-64',
-    },
-    {
-        key: 7,
-        value: 'Over 65',
+        value: '60+'
     },
 ];
 
@@ -76,6 +60,11 @@ export default class XXUploadDialog extends React.Component {
 
         const isValid = !!url;
 
+        const submitClassName = ['xxButton', 'xxButton--highlight'];
+        if (isValid) {
+            submitClassName.push('xxButton--important');
+        }
+
         return (
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
@@ -106,14 +95,13 @@ export default class XXUploadDialog extends React.Component {
                             label="Age"
                             value={age}
                             options={optionsAge}
-                            reverse
                             onSelect={value => updateField('age', value)}
                         />
                     </div>
                     <p className="xxFormNote">Lorem ipsum dolor set amet</p>
                     <button
                         disabled={!isValid}
-                        className="xxButton xxButton--important"
+                        className={submitClassName.join(' ')}
                         type="button"
                         onClick={isValid ? onSubmit : null}
                     >Submit</button>

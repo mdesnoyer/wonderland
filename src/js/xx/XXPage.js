@@ -70,6 +70,7 @@ export default class XXPage extends React.Component {
     }
 
     render() {
+        const { updateStage } = this;
         const { stage } = this.state;
 
         const currentNavItems = ['has-account', 'account'].indexOf(stage) >= 0 ? navItemsLoggedIn : navItems;
@@ -107,12 +108,12 @@ export default class XXPage extends React.Component {
                         </ul>
                     </nav>
 
-                    <XXUpload onSubmit={() => this.updateStage('processing')} />
+                    <XXUpload onSubmit={() => updateStage('processing')} />
                 </header>
 
                 {
                     stage === 'learn-more' ? (
-                        <XXPageOverlay onClose={() => this.updateStage('')}>
+                        <XXPageOverlay onClose={() => updateStage('')}>
                             <XXLearnMore />
                         </XXPageOverlay>
                     ) : null
@@ -120,24 +121,24 @@ export default class XXPage extends React.Component {
 
                 {
                     stage === 'contact-us' ? (
-                        <XXPageOverlay onClose={() => this.updateStage('')}>
-                            <XXContactUs onClose={() => this.updateStage('')} />
+                        <XXPageOverlay onClose={() => updateStage('')}>
+                            <XXContactUs onClose={() => updateStage('')} />
                         </XXPageOverlay>
                     ) : null
                 }
 
                 {
                     stage === 'sign-up' ? (
-                        <XXPageOverlay onClose={() => this.updateStage('')}>
-                            <XXSignUp onClose={stage => this.updateStage(stage)} />
+                        <XXPageOverlay onClose={() => updateStage('')}>
+                            <XXSignUp onClose={stage => updateStage(stage)} />
                         </XXPageOverlay>
                     ) : null
                 }
 
                 {
                     stage === 'account' ? (
-                        <XXPageOverlay onClose={() => this.updateStage('')}>
-                            <XXAccount onClose={stage => this.updateStage(stage)} />
+                        <XXPageOverlay onClose={() => updateStage('')}>
+                            <XXAccount onClose={stage => updateStage(stage)} />
                         </XXPageOverlay>
                     ) : null
                 }
@@ -145,7 +146,7 @@ export default class XXPage extends React.Component {
                 {
                     stage === 'processing' ? (
                         <XXCollectionProcessing
-                            onComplete={() => this.updateStage('processing-finished')}
+                            onComplete={() => updateStage('processing-finished')}
                         />
                     ) : null
                 }
@@ -156,6 +157,7 @@ export default class XXPage extends React.Component {
                             isProcessingReady
                             title="Michael Jackson: From Motown to Off the
                                 Wall Documentary (2016)"
+                            updateStage={updateStage}
                         />
                     ) : null
                 }
@@ -164,15 +166,18 @@ export default class XXPage extends React.Component {
                     hasFilters
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"
+                    updateStage={updateStage}
                 />
 
                 <XXCollection
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"
+                    updateStage={updateStage}
                 />
 
                 <XXCollection
                     title="Thursday evening at Daniel’s"
+                    updateStage={updateStage}
                 />
         </main>
         );

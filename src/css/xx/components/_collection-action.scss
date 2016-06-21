@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionAction {
-    padding: 0 0 45px;
+    @include clearfix;
 
     p {
         margin: 12px 0 20px;
@@ -16,12 +16,13 @@
     @include clearfix;
 
     position: absolute;
-    bottom: 40px;
+    top: 0;
     width: calc((99.99% - #{$gutter-width}) * 1/3 - #{$gutter-width});
+    margin-top: calc(30px + (99.99% - #{$gutter-width}) * 4/9 - 45px);
 
     .xxButton {
-        width: calc((99.99% + #{$gutter-width}) * 1/2 - #{$gutter-width});
         float: left;
+        width: calc((99.99% + #{$gutter-width}) * 1/2 - #{$gutter-width});
 
         + .xxButton {
             float: right;

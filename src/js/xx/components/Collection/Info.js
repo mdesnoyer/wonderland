@@ -43,7 +43,7 @@ export default class XXCollectionInfo extends React.Component {
     }
 
     render() {
-        const { hasFilters, title, activeContent, setActiveContent } = this.props;
+        const { hasFilters, title, activeContent, setActiveContent, updateStage } = this.props;
         const { time } = this.state;
 
         const renderedTime = `${Math.floor(time / 60)}:${time % 60 > 9 ? time % 60 : (`0${time % 60}`)}`;
@@ -74,7 +74,9 @@ export default class XXCollectionInfo extends React.Component {
 
                 {
                     hasFilters || ['has-filters', 'refilter-finished'].indexOf(activeContent) >= 0 ? (
-                        <XXCollectionFilters />
+                        <XXCollectionFilters
+
+                        />
                     ) : (
                         <div className="xxCollectionFilters">
                             <strong className="xxCollectionFilters-title">Filters</strong>
@@ -85,7 +87,7 @@ export default class XXCollectionInfo extends React.Component {
 
                 <XXLift />
 
-                <XXCollectionActions setActiveContent={setActiveContent} />
+                <XXCollectionActions setActiveContent={setActiveContent} updateStage={updateStage} />
             </div>
         );
     }

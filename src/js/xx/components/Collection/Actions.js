@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ({ setActiveContent }) => {
+export default ({ setActiveContent, updateStage }) => {
     return (
         <ul className="xxCollectionActions">
             <li className="xxCollectionActions-item">
@@ -29,7 +29,7 @@ export default ({ setActiveContent }) => {
                 <a
                     href=""
                     className="xxCollectionActions-anchor xxCollectionActions-save"
-                    onClick={e => e.preventDefault()}
+                    onClick={e => {e.preventDefault(); updateStage('sign-up');}}
                 >
                     <span>Save</span>
                 </a>

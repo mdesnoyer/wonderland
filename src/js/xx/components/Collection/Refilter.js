@@ -20,31 +20,15 @@ const optionsGender = [
 const optionsAge = [
     {
         key: 1,
-        value: 'Under 18',
+        value: '18-34',
     },
     {
         key: 2,
-        value: '18-24',
+        value: '35-59',
     },
     {
         key: 3,
-        value: '25-34',
-    },
-    {
-        key: 4,
-        value: '35-44',
-    },
-    {
-        key: 5,
-        value: '45-54',
-    },
-    {
-        key: 6,
-        value: '55-64',
-    },
-    {
-        key: 7,
-        value: 'Over 65',
+        value: '60+'
     },
 ];
 
@@ -73,7 +57,7 @@ export default class XXRefilter extends React.Component {
         const { setActiveContent } = this.props;
         const { gender, age } = this.state
 
-        const isValid = gender && age;
+        const isValid = gender || age;
 
         const applyClassName = ['xxButton', 'xxButton--highlight'];
         if (isValid) {

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import XXUploadDialog from './Dialog';
 
@@ -11,6 +12,7 @@ export default class XXUpload extends React.Component {
         super(props);
 
         this.toggleOpen = this.toggleOpen.bind(this);
+        this.handleBgCloseClick = this.handleBgCloseClick.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
 
         this.state = {
@@ -26,6 +28,16 @@ export default class XXUpload extends React.Component {
         });
     }
 
+    handleBgCloseClick(e) {
+        if (this._overlay !== e.target && this._overlay.children[0] !== e.target && thisNode.contains(e.target)) {
+            return;
+        }
+
+        this.setState({
+            isOpen: false,
+        });
+    }
+
     handleUpload() {
         this.props.onSubmit();
 
@@ -35,6 +47,7 @@ export default class XXUpload extends React.Component {
     }
 
     render() {
+        const { handleBgCloseClick, handleUpload } = this;
         const { isOpen } = this.state;
 
         const className = ['xxUpload'];
@@ -52,8 +65,8 @@ export default class XXUpload extends React.Component {
 
                 {
                     isOpen ? (
-                        <div className="xxOverlay">
-                            <XXUploadDialog onSubmit={this.handleUpload} />
+                        <div className="xxOverlay" ref={overlay => this._overlay = overlay} onClick={handleBgCloseClick}>
+                            <XXUploadDialog onSubmit={handleUpload} />
                         </div>
                     ) : null
                 }
