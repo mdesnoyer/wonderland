@@ -15,7 +15,7 @@ var DragDropComponent = React.createClass({
         getInitialState: function() {
             var self = this;
             return {
-                mode: 'silent', //silent/error/sucess/error/
+                mode: 'silent', //silent/error/success/error/
             }
         },
         onDrop: function (files) {
@@ -28,20 +28,16 @@ var DragDropComponent = React.createClass({
         },
         formatData: function(files) {
             var self = this,
-                formData = new FormData(),
-                url = self.createUrl(),
-                headers = self.createHeaders()
+                formData = new FormData()
             ;
-
-            debugger
             files.forEach((file)=> {
                 formData.append('upload', file)
             })
-
-            formData.append('Authorization', 'Bearer ' + SESSION.state.accessToken)
-
-            ///send ajax data 
-            debugger
+            self.sendFormattedData(formData)
+        },
+        sendFormattedData: function(formData){
+            var self = this,
+                url = self.createUrl()
             reqwest({
               url: url,
               headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
@@ -53,21 +49,42 @@ var DragDropComponent = React.createClass({
             })
             .then(res => {
                 console.log(res);
-                debugger
+                self.setState({
+                    mode:'success'
+                }, setTimeout( 
+                    self.setState({
+                        mode:'silent'
+                    }), 30)
+                )
             }).catch(err => {
+                debugger 
+                if (err.status === 401) {
+                    self.grabRefreshToken(SESSION.state.refreshToken, formData)
+                }
                 console.log(err);
-                debugger
             });
-
         },
         createUrl: function() {
-            console.log(CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/')
-            debugger 
             return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
         },
-        createHeaders: function(){
-            // var 
-            // options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken
+        grabRefreshToken: function(refreshToken, formData){
+            reqwest({
+                url: CONFIG.AUTH_HOST + 'refresh_token',
+                data: JSON.stringify({
+                    token : SESSION.state.refreshToken
+                }),
+                contentType: 'application/json',
+                method: 'POST',
+                crossDomain: true,
+                type: 'json'
+            })
+                .then(function (res) {
+                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                    self.sendFormattedData(formData)
+                })
+                .catch(function (err) {
+                    SESSION.end();
+                });
         },
         render: function () {
             var self = this,
@@ -84,6 +101,12 @@ var DragDropComponent = React.createClass({
                         </span>
                     );
                 break;
+                case 'success':
+                DropzoneContents = (
+                    <span className="icon">
+                        <i className="fa fa-check"></i>
+                    </span>
+                );
             }
             return (
                 <div>
