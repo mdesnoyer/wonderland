@@ -1,7 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import T from '../../modules/Translation';
+import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,7 +49,7 @@ var VideoLift = React.createClass({
             else {
                 self.setState({
                     mode: 'success',
-                    lift: parseInt(json.lift[1].lift * 100)
+                    lift: UTILS.makePercentage(json.lift[1].lift, 0)
                 });
             }
         })
@@ -72,7 +73,7 @@ var VideoLift = React.createClass({
             case 'loading':
                 break;
             case 'success':
-                liftDisplay = self.state.lift + '% ' + T.get('label.lift');
+                liftDisplay = self.state.lift + ' ' + T.get('label.lift');
                 break;
         }
         return (
