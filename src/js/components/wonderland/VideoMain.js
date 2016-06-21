@@ -5,11 +5,14 @@ import React from 'react';
 import Thumbnails from './Thumbnails';
 import VideoInfoBox from './VideoInfoBox';
 import VideoSharer from './VideoSharer';
+import T from '../../modules/translation';
+import AjaxMixin from '../../mixins/Ajax';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoMain = React.createClass({
-    // mixins: [ReactDebugMixin],
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         isGuest: React.PropTypes.bool.isRequired,
         accountId: React.PropTypes.string,
@@ -23,9 +26,42 @@ var VideoMain = React.createClass({
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
         isServingEnabled: React.PropTypes.bool.isRequired,
-        shareToken: React.PropTypes.string.isRequired,
-        experimentState: React.PropTypes.string,
-        winnerThumbnail: React.PropTypes.string
+        shareToken: React.PropTypes.string.isRequired
+    },
+    getInitialState: function() {
+        var self = this;
+        return {
+            isLoading: false,
+            experimentState: T.get('copy.unknown'),
+            winnerThumbnail: ''
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.setState({
+            isLoading: true
+        }, function() {
+            self.GET('statistics/videos', {
+                data: {
+                    video_id: self.props.videoId,
+                    fields: UTILS.VIDEO_STATS_FIELDS
+                }
+            })
+            .then(function(json) {
+                self.setState({
+                    experimentState: json.statistics[0].experiment_state,
+                    winnerThumbnail: json.statistics[0].winnerThumbnail,
+                    isLoading: false
+                });
+            }).catch(function(err) {
+                console.log(err);
+                self.setState({
+                    status: err.code,
+                    error: err.message,
+                    isLoading: false,
+                });
+            });
+        });
     },
     render: function() {
         var self = this,
@@ -52,8 +88,8 @@ var VideoMain = React.createClass({
                             videoLink={self.props.videoLink}
                             duration={self.props.duration}
                             url={self.props.url}
-                            experimentState={self.props.experimentState}
-                            winnerThumbnail={self.props.winnerThumbnail}
+                            experimentState={self.state.experimentState}
+                            winnerThumbnail={self.state.winnerThumbnail}
                         />
                         <VideoSharer
                             isGuest={self.props.isGuest}
