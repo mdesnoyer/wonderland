@@ -54,14 +54,12 @@ var DropBoxHolder = React.createClass({
                 }
             }
     	;
-        // url: UTILS.properEncodeURI(urls[0].link)
 		self.POST('thumbnails', options)
     		 .then(function(res) {
-    		 	//THEN
-                debugger 
+                console.log(res)
     		 })
     		 .catch(function(err){
-    		 	debugger
+    		 	console.log(err)
     		 })	
 
     }

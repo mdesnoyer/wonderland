@@ -57,17 +57,17 @@ var DragDropComponent = React.createClass({
                     }), 30)
                 )
             }).catch(err => {
-                debugger 
                 if (err.status === 401) {
+                    console.log(err);
                     self.grabRefreshToken(SESSION.state.refreshToken, formData)
                 }
-                console.log(err);
             });
         },
         createUrl: function() {
             return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
         },
         grabRefreshToken: function(refreshToken, formData){
+            var self = this; 
             reqwest({
                 url: CONFIG.AUTH_HOST + 'refresh_token',
                 data: JSON.stringify({

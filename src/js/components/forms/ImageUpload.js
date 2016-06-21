@@ -12,14 +12,6 @@ import DropBoxHolder from './DropBoxHolder';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUpload = React.createClass({
-	mixins: [AjaxMixin, Account],
-    getInitialState: function() {
-        var self = this;
-        return {
-            url:'',
-            mode: 'silent' //silent/error/sucess/error/
-        }
-    },
     render: function() {
         var self = this;
         return (
@@ -37,9 +29,3 @@ var ImageUpload = React.createClass({
 export default ImageUpload;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // <div className="Drop-Button-container">
-                //     <button className="Drop-Button button is-large">
-                //         <span className="icon is-medium"><i className="fa fa-angle-left"></i></span>
-                //     </button>
-                //     <button className="Drop-Button button is-large " type="submit" >Analyze</button>
-                // </div>
