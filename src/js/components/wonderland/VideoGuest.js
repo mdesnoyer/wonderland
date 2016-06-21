@@ -12,6 +12,7 @@ import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,6 +41,7 @@ var VideoGuest = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
+        cookie.save('viewShare', self.props.shareToken, {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
             mode: 'loading'
         }, function() {

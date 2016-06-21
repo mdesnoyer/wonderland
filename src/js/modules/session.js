@@ -14,7 +14,6 @@ const accessTokenKey = 'at',
     rememberMeKey = 'rme',
     rememberedEmailKey = 'ru',
     userKey = 'user_info',
-    signUpRefKey = 'signUpRef',
     COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
 ;
 
@@ -92,7 +91,6 @@ var Session = {
         cookie.remove(refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(signUpRefKey, {path: UTILS.COOKIE_DEFAULT_PATH}); // it does get deleted elsewhere but lets make sure
         localStorage.removeItem(userKey);
         this.state = {
             accessToken: undefined,

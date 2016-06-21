@@ -12,6 +12,7 @@ import IntegrationNotification from '../core/IntegrationNotification';
 import E from '../../modules/errors';
 import Account from '../../mixins/Account';
 import Icon from '../core/Icon';
+import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -204,6 +205,7 @@ var AnalyzeVideoForm = React.createClass({
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, videoUrl);
+        cookie.save('analyzeVideo', videoUrl, {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
                 mode: 'loading'
             }, self.analyzeVideo(videoUrl, optionalTitle, optionalDefaultThumbnailUrl)
