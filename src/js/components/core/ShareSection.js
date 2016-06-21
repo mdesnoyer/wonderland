@@ -40,7 +40,6 @@ var ShareSection = React.createClass({
     render: function() {
         var self = this,
             urlToDisplay = self.determineUrl(),
-            title = 'Check out this Awesome NEON IMAGE!',
             customColorBackground = {fill:'#aaa'}
         ;
         return (
