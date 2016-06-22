@@ -6,7 +6,7 @@
 - if the user wants their email remembered on login, email stored in RememberedEmailKey on login
 
 ## In `AnalyzeVideoForm`
-- empty cookie stored on analyze/upload of a video
+- videoUrl of the video analyzed/uploaded stored on analyze/upload
 
 ## In `VideoGuest`
-- empty cookie stored on view of a shared link
+- shareToken stored on view of a shared link

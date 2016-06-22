@@ -27,6 +27,8 @@ const accessTokenKey = 'at',
 var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
+        debugger;
+        cookie.load(viewShareKey);
         return {
             accessToken: (cookie.load(accessTokenKey) ? cookie.load(accessTokenKey) : 'False'),
             accountId: (cookie.load(accountIdKey) ? cookie.load(accountIdKey) : 'False'),
@@ -34,8 +36,8 @@ var CookiesPage = React.createClass({
             refreshToken: (cookie.load(refreshTokenKey) ? cookie.load(refreshTokenKey) : 'False'),
             rememberMe: (cookie.load(rememberMeKey) ? cookie.load(rememberMeKey) : 'False'),
             rememberedEmail: (cookie.load(rememberedEmailKey) ? cookie.load(rememberedEmailKey) : 'False'),
-            viewShare: (cookie.load(viewShareKey) ? 'True' : 'False'),
-            analyzeVideo: (cookie.load(analyzeVideoKey) ? 'True' : 'False')
+            viewShare: (cookie.load(viewShareKey) ? cookie.load(viewShareKey) : 'False'),
+            analyzeVideo: (cookie.load(analyzeVideoKey) ? cookie.load(analyzeVideoKey) : 'False')
         };
     },
     render: function() {
