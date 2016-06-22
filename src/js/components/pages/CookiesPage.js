@@ -24,16 +24,16 @@ const accessTokenKey = 'at',
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var CookiePage = React.createClass({
+var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
-            accessToken: (cookie.load(accessTokenKey) ? 'True' : 'False'),
-            accountId: (cookie.load(accountIdKey) ? 'True' : 'False'),
-            masqueradeAccountId: (cookie.load(masqueradeAccountIdKey) ? 'True' : 'False'),
-            refreshToken: (cookie.load(refreshTokenKey) ? 'True' : 'False'),
-            rememberMe: (cookie.load(rememberMeKey) ? 'True' : 'False'),
-            rememberedEmail: (cookie.load(rememberedEmailKey) ? 'True' : 'False'),
+            accessToken: (cookie.load(accessTokenKey) ? cookie.load(accessTokenKey) : 'False'),
+            accountId: (cookie.load(accountIdKey) ? cookie.load(accountIdKey) : 'False'),
+            masqueradeAccountId: (cookie.load(masqueradeAccountIdKey) ? cookie.load(masqueradeAccountIdKey) : 'False'),
+            refreshToken: (cookie.load(refreshTokenKey) ? cookie.load(refreshTokenKey) : 'False'),
+            rememberMe: (cookie.load(rememberMeKey) ? cookie.load(rememberMeKey) : 'False'),
+            rememberedEmail: (cookie.load(rememberedEmailKey) ? cookie.load(rememberedEmailKey) : 'False'),
             viewShare: (cookie.load(viewShareKey) ? 'True' : 'False'),
             analyzeVideo: (cookie.load(analyzeVideoKey) ? 'True' : 'False')
         };
@@ -74,6 +74,6 @@ var CookiePage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default CookiePage;
+export default CookiesPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
