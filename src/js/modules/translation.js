@@ -249,9 +249,9 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            'copy.cookie.title': 'Cookie Report',
-            'copy.cookie.heading': 'Cookie Report',
-            'copy.cookie.body': 'Listed below is the visibility status of each cookie',
+            'copy.cookies.title': 'Cookies Report',
+            'copy.cookies.heading': 'Cookies Report',
+            'copy.cookies.body': 'Listed below is the visibility status of each cookie',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

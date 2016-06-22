@@ -27,17 +27,24 @@ const accessTokenKey = 'at',
 var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
-        debugger;
-        cookie.load(viewShareKey);
+        var accessTokenCookie = cookie.load(accessTokenKey),
+            accountIdCookie = cookie.load(accountIdKey),
+            masqueradeAccountIdCookie = cookie.load(masqueradeAccountIdKey),
+            refreshTokenCookie = cookie.load(refreshTokenKey),
+            rememberMeCookie = cookie.load(rememberMeKey),
+            rememberedEmailCookie = cookie.load(rememberedEmailKey),
+            viewShareCookie = cookie.load(viewShareKey),
+            analyzeVideoCookie = cookie.load(analyzeVideoKey)
+        ;
         return {
-            accessToken: (cookie.load(accessTokenKey) ? cookie.load(accessTokenKey) : 'False'),
-            accountId: (cookie.load(accountIdKey) ? cookie.load(accountIdKey) : 'False'),
-            masqueradeAccountId: (cookie.load(masqueradeAccountIdKey) ? cookie.load(masqueradeAccountIdKey) : 'False'),
-            refreshToken: (cookie.load(refreshTokenKey) ? cookie.load(refreshTokenKey) : 'False'),
-            rememberMe: (cookie.load(rememberMeKey) ? cookie.load(rememberMeKey) : 'False'),
-            rememberedEmail: (cookie.load(rememberedEmailKey) ? cookie.load(rememberedEmailKey) : 'False'),
-            viewShare: (cookie.load(viewShareKey) ? cookie.load(viewShareKey) : 'False'),
-            analyzeVideo: (cookie.load(analyzeVideoKey) ? cookie.load(analyzeVideoKey) : 'False')
+            accessToken: (accessTokenCookie ? accessTokenCookie : 'False'),
+            accountId: (accountIdCookie ? accountIdCookie : 'False'),
+            masqueradeAccountId: (masqueradeAccountIdCookie ? masqueradeAccountIdCookie : 'False'),
+            refreshToken: (refreshTokenCookie ? refreshTokenCookie : 'False'),
+            rememberMe: (rememberMeCookie ? rememberMeCookie : 'False'),
+            rememberedEmail: (rememberedEmailCookie ? rememberedEmailCookie : 'False'),
+            viewShare: (viewShareCookie ? viewShareCookie : 'False'),
+            analyzeVideo: (analyzeVideoCookie ? analyzeVideoCookie : 'False')
         };
     },
     render: function() {
@@ -45,15 +52,15 @@ var CookiesPage = React.createClass({
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.cookie.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.cookies.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.cookie.heading')}</h1>
+                            <h1 className="title is-2">{T.get('copy.cookies.heading')}</h1>
                             <div className="content">
-                                <p>{T.get('copy.cookie.body')}</p>
+                                <p>{T.get('copy.cookies.body')}</p>
                                 <ul>
                                     <li>accessToken: {self.state.accessToken}</li>
                                     <li>accountId: {self.state.accountId}</li>
