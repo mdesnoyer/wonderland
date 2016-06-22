@@ -66,7 +66,19 @@ var VideoGuest = React.createClass({
                     });
                 })
                 .catch(function(err) {
-                    E.raiseError(err);
+                    switch (err.code) {
+                        case 401:
+                            E.raiseError(T.get('error.401'));
+                            break;
+                        case 403:
+                            E.raiseError(T.get('error.403'));
+                        case 404:
+                            E.raiseError(T.get('error.404'));
+                            break;
+                        default:
+                            E.raiseError(T.get('error.generic'));
+                            break;
+                    }
                     self.setState({
                         mode: 'error'
                     });

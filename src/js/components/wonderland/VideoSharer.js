@@ -7,6 +7,7 @@ import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Account from '../../mixins/Account';
 import Message from '../wonderland/Message';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -144,30 +145,21 @@ var VideoSharer = React.createClass({
                             .catch(function(err) {
                                 switch (err.code) {
                                     case 401:
-                                        E.raiseError('TODO 401 Error message');
-                                        self.setState({
-                                            mode: 'error'
-                                        });
+                                        E.raiseError(T.get('error.401'));
                                         break;
                                     case 403:
-                                        E.raiseError('TODO 403 Error message');
-                                        self.setState({
-                                            mode: 'error'
-                                        });
+                                        E.raiseError(T.get('error.403'));
                                         break;
                                     case 404:
-                                        E.raiseError('TODO 404 Error message');
-                                        self.setState({
-                                            mode: 'error'
-                                        });
+                                        E.raiseError(T.get('error.404'));
                                         break;
                                     default:
-                                        E.raiseError('TODO Default Error message');
-                                        self.setState({
-                                            mode: 'error'
-                                        });
+                                        E.raiseError(T.get('error.generic'));
                                         break;
                                 }
+                                self.setState({
+                                    mode: 'error'
+                                });
                             })
                         ;
                     });

@@ -277,6 +277,15 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don&rsquo;t match.',
             'error.unableToSignIn': 'Unable to Sign In',
+
+            'error.longVideo': 'Please upload a video shorter than 15 minutes long.',
+            'error.loginlessLimit': 'You\'ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
+            'error.unpaidAccountLimit': 'You\'ve hit your upload limit. Check out your options for increasing your limits on our <a href="@link1">pricing page</a> or <a href="@link2">get in touch</a> with us.',
+            'error.generic': 'Oops! Something went wrong. Please refresh the page or come back later.',
+            'error.401': 'Oops! We can\'t find what you\'re looking for. Please refresh the page or try again.',
+            'error.403': 'Oops! We can\'t find what you\'re looking for. Please refresh the page or try again.',
+            'error.404': 'Oops! We can\'t find what you\'re looking for. Please try again.',
+
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'I agree to Neon\u2019s <a href="@link">Terms and Conditions</a> of use.',
