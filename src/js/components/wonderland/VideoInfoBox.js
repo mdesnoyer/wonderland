@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import ShareSection from '../core/ShareSection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,11 +12,13 @@ var VideoInfoBox = React.createClass({
     // mixins: [ReactDebugMixin],
     propTypes: {
         isGuest: React.PropTypes.bool.isRequired,
-        videoLink: React.PropTypes.string,
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         experimentState: React.PropTypes.string.isRequired,
-        winnerThumbnail: React.PropTypes.string
+        winnerThumbnail: React.PropTypes.string,
+        videoLink: React.PropTypes.string.isRequired,
+        shareToken: React.PropTypes.string.isRequired,
+        videoId: React.PropTypes.string.isRequired
     },
     render: function() {
         var self = this,
@@ -38,6 +41,10 @@ var VideoInfoBox = React.createClass({
                         <dd className="wonderland-dd">{self.props.experimentState}</dd>
                     {winnerDefTerm}
                         {winnerDescTerm}
+                    <dt className="wonderland-dt">Share</dt>
+                        <dd className="wonderland-dt">
+                            <ShareSection shareToken={self.props.shareToken} videoId={self.props.videoId} />
+                        </dd>
                 </dl>
             </aside>
         );

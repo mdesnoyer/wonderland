@@ -6,6 +6,7 @@ import T from '../../modules/translation';
 import FuzzyTime from '../core/FuzzyTime';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
+import ShareSection from '../core/ShareSection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +20,8 @@ var ThumbnailInfoBox = React.createClass({
         thumbnailId: React.PropTypes.string,
         created: React.PropTypes.string.isRequired,
         updated: React.PropTypes.string.isRequired,
-        thumbnailStats: React.PropTypes.object
+        thumbnailStats: React.PropTypes.object,
+        url: React.PropTypes.string
     },
     getInitialState: function() {
         return({

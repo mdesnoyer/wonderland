@@ -155,6 +155,9 @@ var Thumbnails = React.createClass({
                         >
                             {
                                 self.state.thumbnails.map(function(thumbnail, i) {
+                                    var neonScoreData = UTILS.NEON_SCORE_ENABLED ? UTILS.getNeonScoreData(thumbnail.neon_score) : '',
+                                        rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,
+                                        cookedNeonScore = UTILS.NEON_SCORE_ENABLED ? neonScoreData.neonScore : 0
                                     return (
                                         <div
                                             className="box wonderland-box"
@@ -166,6 +169,8 @@ var Thumbnails = React.createClass({
                                                 </div>
                                                 <div className="column is-3">
                                                     <ThumbnailInfoBox
+                                                        cookedNeonScore={cookedNeonScore}
+                                                        url={thumbnail.url}
                                                         frameNo={thumbnail.frameno || 0}
                                                         type={thumbnail.type}
                                                         width={thumbnail.width}

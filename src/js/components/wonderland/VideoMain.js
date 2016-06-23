@@ -54,9 +54,6 @@ var VideoMain = React.createClass({
                             url={self.props.url}
                             experimentState={self.props.experimentState}
                             winnerThumbnail={self.props.winnerThumbnail}
-                        />
-                        <VideoSharer
-                            isGuest={self.props.isGuest}
                             shareToken={self.props.shareToken}
                             videoId={self.props.videoId}
                             accountId={self.props.accountId}
