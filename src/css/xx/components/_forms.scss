@@ -109,7 +109,7 @@
         position: absolute;
         top: 17px;
         right: 18px;
-        z-index: 10;
+        z-index: 1;
         width: 1px;
         height: 10px;
         background: $bg-tertiary-color;
@@ -122,7 +122,7 @@
     }
 
     &.is-open {
-        z-index: 99999;
+        z-index: $zindex-above-everything;
 
         &::before, &::after {
             top: 19px;

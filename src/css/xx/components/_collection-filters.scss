@@ -21,7 +21,7 @@
 .xxCollectionFilterToggle {
     float: right;
     position: relative;
-    z-index: 10;
+    z-index: 1;
     top: 14px;
     color: $accent-color;
 
@@ -85,7 +85,7 @@
         }
 
         &::after {
-            z-index: 100;
+            z-index: 2;
             background: $accent-color;
             color: #fff;
             transform: rotate(0deg);
@@ -131,7 +131,7 @@
     .is-open > & {
         &::before, &::after {
             top: 7px;
-            z-index: 100000;
+            z-index: $zindex-above-everything;
             pointer-events: none;
             transform-origin: 50% 0%;
         }
@@ -143,7 +143,7 @@
     width: auto;
     top: -8px;
     left: -16px;
-    z-index: 99999;
+    z-index: $zindex-above-everything - 1;
     box-shadow: 0 0 5px rgba(0, 0, 0, .22);
     background: #fff;
 }

@@ -19,12 +19,12 @@ export default class XXPageOverlay extends React.Component {
         window.scrollTo(0, 0);
         ReactDOM.findDOMNode(this).scrollTop = 0;
 
-        document.body.classList.add('has-overlay');
+        document.body.classList.add('has-overlayWithScroll');
         document.body.style.marginRight = `${scrollbarWidth}px`;
     }
 
     componentWillUnmount() {
-        document.body.classList.remove('has-overlay');
+        document.body.classList.remove('has-overlayWithScroll');
         document.body.style.marginRight = 0;
     }
 
@@ -49,7 +49,7 @@ export default class XXPageOverlay extends React.Component {
         const { children } = this.props;
 
         return (
-            <div className="xxOverlay xxOverlay--page" onClick={handleBgCloseClick}>
+            <div className="xxOverlay xxOverlay--scroll xxOverlay--page" onClick={handleBgCloseClick}>
                 <div className="xxPageOverlay">
                     <a href="" className="xxPageOverlay-close" onClick={handleCloseClick}>Close</a>
                     {children}

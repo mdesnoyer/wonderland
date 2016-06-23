@@ -5,19 +5,11 @@ $upload-button-offset: 35px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxUpload {
-    .xxOverlay {
-        z-index: 4500;
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 .xxUploadButton {
     position: fixed;
     bottom: $upload-button-offset;
     right: 50%;
-    z-index: 500;
+    z-index: $zindex-upload-button;
     width: $upload-button-size;
     height: $upload-button-size;
     border-radius: 100%;
@@ -54,7 +46,7 @@ $upload-button-offset: 35px;
     }
 
     .is-open > & {
-        z-index: 5000;
+        z-index: $zindex-overlay + 1;
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         background: $quaternary-color;
         transform: rotate(-45deg);

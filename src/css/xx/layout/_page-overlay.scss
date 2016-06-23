@@ -5,17 +5,6 @@ $page-overlay-padding-bottom: 60px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.has-overlay {
-    overflow-y: hidden;
-
-    #wonderland {
-        overflow: hidden;
-        height: 100vh;
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 .xxPageOverlay {
     position: absolute;
     top: 0;
@@ -33,7 +22,7 @@ $page-overlay-padding-bottom: 60px;
     right: 0;
     width: 53px;
     height: 53px;
-    z-index: 99999;
+    z-index: $zindex-above-everything;
     text-indent: -10000px;
 
     &::before, &::after {
@@ -70,7 +59,7 @@ $page-overlay-padding-bottom: 60px;
         top: 0;
         right: 0;
         width: 50%;
-        z-index: 1000;
+        z-index: $zindex-header + 1;
         height: $page-overlay-padding-top;
         background: linear-gradient(
             to bottom,
