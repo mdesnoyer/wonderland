@@ -205,7 +205,7 @@ var AnalyzeVideoForm = React.createClass({
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, videoUrl);
-        cookie.save('footprintCookieAnalyzeVideo', self.state.videoUrl, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.save(UTILS.COOKIES_KEY.analyzeVideoKey, self.state.videoUrl, {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
                 mode: 'loading'
             }, self.analyzeVideo(videoUrl, optionalTitle, optionalDefaultThumbnailUrl)
