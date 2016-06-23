@@ -55,7 +55,7 @@ $thumbnail-hover-border: 2px;
     border: $thumbnail-hover-border solid rgba($accent-color, 0);
     transition: border-color .2s ease-in-out;
 
-    .xxThumbnail:hover > & {
+    .xxThumbnail[href]:hover > & {
         border-color: $accent-color;
     }
 }
