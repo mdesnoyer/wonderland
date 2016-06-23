@@ -4,7 +4,7 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ({ href, score, size, src }) => {
+export default ({ href, score, size, src, ...tagProps }) => {
     const Tag = href ? 'a' : 'div';
 
     const className = ['xxThumbnail'];
@@ -20,6 +20,7 @@ export default ({ href, score, size, src }) => {
             href={href}
             className={className.join(' ')}
             data-score={score}
+            {...tagProps}
         >
             <img
                 className="xxThumbnail-image"

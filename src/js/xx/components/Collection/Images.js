@@ -10,11 +10,19 @@ export default class XXCollectionImages extends React.Component {
     constructor(props) {
         super(props);
 
+        this.setZoomVisibility = this.setZoomVisibility.bind(this);
         this.toggleLowScoresVisibility = this.toggleLowScoresVisibility.bind(this);
 
         this.state = {
             showLowScores: false,
+            showZoom: false,
         };
+    }
+
+    setZoomVisibility(isVisible, e) {
+        this.setState({
+            showZoom: isVisible,
+        });
     }
 
     toggleLowScoresVisibility(e) {
@@ -26,6 +34,7 @@ export default class XXCollectionImages extends React.Component {
     }
 
     render() {
+        const { toggleLowScoresVisibility, setZoomVisibility } = this;
         const { showLowScores } = this.state;
 
         return (
@@ -48,6 +57,7 @@ export default class XXCollectionImages extends React.Component {
                         score={80}
                         size="large"
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => setZoomVisibility(true, e)}
                     />
                 </div>
 
