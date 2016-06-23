@@ -7,25 +7,15 @@ import UTILS from './utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const accessTokenKey = 'at',
-    refreshTokenKey = 'rt',
-    accountIdKey ='actId',
-    masqueradeAccountIdKey ='msqactId',
-    rememberMeKey = 'rme',
-    rememberedEmailKey = 'ru',
-    userKey = 'user_info',
-    viewShareKey = 'footprintCookieViewShare',
-    analyzeVideoKey = 'footprintCookieAnalyzeVideo',
-    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
-;
+const COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60; // 5 years approx.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Session = {
     state: {
-        accessToken: cookie.load(accessTokenKey),
-        refreshToken: cookie.load(refreshTokenKey),
-        accountId: cookie.load(accountIdKey),
+        accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey),
+        refreshToken: cookie.load(UTILS.COOKIES_KEY.refreshTokenKey),
+        accountId: cookie.load(UTILS.COOKIES_KEY.accountIdKey),
         masqueradeAccountIdKey: undefined,
         user: undefined
     },
@@ -41,11 +31,11 @@ var Session = {
             accountId: accountId,
             user: user || self.state.user
         };
-        cookie.save(accessTokenKey, accessToken, cookiePath);
-        cookie.save(refreshTokenKey, refreshToken, cookiePath);
-        cookie.save(accountIdKey, accountId, cookiePath);
+        cookie.save(UTILS.COOKIES_KEY.accessTokenKey, accessToken, cookiePath);
+        cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
+        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, cookiePath);
         if (user) {
-            localStorage.setItem(userKey, JSON.stringify(user));
+            localStorage.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(user));
         }
     },
     setAccountId: function(accountId) {
@@ -55,7 +45,7 @@ var Session = {
             }
         ;
         self.state.accountId = accountId;
-        cookie.save(accountIdKey, accountId, {
+        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, {
             path: UTILS.COOKIE_DEFAULT_PATH
         });
     },
@@ -66,7 +56,7 @@ var Session = {
             }
         ;
         self.state.masqueradeAccountId = masqueradeAccountId;
-        cookie.save(masqueradeAccountIdKey, masqueradeAccountId, {
+        cookie.save(UTILS.COOKIES_KEY.masqueradeAccountIdKey, masqueradeAccountId, {
             path: UTILS.COOKIE_DEFAULT_PATH
         });
     },
@@ -89,11 +79,11 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        localStorage.removeItem(userKey);
+        cookie.remove(UTILS.COOKIES_KEY.accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        localStorage.removeItem(UTILS.COOKIES_KEY.userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
@@ -113,14 +103,14 @@ var Session = {
         return new Promise(function (resolve, reject) {
             if (userData) {
                 self.state.user = userData;
-                localStorage.setItem(userKey, JSON.stringify(userData));
+                localStorage.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(userData));
             }
             else if (self.state.user) {
                 userData = self.state.user;
             }
             else {
                 try {
-                    userData = JSON.parse(localStorage.getItem(userKey));
+                    userData = JSON.parse(localStorage.getItem(UTILS.COOKIES_KEY.userKey));
                 }
                 catch (e) {
                     // TODO: Get user from API based on session
@@ -137,31 +127,31 @@ var Session = {
     rememberMe: function(bool) {
         if (bool !== undefined) {
             if (bool) {
-                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {
+                cookie.save(UTILS.COOKIES_KEY.rememberMeKey, (!!bool ? 1 : 0), {
                     path: UTILS.COOKIE_DEFAULT_PATH,
                     maxAge: COOKIE_MAX_AGE
                 });
             }
             else {
-                cookie.remove(rememberMeKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-                cookie.remove(rememberedEmailKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+                cookie.remove(UTILS.COOKIES_KEY.rememberMeKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+                cookie.remove(UTILS.COOKIES_KEY.rememberedEmailKey, {path: UTILS.COOKIE_DEFAULT_PATH});
             }
         }
         else {
-            bool = cookie.load(rememberMeKey) ? true : false;
+            bool = cookie.load(UTILS.COOKIES_KEY.rememberMeKey) ? true : false;
         }
         return !!bool;
     },
     // Getter/setter for email stored during login
     rememberedEmail: function(email) {
         if (email) {
-            cookie.save(rememberedEmailKey, email, {
+            cookie.save(UTILS.COOKIES_KEY.rememberedEmailKey, email, {
                 path: UTILS.COOKIE_DEFAULT_PATH,
                 maxAge: COOKIE_MAX_AGE
             });
         }
         else {
-            email = cookie.load(rememberedEmailKey);
+            email = cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey);
         }
         return email;
     }

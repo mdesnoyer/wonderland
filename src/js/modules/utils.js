@@ -232,6 +232,17 @@ var UTILS = {
             URL: '/cookies/'
         }
     },
+    COOKIES_KEY: {
+        accessTokenKey: 'at',
+        accountIdKey: 'actId',
+        masqueradeAccountIdKey: 'msqactId',
+        refreshTokenKey: 'rt',
+        rememberMeKey: 'rme',
+        rememberedEmailKey: 'ru',
+        userKey: 'user_info',
+        viewShareKey: 'footprintCookieViewShare',
+        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
+    },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,

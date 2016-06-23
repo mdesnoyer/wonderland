@@ -11,30 +11,17 @@ import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const accessTokenKey = 'at',
-    accountIdKey ='actId',
-    masqueradeAccountIdKey ='msqactId',
-    refreshTokenKey = 'rt',
-    rememberMeKey = 'rme',
-    rememberedEmailKey = 'ru',
-    userKey = 'user_info',
-    viewShareKey = 'footprintCookieViewShare',
-    analyzeVideoKey = 'footprintCookieAnalyzeVideo'
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
-        var accessTokenCookie = cookie.load(accessTokenKey),
-            accountIdCookie = cookie.load(accountIdKey),
-            masqueradeAccountIdCookie = cookie.load(masqueradeAccountIdKey),
-            refreshTokenCookie = cookie.load(refreshTokenKey),
-            rememberMeCookie = cookie.load(rememberMeKey),
-            rememberedEmailCookie = cookie.load(rememberedEmailKey),
-            viewShareCookie = cookie.load(viewShareKey),
-            analyzeVideoCookie = cookie.load(analyzeVideoKey)
+        var accessTokenCookie = cookie.load(UTILS.COOKIES_KEY.accessTokenKey),
+            accountIdCookie = cookie.load(UTILS.COOKIES_KEY.accountIdKey),
+            masqueradeAccountIdCookie = cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey),
+            refreshTokenCookie = cookie.load(UTILS.COOKIES_KEY.refreshTokenKey),
+            rememberMeCookie = cookie.load(UTILS.COOKIES_KEY.rememberMeKey),
+            rememberedEmailCookie = cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey),
+            viewShareCookie = cookie.load(UTILS.COOKIES_KEY.viewShareKey),
+            analyzeVideoCookie = cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey)
         ;
         return {
             accessToken: (accessTokenCookie ? accessTokenCookie : 'False'),
