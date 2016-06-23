@@ -37,8 +37,8 @@ export default ({ setActiveContent }) => {
                 </li>
             </ul>
             <p>
-                Copy the link below to share this collection directly with your
-                friends and peers.
+                Copy the link below to share this collection. Anyone with this
+                link can view your images for this video.
             </p>
             <div className="xxFormField">
                 <label

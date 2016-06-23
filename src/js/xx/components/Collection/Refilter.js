@@ -20,15 +20,19 @@ const optionsGender = [
 const optionsAge = [
     {
         key: 1,
-        value: '18-34',
+        value: '18-29',
     },
     {
         key: 2,
-        value: '35-59',
+        value: '30-39',
     },
     {
         key: 3,
-        value: '60+'
+        value: '40-49',
+    },
+    {
+        key: 4,
+        value: '50+'
     },
 ];
 
@@ -66,11 +70,11 @@ export default class XXRefilter extends React.Component {
 
         return (
             <div className="xxCollectionAction">
-                <h2 className="xxTitle">Refilter</h2>
+                <h2 className="xxTitle">Filter Results</h2>
                 <p>
-                    Volutpat libero sapien, vel pellentesque ex porttitor eu.
-                    Morbi semper pharetra dui, et volutpat mi varius eu.
-                    Praesent auctor mi dui, ut vulputate enim.
+                    Filter your video to see images targeted for a specific
+                    demographic audience. We’ll need to reprocess the video,
+                    so this may take a few minutes.
                 </p>
                 <div className="xxFormField">
                     <label className="xxLabel">Filters</label>

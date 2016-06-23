@@ -44,9 +44,9 @@ export default class XXSignUp extends React.Component {
         return (
             <div className="xxPageOverlay-content">
                 <h1 className="xxSubtitle">Sign Up</h1>
-                <h2 className="xxTitle">Let’s get started!</h2>
+                <h2 className="xxTitle">Analyze More Videos</h2>
                 <div className="xxText">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus interdum nec tellus sed congue. Fusce volutpat.</p>
+                    <p>Create a free account to analyze more videos, see more NeonScores, and understand how images work.</p>
                 </div>
                 <div className="xxFormField">
                     <label className="xxLabel">Your Name</label>

@@ -40,7 +40,7 @@ export default class XXContactUs extends React.Component {
                 <h1 className="xxSubtitle">Contact Us</h1>
                 <h2 className="xxTitle">Want to find out more?</h2>
                 <div className="xxText">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus interdum nec tellus sed congue. Fusce volutpat.</p>
+                    <p>Get in touch with questions or comments. We’d love to hear from you!</p>
                 </div>
                 <div className="xxFormField">
                     <label className="xxLabel">Your Name</label>
@@ -94,7 +94,7 @@ export default class XXContactUs extends React.Component {
                             San Francisco, CA 94107<br />
                             United States
                         </p>
-                        <div className="xxKeyValue">
+                        {/*<div className="xxKeyValue">
                             <dl>
                                 <dt>Email</dt>
                                 <dd><a href="mailto:ask@neon-labs.com" className="u-inheritColor">ask@neon-labs.com</a></dd>
@@ -103,7 +103,7 @@ export default class XXContactUs extends React.Component {
                                 <dt>Phone</dt>
                                 <dd>415-355-4249</dd>
                             </dl>
-                        </div>
+                        </div>*/}
                     </div>
                 </section>
             </article>

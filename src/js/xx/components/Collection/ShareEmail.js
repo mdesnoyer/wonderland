@@ -39,8 +39,7 @@ export default class XXShareEmail extends React.Component {
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">Email</h2>
                 <p>
-                    Volutpat libero sapien, vel pellentesque ex porttitor eu.
-                    Morbi semper pharetra dui, et volutpat mi varius eu.
+                    Get an email summary of your image results for this video.
                 </p>
                 <div className="xxFormField">
                     <label

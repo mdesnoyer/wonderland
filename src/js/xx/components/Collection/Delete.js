@@ -7,11 +7,9 @@ import React from 'react';
 export default ({ setActiveContent }) => {
     return (
         <div className="xxCollectionAction">
-            <h2 className="xxTitle">Delete</h2>
+            <h2 className="xxTitle">Delete Collection</h2>
             <p>
-                Volutpat libero sapien, vel pellentesque ex porttitor eu.
-                Morbi semper pharetra dui, et volutpat mi varius eu. Praesent
-                auctor mi dui, ut vulputate enim.
+                Are you sure you want to delete all of the images from this video collection?
             </p>
             <div className="xxCollectionAction-buttons">
                 <button

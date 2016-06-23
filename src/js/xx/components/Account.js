@@ -38,18 +38,17 @@ export default class XXAccount extends React.Component {
         return (
             <article className="xxPageOverlay-content">
                 <h1 className="xxSubtitle">Account</h1>
-                <h2 className="xxTitle">Hi, Markatos@mac.com</h2>
+                <h2 className="xxTitle">Hi, Peter</h2>
                 <div className="xxText">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus interdum nec tellus sed congue. <a href="" className="u-secondaryAnchor">Get More!</a>
+                        Enjoying your Neon Demo, but want to analyze more content more quickly? <a href="" className="u-secondaryAnchor">Get More!</a>
                     </p>
                 </div>
                 <button
                     className="xxButton"
                     type="button"
                     onClick={() => onClose('')}
-                >Sign Out</button>
+                >Log Out</button>
 
                 <section className="xxSection">
                     <div className="xxFormField">

@@ -32,20 +32,16 @@ export default class XXCollectionRefilterReady extends React.Component {
         return (
             <section className="xxOverlay">
                 <div className="xxOverlay-content">
-                    <h2 className="xxTitle">Your refilter is ready!</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Duis ante lacus, lobortis sed pretium id fermentum.
-                    </p>
+                    <h2 className="xxTitle">Your images are ready!</h2>
                     <button
                         className="xxButton xxButton--highlight"
                         type="button"
                         onClick={e => this.props.setActiveContent('has-filters', e)}
-                    >View Results</button>
+                    >View Images</button>
                 </div>
                 <div className="xxCollectionFiltersHint">
                     <div className="xxCollectionFiltersHint-arrow" ref={arr => this._arrow = arr}></div>
-                    <strong className="xxCollectionFiltersHint-label">Click to view previous versions</strong>
+                    <strong className="xxCollectionFiltersHint-label">Click to view images for other audiences</strong>
                 </div>
             </section>
         );

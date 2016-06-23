@@ -60,6 +60,7 @@ export default class XXUpload extends React.Component {
                 <a
                     href=""
                     className="xxUploadButton"
+                    title="Analyze"
                     onClick={this.toggleOpen}
                 >Upload</a>
 

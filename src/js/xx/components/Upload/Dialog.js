@@ -20,15 +20,19 @@ const optionsGender = [
 const optionsAge = [
     {
         key: 1,
-        value: '18-34',
+        value: '18-29',
     },
     {
         key: 2,
-        value: '35-59',
+        value: '30-39',
     },
     {
         key: 3,
-        value: '60+'
+        value: '40-49',
+    },
+    {
+        key: 4,
+        value: '50+'
     },
 ];
 
@@ -68,7 +72,7 @@ export default class XXUploadDialog extends React.Component {
         return (
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">Upload your video</h2>
+                    <h2 className="xxTitle">Let’s analyze a video</h2>
                     <div className="xxFormField">
                         <label
                             className="xxLabel"
@@ -98,7 +102,7 @@ export default class XXUploadDialog extends React.Component {
                             onSelect={value => updateField('age', value)}
                         />
                     </div>
-                    <p className="xxFormNote">Lorem ipsum dolor set amet</p>
+                    <p className="xxFormNote">Get images for a specific audience.</p>
                     <button
                         disabled={!isValid}
                         className={submitClassName.join(' ')}
