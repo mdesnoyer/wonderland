@@ -1,5 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$page-overlay-padding-top: $header-height + $header-margin-bottom + 21px;
+$page-overlay-padding-bottom: 60px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .has-overlay {
     overflow-y: hidden;
 
@@ -57,7 +62,7 @@
 
 .xxPageOverlay-content {
     max-width: $page-max-width / 2;
-    padding: 142px $gutter-width 60px $gutter-width * 2;
+    padding: $page-overlay-padding-top $gutter-width $page-overlay-padding-bottom $gutter-width * 2;
 
     &::before {
         content: '';
@@ -66,7 +71,7 @@
         right: 0;
         width: 50%;
         z-index: 1000;
-        height: 142px;
+        height: $page-overlay-padding-top;
         background: linear-gradient(
             to bottom,
             rgba(255,255,255,1) 5%,
@@ -74,6 +79,10 @@
             rgba(255,255,255,0) 100%
         );
         pointer-events: none;
+
+        @media (max-width: $page-min-width + $gutter-width * 2) {
+            display: none; // only until responsive code exists
+        }
     }
 }
 

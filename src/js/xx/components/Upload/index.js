@@ -29,7 +29,7 @@ export default class XXUpload extends React.Component {
     }
 
     handleBgCloseClick(e) {
-        if (this._overlay !== e.target && this._overlay.children[0] !== e.target && thisNode.contains(e.target)) {
+        if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
             return;
         }
 

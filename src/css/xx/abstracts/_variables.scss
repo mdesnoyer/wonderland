@@ -19,6 +19,8 @@ $bg-color: #f5f5f5;
 $bg-secondary-color: #f0f0f0;
 $bg-tertiary-color: #d8d8d8;
 
+$error-color: #f00;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $serif-family: 'Harriet Display Light', 'Century Schoolbook', serif;
@@ -27,6 +29,25 @@ $sans-serif-family: 'Balto Web', Helvetica, Arial, sans-serif;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $default-font-size: 18px;
-$default-vertical-rhythm: 27px; 
+$default-vertical-rhythm: 27px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$page-padding-bottom: 101px;
+
+$header-height: 87px;
+$header-margin-bottom: 40px;
+
+$collection-padding-top: 30px;
+$collection-padding-bottom: 40px;
+$collection-margin-bottom: 20px;
+
+$processing-ribbon-height: 5px;
+
+$form-element-height: 45px;
+$form-element-border: 1px;
+$form-element-padding-horizontal: 10px;
+
+$button-width: 152px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -8,7 +8,7 @@
     width: $page-max-width + 2 * $gutter-width;
     max-width: 100%;
     min-width: $page-min-width + 2 * $gutter-width;
-    height: 87px;
+    height: $header-height;
     margin: 0 auto;
     padding: 0 $gutter-width;
 }

@@ -5,7 +5,7 @@
     max-width: $page-max-width;
     min-width: $page-min-width;
     margin: 0 auto;
-    padding: 121px 24px 101px;
+    padding: $header-height + $header-margin-bottom $gutter-width $page-padding-bottom;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

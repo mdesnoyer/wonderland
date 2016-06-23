@@ -6,29 +6,29 @@
     @include clearfix;
 
     position: relative;
-    margin: 0 0 20px;
-    padding: 30px $gutter-width 40px;
+    margin: 0 0 $collection-margin-bottom;
+    padding: $collection-padding-top $gutter-width $collection-padding-bottom;
     background: #fff;
 
     &--processing {
-        border-top: 5px solid rgba($accent-color, .2);
-        padding-top: 22px;
-        padding-bottom: 25px;
+        border-top: $processing-ribbon-height solid rgba($accent-color, .2);
+        padding-top: $collection-padding-top - $processing-ribbon-height;
+        padding-bottom: $collection-padding-bottom - 5px;
 
         &::before {
             content: '';
             position: absolute;
-            top: -5px;
+            top: -1 * $processing-ribbon-height;
             left: 0;
             width: 100%;
-            height: 5px;
+            height: $processing-ribbon-height;
             background: linear-gradient(
                 to right,
-                rgba(255,107,49,0) 0%,
-                rgba(255,107,49,0.85) 30%,
-                rgba(255,107,49,1) 50%,
-                rgba(255,107,49,0.85) 70%,
-                rgba(255,107,49,0) 100%
+                rgba($accent-color, 0) 0%,
+                rgba($accent-color, 0.85) 30%,
+                rgba($accent-color, 1) 50%,
+                rgba($accent-color, 0.85) 70%,
+                rgba($accent-color, 0) 100%
             ) -17% 0 / 34% 100% no-repeat;
             animation: ribbon 5s infinite alternate ease-in-out;
         }

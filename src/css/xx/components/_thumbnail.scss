@@ -1,5 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$thumbnail-small-score-size: 30px;
+$thumbnail-large-score-size: 42px;
+
+$thumbnail-hover-border: 2px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .xxThumbnail {
     display: block;
     position: relative;
@@ -16,12 +23,12 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 30px;
-        height: 30px;
+        width: $thumbnail-small-score-size;
+        height: $thumbnail-small-score-size;
         background: $accent-color;
         color: #fff;
         font-size: 14px;
-        line-height: 30px;
+        line-height: $thumbnail-small-score-size;
         vertical-align: middle;
         text-align: center;
     }
@@ -31,28 +38,26 @@
     }
 
     &--large::after {
-        width: 42px;
-        height: 42px;
+        width: $thumbnail-large-score-size;
+        height: $thumbnail-large-score-size;
         font-size: 18px;
-        line-height: 42px;
-    }
-
-    &[href]:hover {
-        .xxThumbnail-image {
-            border-color: $accent-color;
-        }
+        line-height: $thumbnail-large-score-size;
     }
 }
 
 .xxThumbnail-image {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
+    top: -1 * $thumbnail-hover-border;
+    left: -1 * $thumbnail-hover-border;
+    width: calc(100% + #{$thumbnail-hover-border} * 2);
+    height: calc(100% + #{$thumbnail-hover-border} * 2);
     border-radius: 2px;
-    border: 2px solid rgba($accent-color, 0);
+    border: $thumbnail-hover-border solid rgba($accent-color, 0);
     transition: border-color .2s ease-in-out;
+
+    .xxThumbnail:hover > & {
+        border-color: $accent-color;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
