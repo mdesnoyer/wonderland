@@ -29,11 +29,16 @@ export default class XXSignUp extends React.Component {
         const { onClose } = this.props;
         const { name, email, password, passwordVerify } = this.state;
 
-        const isValid = name && email && password && passwordVerify;
+        const isValid = name && email && password && passwordVerify && (password === passwordVerify);
 
         const sendClassName = ['xxButton', 'xxButton--highlight'];
         if (isValid) {
             sendClassName.push('xxButton--important');
+        }
+
+        const verifyPasswordClassName = ['xxFormField'];
+        if (passwordVerify && password !== passwordVerify) {
+            verifyPasswordClassName.push('has-error');
         }
 
         return (
@@ -73,7 +78,14 @@ export default class XXSignUp extends React.Component {
                         onChange={e => updateField('password', e.target.value)}
                     />
                 </div>
-                <div className="xxFormField">
+                <div className={verifyPasswordClassName.join(' ')}>
+                    {
+                        passwordVerify && password !== passwordVerify ? (
+                            <strong className="xxFormError">
+                                Passwords do not match.
+                            </strong>
+                        ) : null
+                    }
                     <label className="xxLabel">Verify Password</label>
                     <input
                         className="xxInputText"
