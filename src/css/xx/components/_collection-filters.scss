@@ -34,7 +34,7 @@
         font-size: 14px;
         line-height: 1;
         pointer-events: none;
-        transition: color $default-transition-speed $default-transition-easing;
+        transition: color $default-transition;
     }
 
     &::after {
@@ -52,7 +52,7 @@
         text-align: center;
         transform: rotate(-60deg);
         transform-origin: 50% 50%;
-        transition: transform $default-transition-speed $default-transition-easing, color $default-transition-speed $default-transition-easing;
+        transition: transform $default-transition, color $default-transition;
     }
 
     &:hover {

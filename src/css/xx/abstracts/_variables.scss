@@ -62,5 +62,6 @@ $zindex-overlay: 10000;
 
 $default-transition-speed: .2s;
 $default-transition-easing: ease-in-out;
+$default-transition: $default-transition-speed $default-transition-easing;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

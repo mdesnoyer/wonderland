@@ -64,7 +64,7 @@
         background: $base-color;
         transform: rotate(-45deg);
         transform-origin: 50% 50%;
-        transition: background $default-transition-speed $default-transition-easing;
+        transition: background $default-transition;
     }
 
     &::after {

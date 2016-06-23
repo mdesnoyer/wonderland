@@ -18,7 +18,7 @@
     display: block;
     color: $quaternary-color;
     cursor: pointer;
-    transition: color $default-transition-speed $default-transition-easing;
+    transition: color $default-transition;
 
     span {
         display: none;

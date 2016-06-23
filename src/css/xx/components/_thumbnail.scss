@@ -53,7 +53,7 @@ $thumbnail-hover-border: 2px;
     height: calc(100% + #{$thumbnail-hover-border} * 2);
     border-radius: 2px;
     border: $thumbnail-hover-border solid rgba($accent-color, 0);
-    transition: border-color $default-transition-speed $default-transition-easing;
+    transition: border-color $default-transition;
 
     .xxThumbnail[href]:hover > & {
         border-color: $accent-color;
