@@ -49,7 +49,7 @@ export default class XXPageOverlay extends React.Component {
         const { children } = this.props;
 
         return (
-            <div className="xxOverlay xxOverlay--scroll xxOverlay--page" onClick={handleBgCloseClick}>
+            <div className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" onClick={handleBgCloseClick}>
                 <div className="xxPageOverlay">
                     <a href="" className="xxPageOverlay-close" onClick={handleCloseClick}>Close</a>
                     {children}
