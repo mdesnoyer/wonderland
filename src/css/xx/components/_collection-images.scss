@@ -41,7 +41,7 @@ $small-thumbnail-width: calc(99.99% * 1/6 - #{$gutter-width});
     color: $base-color;
     cursor: pointer;
     text-align: center;
-    transition: border-color .2s ease-in-out, color .2s ease-in-out;
+    transition: border-color $default-transition-speed $default-transition-easing, color $default-transition-speed $default-transition-easing;
     user-select: none;
 
     &::before {

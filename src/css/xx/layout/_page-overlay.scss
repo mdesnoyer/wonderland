@@ -16,39 +16,6 @@ $page-overlay-padding-bottom: 60px;
     background: #fff;
 }
 
-.xxPageOverlay-close {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 53px;
-    height: 53px;
-    z-index: $zindex-above-everything;
-    text-indent: -10000px;
-
-    &::before, &::after {
-        content: '';
-        position: absolute;
-        top: 27px;
-        right: 17px;
-        width: 21px;
-        height: 1px;
-        background: $base-color;
-        transform: rotate(-45deg);
-        transform-origin: 50% 50%;
-        transition: background .2s ease-in-out;
-    }
-
-    &::after {
-        transform: rotate(45deg);
-    }
-
-    &:hover {
-        &::before, &::after {
-            background: $secondary-color;
-        }
-    }
-}
-
 .xxPageOverlay-content {
     max-width: $page-max-width / 2;
     padding: $page-overlay-padding-top $gutter-width $page-overlay-padding-bottom $gutter-width * 2;

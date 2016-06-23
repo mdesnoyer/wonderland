@@ -3,6 +3,7 @@
 import React from 'react';
 
 import XXThumbnail from '../Thumbnail';
+import XXImageZoom from '../ImageZoom';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -20,6 +21,10 @@ export default class XXCollectionImages extends React.Component {
     }
 
     setZoomVisibility(isVisible, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({
             showZoom: isVisible,
         });
@@ -35,7 +40,7 @@ export default class XXCollectionImages extends React.Component {
 
     render() {
         const { toggleLowScoresVisibility, setZoomVisibility } = this;
-        const { showLowScores } = this.state;
+        const { showLowScores, showZoom } = this.state;
 
         return (
             <div className="xxCollectionImages">
@@ -133,6 +138,12 @@ export default class XXCollectionImages extends React.Component {
                         ) : null
                     }
                 </div>
+
+                {
+                    showZoom ? (
+                        <XXImageZoom onClose={() => setZoomVisibility(false)} />
+                    ) : null
+                }
             </div>
         );
     }

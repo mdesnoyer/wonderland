@@ -13,7 +13,7 @@ body {
 a {
     color: $secondary-color;
     text-decoration: none;
-    transition: color .2s ease-in-out;
+    transition: color $default-transition-speed $default-transition-easing;
 
     &:hover {
         color: $accent-color;

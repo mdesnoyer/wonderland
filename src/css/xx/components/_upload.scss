@@ -18,7 +18,7 @@ $upload-button-offset: 35px;
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
     background: $accent-color;
     text-indent: -10000px;
-    transition: box-shadow .2s ease-in-out, transform .2s ease-in-out, background .2s ease-in-out;
+    transition: box-shadow $default-transition-speed $default-transition-easing, transform $default-transition-speed $default-transition-easing, background $default-transition-speed $default-transition-easing;
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset;

@@ -1,5 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+.has-overlayDark {
+    .xxNav-anchor:hover {
+        color: $quaternary-color;
+    }
+}
+
 .has-overlayWithScroll {
     overflow-y: hidden;
 
@@ -20,6 +26,10 @@
     background: rgba($bg-color, 0.9);
     z-index: $zindex-overlay;
 
+    &--dark {
+        background: rgba($secondary-color, 0.96);
+    }
+
     &--scroll {
         overflow-x: visible;
         overflow-y: scroll;
@@ -32,6 +42,47 @@
 
     &--visibleNav {
         z-index: $zindex-header - 1;
+    }
+}
+
+.xxOverlay-close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 53px;
+    height: 53px;
+    z-index: $zindex-above-everything;
+    text-indent: -10000px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 27px;
+        right: 17px;
+        width: 21px;
+        height: 1px;
+        background: $base-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        transition: background $default-transition-speed $default-transition-easing;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+
+    &:hover {
+        &::before,
+        &::after {
+            background: $secondary-color;
+        }
+
+        .xxOverlay--dark & {
+            &::before,
+            &::after {
+                background: $quaternary-color;
+            }
+        }
     }
 }
 

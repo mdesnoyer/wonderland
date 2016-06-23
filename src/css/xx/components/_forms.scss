@@ -227,8 +227,8 @@
     color: $base-color;
     cursor: pointer;
     text-align: center;
-    transition: border-color .2s ease-in-out,
-                background .2s ease-in-out;
+    transition: border-color $default-transition-speed $default-transition-easing,
+                background $default-transition-speed $default-transition-easing;
 
     &[disabled] {
         cursor: default;

@@ -20,7 +20,7 @@
     display: block;
     color: $quaternary-color;
     cursor: pointer;
-    transition: color .2s ease-in-out;
+    transition: color $default-transition-speed $default-transition-easing;
 
     span {
         display: none;
