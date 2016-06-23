@@ -48,9 +48,7 @@ var VideoOwner = React.createClass({
             status: 200,
             size: self.props.forceOpen ? 'big' : 'small',
             duration: self.props.duration || 0,
-            url: self.props.url || '',
-            experimentState: T.get('copy.unknown'),
-            winnerThumbnail: ''
+            url: self.props.url || ''
         }
     },
     componentDidMount: function() {
@@ -119,8 +117,6 @@ var VideoOwner = React.createClass({
                         url={self.state.url}
                         isServingEnabled={self.props.isServingEnabled}
                         shareToken={self.state.shareToken}
-                        experimentState={self.state.experimentState}
-                        winnerThumbnail={self.state.winnerThumbnail}
                     />
                 </div>
             );
@@ -132,32 +128,6 @@ var VideoOwner = React.createClass({
         }
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.url);
-        if (!self.state.forceOpen) {
-            self.setState({
-                isLoading: true
-            }, function() {
-                self.GET('statistics/videos', {
-                    data: {
-                        video_id: self.state.videoId,
-                        fields: UTILS.VIDEO_STATS_FIELDS
-                    }
-                })
-                .then(function(json) {
-                    self.setState({
-                        experimentState: json.statistics[0].experiment_state,
-                        winnerThumbnail: json.statistics[0].winnerThumbnail,
-                        isLoading: false
-                    });
-                }).catch(function(err) {
-                    console.log(err);
-                    self.setState({
-                        status: err.code,
-                        error: err.message,
-                        isLoading: false,
-                    });
-                });
-            });
-        }
         self.setState({
             forceOpen: !self.state.forceOpen
         });
