@@ -3,6 +3,7 @@
 @mixin input-placeholder {
     &::placeholder {
         color: $tertiary-color;
+        opacity: 1;
     }
 
     &:focus {

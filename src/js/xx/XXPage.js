@@ -10,6 +10,7 @@ import XXLearnMore from './components/LearnMore';
 import XXContactUs from './components/ContactUs';
 import XXSignUp from './components/SignUp';
 import XXAccount from './components/Account';
+import XXImageZoom from './components/ImageZoom';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -140,6 +141,12 @@ export default class XXPage extends React.Component {
                         <XXPageOverlay onClose={() => updateStage('')}>
                             <XXAccount onClose={stage => updateStage(stage)} />
                         </XXPageOverlay>
+                    ) : null
+                }
+
+                {
+                    stage === 'image-zoom' ? (
+                        <XXImageZoom onClose={() => updateStage('')} />
                     ) : null
                 }
 

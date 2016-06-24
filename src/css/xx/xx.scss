@@ -30,7 +30,8 @@
 @import
     'layout/page',
     'layout/page-overlay',
-    'layout/header'
+    'layout/header',
+    'layout/image-overlay'
 ;
 
 // 5. Components
@@ -38,6 +39,7 @@
     'components/forms',
     'components/lift',
     'components/overlay',
+    'components/tag-list',
     'components/text',
     'components/thumbnail',
     'components/collection',

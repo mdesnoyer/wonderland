@@ -4,21 +4,24 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default ({ href, score, size, src, ...tagProps }) => {
+export default ({ href, className, score, size, src, ...tagProps }) => {
     const Tag = href ? 'a' : 'div';
 
-    const className = ['xxThumbnail'];
+    const rootClassName = ['xxThumbnail'];
     if (size) {
-        className.push(`xxThumbnail--${size}`);
+        rootClassName.push(`xxThumbnail--${size}`);
     }
     if (score < 60) {
-        className.push(`xxThumbnail--lowScore`);
+        rootClassName.push('xxThumbnail--lowScore');
+    }
+    if (className) {
+        rootClassName.push(className);
     }
 
     return (
         <Tag
             href={href}
-            className={className.join(' ')}
+            className={rootClassName.join(' ')}
             data-score={score}
             {...tagProps}
         >

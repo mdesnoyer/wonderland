@@ -52,7 +52,7 @@
     width: 53px;
     height: 53px;
     z-index: $zindex-above-everything;
-    text-indent: -10000px;
+    text-indent: $indent-off-screen;
 
     &::before, &::after {
         content: '';

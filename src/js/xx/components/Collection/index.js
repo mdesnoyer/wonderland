@@ -89,7 +89,9 @@ export default class XXCollection extends React.Component {
                     {content}
                 </div>
 
-                <XXCollectionImages />
+                <XXCollectionImages
+                    updateStage={this.props.updateStage}
+                />
 
                 {
                     activeContent === 'refilter-finished' ? (

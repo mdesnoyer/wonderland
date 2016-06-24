@@ -3,7 +3,6 @@
 import React from 'react';
 
 import XXThumbnail from '../Thumbnail';
-import XXImageZoom from '../ImageZoom';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,23 +10,11 @@ export default class XXCollectionImages extends React.Component {
     constructor(props) {
         super(props);
 
-        this.setZoomVisibility = this.setZoomVisibility.bind(this);
         this.toggleLowScoresVisibility = this.toggleLowScoresVisibility.bind(this);
 
         this.state = {
             showLowScores: false,
-            showZoom: false,
         };
-    }
-
-    setZoomVisibility(isVisible, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            showZoom: isVisible,
-        });
     }
 
     toggleLowScoresVisibility(e) {
@@ -39,8 +26,8 @@ export default class XXCollectionImages extends React.Component {
     }
 
     render() {
-        const { toggleLowScoresVisibility, setZoomVisibility } = this;
-        const { showLowScores, showZoom } = this.state;
+        const { updateStage } = this.props;
+        const { showLowScores } = this.state;
 
         return (
             <div className="xxCollectionImages">
@@ -62,7 +49,7 @@ export default class XXCollectionImages extends React.Component {
                         score={80}
                         size="large"
                         src="/img/xx/temporary/thumbnail-2.jpg"
-                        onClick={e => setZoomVisibility(true, e)}
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                 </div>
 
@@ -71,26 +58,31 @@ export default class XXCollectionImages extends React.Component {
                         href="#"
                         score={75}
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                     <XXThumbnail
                         href="#"
                         score={74}
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                     <XXThumbnail
                         href="#"
                         score={71}
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                     <XXThumbnail
                         href="#"
                         score={69}
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                     <XXThumbnail
                         href="#"
                         score={60}
                         src="/img/xx/temporary/thumbnail-2.jpg"
+                        onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                     />
                     <strong
                         className="xxCollectionImages-allAnchor"
@@ -108,42 +100,42 @@ export default class XXCollectionImages extends React.Component {
                                     href="#"
                                     score={55}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                                 <XXThumbnail
                                     href="#"
                                     score={52}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                                 <XXThumbnail
                                     href="#"
                                     score={49}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                                 <XXThumbnail
                                     href="#"
                                     score={48}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                                 <XXThumbnail
                                     href="#"
                                     score={46}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                                 <XXThumbnail
                                     href="#"
                                     score={43}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
+                                    onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                                 />
                             </div>
                         ) : null
                     }
                 </div>
-
-                {
-                    showZoom ? (
-                        <XXImageZoom onClose={() => setZoomVisibility(false)} />
-                    ) : null
-                }
             </div>
         );
     }

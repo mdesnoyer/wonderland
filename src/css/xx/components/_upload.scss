@@ -17,7 +17,7 @@ $upload-button-offset: 35px;
     box-shadow: 0 0 8px rgba(0, 0, 0, .2);
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
     background: $accent-color;
-    text-indent: -10000px;
+    text-indent: $indent-off-screen;
     transition: box-shadow $default-transition, transform $default-transition, background $default-transition;
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
