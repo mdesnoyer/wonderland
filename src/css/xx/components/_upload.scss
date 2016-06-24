@@ -30,7 +30,8 @@ $upload-button-offset: 35px;
         transform: rotate(90deg);
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
         content: '';
         position: absolute;
         top: ($upload-button-size - 1px) / 2 - 2px;

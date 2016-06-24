@@ -1,5 +1,6 @@
 @mixin filters-arrow {
-    &::before, &::after {
+    &::before,
+    &::after {
         content: '';
         position: absolute;
         top: 3px;
@@ -129,7 +130,8 @@
     }
 
     .is-open > & {
-        &::before, &::after {
+        &::before,
+        &::after {
             top: 7px;
             z-index: $zindex-above-everything;
             pointer-events: none;
@@ -198,7 +200,8 @@
     margin-right: 115px;
     background: #fff;
 
-    &::before, &::after {
+    &::before,
+    &::after {
         top: 39px;
         right: 43px;
     }

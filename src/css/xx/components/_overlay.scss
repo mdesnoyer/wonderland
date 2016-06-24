@@ -54,7 +54,8 @@
     z-index: $zindex-above-everything;
     text-indent: $indent-off-screen;
 
-    &::before, &::after {
+    &::before,
+    &::after {
         content: '';
         position: absolute;
         top: 27px;

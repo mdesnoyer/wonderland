@@ -105,7 +105,8 @@
     color: $tertiary-color;
     line-height: $form-element-height - $form-element-border * 2;
 
-    &::before, &::after {
+    &::before,
+    &::after {
         content: '';
         position: absolute;
         top: 17px;
@@ -125,7 +126,8 @@
     &.is-open {
         z-index: $zindex-above-everything;
 
-        &::before, &::after {
+        &::before,
+        &::after {
             top: 19px;
             transform-origin: 50% 0;
         }
@@ -260,7 +262,8 @@
     }
 
     &--important {
-        &, &[disabled] {
+        &,
+        &[disabled] {
             border-color: $accent-color;
             background: $accent-color;
             color: #fff;

@@ -24,7 +24,8 @@
         display: none;
     }
 
-    .is-active > &, &:hover {
+    .is-active > &,
+    &:hover {
         color: $secondary-color;
     }
 }
