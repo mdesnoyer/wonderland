@@ -13,7 +13,7 @@
     &--processing {
         border-top: $processing-ribbon-height solid rgba($accent-color, .2);
         padding-top: $collection-padding-top - $processing-ribbon-height;
-        padding-bottom: $collection-padding-bottom - 5px;
+        padding-bottom: $collection-padding-top - $processing-ribbon-height;
 
         &::before {
             content: '';
