@@ -33,10 +33,10 @@ export default class XXSelect extends React.Component {
             return true;
         }
 
-        if (!isOpen) {
-            document.documentElement.addEventListener('click', this.toggleOpen);
-        } else {
+        if (isOpen) {
             document.documentElement.removeEventListener('click', this.toggleOpen);
+        } else {
+            document.documentElement.addEventListener('click', this.toggleOpen);
         }
 
         this.setState({
