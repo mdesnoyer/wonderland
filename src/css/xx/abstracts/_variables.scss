@@ -1,11 +1,16 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Code uses PX to match the design. Relative scale should be introduced
+// with design feedback, to avoid disrupting current white space & rhythm.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$page-max-width: 1080px;
-$page-min-width: 976px;
+$page-max-width: 1080px; // based on design, allows for good line width in columns
+$page-min-width: 976px; // iPad
 
-$gutter-width: 24px;
+$gutter-width: 24px; // gutters are fixed width, columns are fluid
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// naming is style-guide style to allow easy color replacement without
+// changing every file that uses the colour
 
 $base-color: #989898;
 $secondary-color: #3d3d3d;
