@@ -138,11 +138,11 @@ gulp.task('redirects', function() {
 });
 
 gulp.task('fonts', function() {
-    var FontAwesome = gulp.src('node_modules/font-awesome/fonts/*');
+    var fontAwesome = gulp.src('node_modules/font-awesome/fonts/*');
 
-    var Balto = gulp.src('./src/fonts/*');
+    var fonts = gulp.src('./src/fonts/*');
 
-    return merge(FontAwesome, Balto)
+    return merge(fontAwesome, fonts)
         .pipe(gulp.dest('./build/fonts/'));
 })
 
