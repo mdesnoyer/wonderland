@@ -60,7 +60,7 @@ function buildStyle(isUglified) {
             uglyComments: true
         })))
         .pipe(autoprefixer({
-            browsers: ['last 2 versions', '> 1% in US', 'IE 9']
+            browsers: ['last 2 versions', '> 1% in US']
         }))
         .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
