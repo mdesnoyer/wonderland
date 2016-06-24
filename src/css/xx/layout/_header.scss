@@ -1,0 +1,66 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxHeader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: $page-max-width + 2 * $gutter-width;
+    max-width: 100%;
+    min-width: $page-min-width + 2 * $gutter-width;
+    height: $header-height;
+    margin: 0 auto;
+    padding: 0 $gutter-width;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxNav {
+    position: absolute;
+    right: $gutter-width;
+    bottom: -2px;
+    z-index: $zindex-header;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.xxNav-item {
+    float: left;
+    position: relative;
+    padding-left: 30px;
+}
+
+.xxNav-anchor {
+    color: $base-color;
+
+    &:hover {
+        color: $secondary-color;
+    }
+
+    .is-active > & {
+        color: $secondary-color;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 31px;
+            width: 14px;
+            height: 1px;
+            background: $accent-color;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxLogo {
+    position: absolute;
+    width: 120px;
+    height: 50px;
+    bottom: 0;
+    z-index: $zindex-overlay;
+    left: $gutter-width;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

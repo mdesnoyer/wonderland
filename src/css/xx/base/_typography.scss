@@ -1,0 +1,30 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$base-type: normal #{$default-font-size} / #{$default-vertical-rhythm} $sans-serif-family;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@mixin all-caps-title {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTitle {
+    margin: 0 0 7px;
+    color: $secondary-color;
+    font: normal 33px/48px $serif-family;
+}
+
+.xxSubtitle {
+    @include all-caps-title;
+
+    margin: 0 0 9px;
+    color: $tertiary-color;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
