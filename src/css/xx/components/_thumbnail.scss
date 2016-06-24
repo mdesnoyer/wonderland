@@ -43,20 +43,37 @@ $thumbnail-hover-border: 2px;
         font-size: 18px;
         line-height: $thumbnail-large-score-size;
     }
+
+    &--zoom {        
+        &::before {
+            display: none;
+        }
+    }
 }
 
 .xxThumbnail-image {
+    box-sizing: content-box;
     position: absolute;
     top: -1 * $thumbnail-hover-border;
     left: -1 * $thumbnail-hover-border;
-    width: calc(100% + #{$thumbnail-hover-border} * 2);
-    height: calc(100% + #{$thumbnail-hover-border} * 2);
+    width: 100%;
+    height: 100%;
     border-radius: 2px;
     border: $thumbnail-hover-border solid rgba($accent-color, 0);
     transition: border-color $default-transition;
 
     .xxThumbnail[href]:hover > & {
         border-color: $accent-color;
+    }
+
+    .xxThumbnail--zoom & {
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        border-color: #fff;
     }
 }
 
