@@ -1,19 +1,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$small-thumbnail-width: calc(99.99% * 1/6 - #{$gutter-width});
+$small-thumbnail-width: calc(99.9% * 1/6 - #{$gutter-width});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionImages {
     float: left;
-    width: calc((99.99% + #{$gutter-width}) * 2/3 - #{$gutter-width});
+    width: calc((99.9% + #{$gutter-width}) * 2/3 - #{$gutter-width});
     font-size: 14px;
     line-height: 18px;
 }
 
 .xxCollectionImages-featured {
     float: left;
-    width: calc((99.99% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+    width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
 
     & + & {
         margin: 0 0 0 $gutter-width;

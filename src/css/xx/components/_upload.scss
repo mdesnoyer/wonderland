@@ -86,7 +86,7 @@ $upload-button-offset: 35px;
 
     .xxSelect {
         float: left;
-        width: calc((99.99% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+        width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
 
         + .xxSelect {
             float: right;
@@ -96,7 +96,7 @@ $upload-button-offset: 35px;
 
 .xxUploadDialog-inner {
     float: right;
-    width: calc((99.99% - #{$gutter-width}) * 1/3 + #{$gutter-width});
+    width: calc((99.9% - #{$gutter-width}) * 1/3 + #{$gutter-width});
     min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;

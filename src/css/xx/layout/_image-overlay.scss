@@ -1,4 +1,4 @@
-$zoom-image-max-width: calc((99.99% - #{$gutter-width}) * 2/3 - #{$gutter-width});
+$zoom-image-max-width: calc((99.9% - #{$gutter-width}) * 2/3 - #{$gutter-width});
 
 $zoom-image-max-height: calc(100vh - (#{$header-height} + #{$header-margin-bottom}) * 2);
 
@@ -48,7 +48,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
 
 .xxImageZoom-content {
     display: inline-block;
-    max-width: calc((99.99% - #{$gutter-width}) * 1/3 - #{$gutter-width});
+    max-width: calc((99.9% - #{$gutter-width}) * 1/3 - #{$gutter-width});
     margin: 0 0 0 #{$gutter-width};
     color: #fff;
     text-align: left;
