@@ -68,6 +68,15 @@ export default class XXPageOverlay extends React.Component {
                                 style={{paddingBottom: `${636 / 636 * 100}%`}}
                             />
                         </div>*/}
+                        {/*
+                            The 242px below needs to be imported from SASS variables.
+                            Or we need to put Sass variables into JSON or something.
+                            Either way, this will come later as it's hard to have
+                            this hold up current work as I look for a solution.
+                            Oh and it refers to:
+                            ($header-height + $header-margin-bottom) * 2x
+                            which is top & bottom padding of the overlay
+                        */}
                         <div
                             className="xxImageZoom-image xxImageZoom-image--vertical"
                             style={{maxWidth: `calc((100vh - 242px) / (496 / 370))`}}

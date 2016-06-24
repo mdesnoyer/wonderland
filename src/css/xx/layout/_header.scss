@@ -18,7 +18,7 @@
 .xxNav {
     position: absolute;
     right: $gutter-width;
-    bottom: -2px;
+    bottom: -2px; /* Align with baseline of logo due to line-height limitations */
     z-index: $zindex-header;
     font-size: 16px;
     line-height: 1;
