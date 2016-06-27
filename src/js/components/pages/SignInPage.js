@@ -22,7 +22,7 @@ var SignInPage = React.createClass({
     getInitialState: function() {
         return {
             overlayOpen: false,
-            overlayContent: '' // learnMore, contact, signIn, singUp, account 
+            overlayContent: '' // learnMore, contact, signIn, signUp, account 
         }
     },
     setOverlayContent: function(content) {
@@ -30,6 +30,12 @@ var SignInPage = React.createClass({
         self.setState({
             overlayOpen: true,
             overlayContent: content
+        });
+    },
+    closeOverlay: function() {
+        var self = this;
+        self.setState({
+            overlayOpen: false
         });
     },
     componentWillMount: function() {
@@ -47,8 +53,8 @@ var SignInPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
                 <main className="xxPage">
-                    <SiteHeader setOverlayContent={self.setOverlayContent}/>
-                    <PageOverlay overlayOpen={self.state.overlayOpen} overlayContent={self.state.overlayContent}/>
+                    <SiteHeader overlayOpen={self.state.overlayOpen} setOverlayContent={self.setOverlayContent}/>
+                    <PageOverlay overlayOpen={self.state.overlayOpen} overlayContent={self.state.overlayContent} closeOverlay={self.closeOverlay}/>
                     <SignInForm showLegend={false} />
                     <SiteFooter />
                 </main>

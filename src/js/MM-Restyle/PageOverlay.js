@@ -12,14 +12,21 @@ var PageOverlay = React.createClass({
             overlayOpen: self.props.overlayOpen
         };
     },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            overlayOpen: nextProps.overlayOpen
+        });
+    },
     handleBackgroundClose: function(e) {
         var self = this;
         e.preventDefault();
-        self.setState({
-            overlayOpen: false
-        });
-        console.log('background close');
-        // tell site nav to close as well
+        if (e.target.className === 'xxOverlay xxOverlay--scroll xxOverlay--visibleNav') {
+            self.setState({
+                overlayOpen: false
+            });
+            self.props.closeOverlay();
+        }
     },
     handleClose: function(e) {
         var self = this;
@@ -27,8 +34,7 @@ var PageOverlay = React.createClass({
         self.setState({
             overlayOpen: false
         });
-        console.log('click close');
-        // tell site nav to close as well
+        self.props.closeOverlay();
     },
     render: function() {
         var self = this,
@@ -54,7 +60,11 @@ var PageOverlay = React.createClass({
                 break;
         }
         return (
-            <div className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" onClick={self.handleBackgroundClose}>
+            <div 
+                className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" 
+                onClick={self.handleBackgroundClose} 
+                hidden={!self.state.overlayOpen}
+            >
                 <div className="xxPageOverlay">
                     <a href="" className="xxPageOverlay-close" onClick={self.handleClose}>Close</a>
                     {content}
