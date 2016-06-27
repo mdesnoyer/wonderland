@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
+import PageOverlay from '../../MM-Restyle/PageOverlay';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,6 +18,19 @@ var SignInPage = React.createClass({
     // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function() {
+        return {
+            overlayOpen: false,
+            overlayContent: '' // learnMore, contact, signIn, singUp, account 
+        }
+    },
+    setOverlayContent: function(content) {
+        var self = this;
+        self.setState({
+            overlayOpen: true,
+            overlayContent: content
+        });
     },
     componentWillMount: function() {
         if (SESSION.active()) {
@@ -26,24 +40,18 @@ var SignInPage = React.createClass({
         }
     },
     render: function() {
+        var self = this;
         return (
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
-                <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
-                            <div className="content">
-                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
-                            </div>
-                            <SignInForm showLegend={false} />
-                        </div>
-                    </div>
-                </section>
-                <SiteFooter />
+                <main className="xxPage">
+                    <SiteHeader setOverlayContent={self.setOverlayContent}/>
+                    <PageOverlay overlayOpen={self.state.overlayOpen} overlayContent={self.state.overlayContent}/>
+                    <SignInForm showLegend={false} />
+                    <SiteFooter />
+                </main>
             </div>
         );
     }
