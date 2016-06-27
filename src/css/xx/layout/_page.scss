@@ -6,6 +6,12 @@
     min-width: $page-min-width;
     margin: 0 auto;
     padding: $header-height + $header-margin-bottom $gutter-width $page-padding-bottom;
+
+    @include breakpoint-mobile {
+        min-width: 0;
+        margin: 0;
+        padding: $mobile-header-height + $mobile-header-margin-bottom 0 $mobile-page-padding-bottom;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

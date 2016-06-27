@@ -2,6 +2,7 @@
 
 $thumbnail-small-score-size: 30px;
 $thumbnail-large-score-size: 42px;
+$mobile-thumbnail-score-size: 24px;
 
 $thumbnail-hover-border: 2px;
 
@@ -31,6 +32,13 @@ $thumbnail-hover-border: 2px;
         line-height: $thumbnail-small-score-size;
         vertical-align: middle;
         text-align: center;
+
+        @include breakpoint-mobile {
+            width: $mobile-thumbnail-score-size;
+            height: $mobile-thumbnail-score-size;
+            font-size: 10px;
+            line-height: $mobile-thumbnail-score-size;
+        }
     }
 
     &--lowScore::after {
@@ -42,9 +50,16 @@ $thumbnail-hover-border: 2px;
         height: $thumbnail-large-score-size;
         font-size: 18px;
         line-height: $thumbnail-large-score-size;
+
+        @include breakpoint-mobile {
+            width: $mobile-thumbnail-score-size;
+            height: $mobile-thumbnail-score-size;
+            font-size: 10px;
+            line-height: $mobile-thumbnail-score-size;
+        }
     }
 
-    &--zoom {        
+    &--zoom {
         &::before {
             display: none;
         }

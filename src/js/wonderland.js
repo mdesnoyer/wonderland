@@ -39,6 +39,7 @@ import TelemetryPage from './components/pages/TelemetryPage';
 import SupportPage from './components/pages/SupportPage';
 import URLShortenerPage from './components/pages/URLShortenerPage';
 import XXPage from './xx/XXPage';
+import XXPageMobile from './xx/XXPageMobile';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -94,6 +95,7 @@ render((
         <Route path={UTILS.DRY_NAV.URL_SHORTENER.URL} component={URLShortenerPage} />
 
         <Route path="/xx/" component={XXPage} />
+        <Route path="/xx/mobile/" component={XXPageMobile} />
 
         <Route path="*" component={NotFoundPage} />
 

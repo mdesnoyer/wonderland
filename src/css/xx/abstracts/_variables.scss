@@ -9,6 +9,10 @@ $page-min-width: 976px; // iPad
 $gutter-width: 24px; // gutters are fixed width, columns are fluid
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$breakpoint-mobile: 767px; // below iPad size but could be anything
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // naming is style-guide style to allow easy color replacement without
 // changing every file that uses the colour
 
@@ -36,6 +40,9 @@ $sans-serif-family: 'Balto Web', Helvetica, Arial, sans-serif;
 $default-font-size: 18px;
 $default-vertical-rhythm: 27px;
 
+$default-mobile-font-size: 12px;
+$default-mobile-vertical-rhythm: 18px;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $page-padding-bottom: 101px;
@@ -54,6 +61,16 @@ $form-element-border: 1px;
 $form-element-padding-horizontal: 10px;
 
 $button-width: 152px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$mobile-page-padding-bottom: 42px;
+
+$mobile-header-height: 47px;
+$mobile-header-margin-bottom: 15px;
+
+$mobile-collection-padding-top: 14px;
+$mobile-collection-padding-bottom: 20px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -90,6 +90,7 @@ export default class XXCollection extends React.Component {
                 </div>
 
                 <XXCollectionImages
+                    isMobile={this.props.isMobile}
                     updateStage={this.props.updateStage}
                 />
 

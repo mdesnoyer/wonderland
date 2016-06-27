@@ -8,6 +8,11 @@ body {
     background: $bg-color;
     color: $base-color;
     font: $base-type;
+
+    @include breakpoint-mobile {
+        min-width: 0;
+        font: $base-mobile-type;
+    }
 }
 
 a {

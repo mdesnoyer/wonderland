@@ -16,4 +16,16 @@
     -webkit-font-smoothing: antialiased;
 }
 
+// When the site is made fully responsive, this rule can be turned to be more
+// all-purpose. But presumably, for now, we would want to avoid triggering the
+// limited mobile layout unless it's actually desired. Hence the use of an
+// extra wrapper class.
+@mixin breakpoint-mobile {
+    @media (max-width: $breakpoint-mobile) {
+        @at-root .is-mobile & {
+            @content;
+        }
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

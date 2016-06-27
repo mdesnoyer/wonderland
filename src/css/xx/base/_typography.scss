@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $base-type: normal #{$default-font-size} / #{$default-vertical-rhythm} $sans-serif-family;
+$base-mobile-type: normal #{$default-mobile-font-size} / #{$default-mobile-vertical-rhythm} $sans-serif-family;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -10,6 +11,10 @@ $base-type: normal #{$default-font-size} / #{$default-vertical-rhythm} $sans-ser
     letter-spacing: 1px;
     line-height: 1;
     text-transform: uppercase;
+
+    @include breakpoint-mobile {
+        font-size: 10px;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
