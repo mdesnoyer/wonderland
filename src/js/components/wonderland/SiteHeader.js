@@ -19,7 +19,7 @@ var SiteHeader = React.createClass({
             <div>
                 <NewsFlash message={newsFlashMessage} isActive={false} />
                 <AccountMasqueradeBar />
-                <SiteBanner setOverlayContent={self.props.setOverlayContent}/>
+                <SiteBanner overlayOpen={self.props.overlayOpen} setOverlayContent={self.props.setOverlayContent}/>
             </div>
         );
     }

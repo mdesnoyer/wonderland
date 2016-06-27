@@ -68,7 +68,8 @@ var SiteBanner = React.createClass({
                     <SiteNavigation 
                         pos="right" 
                         displayName={self.state.displayName} 
-                        isSignedIn={SESSION.active()} 
+                        isSignedIn={SESSION.active()}
+                        overlayOpen={self.props.overlayOpen}
                         setOverlayContent={self.props.setOverlayContent}
                     />
                 </nav>

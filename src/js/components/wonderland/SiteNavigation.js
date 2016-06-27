@@ -13,7 +13,7 @@ var SiteNavigation = React.createClass({
         var self = this;
         return {
             isSignedIn: false,
-            displayName: ''
+            displayName: '',
         }
     },
     getInitialState: function() {
@@ -80,7 +80,7 @@ var SiteNavigation = React.createClass({
                 <ul>
                     {
                         constructedNav.map(function(levelItem, i) {
-                            if (levelItem.props['data-tag'] === self.state.overlayContent) {
+                            if (levelItem.props['data-tag'] === self.state.overlayContent && self.props.overlayOpen) {
                                 return (
                                     <li key={i} className="xxNav-item is-active">{levelItem}</li>
                                 );
