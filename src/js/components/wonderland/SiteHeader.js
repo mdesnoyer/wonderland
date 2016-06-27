@@ -12,12 +12,14 @@ import T from '../../modules/translation';
 var SiteHeader = React.createClass({
     // mixins: [ReactDebugMixin],
     render: function() {
-        var newsFlashMessage = T.get('copy.newsFlashMessage');
+        var self = this, 
+            newsFlashMessage = T.get('copy.newsFlashMessage')
+        ;
         return (
             <div>
                 <NewsFlash message={newsFlashMessage} isActive={false} />
                 <AccountMasqueradeBar />
-                <SiteBanner />
+                <SiteBanner setOverlayContent={self.props.setOverlayContent}/>
             </div>
         );
     }

@@ -56,9 +56,21 @@ var SiteBanner = React.createClass({
         var self = this;
         return (
             <header className="xxHeader">
-                <a href="/" title="Go to the Home page"><img className="xxLogo" src="/img/logo.svg" alt={T.get('app.companyShortName')} title={T.get('app.companyShortName')} /></a>
+                <a href="/" title="Go to the Home page">
+                    <img 
+                        className="xxLogo"
+                        src="/img/logo.svg"
+                        alt={T.get('app.companyShortName')}
+                        title={T.get('app.companyShortName')}
+                    />
+                </a>
                 <nav className="xxNav">
-                    <SiteNavigation pos="right" displayName={self.state.displayName} isSignedIn={SESSION.active()} />
+                    <SiteNavigation 
+                        pos="right" 
+                        displayName={self.state.displayName} 
+                        isSignedIn={SESSION.active()} 
+                        setOverlayContent={self.props.setOverlayContent}
+                    />
                 </nav>
             </header>
         );

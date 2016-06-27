@@ -2,10 +2,8 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import {Link} from 'react-router';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,22 +19,39 @@ var SiteNavigation = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isSignedIn: self.props.isSignedIn
+            isSignedIn: self.props.isSignedIn,
+            overlayContent: ''
         }
+    },
+    handleClick: function(e) {
+        var self = this,
+            item = e.target.getAttribute('data-tag')
+        ;
+        e.preventDefault();
+        self.setState({
+            overlayContent: item
+        });
+        self.props.setOverlayContent(item);
+    },
+    handleClose: function() {
+        var self = this;
+        self.setState({
+            overlayContent: ''
+        });
     },
     render: function() {
         var self = this,
-            signedInAs = T.get('copy.signedInAs', {'@user': self.props.displayName}),
             items = {
-                learnMore: <Link className="xxNav-anchor" to="">{T.get('nav.learnMore')}</Link>,
-                contactPage: <Link className="xxNav-anchor" to="">{T.get('nav.contact')}</Link>,
-                signUp: <Link className="xxNav-anchor" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
-                signIn: <Link className="xxNav-anchor" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
-                account: <Link className="xxNav-anchor" to="">{T.get('nav.account')}</Link>,
-                supportPage: <Link className="xxNav-anchor" to={UTILS.DRY_NAV.SUPPORT.URL}>{T.get('nav.support')}</Link>,
-                termsPage: <Link className="xxNav-anchor" to={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</Link>
+                learnMore: <a className="xxNav-anchor" href="" data-tag="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
+                contactPage: <a className="xxNav-anchor" href="" data-tag="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
+                signUp: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNUP.URL} data-tag="signUp">{T.get('nav.signUp')}</a>,
+                signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} data-tag="signIn">{T.get('nav.signIn')}</a>,
+                account: <a className="xxNav-anchor" href="" data-tag="account" onClick={self.handleClick}>{T.get('nav.account')}</a>,
+                supportPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SUPPORT.URL}>{T.get('nav.support')}</a>,
+                termsPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>
             },
-            constructedNav = []
+            constructedNav = [],
+            additionalClass = 'xxNav-item'
         ;
         if (self.state.isSignedIn) {
             // Signed In
@@ -44,7 +59,6 @@ var SiteNavigation = React.createClass({
                 constructedNav.push(items.learnMore);
                 constructedNav.push(items.contactPage);
                 constructedNav.push(items.account);
-                // possibly another if statement here for ppl w/ MONEY
             }
         }
         else {
@@ -62,15 +76,22 @@ var SiteNavigation = React.createClass({
             constructedNav.push(items.termsPage);
         }
         return (
-            <ul>
-                {
-                    constructedNav.map(function(levelItem, i) {
-                        return (
-                            <li key={i} className="xxNav-item">{levelItem}</li>
-                        );
-                    })
-                }
-            </ul>
+            <div>
+                <ul>
+                    {
+                        constructedNav.map(function(levelItem, i) {
+                            if (levelItem.props['data-tag'] === self.state.overlayContent) {
+                                return (
+                                    <li key={i} className="xxNav-item is-active">{levelItem}</li>
+                                );
+                            }
+                            return (
+                                <li key={i} className="xxNav-item">{levelItem}</li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
         );
     }
 });
