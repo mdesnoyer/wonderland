@@ -13,6 +13,8 @@ import XXCollectionDelete from './Delete';
 
 import XXCollectionProcessingReady from './ProcessingReady';
 
+import XXCollectionMobileNotification from './MobileNotification';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default class XXCollection extends React.Component {
@@ -107,6 +109,12 @@ export default class XXCollection extends React.Component {
                         <XXCollectionProcessingReady
                             onClick={() => this.setState({ isProcessingReady: false })}
                         />
+                    ) : null
+                }
+
+                {
+                    this.props.isMobile ? (
+                        <XXCollectionMobileNotification />
                     ) : null
                 }
             </article>

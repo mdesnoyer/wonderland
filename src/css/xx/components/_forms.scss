@@ -52,6 +52,10 @@
 
     -webkit-appearance: none;
 
+    @include breakpoint-mobile {
+        height: $mobile-form-element-height;
+    }
+
     &[readonly] {
         color: $tertiary-color;
     }
@@ -203,6 +207,10 @@
     margin-bottom: 14px;
     line-height: $form-element-height;
 
+    @include breakpoint-mobile {
+        margin-top: 35px;
+    }
+
     .xxButton {
         float: left;
 
@@ -235,6 +243,11 @@
     text-align: center;
     transition: border-color $default-transition,
                 background $default-transition;
+
+    @include breakpoint-mobile {
+        height: $mobile-form-element-height;
+        line-height: $mobile-form-element-height - $form-element-border * 2;
+    }
 
     &[disabled] {
         cursor: default;

@@ -55,6 +55,8 @@ $mobile-all-images-gutter-width: 3px;
     margin: 0 -1 * $gutter-width 0 0;
 
     @include breakpoint-mobile {
+        @include clearfix;
+        
         width: calc(100% + #{$mobile-all-images-gutter-width});
         margin-right: -1 * $mobile-all-images-gutter-width;
     }
