@@ -231,7 +231,7 @@
     background: #fff;
     color: $base-color;
     cursor: pointer;
-    line-height: $form-element-height;
+    line-height: $form-element-height - $form-element-border * 2;
     text-align: center;
     transition: border-color $default-transition,
                 background $default-transition;
