@@ -29,10 +29,6 @@ export default class XXCollectionRefilterReady extends React.Component {
             <section className="xxOverlay">
                 <div className="xxOverlay-content">
                     <h2 className="xxTitle">Your results are ready!</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Duis ante lacus, lobortis sed pretium id fermentum.
-                    </p>
                     <button
                         className="xxButton xxButton--highlight"
                         type="button"

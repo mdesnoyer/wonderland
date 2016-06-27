@@ -7,7 +7,7 @@ import React from 'react';
 export default ({ setActiveContent }) => {
     return (
         <div className="xxCollectionAction">
-            <h2 className="xxTitle">Share</h2>
+            <h2 className="xxTitle">Share Your Images</h2>
             <ul className="xxCollectionShare">
                 <li className="xxCollectionShare-item is-active">
                     <span

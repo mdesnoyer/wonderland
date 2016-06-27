@@ -1,14 +1,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionShare {
-    position: absolute;
-    top: 58px;
-    right: $gutter-width;
+    @include clearfix;
+
+    margin: 16px 0 22px;
 }
 
 .xxCollectionShare-item {
     float: left;
-    margin: 0 0 0 16px;
+    margin: 0 16px 0 0;
     font-size: 20px;
     line-height: 1;
     vertical-align: top;
