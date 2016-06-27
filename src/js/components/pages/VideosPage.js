@@ -14,7 +14,6 @@ import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import cookie from 'react-cookie';
 import SESSION from '../../modules/session';
-import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
