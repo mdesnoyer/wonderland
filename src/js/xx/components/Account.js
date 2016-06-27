@@ -89,11 +89,11 @@ export default class XXAccount extends React.Component {
                             onClick={isValid ? (() => onClose('has-account')) : null}
                         >Change</button>
 
-                    <a
-                        href=""
-                        className="xxFormButtons-anchor u-inheritColor"
-                        onClick={e => {e.preventDefault(); onClose('');}}
-                    >Deactivate Account</a>
+                        <a
+                            href=""
+                            className="xxFormButtons-anchor u-inheritColor"
+                            onClick={e => {e.preventDefault(); onClose('');}}
+                        >Deactivate Account</a>
                     </div>
                 </section>
             </article>
