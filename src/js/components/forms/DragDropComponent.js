@@ -4,7 +4,6 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Dropzone from 'react-dropzone'
 import AjaxMixin from '../../mixins/Ajax';
-import UTILS from '../../modules/utils';
 import Account from '../../mixins/Account';
 import reqwest from 'reqwest';
 import SESSION from '../../modules/session';
@@ -24,7 +23,7 @@ var DragDropComponent = React.createClass({
                 mode: 'loading'
             },
                 self.formatData(files)
-            )
+            );
         },
         formatData: function(files) {
             var self = this,
@@ -32,12 +31,13 @@ var DragDropComponent = React.createClass({
             ;
             files.forEach((file)=> {
                 formData.append('upload', file)
-            })
-            self.sendFormattedData(formData)
+            });
+            self.sendFormattedData(formData);
         },
-        sendFormattedData: function(formData){
+        sendFormattedData: function(formData) {
             var self = this,
                 url = self.createUrl()
+            ;
             reqwest({
               url: url,
               headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
@@ -47,7 +47,7 @@ var DragDropComponent = React.createClass({
               processData : false,
               data : formData
             })
-            .then(res => {
+            .then(function(res) {
                 console.log(res);
                 self.setState({
                     mode:'success'
@@ -56,7 +56,7 @@ var DragDropComponent = React.createClass({
                         mode:'silent'
                     }), 30)
                 )
-            }).catch(err => {
+            }).catch(function(err) {
                 if (err.status === 401) {
                     console.log(err);
                     self.grabRefreshToken(SESSION.state.refreshToken, formData)
@@ -66,7 +66,7 @@ var DragDropComponent = React.createClass({
         createUrl: function() {
             return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
         },
-        grabRefreshToken: function(refreshToken, formData){
+        grabRefreshToken: function(refreshToken, formData) {
             var self = this; 
             reqwest({
                 url: CONFIG.AUTH_HOST + 'refresh_token',
@@ -90,7 +90,7 @@ var DragDropComponent = React.createClass({
             var self = this,
                 DropzoneContents
             ;
-            switch(self.state.mode){
+            switch(self.state.mode) {
                 case 'silent':
                     DropzoneContents = 'Try dropping some files here, or click to select files to upload.';
                     break;
@@ -100,17 +100,25 @@ var DragDropComponent = React.createClass({
                             <i className="fa fa-cog fa-spin"></i>
                         </span>
                     );
-                break;
+                    break;
                 case 'success':
-                DropzoneContents = (
-                    <span className="icon">
-                        <i className="fa fa-check"></i>
-                    </span>
-                );
+                    DropzoneContents = (
+                        <span className="icon">
+                            <i className="fa fa-check"></i>
+                        </span>
+                    );
+                    break;
             }
             return (
                 <div>
-                    <Dropzone className="Dragdrop box" activeClassName="Dragdrop-active" encType="multipart/form-data" onDrop={this.onDrop}>
+                    <Dropzone 
+                        className="Dragdrop box"
+                        multiple={false}
+                        accept="image/*"
+                        activeClassName="Dragdrop-active"
+                        encType="multipart/form-data" 
+                        onDrop={this.onDrop}
+                    >
                         {DropzoneContents}
                     </Dropzone>
                 </div>
