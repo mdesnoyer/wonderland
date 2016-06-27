@@ -243,21 +243,22 @@
 
     &:hover {
         border-color: $accent-color;
+        color: $base-color;
     }
 
     &--highlight {
-        border-color: $base-color;
-        background: $base-color;
-        color: #fff;
+        &,
+        &[disabled],
+        &[disabled]:hover {
+            border-color: $base-color;
+            background: $base-color;
+            color: #fff;
+        }
 
         &:hover {
             border-color: $accent-color;
             background: $accent-color;
-        }
-
-        &[disabled]:hover {
-            border-color: $base-color;
-            background: $base-color;
+            color: #fff;
         }
     }
 
@@ -271,8 +272,13 @@
             &:hover {
                 border-color: $accent-color;
                 background: $accent-color;
+                color: #fff;
             }
         }
+    }
+
+    &--transparent {
+        background: transparent;
     }
 }
 
