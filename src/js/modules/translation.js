@@ -228,6 +228,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
+            'label.lift' : 'Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

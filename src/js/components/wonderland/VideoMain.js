@@ -8,6 +8,7 @@ import VideoSharer from './VideoSharer';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
+import VideoLift from './VideoLift';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -90,6 +91,9 @@ var VideoMain = React.createClass({
                             url={self.props.url}
                             experimentState={self.state.experimentState}
                             winnerThumbnail={self.state.winnerThumbnail}
+                        />
+                        <VideoLift 
+                            thumbnails={self.props.thumbnails}
                         />
                         <VideoSharer
                             isGuest={self.props.isGuest}
