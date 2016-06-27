@@ -14,24 +14,15 @@ import cookie from 'react-cookie';
 var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
-        var accessTokenCookie = cookie.load(UTILS.COOKIES_KEY.accessTokenKey),
-            accountIdCookie = cookie.load(UTILS.COOKIES_KEY.accountIdKey),
-            masqueradeAccountIdCookie = cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey),
-            refreshTokenCookie = cookie.load(UTILS.COOKIES_KEY.refreshTokenKey),
-            rememberMeCookie = cookie.load(UTILS.COOKIES_KEY.rememberMeKey),
-            rememberedEmailCookie = cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey),
-            viewShareCookie = cookie.load(UTILS.COOKIES_KEY.viewShareKey),
-            analyzeVideoCookie = cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey)
-        ;
         return {
-            accessToken: (accessTokenCookie ? accessTokenCookie : 'False'),
-            accountId: (accountIdCookie ? accountIdCookie : 'False'),
-            masqueradeAccountId: (masqueradeAccountIdCookie ? masqueradeAccountIdCookie : 'False'),
-            refreshToken: (refreshTokenCookie ? refreshTokenCookie : 'False'),
-            rememberMe: (rememberMeCookie ? rememberMeCookie : 'False'),
-            rememberedEmail: (rememberedEmailCookie ? rememberedEmailCookie : 'False'),
-            viewShare: (viewShareCookie ? viewShareCookie : 'False'),
-            analyzeVideo: (analyzeVideoCookie ? analyzeVideoCookie : 'False')
+            accessToken: (cookie.load(UTILS.COOKIES_KEY.accessTokenKey) ? cookie.load(UTILS.COOKIES_KEY.accessTokenKey) : 'False'),
+            accountId: (cookie.load(UTILS.COOKIES_KEY.accountIdKey) ? cookie.load(UTILS.COOKIES_KEY.accountIdKey) : 'False'),
+            masqueradeAccountId: (cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) ? cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) : 'False'),
+            refreshToken: (cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) ? cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) : 'False'),
+            rememberMe: (cookie.load(UTILS.COOKIES_KEY.rememberMeKey) ? cookie.load(UTILS.COOKIES_KEY.rememberMeKey) : 'False'),
+            rememberedEmail: (cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) ? cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) : 'False'),
+            viewShare: (cookie.load(UTILS.COOKIES_KEY.viewShareKey) ? cookie.load(UTILS.COOKIES_KEY.viewShareKey) : 'False'),
+            analyzeVideo: (cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) ? cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) : 'False')
         };
     },
     render: function() {
@@ -49,14 +40,13 @@ var CookiesPage = React.createClass({
                             <div className="content">
                                 <p>{T.get('copy.cookies.body')}</p>
                                 <ul>
-                                    <li>accessToken: {self.state.accessToken}</li>
-                                    <li>accountId: {self.state.accountId}</li>
-                                    <li>masqueradeAccountId: {self.state.masqueradeAccountId}</li>
-                                    <li>refreshToken: {self.state.refreshToken}</li>
-                                    <li>rememberMe: {self.state.rememberMe}</li>
-                                    <li>rememberedEmail: {self.state.rememberedEmail}</li>
-                                    <li>viewShare: {self.state.viewShare}</li>
-                                    <li>analyzeVideo: {self.state.analyzeVideo}</li>
+                                    {
+                                        Object.keys(self.state).map(function(key) {
+                                            return (
+                                                <li key={key}>{key}: {self.state[key]}</li>
+                                            );
+                                        })
+                                    }
                                 </ul>
                             </div>
                         </div>
