@@ -32,7 +32,7 @@ var DropBoxHolder = React.createClass({
             }
     },
     componentDidUpdate: function() {
-        var self = this; 
+        var self = this;
         self.sendDropBoxUrl(self.state.urls);
     },
     render: function() {
@@ -41,19 +41,17 @@ var DropBoxHolder = React.createClass({
     sendDropBoxUrl: function(urls) {
         var self = this,
             options = {
-                data:{
+                data: {
                     url: urls[0].link
                 }
             }
         ;
-        debugger
         self.POST('thumbnails', options)
             .then(function(res) {
-                debugger
                 console.log(res)
             })
             .catch(function(err) {
-                // console.log(err)
+                console.log(err)
             });
     }
 });
