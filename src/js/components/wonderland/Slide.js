@@ -7,7 +7,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Slide = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         icon: React.PropTypes.string.isRequired,
         slideContent: React.PropTypes.string.isRequired

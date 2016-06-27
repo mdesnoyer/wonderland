@@ -4,6 +4,10 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import BrightcoveAccountIdContent from '../static/BrightcoveAccountIdContent';
+import BrightcoveClientIdContent from '../static/BrightcoveClientIdContent';
+import BrightcoveSmartPlayerContent from '../static/BrightcoveSmartPlayerContent';
+import BrightcoveThumbnailContent from '../static/BrightcoveThumbnailContent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -28,28 +32,11 @@ var SupportTab2 = React.createClass({
                 <h3 className="title is-4">1. Link Your Brightcove Account</h3>
                 <p>To give Neon access to your Brightcove Video Cloud account, you&rsquo;ll need to have your Video Cloud Account ID and API authentication credentials on hand.</p>
 
-                <h4 className="title is-5">Brightcove Video Cloud Account ID</h4>
-                <p>You can locate your Video Cloud Account ID on the <a rel="external" href="https://studio.brightcove.com/products/videocloud/admin/accountsettings">Account Information</a> page in your Brightcove account. Your Account ID will look similar to this:</p>
-                <figure className="image wonderland-image">
-                    <img src="/img/support/brightcove/1-account-id.png" />
-                </figure>
+                <BrightcoveAccountIdContent />
                 <p>Enter your Account ID into the plugins page in your Neon account. You can access this page by clicking on the gear and then Plugins in your Neon account.</p>
                 {/*<p className="TODO">TODO - add screenshot here when UI is updated</p>*/}
 
-                <h4 className="title is-5">Brightcove Video Cloud API Authentication Credentials</h4>
-                <p>In order to set up your API authentication credentials, go to the <a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings" rel="external">API Authentication</a> page in your Brightcove account.</p>
-                <ol>
-                    <li>Click &ldquo;Register New Application&rdquo;</li>
-                    <li>Enter &ldquo;Neon&rdquo; in the name field</li>
-                    <li>Select the following permissions:
-                        <figure className='image wonderland-image'>
-                            <img src="/img/brightcovepermissions.png" />
-                        </figure>
-                    </li>
-                    <li>Click &ldquo;Save&rdquo;</li>
-                    <li>A window will appear with your Client ID and Client Secret. Copy these values into the Neon plugin configuration page, which you can access by clicking on the gear in your Neon account and selecting Plugins.</li>
-                </ol>
-                <p>For more information about managing your API authentication in Brightcove, see Brightcove&rsquo;s documentation <a href="https://support.brightcove.com/en/video-cloud/docs/managing-api-authentication-credentials" rel="external">here</a>.</p>
+                <BrightcoveClientIdContent />
 
                 <h4 className="title is-5">Why do we need these permissions?</h4>
                 <p>In order to provide you with the best service, Neon needs access to the following permissions in your Brightcove account:</p>
@@ -88,8 +75,7 @@ var SupportTab2 = React.createClass({
 
                 <h3 className="title is-4">2. Enable Image Serving</h3>
                 <p>Once you&rsquo;ve entered your Brightcove Account ID and API credentials into your Neon account, you&rsquo;re ready to move onto the next step. In this step, you&rsquo;ll ensure that Neon is able to serve images onto your site and perform realtime optimization.</p>
-                <p>To enable this functionality, you must specify our serving URL as the source of the thumbnail to display on your page. The serving URL will cause different images to be seen by different users, enabling the realtime optimization.  As a Brightcove customer, you might already be using the Brightcove Media API to determine which image to show on your site. If that is the case, you can skip this step and move on to the next step. If you&rsquo;re a Gallery customer, the default is to use the <a href="http://docs.brightcove.com/en/video-cloud/media/guides/quick-start.html" rel="external">Brightcove Media API</a>.</p>
-                <p>If you do not use the Brightcove Media API to determine the thumbnails shown on your site, then you must insert our serving URLs directly. Please see the image serving documentation for more details.</p>
+                <BrightcoveThumbnailContent />
 
                 <h3 className="title is-4">3. Enable Telemetry from Your Players</h3>
                 <p>During this step, you&rsquo;ll add the Neon Telemetry Player plugin to your video players. This will allow us to understand how your video thumbnails are performing on your site, optimize your thumbnails in real time, and provide you with analytics about your thumbnail performance.</p>
@@ -102,22 +88,8 @@ var SupportTab2 = React.createClass({
                 {/*<p className="TODO">TODO insert picture from our UI</p>*/}
 
                 <h4 className="title is-5">Legacy Smart Player</h4>
-                <p>To configure a legacy Smart Player, you must add the Neon Telemetry Player URL to each player in your Brightcove account.</p>
-                <ol>
-                    <li>Visit the Plugin page in your Neon UI</li>
-                    <li>Answer &ldquo;yes&rdquo; to &ldquo;Do you use the Smart Player?&rdquo;</li>
-                    <li>Copy the Neon Smart Player Plugin URL.</li>
-                    <li>Log in to your Brightcove Account</li>
-                    <li>Go to <a href="https://videocloud.brightcove.com/publishing" rel="external">https://videocloud.brightcove.com/publishing</a></li>
-                    <li>For each player you want to add the plugin to
-                        <ol>
-                            <li>Click Settings</li>
-                            <li>In the resulting window, click &ldquo;Plug-ins&rdquo;</li>
-                            <li>Paste the Neon Smart Player Plugin URL into the URL bar.</li>
-                            <li>Click &ldquo;Add&rdquo;</li>
-                        </ol>
-                    </li>
-                </ol>
+                <p>To configure a legacy Smart Player, you must add the Neon Telemetry Player URL to each player in your Brightcove account. Visit the Plugin page in your Neon UI and answer &ldquo;yes&rdquo; to &ldquo;Do you use the Smart Player?&rdquo;</p>
+                <BrightcoveSmartPlayerContent />
 
                 <h3 className="title is-4">4. Enable Telemetry from Your Site</h3>
                 <p>Neon can receive telemetry from your players using the Neon Telemetry Player plugins for those players. Telemetry is the stream of data that tells us how users are interacting with your images and video, allowing us to ensure that your best images are always representing your content. The process for enabling telemetry for your players is covered in step 3 above. However, if you show thumbnails outside of your player, you must add the Neon Telemetry Tag to your site. If you&rsquo;re a Gallery customer, you must complete this step in order to get accurate data from Neon. If you have a self-managed site, you should complete this step if you show thumbnails outside of your player. For example, a common way to show thumbnails outside of your player is to show a video thumbnail on your homepage that, when clicked, takes the user to an article page that contains the video whose thumbnail was clicked on the homepage. You can find your customized tag in your Neon account by clicking the gear and selecting <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry</a>.</p>

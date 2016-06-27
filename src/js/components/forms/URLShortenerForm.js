@@ -14,7 +14,7 @@ var URLShortenerForm = React.createClass({
     getInitialState: function() {
         return {
             mode: 'quiet', // quiet|error|loading|success
-            shortURL: ''
+            shortUrl: ''
         }
     },
     componentDidMount: function() {
@@ -28,36 +28,23 @@ var URLShortenerForm = React.createClass({
         self.setState({
             mode: 'loading'
         }, function() {
-            reqwest({
-                url: 'https://api-ssl.bitly.com/v3/shorten',
-                method: 'GET',
-                type: 'jsonp',
-                data: {
-                    longUrl: self.refs.url.value.trim(),
-                    access_token: UTILS.BITLY_ACCESS_TOKEN,
-                    domain: 'bit.ly'
-                }
-            })
-            .then(function(response) {
-                if (response.status_code === 500) {
-                    self.setState({
-                        mode: 'error'
-                    });
-                }
-                else {
-                    self.setState({
-                        mode: 'success',
-                        shortURL: response.data.url
-                    });
-                }
-            })
-            .fail(function(error) {
-                console.log(error);
-                self.setState({
-                    mode: 'error'
-                });
-            })
+            UTILS.shortenUrl(self.refs.url.value.trim(), self.handleUrl);
         });
+    },
+    handleUrl: function(response) {
+        var self = this;
+        if (response.status_code === 200) {
+            self.setState({
+                mode: 'success',
+                shortUrl: response.data.url
+            });
+        }
+        else {
+            self.setState({
+                mode: 'error',
+                shortUrl: ''
+            });
+        }
     },
     render: function() {
         var self = this,
@@ -97,17 +84,17 @@ var URLShortenerForm = React.createClass({
                         <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
                             <output
                                 className="input small"
-                                type="text"
+                                type="url"
                                 readOnly
                                 refs="outputUrl"
-                                value={self.state.shortURL}
+                                value={self.state.shortUrl}
                             />
 
                             <button
                                 className="button small is-primary"
                                 type="button"
                                 ref="copyUrl"
-                                data-clipboard-text={self.state.shortURL}
+                                data-clipboard-text={self.state.shortUrl}
                             >
                                 {T.get('copy')}
                             </button>

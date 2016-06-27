@@ -4,6 +4,7 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import PasswordBrothers from '../wonderland/PasswordBrothers';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import Message from '../wonderland/Message';
@@ -45,6 +46,7 @@ var UserResetForm = React.createClass({
                     }
                 })
                 .then(function(json) {
+                    TRACKING.sendEvent(self, arguments, self.props.params.username);
                     self.setState({
                         mode: 'success'
                     }, function() {

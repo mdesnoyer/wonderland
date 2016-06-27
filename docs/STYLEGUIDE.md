@@ -31,6 +31,14 @@ If in doubt, defer to the code. If still in doubt, ask.
 [CSS Guidelines](http://cssguidelin.es/) is a good place to start.
 
 - 1 line per selector
+- BEM style where possible
+- lowercase, use hyphens to separate
+- Prefix numbers with leading zeroes, e.g. `0.2` rather than `.2`
+- Avoid negative margins
+- Use ems (relative units) wherever possible
+- avoid the use of magic numbers, http://csswizardry.com/2012/11/code-smells-in-css/ has a good section on it
+- have a `z-index` plan, randomly using values can be dangerous and cause future headaches
+- `box-sizing: border-box` should be the default globally
 
 ```
 .awesome,
@@ -46,3 +54,13 @@ If in doubt, defer to the code. If still in doubt, ask.
 
 - Sublime Text 3.0 is the preferred editor but you are fre to use your own.
 - `Convert Indentations to Spaces` and `Indent using Spaces` and `Spaces: 4` are your friends in Sublime and there is a file in the root `Neon.sublime-project` which takes care of a lot of these.
+
+## Browser Support
+
+We should be supporting:
+
+- current versions of major desktop browsers including those made by Apple (Safari), Google (Chrome), Microsoft (Edge), Mozilla Firefox and Opera.
+- iOS 9: Safari, Google Chrome
+- Android: Google Chrome on Android Emulator
+
+We won't test in Blackberry, Opera Mini/Mobile, specific Android devices, Windows or other mobile browsers unless required.

@@ -11,6 +11,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,6 +93,7 @@ var VideoOwner = React.createClass({
             return (
                 <div className={videoSizeClass}>
                     <VideoHeader
+                        isGuest={false}
                         handleVideoOpenToggle={self.handleVideoOpenToggle}
                         forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
@@ -103,6 +105,7 @@ var VideoOwner = React.createClass({
                         showVideoOpenToggle={true}
                     />
                     <VideoMain
+                        isGuest={false}
                         videoId={self.state.videoId}
                         forceOpen={self.state.forceOpen}
                         messageNeededComponent={messageNeededComponent}
@@ -124,6 +127,7 @@ var VideoOwner = React.createClass({
             return false;
         }
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.url);
         self.setState({
             forceOpen: !self.state.forceOpen
         });

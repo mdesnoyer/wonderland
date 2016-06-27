@@ -6,16 +6,16 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveAccountIdModal from '../modals/BrightcoveAccountIdModal';
 import BrightcoveClientIdModal from '../modals/BrightcoveClientIdModal';
-import BrightcoveClientSecretModal from '../modals/BrightcoveClientSecretModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -196,13 +196,11 @@ var IntegrationsForm = React.createClass({
             formMode = self.state.formMode
         ;
         e.preventDefault();
-            self.setState({
-                formMode: 'loading'
-            },
-                function() {
-                    self.sendIntegrationData(formMode);
-                }
-            );
+        self.setState({
+            formMode: 'loading'
+        }, function() {
+            self.sendIntegrationData(formMode);
+        });
     },
     sendIntegrationData: function(formMode) {
         var self = this,

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
 import UTILS from '../../modules/utils';
@@ -37,12 +38,14 @@ var Carousel = React.createClass({
     },
     handleClickPrevious: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.items[self.state.selectedItem]);
         self.setState({
             selectedItem: (self.state.selectedItem === 0) ? (self.state.total - 1) : (self.state.selectedItem - 1)
         });
     },
     handleClickNext: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.state.items[self.state.selectedItem]);
         self.setState({
             selectedItem: (self.state.selectedItem === self.state.total - 1) ? (0) : (self.state.selectedItem + 1)
         });
@@ -96,7 +99,10 @@ var Carousel = React.createClass({
                             className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--previous', 'right')}
                             aria-label={T.get('action.previous')}
                         >
-                            <Icon type="chevron-circle-left" />
+                            <Icon
+                                type="chevron-circle-left"
+                                nowrap={true}
+                            />
                         </li>
                         <li>Item {self.state.selectedItem + 1} of {self.state.total}</li>
                         <li
@@ -104,7 +110,10 @@ var Carousel = React.createClass({
                             className={UTILS.buildTooltipClass('wonderland-carousel__control wonderland-carousel__control--next', 'left')}
                             aria-label={T.get('action.next')}
                         >
-                            <Icon type="chevron-circle-right" />
+                            <Icon
+                                type="chevron-circle-right"
+                                nowrap={true}
+                            />
                         </li>
                     </ul>
                 </nav>

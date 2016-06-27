@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import E from '../../modules/errors';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
 import SiteHeader from '../wonderland/SiteHeader';
@@ -17,7 +18,7 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     mixins: [Secured, Account, AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -44,7 +45,8 @@ var VideosPage = React.createClass({
             })
             .catch(function (err) {
                 E.raiseError(err);
-            });
+            })
+        ;
         SESSION.user()
             .then(function(userData) {
                 if (userData) {

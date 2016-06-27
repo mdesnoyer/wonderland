@@ -6,14 +6,16 @@ import AjaxMixin from '../../mixins/Ajax';
 import ThumbBox from '../wonderland/ThumbBox';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import Icon from '../core/Icon';
 import Hud from './Hud';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnail = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         isEnabled: React.PropTypes.bool.isRequired,
         index: React.PropTypes.number.isRequired,
         rawNeonScore: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
@@ -129,6 +131,7 @@ var Thumbnail = React.createClass({
                     </figcaption>
                 </figure>
                 <Hud
+                    isGuest={self.props.isGuest}
                     stats={self.props.thumbnailStats}
                     cookedNeonScore={self.props.cookedNeonScore}
                 />
@@ -137,6 +140,7 @@ var Thumbnail = React.createClass({
     },
     handleToggleModal: function(e) {
         var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.url);
         self.props.handleToggleModal(self.props.index);
     },
     handleEnabledChange: function(e) {

@@ -18,8 +18,9 @@ import AjaxMixin from '../../mixins/Ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Thumbnails = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
+        isGuest: React.PropTypes.bool.isRequired,
         videoState: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         forceOpen: React.PropTypes.bool.isRequired,
@@ -44,12 +45,7 @@ var Thumbnails = React.createClass({
             self.GET('statistics/thumbnails', {
                 data: {
                     video_id: self.props.videoId,
-                    // Comma-separated string of fields to return. Can include
-                    // serving_frac (the fraction of traffic seeing this
-                    // thumbnail), ctr (the click-through rate), impressions
-                    // (the number of impressions), conversions (the number
-                    // of conversions), created, and updated.
-                    fields: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated']
+                    fields: UTILS.THUMBNAIL_FIELDS
                 }
             })
             .then(function(json) {
@@ -115,6 +111,7 @@ var Thumbnails = React.createClass({
                                 rawNeonScore = UTILS.NEON_SCORE_ENABLED ? thumbnail.neon_score : 0,
                                 cookedNeonScore = UTILS.NEON_SCORE_ENABLED ? neonScoreData.neonScore : 0,
                                 thumbnailElement = <Thumbnail
+                                        isGuest={self.props.isGuest}
                                         index={i}
                                         isEnabled={thumbnail.enabled}
                                         strippedUrl={UTILS.stripProtocol(thumbnail.url)}

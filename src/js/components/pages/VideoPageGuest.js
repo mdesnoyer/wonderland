@@ -4,33 +4,29 @@ import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
+import VideoGuest from '../wonderland/VideoGuest';
 import Helmet from 'react-helmet';
 import UTILS from '../../modules/utils';
-import T from '../../modules/translation';
-import SignInForm from '../forms/SignInForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AccountConfirmedPage = React.createClass({
+var VideoPageGuest = React.createClass({
     // mixins: [ReactDebugMixin],
     render: function() {
-        var body = T.get('copy.accountConfirmed.body');
+        var self = this;
         return (
             <div>
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.accountConfirmed.title'))}
+                    title={UTILS.buildPageTitle('Video')}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                           <h1 className="title is-2">{T.get('copy.accountConfirmed.heading')}</h1>
-                            <div className="content">
-                                <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
-                                <p><em>{T.get('app.companySig')}</em></p>
-                            </div>
-                            <SignInForm />
-                        </div>
+                    <div className="container">
+                        <VideoGuest
+                            videoId={self.props.params.videoId}
+                            accountId={self.props.params.accountId}
+                            shareToken={self.props.params.shareToken}
+                        />
                     </div>
                 </section>
                 <SiteFooter />
@@ -41,6 +37,6 @@ var AccountConfirmedPage = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default AccountConfirmedPage;
+export default VideoPageGuest;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

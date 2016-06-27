@@ -8,6 +8,8 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -58,6 +60,14 @@ var AccountSettingsTab1 = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
+        SESSION.user()
+            .then(function(userData) {
+                TRACKING.sendEvent(self, arguments, userData.username);
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+        ;
         if (!self._isSubmitted) {
             self._isSubmitted = true; 
             if (self._isMounted) {

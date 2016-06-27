@@ -2,6 +2,7 @@
 
 import T from './translation';
 import moment from 'moment';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,6 +17,7 @@ var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     NA_STRING = 'n/a',
     COOKIE_DEFAULT_PATH = '/',
+    // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
         { modelScore: 0.155, emoji: '❓' },
@@ -237,7 +239,10 @@ var UTILS = {
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
+    THUMBNAIL_FIELDS: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated'],
+    VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
+    BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -318,9 +323,9 @@ var UTILS = {
         ;
         return hash64.str();
     },
-    // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
     isValidDate: function(d) {
-        return !isNaN(Date.parse(d));
+        var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
+        return !isNaN(Date.parse(niceDate));
     },
     buildTooltipClass: function(existingClass, position) {
         // https://github.com/chinchang/hint.css
@@ -336,19 +341,11 @@ var UTILS = {
         return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");
     },
     getNeonScoreData: function(score) {
-        if (score && !isNaN(score) && (score > 0)) {
-            var neonScoresLength = NEONSCORES.length;
-            for (var i = 0; i < neonScoresLength; i++) {
-                if (score < NEONSCORES[i].modelScore) {
-                    return {
-                        neonScore: i - 1,
-                        emoji: NEONSCORES[i - 1].emoji
-                    };
-                }
-            }
+        // Back End now does math - #1253
+        if (score && !isNaN(score) && (score >= 0)) {
             return {
-                neonScore: i - 1,
-                emoji: NEONSCORES[i - 1].emoji
+                neonScore: score,
+                emoji: NEONSCORES[score].emoji
             };
         }
         else {
@@ -378,6 +375,25 @@ var UTILS = {
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
+    },
+    shortenUrl: function(url, callback) {
+        var self = this;
+        reqwest({
+            url: self.BITLY_SHORTEN_URL,
+            method: 'GET',
+            type: 'jsonp',
+            data: {
+                longUrl: url,
+                access_token: self.BITLY_ACCESS_TOKEN
+            }
+        })
+        .then(function(response) {
+            callback(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+            callback(error);
+        })
     }
 };
 

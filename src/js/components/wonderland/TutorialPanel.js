@@ -7,7 +7,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TutorialPanel = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         icon: React.PropTypes.string.isRequired,
         direction: React.PropTypes.string.isRequired

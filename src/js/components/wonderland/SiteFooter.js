@@ -10,7 +10,7 @@ import SiteNavigation from '../wonderland/SiteNavigation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteFooter = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         return (
             <footer className="footer wonderland-banner wonderland-banner--footer">

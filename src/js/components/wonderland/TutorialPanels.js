@@ -7,7 +7,7 @@ import TutorialPanel from './TutorialPanel';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TutorialPanels = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         panels: React.PropTypes.object.isRequired
     },

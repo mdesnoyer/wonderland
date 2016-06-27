@@ -11,7 +11,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PendingAccountPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     render: function() {
         var body1 = T.get('copy.pendingAccount.body.1'),
             body2 = T.get('copy.pendingAccount.body.2'),

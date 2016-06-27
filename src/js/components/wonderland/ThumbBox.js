@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 // import ReactDebugMixin from 'react-debug-mixin';
 import UTILS from '../../modules/utils';
 import Icon from '../core/Icon';
@@ -8,7 +9,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ThumbBox = React.createClass({
-	// mixins: [ReactDebugMixin],
+    // mixins: [ReactDebugMixin],
     propTypes: {
         copyUrl: React.PropTypes.string.isRequired,
         downloadUrl: React.PropTypes.string.isRequired,
@@ -38,7 +39,7 @@ var ThumbBox = React.createClass({
                         title="Copy the URL of this Thumbnail"
                         className="icon wonderland-thumbbox__tool"
                         ref="copyUrl"
-                        onClick={self.handleCopyUrlClick}
+                        onClick={self.handleCopyTracking}
                         data-clipboard-text={self.props.copyUrl}
                     >
                         <Icon type="files-o" />
@@ -53,6 +54,7 @@ var ThumbBox = React.createClass({
                     <a
                         href={self.props.downloadUrl}
                         download={self.props.downloadUrl}
+                        onClick={self.handleDownloadTracking}
                         className="icon wonderland-thumbbox__tool"
                         title="Download this Thumbnail"
                     >
@@ -68,6 +70,14 @@ var ThumbBox = React.createClass({
                 </div>
             </aside>
         );
+    },
+    handleCopyTracking: function() {
+        var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.copyUrl);
+    },
+    handleDownloadTracking: function() {
+        var self = this;
+        TRACKING.sendEvent(self, arguments, self.props.downloadUrl);
     }
 });
 
