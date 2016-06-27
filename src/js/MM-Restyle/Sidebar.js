@@ -5,17 +5,17 @@ import LearnMore from './LearnMore';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var PageOverlay = React.createClass({
+var Sidebar = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            overlayOpen: self.props.overlayOpen
+            sidebarOpen: self.props.sidebarOpen
         };
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
         self.setState({
-            overlayOpen: nextProps.overlayOpen
+            sidebarOpen: nextProps.sidebarOpen
         });
     },
     handleBackgroundClose: function(e) {
@@ -23,24 +23,24 @@ var PageOverlay = React.createClass({
         e.preventDefault();
         if (e.target.className === 'xxOverlay xxOverlay--scroll xxOverlay--visibleNav') {
             self.setState({
-                overlayOpen: false
+                sidebarOpen: false
             });
-            self.props.closeOverlay();
+            self.props.closeSidebar();
         }
     },
     handleClose: function(e) {
         var self = this;
         e.preventDefault();
         self.setState({
-            overlayOpen: false
+            sidebarOpen: false
         });
-        self.props.closeOverlay();
+        self.props.closeSidebar();
     },
     render: function() {
         var self = this,
             content = ''
         ;
-        switch (self.props.overlayContent) {
+        switch (self.props.sidebarContent) {
             case 'learnMore':
                 content = <LearnMore />;
                 break;
@@ -63,7 +63,7 @@ var PageOverlay = React.createClass({
             <div 
                 className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" 
                 onClick={self.handleBackgroundClose} 
-                hidden={!self.state.overlayOpen}
+                hidden={!self.state.sidebarOpen}
             >
                 <div className="xxPageOverlay">
                     <a href="" className="xxPageOverlay-close" onClick={self.handleClose}>Close</a>
@@ -76,6 +76,6 @@ var PageOverlay = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default PageOverlay;
+export default Sidebar;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
