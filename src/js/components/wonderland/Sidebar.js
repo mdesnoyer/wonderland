@@ -9,32 +9,25 @@ var Sidebar = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            sidebarOpen: self.props.sidebarOpen
+            isOpen: self.props.sidebarOpen
         };
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
         self.setState({
-            sidebarOpen: nextProps.sidebarOpen
+            isOpen: nextProps.sidebarOpen
         });
-    },
-    handleBackgroundClose: function(e) {
-        var self = this;
-        e.preventDefault();
-        if (e.target.className === 'xxOverlay xxOverlay--scroll xxOverlay--visibleNav') {
-            self.setState({
-                sidebarOpen: false
-            });
-            self.props.closeSidebar();
-        }
     },
     handleClose: function(e) {
         var self = this;
         e.preventDefault();
         self.setState({
-            sidebarOpen: false
+            isOpen: false
         });
         self.props.closeSidebar();
+    },
+    sidebarClick: function(e) {
+        e.stopPropagation();
     },
     render: function() {
         var self = this,
@@ -62,11 +55,11 @@ var Sidebar = React.createClass({
         return (
             <div 
                 className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" 
-                onClick={self.handleBackgroundClose} 
-                hidden={!self.state.sidebarOpen}
+                onClick={self.handleClose} 
+                hidden={!self.state.isOpen}
             >
                 <a href="" className="xxOverlay-close" onClick={self.handleClose}>Close</a>
-                <div className="xxPageOverlay">
+                <div className="xxPageOverlay" onClick={self.sidebarClick}>
                     {content}
                 </div>
             </div>

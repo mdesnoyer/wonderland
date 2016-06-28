@@ -6,7 +6,7 @@ import NewsFlash from './NewsFlash';
 import SiteBanner from './SiteBanner';
 import AccountMasqueradeBar from './AccountMasqueradeBar';
 import T from '../../modules/translation';
-import Sidebar from '../../MM-Restyle/Sidebar';
+import Sidebar from './Sidebar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
