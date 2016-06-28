@@ -2,6 +2,7 @@
 
 import React from 'react';
 import LearnMore from './LearnMore';
+import ContactForm from './ContactForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -45,7 +46,7 @@ var Sidebar = React.createClass({
                 content = <LearnMore />;
                 break;
             case 'contact':
-                content = <div>Contact</div>;
+                content = <ContactForm handleClose={self.handleClose} />;
                 break;
             case 'signUp':
                 content = <div>Sign Up</div>;
