@@ -25,7 +25,7 @@ var DemoPage = React.createClass({
             })
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                // Route to the dashboard, which will auto-route to the "upload video" page now that there's a session
+                // Route to the dashboard (upload video) page
                 self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
             })
             .catch(function (err) {
