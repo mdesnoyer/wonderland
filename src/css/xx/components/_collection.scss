@@ -1,0 +1,43 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollection {
+    @include clearfix;
+
+    position: relative;
+    margin: 0 0 20px;
+    padding: 30px $gutter-width 40px;
+    background: #fff;
+}
+
+.xxCollection-title {
+    color: $secondary-color;
+    font: normal 25px/32px $serif-family;
+
+    .xxCollection--video &::after {
+        @include font-awesome('f03d');
+
+        position: relative;
+        top: -2px;
+        margin: 0 0 0 10px;
+        color: $quaternary-color;
+        font-size: 12px;
+    }
+}
+
+.xxCollection-subtitle {
+    margin: 0 0 6px;
+    color: $tertiary-color;
+}
+
+.xxCollection-content {
+    float: right;
+    width: calc((99.99% + #{$gutter-width}) * 1/3 - #{$gutter-width});
+    padding: 17px 0 0;
+
+    .xxLift {
+        border-top: 1px solid #e0e0e0;
+        margin: 20px 0 0;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

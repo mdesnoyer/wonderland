@@ -1,0 +1,14 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+body {
+    background: $bg-color;
+    color: $base-color;
+    font: $base-type;
+}
+
+a {
+    text-decoration: none;
+    transition: color .2s ease-in-out;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

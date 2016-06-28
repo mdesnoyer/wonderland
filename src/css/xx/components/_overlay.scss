@@ -1,0 +1,29 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxOverlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba($bg-color, 0.9);
+    z-index: 10000;
+}
+
+.xxOverlay-content {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    transform: translateY(-50%);
+
+    .xxButton {
+        margin: 24px auto 0;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

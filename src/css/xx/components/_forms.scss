@@ -1,0 +1,205 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@mixin input-placeholder {
+    &::placeholder {
+        color: $tertiary-color;
+    }
+
+    &:focus {
+        &::placeholder {
+            color: #eee;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxFormField {
+    margin: 0 0 14px;
+}
+
+.xxLabel {
+    @include all-caps-title;
+
+    display: block;
+    width: 100%;
+    color: $tertiary-color;
+    line-height: 26px;
+
+    .xxFormField + .xxFormField & {
+        margin-top: -2px;
+    }
+}
+
+.xxInputText {
+    @include input-placeholder;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 45px;
+    border-radius: 0;
+    border: 1px solid $bg-tertiary-color;
+    outline: 0;
+    padding: 0 10px;
+    color: $secondary-color;
+
+    -webkit-appearance: none;
+
+    &[readonly] {
+        color: $tertiary-color;
+    }
+}
+
+.xxTextArea {
+    @include input-placeholder;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 120px;
+    border-radius: 0;
+    border: 1px solid $bg-tertiary-color;
+    outline: 0;
+    padding: 8px 10px;
+    color: $secondary-color;
+
+    -webkit-appearance: none;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxSelect {
+    display: block;
+    position: relative;
+    color: $tertiary-color;
+    line-height: 43px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 17px;
+        right: 18px;
+        z-index: 10;
+        width: 1px;
+        height: 10px;
+        background: $bg-tertiary-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 100%;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+
+    &.is-open {
+        z-index: 99999;
+
+        &::before, &::after {
+            top: 19px;
+            transform-origin: 50% 0;
+        }
+    }
+}
+
+.xxSelect-label {
+    height: 45px;
+    border: 1px solid $bg-tertiary-color;
+    padding: 0 10px;
+    cursor: pointer;
+    user-select: none;
+
+    .has-value > & {
+        color: $secondary-color;
+    }
+}
+
+.xxSelect-dropdown {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #fff;
+
+    .is-open > & {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+    }
+}
+
+.xxSelect-option {
+    user-select: none;
+    height: 44px;
+    padding: 1px 11px 0;
+    cursor: pointer;
+
+    &:hover {
+        background: $bg-secondary-color;
+    }
+
+    &.is-selected {
+        color: $secondary-color;
+    }
+
+    &--label {
+        height: 45px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+}
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxButton {
+    display: block;
+    overflow: hidden;
+    width: 152px;
+    height: 45px;
+    border: 1px solid #e1e1e1;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    background: #fff;
+    color: $base-color;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color .2s ease-in-out,
+                background .2s ease-in-out;
+
+    &[disabled] {
+        cursor: default;
+
+        &:hover {
+            border-color: #e1e1e1;
+        }
+    }
+
+    &:hover {
+        border-color: $accent-color;
+    }
+
+    &--highlight {
+        border-color: $base-color;
+        background: $base-color;
+        color: #fff;
+
+        &:hover {
+            border-color: $accent-color;
+            background: $accent-color;
+        }
+
+        &[disabled]:hover {
+            border-color: $base-color;
+            background: $base-color;
+        }
+    }
+
+    &--important {
+        border-color: $accent-color;
+        background: $accent-color;
+        color: #fff;
+
+        &:hover {
+            border-color: $accent-color;
+            background: $accent-color;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

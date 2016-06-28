@@ -2,25 +2,55 @@
 
 import React from 'react';
 
+import XXCollection from './components/Collection';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var XXPage = React.createClass({
-    render: function() {
-        var self = this;
+export default class XXPage extends React.Component {
+    render() {
         return (
-            <div>
-                <div className="xxComponent">TODO</div>
-                <div className="xxComponent">TODO</div>
-                <div className="xxComponent">TODO</div>
-                <div className="xxComponent">TODO</div>
-                <div className="xxComponent">TODO</div>
-            </div>
+            <main className="xxPage">
+                <header className="xxHeader">
+                    <img className="xxLogo" src="/img/xx/logo.svg" />
+
+                    <nav className="xxNav">
+                        <ul>
+                            <li className="xxNav-item">
+                                <a href="" className="xxNav-anchor">
+                                    Learn More
+                                </a>
+                            </li>
+                            <li className="xxNav-item">
+                                <a href="" className="xxNav-anchor">
+                                    Contact Us
+                                </a>
+                            </li>
+                            <li className="xxNav-item">
+                                <a href="" className="xxNav-anchor">
+                                    Sign Up
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>
+
+                <XXCollection
+                    hasFilters
+                    title="Santa Cruz man wins Mavericks
+                        big wave surf competition"
+                />
+
+                <XXCollection
+                    title="Santa Cruz man wins Mavericks
+                        big wave surf competition"
+                />
+
+                <XXCollection
+                    title="Thursday evening at Daniel’s"
+                />
+        </main>
         );
     }
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default XXPage;
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
