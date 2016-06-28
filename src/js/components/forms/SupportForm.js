@@ -17,19 +17,19 @@ var SupportForm = React.createClass({
     render: function() {
         var self = this,
             initialForm = ( 
-                <form onSubmit={self.handleSubmit} className={'support-form'}>
+                <form onSubmit={self.handleSubmit}>
                     <div className="content">
                         <h1 className="title">What can we help you with?</h1>
                     </div>
-                    <label className="label">your name</label>
+                    <label className="label">Your Name</label>
                     <p className="control">
                         <input className="input" type="text" ref="firstName" required />
                     </p>
-                    <label className="label">your email</label>
+                    <label className="label">Your Email</label>
                     <p className="control">
                         <input className="input" type="email" ref="contactEmail" required/>
                     </p>
-                    <label className="label">issue</label>
+                    <label className="label">Issue</label>
                     <p className="control">
                       <textarea className="textarea" ref="supportMessage" required></textarea>
                     </p>
@@ -93,13 +93,13 @@ var SupportForm = React.createClass({
         }
         data = {
             data: {
-                    subject: 'Neon Support Email',
+                    subject: UTILS.SUPPORT_EMAIL_SUBJECT,
                     to_email_address: email,
                     template_slug: slug,
                     template_args:{
-                        "first_name": self.refs.firstName.value.trim(),
-                        "contact_email": self.refs.contactEmail.value.trim(),
-                        "support_message": self.refs.supportMessage.value.trim()
+                        'first_name': self.refs.firstName.value.trim(),
+                        'contact_email': self.refs.contactEmail.value.trim(),
+                        'support_message': self.refs.supportMessage.value.trim()
                     }
                 }
         }

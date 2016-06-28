@@ -232,6 +232,7 @@ var UTILS = {
     },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SUPPORT_EMAIL:'support@neon-lab.com',
+    SUPPORT_EMAIL_SUBJECT:'Neon Support Email',
     SUPPORT_MANDRILL_SLUG:'support-email-admin',
     CONFIRM_MANDRILL_SLUG:'support-email',
     VERSION: '1.9.1',
