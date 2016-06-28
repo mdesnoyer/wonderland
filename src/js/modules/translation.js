@@ -38,7 +38,9 @@ const _DEFAULT_LOCALE = 'en-US',
             back: 'Back',
             send: 'Send',
             change: 'Change',
-
+            delete: 'Delete',
+            share: 'Share',
+            apply: 'Apply',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -50,6 +52,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.shortenURL': 'Shorten URL',
 
             rememberMe: 'Remember',
+
+            'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
+            'copy.videoContent.delete.title': 'Delete Collection',
+            'copy.videoContent.email': 'Get an email summary of your image results for this video.',
+            'copy.videoContent.share': 'Copy the link below to share this collection directly with your friends and peers',
 
             'copy.signIn.title': 'Sign In',
             'copy.signIn.heading': 'Welcome to Neon',
@@ -251,7 +258,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
             'copy.defaultThumbnail': 'Default Thumbnail',
-            'copy.neonSelect': 'Neon Select', 
+            'copy.neonSelect': 'Neon Select',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

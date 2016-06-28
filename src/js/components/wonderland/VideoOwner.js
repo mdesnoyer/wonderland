@@ -11,6 +11,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
+import VideoProcessing from '../knave/VideoProcessing';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,29 +65,27 @@ var VideoOwner = React.createClass({
         clearInterval(self.timer);
     },
     render: function() {
-        var self = this
-        if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small' + (self.state.isLoading ? ' is-loading' : ''),
-                videoLink = '/video/' + self.state.videoId + '/',
-                videoSizeClass = 'video video--' + self.state.size
-            ;
-            return (
-                    <VideoMain
-                        isGuest={false}
-                        videoId={self.state.videoId}
-                        thumbnails={self.state.sortedThumbnails}
-                        videoState={self.state.videoState}
-                        videoLink={videoLink}
-                        duration={self.state.duration}
-                        created={self.state.created}
-                        url={self.state.url}
-                        isServingEnabled={self.props.isServingEnabled}
-                        shareToken={self.state.shareToken}
-                        experimentState={self.state.experimentState}
-                        winnerThumbnail={self.state.winnerThumbnail}
-                        title={self.state.title}
-                    />
-            );
+        var self = this;
+            if (self.props.videoState === 'processing' || self.props.videoState === 'failed') {
+                return <VideoProcessing title={self.props.title} videoState={self.state.videoState} />;
+            }
+            else {
+                return (
+                        <VideoMain
+                            isGuest={false}
+                            videoId={self.state.videoId}
+                            thumbnails={self.state.sortedThumbnails}
+                            videoState={self.state.videoState}
+                            duration={self.state.duration}
+                            created={self.state.created}
+                            url={self.state.url}
+                            isServingEnabled={self.props.isServingEnabled}
+                            shareToken={self.state.shareToken}
+                            experimentState={self.state.experimentState}
+                            winnerThumbnail={self.state.winnerThumbnail}
+                            title={self.state.title}
+                        />
+                );
         }
     },
     pingVideo: function() {

@@ -243,6 +243,39 @@ var UTILS = {
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
+    FILTERS_GENDER_AGE: [    
+        {
+            value: 'Female / 35-44',
+        },
+        {
+            value: 'Male / 25 - 34',
+        },
+        {
+            value: 'None',
+        }
+    ],
+    FILTERS_GENDER: [
+        {
+            value: 'Female',
+        },
+        {
+            value: 'Male',
+        }     
+    ],  
+    FILTERS_AGE: [    
+        {
+            value: '18-29',
+        },
+        {
+            value: '30-39',
+        },
+        {
+            value: '40-49',
+        },
+        {
+            value: '50+'
+        }
+    ], 
     LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SUPPORT_EMAIL:'support@neon-lab.com',

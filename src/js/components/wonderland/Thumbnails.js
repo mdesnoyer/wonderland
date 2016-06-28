@@ -5,7 +5,6 @@ import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import ThumbnailInfoBox from './ThumbnailInfoBox';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import FuzzyTime from '../core/FuzzyTime';
@@ -73,16 +72,16 @@ var Thumbnails = React.createClass({
         ;
             return (
                 <div className="xxCollectionImages">
-                    <FeatureThumbnail 
-                        thumbnails={self.props.thumbnails} 
-                        type="default" 
+                    <FeatureThumbnail
+                        thumbnails={self.props.thumbnails}
+                        type="default"
                     />
-                    <FeatureThumbnail 
-                        thumbnails={self.props.thumbnails} 
-                        type="neon" 
+                    <FeatureThumbnail
+                        thumbnails={self.props.thumbnails}
+                        type="neon"
                     />
                     <div className="xxCollectionImages-all">
-                        <ThumbnailCollection 
+                        <ThumbnailCollection
                             thumbnails={self.state.thumbnails}
                         />
                     </div>
