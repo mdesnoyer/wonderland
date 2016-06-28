@@ -44,8 +44,8 @@ var SiteNavigation = React.createClass({
                 signUp: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNUP.URL} data-content="signUp">{T.get('nav.signUp')}</a>,
                 signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} data-content="signIn">{T.get('nav.signIn')}</a>,
                 account: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} data-content="account">{T.get('nav.account')}</a>,
-                supportPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SUPPORT.URL}>{T.get('nav.support')}</a>,
-                termsPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>
+                supportPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SUPPORT.URL} data-content="support">{T.get('nav.support')}</a>,
+                termsPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.TERMS.URL} data-content="terms">{T.get('nav.terms')}</a>
             },
             constructedNav = [],
             additionalClass = 'xxNav-item'
