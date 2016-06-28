@@ -27,7 +27,8 @@ var SiteHeader = React.createClass({
     closeSidebar: function() {
         var self = this;
         self.setState({
-            sidebarOpen: false
+            sidebarOpen: false,
+            sidebarContent: ''
         });
     },
     render: function() {
@@ -35,9 +36,9 @@ var SiteHeader = React.createClass({
         return (
             <div>
                 <AccountMasqueradeBar />
-                <SiteBanner sidebarOpen={self.state.sidebarOpen} setSidebarContent={self.setSidebarContent}/>
+                <SiteBanner sidebarContent={self.state.sidebarContent} setSidebarContent={self.setSidebarContent}/>
                 <Sidebar 
-                    sidebarOpen={self.state.sidebarOpen}
+                    isOpen={self.state.sidebarOpen}
                     sidebarContent={self.state.sidebarContent}
                     closeSidebar={self.closeSidebar}
                 />

@@ -20,24 +20,21 @@ var SiteNavigation = React.createClass({
         var self = this;
         return {
             isSignedIn: self.props.isSignedIn,
-            sidebarContent: ''
+            sidebarContent: self.props.sidebarContent
         }
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        self.setState({
+            sidebarContent: nextProps.sidebarContent
+        });
     },
     handleClick: function(e) {
         var self = this,
             item = e.target.getAttribute('data-content')
         ;
         e.preventDefault();
-        self.setState({
-            sidebarContent: item
-        });
         self.props.setSidebarContent(item);
-    },
-    handleClose: function() {
-        var self = this;
-        self.setState({
-            sidebarContent: ''
-        });
     },
     render: function() {
         var self = this,
@@ -80,7 +77,7 @@ var SiteNavigation = React.createClass({
                 <ul>
                     {
                         constructedNav.map(function(levelItem, i) {
-                            if (levelItem.props['data-content'] === self.state.sidebarContent && self.props.sidebarOpen) {
+                            if (levelItem.props['data-content'] === self.state.sidebarContent) {
                                 return (
                                     <li key={i} className="xxNav-item is-active">{levelItem}</li>
                                 );

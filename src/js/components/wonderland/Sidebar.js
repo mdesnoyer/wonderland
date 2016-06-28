@@ -9,21 +9,18 @@ var Sidebar = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isOpen: self.props.sidebarOpen
+            isOpen: self.props.isOpen
         };
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
         self.setState({
-            isOpen: nextProps.sidebarOpen
+            isOpen: nextProps.isOpen
         });
     },
     handleClose: function(e) {
         var self = this;
         e.preventDefault();
-        self.setState({
-            isOpen: false
-        });
         self.props.closeSidebar();
     },
     sidebarClick: function(e) {
