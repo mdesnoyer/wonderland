@@ -3,7 +3,6 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
-import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
@@ -26,7 +25,7 @@ var Videos = React.createClass({
             isLoading: false,
             pseudoPageUrl: '?', // used to hold the Prev / Next choice
             previousPseudoPageUrl: '' // used to hold the Page before
-        }  
+        }
     },
     componentDidMount: function() {
         var self = this;
@@ -48,18 +47,11 @@ var Videos = React.createClass({
     render: function() {
         var self = this,
             errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : false,
-            panels = {
-                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
-                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
-                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
-            },
-            tutorialComponent = self.state.videoCountServed === 0 ? <section className="wonderland-section section"><TutorialPanels panels={panels}/></section> : false,
             prevPageAPICall = '',
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
         if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
-            tutorialComponent = false;
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
         }
@@ -69,14 +61,10 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                {tutorialComponent}
-                <section className="wonderland-section section">
                     <AnalyzeVideoForm
                         postHook={self.doVideoSearch}
                         videoCountServed={self.state.videoCountServed}
                     />
-                </section>
-                <section id="results" className="wonderland-section section">
                     <VideosResults
                         videos={self.state.videos}
                         handleNewSearch={self.handleNewSearch}
@@ -90,7 +78,6 @@ var Videos = React.createClass({
                         videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                         isServingEnabled={self.props.isServingEnabled}
                     />
-                </section>
             </div>
         );
     },

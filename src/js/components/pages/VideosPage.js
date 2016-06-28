@@ -38,45 +38,20 @@ var VideosPage = React.createClass({
             })
             .catch(function (err) {
                 E.raiseError(err);
-            })
-        ;
-        SESSION.user()
-            .then(function(userData) {
-                if (userData) {
-                    self.setState({
-                        displayName: userData.displayName
-                    });
-                }
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
-        ;
+            });
     },
     render: function() {
-        var self = this,
-            heading = T.get('copy.videosPage.heading'),
-            body = T.get('copy.videosPage.body', {
-                '@displayName' : self.state.displayName
-            })
-        ;
+        var self = this;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="container">
-                        <h1 className="title is-2">{heading}</h1>
-                        {body}
-                        <Videos
-                            isServingEnabled={self.state.isServingEnabled}
-                        />
-                    </div>
-                </section>
-                <SiteFooter />
-            </div>
+                <Videos
+                    isServingEnabled={self.state.isServingEnabled}
+                />
+            </main>
         );
     }
 });

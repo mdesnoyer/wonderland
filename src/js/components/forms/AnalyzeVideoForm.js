@@ -7,7 +7,6 @@ import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
-import TutorialPanels from '../wonderland/TutorialPanels';
 import IntegrationNotification from '../core/IntegrationNotification';
 import E from '../../modules/errors';
 import Account from '../../mixins/Account';

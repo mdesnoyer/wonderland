@@ -1,10 +1,5 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
-import Icon from '../core/Icon';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TutorialPanel = React.createClass({
     // mixins: [ReactDebugMixin],
