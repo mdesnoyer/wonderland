@@ -1,6 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16,6 +18,17 @@ var Sidebar = React.createClass({
         var self = this;
         self.setState({
             isOpen: nextProps.isOpen
+        }, function() {
+            if (self.state.isOpen) {
+                window.scrollTo(0, 0);
+                ReactDOM.findDOMNode(this).scrollTop = 0;
+                document.body.classList.add('has-overlayWithScroll');
+                document.body.style.marginRight = `${scrollbarWidth}px`;
+            }
+            else {
+                document.body.classList.remove('has-overlayWithScroll');
+                document.body.style.marginRight = 0;
+            }
         });
     },
     handleClose: function(e) {
