@@ -1,0 +1,66 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$small-thumbnail-width: calc(99.9% * 1/6 - #{$gutter-width});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionImages {
+    float: left;
+    width: calc((99.9% + #{$gutter-width}) * 2/3 - #{$gutter-width});
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.xxCollectionImages-featured {
+    float: left;
+    width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+
+    & + & {
+        margin: 0 0 0 $gutter-width;
+    }
+}
+
+.xxCollectionImages-all {
+    clear: both;
+    width: calc(100% + #{$gutter-width});
+    margin: 0 -1 * $gutter-width 0 0;
+
+    .xxThumbnail {
+        float: left;
+        width: $small-thumbnail-width;
+        margin: $gutter-width $gutter-width 0 0;
+    }
+}
+
+.xxCollectionImages-allAnchor {
+    float: left;
+    position:relative;
+    width: $small-thumbnail-width;
+    border: 1px solid rgba($base-color, 0.5);
+    margin: $gutter-width 0 0;
+    color: $base-color;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color $default-transition, color $default-transition;
+    user-select: none;
+
+    &::before {
+        content: '';
+        display: block;
+        padding: 0 0 100%;
+    }
+
+    span {
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &:hover {
+        border-color: rgba($accent-color, 0.5);
+        color: $secondary-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

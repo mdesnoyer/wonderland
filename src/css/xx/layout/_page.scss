@@ -1,0 +1,11 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPage {
+    box-sizing: content-box;
+    max-width: $page-max-width;
+    min-width: $page-min-width;
+    margin: 0 auto;
+    padding: $header-height + $header-margin-bottom $gutter-width $page-padding-bottom;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

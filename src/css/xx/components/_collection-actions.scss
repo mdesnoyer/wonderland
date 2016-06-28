@@ -1,0 +1,64 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionActions {
+    @include clearfix;
+
+    border-top: 1px solid #e0e0e0;
+    margin: 22px 0 0;
+    padding: 20px 0 0;
+}
+
+.xxCollectionActions-item {
+    float: left;
+    margin: 0 18px 0 0;
+    font-size: 18px;
+    line-height: 1;
+    vertical-align: top;
+}
+
+.xxCollectionActions-anchor {
+    display: block;
+    color: $quaternary-color;
+    cursor: pointer;
+    transition: color $default-transition;
+
+    span {
+        display: none;
+    }
+
+    &:hover {
+        color: $secondary-color;
+    }
+}
+
+.xxCollectionActions-email {
+    line-height: 16px;
+
+    &::after {
+        @include font-awesome('f0e0');
+        font-size: 16px;
+    }
+}
+
+.xxCollectionActions-share {
+    line-height: 16px;
+
+    &::after {
+        @include font-awesome('f064');
+        font-size: 16px;
+    }
+}
+
+.xxCollectionActions-save {
+    &::after {
+        @include font-awesome('f0c7');
+    }
+}
+
+.xxCollectionActions-delete {
+    &::after {
+        @include font-awesome('f1f8');
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
