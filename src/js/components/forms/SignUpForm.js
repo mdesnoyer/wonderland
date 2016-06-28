@@ -7,7 +7,6 @@ import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
-import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,13 +16,11 @@ var SignUpForm = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     propTypes: {
-        showLegend: React.PropTypes.bool.isRequired,
-        signUpRef: React.PropTypes.string
+        showLegend: React.PropTypes.bool.isRequired
     },
     getDefaultProps: function() {
         return {
-            showLegend: true,
-            signUpRef: ''
+            showLegend: true
         }
     },
     getInitialState: function() {
@@ -37,9 +34,6 @@ var SignUpForm = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (self.props.signUpRef && !SESSION.active()) {
-            cookie.save('signUpRef', self.props.signUpRef, {path: UTILS.COOKIE_DEFAULT_PATH});
-        }
         if (SESSION.active()) {
             self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
