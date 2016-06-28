@@ -1,0 +1,19 @@
+@keyframes ribbon {
+    0% {
+        background-position: -17% 0;
+    }
+
+    100% {
+        background-position: 117% 0;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

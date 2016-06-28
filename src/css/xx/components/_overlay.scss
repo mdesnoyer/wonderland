@@ -1,0 +1,106 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.has-overlayDark {
+    .xxNav-anchor:hover {
+        color: $quaternary-color;
+    }
+}
+
+.has-overlayWithScroll {
+    overflow-y: hidden;
+
+    #wonderland {
+        overflow: hidden;
+        height: 100vh;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxOverlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba($bg-color, 0.9);
+    z-index: $zindex-overlay;
+
+    &--dark {
+        background: rgba($secondary-color, 0.96);
+    }
+
+    &--scroll {
+        overflow-x: visible;
+        overflow-y: scroll;
+        min-width: $page-min-width + $gutter-width * 2;
+
+        @media (max-width: $page-min-width + $gutter-width * 2) {
+            position: absolute;
+        }
+    }
+
+    &--visibleNav {
+        z-index: $zindex-header - 1;
+    }
+}
+
+.xxOverlay-close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 53px;
+    height: 53px;
+    z-index: $zindex-above-everything;
+    text-indent: $indent-off-screen;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 27px;
+        right: 17px;
+        width: 21px;
+        height: 1px;
+        background: $base-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        transition: background $default-transition;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+
+    &:hover {
+        &::before,
+        &::after {
+            background: $secondary-color;
+        }
+
+        .xxOverlay--dark & {
+            &::before,
+            &::after {
+                background: $quaternary-color;
+            }
+        }
+    }
+}
+
+.xxOverlay-content {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    transform: translateY(-50%);
+
+    .xxButton {
+        margin: 24px auto 0;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

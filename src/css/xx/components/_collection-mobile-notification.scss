@@ -1,0 +1,26 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionMobileNotification {
+    @include breakpoint-mobile {
+        clear: both;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 15px;
+        padding-top: 12px;
+
+        .xxCollection-title {
+            margin-bottom: 5px;
+
+            &::after {
+                display: none;
+            }
+        }
+    }
+}
+
+.xxCollectionMobileNotification-text {
+    @include breakpoint-mobile {
+        margin-bottom: 8px;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

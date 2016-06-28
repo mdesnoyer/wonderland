@@ -1,0 +1,42 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+body {
+    overflow-x: auto;
+    overflow-y: scroll;
+    position: relative;
+    min-width: $page-min-width + $gutter-width * 2;
+    background: $bg-color;
+    color: $base-color;
+    font: $base-type;
+
+    @include breakpoint-mobile {
+        min-width: 0;
+        font: $base-mobile-type;
+    }
+}
+
+a {
+    color: $secondary-color;
+    text-decoration: none;
+    transition: color $default-transition;
+
+    &:hover {
+        color: $accent-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.u-inheritColor {
+    color: inherit !important;
+}
+
+.u-secondaryAnchor {
+    color: $secondary-color !important;
+
+    &:hover {
+        color: $accent-color !important;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

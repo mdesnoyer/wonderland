@@ -16,6 +16,7 @@ var gulpif = require('gulp-if');
 var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
+var autoprefixer = require('gulp-autoprefixer');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -51,19 +52,22 @@ function buildStyle(isUglified) {
     var xxStream = gulp.src('./src/css/xx/**/*')
         .pipe(sass()) // Using gulp-sass (can change to PostCSS if faster)
     ;
-    var mergedStream = merge(fontAwesomeStream, sassStream, hintCssStream, xxStream)
+    var mergedStream = merge(fontAwesomeStream,/* sassStream, hintCssStream,*/ xxStream)
         .pipe(concatCss('wonderland.css', {
             rebaseUrls: false
         }))
         .pipe(gulpif(isUglified, uglifycss({
             uglyComments: true
         })))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions', '> 1% in US']
+        }))
         .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
             stream: true
         }))
     ;
-    return mergedStream;   
+    return mergedStream;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -120,7 +124,7 @@ gulp.task('config',['clean:config'] ,function() {
             stream: true
         }));
 });
- 
+
 gulp.task('clean:config', function() {
       return gulp.src('./env/config.json', {read: false})
         .pipe(clean());
@@ -134,7 +138,11 @@ gulp.task('redirects', function() {
 });
 
 gulp.task('fonts', function() {
-    return gulp.src('node_modules/font-awesome/fonts/*')
+    var fontAwesome = gulp.src('node_modules/font-awesome/fonts/*');
+
+    var fonts = gulp.src('./src/fonts/*');
+
+    return merge(fontAwesome, fonts)
         .pipe(gulp.dest('./build/fonts/'));
 })
 
@@ -177,7 +185,7 @@ function buildScript(file, watch) {
         transform:  [babelify.configure({ stage : 0 })]
     };
 
-    // watchify() if watch requested, otherwise run browserify() once 
+    // watchify() if watch requested, otherwise run browserify() once
     var bundler = watch ? watchify(browserify(props)) : browserify(props);
 
     function rebundle() {

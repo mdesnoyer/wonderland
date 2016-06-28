@@ -1,0 +1,95 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$thumbnail-small-score-size: 30px;
+$thumbnail-large-score-size: 42px;
+$mobile-thumbnail-score-size: 24px;
+
+$thumbnail-hover-border: 2px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxThumbnail {
+    display: block;
+    position: relative;
+    width: 100%;
+
+    &::before {
+        content: '';
+        display: block;
+        padding: 0 0 100%;
+    }
+
+    &::after {
+        content: attr(data-score);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: $thumbnail-small-score-size;
+        height: $thumbnail-small-score-size;
+        background: $accent-color;
+        color: #fff;
+        font-size: 14px;
+        line-height: $thumbnail-small-score-size;
+        vertical-align: middle;
+        text-align: center;
+
+        @include breakpoint-mobile {
+            width: $mobile-thumbnail-score-size;
+            height: $mobile-thumbnail-score-size;
+            font-size: 10px;
+            line-height: $mobile-thumbnail-score-size;
+        }
+    }
+
+    &--lowScore::after {
+        background: $base-color;
+    }
+
+    &--large::after {
+        width: $thumbnail-large-score-size;
+        height: $thumbnail-large-score-size;
+        font-size: 18px;
+        line-height: $thumbnail-large-score-size;
+
+        @include breakpoint-mobile {
+            width: $mobile-thumbnail-score-size;
+            height: $mobile-thumbnail-score-size;
+            font-size: 10px;
+            line-height: $mobile-thumbnail-score-size;
+        }
+    }
+
+    &--zoom {
+        &::before {
+            display: none;
+        }
+    }
+}
+
+.xxThumbnail-image {
+    box-sizing: content-box;
+    position: absolute;
+    top: -1 * $thumbnail-hover-border;
+    left: -1 * $thumbnail-hover-border;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    border: $thumbnail-hover-border solid rgba($accent-color, 0);
+    transition: border-color $default-transition;
+
+    .xxThumbnail[href]:hover > & {
+        border-color: $accent-color;
+    }
+
+    .xxThumbnail--zoom & {
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        border-color: #fff;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
