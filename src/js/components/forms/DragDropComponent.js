@@ -112,10 +112,10 @@ var DragDropComponent = React.createClass({
             return (
                 <div>
                     <Dropzone 
-                        className="Dragdrop box"
+                        className="dragdrop box"
                         multiple={false}
                         accept="image/*"
-                        activeClassName="Dragdrop-active"
+                        activeClassName="dragdrop-active"
                         encType="multipart/form-data" 
                         onDrop={this.onDrop}
                     >

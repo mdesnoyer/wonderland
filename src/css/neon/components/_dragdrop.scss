@@ -1,4 +1,4 @@
-.Dragdrop{
+.dragdrop {
     width: 60%;
     border-width: 2px;
     /*border-color: $colour-dusty-gray;*/
@@ -13,11 +13,8 @@
     margin-bottom: 5%;
     margin-top: 5%;
 }
-.Drop-Input {
-    background-color: $colour-alabaster; 
-}
 
-.Dragdrop-active{
+.dragdrop-active {
     border-width: 4px;
     border-color: $colour-burning-orange;
     color: $colour-dusty-gray;
@@ -25,23 +22,8 @@
     border-radius: 5px;
     opacity: 0.5;
 }
-.Drop-Button-container {
-    width: 70%;
-    margin-right: 15%;
-    margin-left: 15%;
-}
-.Drop-Button {
-    width: 50%;
-    text-align: center;
-    vertical-align: middle;
-    color:  white;
-    &:hover {
-        background-color: $colour-burning-orange;
-        color:  white;
-    }
-        background-color: $colour-silver-chalice;
-}
-.Drop-Container {
+
+.drop-container {
     margin: auto;
     width: 70%;
     height: 100%;
