@@ -11,7 +11,7 @@ var ImageUpload = React.createClass({
         var self = this;
         return (
             <div className="box Drop-Container">
-                <p className="subtitle is-3">Photo Source</p>
+                <p className="subtitle is-3">TODO Image Source</p>
                 <DropBoxHolder />
                 <DragDropComponent />
             </div>

@@ -1,1 +1,0 @@
-AnalyzeImageForm.js
