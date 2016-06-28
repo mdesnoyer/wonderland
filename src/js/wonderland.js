@@ -40,6 +40,7 @@ import SupportPage from './components/pages/SupportPage';
 import URLShortenerPage from './components/pages/URLShortenerPage';
 import CookiesPage from './components/pages/CookiesPage';
 import XXPage from './xx/XXPage';
+import XXPageMobile from './xx/XXPageMobile';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -96,6 +97,7 @@ render((
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
 
         <Route path="/xx/" component={XXPage} />
+        <Route path="/xx/mobile/" component={XXPageMobile} />
 
         <Route path="*" component={NotFoundPage} />
 

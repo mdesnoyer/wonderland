@@ -25,6 +25,10 @@ $upload-button-offset: 35px;
         margin-right: 0;
     }
 
+    @include breakpoint-mobile {
+        display: none;
+    }
+
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, .3);
         transform: rotate(90deg);

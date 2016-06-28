@@ -43,7 +43,7 @@ export default class XXCollectionInfo extends React.Component {
     }
 
     render() {
-        const { hasFilters, title, activeContent, setActiveContent, updateStage } = this.props;
+        const { hasFilters, isMobile, title, activeContent, setActiveContent, updateStage } = this.props;
         const { time } = this.state;
 
         const renderedTime = `${Math.floor(time / 60)}:${time % 60 > 9 ? time % 60 : (`0${time % 60}`)}`;
@@ -85,7 +85,11 @@ export default class XXCollectionInfo extends React.Component {
                     )
                 }
 
-                <XXLift />
+                {
+                    isMobile ? null : (
+                        <XXLift />
+                    )
+                }
 
                 <XXCollectionActions setActiveContent={setActiveContent} updateStage={updateStage} />
             </div>
