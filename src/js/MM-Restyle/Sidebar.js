@@ -65,8 +65,8 @@ var Sidebar = React.createClass({
                 onClick={self.handleBackgroundClose} 
                 hidden={!self.state.sidebarOpen}
             >
+                <a href="" className="xxOverlay-close" onClick={self.handleClose}>Close</a>
                 <div className="xxPageOverlay">
-                    <a href="" className="xxPageOverlay-close" onClick={self.handleClose}>Close</a>
                     {content}
                 </div>
             </div>
