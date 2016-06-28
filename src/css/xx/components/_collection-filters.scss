@@ -1,0 +1,231 @@
+@mixin filters-arrow {
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        right: 29px;
+        width: 1px;
+        height: 10px;
+        background: $bg-tertiary-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 100%;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionFilterToggle {
+    float: right;
+    position: relative;
+    z-index: 1;
+    top: 14px;
+    color: $accent-color;
+
+    span {
+        position: absolute;
+        top: 7px;
+        right: 100%;
+        margin: 0 12px 0 0;
+        color: rgba($base-color, 0);
+        font-size: 14px;
+        line-height: 1;
+        pointer-events: none;
+        transition: color .2s ease-in-out;
+    }
+
+    &::after {
+        @include font-awesome('f021');
+
+        display: block;
+        box-sizing: border-box;
+        width: 27px;
+        height: 27px;
+        border-radius: 100%;
+        border: 1px solid $accent-color;
+        background: #fff;
+        font-size: 15px;
+        line-height: 26px;
+        text-align: center;
+        transform: rotate(-60deg);
+        transform-origin: 50% 50%;
+        transition: transform .2s ease-in-out, color .2s ease-in-out;
+    }
+
+    &:hover {
+        span {
+            color: $base-color;
+        }
+
+        &::after {
+            background: $accent-color;
+            color: #fff;
+            transform: rotate(0deg);
+        }
+    }
+
+    &--countdown {
+        cursor: default;
+
+        span {
+            width: 70px;
+            height: 27px;
+            top: 0;
+            right: 14px;
+            border-top-left-radius: 14px;
+            border-bottom-left-radius: 14px;
+            margin: 0;
+            padding: 1px 0 0 18px;
+            background: $bg-secondary-color;
+            color: $tertiary-color;
+            line-height: 26px;
+        }
+
+        &::after {
+            z-index: 2;
+            background: $accent-color;
+            color: #fff;
+            transform: rotate(0deg);
+            animation: rotate 2s infinite linear;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionFilters {
+    @include clearfix;
+    @include all-caps-title;
+
+    position: relative;
+    margin: 14px 0 0;
+    padding: 4px 0;
+    color: $tertiary-color;
+}
+
+.xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
+    float: left;
+    padding: 4px 10px 4px 0;
+    color: $secondary-color;
+
+    .has-dropdown > & {
+        cursor: pointer;
+    }
+}
+
+.xxCollectionFilters-value {
+    float: left;
+    position: relative;
+    padding: 4px 0;
+
+    .has-dropdown > & {
+        @include filters-arrow;
+
+        padding-right: 52px;
+        cursor: pointer;
+    }
+
+    .is-open > & {
+        &::before, &::after {
+            top: 7px;
+            z-index: $zindex-above-everything;
+            pointer-events: none;
+            transform-origin: 50% 0%;
+        }
+    }
+}
+
+.xxCollectionFilters-dropdown {
+    position: absolute;
+    width: auto;
+    top: -8px;
+    left: -16px;
+    z-index: $zindex-above-everything - 1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+    background: #fff;
+}
+
+.xxCollectionFilters-version {
+    height: 44px;
+    padding: 0 52px 0 16px;
+    cursor: pointer;
+    line-height: 44px;
+    white-space: nowrap;
+
+    &:hover {
+        background: $bg-secondary-color;
+    }
+}
+
+.xxCollectionFilters-versionTitle {
+    padding-top: 0;
+    padding-bottom: 0;
+    color: transparent;
+
+    .is-selected > & {
+        color: $secondary-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionFiltersHint {
+    @include clearfix;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    width: $page-max-width;
+    max-width: 100%;
+    min-width: $page-min-width;
+    margin: 0 auto;
+    transform: translateY(-55%);
+}
+
+.xxCollectionFiltersHint-arrow {
+    @include filters-arrow;
+
+    float: right;
+    position: relative;
+    width: 89px;
+    height: 89px;
+    border-radius: 100%;
+    border: 1px solid $base-color;
+    margin-right: 115px;
+    background: #fff;
+
+    &::before, &::after {
+        top: 39px;
+        right: 43px;
+    }
+}
+
+.xxCollectionFiltersHint-label {
+    @include all-caps-title;
+
+    clear: right;
+    float: right;
+    position: relative;
+    width: 319px;
+    padding: 230px 0 0;
+    color: $secondary-color;
+    text-align: center;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 1px;
+        height: 202px;
+        margin: 0 auto;
+        background: $base-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,0 +1,52 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxSection {
+    border-top: 1px solid #e0e0e0;
+    margin-top: 38px;
+    padding-top: $default-vertical-rhythm;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxText {
+    margin: 12px 0 0;
+
+    p {
+        margin: 0 0 $default-vertical-rhythm;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 14px 0 $default-vertical-rhythm;
+    }
+
+    a {
+        color: $accent-color;
+
+        &:hover {
+            color: $secondary-color;
+        }
+    }
+}
+
+.xxKeyValue {
+    display: table;
+
+    dl {
+        display: table-row;
+    }
+
+    dt, dd {
+        display: table-cell;
+    }
+
+    dt {
+        @include all-caps-title;
+
+        padding-right: 10px;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

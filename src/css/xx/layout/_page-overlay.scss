@@ -1,0 +1,78 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$page-overlay-padding-top: $header-height + $header-margin-bottom + 21px;
+$page-overlay-padding-bottom: 60px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPageOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    min-height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    padding: 0 $gutter-width 0 0;
+    background: #fff;
+}
+
+.xxPageOverlay-close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 53px;
+    height: 53px;
+    z-index: $zindex-above-everything;
+    text-indent: -10000px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 27px;
+        right: 17px;
+        width: 21px;
+        height: 1px;
+        background: $base-color;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        transition: background .2s ease-in-out;
+    }
+
+    &::after {
+        transform: rotate(45deg);
+    }
+
+    &:hover {
+        &::before, &::after {
+            background: $secondary-color;
+        }
+    }
+}
+
+.xxPageOverlay-content {
+    max-width: $page-max-width / 2;
+    padding: $page-overlay-padding-top $gutter-width $page-overlay-padding-bottom $gutter-width * 2;
+
+    &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50%;
+        z-index: $zindex-header + 1;
+        height: $page-overlay-padding-top;
+        background: linear-gradient(
+            to bottom,
+            rgba(255,255,255,1) 5%,
+            rgba(255,255,255,.75) 60%,
+            rgba(255,255,255,0) 100%
+        );
+        pointer-events: none;
+
+        @media (max-width: $page-min-width + $gutter-width * 2) {
+            display: none; // only until responsive code exists
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
