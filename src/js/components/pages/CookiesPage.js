@@ -15,14 +15,14 @@ var CookiesPage = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
-            accessToken: (cookie.load(UTILS.COOKIES_KEY.accessTokenKey) ? cookie.load(UTILS.COOKIES_KEY.accessTokenKey) : 'False'),
-            accountId: (cookie.load(UTILS.COOKIES_KEY.accountIdKey) ? cookie.load(UTILS.COOKIES_KEY.accountIdKey) : 'False'),
-            masqueradeAccountId: (cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) ? cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) : 'False'),
-            refreshToken: (cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) ? cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) : 'False'),
-            rememberMe: (cookie.load(UTILS.COOKIES_KEY.rememberMeKey) ? cookie.load(UTILS.COOKIES_KEY.rememberMeKey) : 'False'),
-            rememberedEmail: (cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) ? cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) : 'False'),
-            viewShare: (cookie.load(UTILS.COOKIES_KEY.viewShareKey) ? cookie.load(UTILS.COOKIES_KEY.viewShareKey) : 'False'),
-            analyzeVideo: (cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) ? cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) : 'False')
+            accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey) || 'None',
+            accountId: cookie.load(UTILS.COOKIES_KEY.accountIdKey) || 'None',
+            masqueradeAccountId: cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) || 'None',
+            refreshToken: cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) || 'None',
+            rememberMe: cookie.load(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
+            rememberedEmail: cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
+            viewShare: cookie.load(UTILS.COOKIES_KEY.viewShareKey) || 'None',
+            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None'
         };
     },
     render: function() {
@@ -39,15 +39,16 @@ var CookiesPage = React.createClass({
                             <h1 className="title is-2">{T.get('copy.cookies.heading')}</h1>
                             <div className="content">
                                 <p>{T.get('copy.cookies.body')}</p>
-                                <ul>
-                                    {
-                                        Object.keys(self.state).map(function(key) {
-                                            return (
-                                                <li key={key}>{key}: {self.state[key]}</li>
-                                            );
-                                        })
-                                    }
-                                </ul>
+                                {
+                                    Object.keys(self.state).map(function(key) {
+                                        return (
+                                            <dl>
+                                                <dt>{key}:</dt>
+                                                <dd>{self.state[key]}</dd>
+                                            </dl>
+                                        );
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
