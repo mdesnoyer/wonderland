@@ -299,7 +299,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',
 
             'copy.copyright': String.fromCharCode(169) + ' 2016 @name All rights reserved.',
-            'copy.newsFlashMessage': 'Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon.',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
             //image processing stages
