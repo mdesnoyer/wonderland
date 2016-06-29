@@ -61,22 +61,22 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                    <VideoUploadForm
-                        postHook={self.doVideoSearch}
-                        videoCountServed={self.state.videoCountServed}
-                    />
-                    <VideosResults
-                        videos={self.state.videos}
-                        handleNewSearch={self.handleNewSearch}
-                        prevPageAPICall={prevPageAPICall}
-                        nextPageAPICall={self.state.nextPageAPICall}
-                        errorMessage={errorMessage}
-                        alertMessage={alertMessage}
-                        currentPage={self.state.currentPage}
-                        isLoading={self.state.isLoading}
-                        videoCountServed={self.state.videoCountServed}
-                        videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                    />
+                <VideoUploadForm
+                    postHook={self.doVideoSearch}
+                    videoCountServed={self.state.videoCountServed}
+                />
+                <VideosResults
+                    videos={self.state.videos}
+                    handleNewSearch={self.handleNewSearch}
+                    prevPageAPICall={prevPageAPICall}
+                    nextPageAPICall={self.state.nextPageAPICall}
+                    errorMessage={errorMessage}
+                    alertMessage={alertMessage}
+                    currentPage={self.state.currentPage}
+                    isLoading={self.state.isLoading}
+                    videoCountServed={self.state.videoCountServed}
+                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                />
             </div>
         );
     },

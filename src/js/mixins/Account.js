@@ -17,8 +17,7 @@ function normalizeAccount(res) {
         defaultHeight: res.default_size[1],
         stagingTrackerAccountId: res.staging_tracker_account_id,
         accountEmail: res.email,
-        accountName: res.customer_name,
-        isServingEnabled: res.serving_enabled ? !!res.serving_enabled : UTILS.DEFAULT_SERVING_STATE
+        accountName: res.customer_name
     };
 }
 
@@ -40,8 +39,7 @@ var Account = {
                 default_height: account.defaultHeight,
                 staging_tracker_account_id: account.stagingTrackerAccountId,
                 email: account.email,
-                customer_name: account.accountName,
-                serving_enabled: account.isServingEnabled
+                customer_name: account.accountName
             }
         };
         return this.PUT('', options);

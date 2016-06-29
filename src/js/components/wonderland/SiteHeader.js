@@ -27,7 +27,10 @@ var SiteHeader = React.createClass({
         return (
             <div>
                 <AccountMasqueradeBar />
-                <SiteBanner sidebarContent={self.state.sidebarContent} setSidebarContent={self.setSidebarContent}/>
+                <SiteBanner
+                    setSidebarContent={self.setSidebarContent}
+                    sidebarContent={self.state.sidebarContent}
+                />
                 <Sidebar
                     content={self.state.sidebarContent}
                     setContent={self.setSidebarContent}

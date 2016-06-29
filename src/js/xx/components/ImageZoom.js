@@ -42,12 +42,12 @@ export default class XXPageOverlay extends React.Component {
             <article className="xxOverlay xxOverlay--dark xxOverlay--scroll">
                 <a href="" className="xxOverlay-close" onClick={handleCloseClick}>Close</a>
                 <div className="xxImageZoom">
-                    <div className="xxImageZoom-inner">
+                    <div className="xxImageZoom-inner is-active">
                         {/*
                             Ideally, the back-end provides image dimensions
                             paddingBottom, rather than needing to use DOM access
                             to calculate. You would also use those to determine
-                            whether to set --vertical or --square modifier.
+                            whether to set --portrait or --square modifier.
                         */}
                         {/*<div className="xxImageZoom-image">
                             <XXThumbnail
@@ -77,7 +77,7 @@ export default class XXPageOverlay extends React.Component {
                             which is top & bottom padding of the overlay
                         */}
                         <div
-                            className="xxImageZoom-image xxImageZoom-image--vertical"
+                            className="xxImageZoom-image xxImageZoom-image--portrait"
                             style={{maxWidth: `calc((100vh - 242px) / (496 / 370))`}}
                         >
                             <XXThumbnail

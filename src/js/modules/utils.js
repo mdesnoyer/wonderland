@@ -15,7 +15,6 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
-    NA_STRING = 'n/a',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -287,26 +286,19 @@ var UTILS = {
     CONFIRM_MANDRILL_SLUG:'support-email',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
-    DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
-    THUMBNAIL_FIELDS: ['thumbnail_id', 'ctr', 'serving_frac', 'impressions', 'conversions', 'created', 'updated'],
+    THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
-    },
-    enabledDisabledIcon: function(isEnabled) {
-        return isEnabled ? 'check' : 'times';
-    },
-    modalActiveIcon: function(isActive) {
-        return isActive ? 'search-plus' : 'search-minus';
     },
     fixThumbnails: function(rawThumbnails) {
         var defaults = [],
@@ -364,14 +356,8 @@ var UTILS = {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
         return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
-    formatCtr: function(rawCtr) {
-        return UTILS.makePercentage(rawCtr, 2);
-    },
-    formatServingFrac: function(rawServingFrac) {
-        return UTILS.makePercentage(rawServingFrac, 2);
-    },
-    makePercentage: function(rawNumber, decimalPlaces) {
-        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
+    makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
+        return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -406,7 +392,7 @@ var UTILS = {
         }
         else {
             return {
-                neonScore: NA_STRING,
+                neonScore: UNKNOWN_STRING,
                 emoji: UNKNOWN_EMOJI
             };
         }

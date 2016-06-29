@@ -50,9 +50,10 @@ function buildStyle(isUglified) {
         .pipe(sass()) // Using gulp-sass
     ;
     var xxStream = gulp.src('./src/css/xx/**/*')
-        .pipe(sass()) // Using gulp-sass (can change to PostCSS if faster)
+        .pipe(sass())
     ;
     var mergedStream = merge(fontAwesomeStream,/* sassStream, hintCssStream,*/ xxStream)
+    // var mergedStream = merge(fontAwesomeStream, sassStream, hintCssStream, xxStream)
         .pipe(concatCss('wonderland.css', {
             rebaseUrls: false
         }))

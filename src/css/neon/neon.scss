@@ -86,15 +86,12 @@ $black: $blackish;
 
 // 5. Components
 @import
-    'components/thumbnail',
     'components/video',
     'components/videos',
-    'components/thumbbox',
     'components/slides',
     'components/infobox',
     'components/checkbox',
     'components/modal',
-    'components/xylophone',
     'components/section',
     'components/brick',
     'components/banner',
@@ -105,8 +102,6 @@ $black: $blackish;
     'components/inputtextedit',
     'components/wondertabs',
     'components/image',
-    'components/carousel',
-    'components/hud',
     'components/tooltip',
     'components/pre',
     'components/radioinputform'
