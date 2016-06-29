@@ -31,7 +31,7 @@ var SiteNavigation = React.createClass({
     },
     handleClick: function(e) {
         var self = this,
-            item = e.target.getAttribute('data-content')
+            item = e.target.getAttribute('content')
         ;
         e.preventDefault();
         self.props.setSidebarContent(item);
@@ -39,16 +39,15 @@ var SiteNavigation = React.createClass({
     render: function() {
         var self = this,
             items = {
-                learnMore: <a className="xxNav-anchor" href="#" data-content="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
-                contactPage: <a className="xxNav-anchor" href={UTILS.CONTACT_EXTERNAL_URL} data-content="contact">{T.get('nav.contact')}</a>,
-                signUp: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNUP.URL} data-content="signUp">{T.get('nav.signUp')}</a>,
-                signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} data-content="signIn">{T.get('nav.signIn')}</a>,
-                account: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} data-content="account">{T.get('nav.account')}</a>,
-                supportPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SUPPORT.URL} data-content="support">{T.get('nav.support')}</a>,
-                termsPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.TERMS.URL} data-content="terms">{T.get('nav.terms')}</a>
+                learnMore: <a className="xxNav-anchor" href="#" content="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
+                contactPage: <a className="xxNav-anchor" href={UTILS.CONTACT_EXTERNAL_URL} content="contact">{T.get('nav.contact')}</a>,
+                signUp: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNUP.URL} content="signUp">{T.get('nav.signUp')}</a>,
+                signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} content="signIn">{T.get('nav.signIn')}</a>,
+                account: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} content="account">{T.get('nav.account')}</a>,
+                supportPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SUPPORT.URL} content="support">{T.get('nav.support')}</a>,
+                termsPage: <a className="xxNav-anchor" href={UTILS.DRY_NAV.TERMS.URL} content="terms">{T.get('nav.terms')}</a>
             },
-            constructedNav = [],
-            additionalClass = 'xxNav-item'
+            constructedNav = []
         ;
         if (self.state.isSignedIn) {
             // Signed In
@@ -77,7 +76,7 @@ var SiteNavigation = React.createClass({
                 <ul>
                     {
                         constructedNav.map(function(levelItem, i) {
-                            if (levelItem.props['data-content'] === self.state.sidebarContent) {
+                            if (levelItem.props['content'] === self.state.sidebarContent) {
                                 return (
                                     <li key={i} className="xxNav-item is-active">{levelItem}</li>
                                 );

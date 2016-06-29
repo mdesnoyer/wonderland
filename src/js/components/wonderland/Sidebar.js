@@ -4,46 +4,53 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Sidebar = React.createClass({
+    getDefaultProps: function() {
+        return {
+            content: null
+        }
+    },
     getInitialState: function() {
         var self = this;
         return {
-            isOpen: self.props.isOpen
+            content: self.props.content
         };
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
         self.setState({
-            isOpen: nextProps.isOpen
+            content: nextProps.content
         }, function() {
-            if (self.state.isOpen) {
-                window.scrollTo(0, 0);
-                ReactDOM.findDOMNode(this).scrollTop = 0;
-                document.body.classList.add('has-overlayWithScroll');
-                document.body.style.marginRight = `${scrollbarWidth}px`;
-            }
-            else {
+            if (self.state.content === '') {
                 document.body.classList.remove('has-overlayWithScroll');
                 document.body.style.marginRight = 0;
+            }
+            else {
+                window.scrollTo(0, 0);
+                ReactDOM.findDOMNode(self).scrollTop = 0;
+                document.body.classList.add('has-overlayWithScroll');
+                document.body.style.marginRight = `${scrollbarWidth}px`;
             }
         });
     },
     handleClose: function(e) {
         var self = this;
         e.preventDefault();
-        self.props.closeSidebar();
+        self.props.setContent('');
     },
-    sidebarClick: function(e) {
+    handleSidebarClick: function(e) {
         e.stopPropagation();
     },
     render: function() {
         var self = this,
-            content = ''
+            content = null,
+            isHidden = (self.state.content === '' ? true : false)
         ;
-        switch (self.props.sidebarContent) {
+        switch (self.state.content) {
             case 'learnMore':
                 content = <LearnMore />;
                 break;
@@ -66,10 +73,10 @@ var Sidebar = React.createClass({
             <div 
                 className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" 
                 onClick={self.handleClose} 
-                hidden={!self.state.isOpen}
+                hidden={isHidden}
             >
-                <a href="" className="xxOverlay-close" onClick={self.handleClose}>Close</a>
-                <div className="xxPageOverlay" onClick={self.sidebarClick}>
+                <a href="#" className="xxOverlay-close" onClick={self.handleClose}>{T.get('close')}</a>
+                <div className="xxPageOverlay" onClick={self.handleSidebarClick}>
                     {content}
                 </div>
             </div>

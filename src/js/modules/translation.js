@@ -33,6 +33,7 @@ const _DEFAULT_LOCALE = 'en-US',
             update: 'Update',
             url: 'URL',
             copy: 'Copy',
+            close: 'Close',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -267,6 +268,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.accountSettings': 'Account Settings',
             'nav.userSettings': 'User Settings',
             'nav.learnMore': 'Learn More',
+
+            // Titles
+
+            'title.home': 'Go to the Home Page',
 
             // Error messages
 

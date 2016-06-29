@@ -13,22 +13,13 @@ var SiteHeader = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
-            sidebarOpen: false,
-            sidebarContent: '' // learnMore, contact, signIn, signUp, account 
+            sidebarContent: '' // '', learnMore, contact, signIn, signUp, account 
         }
     },
     setSidebarContent: function(content) {
         var self = this;
         self.setState({
-            sidebarOpen: true,
             sidebarContent: content
-        });
-    },
-    closeSidebar: function() {
-        var self = this;
-        self.setState({
-            sidebarOpen: false,
-            sidebarContent: ''
         });
     },
     render: function() {
@@ -37,10 +28,9 @@ var SiteHeader = React.createClass({
             <div>
                 <AccountMasqueradeBar />
                 <SiteBanner sidebarContent={self.state.sidebarContent} setSidebarContent={self.setSidebarContent}/>
-                <Sidebar 
-                    isOpen={self.state.sidebarOpen}
-                    sidebarContent={self.state.sidebarContent}
-                    closeSidebar={self.closeSidebar}
+                <Sidebar
+                    content={self.state.sidebarContent}
+                    setContent={self.setSidebarContent}
                 />
             </div>
         );

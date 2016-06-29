@@ -56,7 +56,7 @@ var SiteBanner = React.createClass({
         var self = this;
         return (
             <header className="xxHeader">
-                <a href="/" title="Go to the Home page">
+                <a href="/" title={T.get('title.home')}>
                     <img 
                         className="xxLogo"
                         src="/img/xx/logo.svg"
