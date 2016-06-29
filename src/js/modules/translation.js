@@ -248,6 +248,10 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            'copy.contactUs.success' : 'Thanks! We’ll be in touch shortly.',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
             'copy.urlShortener.title': 'URL Shortener',
             'copy.urlShortener.heading': 'URL Shortener',
             'copy.urlShortener.body': 'Enter a Neon URL below to receive a shortened URL',

@@ -4,7 +4,7 @@ import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-
+import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -45,22 +45,97 @@ var ContactForm = React.createClass({
         e.preventDefault();
         self.setState({
             mode: 'loading'
-        }, function() {
-            console.log('sending email stuff here');
-        });
+        }, self.sendSupportEmail);
+    },
+    sendSupportEmail: function () {
+        var self = this,
+            options = self.dataMaker('support')
+        ;
+        self.POST('email', options)
+            .then(function(res) {
+                self.sendConfirmationEmail();
+            })
+            .catch(function(err) {
+                console.log(err);
+                E.raiseError(err);
+                self.setState({
+                    mode: 'error'
+                });
+            });
+    },
+    sendConfirmationEmail: function() {
+        var self = this,
+            optionsNew = self.dataMaker('confirm')
+        ;
+        self.POST('email', optionsNew)
+            .then(function(res){
+                self.setState({
+                    mode: 'success'
+                });
+            })
+            .catch(function(err){
+                console.log(err);
+                E.raiseError(err);
+                self.setState({
+                    mode: 'error'
+                });
+            })
+    },
+    dataMaker: function(emailType) {
+        var self = this,
+            email,
+            slug,
+            data
+        ;
+        switch(emailType) {
+            case 'support':
+                email = UTILS.SUPPORT_EMAIL;
+                slug =  UTILS.SUPPORT_MANDRILL_SLUG;
+            break; 
+            case 'confirm':
+                email = self.state.email.trim();
+                slug = UTILS.CONFIRM_MANDRILL_SLUG;
+            break;
+        }
+        data = {
+            data: {
+                    subject: UTILS.SUPPORT_EMAIL_SUBJECT,
+                    to_email_address: email,
+                    template_slug: slug,
+                    template_args:{
+                        'first_name': self.state.name.trim(),
+                        'contact_email': self.state.email.trim(),
+                        'support_message': self.state.message.trim()
+                    }
+                }
+        }
+        return data; 
     },
     render: function() {
         var self = this,
         	sendClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = (self.state.name && self.state.email && self.state.message),
-            errorMessage = (self.state.mode === 'error' ? <div className="has-error"><p className="xxLabel">TODO: ERROR MESSAGE</p></div> : null)
+            isValid = (self.state.name && self.state.email && self.state.message && (self.state.mode !== 'loading')),
+            userMessage = null
         ;
         if (isValid) {
             sendClassName.push('xxButton--important');
         }
+        switch (self.state.mode) {
+            case 'error':
+                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                break;
+            case 'loading':
+                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                break;
+            case 'success':
+                userMessage = <div className="xxLabel"><p>{T.get('copy.contactUs.success')}</p></div>;
+                break;
+            default:
+                break;
+        }
         return (
             <form onSubmit={self.handleSubmit}>
-                {errorMessage}
+                {userMessage}
                 <fieldset>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourName')}</label>
