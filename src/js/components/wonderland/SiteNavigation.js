@@ -40,7 +40,7 @@ var SiteNavigation = React.createClass({
         var self = this,
             items = {
                 learnMore: <a className="xxNav-anchor" href="#" content="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
-                contactPage: <a className="xxNav-anchor" href={UTILS.CONTACT_EXTERNAL_URL} content="contact">{T.get('nav.contact')}</a>,
+                contactPage: <a className="xxNav-anchor" href="#" content="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
                 signUp: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNUP.URL} content="signUp">{T.get('nav.signUp')}</a>,
                 signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} content="signIn">{T.get('nav.signIn')}</a>,
                 account: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} content="account">{T.get('nav.account')}</a>,
