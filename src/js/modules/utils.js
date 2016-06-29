@@ -228,6 +228,9 @@ var UTILS = {
         URL_SHORTENER: {
             URL: '/shorturl/'
         },
+        DEMO: {
+            URL: '/demo/'
+        },
         COOKIES: {
             URL: '/cookies/'
         }
