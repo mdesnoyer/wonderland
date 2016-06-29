@@ -1,13 +1,18 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ContactForm = React.createClass({
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
+            mode: 'quiet', // quiet, error, loading, success
             name: '',
             email: '',
             message: ''
@@ -36,19 +41,26 @@ var ContactForm = React.createClass({
         }
     },
     handleSubmit: function(e) {
+        var self = this;
         e.preventDefault();
-        console.log('submit');
+        self.setState({
+            mode: 'loading'
+        }, function() {
+            console.log('sending email stuff here');
+        });
     },
     render: function() {
         var self = this,
         	sendClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = (self.state.name && self.state.email && self.state.message) ? true : false
+            isValid = (self.state.name && self.state.email && self.state.message),
+            errorMessage = (self.state.mode === 'error' ? <div className="has-error"><p className="xxLabel">TODO: ERROR MESSAGE</p></div> : null)
         ;
         if (isValid) {
             sendClassName.push('xxButton--important');
         }
         return (
             <form onSubmit={self.handleSubmit}>
+                {errorMessage}
                 <fieldset>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourName')}</label>
@@ -58,26 +70,28 @@ var ContactForm = React.createClass({
                             data-ref="name"
                             placeholder="John Doe"
                             onChange={self.updateField}
+                            required
                         />
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
                         <input
                             className="xxInputText"
-                            type="text"
+                            type="email"
                             data-ref="email"
                             placeholder="example@email.com"
                             onChange={self.updateField}
+                            required
                         />
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.message')}</label>
                         <textarea
                             className="xxTextArea"
-                            type="text"
                             data-ref="message"
                             placeholder="This demo is fantastic. This could work for me!"
                             onChange={self.updateField}
+                            required
                         ></textarea>
                     </div>
                     <div className="xxFormButtons">
