@@ -13,7 +13,7 @@ var SiteHeader = React.createClass({
     // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
-            sidebarContent: '' // '', learnMore, contact, signIn, signUp, account 
+            sidebarContent: null // null, learnMore, contact, signIn, signUp, account 
         }
     },
     setSidebarContent: function(content) {

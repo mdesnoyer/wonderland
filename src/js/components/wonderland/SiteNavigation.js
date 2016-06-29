@@ -31,10 +31,10 @@ var SiteNavigation = React.createClass({
     },
     handleClick: function(e) {
         var self = this,
-            item = e.target.getAttribute('content')
+            content = e.target.getAttribute('content')
         ;
         e.preventDefault();
-        self.props.setSidebarContent(item);
+        self.props.setSidebarContent(content);
     },
     render: function() {
         var self = this,

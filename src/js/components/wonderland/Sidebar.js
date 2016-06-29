@@ -25,7 +25,7 @@ var Sidebar = React.createClass({
         self.setState({
             content: nextProps.content
         }, function() {
-            if (self.state.content === '') {
+            if (self.state.content === null) {
                 document.body.classList.remove('has-overlayWithScroll');
                 document.body.style.marginRight = 0;
             }
@@ -40,7 +40,7 @@ var Sidebar = React.createClass({
     handleClose: function(e) {
         var self = this;
         e.preventDefault();
-        self.props.setContent('');
+        self.props.setContent(null);
     },
     handleSidebarClick: function(e) {
         e.stopPropagation();
@@ -48,7 +48,7 @@ var Sidebar = React.createClass({
     render: function() {
         var self = this,
             content = null,
-            isHidden = (self.state.content === '' ? true : false)
+            isHidden = (self.state.content === null ? true : false)
         ;
         switch (self.state.content) {
             case 'learnMore':
