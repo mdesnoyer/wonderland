@@ -35,7 +35,11 @@ var SignUpForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+            // If there's an active session with a user, there's no reason to be here
+            SESSION.user()
+                .then(function() {
+                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                });
         }
     },
     componentWillUnmount: function(e) {
@@ -142,7 +146,8 @@ var SignUpForm = React.createClass({
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
                 {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
-            ]
+            ],
+            userPromise
         ;
         e.preventDefault();
         TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
@@ -159,20 +164,38 @@ var SignUpForm = React.createClass({
         else {
             if (!self._isSubmitted) {
                 self._isSubmitted = true;
-                userDataObject = {
-                    email: self.refs.email.value.trim(),
-                    admin_user_username: self.refs.email.value.trim(),
-                    admin_user_password: self.refs.passwordInitial.value.trim(),
-                    admin_user_first_name: self.refs.firstName.value.trim(),
-                };
-                // Only add the last name if it exists #1194
-                if (self.refs.lastName.value.trim()) {
-                    userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
-                }
-                self.POST('accounts', {
+                // If the session is active, we just need to create the user; not the whole account
+                if (SESSION.active()) {
+                    userDataObject = {
+                        username: self.refs.email.value.trim(),
+                        password: self.refs.passwordInitial.value.trim(),
+                        first_name: self.refs.firstName.value.trim()
+                    };
+                    // Only add the last name if it exists #1194
+                    if (self.refs.lastName.value.trim()) {
+                        userDataObject.last_name = self.refs.lastName.value.trim();
+                    }
+                    userPromise = self.POST('users', {
                         host: CONFIG.AUTH_HOST,
                         data: userDataObject
-                    })
+                    });
+                } else {
+                    userDataObject = {
+                        email: self.refs.email.value.trim(),
+                        admin_user_username: self.refs.email.value.trim(),
+                        admin_user_password: self.refs.passwordInitial.value.trim(),
+                        admin_user_first_name: self.refs.firstName.value.trim()
+                    };
+                    // Only add the last name if it exists #1194
+                    if (self.refs.lastName.value.trim()) {
+                        userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
+                    }
+                    userPromise = self.POST('accounts', {
+                        host: CONFIG.AUTH_HOST,
+                        data: userDataObject
+                    });
+                }
+                userPromise
                     .then(function (account) {
                         self._isSubmitted = false;
                         self.setState({
@@ -188,7 +211,7 @@ var SignUpForm = React.createClass({
                             isError: true,
                             isLoading: false
                         });
-                });
+                    })
             }
         }
     }
