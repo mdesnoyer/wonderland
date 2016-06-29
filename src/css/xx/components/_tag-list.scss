@@ -1,0 +1,26 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$tag-list-item-height: 32px;
+$tag-list-item-margin: 9px;
+$tag-list-item-padding-horizontal: 13px;
+$tag-list-item-border: 1px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTagList {
+    @include clearfix;
+
+    margin: 0 0 $tag-list-item-margin;
+}
+
+.xxTagList-item {
+    float: left;
+    height: $tag-list-item-height;
+    border: $tag-list-item-border solid $base-color;
+    margin: 0 $tag-list-item-margin $tag-list-item-margin 0;
+    padding: 0 $tag-list-item-padding-horizontal;
+    color: $base-color;
+    line-height: $tag-list-item-height - $tag-list-item-border * 2;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

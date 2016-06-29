@@ -6,12 +6,13 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import Message from './Message';
-import UTILS from '../../modules/utils';
 import AjaxMixin from '../../mixins/Ajax';
 import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
+import cookie from 'react-cookie';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,6 +41,7 @@ var VideoGuest = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
+        cookie.save(UTILS.COOKIES_KEY.viewShareKey, self.props.shareToken, {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
             mode: 'loading'
         }, function() {

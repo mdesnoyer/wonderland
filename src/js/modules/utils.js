@@ -16,7 +16,6 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     NA_STRING = 'n/a',
-    COOKIE_DEFAULT_PATH = '/',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -228,7 +227,21 @@ var UTILS = {
         },
         URL_SHORTENER: {
             URL: '/shorturl/'
+        },
+        COOKIES: {
+            URL: '/cookies/'
         }
+    },
+    COOKIES_KEY: {
+        accessTokenKey: 'at',
+        accountIdKey: 'actId',
+        masqueradeAccountIdKey: 'msqactId',
+        refreshTokenKey: 'rt',
+        rememberMeKey: 'rme',
+        rememberedEmailKey: 'ru',
+        userKey: 'user_info',
+        viewShareKey: 'footprintCookieViewShare',
+        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     VERSION: '1.9.1',
@@ -243,6 +256,7 @@ var UTILS = {
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
+    COOKIE_DEFAULT_PATH: '/',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },

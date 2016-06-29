@@ -228,6 +228,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
+            'label.lift' : 'Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -245,6 +246,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.urlShortener.body': 'Enter a Neon URL below to receive a shortened URL',
             'copy.urlShortener.messageHeading': 'URL Shortener Error',
             'copy.urlShortener.messageBody': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.cookies.title': 'Cookies Report',
+            'copy.cookies.heading': 'Cookies Report',
+            'copy.cookies.body': 'Listed below is the visibility status of each cookie',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

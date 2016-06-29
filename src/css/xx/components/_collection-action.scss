@@ -1,0 +1,33 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionAction {
+    @include clearfix;
+
+    p {
+        margin: 12px 0 20px;
+    }
+
+    .xxTitle {
+        margin-top: -5px;
+    }
+}
+
+.xxCollectionAction-buttons {
+    @include clearfix;
+
+    position: absolute;
+    top: 0;
+    width: calc((99.9% - #{$gutter-width}) * 1/3 - #{$gutter-width});
+    margin-top: calc(#{$collection-padding-top} + (99.9% - #{$gutter-width}) * 4/9 - #{$form-element-height});
+
+    .xxButton {
+        float: left;
+        width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+
+        + .xxButton {
+            float: right;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
