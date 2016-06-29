@@ -3,6 +3,8 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import ModalParent from '../core/ModalParent';
+import SupportForm from '../forms/SupportForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +14,7 @@ var SupportTab5 = React.createClass({
         return (
             <section className="content">
                 <h2 className="title is-3">Contact Support</h2>
-                <p>Have a question? You can get in touch with us at <a href="mailto:support@neon-lab.com">support@neon-lab.com</a></p>
+                <SupportForm />
             </section>
         );
     }
