@@ -41,6 +41,7 @@ const _DEFAULT_LOCALE = 'en-US',
             delete: 'Delete',
             share: 'Share',
             apply: 'Apply',
+            upload: 'Upload',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -217,9 +218,10 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             //analyze page
-            'analyzeVideo.videoUrl': 'Video URL',
-            'analyzeVideo.optionalTitle': 'Optional Title',
-            'analyzeVideo.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+            'upload.videoUrl': 'Video URL',
+            'upload.submit': 'Submit',
+            'upload.optionalTitle': 'Optional Title',
+            'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             //navigation bar
 
             // Labels
