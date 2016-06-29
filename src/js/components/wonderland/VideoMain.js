@@ -18,7 +18,6 @@ var VideoMain = React.createClass({
         isGuest: React.PropTypes.bool.isRequired,
         accountId: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
-        forceOpen: React.PropTypes.bool.isRequired,
         messageNeededComponent: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool, React.PropTypes.object]).isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         videoState: React.PropTypes.string.isRequired,
@@ -65,11 +64,9 @@ var VideoMain = React.createClass({
         });
     },
     render: function() {
-        var self = this,
-            additionalClass = self.props.forceOpen ? 'is-shown' : 'is-hidden'
-        ;
+        var self = this;
         return (
-            <div className={additionalClass}>
+            <div>
                 <br />
                 <div className="columns is-desktop">
                     <div className="column is-12-mobile is-10-desktop">
@@ -78,7 +75,6 @@ var VideoMain = React.createClass({
                             isGuest={self.props.isGuest}
                             thumbnails={self.props.thumbnails}
                             videoState={self.props.videoState}
-                            forceOpen={self.props.forceOpen}
                             isServingEnabled={self.props.isServingEnabled}
                             videoId={self.props.videoId}
                         />

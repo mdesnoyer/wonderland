@@ -31,7 +31,7 @@ var Videos = React.createClass({
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
-        self.doVideoSearch(1, false);
+        self.doVideoSearch(1);
     },
     componentWillUnmount: function() {
         var self = this;
@@ -78,7 +78,6 @@ var Videos = React.createClass({
                 </section>
                 <section id="results" className="wonderland-section section">
                     <VideosResults
-                        forceOpenFirstOverride={self.state.forceOpenFirstOverride}
                         videos={self.state.videos}
                         handleNewSearch={self.handleNewSearch}
                         prevPageAPICall={prevPageAPICall}
@@ -105,10 +104,10 @@ var Videos = React.createClass({
             previousPseudoPageUrl: self.state.pseudoPageUrl,
             pseudoPageUrl: pseudoPageUrl
         }, function() {
-            self.doVideoSearch(pageAdjustment, false);
+            self.doVideoSearch(pageAdjustment);
         });
     },
-    doVideoSearch: function(pageAdjustment, forceOpenFirstOverride) {
+    doVideoSearch: function(pageAdjustment) {
         var self = this,
             options = {
                 data: {
@@ -119,7 +118,6 @@ var Videos = React.createClass({
         ;
         self.setState({
             isLoading: true,
-            forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';

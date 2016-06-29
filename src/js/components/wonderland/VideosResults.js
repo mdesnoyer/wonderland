@@ -33,7 +33,6 @@ var VideosResults = React.createClass({
                 <tbody>
                     {
                         self.props.videos.map(function(video, i) {
-                            var forceOpen = (i === 0) && self.props.forceOpenFirstOverride;
                             return (
                                 <tr key={video.video_id}>
                                     <td>
@@ -41,7 +40,6 @@ var VideosResults = React.createClass({
                                             videoId={video.video_id}
                                             pingInitial={false}
                                             pingInterval={true}
-                                            forceOpen={forceOpen}
                                             videoState={video.state}
                                             thumbnails={video.thumbnails}
                                             title={video.title}

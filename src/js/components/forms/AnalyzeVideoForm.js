@@ -117,7 +117,7 @@ var AnalyzeVideoForm = React.createClass({
                 <form onSubmit={self.handleSubmit}>
                     {messageNeededComponent}
                     <div className={promptHiddenClass}>
-                        <IntegrationNotification toggeleOpen={self.toggeleOpen} />
+                        <IntegrationNotification toggleOpen={self.toggleOpen} />
                     </div>
                     <fieldset className={formHiddenClass}>
                         {legendElement}
@@ -284,7 +284,7 @@ var AnalyzeVideoForm = React.createClass({
             })
         ;
     },
-    toggeleOpen: function() {
+    toggleOpen: function() {
         var self = this; 
         self.setState({
             isFormHidden: false
