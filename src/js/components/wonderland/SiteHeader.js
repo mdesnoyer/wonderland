@@ -2,22 +2,36 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import NewsFlash from './NewsFlash';
 import SiteBanner from './SiteBanner';
 import AccountMasqueradeBar from './AccountMasqueradeBar';
 import T from '../../modules/translation';
+import Sidebar from './Sidebar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteHeader = React.createClass({
     // mixins: [ReactDebugMixin],
+    getInitialState: function() {
+        return {
+            sidebarContent: null // null, learnMore, contact, signIn, signUp, account 
+        }
+    },
+    setSidebarContent: function(content) {
+        var self = this;
+        self.setState({
+            sidebarContent: content
+        });
+    },
     render: function() {
-        var newsFlashMessage = T.get('copy.newsFlashMessage');
+        var self = this;
         return (
             <div>
-                <NewsFlash message={newsFlashMessage} isActive={false} />
                 <AccountMasqueradeBar />
-                <SiteBanner />
+                <SiteBanner sidebarContent={self.state.sidebarContent} setSidebarContent={self.setSidebarContent}/>
+                <Sidebar
+                    content={self.state.sidebarContent}
+                    setContent={self.setSidebarContent}
+                />
             </div>
         );
     }
