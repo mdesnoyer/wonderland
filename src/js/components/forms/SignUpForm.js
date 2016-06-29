@@ -150,62 +150,58 @@ var SignUpForm = React.createClass({
         );
     },
     handleSubmit: function (e) {
+        var self = this,
+            userDataObject = {},
+            errorList = [
+                {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
+                {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
+            ]
+        ;
         e.preventDefault();
-        console.log('submit');
-        // var self = this,
-        //     userDataObject = {},
-        //     errorList = [
-        //         {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
-        //         {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
-        //     ]
-        // ;
-        // e.preventDefault();
-        // TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
-        // self.setState({
-        //     isError: false,
-        //     isLoading: true
-        // });
-        // if (!E.checkForErrors(errorList)) {
-        //     self.setState({
-        //         isError: true,
-        //         isLoading: false
-        //     });
-        // }
-        // else {
-        //     if (!self._isSubmitted) {
-        //         self._isSubmitted = true;
-        //         userDataObject = {
-        //             email: self.refs.email.value.trim(),
-        //             admin_user_username: self.refs.email.value.trim(),
-        //             admin_user_password: self.refs.passwordInitial.value.trim(),
-        //             admin_user_first_name: self.refs.firstName.value.trim(),
-        //         };
-        //         // Only add the last name if it exists #1194
-        //         if (self.refs.lastName.value.trim()) {
-        //             userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
-        //         }
-        //         self.POST('accounts', {
-        //                 host: CONFIG.AUTH_HOST,
-        //                 data: userDataObject
-        //             })
-        //             .then(function (account) {
-        //                 self._isSubmitted = false;
-        //                 self.setState({
-        //                     isError: false,
-        //                     isLoading: false
-        //                 });
-        //                 self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
-        //             })
-        //             .catch(function (err) {
-        //                 E.raiseError(err);
-        //                 self._isSubmitted = false;
-        //                 self.setState({
-        //                     isError: true,
-        //                     isLoading: false
-        //                 });
-        //         });
-        //     }
-        // }
+        self.setState({
+            mode: 'loading'
+        }, function() {
+            if (!E.checkForErrors(errorList)) {
+                self.setState({
+                    mode: 'error'
+                });
+            }
+            else {
+                if (!self._isSubmitted) {
+                    self._isSubmitted = true;
+                    TRACKING.sendEvent(self, arguments, self.state.email.trim());
+                    userDataObject = {
+                        email: self.state.email.trim(),
+                        admin_user_username: self.state.email.trim(),
+                        admin_user_password: self.state.password.trim(),
+                        admin_user_first_name: self.state.name.trim(), // full name, is this an issue?
+                    };
+                    // // Only add the last name if it exists #1194
+                    // if (self.refs.lastName.value.trim()) {
+                    //     userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
+                    // }
+                    self.POST('accounts', {
+                            host: CONFIG.AUTH_HOST,
+                            data: userDataObject
+                        })
+                        .then(function (account) {
+                            self._isSubmitted = false;
+                            self.setState({
+                                mode: 'success'
+                            });
+                            self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
+                        })
+                        .catch(function (err) {
+                            E.raiseError(err);
+                            self._isSubmitted = false;
+                            self.setState({
+                                mode: 'error'
+                            });
+                    });
+                }
+            }
+        });
+
     }
 });
 
