@@ -24,7 +24,6 @@ var Thumbnail = React.createClass({
         frameNo: React.PropTypes.number,
         url: React.PropTypes.string.isRequired,
         strippedUrl: React.PropTypes.string.isRequired,
-        forceOpen: React.PropTypes.bool.isRequired,
         isServingEnabled: React.PropTypes.bool.isRequired,
         width: React.PropTypes.number.isRequired,
         height: React.PropTypes.number.isRequired,
@@ -50,27 +49,12 @@ var Thumbnail = React.createClass({
             isEnabled: nextProps.isEnabled
         });
     },
-    componentDidMount: function() {
-        var self = this;
-        if (!self.props.forceOpen) {
-            // We want to sneak these in since it is closed
-            var thumbnailImage = self.refs.thumbnailImage,
-                bufferImage = new Image()
-            ;
-            bufferImage.onload = function() {
-                var _self = this; // img
-                thumbnailImage.setAttribute('src', _self.src);
-            };
-            bufferImage.src = thumbnailImage.getAttribute('data-src');
-        }
-    },
     render: function() {
         var self = this,
             neonScoreClass = 'tag' + (self.props.isModalActive ? ' is-large' : ' is-medium') + ' wonderland-thumbnail__neonscore' + (self.state.isEnabled ? ' is-primary' : ' is-disabled'),
             caption = 'Thumbnail ' + (self.props.index + 1),
             enabledDisabled = self.state.isLoading ? 'disabled' : '',
-            src = (self.props.forceOpen ? self.props.strippedUrl : '/img/clear.gif'),
-            dataSrc = (self.props.forceOpen ? '' : self.props.strippedUrl),
+            src = self.props.strippedUrl,
             boxClass = 'box wonderland-box' + (self.props.type === 'default' ? ' -alt' : ''),
             rubricClass = 'wonderland-thumbnail__rubric' + (self.props.type === 'default' ? '' : ' is-hidden'),
             figureClass = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled') + ' -' + self.props.type,
@@ -95,7 +79,6 @@ var Thumbnail = React.createClass({
                         ref="thumbnailImage"
                         className={'wonderland-thumbnail__image -' + self.props.type}
                         src={src}
-                        data-src={dataSrc}
                         alt={caption}
                         title={caption}
                         onClick={self.handleToggleModal}

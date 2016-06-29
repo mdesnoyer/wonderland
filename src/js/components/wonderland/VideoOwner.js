@@ -24,7 +24,6 @@ var VideoOwner = React.createClass({
         var self = this;
         return {
             videoState: 'unknown',
-            forceOpen: false,
             thumbnails: [],
             title: 'Unknown',
             error: '',
@@ -37,7 +36,6 @@ var VideoOwner = React.createClass({
             videoId: self.props.videoId,
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
-            forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails),
             title: self.props.title,
@@ -46,7 +44,7 @@ var VideoOwner = React.createClass({
             shareToken: '',
             isLoading: false,
             status: 200,
-            size: self.props.forceOpen ? 'big' : 'small',
+            size: 'big',
             duration: self.props.duration || 0,
             url: self.props.url || ''
         }
@@ -94,20 +92,16 @@ var VideoOwner = React.createClass({
                 <div className={videoSizeClass}>
                     <VideoHeader
                         isGuest={false}
-                        handleVideoOpenToggle={self.handleVideoOpenToggle}
-                        forceOpen={self.state.forceOpen}
                         videoState={self.state.videoState}
                         title={self.state.title}
                         additionalClass={additionalClass}
                         videoId={self.state.videoId}
                         created={self.state.created}
                         thumbnails={self.state.sortedThumbnails}
-                        showVideoOpenToggle={true}
                     />
                     <VideoMain
                         isGuest={false}
                         videoId={self.state.videoId}
-                        forceOpen={self.state.forceOpen}
                         messageNeededComponent={messageNeededComponent}
                         thumbnails={self.state.sortedThumbnails}
                         videoState={self.state.videoState}
@@ -121,16 +115,6 @@ var VideoOwner = React.createClass({
                 </div>
             );
         }
-    },
-    handleVideoOpenToggle: function(e) {
-        if (e.target.type === 'text') { // hack
-            return false;
-        }
-        var self = this;
-        TRACKING.sendEvent(self, arguments, self.state.url);
-        self.setState({
-            forceOpen: !self.state.forceOpen
-        });
     },
     pingVideo: function() {
         var self = this,

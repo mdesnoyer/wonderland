@@ -53,7 +53,6 @@ var VideoPageOwner = React.createClass({
                             videoId={self.props.params.videoId}
                             pingInitial={true}
                             pingInterval={true}
-                            forceOpen={true}
                             isServingEnabled={self.state.isServingEnabled}
                         />
                     </div>
