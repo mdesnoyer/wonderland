@@ -48,7 +48,7 @@ var Sidebar = React.createClass({
     render: function() {
         var self = this,
             content = null,
-            isHidden = (self.state.content === null ? true : false)
+            isHidden = (self.state.content === null)
         ;
         switch (self.state.content) {
             case 'learnMore':
