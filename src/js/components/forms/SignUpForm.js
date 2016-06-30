@@ -12,7 +12,8 @@ var SignUpForm = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
-            name: '',
+            firstName: '',
+            lastName: '',
             email: '',
             password: '',
             verifyPassword: '',
@@ -29,9 +30,14 @@ var SignUpForm = React.createClass({
     updateField: function(e) {
         var self = this;
         switch (e.target.getAttribute('data-ref')) {
-            case 'name':
+            case 'firstName':
                 self.setState({
-                    name: e.target.value
+                    firstName: e.target.value
+                });
+                break;
+            case 'lastName':
+                self.setState({
+                    lastName: e.target.value
                 });
                 break;
             case 'email':
@@ -58,7 +64,7 @@ var SignUpForm = React.createClass({
             terms = T.get('copy.agreeTerms', {
                 '@link': UTILS.DRY_NAV.TERMS.URL
             }),
-            isValid = self.state.name && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
+            isValid = self.state.firstName && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
             submitClassName = ['xxButton', 'xxButton--highlight'],
             userMessage = null
         ;
@@ -83,15 +89,26 @@ var SignUpForm = React.createClass({
                 {userMessage}
                 <fieldset>
                     <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourName')}</label>
+                        <label className="xxLabel">{T.get('label.firstName')}</label>
                         <input
                             className="xxInputText"
                             type="text"
-                            data-ref="name"
+                            data-ref="firstName"
                             minLength="1"
                             maxLength="256"
                             onChange={self.updateField}
                             required
+                        />
+                    </div>
+                    <div className="xxFormField">
+                        <label className="xxLabel">{T.get('label.lastName.optional')}</label>
+                        <input
+                            className="xxInputText"
+                            type="text"
+                            data-ref="lastName"
+                            minLength="1"
+                            maxLength="256"
+                            onChange={self.updateField}
                         />
                     </div>
                     <div className="xxFormField">
@@ -181,12 +198,12 @@ var SignUpForm = React.createClass({
                         email: self.state.email.trim(),
                         admin_user_username: self.state.email.trim(),
                         admin_user_password: self.state.password.trim(),
-                        admin_user_first_name: self.state.name.trim(), // full name, is this an issue?
+                        admin_user_first_name: self.state.firstName.trim(),
                     };
-                    // // Only add the last name if it exists #1194
-                    // if (self.refs.lastName.value.trim()) {
-                    //     userDataObject['admin_user_last_name'] = self.refs.lastName.value.trim();
-                    // }
+                    // Only add the last name if it exists #1194
+                    if (self.state.lastName.trim()) {
+                        userDataObject['admin_user_last_name'] = self.state.lastName.trim();
+                    }
                     self.POST('accounts', {
                             host: CONFIG.AUTH_HOST,
                             data: userDataObject

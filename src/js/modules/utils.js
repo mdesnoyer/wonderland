@@ -168,9 +168,6 @@ var UTILS = {
         PLUGINS_BRIGHTCOVE_WIZARD: {
             URL: '/plugins/new/brightcove/wizard/'
         },
-        SIGNUP: {
-            URL: '/signup/'
-        },
         SIGNIN: {
             URL: '/signin/'
         },

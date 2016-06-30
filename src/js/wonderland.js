@@ -12,7 +12,6 @@ import UTILS from './modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Pages
-import SignUpPage from './components/pages/SignUpPage';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
@@ -23,7 +22,6 @@ import VideoPageGuest from './components/pages/VideoPageGuest';
 import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
 import PendingAccountPage from './components/pages/PendingAccountPage';
-import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import UserResetPage from './components/pages/UserResetPage';
 import UserForgotPage from './components/pages/UserForgotPage';
@@ -62,11 +60,9 @@ render((
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
 
-        <Route path={UTILS.DRY_NAV.SIGNUP.URL} component={SignUpPage} />
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
 
-        <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRM.URL} component={ConfirmAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
 
