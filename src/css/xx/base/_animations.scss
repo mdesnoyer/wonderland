@@ -1,3 +1,6 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 @keyframes ribbon {
     0% {
         background-position: -17% 0;
@@ -17,3 +20,45 @@
         transform: rotate(360deg);
     }
 }
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.fadeInOut,
+.fadeInOutFast {
+    &-enter {
+        opacity: 0;
+    }
+
+    &-enter-active {
+        opacity: 1;
+        transition: opacity $default-transition-speed * 2 $default-transition-easing;
+    }
+
+    &-leave {
+        opacity: 1;
+    }
+
+    &-leave-active {
+        opacity: 0;
+        transition: opacity $default-transition-speed * 2 $default-transition-easing;
+    }
+}
+
+.fadeInOutFast {
+    &-enter-active,
+    &-leave-active {
+        transition-duration: $default-transition-speed;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

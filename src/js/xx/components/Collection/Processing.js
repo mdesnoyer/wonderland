@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import renderedTime from '../../utils/renderedTime';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default class XXCollectionProcessing extends React.Component {
@@ -37,8 +39,6 @@ export default class XXCollectionProcessing extends React.Component {
     render() {
         const { time, isReady } = this.state;
 
-        const renderedTime = `${Math.floor(time / 60)}:${time % 60 > 9 ? time % 60 : (`0${time % 60}`)}`;
-
         return (
             <article className="xxCollection xxCollection--video xxCollection--processing">
                 <h1 className="xxCollection-title">
@@ -50,7 +50,7 @@ export default class XXCollectionProcessing extends React.Component {
                     href=""
                     className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
                     onClick={e => e.preventDefault()}>
-                    <span>{renderedTime}</span>
+                    <span className="xxCollectionFilterToggle-label">{renderedTime(Math.floor(time / 60), time % 60)}</span>
                 </a>
 
                 <div className="xxCollectionFilters">

@@ -60,7 +60,7 @@ export default class XXBlankCanvas extends React.Component {
 
                 <div className="xxFeatureContent">
                     <h1 className="xxTitle">Oh no! You don’t have any collections.</h1>
-                    <div className="xxFeatureContent-buttons">
+                    <div className="xxFormButtons xxFeatureContent-buttons">
                         <a href="#" className="xxButton xxButton--transparent">Sign Up</a>
                         <a href="#" className="xxButton xxButton--highlight">Try it Out</a>
                     </div>

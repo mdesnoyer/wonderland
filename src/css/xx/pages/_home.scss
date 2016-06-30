@@ -2,9 +2,8 @@
 
 .xxHomeLogIn {
     position: absolute;
-    top: 100vh;
+    bottom: 48px;
     left: 50%;
-    margin-top: -75px;
     white-space: nowrap;
     transform: translateX(-50%);
 }
@@ -13,6 +12,88 @@
     border-bottom: 1px solid #d0d0d0;
     margin-left: 20px;
     padding-bottom: 7px;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@keyframes upload-button-onboarding {
+    0% {
+        transform: scale(1.25);
+    }
+
+    25% {
+        transform: scale(1.25);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes upload-button-help-onboarding {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.is-onboarding {
+    .xxOverlay {
+        z-index: $zindex-header - 1;
+    }
+
+    .xxNav {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .4s ease-out, visibility 0s .4s;
+    }
+
+    .xxUploadButton {
+        animation: upload-button-onboarding .8s ease-in-out;
+        transform-origin: 50% 50%;
+    }
+
+    .xxUploadButton-help {
+        opacity: 0;
+        animation: upload-button-help-onboarding .8s ease-in-out .4s forwards;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.is-processing {
+    .xxOverlay {
+        z-index: $zindex-header - 1;
+    }
+
+    &.xxPage {
+        &::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: $processing-ribbon-height;
+            background: rgba($accent-color, .2) linear-gradient(
+                to right,
+                rgba($accent-color, 0) 0%,
+                rgba($accent-color, 0.85) 30%,
+                rgba($accent-color, 1) 50%,
+                rgba($accent-color, 0.85) 70%,
+                rgba($accent-color, 0) 100%
+            ) -17% 0 / 34% 100% no-repeat;
+            animation: ribbon 5s infinite alternate ease-in-out, fade-in .4s ease-in;
+        }
+    }
+
+    .xxNav {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .4s ease-in, visibility 0s;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

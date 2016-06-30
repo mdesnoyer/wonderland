@@ -12,6 +12,13 @@
     transform: translateY(-50%);
 }
 
+.xxFeatureContent-image {
+    display: block;
+    width: 176px;
+    height: 176px;
+    margin: 0 auto 22px;
+}
+
 .xxFeatureContent-title {
     margin-bottom: 10px;
     font-size: 45px;
@@ -29,6 +36,12 @@
             margin-left: $gutter-width;
         }
     }
+}
+
+.xxFeatureContent-small {
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

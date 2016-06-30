@@ -110,6 +110,7 @@
     color: $tertiary-color;
     line-height: $form-element-height - $form-element-border * 2;
 
+    // FIXME
     &::before,
     &::after {
         content: '';

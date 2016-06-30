@@ -1,18 +1,20 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$upload-button-size: 53px;
-$upload-button-offset: 35px;
+// roughly 1.7x the size of $upload-button-size but the resulting number
+// has to be odd to keep both centred correctly, hence the specific value
+$upload-button-help-circle-size: $upload-button-size + 38px;
+$upload-button-help-line-length: 190px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxUploadButton {
     position: fixed;
-    bottom: $upload-button-offset;
     right: 50%;
+    bottom: $upload-button-offset;
     z-index: $zindex-upload-button;
     width: $upload-button-size;
     height: $upload-button-size;
-    border-radius: 100%;
+    border-radius: 50%;
     border: 2px solid #fff;
     box-shadow: 0 0 8px rgba(0, 0, 0, .2);
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
@@ -106,6 +108,49 @@ $upload-button-offset: 35px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: #fff;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxUploadButton-help {
+    @include all-caps-title;
+
+    position: fixed;
+    right: 50%;
+    bottom: $upload-button-offset;
+    margin-right: -1 * $page-max-width / 2 + floor($upload-button-help-circle-size / 2) + $upload-button-help-line-length;
+    padding-right: 20px;
+    color: $secondary-color;
+    line-height: $upload-button-size;
+    pointer-events: none;
+
+    @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
+        right: $upload-button-offset + $upload-button-size + ($upload-button-help-circle-size - $upload-button-size) / 2 + $upload-button-help-line-length;
+        margin-right: 0;
+    }
+
+    .fadeInOut-leave & {
+        opacity: 0;
+    }
+}
+
+.xxUploadButton-helpCircle {
+    position: absolute;
+    top: ($upload-button-size - $upload-button-help-circle-size) / 2;
+    left: calc(100% + #{$upload-button-help-line-length} - 1px); // 1px to account for floor above
+    width: $upload-button-help-circle-size;
+    height: $upload-button-help-circle-size;
+    border: 1px solid rgba($base-color, .5);
+    border-radius: 50%;
+}
+
+.xxUploadButton-helpLine {
+    position: absolute;
+    top: floor($upload-button-size / 2);
+    left: calc(100% - 1px);
+    width: $upload-button-help-line-length; // 1px to account for floor above
+    height: 1px;
+    background: rgba($base-color, .5);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
