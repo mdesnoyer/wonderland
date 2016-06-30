@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
+import Contact from './Contact';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,7 +56,7 @@ var Sidebar = React.createClass({
                 content = <LearnMore />;
                 break;
             case 'contact':
-                content = <div>Contact</div>;
+                content = <Contact handleClose={self.handleClose} />;
                 break;
             case 'signUp':
                 content = <div>Sign Up</div>;

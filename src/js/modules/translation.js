@@ -34,6 +34,8 @@ const _DEFAULT_LOCALE = 'en-US',
             url: 'URL',
             copy: 'Copy',
             close: 'Close',
+            back: 'Back',
+            send: 'Send',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -225,6 +227,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.accountName' : 'Account Name',
             'label.accountId' : 'Account ID',
             'label.avatar' : 'Avatar',
+            'label.yourName' : 'Your Name',
+            'label.yourEmail' : 'Your Email',
+            'label.message' : 'Message',
+            'label.ourLocation' : 'Our Location',
             // Created
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
@@ -241,6 +247,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signedInAs': 'Signed In as @user',
             'copy.defaultThumbnail': 'Default Thumbnail',
             'copy.neonSelect': 'Neon Select', 
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.contactUs.success' : 'Thanks! We’ll be in touch shortly.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
