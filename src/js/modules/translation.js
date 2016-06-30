@@ -142,6 +142,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountSettings.title': 'Account Settings',
             'copy.accountSettings.heading': 'Account Settings',
             'copy.accountSettings.body': '',
+            'copy.account.heading': 'Hi, @displayName',
 
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
