@@ -239,6 +239,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
+            'copy.defaultThumbnail': 'Default Thumbnail',
+            'copy.neonSelect': 'Neon Select', 
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

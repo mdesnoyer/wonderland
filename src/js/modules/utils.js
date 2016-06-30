@@ -246,6 +246,7 @@ var UTILS = {
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
+    LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
