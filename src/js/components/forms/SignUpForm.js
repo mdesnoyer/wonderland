@@ -75,7 +75,6 @@ var SignUpForm = React.createClass({
                             className="xxInputText"
                             type="text"
                             data-ref="name"
-                            placeholder="John Doe"
                             minLength="1"
                             maxLength="256"
                             onChange={self.updateField}
@@ -88,7 +87,6 @@ var SignUpForm = React.createClass({
                             className="xxInputText"
                             type="email"
                             data-ref="email"
-                            placeholder="example@email.com"
                             minLength="6"
                             maxLength="1024"
                             onChange={self.updateField}
@@ -101,7 +99,6 @@ var SignUpForm = React.createClass({
                             className="xxInputText"
                             type="password"
                             data-ref="password"
-                            placeholder="••••••••••"
                             minLength="8"
                             maxLength="64"
                             onChange={self.updateField}
@@ -121,14 +118,13 @@ var SignUpForm = React.createClass({
                             className="xxInputText"
                             type="password"
                             data-ref="verifyPassword"
-                            placeholder="••••••••••"
                             minLength="8"
                             maxLength="64"
                             onChange={self.updateField}
                             required
                         />
                     </div>
-                    <div>By using this service, you agree to our <a href="/terms/">Terms of Service</a>.</div>
+                    <div>By using this service, you agree to our <a href="/terms/" target="_blank">Terms of Service</a>.</div>
                     <div className="xxFormButtons">
                         <button
                             className="xxButton"
