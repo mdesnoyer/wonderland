@@ -58,7 +58,7 @@ var SignUpForm = React.createClass({
             terms = T.get('copy.agreeTerms', {
                 '@link': UTILS.DRY_NAV.TERMS.URL
             }),
-            isValid = self.state.name && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword),
+            isValid = self.state.name && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
             submitClassName = ['xxButton', 'xxButton--highlight'],
             userMessage = null
         ;
@@ -73,7 +73,7 @@ var SignUpForm = React.createClass({
                 userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
                 break;
             case 'success':
-                userMessage = <div className="xxLabel"><p>TODO: Sign Up Success</p></div>;
+                userMessage = <div className="xxLabel"><p>{T.get('copy.confirmAccount.body')}</p></div>;
                 break;
             default:
                 break;
@@ -196,8 +196,6 @@ var SignUpForm = React.createClass({
                             self.setState({
                                 mode: 'success'
                             });
-                            // self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
-                            // probably some sort of message instead?
                         })
                         .catch(function (err) {
                             E.raiseError(err);

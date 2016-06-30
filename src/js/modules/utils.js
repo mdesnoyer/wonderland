@@ -393,7 +393,7 @@ var UTILS = {
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
+        return state.password === state.verifyPassword;
     },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
