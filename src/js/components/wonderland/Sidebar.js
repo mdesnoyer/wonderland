@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
 import Contact from './Contact';
+import Account from './Account';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +66,7 @@ var Sidebar = React.createClass({
                 content = <div>Sign In</div>;
                 break;
             case 'account':
-                content = <div>Account</div>;
+                content = <Account />;
                 break;
             default:
                 break;
