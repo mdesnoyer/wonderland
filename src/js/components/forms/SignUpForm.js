@@ -10,9 +10,6 @@ import E from '../../modules/errors';
 
 var SignUpForm = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     getInitialState: function() {
         return {
             name: '',
@@ -58,19 +55,35 @@ var SignUpForm = React.createClass({
     },
     render: function() {
         var self = this,
+            terms = T.get('copy.agreeTerms', {
+                '@link': UTILS.DRY_NAV.TERMS.URL
+            }),
             isValid = self.state.name && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword),
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            errorMessage = self.state.mode === 'error' ? <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div> : null
+            userMessage = null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
+        switch (self.state.mode) {
+            case 'error':
+                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                break;
+            case 'loading':
+                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                break;
+            case 'success':
+                userMessage = <div className="xxLabel"><p>TODO: Sign Up Success</p></div>;
+                break;
+            default:
+                break;
+        }
         return (
             <form onSubmit={self.handleSubmit}>
-                {errorMessage}
+                {userMessage}
                 <fieldset>
                     <div className="xxFormField">
-                        <label className="xxLabel">Your Name</label>
+                        <label className="xxLabel">{T.get('label.yourName')}</label>
                         <input
                             className="xxInputText"
                             type="text"
@@ -82,7 +95,7 @@ var SignUpForm = React.createClass({
                         />
                     </div>
                     <div className="xxFormField">
-                        <label className="xxLabel">Your Email</label>
+                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
                         <input
                             className="xxInputText"
                             type="email"
@@ -94,7 +107,7 @@ var SignUpForm = React.createClass({
                         />
                     </div>
                     <div className="xxFormField">
-                        <label className="xxLabel">Password</label>
+                        <label className="xxLabel">{T.get('copy.passwordInitial')}</label>
                         <input
                             className="xxInputText"
                             type="password"
@@ -108,12 +121,10 @@ var SignUpForm = React.createClass({
                     <div className="xxFormField">
                         {
                             self.state.verifyPassword && self.state.password !== self.state.verifyPassword ? (
-                                <strong className="xxFormError">
-                                    Passwords do not match.
-                                </strong>
+                                <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
                             ) : null
                         }
-                        <label className="xxLabel">Verify Password</label>
+                        <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
                         <input
                             className="xxInputText"
                             type="password"
@@ -124,14 +135,14 @@ var SignUpForm = React.createClass({
                             required
                         />
                     </div>
-                    <div>By using this service, you agree to our <a href="/terms/" target="_blank">Terms of Service</a>.</div>
+                    <div>{terms}</div>
                     <div className="xxFormButtons">
                         <button
                             className="xxButton"
                             type="button"
                             onClick={self.props.handleClose}
                         >
-                            Back
+                            {T.get('back')}
                         </button>
                         <button
                             className={submitClassName.join(' ')}
@@ -185,7 +196,8 @@ var SignUpForm = React.createClass({
                             self.setState({
                                 mode: 'success'
                             });
-                            self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
+                            // self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
+                            // probably some sort of message instead?
                         })
                         .catch(function (err) {
                             E.raiseError(err);

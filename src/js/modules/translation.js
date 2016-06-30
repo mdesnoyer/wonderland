@@ -88,6 +88,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
+            'copy.passwordVerify': 'Verify Password',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -319,7 +320,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            'copy.agreeTerms': 'I agree to Neon\u2019s <a href="@link">Terms and Conditions</a> of use.',
+            'copy.agreeTerms': 'By using this service, you agree to our <a href="@link" target="_blank">Terms of Service</a>.',
 
             'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
             'copy.processingSlide.2': 'Please be patient–it takes about the same amount of time for Neon to analyze your video as it takes for you to watch it.',
