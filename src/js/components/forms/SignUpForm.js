@@ -152,7 +152,7 @@ var SignUpForm = React.createClass({
                             required
                         />
                     </div>
-                    <div>{terms}</div>
+                    <span dangerouslySetInnerHTML={{__html: terms}} />
                     <div className="xxFormButtons">
                         <button
                             className="xxButton"
