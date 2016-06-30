@@ -79,6 +79,8 @@ var ChangePasswordForm = React.createClass({
                             className="xxInputText"
                             type="password"
                             data-ref="currentPassword"
+                            minLength="8"
+                            maxLength="64"
                             onChange={self.updateField}
                             required
                         />
@@ -89,22 +91,37 @@ var ChangePasswordForm = React.createClass({
                             className="xxInputText"
                             type="password"
                             data-ref="newPassword"
+                            minLength="8"
+                            maxLength="64"
                             onChange={self.updateField}
                             required
                         />
                     </div>
                     <div className="xxFormField">
+                        {
+                            self.state.verifyPassword && self.state.newPassword !== self.state.verifyPassword ? (
+                                <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
+                            ) : null
+                        }
                         <label className="xxLabel">Verify Password</label>
-                        <textarea
+                        <input
                             className="xxInputText"
                             type="password"
                             data-ref="verifyPassword"
+                            minLength="8"
+                            maxLength="64"
                             onChange={self.updateField}
                             required
-                        ></textarea>
+                        />
                     </div>
                     <div className="xxFormButtons">
-                        <button className={sendClassName.join(' ')} type="submit" disabled={!isValid}>Change</button>
+                        <button 
+                            className={sendClassName.join(' ')} 
+                            type="submit" 
+                            disabled={!isValid}
+                        >
+                            {T.get('change')}
+                        </button>
                     </div>
                 </fieldset>
             </form>

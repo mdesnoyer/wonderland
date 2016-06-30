@@ -3,11 +3,15 @@
 import React from 'react';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
+import UTILS from '../../modules/utils';
 import ChangePasswordForm from '../forms/ChangePasswordForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Account = React.createClass({
+    contextTypes: {     
+        router: React.PropTypes.object.isRequired     
+    },
     getInitialState: function() {
         return {
             displayName: ''
@@ -26,9 +30,13 @@ var Account = React.createClass({
             })
         ;
     },
+    handleLogOut: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
+    },
     render: function() {
         var self = this;
-        // need to put a check in here for type of account
         return (
             <article className="xxPageOverlay-content">
                 <h1 className="xxSubtitle">{T.get('nav.account')}</h1>
@@ -37,7 +45,7 @@ var Account = React.createClass({
                     <p>TODO: Text. Get More!</p>
                 </div>
                 <div className="xxFormButtons">
-                    <button className="xxButton" type="button">Log Out</button>
+                    <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('logOut')}</button>
                 </div>
                 <section className="xxSection">
                     <ChangePasswordForm />
