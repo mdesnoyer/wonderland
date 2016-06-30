@@ -230,7 +230,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.yourName' : 'Your Name',
             'label.yourEmail' : 'Your Email',
             'label.message' : 'Message',
-            'label.location' : 'Our Location',
+            'label.ourLocation' : 'Our Location',
             // Created
             // Updated
             'label.servingEnabled' : 'Serving Enabled',

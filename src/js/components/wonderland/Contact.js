@@ -14,14 +14,14 @@ var Contact = React.createClass({
                 <h1 className="xxSubtitle">{T.get('nav.contact')}</h1>
                 <h2 className="xxTitle">Want to find out more?</h2>
                 <div className="xxText">
-                    <p>Get in touch with questions or comments. We’d love to hear from you!</p>
+                    <p>Get in touch with questions or comments. We&rsquo;d love to hear from you!</p>
                 </div>
                 <ContactForm handleClose={self.props.handleClose} />
                 <section className="xxSection">
-                    <h2 className="xxTitle">{T.get('label.location')}</h2>
+                    <h2 className="xxTitle">{T.get('label.ourLocation')}</h2>
                     <div className="xxText">
                         <p>
-                            Neon Labs<br />
+                            {T.get('app.companyLongName')}<br />
                             70 South Park Street<br />
                             San Francisco, CA 94107<br />
                             United States

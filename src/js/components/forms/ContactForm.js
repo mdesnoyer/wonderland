@@ -45,41 +45,31 @@ var ContactForm = React.createClass({
         e.preventDefault();
         self.setState({
             mode: 'loading'
-        }, self.sendSupportEmail);
-    },
-    sendSupportEmail: function () {
-        var self = this,
-            options = self.dataMaker('support')
-        ;
-        self.POST('email', options)
-            .then(function(res) {
-                self.sendConfirmationEmail();
-            })
-            .catch(function(err) {
-                console.log(err);
-                E.raiseError(err);
-                self.setState({
-                    mode: 'error'
+        }, function() {
+            var options = self.dataMaker('support');
+            self.POST('email', options)
+                .then(function(res) {
+                    var optionsNew = self.dataMaker('confirm');
+                    self.POST('email', optionsNew)
+                        .then(function(res) {
+                            self.setState({
+                                mode: 'success'
+                            });
+                        })
+                        .catch(function(err) {
+                            E.raiseError(err);
+                            self.setState({
+                                mode: 'error'
+                            });
+                        });
+                })
+                .catch(function(err) {
+                    E.raiseError(err);
+                    self.setState({
+                        mode: 'error'
+                    });
                 });
-            });
-    },
-    sendConfirmationEmail: function() {
-        var self = this,
-            optionsNew = self.dataMaker('confirm')
-        ;
-        self.POST('email', optionsNew)
-            .then(function(res){
-                self.setState({
-                    mode: 'success'
-                });
-            })
-            .catch(function(err){
-                console.log(err);
-                E.raiseError(err);
-                self.setState({
-                    mode: 'error'
-                });
-            })
+        });
     },
     dataMaker: function(emailType) {
         var self = this,
@@ -102,7 +92,7 @@ var ContactForm = React.createClass({
                     subject: UTILS.SUPPORT_EMAIL_SUBJECT,
                     to_email_address: email,
                     template_slug: slug,
-                    template_args:{
+                    template_args: {
                         'first_name': self.state.name.trim(),
                         'contact_email': self.state.email.trim(),
                         'support_message': self.state.message.trim()
@@ -143,7 +133,6 @@ var ContactForm = React.createClass({
                             className="xxInputText"
                             type="text"
                             data-ref="name"
-                            placeholder="John Doe"
                             onChange={self.updateField}
                             required
                         />
@@ -154,7 +143,6 @@ var ContactForm = React.createClass({
                             className="xxInputText"
                             type="email"
                             data-ref="email"
-                            placeholder="example@email.com"
                             onChange={self.updateField}
                             required
                         />
@@ -164,7 +152,6 @@ var ContactForm = React.createClass({
                         <textarea
                             className="xxTextArea"
                             data-ref="message"
-                            placeholder="This demo is fantastic. This could work for me!"
                             onChange={self.updateField}
                             required
                         ></textarea>
