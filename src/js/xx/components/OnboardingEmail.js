@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,6 +13,7 @@ export default class XXOnboardingEmail extends React.Component {
 
         this.state = {
             email: '',
+            isSubmitted: false,
         };
     }
 
@@ -23,9 +25,11 @@ export default class XXOnboardingEmail extends React.Component {
 
     render() {
         const { updateField } = this;
-        const { email } = this.state;
+        const { email, isSubmitted } = this.state;
 
         const isValid = email;
+
+        const isNotSubmitted = !isSubmitted;
 
         const sendClassName = ['xxOnboardingEmail-button', 'xxButton', 'xxButton--highlight'];
         if (isValid) {
@@ -34,20 +38,32 @@ export default class XXOnboardingEmail extends React.Component {
 
         return (
             <section className="xxOnboardingEmail">
-                <h2 className="xxOnboardingEmail-title">Don’t want to wait? We’ll email you when your results are ready.</h2>
-                <input
-                    className="xxInputText"
-                    type="text"
-                    placeholder="example@email.com"
-                    value={email}
-                    onChange={e => updateField('email', e.target.value)}
-                />
-                <button
-                    disabled={!isValid}
-                    className={sendClassName.join(' ')}
-                    type="button"
-                    onClick={e => e.preventDefault()}
-                >Submit</button>
+                <ReactCSSTransitionGroup transitionName="fadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                    {
+                        isNotSubmitted ? (
+                            <div key="onboarding-email-form">
+                                <h2 className="xxOnboardingEmail-title">Don’t want to wait? We’ll email you when your results are ready.</h2>
+                                <input
+                                    className="xxInputText"
+                                    type="text"
+                                    placeholder="example@email.com"
+                                    value={email}
+                                    onChange={e => updateField('email', e.target.value)}
+                                />
+                                <button
+                                    disabled={!isValid}
+                                    className={sendClassName.join(' ')}
+                                    type="button"
+                                    onClick={e => {e.preventDefault(); this.setState({ isSubmitted: true });}}
+                                >Submit</button>
+                            </div>
+                        ) : (
+                            <div className="xxOnboardingEmail-success" key="onboarding-email-success">
+                                Thanks! We’ll be in touch…
+                            </div>
+                        )
+                    }
+                </ReactCSSTransitionGroup>
             </section>
         );
     }

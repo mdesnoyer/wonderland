@@ -4,6 +4,7 @@
     position: absolute;
     bottom: 48px;
     left: 50%;
+    z-index: $zindex-feature-content;
     white-space: nowrap;
     transform: translateX(-50%);
 }
@@ -12,6 +13,132 @@
     border-bottom: 1px solid #d0d0d0;
     margin-left: 20px;
     padding-bottom: 7px;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxHomeImages {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $zindex-feature-content - 1;
+    height: 100vh;
+    pointer-events: none;
+
+    &::before, &::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: ($header-height + $header-margin-bottom) * 1.5;
+        background: linear-gradient(
+            to bottom,
+            rgba($bg-color, 1) 5%,
+            rgba($bg-color, .75) 60%,
+            rgba($bg-color, 0) 100%
+        );
+    }
+
+    &::after {
+        top: auto;
+        bottom:0;
+        transform: rotate(180deg);
+    }
+}
+
+.xxHomeImages-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    max-width: $page-max-width + $gutter-width * 2;
+    min-width: $page-min-width + $gutter-width * 2;
+    height: 100vh;
+    margin: 0 auto;
+}
+
+@mixin generate-home-image-animation($id, $total-duration, $duration, $delay: 0s) {
+    $percentage: percentage($duration / $total-duration);
+    $animation-name: animate-home-image- + $id;
+
+    @at-root {
+        @keyframes #{$animation-name} {
+            #{$percentage} {
+                top: -100vh;
+            }
+
+            100% {
+                top: -100vh;
+            }
+        }
+    }
+
+    animation: $animation-name $total-duration linear $delay infinite;
+}
+
+.xxHomeImages-image {
+    position: absolute;
+    width: 30%;
+    height: auto;
+    top: 100vh;
+    right: 0;
+    border: 5px solid #fff;
+    @include generate-home-image-animation(1, 30s, 14s);
+
+    &:nth-child(2) {
+        right: auto;
+        left: 0;
+        width: 33%;
+        @include generate-home-image-animation(2, 30s, 8s, 2s);
+    }
+
+    &:nth-child(3) {
+        right: -10%;
+        width: 36%;
+        @include generate-home-image-animation(3, 30s, 20s, 4s);
+    }
+
+    &:nth-child(4) {
+        right: auto;
+        left: 0;
+        @include generate-home-image-animation(4, 30s, 10s, 8s);
+    }
+
+    &:nth-child(5) {
+        right: 2%;
+        @include generate-home-image-animation(5, 30s, 10s, 16s);
+    }
+
+    &:nth-child(6) {
+        right: auto;
+        left: -10%;
+        width: 36%;
+        @include generate-home-image-animation(6, 30s, 20s, 10s);
+    }
+
+    &:nth-child(7) {
+        right: 0;
+        width: 33%;
+        @include generate-home-image-animation(7, 30s, 18s, 20s);
+    }
+
+    &:nth-child(8) {
+        right: auto;
+        left: 2%;
+        width: 30%;
+        @include generate-home-image-animation(8, 30s, 12s, 20s);
+    }
+
+    &:nth-child(9) {
+        right: auto;
+        left: -1%;
+        width: 35%;
+        @include generate-home-image-animation(9, 30s, 12s, 26s);
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

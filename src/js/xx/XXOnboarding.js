@@ -9,6 +9,8 @@ import XXLogin from './components/Login';
 import XXForgotPassword from './components/ForgotPassword';
 import XXChangePassword from './components/ChangePassword';
 
+import XXHomeImages from './components/HomeImages';
+
 import XXOnboardingCountdown from './components/OnboardingCountdown';
 import XXOnboardingEmail from './components/OnboardingEmail';
 import XXOnboardingSlides from './components/OnboardingSlides';
@@ -176,6 +178,43 @@ export default class XXOnboarding extends React.Component {
 
                 <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {
+                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
+                            <article className="xxFeatureContent" key="home-featureContent">
+                                <h2 className="xxSubtitle">NeonScore for Video (beta 1.0)</h2>
+                                <h1 className="xxTitle xxFeatureContent-title">How Engaging Are Your Images?</h1>
+                                <p>The prettiest images don’t always drive the most clicks. Neon knows which images and video thumbnails evoke emotion and drive engagement for specific audiences, devices, and platforms. Try it out to see NeonScores for your video thumbnails. </p>
+                                <div className="xxFormButtons xxFeatureContent-buttons">
+                                    <a href="#" className="xxButton xxButton--transparent">Sign Up</a>
+                                    <a
+                                        href=""
+                                        className="xxButton xxButton--highlight"
+                                        onClick={e => {e.preventDefault(); updateStage('onboarding-upload');}}
+                                    >Try it Out</a>
+                                </div>
+                            </article>
+                        ) : null
+                    }
+
+                    {
+                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
+                            <div className="xxHomeLogIn" key="home-logIn">
+                                Already Signed Up?
+                                <a
+                                    href="#"
+                                    className="xxHomeLogIn-anchor"
+                                    onClick={e => {e.preventDefault(); updateStage('login');}}
+                                >Log In</a>
+                            </div>
+                        ) : null
+                    }
+
+                    {
+                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
+                            <XXHomeImages key="home-images" />
+                        ) : null
+                     }
+
+                    {
                         stage === 'onboarding-processing' ? (
                             <XXOnboardingCountdown
                                 key="onboarding-countdown"
@@ -214,39 +253,6 @@ export default class XXOnboarding extends React.Component {
                                     big wave surf competition"
                                 updateStage={updateStage}
                             />
-                        ) : null
-                    }
-                </ReactCSSTransitionGroup>
-
-                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
-                    {
-                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
-                            <article className="xxFeatureContent">
-                                <h2 className="xxSubtitle">NeonScore for Video (beta 1.0)</h2>
-                                <h1 className="xxTitle xxFeatureContent-title">How Engaging Are Your Images?</h1>
-                                <p>The prettiest images don’t always drive the most clicks. Neon knows which images and video thumbnails evoke emotion and drive engagement for specific audiences, devices, and platforms. Try it out to see NeonScores for your video thumbnails. </p>
-                                <div className="xxFormButtons xxFeatureContent-buttons">
-                                    <a href="#" className="xxButton xxButton--transparent">Sign Up</a>
-                                    <a
-                                        href=""
-                                        className="xxButton xxButton--highlight"
-                                        onClick={e => {e.preventDefault(); updateStage('onboarding-upload');}}
-                                    >Try it Out</a>
-                                </div>
-                            </article>
-                        ) : null
-                    }
-
-                    {
-                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
-                            <div className="xxHomeLogIn">
-                                Already Signed Up?
-                                <a
-                                    href="#"
-                                    className="xxHomeLogIn-anchor"
-                                    onClick={e => {e.preventDefault(); updateStage('login');}}
-                                >Log In</a>
-                            </div>
                         ) : null
                     }
                 </ReactCSSTransitionGroup>
