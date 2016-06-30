@@ -68,11 +68,11 @@
     @at-root {
         @keyframes #{$animation-name} {
             #{$percentage} {
-                top: -100vh;
+                transform: translateY(-200vh);
             }
 
             100% {
-                top: -100vh;
+                transform: translateY(-200vh);
             }
         }
     }
