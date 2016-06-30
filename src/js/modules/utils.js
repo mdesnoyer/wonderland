@@ -228,6 +228,9 @@ var UTILS = {
         URL_SHORTENER: {
             URL: '/shorturl/'
         },
+        DEMO: {
+            URL: '/demo/'
+        },
         COOKIES: {
             URL: '/cookies/'
         }
@@ -243,7 +246,12 @@ var UTILS = {
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
+    LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
+    SUPPORT_EMAIL:'support@neon-lab.com',
+    SUPPORT_EMAIL_SUBJECT:'Question about Neon',
+    SUPPORT_MANDRILL_SLUG:'support-email-admin',
+    CONFIRM_MANDRILL_SLUG:'support-email',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,

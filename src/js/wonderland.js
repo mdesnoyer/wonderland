@@ -38,6 +38,7 @@ import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import SupportPage from './components/pages/SupportPage';
 import URLShortenerPage from './components/pages/URLShortenerPage';
+import DemoPage from './components/pages/DemoPage';
 import CookiesPage from './components/pages/CookiesPage';
 import XXPage from './xx/XXPage';
 import XXPageMobile from './xx/XXPageMobile';
@@ -95,6 +96,8 @@ render((
 
         <Route path={UTILS.DRY_NAV.URL_SHORTENER.URL} component={URLShortenerPage} />
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
+
+        <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
 
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />

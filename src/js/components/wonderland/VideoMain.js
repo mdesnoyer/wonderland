@@ -8,7 +8,6 @@ import VideoSharer from './VideoSharer';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import VideoLift from './VideoLift';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -18,8 +17,6 @@ var VideoMain = React.createClass({
         isGuest: React.PropTypes.bool.isRequired,
         accountId: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
-        forceOpen: React.PropTypes.bool.isRequired,
-        messageNeededComponent: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool, React.PropTypes.object]).isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         videoState: React.PropTypes.string.isRequired,
         videoLink: React.PropTypes.string,
@@ -65,45 +62,37 @@ var VideoMain = React.createClass({
         });
     },
     render: function() {
-        var self = this,
-            additionalClass = self.props.forceOpen ? 'is-shown' : 'is-hidden'
-        ;
+        var self = this;
         return (
-            <div className={additionalClass}>
-                <br />
-                <div className="columns is-desktop">
-                    <div className="column is-12-mobile is-10-desktop">
-                        {self.props.messageNeededComponent}
-                        <Thumbnails
-                            isGuest={self.props.isGuest}
-                            thumbnails={self.props.thumbnails}
-                            videoState={self.props.videoState}
-                            forceOpen={self.props.forceOpen}
-                            isServingEnabled={self.props.isServingEnabled}
-                            videoId={self.props.videoId}
-                        />
-                    </div>
-                    <aside className="column is-12-mobile is-2-desktop">
-                        <VideoInfoBox
-                            isGuest={self.props.isGuest}
-                            videoLink={self.props.videoLink}
-                            duration={self.props.duration}
-                            url={self.props.url}
-                            experimentState={self.state.experimentState}
-                            winnerThumbnail={self.state.winnerThumbnail}
-                        />
-                        <VideoLift 
-                            thumbnails={self.props.thumbnails}
-                        />
-                        <VideoSharer
-                            isGuest={self.props.isGuest}
-                            shareToken={self.props.shareToken}
-                            videoId={self.props.videoId}
-                            accountId={self.props.accountId}
-                        />
-                    </aside>
+            <article className="xxCollection xxCollection--video">
+                <div className="xxCollection-content">
+                    <VideoInfoBox
+                        isGuest={self.props.isGuest}
+                        videoLink={self.props.videoLink}
+                        duration={self.props.duration}
+                        url={self.props.url}
+                        experimentState={self.state.experimentState}
+                        winnerThumbnail={self.state.winnerThumbnail}
+                    />
+                    <VideoSharer
+                        isGuest={self.props.isGuest}
+                        shareToken={self.props.shareToken}
+                        videoId={self.props.videoId}
+                        accountId={self.props.accountId}
+                    />
                 </div>
-            </div>
+                    <Thumbnails
+                        isGuest={self.props.isGuest}
+                        thumbnails={self.props.thumbnails}
+                        videoState={self.props.videoState}
+                        forceOpen={self.props.forceOpen}
+                        isServingEnabled={self.props.isServingEnabled}
+                        videoId={self.props.videoId}
+                        shareToken={self.props.shareToken}
+                        videoId={self.props.videoId}
+                        accountId={self.props.accountId}
+                    />
+            </article>
         );
     }
 });

@@ -33,6 +33,9 @@ const _DEFAULT_LOCALE = 'en-US',
             update: 'Update',
             url: 'URL',
             copy: 'Copy',
+            close: 'Close',
+            back: 'Back',
+            send: 'Send',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
@@ -224,6 +227,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.accountName' : 'Account Name',
             'label.accountId' : 'Account ID',
             'label.avatar' : 'Avatar',
+            'label.yourName' : 'Your Name',
+            'label.yourEmail' : 'Your Email',
+            'label.message' : 'Message',
+            'label.ourLocation' : 'Our Location',
             // Created
             // Updated
             'label.servingEnabled' : 'Serving Enabled',
@@ -238,6 +245,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
             'copy.signedInAs': 'Signed In as @user',
+            'copy.defaultThumbnail': 'Default Thumbnail',
+            'copy.neonSelect': 'Neon Select', 
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.contactUs.success' : 'Thanks! We’ll be in touch shortly.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -259,11 +272,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
+            'nav.account': 'Account',
             'nav.forgotUser': 'Forgot Password?',
             'nav.signOut': 'Sign Out',
             'nav.videoLibrary': 'Video Library',
             'nav.analyze': 'Analyze',
-            'nav.contact': 'Contact',
+            'nav.contact': 'Contact Us',
             'nav.support': 'Support',
             'nav.plugins': 'Plugins',
             'nav.api': 'API Documentation',
@@ -271,6 +285,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.billing': 'Billing',
             'nav.accountSettings': 'Account Settings',
             'nav.userSettings': 'User Settings',
+            'nav.learnMore': 'Learn More',
+
+            // Titles
+
+            'title.home': 'Go to the Home Page',
 
             // Error messages
 
@@ -303,7 +322,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',
 
             'copy.copyright': String.fromCharCode(169) + ' 2016 @name All rights reserved.',
-            'copy.newsFlashMessage': 'Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon.',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
             //image processing stages
