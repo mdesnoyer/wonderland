@@ -19,6 +19,7 @@ var DragDropComponent = React.createClass({
         },
         onDrop: function (files) {
             var self = this;
+            debugger 
             self.setState({
                 mode: 'loading'
             },
