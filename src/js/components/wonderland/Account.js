@@ -14,7 +14,8 @@ var Account = React.createClass({
     },
     getInitialState: function() {
         return {
-            displayName: ''
+            displayName: '',
+            username: ''
         }
     },
     componentWillMount: function() {
@@ -22,7 +23,8 @@ var Account = React.createClass({
         SESSION.user()
             .then(function(userData) {
                 self.setState({
-                    displayName: userData.displayName
+                    displayName: userData.displayName || userData.username,
+                    username: userData.username
                 });
             })
             .catch(function(err) {
@@ -36,19 +38,23 @@ var Account = React.createClass({
         self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
     },
     render: function() {
-        var self = this;
+        var self = this,
+            accountBodyText = T.get('copy.account.body', {
+                '@link': UTILS.PRICING_EXTERNAL_URL
+            })
+        ;
         return (
             <article className="xxPageOverlay-content">
                 <h1 className="xxSubtitle">{T.get('nav.account')}</h1>
                 <h2 className="xxTitle">{T.get('copy.account.heading', {'@displayName': self.state.displayName})}</h2>
                 <div className="xxText">
-                    <p>TODO: Text. Get More!</p>
+                    <p dangerouslySetInnerHTML={{__html: accountBodyText}} />
                 </div>
                 <div className="xxFormButtons">
                     <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('logOut')}</button>
                 </div>
                 <section className="xxSection">
-                    <ChangePasswordForm />
+                    <ChangePasswordForm username={self.state.username}/>
                 </section>
             </article>
         );

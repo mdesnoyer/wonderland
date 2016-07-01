@@ -145,6 +145,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountSettings.heading': 'Account Settings',
             'copy.accountSettings.body': '',
             'copy.account.heading': 'Hi, @displayName',
+            'copy.account.body' : 'Enjoying your Neon Demo, but want to analyze more content more quickly? <a href="@link">Get More!</a>',
 
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
@@ -303,7 +304,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
-            'error.passwordMatchInvalid': 'Passwords don&rsquo;t match.',
+            'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
             'error.unableToSignIn': 'Unable to Sign In',
 
             'error.longVideo': 'Please upload a video shorter than 15 minutes long.',
