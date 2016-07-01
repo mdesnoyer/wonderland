@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import XXCollection from './components/Collection';
 import XXUpload from './components/Upload';
@@ -76,6 +77,21 @@ export default class XXPage extends React.Component {
 
         const currentNavItems = ['has-account', 'account'].indexOf(stage) >= 0 ? navItemsLoggedIn : navItems;
 
+        const overlays = {
+            'learn-more': (
+                <XXLearnMore key="learn-more" />
+            ),
+            'contact-us': (
+                <XXContactUs onClose={() => updateStage('')} key="contact-us" />
+            ),
+            'sign-up': (
+                <XXSignUp onClose={stage => updateStage(stage)} key="sign-up" />
+            ),
+            'account': (
+                <XXAccount onClose={stage => updateStage(stage)} key="account" />
+            ),
+        };
+
         return (
             <main className="xxPage">
                 <header className="xxHeader">
@@ -112,43 +128,28 @@ export default class XXPage extends React.Component {
                     <XXUpload onSubmit={() => updateStage('processing')} />
                 </header>
 
-                {
-                    stage === 'learn-more' ? (
-                        <XXPageOverlay onClose={() => updateStage('')}>
-                            <XXLearnMore />
-                        </XXPageOverlay>
-                    ) : null
-                }
+                {/*
+                    One XXPageOverlay for all overlay pages, then all the content goes inside it.
+                    That allows the overlay to slide in & out the first time & then just the
+                    individual content blocks to transition within while it's open.
+                */}
+                <ReactCSSTransitionGroup transitionName="transitionPageOverlay" transitionEnterTimeout={600} transitionLeaveTimeout={600}>
+                    {
+                        ['learn-more', 'contact-us', 'sign-up', 'account'].indexOf(stage) >= 0  ? (
+                            <XXPageOverlay onClose={() => updateStage('')}>
+                                {overlays[stage]}
+                            </XXPageOverlay>
+                        ) : null
+                    }
+                </ReactCSSTransitionGroup>
 
-                {
-                    stage === 'contact-us' ? (
-                        <XXPageOverlay onClose={() => updateStage('')}>
-                            <XXContactUs onClose={() => updateStage('')} />
-                        </XXPageOverlay>
-                    ) : null
-                }
-
-                {
-                    stage === 'sign-up' ? (
-                        <XXPageOverlay onClose={() => updateStage('')}>
-                            <XXSignUp onClose={stage => updateStage(stage)} />
-                        </XXPageOverlay>
-                    ) : null
-                }
-
-                {
-                    stage === 'account' ? (
-                        <XXPageOverlay onClose={() => updateStage('')}>
-                            <XXAccount onClose={stage => updateStage(stage)} />
-                        </XXPageOverlay>
-                    ) : null
-                }
-
-                {
-                    stage === 'image-zoom' ? (
-                        <XXImageZoom onClose={() => updateStage('')} />
-                    ) : null
-                }
+                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                    {
+                        stage === 'image-zoom' ? (
+                            <XXImageZoom onClose={() => updateStage('')} />
+                        ) : null
+                    }
+                </ReactCSSTransitionGroup>
 
                 {
                     stage === 'processing' ? (

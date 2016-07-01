@@ -31,7 +31,7 @@
     }
 
     &--scroll {
-        overflow-x: visible;
+        overflow-x: hidden;
         overflow-y: scroll;
         min-width: $page-min-width + $gutter-width * 2;
 

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import XXCollectionInfo from './Info';
 import XXCollectionImages from './Images';
@@ -49,6 +50,7 @@ export default class XXCollection extends React.Component {
         let content = (
             <XXCollectionInfo
                 {...this.props}
+                key="collection-info"
                 activeContent={activeContent}
                 setActiveContent={setActiveContent}
             />
@@ -58,6 +60,7 @@ export default class XXCollection extends React.Component {
             case 'refilter':
                 content = (
                     <XXCollectionRefilter
+                        key="collection-refilter"
                         setActiveContent={setActiveContent}
                     />
                 );
@@ -65,6 +68,7 @@ export default class XXCollection extends React.Component {
             case 'email':
                 content = (
                     <XXCollectionShareEmail
+                        key="collection-email"
                         setActiveContent={setActiveContent}
                     />
                 );
@@ -72,6 +76,7 @@ export default class XXCollection extends React.Component {
             case 'share':
                 content = (
                     <XXCollectionShareLink
+                        key="collection-share"
                         setActiveContent={setActiveContent}
                     />
                 );
@@ -79,6 +84,7 @@ export default class XXCollection extends React.Component {
             case 'delete':
                 content = (
                     <XXCollectionDelete
+                        key="collection-delete"
                         setActiveContent={setActiveContent}
                     />
                 );
@@ -88,7 +94,9 @@ export default class XXCollection extends React.Component {
         return (
             <article className="xxCollection xxCollection--video">
                 <div className="xxCollection-content">
-                    {content}
+                    <ReactCSSTransitionGroup transitionName="fadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                        {content}
+                    </ReactCSSTransitionGroup>
                 </div>
 
                 <XXCollectionImages
@@ -96,21 +104,25 @@ export default class XXCollection extends React.Component {
                     updateStage={this.props.updateStage}
                 />
 
-                {
-                    activeContent === 'refilter-finished' ? (
-                        <XXCollectionRefilterReady
-                            setActiveContent={setActiveContent}
-                        />
-                    ) : null
-                }
+                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                    {
+                        activeContent === 'refilter-finished' ? (
+                            <XXCollectionRefilterReady
+                                key="refilter-ready"
+                                setActiveContent={setActiveContent}
+                            />
+                        ) : null
+                    }
 
-                {
-                    isProcessingReady ? (
-                        <XXCollectionProcessingReady
-                            onClick={() => this.setState({ isProcessingReady: false })}
-                        />
-                    ) : null
-                }
+                    {
+                        isProcessingReady ? (
+                            <XXCollectionProcessingReady
+                                key="processing-ready"
+                                onClick={() => this.setState({ isProcessingReady: false })}
+                            />
+                        ) : null
+                    }
+                </ReactCSSTransitionGroup>
 
                 {
                     this.props.isMobile ? (

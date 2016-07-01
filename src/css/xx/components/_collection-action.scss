@@ -2,6 +2,7 @@
 
 .xxCollectionAction {
     @include clearfix;
+    clear: both;
 
     p {
         margin: 12px 0 20px;
