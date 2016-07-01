@@ -43,7 +43,56 @@ var ChangePasswordForm = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        console.log('submitted');
+        E.checkForError(T.get('error.passwordMatchInvalid'), (self.state.newPassword === self.state.verifyPassword));
+        E.checkForError(T.get('error.passwordFormatInvalid'),UTILS.isValidPassword(self.state.newPassword));
+        if (E.isErrors()) {
+            self.setState({
+                mode: 'error'
+            });
+        }
+        else {
+            self.setState({
+                mode: 'loading'
+            }, function() {
+                self.PUT('users', {
+                    host: CONFIG.AUTH_HOST,
+                    data: {
+                        'username': self.props.username,
+                        'new_password': self.state.newPassword,
+                        'reset_password_token': self.props.params.token // TODO
+                    }
+                })
+                .then(function(json) {
+                    TRACKING.sendEvent(self, arguments, self.props.username);
+                    self.setState({
+                        mode: 'success'
+                    }, function() {
+                        E.clearErrors();
+                    });
+                })
+                .catch(function(err) {
+                    switch (err.code) {
+                        case 401:
+                        case 404:
+                            console.log(err);
+                            E.raiseError(T.get('copy.userReset.error', {
+                                '@link': UTILS.DRY_NAV.USER_FORGOT.URL
+                            }));
+                            self.setState({
+                                mode: 'error'
+                            });
+                            break;
+                        default:
+                            console.log(err);
+                            E.raiseError(err);
+                            self.setState({
+                                mode: 'error'
+                            });
+                            break;
+                    }
+                });
+            });
+        }
     },
     render: function() {
         var self = this,
@@ -94,6 +143,7 @@ var ChangePasswordForm = React.createClass({
                             minLength="8"
                             maxLength="64"
                             onChange={self.updateField}
+                            autoComplete="off"
                             required
                         />
                     </div>
@@ -111,6 +161,7 @@ var ChangePasswordForm = React.createClass({
                             minLength="8"
                             maxLength="64"
                             onChange={self.updateField}
+                            autoComplete="off"
                             required
                         />
                     </div>
