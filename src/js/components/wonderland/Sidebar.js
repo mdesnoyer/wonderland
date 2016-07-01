@@ -63,9 +63,6 @@ var Sidebar = React.createClass({
             case 'signUp':
                 content = <SignUp handleClose={self.handleClose} />;
                 break;
-            case 'signIn':
-                content = <div>Sign In</div>;
-                break;
             case 'account':
                 content = <Account />;
                 break;

@@ -55,9 +55,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signIn.heading': 'Welcome to Neon',
             'copy.signIn.body': 'Sign in below.',
 
-            'copy.signUp.title': 'Sign Up for Neon',
-            'copy.signUp.heading': 'Sign Up for Neon',
-            'copy.signUp.body': 'See your high-performance thumbnails now. Get started by creating an account.',
+            'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
+            'copy.signUp.logIn': 'Already have an account? <a href="@link">Log In</a>.',
 
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
