@@ -12,6 +12,7 @@ var ThumbnailCollection = React.createClass({
             <div>
                 {
                     self.props.thumbnails.map(function(thumbnail, i) {
+                        debugger
                         if (i === 0 || i === self.props.thumbnails.length -1) {
                             return null;
                         }
