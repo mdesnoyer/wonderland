@@ -3,11 +3,26 @@
 import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var FeatureThumbnail = React.createClass({
     // mixins: [ReactDebugMixin],
+    // getInitialState: function() {
+    //     return {
+    //         renditionNumber: 0
+    //     }
+    // },
+    // componentWillMount: function(){
+    //     var self = this,
+    //         number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[1])
+    //     ; 
+    //     self.setState({
+    //         renditionNumber: number 
+    //     })
+        
+    // },
     render: function() {
         var self = this,
             score,
