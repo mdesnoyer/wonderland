@@ -3,11 +3,11 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Thumbnails from './Thumbnails';
-import VideoInfoBox from './VideoInfoBox';
 import VideoSharer from './VideoSharer';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
+import VideoContent from '../knave/VideoContent';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +19,6 @@ var VideoMain = React.createClass({
         videoId: React.PropTypes.string.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         videoState: React.PropTypes.string.isRequired,
-        videoLink: React.PropTypes.string,
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
@@ -66,19 +65,9 @@ var VideoMain = React.createClass({
         return (
             <article className="xxCollection xxCollection--video">
                 <div className="xxCollection-content">
-                    <VideoInfoBox
-                        isGuest={self.props.isGuest}
-                        videoLink={self.props.videoLink}
-                        duration={self.props.duration}
-                        url={self.props.url}
-                        experimentState={self.state.experimentState}
-                        winnerThumbnail={self.state.winnerThumbnail}
-                    />
-                    <VideoSharer
-                        isGuest={self.props.isGuest}
-                        shareToken={self.props.shareToken}
+                    <VideoContent 
+                        title={self.props.title}
                         videoId={self.props.videoId}
-                        accountId={self.props.accountId}
                     />
                 </div>
                     <Thumbnails
