@@ -55,9 +55,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signIn.heading': 'Welcome to Neon',
             'copy.signIn.body': 'Sign in below.',
 
-            'copy.signUp.title': 'Sign Up for Neon',
-            'copy.signUp.heading': 'Sign Up for Neon',
-            'copy.signUp.body': 'See your high-performance thumbnails now. Get started by creating an account.',
+            'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
+            'copy.signUp.logIn': 'Already have an account? <a href="@link">Log In</a>.',
 
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
@@ -88,6 +88,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
+            'copy.passwordVerify': 'Verify Password',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -154,10 +155,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
             'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
 
-            'copy.confirmAccount.title': 'Confirm Account',
-            'copy.confirmAccount.heading': 'Confirm Account',
-            'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails.',
-            'copy.confirmAccount.body.2': 'Please look for an email to verify your account. If you don&rsquo;t see it within 30 minutes, please <a href="@link" rel="external">contact us</a>.',
+            'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails. Please look for an email to verify your account. If you don\u2019t see it within 30 minutes, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
@@ -222,8 +220,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.accessLevel' : 'Access Level',
             'label.created' : 'Created',
             'label.updated' : 'Updated',
-            'label.firstName' : 'First Name',
-            'label.lastName' : 'Last Name',
+            'label.firstName' : 'Your First Name',
+            'label.lastName' : 'Your Last Name',
+            'label.lastName.optional' : 'Your Last Name (Optional)',
             'label.title' : 'Title',
             'label.defaultThumbnailId' : 'Default Thumbnail ID',
             'label.defaultSizeWidthXHeight' : 'Default Size (width x height)',
@@ -319,7 +318,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            'copy.agreeTerms': 'I agree to Neon\u2019s <a href="@link">Terms and Conditions</a> of use.',
+            'copy.agreeTerms': 'By using this service, you agree to our <a href="@link" target="_blank">Terms of Service</a>.',
 
             'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
             'copy.processingSlide.2': 'Please be patient–it takes about the same amount of time for Neon to analyze your video as it takes for you to watch it.',

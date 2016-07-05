@@ -168,9 +168,6 @@ var UTILS = {
         PLUGINS_BRIGHTCOVE_WIZARD: {
             URL: '/plugins/new/brightcove/wizard/'
         },
-        SIGNUP: {
-            URL: '/signup/'
-        },
         SIGNIN: {
             URL: '/signin/'
         },
@@ -393,7 +390,7 @@ var UTILS = {
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
+        return state.password === state.verifyPassword;
     },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {

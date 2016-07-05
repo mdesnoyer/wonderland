@@ -6,6 +6,7 @@ import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
 import Contact from './Contact';
 import Account from './Account';
+import SignUp from './SignUp';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,10 +61,7 @@ var Sidebar = React.createClass({
                 content = <Contact handleClose={self.handleClose} />;
                 break;
             case 'signUp':
-                content = <div>Sign Up</div>;
-                break;
-            case 'signIn':
-                content = <div>Sign In</div>;
+                content = <SignUp handleClose={self.handleClose} />;
                 break;
             case 'account':
                 content = <Account />;
