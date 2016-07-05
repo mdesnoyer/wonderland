@@ -42,7 +42,6 @@ var SiteNavigation = React.createClass({
                 learnMore: <a className="xxNav-anchor" href="#" content="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
                 contactPage: <a className="xxNav-anchor" href="#" content="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
                 signUp: <a className="xxNav-anchor" href="#" content="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
-                signIn: <a className="xxNav-anchor" href={UTILS.DRY_NAV.SIGNIN.URL} content="signIn">{T.get('nav.signIn')}</a>,
                 account: <a className="xxNav-anchor" href="#" content="account" onClick={self.handleClick}>{T.get('nav.account')}</a>
             },
             constructedNav = []
@@ -57,7 +56,6 @@ var SiteNavigation = React.createClass({
             // Signed Out
             constructedNav.push(items.learnMore);
             constructedNav.push(items.contactPage);
-            constructedNav.push(items.signIn);
             constructedNav.push(items.signUp);
         }
         return (
