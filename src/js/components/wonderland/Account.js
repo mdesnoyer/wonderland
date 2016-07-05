@@ -67,7 +67,26 @@ var Account = React.createClass({
                             })}} />
                         </div>
                     ) : (
-                        <div>cash money</div>
+                        <div>
+                            <section className="xxSection">
+                                Account Settings
+                            </section>
+                            <section className="xxSection">
+                                Billing
+                            </section>
+                            <section className="xxSection">
+                                Plugins
+                            </section>
+                            <section className="xxSection">
+                                Telemetry
+                            </section>
+                            <section className="xxSection">
+                                Support
+                            </section>
+                            <section className="xxSection">
+                                API Docs
+                            </section>
+                        </div>
                     )
                 }
                 <div className="xxFormButtons">
