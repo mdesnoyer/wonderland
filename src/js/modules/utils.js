@@ -168,9 +168,6 @@ var UTILS = {
         PLUGINS_BRIGHTCOVE_WIZARD: {
             URL: '/plugins/new/brightcove/wizard/'
         },
-        SIGNUP: {
-            URL: '/signup/'
-        },
         SIGNIN: {
             URL: '/signin/'
         },
@@ -257,6 +254,7 @@ var UTILS = {
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
+    PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
@@ -392,7 +390,7 @@ var UTILS = {
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
+        return state.password === state.verifyPassword;
     },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {

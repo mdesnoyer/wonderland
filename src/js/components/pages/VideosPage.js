@@ -51,6 +51,7 @@ var VideosPage = React.createClass({
                 <Videos
                     isServingEnabled={self.state.isServingEnabled}
                 />
+                <SiteFooter />
             </main>
         );
     }
