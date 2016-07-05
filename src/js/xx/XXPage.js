@@ -143,7 +143,7 @@ export default class XXPage extends React.Component {
                     }
                 </ReactCSSTransitionGroup>
 
-                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {
                         stage === 'image-zoom' ? (
                             <XXImageZoom onClose={() => updateStage('')} />

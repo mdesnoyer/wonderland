@@ -58,7 +58,7 @@ export default class XXPageOverlay extends React.Component {
             <div className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" onClick={handleBgCloseClick}>
                 <a href="" className="xxOverlay-close" onClick={handleCloseClick}>Close</a>
                 <div className="xxPageOverlay">
-                    <ReactCSSTransitionGroup transitionName="fadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
                         {children}
                     </ReactCSSTransitionGroup>
                 </div>

@@ -100,7 +100,7 @@
 .xxCollectionInfo {
 
     // allow this module to take up 0 space when animating
-    &.fadeInOutSequential-leave {
+    &.xxFadeInOutSequential-leave {
         float: left;
         width: 100%;
     }

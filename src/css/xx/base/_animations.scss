@@ -60,7 +60,7 @@
     }
 }
 
-.fadeInOutSequential {
+.xxFadeInOutSequential {
     &-enter {
         overflow: hidden;
         max-height: 0;
@@ -68,7 +68,7 @@
     }
 
     &-enter-active {
-        max-height: 100000px;
+        max-height: $max-possible-px;
         opacity: 1;
         transition: opacity $default-transition $default-transition-speed,
                     max-height 0s $default-transition-speed;

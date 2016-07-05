@@ -94,7 +94,7 @@ export default class XXCollection extends React.Component {
         return (
             <article className="xxCollection xxCollection--video">
                 <div className="xxCollection-content">
-                    <ReactCSSTransitionGroup transitionName="fadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                         {content}
                     </ReactCSSTransitionGroup>
                 </div>
@@ -104,7 +104,7 @@ export default class XXCollection extends React.Component {
                     updateStage={this.props.updateStage}
                 />
 
-                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {
                         activeContent === 'refilter-finished' ? (
                             <XXCollectionRefilterReady
