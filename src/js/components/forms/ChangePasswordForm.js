@@ -20,20 +20,20 @@ var ChangePasswordForm = React.createClass({
     updateField: function(e) {
         var self = this;
         self.setState({
-            email: e.target.value
+            email: e.target.value.trim()
         });
     },
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, self.state.email.trim());
+        TRACKING.sendEvent(self, arguments, self.state.email);
         self.setState({
             mode: 'loading'
         }, function() {
             self.POST('users/forgot_password', {
                 host: CONFIG.AUTH_HOST,
                 data: {
-                    username: self.state.email.trim()
+                    username: self.state.email
                 }
             })
             .then(function(json) {
