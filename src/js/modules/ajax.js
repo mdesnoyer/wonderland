@@ -57,9 +57,9 @@ var AJAXModule = {
                 _options.type = 'json';
                 _options.contentType = _options.contentType || 'application/json';
                 if (_options.contentType === 'application/json') {
-                    // Wrap in a try/catch in case _option.data is already stringified
+                    // Wrap in a try/catch in case options.data is already stringified
                     try {
-                        _options.data = JSON.stringify(_options.data);
+                        _options.data = JSON.stringify(options.data);
                     } catch (e) {
                         // no-op
                     }
