@@ -40,6 +40,7 @@ import DemoPage from './components/pages/DemoPage';
 import CookiesPage from './components/pages/CookiesPage';
 import XXPage from './xx/XXPage';
 import XXPageMobile from './xx/XXPageMobile';
+import TestPage from './components/pages/TestPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -89,6 +90,7 @@ render((
         <Route path={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.SETTINGS_USER.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
+        <Route path={"/testing/"} component={TestPage} />
 
         <Route path={UTILS.DRY_NAV.URL_SHORTENER.URL} component={URLShortenerPage} />
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />

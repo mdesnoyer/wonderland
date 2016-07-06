@@ -44,19 +44,30 @@ var AJAXModule = {
         function fin(resolve, reject) {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
-            _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
             if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
                 _options.headers = _options.headers || {};
                 _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
             }
             if (_options.method === 'GET') {
+                _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
                 _url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(_options.data);
                 delete _options.data;
             }
             else {
-                _options.data = JSON.stringify(_options.data);
                 _options.type = 'json';
-                _options.contentType = 'application/json';
+                _options.contentType = _options.contentType || 'application/json';
+                if (_options.contentType === 'application/json') {
+                    // Wrap in a try/catch in case options.data is already stringified
+                    try {
+                        _options.data = JSON.stringify(options.data);
+                    } catch (e) {
+                        // no-op
+                    }
+                } else {
+                    // Assume that we're sending in "raw" data (such a multipart/form)
+                    _options.processData = _options.processData || false;
+                    _options.data = options.data || {};
+                }
             }
 
             var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
