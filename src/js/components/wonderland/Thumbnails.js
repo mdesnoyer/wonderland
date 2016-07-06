@@ -36,15 +36,20 @@ var Thumbnails = React.createClass({
             <div className="xxCollectionImages">
                 <FeatureThumbnail
                     thumbnails={self.props.thumbnails}
+                    videoId={self.props.videoId}
                     type="default"
                 />
                 <FeatureThumbnail
                     thumbnails={self.props.thumbnails}
+                    videoId={self.props.videoId}
                     type="neon"
+                    handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                 />
                 <div className="xxCollectionImages-all">
                     <ThumbnailCollection
+                        videoId={self.props.videoId}
                         thumbnails={self.state.thumbnails}
+                        handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                     />
                 </div>
             </div>

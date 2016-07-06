@@ -24,7 +24,7 @@ var VideoInfo = React.createClass({
                     <strong className="xxCollectionFilters-title">Filters</strong>
                     <span className="xxCollectionFilters-value">None</span>
                 </div>
-                <Lift/>
+                <Lift displayThumbLift={self.props.displayThumbLift}/>
             </div>
         );
     }
