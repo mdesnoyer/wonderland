@@ -38,7 +38,13 @@ var VideoContent = React.createClass({
                 );
                 break;
             case 'share':
-                contents = <ShareLink handleMenuChange={self.handleMenuChange}/>;
+                contents = (
+                    <ShareLink 
+                        handleMenuChange={self.handleMenuChange} 
+                        shareToken={self.props.shareToken} 
+                        videoId={self.props.videoId}
+                    />
+                );
                 break;
             case 'email':
                 contents = <ShareEmail handleMenuChange={self.handleMenuChange}/>;
