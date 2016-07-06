@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 347.1 243.36">
+  <g>
+    <g>
+      <path d="M85.88,39.07a121.31,121.31,0,0,0,163.3,178.05" transform="translate(0 0.75)" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.5px;stroke-dasharray: 0.001,3.5"/>
+      <polygon points="89.98 35.53 81.75 39.26 85.6 40.16 86.72 43.95 89.98 35.53" style="fill: #94a0ab"/>
+      <circle cx="249.11" cy="217.15" r="1.41" transform="translate(-80.36 192.22) rotate(-36.62)" style="fill: #94a0ab"/>
+    </g>
+    <g>
+      <path d="M265,202.78A121.31,121.31,0,0,0,101.67,24.73" transform="translate(0 0.75)" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.5px;stroke-dasharray: 0.001,3.5"/>
+      <polygon points="260.87 207.83 269.1 204.1 265.25 203.19 264.13 199.41 260.87 207.83" style="fill: #94a0ab"/>
+      <circle cx="101.74" cy="24.71" r="1.41" transform="translate(5.35 66.32) rotate(-36.62)" style="fill: #94a0ab"/>
+    </g>
+    <path d="M44.07,222.56C72.58,222.56,65.69,195,79,195c21.37,0,20.1-82,34.88-82,21.76,0,28.33-96.11,34.88-96.11s1.84,80.88,34.88,80.88c32.24,0,27.73-44.25,34.88-44.25s-2.5,121,35,121c17.55,0,29,46.79,51.18,48" transform="translate(0 0.75)" style="fill: none;stroke: #ff6b31;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 0.001,2;opacity: 0.8"/>
+    <g>
+      <polyline points="4.63 205.64 174.63 205.64 344.63 205.64" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 182.35 174.63 182.35 344.63 182.35" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 159.06 174.63 159.06 344.63 159.06" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 135.76 174.63 135.76 344.63 135.76" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 112.47 174.63 112.47 344.63 112.47" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 89.18 174.63 89.18 344.63 89.18" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <polyline points="4.63 65.89 174.63 65.89 344.63 65.89" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+      <line x1="4.63" y1="42.6" x2="344.63" y2="42.6" style="fill: none;stroke: #94a0ab;stroke-linecap: round;stroke-linejoin: round;stroke-width: 0.5px;stroke-dasharray: 0.001,3"/>
+    </g>
+    <circle cx="97.27" cy="186.57" r="3.85" style="fill: #ff6b31;opacity: 0.41666666790843"/>
+    <circle cx="112" cy="186.57" r="3.85" style="fill: #ff6b31;opacity: 0.5"/>
+    <polyline points="0 172.75 69.08 172.75 69.08 77.88 20.44 77.88" style="fill: none;stroke: #ff6b31;stroke-miterlimit: 10;opacity: 0.8"/>
+    <polyline points="347.1 77.88 278.02 77.88 278.02 172.75 326.66 172.75" style="fill: none;stroke: #ff6b31;stroke-miterlimit: 10;opacity: 0.8"/>
+    <rect x="93.42" y="77.88" width="157.38" height="94.87" style="fill: #ff6b31;opacity: 0.1"/>
+    <rect x="93.42" y="77.88" width="157.38" height="94.87" style="fill: none;stroke: #ff6b31;stroke-miterlimit: 10;opacity: 0.8"/>
+    <g>
+      <circle cx="250.8" cy="172.75" r="13.93" style="fill: #fff"/>
+      <g style="opacity: 0.8">
+        <circle cx="250.8" cy="172.75" r="13.93" style="fill: #ff6b31"/>
+      </g>
+      <path d="M256.31,168.53l-1.19,1.19a4.83,4.83,0,0,1,.57,2.28,4.89,4.89,0,0,1-4.89,4.89v-2.45l-3.26,3.26L250.8,181v-2.45A6.51,6.51,0,0,0,256.31,168.53Zm-5.51-1.42v2.45l3.26-3.26L250.8,163v2.45a6.51,6.51,0,0,0-5.51,10l1.19-1.19a4.83,4.83,0,0,1-.57-2.28A4.89,4.89,0,0,1,250.8,167.11Z" transform="translate(0 0.75)" style="fill: #fff"/>
+    </g>
+    <g>
+      <path d="M148.72,125.64v8h-0.84v-8h-8v-0.76h8v-8h0.84v8h8v0.76h-8Z" transform="translate(0 0.75)" style="fill: #ff6b31"/>
+      <path d="M166.83,139.25c1.3-10.55,4.92-19.79,11.3-27.23H160.49v-0.76h18.57V112c-6.68,7.86-10.13,17.15-11.39,27.23h-0.84Z" transform="translate(0 0.75)" style="fill: #ff6b31"/>
+      <path d="M182.21,138.49h6.34V112.36a19,19,0,0,1-6.34,3.07v-0.76a17,17,0,0,0,6.43-3.4h0.76v27.23h6.05v0.76H182.21v-0.76Z" transform="translate(0 0.75)" style="fill: #ff6b31"/>
+    </g>
+  </g>
+</svg>

@@ -29,3 +29,51 @@
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// generates arrow
+// $direction: N, S, E, W
+@mixin arrow($direction, $width, $height, $color) {
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background: $color;
+        transform: rotate(45deg);
+        transition: background $default-transition;
+
+        @if $direction == N {
+            width: $width;
+            height: $height;
+            transform-origin: 50% 0;
+        }
+
+        @if $direction == S {
+            width: $width;
+            height: $height;
+            transform-origin: 50% 100%;
+        }
+
+        @if $direction == E {
+            width: $width;
+            height: $height;
+            transform-origin: 100% 50%;
+        }
+
+        @if $direction == W {
+            width: $width;
+            height: $height;
+            transform-origin: 0 50%;
+        }
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
