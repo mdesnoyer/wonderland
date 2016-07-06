@@ -36,55 +36,24 @@ var DragDropComponent = React.createClass({
             self.sendFormattedData(formData);
         },
         sendFormattedData: function(formData) {
-            var self = this,
-                url = self.createUrl()
-            ;
-            reqwest({
-              url: url,
-              headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
-              method: 'POST',
-              contentype: 'multipart/form-data',
-              crossOrigin: true,
-              processData : false,
-              data : formData
-            })
-            .then(function(res) {
-                console.log(res);
-                self.setState({
-                    mode:'success'
-                }, setTimeout( 
-                    self.setState({
-                        mode:'silent'
-                    }), 30)
-                )
-            }).catch(function(err) {
-                if (err.status === 401) {
-                    console.log(err);
-                    self.grabRefreshToken(SESSION.state.refreshToken, formData)
-                }
-            });
-        },
-        createUrl: function() {
-            return CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'  
-        },
-        grabRefreshToken: function(refreshToken, formData) {
-            var self = this; 
-            reqwest({
-                url: CONFIG.AUTH_HOST + 'refresh_token',
-                data: JSON.stringify({
-                    token : SESSION.state.refreshToken
-                }),
-                contentType: 'application/json',
-                method: 'POST',
-                crossDomain: true,
-                type: 'json'
+            var self = this;
+            self.POST('thumbnails', {
+                contentType: 'multipart/form-data',
+                data: formData
             })
                 .then(function (res) {
-                    SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                    self.sendFormattedData(formData)
+                    console.log(res);
+                    self.setState({
+                        mode:'success'
+                    }, setTimeout( 
+                        self.setState({
+                            mode:'silent'
+                        }), 30)
+                    )
                 })
                 .catch(function (err) {
-                    SESSION.end();
+                    // TODO: Handle error
+                    console.log(err);
                 });
         },
         render: function () {
