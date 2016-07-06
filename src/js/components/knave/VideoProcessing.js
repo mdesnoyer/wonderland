@@ -19,7 +19,6 @@ var VideoProcessing = React.createClass({
                 >
                     <span>TIME TODO</span>
                 </a>
-
                 <div className="xxCollectionFilters">
                     <strong className="xxCollectionFilters-title">Filters</strong>
                     <span className="xxCollectionFilters-value">None</span>
