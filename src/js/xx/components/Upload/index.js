@@ -106,7 +106,7 @@ export default class XXUpload extends React.Component {
                     ) : null
                 }
 
-                <ReactCSSTransitionGroup transitionName="fadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
                     {
                         isOpen ? (
                             <div className="xxOverlay" ref={overlay => this._overlay = overlay} onClick={handleBgCloseClick}>

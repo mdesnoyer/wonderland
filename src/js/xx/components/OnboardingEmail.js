@@ -38,7 +38,7 @@ export default class XXOnboardingEmail extends React.Component {
 
         return (
             <section className="xxOnboardingEmail">
-                <ReactCSSTransitionGroup transitionName="fadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
                     {
                         isNotSubmitted ? (
                             <div key="onboarding-email-form">

@@ -130,7 +130,7 @@ export default class XXOnboarding extends React.Component {
                         </ul>
                     </nav>
 
-                    <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                         {
                           stage === 'onboarding-upload' ? (
                             <XXUpload
@@ -176,7 +176,7 @@ export default class XXOnboarding extends React.Component {
                     ) : null
                 }
 
-                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {
                         ONBOARDING_STAGES.indexOf(stage) < 0 ? (
                             <article className="xxFeatureContent" key="home-featureContent">
@@ -244,7 +244,7 @@ export default class XXOnboarding extends React.Component {
                     }
                 </ReactCSSTransitionGroup>
 
-                <ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeave={false}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeave={false}>
                     {
                         stage === 'onboarding-tutorial' || stage === 'final' ? (
                             <XXCollection
