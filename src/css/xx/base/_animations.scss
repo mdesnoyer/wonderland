@@ -62,7 +62,6 @@
 
 .xxFadeInOutSequential {
     &-enter {
-        overflow: hidden;
         max-height: 0;
         opacity: 0;
     }
