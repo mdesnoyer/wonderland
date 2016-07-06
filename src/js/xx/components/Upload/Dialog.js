@@ -59,7 +59,7 @@ export default class XXUploadDialog extends React.Component {
 
     render() {
         const { updateField } = this;
-        const { onSubmit } = this.props;
+        const { isOnboarding, onSubmit } = this.props;
         const { url, gender, age } = this.state;
 
         const isValid = !!url;
@@ -87,22 +87,30 @@ export default class XXUploadDialog extends React.Component {
                             onChange={e => updateField('url', e.target.value)}
                         />
                     </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">Filters</label>
-                        <XXSelect
-                            label="Gender"
-                            value={gender}
-                            options={optionsGender}
-                            onSelect={value => updateField('gender', value)}
-                        />
-                        <XXSelect
-                            label="Age"
-                            value={age}
-                            options={optionsAge}
-                            onSelect={value => updateField('age', value)}
-                        />
-                    </div>
-                    <p className="xxFormNote">Get images for a specific audience.</p>
+                    {
+                      isOnboarding ? null : (
+                        <div className="xxFormField">
+                            <label className="xxLabel">Filters</label>
+                            <XXSelect
+                                label="Gender"
+                                value={gender}
+                                options={optionsGender}
+                                onSelect={value => updateField('gender', value)}
+                            />
+                            <XXSelect
+                                label="Age"
+                                value={age}
+                                options={optionsAge}
+                                onSelect={value => updateField('age', value)}
+                            />
+                        </div>
+                      )
+                    }
+                    {
+                        isOnboarding ? null : (
+                            <p className="xxFormNote">Get images for a specific audience.</p>
+                        )
+                    }
                     <button
                         disabled={!isValid}
                         className={submitClassName.join(' ')}

@@ -1,0 +1,23 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxOnboardingTutorial-slide {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .25s ease-in-out, visibility 0s .25s;
+
+    &.is-active {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .25s ease-in-out .25s, visibility 0s .25s;
+    }
+
+    .xxButton--transparent {
+        color: $secondary-color;
+    }
+
+    .xxFeatureContent-small {
+        margin-top: $default-vertical-rhythm;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

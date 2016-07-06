@@ -1,22 +1,3 @@
-@mixin filters-arrow {
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        top: 3px;
-        right: 29px;
-        width: 1px;
-        height: 10px;
-        background: $bg-tertiary-color;
-        transform: rotate(-45deg);
-        transform-origin: 50% 100%;
-    }
-
-    &::after {
-        transform: rotate(45deg);
-    }
-}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionFilterToggle {
@@ -30,18 +11,6 @@
         display: none;
     }
 
-    span {
-        position: absolute;
-        top: 7px;
-        right: 100%;
-        margin: 0 12px 0 0;
-        color: rgba($base-color, 0);
-        font-size: 14px;
-        line-height: 1;
-        pointer-events: none;
-        transition: color $default-transition;
-    }
-
     &::after {
         @include font-awesome('f021');
 
@@ -49,7 +18,7 @@
         box-sizing: border-box;
         width: 27px;
         height: 27px;
-        border-radius: 100%;
+        border-radius: 50%;
         border: 1px solid $accent-color;
         background: #fff;
         font-size: 15px;
@@ -61,7 +30,7 @@
     }
 
     &:hover {
-        span {
+        .xxCollectionFilterToggle-label {
             color: $base-color;
         }
 
@@ -75,20 +44,6 @@
     &--countdown {
         cursor: default;
 
-        span {
-            width: 70px;
-            height: 27px;
-            top: 0;
-            right: 14px;
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
-            margin: 0;
-            padding: 1px 0 0 18px;
-            background: $bg-secondary-color;
-            color: $tertiary-color;
-            line-height: 26px;
-        }
-
         &::after {
             z-index: 2;
             background: $accent-color;
@@ -96,6 +51,32 @@
             transform: rotate(0deg);
             animation: rotate 2s infinite linear;
         }
+    }
+}
+
+.xxCollectionFilterToggle-label {
+    position: absolute;
+    top: 7px;
+    right: 100%;
+    margin: 0 12px 0 0;
+    color: rgba($base-color, 0);
+    font-size: 14px;
+    line-height: 1;
+    pointer-events: none;
+    transition: color $default-transition;
+
+    .xxCollectionFilterToggle--countdown & {
+        min-width: 80px;
+        height: 27px;
+        top: 0;
+        right: 14px;
+        border-top-left-radius: 14px;
+        border-bottom-left-radius: 14px;
+        margin: 0;
+        padding: 1px 24px 0 16px;
+        background: $bg-secondary-color;
+        color: $tertiary-color;
+        line-height: 26px;
     }
 }
 
@@ -131,16 +112,24 @@
     padding: 4px 0;
 
     .has-dropdown > & {
-        @include filters-arrow;
-
         padding-right: 52px;
         cursor: pointer;
+
+        @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+        &::before,
+        &::after {
+            top: 3px;
+            right: 28px;
+            bottom: auto;
+            left: auto;
+        }
     }
 
     .is-open > & {
         &::before,
         &::after {
-            top: 7px;
+            top: 6px;
             z-index: $zindex-above-everything;
             pointer-events: none;
             transform-origin: 50% 0%;
@@ -197,22 +186,16 @@
 }
 
 .xxCollectionFiltersHint-arrow {
-    @include filters-arrow;
-
     float: right;
     position: relative;
     width: 89px;
     height: 89px;
-    border-radius: 100%;
+    border-radius: 50%;
     border: 1px solid $base-color;
     margin-right: 115px;
     background: #fff;
 
-    &::before,
-    &::after {
-        top: 39px;
-        right: 43px;
-    }
+    @include arrow(S, 1px, 11px, $bg-tertiary-color);
 }
 
 .xxCollectionFiltersHint-label {

@@ -37,6 +37,7 @@
 
 // 5. Components
 @import
+    'components/feature-content',
     'components/forms',
     'components/lift',
     'components/overlay',
@@ -50,9 +51,14 @@
     'components/collection-images',
     'components/collection-share',
     'components/collection-mobile-notification',
+    'components/onboarding-countdown',
+    'components/onboarding-email',
+    'components/onboarding-slides',
+    'components/onboarding-tutorial',
     'components/upload'
 ;
 
 // 6. Page-specific styles
-// @import
-    // 'pages/home';
+@import
+    'pages/home'
+;

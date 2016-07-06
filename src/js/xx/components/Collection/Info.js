@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import renderedTime from '../../utils/renderedTime';
+
 import XXCollectionFilters from './Filters';
 import XXLift from '../Lift';
 import XXCollectionActions from './Actions';
@@ -46,8 +48,6 @@ export default class XXCollectionInfo extends React.Component {
         const { hasFilters, isMobile, title, activeContent, setActiveContent, updateStage } = this.props;
         const { time } = this.state;
 
-        const renderedTime = `${Math.floor(time / 60)}:${time % 60 > 9 ? time % 60 : (`0${time % 60}`)}`;
-
         return (
             <div>
                 <h1 className="xxCollection-title">
@@ -60,14 +60,16 @@ export default class XXCollectionInfo extends React.Component {
                             href=""
                             className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
                             onClick={e => e.preventDefault()}>
-                            <span>{renderedTime}</span>
+                            <span className="xxCollectionFilterToggle-label">
+                                {renderedTime(Math.floor(time / 60), time % 60)}
+                            </span>
                         </a>
                     ) : (
                         <a
                             href=""
                             className="xxCollectionFilterToggle"
                             onClick={e => setActiveContent('refilter', e)}>
-                            <span>Refilter</span>
+                            <span className="xxCollectionFilterToggle-label">Refilter</span>
                         </a>
                     )
                 }
