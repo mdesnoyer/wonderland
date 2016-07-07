@@ -30,7 +30,8 @@ var VideoMain = React.createClass({
         return {
             isLoading: false,
             experimentState: T.get('copy.unknown'),
-            winnerThumbnail: ''
+            winnerThumbnail: '',
+            isHidden: false
         }
     },
     componentWillMount: function() {
@@ -62,28 +63,39 @@ var VideoMain = React.createClass({
     },
     render: function() {
         var self = this;
-        return (
-            <article className="xxCollection xxCollection--video">
-                <div className="xxCollection-content">
-                    <VideoContent 
-                        title={self.props.title}
-                        videoId={self.props.videoId}
-                    />
-                </div>
-                    <Thumbnails
-                        isGuest={self.props.isGuest}
-                        thumbnails={self.props.thumbnails}
-                        videoState={self.props.videoState}
-                        forceOpen={self.props.forceOpen}
-                        isServingEnabled={self.props.isServingEnabled}
-                        videoId={self.props.videoId}
-                        shareToken={self.props.shareToken}
-                        videoId={self.props.videoId}
-                        accountId={self.props.accountId}
-                    />
-            </article>
-        );
-    }
+        if (self.state.isHidden) {
+            return null; 
+        }
+        else {
+            return (
+                <article className="xxCollection xxCollection--video">
+                    <div className="xxCollection-content">
+                        <VideoContent 
+                            title={self.props.title}
+                            videoId={self.props.videoId}
+                            handleDelete={self.handleDelete}
+                        />
+                    </div>
+                        <Thumbnails
+                            isGuest={self.props.isGuest}
+                            thumbnails={self.props.thumbnails}
+                            videoState={self.props.videoState}
+                            forceOpen={self.props.forceOpen}
+                            videoId={self.props.videoId}
+                            shareToken={self.props.shareToken}
+                            videoId={self.props.videoId}
+                            accountId={self.props.accountId}
+                        />
+                </article>
+            );
+        }
+    },
+    handleDelete: function(e) {
+        var self = this; 
+        self.setState({
+            isHidden: true
+        });
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
