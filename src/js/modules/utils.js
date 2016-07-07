@@ -14,7 +14,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
-    NA_STRING = 'n/a',
+    NA_STRING = '?',
     COOKIE_DEFAULT_PATH = '/',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [

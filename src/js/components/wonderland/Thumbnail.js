@@ -73,7 +73,7 @@ var Thumbnail = React.createClass({
             rubricClass = 'wonderland-thumbnail__rubric' + (self.props.type === 'default' ? '' : ' is-hidden'),
             figureClass = 'wonderland-thumbnail ' + (self.state.isEnabled ? 'is-wonderland-enabled' : 'is-wonderland-disabled') + ' -' + self.props.type,
             enabledIndicator = UTILS.enabledDisabledIcon(self.state.isEnabled), // we want the opposite
-            neonScore = (UTILS.NEON_SCORE_ENABLED && self.props.type === 'neon') ? <span className={neonScoreClass} title={T.get('neonScore')}><Icon type="neon" />&nbsp;{self.props.cookedNeonScore}</span> : false,
+            neonScore = UTILS.NEON_SCORE_ENABLED ? <span className={neonScoreClass} title={T.get('neonScore')}><Icon type="neon" />&nbsp;{self.props.cookedNeonScore}</span> : null,
             handleEnabledChangeHook = self.props.isServingEnabled ? self.handleEnabledChange : function() { return false; }
         ;
         return (
