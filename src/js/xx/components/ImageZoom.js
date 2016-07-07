@@ -18,7 +18,6 @@ export default class XXPageOverlay extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0, 0);
         ReactDOM.findDOMNode(this).scrollTop = 0;
 
         document.body.classList.add('has-overlayWithScroll', 'has-overlayDark');
@@ -40,7 +39,7 @@ export default class XXPageOverlay extends React.Component {
         const { handleBgCloseClick, handleCloseClick } = this;
 
         return (
-            <article className="xxOverlay xxOverlay--dark xxOverlay--scroll xxOverlay--visibleNav">
+            <article className="xxOverlay xxOverlay--dark xxOverlay--scroll">
                 <a href="" className="xxOverlay-close" onClick={handleCloseClick}>Close</a>
                 <div className="xxImageZoom">
                     <div className="xxImageZoom-inner">

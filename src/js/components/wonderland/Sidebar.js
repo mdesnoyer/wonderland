@@ -29,13 +29,13 @@ var Sidebar = React.createClass({
             content: nextProps.content
         }, function() {
             if (self.state.content === null) {
-                document.body.classList.remove('has-overlayWithScroll');
+                document.body.classList.remove('has-overlayWithNav');
                 document.body.style.marginRight = 0;
             }
             else {
                 window.scrollTo(0, 0);
                 ReactDOM.findDOMNode(self).scrollTop = 0;
-                document.body.classList.add('has-overlayWithScroll');
+                document.body.classList.add('has-overlayWithNav');
                 document.body.style.marginRight = `${scrollbarWidth}px`;
             }
         });
@@ -70,9 +70,9 @@ var Sidebar = React.createClass({
                 break;
         }
         return (
-            <div 
-                className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" 
-                onClick={self.handleClose} 
+            <div
+                className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav"
+                onClick={self.handleClose}
                 hidden={isHidden}
             >
                 <a href="#" className="xxOverlay-close" onClick={self.handleClose}>{T.get('close')}</a>

@@ -19,12 +19,12 @@ export default class XXPageOverlay extends React.Component {
         window.scrollTo(0, 0);
         ReactDOM.findDOMNode(this).scrollTop = 0;
 
-        document.body.classList.add('has-overlayWithScroll');
+        document.body.classList.add('has-overlayWithNav');
         document.body.style.marginRight = `${scrollbarWidth}px`;
     }
 
     componentWillUnmount() {
-        document.body.classList.remove('has-overlayWithScroll');
+        document.body.classList.remove('has-overlayWithNav');
         document.body.style.marginRight = 0;
     }
 
