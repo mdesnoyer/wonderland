@@ -70,7 +70,7 @@ $page-overlay-padding-bottom: 60px;
     &-enter-active {
         &.xxOverlay {
             background: rgba($bg-color, 0.95);
-            transition: background $default-transition-speed * 2 $default-transition-easing;
+            transition: background $default-transition-speed * 1.5 $default-transition-easing;
         }
 
         .xxOverlay-close {
@@ -81,7 +81,7 @@ $page-overlay-padding-bottom: 60px;
         .xxPageOverlay,
         .xxPageOverlay-content::before {
             right: 0;
-            transition: right $default-transition-speed * 3 $default-transition-easing;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
         }
     }
 
@@ -103,7 +103,7 @@ $page-overlay-padding-bottom: 60px;
     &-leave-active {
         &.xxOverlay {
             background: transparent;
-            transition: background $default-transition-speed * 2 $default-transition-easing $default-transition-speed;
+            transition: background $default-transition-speed * 1.5 $default-transition-easing $default-transition-speed / 2;
         }
 
         .xxOverlay-close {
@@ -114,7 +114,9 @@ $page-overlay-padding-bottom: 60px;
         .xxPageOverlay,
         .xxPageOverlay-content::before {
             right: -50%;
-            transition: right $default-transition-speed * 3 $default-transition-easing;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
         }
     }
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
