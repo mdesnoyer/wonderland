@@ -219,6 +219,9 @@ var SignUpForm = React.createClass({
                     }
                     userPromise = self.POST('users', {
                         host: CONFIG.AUTH_HOST,
+                        headers: {
+                            Authorization: 'Bearer ' + SESSION.state.accessToken
+                        },
                         data: userDataObject
                     });
                 } else {

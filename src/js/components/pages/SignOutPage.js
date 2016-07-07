@@ -34,7 +34,8 @@ var SignOutPage = React.createClass({
                     });
                 })
                 .catch(function(err) {
-                    console.error(err);
+                    SESSION.end();
+                    self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
                 })
             ;
         }
