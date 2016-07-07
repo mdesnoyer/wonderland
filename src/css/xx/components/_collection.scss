@@ -108,6 +108,8 @@ $collection-content-padding-top: 17px;
     // a perfect animation that works in all browsers (namely: Chrome & Safari)
     // Otherwise the action buttons like Back & Save don't animate due
     // to an overflow bug (in combination with transition) in those two browsers.
+    // If bug is fixed, revert the following commit to get the bullet-proof solution:
+    // https://github.com/neon-lab/wonderland/commit/fe3c9f32b8989772b47c107f9cac96fcc19c899e
     &.xxFadeInOutSequential-enter,
     &.xxFadeInOutSequential-leave {
         position: absolute;
