@@ -5,6 +5,7 @@ import React from 'react';
 import SiteNavigation from '../wonderland/SiteNavigation';
 import SESSION from '../../modules/session';
 import gravatar from 'gravatar';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,13 +55,23 @@ var SiteBanner = React.createClass({
     render: function() {
         var self = this;
         return (
-            <header className="wonderland-banner wonderland-banner--header">
-                <div className="container">
-                    <nav className="level wonderland-level is-fullwidth">
-                        <SiteNavigation pos="left" isSignedIn={SESSION.active()} />
-                        <SiteNavigation pos="right" avatar={self.state.avatar} displayName={self.state.displayName} isSignedIn={SESSION.active()} />
-                    </nav>
-                </div>
+            <header className="xxHeader">
+                <a href="/" title={T.get('title.home')}>
+                    <img 
+                        className="xxLogo"
+                        src="/img/xx/logo.svg"
+                        alt={T.get('app.companyShortName')}
+                        title={T.get('app.companyShortName')}
+                    />
+                </a>
+                <nav className="xxNav">
+                    <SiteNavigation 
+                        displayName={self.state.displayName} 
+                        isSignedIn={SESSION.active()}
+                        sidebarContent={self.props.sidebarContent}
+                        setSidebarContent={self.props.setSidebarContent}
+                    />
+                </nav>
             </header>
         );
     }

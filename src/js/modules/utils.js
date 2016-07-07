@@ -168,9 +168,6 @@ var UTILS = {
         PLUGINS_BRIGHTCOVE_WIZARD: {
             URL: '/plugins/new/brightcove/wizard/'
         },
-        SIGNUP: {
-            URL: '/signup/'
-        },
         SIGNIN: {
             URL: '/signin/'
         },
@@ -246,12 +243,51 @@ var UTILS = {
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
+    FILTERS_GENDER_AGE: [    
+        {
+            value: 'Female / 35-44',
+        },
+        {
+            value: 'Male / 25 - 34',
+        },
+        {
+            value: 'None',
+        }
+    ],
+    FILTERS_GENDER: [
+        {
+            value: 'Female',
+        },
+        {
+            value: 'Male',
+        }     
+    ],  
+    FILTERS_AGE: [    
+        {
+            value: '18-29',
+        },
+        {
+            value: '30-39',
+        },
+        {
+            value: '40-49',
+        },
+        {
+            value: '50+'
+        }
+    ], 
+    LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
+    SUPPORT_EMAIL:'support@neon-lab.com',
+    SUPPORT_EMAIL_SUBJECT:'Question about Neon',
+    SUPPORT_MANDRILL_SLUG:'support-email-admin',
+    CONFIRM_MANDRILL_SLUG:'support-email',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
+    PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
@@ -387,7 +423,7 @@ var UTILS = {
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
+        return state.password === state.verifyPassword;
     },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {

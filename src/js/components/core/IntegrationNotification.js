@@ -33,8 +33,8 @@ var IntegrationNotification = React.createClass({
     },
     toggleOpen: function() {
         var self = this;
-        if (self.props.toggeleOpen) {
-            self.props.toggeleOpen();
+        if (self.props.toggleOpen) {
+            self.props.toggleOpen();
         }
     }
 })

@@ -8,10 +8,10 @@ import React from 'react';
 import Message from './Message';
 import UTILS from '../../modules/utils';
 import AjaxMixin from '../../mixins/Ajax';
-import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
+import VideoProcessing from '../knave/VideoProcessing';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -24,7 +24,6 @@ var VideoOwner = React.createClass({
         var self = this;
         return {
             videoState: 'unknown',
-            forceOpen: false,
             thumbnails: [],
             title: 'Unknown',
             error: '',
@@ -37,7 +36,6 @@ var VideoOwner = React.createClass({
             videoId: self.props.videoId,
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
-            forceOpen: self.props.forceOpen,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails),
             title: self.props.title,
@@ -46,9 +44,11 @@ var VideoOwner = React.createClass({
             shareToken: '',
             isLoading: false,
             status: 200,
-            size: self.props.forceOpen ? 'big' : 'small',
+            size: 'big',
             duration: self.props.duration || 0,
-            url: self.props.url || ''
+            url: self.props.url || '',
+            experimentState: T.get('copy.unknown'),
+            winnerThumbnail: ''
         }
     },
     componentDidMount: function() {
@@ -65,72 +65,28 @@ var VideoOwner = React.createClass({
         clearInterval(self.timer);
     },
     render: function() {
-        var self = this,
-            fourZeroFourMessageArray = [
-                T.get('copy.message.line.one'),
-                T.get('copy.message.line.two'),
-                T.get('copy.message.link.one', {'@link': UTILS.CORP_EXTERNAL_URL}),
-                T.get('copy.message.link.two', {'@link': UTILS.DRY_NAV.VIDEO_LIBRARY.URL}),
-                T.get('copy.message.link.three', {'@link': UTILS.CONTACT_EXTERNAL_URL})
-            ]
-        ;
-        if (self.state.status === 401) {
-            return (
-                <Message header={self.state.status} body={T.get('error.unableToSignIn')} flavour="danger" />
-            );
-        }
-        if (self.state.status === 404) {
-            return (
-                <Message header={self.state.status} body={fourZeroFourMessageArray} flavour="danger" />
-            );
-        }
-        if (self.state.status === 200) {
-            var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small' + (self.state.isLoading ? ' is-loading' : ''),
-                messageNeededComponent = self.state.error === '' ? '' : <Message header="Error" body={self.state.error} flavour="danger" />,
-                videoLink = '/video/' + self.state.videoId + '/',
-                videoSizeClass = 'video video--' + self.state.size
-            ;
-            return (
-                <div className={videoSizeClass}>
-                    <VideoHeader
-                        isGuest={false}
-                        handleVideoOpenToggle={self.handleVideoOpenToggle}
-                        forceOpen={self.state.forceOpen}
-                        videoState={self.state.videoState}
-                        title={self.state.title}
-                        additionalClass={additionalClass}
-                        videoId={self.state.videoId}
-                        created={self.state.created}
-                        thumbnails={self.state.sortedThumbnails}
-                        showVideoOpenToggle={true}
-                    />
-                    <VideoMain
-                        isGuest={false}
-                        videoId={self.state.videoId}
-                        forceOpen={self.state.forceOpen}
-                        messageNeededComponent={messageNeededComponent}
-                        thumbnails={self.state.sortedThumbnails}
-                        videoState={self.state.videoState}
-                        videoLink={videoLink}
-                        duration={self.state.duration}
-                        created={self.state.created}
-                        url={self.state.url}
-                        isServingEnabled={self.props.isServingEnabled}
-                        shareToken={self.state.shareToken}
-                    />
-                </div>
-            );
-        }
-    },
-    handleVideoOpenToggle: function(e) {
-        if (e.target.type === 'text') { // hack
-            return false;
-        }
         var self = this;
-        TRACKING.sendEvent(self, arguments, self.state.url);
-        self.setState({
-            forceOpen: !self.state.forceOpen
-        });
+            if (self.props.videoState === 'processing' || self.props.videoState === 'failed') {
+                return <VideoProcessing title={self.props.title} videoState={self.state.videoState} />;
+            }
+            else {
+                return (
+                        <VideoMain
+                            isGuest={false}
+                            videoId={self.state.videoId}
+                            thumbnails={self.state.sortedThumbnails}
+                            videoState={self.state.videoState}
+                            duration={self.state.duration}
+                            created={self.state.created}
+                            url={self.state.url}
+                            isServingEnabled={self.props.isServingEnabled}
+                            shareToken={self.state.shareToken}
+                            experimentState={self.state.experimentState}
+                            winnerThumbnail={self.state.winnerThumbnail}
+                            title={self.state.title}
+                        />
+                );
+        }
     },
     pingVideo: function() {
         var self = this,

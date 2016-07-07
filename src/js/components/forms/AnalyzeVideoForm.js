@@ -7,7 +7,6 @@ import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
-import TutorialPanels from '../wonderland/TutorialPanels';
 import IntegrationNotification from '../core/IntegrationNotification';
 import E from '../../modules/errors';
 import Account from '../../mixins/Account';
@@ -117,7 +116,7 @@ var AnalyzeVideoForm = React.createClass({
                 <form onSubmit={self.handleSubmit}>
                     {messageNeededComponent}
                     <div className={promptHiddenClass}>
-                        <IntegrationNotification toggeleOpen={self.toggeleOpen} />
+                        <IntegrationNotification toggleOpen={self.toggleOpen} />
                     </div>
                     <fieldset className={formHiddenClass}>
                         {legendElement}
@@ -284,7 +283,7 @@ var AnalyzeVideoForm = React.createClass({
             })
         ;
     },
-    toggeleOpen: function() {
+    toggleOpen: function() {
         var self = this; 
         self.setState({
             isFormHidden: false

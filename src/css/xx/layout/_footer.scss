@@ -1,0 +1,16 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.Footer {
+    background: $tertiary-color;
+    color: $secondary-color;
+    font-family: $sans-serif-family;
+    font-size: 14px;
+    padding: 16px $gutter-width;
+    text-align: center;
+
+    a {
+        color: #fff;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

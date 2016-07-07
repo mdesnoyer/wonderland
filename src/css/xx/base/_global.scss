@@ -5,6 +5,7 @@ body {
     overflow-y: scroll;
     position: relative;
     min-width: $page-min-width + $gutter-width * 2;
+    min-height: 100vh;
     background: $bg-color;
     color: $base-color;
     font: $base-type;

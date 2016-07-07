@@ -62,6 +62,9 @@ $form-element-padding-horizontal: 10px;
 
 $button-width: 152px;
 
+$upload-button-size: 53px; // has to be odd to allow centering the + inside
+$upload-button-offset: 35px;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $mobile-page-padding-bottom: 42px;
@@ -85,6 +88,8 @@ $zindex-upload-button: 500;
 
 $zindex-above-everything: 100000;
 $zindex-overlay: 10000;
+
+$zindex-feature-content: 100;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

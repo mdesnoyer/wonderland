@@ -115,8 +115,6 @@ var VideoGuest = React.createClass({
                     <div className={videoSizeClass}>
                         <VideoHeader
                             isGuest={true}
-                            showVideoOpenToggle={false}
-                            forceOpen={true}
                             additionalClass={additionalClass}
                             videoState={self.state.videoState}
                             title={self.state.title}
@@ -127,7 +125,6 @@ var VideoGuest = React.createClass({
                         <VideoMain
                             isGuest={true}
                             videoId={self.state.videoId}
-                            forceOpen={true}
                             messageNeededComponent={false}
                             thumbnails={self.state.sortedThumbnails}
                             videoState={self.state.videoState}
