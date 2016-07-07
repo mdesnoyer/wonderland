@@ -7,6 +7,11 @@
 }
 
 .has-overlayWithScroll {
+    overflow: hidden;
+}
+
+.has-overlayWithNav {
+    overflow-x: auto;
     overflow-y: hidden;
 
     #wonderland {
@@ -33,15 +38,15 @@
     &--scroll {
         overflow-x: visible;
         overflow-y: scroll;
+    }
+
+    &--visibleNav {
+        z-index: $zindex-header - 1;
         min-width: $page-min-width + $gutter-width * 2;
 
         @media (max-width: $page-min-width + $gutter-width * 2) {
             position: absolute;
         }
-    }
-
-    &--visibleNav {
-        z-index: $zindex-header - 1;
     }
 }
 

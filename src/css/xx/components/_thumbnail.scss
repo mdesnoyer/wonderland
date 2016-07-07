@@ -26,7 +26,7 @@ $thumbnail-hover-border: 2px;
         left: 0;
         width: $thumbnail-small-score-size;
         height: $thumbnail-small-score-size;
-        background: $accent-color;
+        background-color: rgba($accent-color, 0.9);
         color: #fff;
         font-size: 14px;
         line-height: $thumbnail-small-score-size;
@@ -41,8 +41,10 @@ $thumbnail-hover-border: 2px;
         }
     }
 
-    &--lowScore::after {
-        background: $base-color;
+    &--lowScore {
+        &::after {
+            background-color: $base-color;
+        }
     }
 
     &--large::after {
@@ -74,7 +76,7 @@ $thumbnail-hover-border: 2px;
     width: 100%;
     height: 100%;
     border-radius: 2px;
-    border: $thumbnail-hover-border solid rgba($accent-color, 0);
+    border: $thumbnail-hover-border solid $accent-color;
     transition: border-color $default-transition;
 
     .xxThumbnail[href]:hover > & {

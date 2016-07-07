@@ -44,7 +44,13 @@ var VideoContent = React.createClass({
                 contents = <ShareEmail handleMenuChange={self.handleMenuChange}/>;
                 break;
             case 'delete':
-                contents = <VideoDelete handleMenuChange={self.handleMenuChange} videoId={self.props.videoId}/>;
+                contents = (
+                    <VideoDelete 
+                        handleMenuChange={self.handleMenuChange}
+                        videoId={self.props.videoId}
+                        handleDelete={self.props.handleDelete}
+                    />
+                );
                 break;
             case 'save':
                 alert("TODO SAVE LINKED TO SIGN UP")
