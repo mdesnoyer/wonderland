@@ -40,6 +40,83 @@ $page-overlay-padding-bottom: 60px;
             display: none; // only until responsive code exists
         }
     }
+
+    &.xxFadeInOutSequential-enter {
+        position: absolute;
+        top: 0;
+        right: $gutter-width;
+        left: 0;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.transitionPageOverlay {
+    &-enter  {
+        &.xxOverlay {
+            background: transparent;
+        }
+
+        .xxOverlay-close {
+            opacity: 0;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: -50%;
+        }
+    }
+
+    &-enter-active {
+        &.xxOverlay {
+            background: rgba($bg-color, 0.95);
+            transition: background $default-transition-speed * 1.5 $default-transition-easing;
+        }
+
+        .xxOverlay-close {
+            opacity: 1;
+            transition: opacity $default-transition-speed $default-transition-easing $default-transition-speed;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: 0;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
+        }
+    }
+
+    &-leave  {
+        &.xxOverlay {
+            background: rgba($bg-color, 0.95);
+        }
+
+        .xxOverlay-close {
+            opacity: 1;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: 0;
+        }
+    }
+
+    &-leave-active {
+        &.xxOverlay {
+            background: transparent;
+            transition: background $default-transition-speed * 1.5 $default-transition-easing $default-transition-speed / 2;
+        }
+
+        .xxOverlay-close {
+            opacity: 0;
+            transition: opacity $default-transition-speed $default-transition-easing;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: -50%;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import scrollbarWidth from '../utils/scrollbarWidth';
 
@@ -15,16 +16,21 @@ export default class XXPageOverlay extends React.Component {
         this.handleCloseClick = this.handleCloseClick.bind(this);
     }
 
+    componentDidUpdate() {
+        window.scrollTo(0, 0);
+        ReactDOM.findDOMNode(this).scrollTop = 0;
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
         ReactDOM.findDOMNode(this).scrollTop = 0;
 
-        document.body.classList.add('has-overlayWithScroll');
+        document.body.classList.add('has-overlayWithNav');
         document.body.style.marginRight = `${scrollbarWidth}px`;
     }
 
     componentWillUnmount() {
-        document.body.classList.remove('has-overlayWithScroll');
+        document.body.classList.remove('has-overlayWithNav');
         document.body.style.marginRight = 0;
     }
 
@@ -52,7 +58,9 @@ export default class XXPageOverlay extends React.Component {
             <div className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav" onClick={handleBgCloseClick}>
                 <a href="" className="xxOverlay-close" onClick={handleCloseClick}>Close</a>
                 <div className="xxPageOverlay">
-                    {children}
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
+                        {children}
+                    </ReactCSSTransitionGroup>
                 </div>
             </div>
         );

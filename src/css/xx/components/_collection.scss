@@ -1,5 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$collection-content-padding-top: 17px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .xxCollection {
     @include clearfix;
 
@@ -79,7 +83,7 @@
 .xxCollection-content {
     float: right;
     width: calc((99.9% + #{$gutter-width}) * 1/3 - #{$gutter-width});
-    padding: 17px 0 0;
+    padding: $collection-content-padding-top 0 0;
 
     @include breakpoint-mobile {
         float: none;
@@ -94,6 +98,23 @@
         @include breakpoint-mobile {
             display: none;
         }
+    }
+}
+
+.xxCollectionInfo {
+
+    // Brittle. If this content grows to be taller than the images, then this
+    // will no longer work. Unfortunately, this is the only thing that allows
+    // a perfect animation that works in all browsers (namely: Chrome & Safari)
+    // Otherwise the action buttons like Back & Save don't animate due
+    // to an overflow bug (in combination with transition) in those two browsers.
+    // If bug is fixed, revert the following commit to get the bullet-proof solution:
+    // https://github.com/neon-lab/wonderland/commit/fe3c9f32b8989772b47c107f9cac96fcc19c899e
+    &.xxFadeInOutSequential-enter,
+    &.xxFadeInOutSequential-leave {
+        position: absolute;
+        top: $collection-padding-top + $collection-content-padding-top;
+        padding-right: $gutter-width;
     }
 }
 
