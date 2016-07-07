@@ -1,3 +1,5 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 $zoom-image-max-width: calc((99.9% - #{$gutter-width}) * 2/3 - #{$gutter-width});
 
 $zoom-image-max-height: calc(100vh - (#{$header-height} + #{$header-margin-bottom}) * 2);
