@@ -30,12 +30,20 @@ var VideoDelete = React.createClass({
             </div>
         );
     },
-    handleBackClick: function(e) {
-        var self = this;
-        self.props.handleMenuChange(e);
-    },
     handleDeleteClick: function(e) {
-        alert('TODO DELETE CALL');
+        var self = this, options = {}
+        ;
+        options.data = {
+            video_id: self.props.videoId,
+            hidden: true
+        }
+        self.PUT('videos', options)
+            .then(function(res) {
+                self.props.handleDelete();
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     }
 })
 
