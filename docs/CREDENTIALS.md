@@ -51,3 +51,10 @@
 - USERNAME = 'neonlab'
 - EMAIL = 'holler@neon'
 - PASSWORD = 'yMPJR4oV8MXVZY'
+
+## Mandrill Account
+
+*Do not share outside Neon*
+
+- EMAIL = 'ops@neon-lab.com'
+- PASSWORD = 'c6PCPUpr7g$eupjSV'
