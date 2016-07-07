@@ -49,7 +49,7 @@ export default class XXCollectionInfo extends React.Component {
         const { time } = this.state;
 
         return (
-            <div>
+            <div className="xxCollectionInfo">
                 <h1 className="xxCollection-title">
                     {title}
                 </h1>
