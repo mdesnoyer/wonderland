@@ -21,7 +21,8 @@ export default class XXCollectionRefilterReady extends React.Component {
     }
 
     setScrollPosition() {
-        const filtersNode = ReactDOM.findDOMNode(this).parentNode.querySelector('.xxCollectionFilters-title');
+        // needs to use double parentNode to get through the dummy node that ReactCSSTransitionGroup creates
+        const filtersNode = ReactDOM.findDOMNode(this).parentNode.parentNode.querySelector('.xxCollectionFilters-title');
         const filtersOffset = filtersNode.getBoundingClientRect().top;
         const arrowOffset = this._arrow.getBoundingClientRect().top + 37;
 

@@ -41,6 +41,7 @@ const _DEFAULT_LOCALE = 'en-US',
             delete: 'Delete',
             share: 'Share',
             apply: 'Apply',
+            upload: 'Upload',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -217,9 +218,10 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             //analyze page
-            'analyzeVideo.videoUrl': 'Video URL',
-            'analyzeVideo.optionalTitle': 'Optional Title',
-            'analyzeVideo.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+            'upload.videoUrl': 'Video URL',
+            'upload.submit': 'Submit',
+            'upload.optionalTitle': 'Optional Title',
+            'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             //navigation bar
 
             // Labels
@@ -279,6 +281,17 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.cookies.body': 'Listed below is the visibility status of each cookie',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.share.facebook': '#neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.twitter': '@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
+            'copy.share.linkedin': 'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.description': 'Copy the link below to share this collection. Anyone with this link can view your images for this video.',
+            'copy.share.title': 'Neon Labs',
+            'copy.share.main': 'Share Your Images',
+            'copy.share.label': 'COLLECTION LINK',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
             'nav.home': 'Home',
             'nav.terms': 'Terms',

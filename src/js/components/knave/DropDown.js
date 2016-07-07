@@ -60,9 +60,12 @@ var DropDown = React.createClass({
         var self = this,
             value = e.target.dataset.value
         ;
-        e.preventDefault();
         self.setState({
             currentValue: value
+        }, function() {
+            if (value !== self.props.label) {
+                self.props.updateField(self.props.label, value);
+            }
         });
     },
     toggleOpen: function(e) {

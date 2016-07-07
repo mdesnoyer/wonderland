@@ -6,7 +6,7 @@ import Message from './Message';
 import VideosResults from './VideosResults';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
+import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,7 +61,7 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                    <AnalyzeVideoForm
+                    <VideoUploadForm
                         postHook={self.doVideoSearch}
                         videoCountServed={self.state.videoCountServed}
                     />
@@ -76,7 +76,6 @@ var Videos = React.createClass({
                         isLoading={self.state.isLoading}
                         videoCountServed={self.state.videoCountServed}
                         videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                        isServingEnabled={self.props.isServingEnabled}
                     />
             </div>
         );

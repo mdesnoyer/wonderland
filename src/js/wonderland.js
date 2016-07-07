@@ -15,7 +15,6 @@ import UTILS from './modules/utils';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
-import AnalyzeVideoPage from './components/pages/AnalyzeVideoPage';
 import VideosPage from './components/pages/VideosPage';
 import VideoPageOwner from './components/pages/VideoPageOwner';
 import VideoPageGuest from './components/pages/VideoPageGuest';
@@ -71,7 +70,6 @@ render((
         <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPage} />
         <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />
 
-        <Route path={UTILS.DRY_NAV.VIDEO_ANALYZE.URL} component={AnalyzeVideoPage} />
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
