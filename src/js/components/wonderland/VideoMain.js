@@ -3,7 +3,6 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import Thumbnails from './Thumbnails';
-import VideoSharer from './VideoSharer';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
@@ -34,31 +33,10 @@ var VideoMain = React.createClass({
             isHidden: false
         }
     },
-    componentWillMount: function() {
-        var self = this;
+    handleDelete: function(e) {
+        var self = this; 
         self.setState({
-            isLoading: true
-        }, function() {
-            self.GET('statistics/videos', {
-                data: {
-                    video_id: self.props.videoId,
-                    fields: UTILS.VIDEO_STATS_FIELDS
-                }
-            })
-            .then(function(json) {
-                self.setState({
-                    experimentState: json.statistics[0].experiment_state,
-                    winnerThumbnail: json.statistics[0].winnerThumbnail,
-                    isLoading: false
-                });
-            }).catch(function(err) {
-                console.log(err);
-                self.setState({
-                    status: err.code,
-                    error: err.message,
-                    isLoading: false,
-                });
-            });
+            isHidden: true
         });
     },
     render: function() {
@@ -74,28 +52,21 @@ var VideoMain = React.createClass({
                             title={self.props.title}
                             videoId={self.props.videoId}
                             handleDelete={self.handleDelete}
+                            shareToken={self.props.shareToken}
                         />
                     </div>
                         <Thumbnails
                             isGuest={self.props.isGuest}
                             thumbnails={self.props.thumbnails}
                             videoState={self.props.videoState}
-                            forceOpen={self.props.forceOpen}
                             videoId={self.props.videoId}
                             shareToken={self.props.shareToken}
-                            videoId={self.props.videoId}
                             accountId={self.props.accountId}
                         />
                 </article>
             );
         }
-    },
-    handleDelete: function(e) {
-        var self = this; 
-        self.setState({
-            isHidden: true
-        });
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

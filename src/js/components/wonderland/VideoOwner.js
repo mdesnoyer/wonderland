@@ -81,8 +81,6 @@ var VideoOwner = React.createClass({
                             url={self.state.url}
                             isServingEnabled={self.props.isServingEnabled}
                             shareToken={self.state.shareToken}
-                            experimentState={self.state.experimentState}
-                            winnerThumbnail={self.state.winnerThumbnail}
                             title={self.state.title}
                         />
                 );

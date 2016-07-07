@@ -2,6 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
+import T from '../../modules/translation';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import VideoGuest from '../wonderland/VideoGuest';
@@ -15,22 +16,18 @@ var VideoPageGuest = React.createClass({
     render: function() {
         var self = this;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
-                    title={UTILS.buildPageTitle('Video')}
+                    title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="container">
-                        <VideoGuest
-                            videoId={self.props.params.videoId}
-                            accountId={self.props.params.accountId}
-                            shareToken={self.props.params.shareToken}
-                        />
-                    </div>
-                </section>
+                    <VideoGuest
+                        videoId={self.props.params.videoId}
+                        accountId={self.props.params.accountId}
+                        shareToken={self.props.params.shareToken}
+                    />
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });
