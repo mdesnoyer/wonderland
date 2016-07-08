@@ -19,7 +19,7 @@
 
 ## Hosting
 
-- [Netlify](https://netlify.com)
+- [Netlify](https://netlify.com/)
 
 Sites are:
 
