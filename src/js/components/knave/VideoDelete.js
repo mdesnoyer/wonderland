@@ -19,7 +19,7 @@ var VideoDelete = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={self.handleBackClick}
+                        onClick={self.props.handleMenuChange}
                         >{T.get('cancel')}</button>
                     <button
                         className="xxButton xxButton--highlight"

@@ -15,26 +15,12 @@ var UserForgotPage = React.createClass({
     // mixins: [ReactDebugMixin],
     render: function() {
         return (
-            <div>
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.userForgot.title'))}
-                />
+            <main className="xxPage">
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.userForgot.title'))}/>
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.userForgot.heading')}</h1>
-                            <div className="content">
-                                <p>{T.get('copy.userForgot.body')}</p>
-                            </div>
-                            <UserForgotForm
-                                showLegend={false}
-                            />
-                        </div>
-                    </div>
-                </section>
+                <UserForgotForm showLegend={false}/>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

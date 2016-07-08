@@ -31,15 +31,13 @@ export default class HomePage extends React.Component {
                                 >{T.get('tryItOut')}</Link>
                             </div>
                         </article>
-
                         <div className="xxHomeLogIn" key="home-logIn">
                             {T.get('copy.homePage.signedUp')}
                             <a
-                                href="#"
+                                href={UTILS.DRY_NAV.SIGNIN.URL}
                                 className="xxHomeLogIn-anchor"
                             >{T.get('logIn')}</a>
                         </div>
-
                         <HomeImages key="home-images" />
                     </div>
                 </ReactCSSTransitionGroup>
