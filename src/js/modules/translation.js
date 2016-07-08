@@ -163,6 +163,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
             'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
 
+            'copy.confirmAccount.title': 'Confirm Account',
+            'copy.confirmAccount.heading': 'Confirm Account',
+            'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
+            'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
+            
             'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails. Please look for an email to verify your account. If you don\u2019t see it within 30 minutes, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
