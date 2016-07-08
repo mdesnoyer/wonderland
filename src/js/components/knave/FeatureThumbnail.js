@@ -13,20 +13,23 @@ var FeatureThumbnail = React.createClass({
             score,
             src,
             title,
-            thumbnail_id
+            thumbnailId,
+            handleChildOnMouseEnter
         ;
         switch(self.props.type) {
             case 'default':
                 title= T.get('copy.defaultThumbnail');
                 score = self.props.thumbnails[self.props.thumbnails.length - 1].neon_score;
-                thumbnail_id = null;
+                thumbnailId = null;
                 src = self.props.thumbnails[self.props.thumbnails.length - 1].url;
+                handleChildOnMouseEnter = null;
                 break;
             case 'neon':
                 title = T.get('copy.neonSelect');
                 score = self.props.thumbnails[0].neon_score;
-                thumbnail_id = self.props.thumbnails[0].thumbnail_id;
+                thumbnailId = self.props.thumbnails[0].thumbnail_id;
                 src = self.props.thumbnails[0].url;
+                handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 break;
         }
         return (
@@ -38,7 +41,8 @@ var FeatureThumbnail = React.createClass({
                     score={score}
                     size="large"
                     src={src}
-                    thumbnail_id={thumbnail_id}
+                    thumbnailId={thumbnailId}
+                    handleChildOnMouseEnter={handleChildOnMouseEnter}
                 />
             </div>
         );

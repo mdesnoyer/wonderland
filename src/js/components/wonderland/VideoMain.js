@@ -29,8 +29,44 @@ var VideoMain = React.createClass({
             isLoading: false,
             experimentState: T.get('copy.unknown'),
             winnerThumbnail: '',
-            isHidden: false
+            isHidden: false,
+            liftArray: [],
+            displayThumbLift: 0
         }
+    },
+    componentWillMount: function() {
+        var self = this;
+            self.sendForLiftData();
+    },
+    sendForLiftData: function() {
+        var self = this,
+            options = {}
+        ;
+            options.data = {
+                base_id: self.props.thumbnails[self.props.thumbnails.length - 1].thumbnail_id,
+                thumbnail_ids: self.parseLiftThumbnails(self.props.thumbnails)
+            }
+            self.GET('statistics/estimated_lift/', options)
+                .then(function(res) {
+                    self.setState({
+                        displayThumbLift: res.lift.find(x=> x.thumbnail_id === self.props.thumbnails[0].thumbnail_id).lift,
+                        liftArray: res.lift
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+    },
+    parseLiftThumbnails: function(thumbnails) {
+        var self = this,
+            parseLiftThumbnailsArray = []
+        ;
+        thumbnails.map(function(thumbnail, i) {
+            if (i < thumbnails.length - 1) {
+                parseLiftThumbnailsArray.push(thumbnail.thumbnail_id);
+            }
+        });
+        return parseLiftThumbnailsArray.join(',');
     },
     handleDelete: function(e) {
         var self = this; 
@@ -52,6 +88,7 @@ var VideoMain = React.createClass({
                             videoId={self.props.videoId}
                             handleDelete={self.handleDelete}
                             shareToken={self.props.shareToken}
+                            displayThumbLift={self.state.displayThumbLift}
                         />
                     </div>
                         <Thumbnails
@@ -61,10 +98,19 @@ var VideoMain = React.createClass({
                             videoId={self.props.videoId}
                             shareToken={self.props.shareToken}
                             accountId={self.props.accountId}
+                            handleChildOnMouseEnter={self.handleChildOnMouseEnter}
                         />
                 </article>
             );
         }
+    },
+    handleChildOnMouseEnter: function(thumbnail_id) {
+        var self = this,
+            liftArray = self.state.liftArray
+        ;
+        self.setState({
+            displayThumbLift: liftArray.find(x=> x.thumbnail_id === thumbnail_id).lift
+        });
     }
 });
 
