@@ -5,6 +5,8 @@
 $upload-button-help-circle-size: $upload-button-size + 38px;
 $upload-button-help-line-length: 190px;
 
+$default-button-transitions: box-shadow $default-transition, transform $default-transition, background $default-transition;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxUploadButton {
@@ -21,7 +23,8 @@ $upload-button-help-line-length: 190px;
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
     background: $accent-color;
     text-indent: $indent-off-screen;
-    transition: box-shadow $default-transition, transform $default-transition, background $default-transition;
+    transition: $default-button-transitions,
+                z-index 0s $default-transition; // this is needed to avoid button disappearing behind overlay
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset;
@@ -58,6 +61,7 @@ $upload-button-help-line-length: 190px;
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         background: $quaternary-color;
         transform: rotate(-45deg);
+        transition: $default-button-transitions;
 
         &:hover {
             transform: rotate(45deg);
