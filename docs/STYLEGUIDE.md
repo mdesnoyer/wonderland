@@ -2,18 +2,11 @@
 
 This document is very much work in progress, please help and if in doubt, lets talk about it.
 
-## Language
-
-- `Sign Up`, `Sign In`, `Sign Out` to be used in code to standardise how we talk about this process
-- We use the terms `Owner` and `Guest` to refer to ownership of a Video.
-  - If a User (Signed In OR Signed Out) is viewing their own Video, they are the `Owner`.
-  - If a User (Signed In OR Signed Out) is viewing another User's Video then they are a `Guest`
-
 ## Javascript
 
-- use `var` always, please use one var be definitions if possible
+- use `var` always, please use one var for definitions if possible
 - Use NAMES_LIKE_THIS for constant values
-- 4 spaces for tabs
+- 4 spaces for tabs, no tabs - https://www.youtube.com/watch?v=cowtgmZuai0
 - space before `{`
 - semicolons at end of line `;` apart from declaration blocks where they should be on their own line
 - single quotes for strings in Javascript `'bacon'` NOT `"bacon"`
@@ -24,7 +17,7 @@ This document is very much work in progress, please help and if in doubt, lets t
 - no spaces inside curly brackets, e.g. `{this.state.type}`, NOT `{ this.state.type }`
 - close your tags, e.g. `<input type="text" />`, use one space before closing, NOT `<input type="text"/>`
 
-If in doubt, defer to the code. If still in doubt, ask.
+If in doubt, defer to the existing code. If still in doubt, ask.
 
 ## Sass / CSS
 
