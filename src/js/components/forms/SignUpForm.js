@@ -209,12 +209,14 @@ var SignUpForm = React.createClass({
                             data: userDataObject
                         })
                         .then(function (account) {
+                            debugger 
                             self._isSubmitted = false;
                             self.setState({
                                 mode: 'success'
                             });
                         })
                         .catch(function (err) {
+                            debugger 
                             E.raiseError(err);
                             self._isSubmitted = false;
                             self.setState({
