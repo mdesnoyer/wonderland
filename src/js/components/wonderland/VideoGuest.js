@@ -108,20 +108,8 @@ var VideoGuest = React.createClass({
                 );
                 break;
             case 'success':
-                var additionalClass = 'wonderland-video--state button is-' + self.state.videoStateMapping + ' is-small',
-                    videoSizeClass = 'video video--big'
                 ;
                 return (
-                    <div className={videoSizeClass}>
-                        <VideoHeader
-                            isGuest={true}
-                            additionalClass={additionalClass}
-                            videoState={self.state.videoState}
-                            title={self.state.title}
-                            videoId={self.state.videoId}
-                            created={self.state.created}
-                            thumbnails={self.state.sortedThumbnails}
-                        />
                         <VideoMain
                             isGuest={true}
                             videoId={self.state.videoId}
@@ -135,7 +123,6 @@ var VideoGuest = React.createClass({
                             shareToken={self.state.shareToken}
                             accountId={self.state.accountId}
                         />
-                    </div>
                 );
                 break;
         }
