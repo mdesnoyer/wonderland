@@ -8,16 +8,16 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var FeatureThumbnail = React.createClass({
-    // mixins: [ReactDebugMixin],
-    // getInitialState: function() {
-    //     return {
-    //         renditionNumber: 0
-    //     }
-    // },
+    getInitialState: function() {
+        return {
+            renditionNumber: 0
+        }
+    },
     // componentWillMount: function(){
     //     var self = this,
     //         number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[1])
     //     ; 
+    //     debugger 
     //     self.setState({
     //         renditionNumber: number 
     //     })
@@ -36,14 +36,14 @@ var FeatureThumbnail = React.createClass({
                 title= T.get('copy.defaultThumbnail');
                 score = self.props.thumbnails[self.props.thumbnails.length - 1].neon_score;
                 thumbnailId = null;
-                src = self.props.thumbnails[self.props.thumbnails.length - 1].url;
+                src = self.props.thumbnails[self.props.thumbnails.length - 1].renditions[10].url;
                 handleChildOnMouseEnter = null;
                 break;
             case 'neon':
                 title = T.get('copy.neonSelect');
                 score = self.props.thumbnails[0].neon_score;
                 thumbnailId = self.props.thumbnails[0].thumbnail_id;
-                src = self.props.thumbnails[0].url;
+                src = self.props.thumbnails[0].renditions[10].url;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 break;
         }

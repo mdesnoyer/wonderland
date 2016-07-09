@@ -21,7 +21,10 @@ var ThumbnailCollection = React.createClass({
     //     // })
     // },
     render: function() {
-        var self = this;
+        var self = this
+            aspectRatio,
+            height
+        ;
         return (
             <div>
                 {
@@ -30,11 +33,12 @@ var ThumbnailCollection = React.createClass({
                             return null;
                         }
                         else {
+                            debugger
                             return (
                                 <Thumbnail
                                     key={i}
                                     score={thumbnail.neon_score}
-                                    src={thumbnail.url}
+                                    src={thumbnail.renditions.find(x => x.aspect_ratio === "4x3" && x.height === 90).url}
                                     thumbnailId={thumbnail.thumbnail_id}
                                     handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                                 />
@@ -44,8 +48,16 @@ var ThumbnailCollection = React.createClass({
                 }
             </div>
         );
-    }
+    },
+    // findThumbnailSize: function (thumbnail) {
+    //     if (self.props.thumbnails.renditions > 10) {
+    //         return thumbnail.renditions.find(x => x.aspect_ratio === "1x1" && x.height === 100).url
+    //     }else {
+    //         return thumbnail.renditions.find(x => x.aspect_ratio === "4x3" && x.height === 90).url
+    //     }
+    // }
 });
+                                            // thumbnail.renditions.find(x => x.aspect_ratio === "1x1" && x.height === 100).url   
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
