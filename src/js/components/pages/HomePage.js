@@ -41,7 +41,7 @@ const ONBOARDING_STAGES = [
     'onboarding-upload',
     'onboarding-processing',
     'onboarding-tutorial',
-    'final',
+    'onboarding-final',
 ];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -144,7 +144,7 @@ export default class HomePage extends React.Component {
                         }
 
                         {
-                            stage === 'onboarding-tutorial' || stage === 'final' ? (
+                            stage === 'onboarding-tutorial' || stage === 'onboarding-final' ? (
                                 <XXUpload
                                     onClose={() => updateStage('')}
                                     onSubmit={() => updateStage('')}
@@ -234,7 +234,7 @@ export default class HomePage extends React.Component {
                         stage === 'onboarding-tutorial' ? (
                             <XXOnboardingTutorial
                                 key="onboarding-tutorial"
-                                onClose={e => {e.preventDefault(); updateStage('final');}}
+                                onClose={e => {e.preventDefault(); updateStage('onboarding-final');}}
                             />
                         ) : null
                     }
@@ -242,7 +242,7 @@ export default class HomePage extends React.Component {
 
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeave={false}>
                     {
-                        stage === 'onboarding-tutorial' || stage === 'final' ? (
+                        stage === 'onboarding-tutorial' || stage === 'onboarding-final' ? (
                             <XXCollection
                                 key="first-collection"
                                 title="Santa Cruz man wins Mavericks
