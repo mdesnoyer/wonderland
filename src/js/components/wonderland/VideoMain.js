@@ -36,7 +36,9 @@ var VideoMain = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-            self.sendForLiftData();
+        if (self.props.thumbnails.length > 1) {
+            self.sendForLiftData();    
+        }
     },
     sendForLiftData: function() {
         var self = this,

@@ -19,7 +19,7 @@ var FeatureThumbnail = React.createClass({
             number = UTILS.closest(Math.pow(331.03, 2), self.props.thumbnails[1])
         ;
         self.setState({
-            renditionNumber: number 
+            renditionNumber: number
         })
     },
     render: function() {
