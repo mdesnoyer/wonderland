@@ -211,6 +211,12 @@ export default class HomePage extends React.Component {
                     }
 
                     {
+                        ONBOARDING_STAGES.indexOf(stage) < 0 ? (
+                            <HomeImages key="home-images" />
+                        ) : null
+                     }
+
+                    {
                         stage === 'onboarding-processing' ? (
                             <XXOnboardingCountdown
                                 key="onboarding-countdown"

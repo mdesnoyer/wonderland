@@ -39,7 +39,6 @@ import DemoPage from './components/pages/DemoPage';
 import CookiesPage from './components/pages/CookiesPage';
 import XXPage from './xx/XXPage';
 import XXPageMobile from './xx/XXPageMobile';
-import XXOnboarding from './xx/XXOnboarding';
 import XXBlankCanvas from './xx/XXBlankCanvas';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 
@@ -98,7 +97,6 @@ render((
 
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />
-        <Route path="/xx/onboarding/" component={XXOnboarding} />
         <Route path="/xx/blank/" component={XXBlankCanvas} />
 
         <Route path="*" component={NotFoundPage} />
