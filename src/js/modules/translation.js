@@ -24,6 +24,7 @@ const _DEFAULT_LOCALE = 'en-US',
             success: 'Success',
             signUp: 'Sign Up',
             signIn: 'Sign In',
+            logIn: 'Log In',
             logOut: 'Log Out',
             confirmAccount: 'Confirm Account',
             confirmedAccount: 'Your account is confirmed. Please sign in to continue.',
@@ -42,6 +43,7 @@ const _DEFAULT_LOCALE = 'en-US',
             share: 'Share',
             apply: 'Apply',
             upload: 'Upload',
+            tryItOut: 'Try it Out',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -359,7 +361,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.processingState': 'Processing',
             'copy.processedState': 'OK',
             'copy.servingState': 'OK',
-            'copy.failedState': 'Failed'
+            'copy.failedState': 'Failed',
+
+            // Home page
+            'copy.homePage.title': 'Find your most clickable images',
+            'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
+            'copy.homePage.neonBeta': 'NeonScore for Video (beta 1.0)',
+            'copy.homePage.signedUp': 'Already Signed Up?'
         },
         'en-GB': {
         },
