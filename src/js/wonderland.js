@@ -41,6 +41,7 @@ import XXPage from './xx/XXPage';
 import XXPageMobile from './xx/XXPageMobile';
 import XXOnboarding from './xx/XXOnboarding';
 import XXBlankCanvas from './xx/XXBlankCanvas';
+import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -66,6 +67,7 @@ render((
 
         <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
+        <Route path="/account/confirm" component={ConfirmAccountPage} />
 
         <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPage} />
         <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />

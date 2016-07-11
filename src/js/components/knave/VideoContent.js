@@ -29,9 +29,10 @@ var VideoContent = React.createClass({
             case 'info':
                 contents = (
                     <div>
-                        <VideoInfo 
+                        <VideoInfo
                             title={self.props.title}
-                            handleMenuChange={self.handleMenuChange} 
+                            handleMenuChange={self.handleMenuChange}
+                            displayThumbLift={self.props.displayThumbLift}
                         />
                         <VideoCollectionActions handleMenuChange={self.handleMenuChange} />
                     </div>

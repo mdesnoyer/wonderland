@@ -1,15 +1,18 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Lift = React.createClass({
     render: function() {
-        var self = this;
+        var self = this,
+            liftPercent = UTILS.makePercentage(self.props.displayThumbLift, 0);
+        ;
         return (
             <div className="xxLift">
-                <strong className="xxLift-title">{'0% Lift'}</strong>
+                <strong className="xxLift-title">{liftPercent + ' Lift'}</strong>
                 <div className="xxLift-chart">
                     <div className="xxLift-chartLine" style={{width: '100%'}}></div>
                     <div className="xxLift-chartLine xxLift-chartLine--original" style={{width: '67.5%'}}></div>
@@ -22,6 +25,6 @@ var Lift = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default Lift;
+export default Lift
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
