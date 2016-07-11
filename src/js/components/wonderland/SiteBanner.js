@@ -67,7 +67,6 @@ var SiteBanner = React.createClass({
                 <nav className="xxNav">
                     <SiteNavigation 
                         displayName={self.state.displayName} 
-                        isSignedIn={SESSION.active()}
                         sidebarContent={self.props.sidebarContent}
                         setSidebarContent={self.props.setSidebarContent}
                     />
