@@ -41,3 +41,20 @@ a {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+blockquote {
+    background-color: $bg-secondary-color;
+    border-left: 5px solid $bg-tertiary-color;
+    padding: 1.5em;
+    margin-bottom: $header-margin-bottom;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.ul-disc {
+  padding-left: 0;
+  margin-left: 2.14285714em;
+  list-style-type: disc;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
