@@ -7,22 +7,17 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ThumbnailCollection = React.createClass({
-    // getInitialState: function() {
-    //     // return {
-    //     //     renditionNumber: 0
-    //     // }
-    // },
-    // componentWillMount: function(){
-    //     // var self = this,
-    //     //     number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[1])
-    //     // ; 
-    //     // self.setState({
-    //     //     renditionNumber: number 
-    //     // })
-    // },
+    componentWillMount: function() {
+        var self = this,
+        // 97.09 is the pixel size of the large feature thumbnails. 
+            number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[1])
+        ; 
+        self.setState({
+            renditionNumber: number 
+        });
+    },
     render: function() {
         var self = this;
-        // debugger 
         return (
             <div>
                 {
@@ -31,13 +26,11 @@ var ThumbnailCollection = React.createClass({
                             return null;
                         }
                         else {
-                            var rendtionPoint = self.props.thumbnails[0].renditions.length
-                            var point = rendtionPoint > 10 ? 1 : 4 
                             return (
                                 <Thumbnail
                                     key={i}
                                     score={thumbnail.neon_score}
-                                    src={thumbnail.renditions[point].url}
+                                    src={thumbnail.renditions[self.state.renditionNumber].url}
                                     thumbnailId={thumbnail.thumbnail_id}
                                     handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                                 />
@@ -49,7 +42,7 @@ var ThumbnailCollection = React.createClass({
         );
     }
 });
-// thumbnail.renditions.find(x => x.aspect_ratio === "4X3").url
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default ThumbnailCollection;

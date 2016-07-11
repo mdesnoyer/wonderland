@@ -28,6 +28,9 @@ var Thumbnails = React.createClass({
             thumbnails: self.props.thumbnails
         };
     },
+    componentWillMount: function() {
+        var self = this; 
+    },
     render: function() {
         var self = this,
             thumbnailElements = []

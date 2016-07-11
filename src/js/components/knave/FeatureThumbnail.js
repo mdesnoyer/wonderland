@@ -13,16 +13,15 @@ var FeatureThumbnail = React.createClass({
             renditionNumber: 0
         }
     },
-    // componentWillMount: function(){
-    //     var self = this,
-    //         number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[1])
-    //     ; 
-    //     debugger 
-    //     self.setState({
-    //         renditionNumber: number 
-    //     })
-        
-    // },
+    componentWillMount: function(){
+        var self = this,
+        //331.03 is the pixel size of the large feature thumbnails. 
+            number = UTILS.closest(Math.pow(331.03, 2), self.props.thumbnails[1])
+        ;
+        self.setState({
+            renditionNumber: number 
+        })
+    },
     render: function() {
         var self = this,
             score,
@@ -36,14 +35,14 @@ var FeatureThumbnail = React.createClass({
                 title= T.get('copy.defaultThumbnail');
                 score = self.props.thumbnails[self.props.thumbnails.length - 1].neon_score;
                 thumbnailId = null;
-                src = self.props.thumbnails[self.props.thumbnails.length - 1].renditions[10].url;
+                src = self.props.thumbnails[self.props.thumbnails.length - 1].renditions[self.state.renditionNumber].url;
                 handleChildOnMouseEnter = null;
                 break;
             case 'neon':
                 title = T.get('copy.neonSelect');
                 score = self.props.thumbnails[0].neon_score;
                 thumbnailId = self.props.thumbnails[0].thumbnail_id;
-                src = self.props.thumbnails[0].renditions[10].url;
+                src = self.props.thumbnails[0].renditions[self.state.renditionNumber].url;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 break;
         }
