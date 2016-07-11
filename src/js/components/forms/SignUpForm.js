@@ -17,7 +17,6 @@ var SignUpForm = React.createClass({
             lastName: '',
             email: '',
             password: '',
-            confirm: '',
             verifyPassword: '',
             mode: 'quiet' // quiet, loading, error, success
         }
