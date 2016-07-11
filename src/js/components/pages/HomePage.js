@@ -15,7 +15,7 @@ import XXOnboardingCountdown from '../../xx/components/OnboardingCountdown';
 import XXOnboardingEmail from '../../xx/components/OnboardingEmail';
 import XXOnboardingSlides from '../../xx/components/OnboardingSlides';
 
-import XXOnboardingTutorial from '../../xx/components/OnboardingTutorial';
+import OnboardingTutorial from '../wonderland/OnboardingTutorial';
 import XXCollection from '../../xx/components/Collection';
 
 import T from '../../modules/translation';
@@ -232,7 +232,7 @@ export default class HomePage extends React.Component {
                     }
                     {
                         stage === 'onboarding-tutorial' ? (
-                            <XXOnboardingTutorial
+                            <OnboardingTutorial
                                 key="onboarding-tutorial"
                                 onClose={e => {e.preventDefault(); updateStage('onboarding-final');}}
                             />

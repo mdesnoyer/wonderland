@@ -1,39 +1,40 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const slides = [
     {
         id: 'ready',
-        title: 'Your images are ready!',
+        title: T.get('copy.tutorial.ready.title'),
         description: null,
         image: null,
     },
     {
         id: 'neonscore',
-        title: 'What is a NeonScore?',
-        description: 'The NeonScore is a 0-99 scale that represents how clickable your image is. The higher the score, the more clicks.',
-        image: '/img/xx/tutorial-neonscore.png',
+        title: T.get('copy.tutorial.neonscore.title'),
+        description: T.get('copy.tutorial.neonscore.description'),
+        image: '/img/tutorial-neonscore.png',
     },
     {
         id: 'lift',
-        title: 'What is lift?',
-        description: 'Lift is the percentage increase in clicks your video would get by using Neon images as your video thumbnails.',
-        image: '/img/xx/tutorial-lift.png',
+        title: T.get('copy.tutorial.lift.title'),
+        description: T.get('copy.tutorial.lift.description'),
+        image: '/img/tutorial-lift.png',
     },
     {
         id: 'upload',
-        title: 'Upload your own videos.',
-        description: 'If you like what you see, you can upload your own videos to get your most clickable images. Just click on the orange button on the next screen and enter a video URL.',
-        image: '/img/xx/tutorial-upload.png',
+        title: T.get('copy.tutorial.upload.title'),
+        description: T.get('copy.tutorial.upload.description'),
+        image: '/img/tutorial-upload.png',
     },
 ];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class XXOnboardingTutorial extends React.Component {
+export default class OnboardingTutorial extends React.Component {
     constructor(props) {
         super(props);
 
@@ -85,7 +86,7 @@ export default class XXOnboardingTutorial extends React.Component {
                                                 href=""
                                                 className="xxButton xxButton--transparent"
                                                 onClick={e => setActiveSlide(activeSlide - 1, e)}
-                                            >Back</a>
+                                            >{T.get('back')}</a>
                                         ) : null
                                     }
                                     {
@@ -94,7 +95,7 @@ export default class XXOnboardingTutorial extends React.Component {
                                                 href=""
                                                 className="xxButton xxButton--highlight"
                                                 onClick={e => setActiveSlide(activeSlide + 1, e)}
-                                            >Next</a>
+                                            >{T.get('action.next')}</a>
                                         ) : null
                                     }
                                     {
@@ -103,7 +104,7 @@ export default class XXOnboardingTutorial extends React.Component {
                                                 href=""
                                                 className="xxButton xxButton--highlight"
                                                 onClick={onClose}
-                                            >Check it Out</a>
+                                            >{T.get('copy.tutorial.checkItOut')}</a>
                                         ) : null
                                     }
                                 </div>
@@ -114,7 +115,7 @@ export default class XXOnboardingTutorial extends React.Component {
                                                 href=""
                                                 className="u-inheritColor"
                                                 onClick={onClose}
-                                            >Skip Tutorial</a>
+                                            >{T.get('copy.tutorial.skip')}</a>
                                         </div>
                                     ) : null
                                 }

@@ -367,7 +367,18 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.homePage.title': 'Find your most clickable images',
             'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
             'copy.homePage.neonBeta': 'NeonScore for Video (beta 1.0)',
-            'copy.homePage.signedUp': 'Already Signed Up?'
+            'copy.homePage.signedUp': 'Already Signed Up?',
+
+            // Tutorial
+            'copy.tutorial.checkItOut': 'Check it Out',
+            'copy.tutorial.skip': 'Skip Tutorial',
+            'copy.tutorial.ready.title': 'Your images are ready!',
+            'copy.tutorial.neonscore.title': 'What is a NeonScore?',
+            'copy.tutorial.neonscore.description': 'The NeonScore is a 0-99 scale that represents how clickable your image is. The higher the score, the more clicks.',
+            'copy.tutorial.lift.title': 'What is lift?',
+            'copy.tutorial.lift.description': 'Lift is the percentage increase in clicks your video would get by using Neon images as your video thumbnails.',
+            'copy.tutorial.upload.title': 'Upload your own videos.',
+            'copy.tutorial.upload.description': 'If you like what you see, you can upload your own videos to get your most clickable images. Just click on the orange button on the next screen and enter a video URL.',
         },
         'en-GB': {
         },
