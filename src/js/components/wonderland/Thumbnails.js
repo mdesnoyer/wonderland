@@ -28,7 +28,10 @@ var Thumbnails = React.createClass({
             thumbnails: self.props.thumbnails,
             total: self.props.thumbnails.length,
             selectedItem: 0,
-            isThumbnailOverlayActive: false
+            isThumbnailOverlayActive: false,
+            isPageOverlayActive: false,
+            badThumbs: self.props.badThumbs,
+            showLowScores: false
         };
     },
     handleKeyEvent: function(e) {
@@ -88,46 +91,78 @@ var Thumbnails = React.createClass({
                 />
             ) : null
         ;
-        return (
-            <div>
-                <div className="xxCollectionImages">
-                    <FeatureThumbnail
-                        thumbnails={self.props.thumbnails}
-                        videoId={self.props.videoId}
-                        type="default"
-                    />
-                    <FeatureThumbnail
-                        thumbnails={self.props.thumbnails}
-                        videoId={self.props.videoId}
-                        type="neon"
-                        handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
-                        handleClick={self.toggleThumbnailOverlay}
-                    />
-
+        return (                
+            <div className="xxCollectionImages">
+                {
+                    self.props.isMobile ? null : ThumbnailOverlayComponent
+                }
+                <FeatureThumbnail
+                    thumbnails={self.props.thumbnails}
+                    videoId={self.props.videoId}
+                    type="default"
+                    isMobile={self.props.isMobile}
+                />
+                <FeatureThumbnail
+                    thumbnails={self.props.thumbnails}
+                    videoId={self.props.videoId}
+                    type="neon"
+                    handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
+                    handleClick={self.toggleThumbnailOverlay}
+                    isMobile={self.props.isMobile}
+                />
+                {
+                    self.props.isMobile ? (
+                        <Lift displayThumbLift={self.props.displayThumbLift} />
+                    ) : null
+                }
+                <div className="xxCollectionImages-all">
                     {
-                        this.props.isMobile ? (
-                            <Lift displayThumbLift={this.props.displayThumbLift} />
+                        self.props.isMobile ? (
+                            <h2 className="xxCollection-subtitle">{T.get('copy.videos.topSelects')}</h2>
                         ) : null
                     }
-
-                    <div className="xxCollectionImages-all">
-                        {
-                            this.props.isMobile ? (
-                                <h2 className="xxCollection-subtitle">{T.get('copy.videos.topSelects')}</h2>
-                            ) : null
-                        }
-
-                        <ThumbnailCollection
-                            videoId={self.props.videoId}
-                            thumbnails={self.state.thumbnails}
-                            handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
-                            handleClick={self.toggleThumbnailOverlay}
-                        />
+                    <ThumbnailCollection
+                        videoId={self.props.videoId}
+                        thumbnails={self.state.thumbnails}
+                        handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
+                        handleClick={self.toggleThumbnailOverlay}
+                        type="highScores"
+                        isMobile={self.props.isMobile}
+                    />
+                    {
+                        self.props.isMobile ? null : (
+                            <strong className="xxCollectionImages-allAnchor">
+                                <span onClick={self.toggleLowScoresVisibility}>
+                                    {self.state.showLowScores ? T.get('copy.thumbnails.high') : T.get('copy.thumbnails.low')}
+                                </span>
+                            </strong>
+                        )
+                    }
                     </div>
+                <div className="xxCollectionImages-all">
+                    {
+                        self.props.isMobile ? (
+                            <h2 className="xxCollection-subtitle">{T.get('copy.videos.lowest')}</h2>
+                        ) : null
+                    }
+                    {
+                        self.state.showLowScores || self.props.isMobile ? (
+                            <ThumbnailCollection
+                                thumbnails={self.state.badThumbs}
+                                type="lowScores"
+                                isMobile={self.props.isMobile}
+                            />
+                        ): null
+                    }
                 </div>
-                {ThumbnailOverlayComponent}
             </div>
         );
+    },
+    toggleLowScoresVisibility: function(e) {
+        var self = this;
+        self.setState({
+            showLowScores: !self.state.showLowScores
+        });
     }
 });
 

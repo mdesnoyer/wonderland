@@ -64,7 +64,8 @@ var VideoGuest = React.createClass({
                         sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-                        created: video.created
+                        created: video.created,
+                        badThumbs: video.bad_thumbnails
                     });
                 })
                 .catch(function(err) {
@@ -112,6 +113,7 @@ var VideoGuest = React.createClass({
                 return (
                         <VideoMain
                             isGuest={true}
+                            title={self.state.title}
                             videoId={self.state.videoId}
                             messageNeededComponent={false}
                             thumbnails={self.state.sortedThumbnails}
@@ -121,7 +123,7 @@ var VideoGuest = React.createClass({
                             url={self.state.url}
                             shareToken={self.state.shareToken}
                             accountId={self.state.accountId}
-                            title={self.state.title}
+                            badThumbs={self.state.badThumbs}
                         />
                 );
                 break;

@@ -33,6 +33,7 @@ var VideosResults = React.createClass({
                                 // updated
                                 created={video.created}
                                 isMobile={self.props.isMobile}
+                                badThumbs={video.bad_thumbnails}
                             />
                         );
                     })

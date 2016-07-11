@@ -85,7 +85,7 @@ var VideoMain = React.createClass({
         return parseLiftThumbnailsArray.join(',');
     },
     handleDelete: function(e) {
-        var self = this; 
+        var self = this;
         self.setState({
             isHidden: true
         });
@@ -93,13 +93,13 @@ var VideoMain = React.createClass({
     render: function() {
         var self = this;
         if (self.state.isHidden) {
-            return null; 
+            return null;
         }
         else {
             return (
                 <article className="xxCollection xxCollection--video">
                     <div className="xxCollection-content">
-                        <VideoContent 
+                        <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
                             handleDelete={self.handleDelete}
@@ -116,6 +116,7 @@ var VideoMain = React.createClass({
                         handleChildOnMouseEnter={self.handleChildOnMouseEnter}
                         displayThumbLift={self.state.displayThumbLift}
                         isMobile={self.props.isMobile}
+                        badThumbs={self.props.badThumbs}
                     />
                 </article>
             );
