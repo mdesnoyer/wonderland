@@ -11,7 +11,6 @@ import SupportTab1 from '../tabs/SupportTab1';
 import SupportTab2 from '../tabs/SupportTab2';
 import SupportTab3 from '../tabs/SupportTab3';
 import SupportTab4 from '../tabs/SupportTab4';
-import SupportTab5 from '../tabs/SupportTab5';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -34,10 +33,6 @@ var SupportPage = React.createClass({
                 {
                     label: 'API',
                     body: <SupportTab4 />
-                },
-                {
-                    label: 'Contact Support',
-                    body: <SupportTab5 />
                 }
             ]
         ;

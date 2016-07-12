@@ -34,7 +34,6 @@ $base-mobile-type: normal #{$default-mobile-font-size} / #{$default-mobile-verti
 
 .xxPage-Subtitle {
     @include all-caps-title;
-
     margin: 0 0 9px;
     color: $secondary-color;
 }

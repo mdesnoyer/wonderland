@@ -53,6 +53,32 @@ blockquote {
 
 .simple-list {
     list-style-type: disc;
+    margin-bottom: $collection-margin-bottom;
+}
+
+.simple-ol-list {
+    padding-left: 0;
+    margin-left: 2.14em;
+    margin-bottom: $collection-margin-bottom;
+    list-style-type: decimal;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTable {
+    background: $white-color;
+    color: $secondary-color;
+    margin-bottom: $collection-margin-bottom;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.xxTable td, 
+.xxTable th {
+    border: 1px solid $bg-tertiary-color;
+    padding: 8px 10px;
+    text-align: left;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
