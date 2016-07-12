@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import Helmet from 'react-helmet';
 
 import XXCollection from './components/Collection';
 import XXUpload from './components/Upload';
@@ -112,6 +113,11 @@ export default class XXPage extends React.Component {
 
         return (
             <main className="xxPage">
+                <Helmet
+                    meta={[
+                        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
+                    ]}
+                />
                 <header className="xxHeader">
                     <img className="xxLogo" src="/img/xx/logo.svg" />
 

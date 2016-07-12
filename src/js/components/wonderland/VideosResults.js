@@ -32,6 +32,7 @@ var VideosResults = React.createClass({
                                 // publish_date
                                 // updated
                                 created={video.created}
+                                isMobile={self.props.isMobile}
                             />
                         );
                     })

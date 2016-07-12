@@ -113,4 +113,10 @@ $mobile-all-images-gutter-width: 3px;
     }
 }
 
+.xxCollectionNavBar {
+    @include breakpoint-mobile {
+        display: none;
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
