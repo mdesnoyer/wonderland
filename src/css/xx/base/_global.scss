@@ -41,3 +41,18 @@ a {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+blockquote {
+    background-color: $bg-secondary-color;
+    border-left: 5px solid $bg-tertiary-color;
+    padding: 1.5em;
+    margin-bottom: $header-margin-bottom;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.simple-list {
+    list-style-type: disc;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
