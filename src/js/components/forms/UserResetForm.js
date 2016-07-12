@@ -7,6 +7,8 @@ import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
+import Message from '../wonderland/Message';
+import PasswordBrothers from '../wonderland/PasswordBrothers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -100,45 +102,23 @@ var UserResetForm = React.createClass({
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                messageNeededComponent = <Message message={E.getErrors()} />;
                 break;
             case 'loading':
-                messageNeededComponent = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                messageNeededComponent = <Message message={T.get('copy.loading')} />;
                 break;
             case 'success':
-                messageNeededComponent = <div className="xxLabel"><p>{T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})}</p></div>;
+                messageNeededComponent = <Message message={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} />;
                 break;
         }
         return (
             <form onSubmit={self.handleSubmit}>
                 {messageNeededComponent}
                 <fieldset>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.newPassword')}</label>
-                        <input
-                            className="xxInputText"
-                            type="password"
-                            data-ref="passwordInitial"
-                            minLength="8"
-                            maxLength="64"
-                            onChange={self.handlePasswordInitialChange}
-                            autoComplete="off"
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
-                        <input
-                            className="xxInputText"
-                            type="password"
-                            data-ref="passwordConfirm"
-                            minLength="8"
-                            maxLength="64"
-                            onChange={self.handlePasswordConfirmChange}
-                            autoComplete="off"
-                            required
-                        />
-                    </div>
+                    <PasswordBrothers 
+                        handlePasswordInitialChange={self.handlePasswordInitialChange}
+                        handlePasswordConfirmChange={self.handlePasswordConfirmChange}
+                    />
                     <div className="xxFormButtons">
                         <button  
                             className={sendClassName.join(' ')} 
