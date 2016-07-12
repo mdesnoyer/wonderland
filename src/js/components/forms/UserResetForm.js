@@ -2,14 +2,10 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import PasswordBrothers from '../wonderland/PasswordBrothers';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
-import Message from '../wonderland/Message';
-import Icon from '../core/Icon';
-import SignInForm from '../forms/SignInForm';
 import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,44 +87,69 @@ var UserResetForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.userForgot.heading')}</legend> : false,
-            messageNeededComponent = false  
+            messageNeededComponent = false,
+            sendClassName = ['xxButton', 'xxButton--highlight'],
+            isValid = (self.state.passwordInitial && self.state.passwordConfirm 
+                && (self.state.passwordInitial === self.state.passwordConfirm) 
+                && (self.state.mode !== 'loading'))
         ;
+        if (isValid) {
+            sendClassName.push('xxButton--important');
+        }
         switch(self.state.mode) {
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message header={T.get('copy.userReset.heading')} body={E.getErrors()} flavour="danger" />;
+                messageNeededComponent = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
                 break;
             case 'loading':
+                messageNeededComponent = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
                 break;
             case 'success':
-                messageNeededComponent = <div><Message header={T.get('copy.userReset.heading')} body={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} flavour="success" /><SignInForm showLegend={true} /></div>;
+                messageNeededComponent = <div className="xxLabel"><p>{T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})}</p></div>;
                 break;
         }
         return (
-            <div>
+            <form onSubmit={self.handleSubmit}>
                 {messageNeededComponent}
-                <form onSubmit={self.handleSubmit} className={self.state.mode === 'success' ? 'is-hidden' : ''}>
-                    <fieldset>
-                        {legendElement}
-                        <PasswordBrothers
-                            mode={self.state.mode}
-                            handlePasswordInitialChange={self.handlePasswordInitialChange}
-                            handlePasswordConfirmChange={self.handlePasswordConfirmChange}
+                <fieldset>
+                    <div className="xxFormField">
+                        <label className="xxLabel">New Password</label>
+                        <input
+                            className="xxInputText"
+                            type="password"
+                            data-ref="passwordInitial"
+                            minLength="8"
+                            maxLength="64"
+                            onChange={self.handlePasswordInitialChange}
+                            autoComplete="off"
+                            required
                         />
-                        <p className="has-text-centered">
-                            <button
-                                className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                                type="submit"
-                            >
-                                <Icon type="check-circle" />
-                                {T.get('action.resetPassword')}
-                            </button>
-                        </p>
-                    </fieldset>
-                </form>
-            </div>
+                    </div>
+                    <div className="xxFormField">
+                        <label className="xxLabel">Verify Password</label>
+                        <input
+                            className="xxInputText"
+                            type="password"
+                            data-ref="passwordConfirm"
+                            minLength="8"
+                            maxLength="64"
+                            onChange={self.handlePasswordConfirmChange}
+                            autoComplete="off"
+                            required
+                        />
+                    </div>
+                    <div className="xxFormButtons">
+                        <button  
+                            className={sendClassName.join(' ')} 
+                            type="submit" 
+                            disabled={!isValid}
+                        >
+                            {T.get('action.resetPassword')}
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
         );
     }
 })

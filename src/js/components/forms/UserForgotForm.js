@@ -1,47 +1,39 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
-import Message from '../wonderland/Message';
+import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
-import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
-import AjaxMixin from '../../mixins/Ajax';
-import Icon from '../core/Icon';
-import SESSION from '../../modules/session';
+import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserForgotForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
-    propTypes: {
-        showLegend: React.PropTypes.bool.isRequired
-    },
-    getDefaultProps: function() {
-        return {
-            showLegend: true
-        }
-    },
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            mode: 'quiet' // quiet|error|loading|success
+            mode: 'quiet', // quiet, error, loading, success
+            email: ''
         }
     },
-    componentWillUnmount: function(e) {
-        E.clearErrors();
+    updateField: function(e) {
+        var self = this;
+        self.setState({
+            email: e.target.value.trim()
+        });
     },
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
+        TRACKING.sendEvent(self, arguments, self.state.email);
         self.setState({
             mode: 'loading'
         }, function() {
             self.POST('users/forgot_password', {
                 host: CONFIG.AUTH_HOST,
                 data: {
-                    username: self.refs.email.value.trim()
+                    username: self.state.email
                 }
             })
             .then(function(json) {
@@ -73,44 +65,52 @@ var UserForgotForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.userForgot.heading')}</legend> : false,
-            messageNeededComponent = false
+            sendClassName = ['xxButton', 'xxButton--highlight'],
+            isValid = (self.state.email && (self.state.mode !== 'loading')),
+            userMessage = null
         ;
-        switch(self.state.mode) {
-            case 'quiet':
-                break;
+        if (isValid) {
+            sendClassName.push('xxButton--important');
+        }
+        switch (self.state.mode) {
             case 'error':
-                messageNeededComponent = <Message header={T.get('copy.userForgot.heading')} body={E.getErrors()} flavour="danger" />;
+                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
                 break;
             case 'loading':
+                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
                 break;
             case 'success':
-                messageNeededComponent = <Message header={T.get('copy.userForgot.heading')} body={T.get('copy.userForgot.success')} flavour="success" />;
+                userMessage = <div className="xxLabel"><p>{T.get('copy.userForgot.success')}</p></div>;
+                break;
+            default:
                 break;
         }
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeededComponent}
+                    {userMessage} 
                     <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
                     <h1 className="xxSubtitle">{T.get('copy.userForgot.body')}</h1>
                         {legendElement}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                        <input className="xxInputText"
+                        <input
+                            className="xxInputText"
                             type="email"
-                            ref="email"
-                            required
+                            data-ref="email"
                             minLength="6"
                             maxLength="1024"
                             placeholder={T.get('email')}
                             defaultValue={SESSION.rememberedEmail()}
+                            onChange={self.updateField}
+                            required
                         />
                     </div>
                     <div className="xxFormButtons">
-                        <button
-                            className="xxButton"
-                            type="submit"
+                        <button 
+                            className={sendClassName.join(' ')} 
+                            type="submit" 
+                            disabled={!isValid}
                         >
                             {T.get('action.resetPassword')}
                         </button>
@@ -119,10 +119,10 @@ var UserForgotForm = React.createClass({
             </fieldset>
         );
     }
-})
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UserForgotForm
+export default UserForgotForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
