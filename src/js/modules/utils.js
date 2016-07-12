@@ -450,6 +450,20 @@ var UTILS = {
             console.log(error);
             callback(error);
         })
+    },
+    closest: function (num, arr) {
+        var curr = (arr.renditions[0].height * arr.renditions[0].width);
+        var diff = Math.abs (num - curr);
+        var value = 0
+        for (var val = 0; val < arr.renditions.length; val++) {
+            var newdiff = Math.abs (num - arr.renditions[val].height * arr.renditions[val].width);
+            if (newdiff < diff) {
+                diff = newdiff;
+                curr = arr[val];
+                value = val
+            }
+        }
+        return value;
     }
 };
 

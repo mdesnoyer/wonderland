@@ -2,10 +2,20 @@
 
 import React from 'react';
 import Thumbnail from './Thumbnail';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ThumbnailCollection = React.createClass({
+    componentWillMount: function() {
+        var self = this,
+        // 97.09 is the pixel size of the large feature thumbnails. 
+            number = UTILS.closest(Math.pow(97.09, 2), self.props.thumbnails[0])
+        ; 
+        self.setState({
+            renditionNumber: number 
+        });
+    },
     render: function() {
         var self = this;
         return (
@@ -20,7 +30,7 @@ var ThumbnailCollection = React.createClass({
                                 <Thumbnail
                                     key={i}
                                     score={thumbnail.neon_score}
-                                    src={thumbnail.url}
+                                    src={thumbnail.renditions[self.state.renditionNumber].url}
                                     thumbnailId={thumbnail.thumbnail_id}
                                     handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                                 />
