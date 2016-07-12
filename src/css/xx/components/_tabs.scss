@@ -9,7 +9,7 @@
 .xxTabs li {
     display: inline-block;
     vertical-align: top;
-    padding: 12px 20px;
+    padding: 8px 20px;
     margin-right: 10px;
     border: 1px solid $bg-color;
 }
@@ -23,9 +23,9 @@
 }
 
 .xxTabs li.is-active {
-    background-color: $white-color;
+    background-color: $primary-white-color;
     border: 1px solid $bg-tertiary-color;
-    border-bottom: 1px solid $white-color;
+    border-bottom: 1px solid $primary-white-color;
     border-top-right-radius: $processing-ribbon-height;
     border-top-left-radius: $processing-ribbon-height;
 }

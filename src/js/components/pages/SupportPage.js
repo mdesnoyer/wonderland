@@ -38,9 +38,7 @@ var SupportPage = React.createClass({
         ;
         return (
             <main className="xxPage">
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.support.title'))}
-                />
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.support.title'))} />
                 <SiteHeader />
                 <h1 className="xxTitle">{T.get('copy.support.heading')}</h1>
                 <WonderTabs tabs={tabs} />

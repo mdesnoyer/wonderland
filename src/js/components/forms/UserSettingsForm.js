@@ -7,6 +7,7 @@ import T from '../../modules/translation';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import TRACKING from '../../modules/tracking';
+import UserSettingsInfo from '../wonderland/UserSettingsInfo';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -126,9 +127,10 @@ var UserSettingsForm = React.createClass({
                 break;
         }
         return (
-            <form onSubmit={self.handleSubmit}>
-                {userMessage}
-                <fieldset>
+            <fieldset className="xxMainForm">
+                <form onSubmit={self.handleSubmit}>
+                    <h2 className="xxTitle">{T.get('copy.userSettings.heading')}</h2>
+                    {userMessage}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.firstName')}</label>
                         <input
@@ -173,8 +175,11 @@ var UserSettingsForm = React.createClass({
                             {T.get('save')}
                         </button>
                     </div>
-                </fieldset>
-            </form>
+                </form>
+                <section className="xxSection">
+                    <UserSettingsInfo />
+                </section>
+            </fieldset>
         );
     }
 });
