@@ -8,28 +8,32 @@ import T from '../../modules/translation';
 
 var FeatureThumbnail = React.createClass({
     // mixins: [ReactDebugMixin],
+    propTypes: {
+        type: React.PropTypes.string.isRequired,
+        handleClick: React.PropTypes.func
+    },
     render: function() {
         var self = this,
-            score,
-            src,
             title,
             thumbnailId,
-            handleChildOnMouseEnter
+            uid,
+            handleChildOnMouseEnter,
+            showHref
         ;
         switch(self.props.type) {
             case 'default':
+                uid = self.props.thumbnails.length - 1;
                 title= T.get('copy.defaultThumbnail');
-                score = self.props.thumbnails[self.props.thumbnails.length - 1].neon_score;
                 thumbnailId = null;
-                src = self.props.thumbnails[self.props.thumbnails.length - 1].url;
                 handleChildOnMouseEnter = null;
+                showHref = false;
                 break;
             case 'neon':
+                uid = 0;
                 title = T.get('copy.neonSelect');
-                score = self.props.thumbnails[0].neon_score;
-                thumbnailId = self.props.thumbnails[0].thumbnail_id;
-                src = self.props.thumbnails[0].url;
+                thumbnailId = self.props.thumbnails[uid].thumbnail_id;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
+                showHref = true;
                 break;
         }
         return (
@@ -38,11 +42,16 @@ var FeatureThumbnail = React.createClass({
                     {title}
                 </h2>
                 <Thumbnail
-                    score={score}
+                    score={self.props.thumbnails[uid].neon_score}
+                    uid={uid}
+                    title={title}
                     size="large"
-                    src={src}
+                    handleClick={self.props.handleClick}
+                    src={self.props.thumbnails[uid].url}
                     thumbnailId={thumbnailId}
                     handleChildOnMouseEnter={handleChildOnMouseEnter}
+                    type={self.props.type}
+                    showHref={showHref}
                 />
             </div>
         );

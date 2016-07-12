@@ -106,7 +106,7 @@ var UserResetForm = React.createClass({
                 messageNeededComponent = <div><Message header={T.get('copy.userReset.heading')} body={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} flavour="success" /><SignInForm showLegend={true} /></div>;
                 break;
         }
-        return(
+        return (
             <div>
                 {messageNeededComponent}
                 <form onSubmit={self.handleSubmit} className={self.state.mode === 'success' ? 'is-hidden' : ''}>

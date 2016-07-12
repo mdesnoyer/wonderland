@@ -46,9 +46,7 @@ var VideoOwner = React.createClass({
             status: 200,
             size: 'big',
             duration: self.props.duration || 0,
-            url: self.props.url || '',
-            experimentState: T.get('copy.unknown'),
-            winnerThumbnail: ''
+            url: self.props.url || ''
         }
     },
     componentDidMount: function() {
@@ -74,17 +72,17 @@ var VideoOwner = React.createClass({
             }
             else { 
                 return (
-                        <VideoMain
-                            isGuest={false}
-                            videoId={self.state.videoId}
-                            thumbnails={self.state.sortedThumbnails}
-                            videoState={self.state.videoState}
-                            duration={self.state.duration}
-                            created={self.state.created}
-                            url={self.state.url}
-                            shareToken={self.state.shareToken}
-                            title={self.state.title}
-                        />
+                    <VideoMain
+                        isGuest={false}
+                        videoId={self.state.videoId}
+                        thumbnails={self.state.sortedThumbnails}
+                        videoState={self.state.videoState}
+                        duration={self.state.duration}
+                        created={self.state.created}
+                        url={self.state.url}
+                        shareToken={self.state.shareToken}
+                        title={self.state.title}
+                    />
                 );
             }
     },

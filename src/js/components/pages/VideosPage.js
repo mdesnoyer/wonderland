@@ -24,21 +24,8 @@ var VideosPage = React.createClass({
     },
     getInitialState: function () {
         return {
-            isServingEnabled: false,
             displayName: ''
         };
-    },
-    componentWillMount: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    isServingEnabled: account.isServingEnabled
-                });
-            })
-            .catch(function (err) {
-                E.raiseError(err);
-            });
     },
     render: function() {
         var self = this;
@@ -48,9 +35,7 @@ var VideosPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                 />
                 <SiteHeader />
-                <Videos
-                    isServingEnabled={self.state.isServingEnabled}
-                />
+                <Videos />
                 <SiteFooter />
             </main>
         );

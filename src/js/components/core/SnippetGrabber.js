@@ -45,7 +45,7 @@ var SnippetGrabber = React.createClass({
             hasSnippetTextArea = self.state.isActive ?   '' : ' is-hidden',
             snippetText = UTILS.TELEMETRY_SNIPPET + self.state.trackerAccountId
         ;
-        return(
+        return (
                 <div className={"control" + hasSnippetTextArea}>
                     <label className="label">SnippetGrabber</label>
                     <textarea className="textarea" value={snippetText}></textarea>

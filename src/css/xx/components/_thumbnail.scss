@@ -47,25 +47,42 @@ $thumbnail-hover-border: 2px;
         }
     }
 
-    &--large::after {
-        width: $thumbnail-large-score-size;
-        height: $thumbnail-large-score-size;
-        font-size: 18px;
-        line-height: $thumbnail-large-score-size;
+    &--small {
+        // empty
+    }
 
-        @include breakpoint-mobile {
-            width: $mobile-thumbnail-score-size;
-            height: $mobile-thumbnail-score-size;
-            font-size: 10px;
-            line-height: $mobile-thumbnail-score-size;
+    &--large {
+        &::after {
+            width: $thumbnail-large-score-size;
+            height: $thumbnail-large-score-size;
+            font-size: 18px;
+            line-height: $thumbnail-large-score-size;
+
+            @include breakpoint-mobile {
+                width: $mobile-thumbnail-score-size;
+                height: $mobile-thumbnail-score-size;
+                font-size: 10px;
+                line-height: $mobile-thumbnail-score-size;
+            }
         }
     }
 
+    &--default,{
+        cursor: default;
+    }
+
+    &--regular,
+    &--neon {
+        cursor: pointer;
+    }
+
     &--zoom {
+        cursor: default;
         &::before {
             display: none;
         }
     }
+
 }
 
 .xxThumbnail-image {

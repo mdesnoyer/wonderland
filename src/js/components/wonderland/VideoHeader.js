@@ -3,7 +3,6 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import FuzzyTime from '../core/FuzzyTime';
-import Xylophone from '../core/Xylophone';
 import HeroThumbnail from '../wonderland/HeroThumbnail';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -25,8 +24,7 @@ var VideoHeader = React.createClass({
     },
     render: function() {
         var self = this,
-            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State'),
-            xylophone = UTILS.NEON_SCORE_ENABLED ? <Xylophone thumbnails={self.props.thumbnails} /> : false
+            videoTranslatedState = T.get('copy.' + self.props.videoState + 'State')
         ;
         return (
             <nav className="wonderland-video__header level is-marginless columns">
@@ -57,9 +55,6 @@ var VideoHeader = React.createClass({
                 <div className="level-right column is-4">
                     <div className="level-item">
                         <span className="subtitle is-6"><FuzzyTime date={self.props.created} /></span>
-                    </div>
-                    <div className="level-item">
-                        {xylophone}
                     </div>
                 </div>
             </nav>
