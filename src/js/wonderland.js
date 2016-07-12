@@ -71,7 +71,6 @@ render((
 
         <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPage} />
         <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />
-        <Route path={UTILS.DRY_NAV.USER_RESET.URL} component={UserResetPage} />
 
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={OnboardingVideoUpload} />
