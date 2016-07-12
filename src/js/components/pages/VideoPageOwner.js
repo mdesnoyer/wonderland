@@ -21,24 +21,6 @@ var VideoPageOwner = React.createClass({
     propTypes: {
         videoId: React.PropTypes.string
     },
-    getInitialState: function () {
-        return {
-            isServingEnabled: false
-        };
-    },
-    componentWillMount: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    isServingEnabled: account.isServingEnabled
-                });
-            })
-            .catch(function (err) {
-                E.raiseError(err);
-            })
-        ;
-    },
     render: function() {
         var self = this;
         return (
@@ -53,7 +35,6 @@ var VideoPageOwner = React.createClass({
                             videoId={self.props.params.videoId}
                             pingInitial={true}
                             pingInterval={true}
-                            isServingEnabled={self.state.isServingEnabled}
                         />
                     </div>
                 </section>

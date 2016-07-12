@@ -56,6 +56,10 @@ const _DEFAULT_LOCALE = 'en-US',
 
             rememberMe: 'Remember',
 
+            'copy.xOfY': '@x of @y',
+
+            'copy.whyThisImage': 'Why did Neon pick this image? We understand all of the different features that give rise to image preference. In your image, these particular features showed up.',
+
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
             'copy.videoContent.email': 'Get an email summary of your image results for this video.',
@@ -83,7 +87,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.body': '',
             'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your video upload limit. Increase your limit on the <a href="@link">Billing page</a> in just a few clicks.',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
-            'copy.analyzeVideo.experimentState' : 'Exp. State',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
@@ -93,6 +96,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.1': 'Whoops! The page you are looking for doesn&rsquo;t exist.',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
+
+            'copy.lift.explanation': 'Compared to the default thumbnail for this video, with our select top scoring image.',
+            'copy.lift.units': '@lift Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -197,12 +203,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.plugins.types.brightcove.form.readToken': 'Read Token (with URL Access)',
             'copy.plugins.types.brightcove.form.writeToken': 'Write Token',
 
-            'copy.analyzeVideoPanel.panel.1': 'To see your top thumbnails, paste a video URL into the Analyze field.',
-            'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze button.',
-            'copy.analyzeVideoPanel.panel.3': 'View your results.',
-
-            //integrations
-            //brightcove
             'copy.integration.bc.accountId': 'Account ID',
             'copy.integration.bc.clientId': 'Client ID',
             'copy.integration.bc.clientSecret': 'Client Secret',
@@ -210,14 +210,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.integration.bc.no': 'No',
             'copy.integration.bc.playerNotFound': 'No Players Found',
             'copy.integration.manualswitch': 'You are currently using a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.',
-
-            'copy.type': 'Type',
-            'copy.dimensions': 'Dimensions',
-            'copy.thumbnailId': 'Thumbnail ID',
-            'copy.created' : 'Created',
-            'copy.updated' : 'Updated',
-            'copy.frame' : 'Frame',
-            'copy.ctr' : '<abbr title="Clickthrough Rate">CTR</abbr>',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
@@ -254,20 +246,15 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.ourLocation' : 'Our Location',
             // Created
             // Updated
-            'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            'copy.servingFraction': 'Serving Fraction',
-            'copy.impressions': 'Impressions',
-            'copy.conversions': 'Conversions',
-            'copy.neonScoreEquals': 'NeonScore of @neonscore',
             'copy.bestThumbnail': 'Best Thumbnail',
-            'copy.signedInAs': 'Signed In as @user',
             'copy.defaultThumbnail': 'Default Thumbnail',
             'copy.neonSelect': 'Neon Select',
+            'copy.valenceFeatures': 'Valence Features',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -346,12 +333,6 @@ const _DEFAULT_LOCALE = 'en-US',
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
             'copy.agreeTerms': 'By using this service, you agree to our <a href="@link" target="_blank">Terms of Service</a>.',
-
-            'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
-            'copy.processingSlide.2': 'Please be patient–it takes about the same amount of time for Neon to analyze your video as it takes for you to watch it.',
-            'copy.processingSlide.3': 'Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
-            // TODO 'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results. You will also get an email from Neon when your thumbnails are ready.',
-            'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',
 
             'copy.copyright': String.fromCharCode(169) + ' 2016 @name All rights reserved.',
             'copy.PreviousLabel': 'Previous',

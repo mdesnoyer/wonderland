@@ -27,35 +27,51 @@ var VideoMain = React.createClass({
         var self = this;
         return {
             isLoading: false,
-            experimentState: T.get('copy.unknown'),
-            winnerThumbnail: '',
             isHidden: false,
             liftArray: [],
-            displayThumbLift: 0
+            displayThumbLift: 0,
+            thumbnails: self.props.thumbnails
         }
     },
     componentWillMount: function() {
         var self = this;
-            self.sendForLiftData();
+        self.sendForLiftData();
     },
     sendForLiftData: function() {
         var self = this,
             options = {}
         ;
-            options.data = {
-                base_id: self.props.thumbnails[self.props.thumbnails.length - 1].thumbnail_id,
-                thumbnail_ids: self.parseLiftThumbnails(self.props.thumbnails)
-            }
-            self.GET('statistics/estimated_lift/', options)
-                .then(function(res) {
+        options.data = {
+            base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
+            thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+        }
+        self.GET('statistics/estimated_lift/', options)
+            .then(function(res) {
+                self.setState({
+                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
+                    liftArray: res.lift
+                }, function() {
+                    // We need to inject the lift into the Thumbnail object
+                    let tempThumbnails = self.state.thumbnails;
+                    for (let l of self.state.liftArray) {
+                        for (let t of tempThumbnails) {
+                            if (t.thumbnail_id === l.thumbnail_id) {
+                                t.lift = l.lift;
+                                break;
+                            }
+                        }
+                    }
                     self.setState({
-                        displayThumbLift: res.lift.find(x=> x.thumbnail_id === self.props.thumbnails[0].thumbnail_id).lift,
-                        liftArray: res.lift
+                        thumbnails: tempThumbnails
+                    }, function() {
+                        return true;
                     });
-                })
-                .catch(function(err) {
-                    console.log(err);
                 });
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+        ;
     },
     parseLiftThumbnails: function(thumbnails) {
         var self = this,
@@ -91,25 +107,25 @@ var VideoMain = React.createClass({
                             displayThumbLift={self.state.displayThumbLift}
                         />
                     </div>
-                        <Thumbnails
-                            isGuest={self.props.isGuest}
-                            thumbnails={self.props.thumbnails}
-                            videoState={self.props.videoState}
-                            videoId={self.props.videoId}
-                            shareToken={self.props.shareToken}
-                            accountId={self.props.accountId}
-                            handleChildOnMouseEnter={self.handleChildOnMouseEnter}
-                        />
+                    <Thumbnails
+                        thumbnails={self.state.thumbnails}
+                        videoState={self.props.videoState}
+                        videoId={self.props.videoId}
+                        shareToken={self.props.shareToken}
+                        accountId={self.props.accountId}
+                        handleChildOnMouseEnter={self.handleChildOnMouseEnter}
+                        displayThumbLift={self.state.displayThumbLift}
+                    />
                 </article>
             );
         }
     },
-    handleChildOnMouseEnter: function(thumbnail_id) {
+    handleChildOnMouseEnter: function(thumbnailId) {
         var self = this,
             liftArray = self.state.liftArray
         ;
         self.setState({
-            displayThumbLift: liftArray.find(x=> x.thumbnail_id === thumbnail_id).lift
+            displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
         });
     }
 });
