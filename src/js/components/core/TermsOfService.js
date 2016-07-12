@@ -107,7 +107,7 @@ var TermsOfService = React.createClass({
                     </blockquote>
                 <h1 className="xxPage-Subtitle">Notice:</h1>
                 <p>To be effective, the notification must be in writing and contain the following information:</p>
-                <p><ul className="ul-disc">
+                <p><ul className="fa-ul simple-list">
                     <li> An electronic or physical signature of the person authorized to act on behalf of the owner of the copyright or other intellectual property interest;</li>
                     <li> A description of the copyrighted work or other intellectual property that you claim has been infringed;</li>
                     <li> A description of where the material that you claim is infringing is located on the Site, with enough detail that we may find it on the Site;</li>
@@ -117,7 +117,7 @@ var TermsOfService = React.createClass({
                 </ul></p>
                 <h1 className="xxPage-Subtitle">Counter-Notice: </h1> 
                 <p>If you believe that the relevant Content that was removed (or to which access was disabled) is not infringing, or that you have the authorization from the copyright owner, the copyright owner&rsquo;s agent, or pursuant to the law, to post and use such Content, you may send a written counter-notice containing the following information to the Copyright Agent:</p>
-                <p><ul className="ul-disc">
+                <p><ul className="fa-ul simple-list">
                     <li>Your physical or electronic signature;</li>
                     <li>Identification of the content that has been removed or to which access has been disabled and the location at which the content appeared before it was removed or disabled;</li>
                     <li>A statement that you have a good faith belief that the content was removed or disabled as a result of mistake or a misidentification of the content;</li> 
