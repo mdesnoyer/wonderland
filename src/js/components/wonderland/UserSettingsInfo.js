@@ -9,7 +9,8 @@ import gravatar from 'gravatar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var UserSettingsTab1 = React.createClass({
+var UserSettingsInfo = React.createClass({
+    // mixins: [ReactDebugMixin],
     getInitialState: function() {
         var self = this;
         return {
@@ -46,22 +47,33 @@ var UserSettingsTab1 = React.createClass({
         ;
         return (
             <fieldset>
-                <label className="label">{T.get('label.username')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.username} disabled />
-                </p>
-                <label className="label">{T.get('label.created')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={created} disabled />
-                </p>
-                <label className="label">{T.get('label.updated')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={updated} disabled />
-                </p>
-                <label className="label">{T.get('label.avatar')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <img src={self.state.avatar} alt={self.state.username} title={self.state.username} />
-                </p>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.username')}</label>
+                    <input
+                        className="xxInputText"
+                        type="text"
+                        value={self.state.username}
+                        disabled
+                    />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.created')}</label>
+                    <input
+                        className="xxInputText"
+                        type="text"
+                        value={created}
+                        disabled
+                    />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.updated')}</label>
+                    <input
+                        className="xxInputText"
+                        type="text"
+                        value={updated}
+                        disabled
+                    />
+                </div>
             </fieldset>
         )
     }
@@ -69,6 +81,6 @@ var UserSettingsTab1 = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default UserSettingsTab1;
+export default UserSettingsInfo;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

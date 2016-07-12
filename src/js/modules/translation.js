@@ -164,6 +164,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountSettings.body': '',
             'copy.account.heading': 'Hi, @displayName',
             'copy.account.body' : 'Enjoying your Neon Demo, but want to analyze more content more quickly? <a href="@link">Get More!</a>',
+            'copy.heading.changePassword' : 'Change Password',
             'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link. Please verify your email below.',
 
             'copy.pendingAccount.title': 'Pending Neon Account',
@@ -315,6 +316,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.accountSettings': 'Account Settings',
             'nav.userSettings': 'User Settings',
             'nav.learnMore': 'Learn More',
+            'nav.settings' : 'Settings',
 
             // Titles
 

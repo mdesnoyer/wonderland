@@ -41,7 +41,6 @@ var Account = React.createClass({
                 });
             })
             .catch(function (err) {
-                console.log(err);
                 self.setState({
                     isPaidUser: false
                 });
@@ -60,40 +59,33 @@ var Account = React.createClass({
                 <h1 className="xxSubtitle">{T.get('nav.account')}</h1>
                 <h2 className="xxTitle">{T.get('copy.account.heading', {'@displayName': self.state.displayName})}</h2>
                 {
-                    (!self.state.isPaidUser) ? (
+                    (self.state.isPaidUser) ? (
                         <div className="xxText">
                             <p dangerouslySetInnerHTML={{__html: T.get('copy.account.body', {
                                 '@link': UTILS.PRICING_EXTERNAL_URL
                             })}} />
                         </div>
-                    ) : (
-                        <div>
-                            <section className="xxSection">
-                                Account Settings
-                            </section>
-                            <section className="xxSection">
-                                Billing
-                            </section>
-                            <section className="xxSection">
-                                Plugins
-                            </section>
-                            <section className="xxSection">
-                                Telemetry
-                            </section>
-                            <section className="xxSection">
-                                Support
-                            </section>
-                            <section className="xxSection">
-                                API Docs
-                            </section>
-                        </div>
-                    )
+                    ) : ''
                 }
                 <div className="xxFormButtons">
                     <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('logOut')}</button>
                 </div>
+                {
+                    (self.state.isPaidUser) ? '' : (
+                        <section className="xxSection">
+                            <h2 className="xxTitle">{T.get('nav.settings')}</h2>
+                            <a href="/settings/user/">{T.get('nav.userSettings')}</a><br></br>
+                            <a href="/billing/">{T.get('nav.billing')}</a><br></br>
+                            <a href="/plugins/">{T.get('nav.plugins')}</a><br></br>
+                            <a href="/telemetry/">{T.get('nav.telemetry')}</a><br></br>
+                            <a href="/support/">{T.get('nav.support')}</a><br></br>
+                            <a href="http://api.docs.neon-lab.com/">{T.get('nav.api')}</a>
+                        </section>
+                    )
+                }
                 <section className="xxSection">
-                    <ChangePasswordForm username={self.state.username}/>
+                    <h2 className="xxTitle">{T.get('copy.heading.changePassword')}</h2>
+                    <ChangePasswordForm username={self.state.username} />
                 </section>
             </article>
         );
