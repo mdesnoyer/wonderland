@@ -16,7 +16,7 @@ var FeatureThumbnail = React.createClass({
     componentWillMount: function(){
         var self = this,
         //331.03 is the pixel size of the large feature thumbnails. 
-            number = UTILS.closest(Math.pow(331.03, 2), self.props.thumbnails[1])
+            number = UTILS.closest(Math.pow(331.03, 2), self.props.thumbnails[0])
         ;
         self.setState({
             renditionNumber: number
