@@ -10,8 +10,8 @@ import UTILS from '../../modules/utils';
 import FuzzyTime from '../core/FuzzyTime';
 import AjaxMixin from '../../mixins/Ajax';
 import FeatureThumbnail from '../knave/FeatureThumbnail';
+import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 import ThumbnailCollection from '../knave/ThumbnailCollection';
-import ZoomThumbnail from '../knave/ZoomThumbnail';
 import TRACKING from '../../modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,8 +27,22 @@ var Thumbnails = React.createClass({
             thumbnails: self.props.thumbnails,
             total: self.props.thumbnails.length,
             selectedItem: 0,
-            isPageOverlayActive: false
+            isThumbnailOverlayActive: false
         };
+    },
+    handleKeyEvent: function(e) {
+        var self = this;
+        switch (e.keyCode) {
+            case 27: // Escape
+                self.closeThumbnailOverlay(e);
+                break;
+            case 37: // Left Arrow
+                self.handleClickPrevious(e);
+                break;
+            case 39: // Right Arrow
+                self.handleClickNext(e);
+                break;
+        }
     },
     handleClickPrevious: function(e) {
         e.preventDefault();
@@ -46,44 +60,31 @@ var Thumbnails = React.createClass({
             selectedItem: (self.state.selectedItem === self.state.total - 1) ? (0) : (self.state.selectedItem + 1)
         });
     },
-    closePageOverlay: function(e) {
+    closeThumbnailOverlay: function(e) {
         e.preventDefault();
         var self = this;
-        self.togglePageOverlay(self.state.selectedItem);
+        self.toggleThumbnailOverlay(self.state.selectedItem);
     },
-    togglePageOverlay: function(selectedItem) {
+    toggleThumbnailOverlay: function(selectedItem) {
         var self = this;
         self.setState({
-            isPageOverlayActive: !self.state.isPageOverlayActive,
+            isThumbnailOverlayActive: !self.state.isThumbnailOverlayActive,
             selectedItem: selectedItem
         });
     },
     render: function() {
         var self = this,
-            tempValenceArray = ['sunshine', 'rainbows', 'unicorns', 'happiness', 'kittens'], // TODO
-            pageOverlayComponent = self.state.isPageOverlayActive ? (
-                <article className="xxOverlay xxOverlay--dark xxOverlay--scroll">
-                    <a href="#" className="xxOverlay-close" onClick={self.closePageOverlay}>Close</a>
-                    <div className="xxImageZoom">
-                        {
-                            self.state.thumbnails.map(function(thumbnail, i) {
-                                return (
-                                    <ZoomThumbnail
-                                        key={i}
-                                        thumbnail={thumbnail}
-                                        index={i}
-                                        selectedItem={self.state.selectedItem}
-                                        total={self.state.total}
-                                        handleClickPrevious={self.handleClickPrevious}
-                                        handleClickNext={self.handleClickNext}
-                                        displayThumbLift={self.props.displayThumbLift}
-                                        valence={[tempValenceArray[Math.floor(Math.random() * tempValenceArray.length)]]}
-                                    />
-                                );
-                            })
-                        }
-                    </div>
-                </article>
+            ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
+                <ThumbnailOverlay
+                    closeThumbnailOverlay={self.closeThumbnailOverlay}
+                    thumbnails={self.state.thumbnails}
+                    selectedItem={self.state.selectedItem}
+                    total={self.state.total}
+                    handleClickPrevious={self.handleClickPrevious}
+                    handleClickNext={self.handleClickNext}
+                    handleKeyEvent={self.handleKeyEvent}
+                    displayThumbLift={self.props.displayThumbLift}
+                />
             ) : null
         ;
         return (
@@ -99,18 +100,18 @@ var Thumbnails = React.createClass({
                         videoId={self.props.videoId}
                         type="neon"
                         handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
-                        handleClick={self.togglePageOverlay}
+                        handleClick={self.toggleThumbnailOverlay}
                     />
                     <div className="xxCollectionImages-all">
                         <ThumbnailCollection
                             videoId={self.props.videoId}
                             thumbnails={self.state.thumbnails}
                             handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
-                            handleClick={self.togglePageOverlay}
+                            handleClick={self.toggleThumbnailOverlay}
                         />
                     </div>
                 </div>
-                {pageOverlayComponent}
+                {ThumbnailOverlayComponent}
             </div>
         );
     }

@@ -75,7 +75,7 @@ var Sidebar = React.createClass({
                 onClick={self.handleClose}
                 hidden={isHidden}
             >
-                <a href="#" className="xxOverlay-close" onClick={self.handleClose}>{T.get('close')}</a>
+                <a href="#" className="xxOverlay-close" onClick={self.handleClose}>{T.get('action.close')}</a>
                 <div className="xxPageOverlay" onClick={self.handleSidebarClick}>
                     {content}
                 </div>
