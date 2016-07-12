@@ -43,8 +43,8 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false
-;
+            messageNeededComponent = self.state.isError ? <Message message={E.getErrors()} /> : false
+        ;
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
@@ -138,8 +138,8 @@ var SignInForm = React.createClass({
                         self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                     }
                 })
-                .catch(function (err) {
-                    E.checkForError('Sorry, we could not sign you in.', false);
+                .catch(function (err) { 
+                    E.checkForError(T.get('error.unableToSignIn', {'@link': UTILS.DRY_NAV.USER_FORGOT.URL }), false);
                     self._isSubmitted = false;
                     self.setState({
                         isError: true,

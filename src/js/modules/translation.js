@@ -111,8 +111,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.passwordConfirm': 'Confirm Password',
             'copy.passwordVerify': 'Verify Password',
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
             'copy.userForgot.title': 'Forgot Password',
             'copy.userForgot.heading': 'Forgot Password',
             'copy.userForgot.body': 'Enter your email address below to receive an email with password reset instructions.',
@@ -334,7 +332,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
-            'error.unableToSignIn': 'Unable to Sign In',
+            'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a> ',
+
 
             'error.longVideo': 'Please upload a video shorter than 15 minutes long.',
             'error.loginlessLimit': 'You\'ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',

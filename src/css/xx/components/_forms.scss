@@ -29,7 +29,8 @@
     line-height: 26px;
 
     .has-error > & {
-        color: $error-color;
+        color: $accent-color;
+        font-size: 10px
     }
 
     .xxFormField + .xxFormField & {

@@ -38,7 +38,7 @@ var VideoUploadForm = React.createClass({
     handleUpload: function(url) {
         var self = this;
         self.setState({
-            isOpen: false,
+            isOpen: false
         }, function() {
             self.sendVideoUrl(url)
         });

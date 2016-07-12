@@ -3,6 +3,9 @@
 import React from 'react';
 import VideoOwner from './VideoOwner';
 import PagingControls from '../core/PagingControls';
+import NavigationBar from '../core/NavigationBar';
+import VideoProcessing from '../knave/VideoProcessing';
+import Message from '../wonderland/Message'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,6 +14,8 @@ var VideosResults = React.createClass({
         var self = this;
         return (
             <div>
+                <NavigationBar {...self.props} />
+                <Message />
                 {
                     self.props.videos.map(function(video, i) {
                         return (

@@ -8,14 +8,12 @@ import React from 'react';
 var Message = React.createClass({
     render: function() {
         var self = this,
-            message = self.props.body,
-            messageClass = 'message is-' + self.props.flavour,
+            message = self.props.message,
             finalMessage = ''
         ;
-        if (message.constructor == Array) {
+        if (self.props.type === 'many') {
             finalMessage = (
                 <div>
-                    <p className="message-header">{self.props.header}</p>
                     <ul className="message-body">
                         {message.map(function(message, index) {
                             return <li key = {index}>
@@ -28,19 +26,20 @@ var Message = React.createClass({
         } 
         else {
             finalMessage = (
-                <div>
-                    <p className="message-header">{self.props.header}</p>
-                    <p className="message-body"><span dangerouslySetInnerHTML={{__html: self.props.body}} /></p>
+                <div className="has-error">
+                    <p className="xxLabel" dangerouslySetInnerHTML={{__html: self.props.message}} >
+                    </p>
                 </div>
             );
         }
-        return (
-            <blockquote className={messageClass}>
-                {finalMessage}
-            </blockquote>
-        );
+        return <div>{finalMessage}</div>;
     }
 });
+
+//<p>Error</p>
+//<h1>401:</h1>
+//<h2>Oops! We can't find what you're looking for. Please refresh the page or try again.</h2>
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
