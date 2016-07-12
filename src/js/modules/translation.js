@@ -244,6 +244,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.emailMe' : 'Email Me',
             'label.message' : 'Message',
             'label.ourLocation' : 'Our Location',
+            'label.gender': 'Gender',
+            'label.age': 'Age',
             // Created
             // Updated
             'label.accountEmail' : 'Account Email',
@@ -348,7 +350,15 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.homePage.title': 'Find your most clickable images',
             'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
             'copy.homePage.neonBeta': 'NeonScore for Video (beta 1.0)',
-            'copy.homePage.signedUp': 'Already Signed Up?'
+            'copy.homePage.signedUp': 'Already Signed Up?',
+
+            // Onboarding
+            'copy.onboarding.uploadHelpText': 'Upload a video at any time by clicking here',
+
+            // Videos
+            'copy.videos.upload.filter.title': 'Filters',
+            'copy.videos.upload.filter.description': 'Get images for a specific audience.',
+
         },
         'en-GB': {
         },

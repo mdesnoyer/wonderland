@@ -18,7 +18,7 @@ var DemoPage = React.createClass({
         if (SESSION.active()) {
             // Play nice, transport the user to the internal home
             // page (dashboard)
-            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+            self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
         } else {
             self.POST('accounts', {
                 host: CONFIG.AUTH_HOST
@@ -26,7 +26,7 @@ var DemoPage = React.createClass({
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
                 // Route to the dashboard (upload video) page
-                self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
             })
             .catch(function (err) {
                 // TODO: Error result?

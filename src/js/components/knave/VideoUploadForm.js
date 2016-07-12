@@ -19,6 +19,7 @@ var VideoUploadForm = React.createClass({
     },
     getDefaultProps: function() {
         return {
+            isOnboarding: false,
             videoCountServed: 0
         }
     },
@@ -67,6 +68,7 @@ var VideoUploadForm = React.createClass({
             });
     },
     render: function() {
+        const { isOnboarding } = this.props;
         var self = this,
             className = ['xxUpload']
         ;
@@ -83,7 +85,10 @@ var VideoUploadForm = React.createClass({
             {
                 self.state.isOpen ? (
                     <div className="xxOverlay" >
-                        <VideoUploadOverlay handleUpload={self.handleUpload}/>
+                        <VideoUploadOverlay
+                            handleUpload={self.handleUpload}
+                            isOnboarding={isOnboarding}
+                        />
                     </div>
                 ) : null
             }

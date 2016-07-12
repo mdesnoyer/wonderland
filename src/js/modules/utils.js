@@ -229,7 +229,10 @@ var UTILS = {
         },
         COOKIES: {
             URL: '/cookies/'
-        }
+        },
+        ONBOARDING_VIDEO_UPLOAD: {
+            URL: '/demo/upload/'
+        },
     },
     COOKIES_KEY: {
         accessTokenKey: 'at',

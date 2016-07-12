@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Helmet from 'react-helmet';
 
@@ -24,10 +25,10 @@ export default class HomePage extends React.Component {
                             <p>{T.get('copy.homePage.description')}</p>
                             <div className="xxFormButtons xxFeatureContent-buttons">
                                 <a href="#" className="xxButton xxButton--transparent">{T.get('signUp')}</a>
-                                <a
-                                    href="#"
+                                <Link 
+                                    to={UTILS.DRY_NAV.DEMO.URL}
                                     className="xxButton xxButton--highlight"
-                                >{T.get('tryItOut')}</a>
+                                >{T.get('tryItOut')}</Link>
                             </div>
                         </article>
 
