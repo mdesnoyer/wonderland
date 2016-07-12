@@ -32,7 +32,6 @@ var SignInForm = React.createClass({
     getInitialState: function() {
         return {
             isError: false,
-            isModalActive: false,
             isLoading: false
         }
     },
@@ -45,27 +44,16 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signIn.heading')}</legend> : false,
-            buttonClassName,
-            inputClassName
-        ;
-            if (self.state.isLoading) {
-                buttonClassName = 'button is-primary is-medium is-disabled is-loading';
-                inputClassName = 'input is-medium is-disabled';
-            }
-            else {
-                buttonClassName = 'button is-medium is-primary';
-                inputClassName = 'input is-medium';
-            }
+            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false
+;
         return (
-            <div>
+            <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     {messageNeededComponent}
-                    <fieldset>
-                        {legendElement}
-                        <p className="control">
-                            <input className={inputClassName}
+                    <h2 className="xxTitle">{T.get('signIn')}</h2>
+                    <div className="xxFormField">
+                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                            <input className="xxInputText"
                                 name="email"
                                 type="text"
                                 required
@@ -73,66 +61,36 @@ var SignInForm = React.createClass({
                                 minLength="6"
                                 maxLength="1024"
                                 placeholder={T.get('email')}
-                                defaultValue={SESSION.rememberedEmail()}
                             />
-                        </p>
-                        <p className="control">
-                            <input className={inputClassName}
-                                name="password"
-                                type="password"
-                                required
-                                ref="password"
-                                minLength="8"
-                                maxLength="64"
-                                placeholder={T.get('copy.passwordInitial')}
-                            />
-                        </p>
-                        <div className="columns">
-                            <div className="column is-6">
-                                <label className="checkbox" htmlFor="isRememberMe">
-                                    <input type="checkbox"
-                                        className="wonderland-checkbox--checkbox"
-                                        ref="isRememberMe"
-                                        id="isRememberMe"
-                                        defaultValue={SESSION.rememberMe()}
-                                        defaultChecked={SESSION.rememberMe()}
-                                    />
-                                    {T.get('rememberMe')}
-                                </label>
-                            </div>
-                            <div className="column is-6 ">
-                                <Link className="is-pulled-right" activeClassName="wonderland-active" to={UTILS.DRY_NAV.USER_FORGOT.URL}>{T.get('nav.forgotUser')}</Link>
-                            </div>
                         </div>
-                        <p className="has-text-centered">
-                            <button
-                                className={buttonClassName}
-                                type="submit"
-                            >
-                                <Icon type="sign-in" />
-                                {T.get('signIn')}
-                            </button>
-                        </p>
-                    </fieldset>
+                    <div className="xxFormField">
+                        <label className="xxLabel">{T.get('copy.passwordInitial')}</label>
+                        <input className="xxInputText"
+                            name="password"
+                            type="password"
+                            required
+                            ref="password"
+                            minLength="8"
+                            maxLength="64"
+                            placeholder={T.get('copy.passwordPlaceholder')}
+                        />
+                    </div>
+                    <Link 
+                        className="xxFormButtons-anchor u-inheritColor" 
+                        to={UTILS.DRY_NAV.USER_FORGOT.URL}
+                    >{T.get('nav.forgotUser')}
+                    </Link>
+                    <div className="xxFormButtons">
+                        <button
+                            className="xxButton"
+                            type="submit"
+                        >
+                            {T.get('signIn')}
+                        </button>
+                    </div>
                 </form>
-                <ModalParent
-                    isModalActive={self.state.isModalActive}
-                    handleToggleModal={self.handleToggleModal}
-                    isModalContentMax={false}
-                >
-                    <AccountMasqueradeModal />
-                </ModalParent>
-            </div>
+            </fieldset>
         );
-    },
-    handleToggleModal: function() {
-        var self = this;
-        self.setState({
-            isModalActive: false
-        }, function() {
-            SESSION.end();
-            self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
-        });
     },
     handleSubmit: function (e) {
         var self = this;
@@ -147,7 +105,6 @@ var SignInForm = React.createClass({
     },
     sendUserData: function() {
         var self = this,
-            isRememberMe = self.refs.isRememberMe.checked,
             email = self.refs.email.value.trim(),
             password = self.refs.password.value.trim(),
             errorList = [
@@ -170,15 +127,11 @@ var SignInForm = React.createClass({
                     self._isSubmitted = false;
                     if (typeof(res.account_ids[0]) === 'undefined') {
                         self.setState({
-                            isModalActive: true,
                             isError: false,
                             isLoading: false
                         });
                     }
                     else {
-                        if (SESSION.rememberMe(isRememberMe)) {
-                            SESSION.rememberedEmail(email);
-                        }
                         self.setState({
                             isError: false,
                             isLoading: false

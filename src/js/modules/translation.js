@@ -101,7 +101,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.lift.units': '@lift Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+            'copy.passwordPlaceholder': "••••••••••",
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
             'copy.passwordVerify': 'Verify Password',
