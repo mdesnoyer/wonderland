@@ -55,7 +55,7 @@ var WonderTabs = React.createClass({
         var self = this;
         return (
             <div>
-                <nav className="wonderland-tabs tabs is-boxed">
+                <nav className="xxTabs">
                     <ul>
                         {
                             self.state.tabs.map(function(tab, i) {
@@ -86,7 +86,7 @@ var WonderTabs = React.createClass({
                         }
                     </ul>
                 </nav>
-                <div className="wonderland-tabs-body">
+                <div>
                     {self.state.tabs[self.state.selectedTab].body}
                 </div>
             </div>

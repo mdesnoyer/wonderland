@@ -1,0 +1,35 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTabs {
+    margin-bottom: 20px;
+    line-height: 24px;
+    display: block;
+    border-bottom: 1px solid $bg-tertiary-color;
+}
+
+.xxTabs li {
+    display: inline-block;
+    vertical-align: top;
+    padding: 12px 20px;
+    margin-right: 16px;
+    border: 1px solid $bg-color;
+}
+
+.xxTabs li:hover {
+    background-color: $bg-secondary-color;
+    border: 1px solid $bg-tertiary-color;
+    border-bottom: 1px solid $bg-secondary-color;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.xxTabs li.is-active {
+    background-color: $white-color;
+    border: 1px solid $bg-tertiary-color;
+    border-bottom: 1px solid $white-color;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
