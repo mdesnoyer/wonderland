@@ -246,6 +246,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.ourLocation' : 'Our Location',
             'label.gender': 'Gender',
             'label.age': 'Age',
+            'label.newPassword' : 'New Password',
             // Created
             // Updated
             'label.accountEmail' : 'Account Email',

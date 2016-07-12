@@ -114,7 +114,7 @@ var UserResetForm = React.createClass({
                 {messageNeededComponent}
                 <fieldset>
                     <div className="xxFormField">
-                        <label className="xxLabel">New Password</label>
+                        <label className="xxLabel">{T.get('label.newPassword')}</label>
                         <input
                             className="xxInputText"
                             type="password"
@@ -127,7 +127,7 @@ var UserResetForm = React.createClass({
                         />
                     </div>
                     <div className="xxFormField">
-                        <label className="xxLabel">Verify Password</label>
+                        <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
                         <input
                             className="xxInputText"
                             type="password"
