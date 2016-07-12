@@ -112,9 +112,11 @@ var UserResetForm = React.createClass({
                 break;
         }
         return (
-            <form onSubmit={self.handleSubmit}>
-                {messageNeededComponent}
-                <fieldset>
+            <fieldset className="xxMainForm">
+                <form onSubmit={self.handleSubmit}>
+                    <h2 className="xxTitle">{T.get('copy.userReset.heading')}</h2>
+                    <h1 className="xxSubtitle">{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</h1>
+                    {messageNeededComponent}
                     <PasswordBrothers 
                         handlePasswordInitialChange={self.handlePasswordInitialChange}
                         handlePasswordConfirmChange={self.handlePasswordConfirmChange}
@@ -128,8 +130,8 @@ var UserResetForm = React.createClass({
                             {T.get('action.resetPassword')}
                         </button>
                     </div>
-                </fieldset>
-            </form>
+                </form>
+            </fieldset>
         );
     }
 })

@@ -17,19 +17,9 @@ var UserResetPage = React.createClass({
         var self = this;
         return (
             <main className="xxPage">
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.userReset.title'))}
-                />
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.userReset.title'))} />
                 <SiteHeader />
-                <section className="xxFormPage">
-                    <h1 className="xxTitle">{T.get('copy.userReset.heading')}</h1>
-                    <div className="xxText">
-                        <p>{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</p>
-                    </div>
-                    <UserResetForm
-                        {...self.props}
-                    />
-                </section>
+                <UserResetForm {...self.props} />
                 <SiteFooter />
             </main>
         );
