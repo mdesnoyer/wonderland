@@ -23,11 +23,11 @@ var SupportTab3 = React.createClass({
                 
                 <p>When you are ready for Neon to analyze a video, you can use Neon&rsquo;s CMS API to submit that video. The video must be available at a publicly accessible URL. Our servers will download that video, analyze it, and send you a callback when the job is complete. To submit a video, send a POST request to:</p>
 
-<pre className="wonderland-pre"><code>{`https://services.neon-lab.com/api/v2/{account_id}/videos`}</code></pre>
+<pre className="xxPre"><code className="xxCode">{`https://services.neon-lab.com/api/v2/{account_id}/videos`}</code></pre>
 
                 <p>The body of the request must be a JSON object. For example:</p>
 
-<pre className="wonderland-pre"><code>{`{
+<pre className="xxPre"><code className="xxCode">{`{
     "external_video_ref": "video1",
     "url" : "http://video_repo.com/myvideo.mp4",
     "callback_url" : "http://myserver.com/neon"
@@ -48,7 +48,7 @@ var SupportTab3 = React.createClass({
 
                 <p>A resulting URL will look like:</p>
 
-<pre className="wonderland-pre"><code>{`http://i2.neon-images.com/v1/client/12345/neonvid_video1.jpg?height=90&width=160`}</code></pre>
+<pre className="xxPre"><code className="xxCode">{`http://i2.neon-images.com/v1/client/12345/neonvid_video1.jpg?height=90&width=160`}</code></pre>
 
                 <h1 className="xxCollection-title">3. Telemetry</h1>
                 <p>After serving different images to different users, we use telemetry from your site to measure which images are most effective. This allows you to measure the impact of better thumbnails, as well as ensure that you always have the most effective thumbnails live on your site.</p>
@@ -58,13 +58,13 @@ var SupportTab3 = React.createClass({
 
                 <h1 className="xxSubtitle">1. Your thumbnails are inside an anchor tag. Each thumbnail can be either an img tag or a background-image css property. For example:</h1>
 
-<pre className="wonderland-pre"><code>{`<a href="http://www.mysite.com/play_video1">
+<pre className="xxPre"><code className="xxCode">{`<a href="http://www.mysite.com/play_video1">
     <img src="http://i3.neon-images.com/v1/client/1234/neonvid_video1.jpg" />
 </a>`}</code></pre>
 
                 <p>Or</p>
 
-<pre className="wonderland-pre"><code>{`<a href="http://www.mysite.com/play_video1">
+<pre className="xxPre"><code className="xxCode">{`<a href="http://www.mysite.com/play_video1">
     <div style="background-image: url('http://i3.neon-images.com/v1/client/1234/neonvid_video1.jpg');"></div>
 </a>`}</code></pre>
                 <h1 className="xxSubtitle">2. Any click that causes the video to play resolves to the same location as the destination of the above anchor tag.</h1>
@@ -127,7 +127,7 @@ var SupportTab3 = React.createClass({
 
                 <p>The recommended callback handler has the following logic:</p>
 
-<pre><code>{`def put(body):
+<pre className="xxPre"><code className="xxCode">{`def put(body):
     if body['processing_state'] == 'failed':
         # Report processing error
 

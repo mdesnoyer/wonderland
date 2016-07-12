@@ -82,12 +82,11 @@ var TelemetryPage = React.createClass({
                                 <h1 className="xxCollection-title">Insert the Telemetry Tag</h1>
                                 <p>To use this tag, your site must meet the following two criteria:</p>
                                 <p>1. Your thumbnails are inside an anchor tag. Each thumbnail can be either an img tag or a background-image CSS property. For example:</p>
-<pre><code>{`<a href="http://www.mysite.com/play_video1">
->>>>>>> page restyling
+<pre className="xxPre"><code className="xxCode">{`<a href="http://www.mysite.com/play_video1">
     <img src="http://i3.neon-images.com/v1/client/1234/neonvid_video1.jpg" />
 </a>`}</code></pre>
                                 <p>Or</p>
-<pre><code>{`<a href="http://www.mysite.com/play_video1">
+<pre className="xxPre"><code className="xxCode">{`<a href="http://www.mysite.com/play_video1">
     <div style="background-image: url('http://i3.neon-images.com/v1/client/1234/neonvid_video1.jpg');"></div>
 </a>`}</code></pre>
                                 <p>2. Any click that causes the video to play resolves to the same location as the destination of the above anchor tag.</p>

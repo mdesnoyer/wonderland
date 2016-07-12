@@ -21,7 +21,7 @@ var IntegrationsPage = React.createClass({
                 />
                 <SiteHeader />
                 <h1 className="xxTitle">{T.get('copy.plugins.heading')}</h1>
-                <Integrations pop={window.location.hash === '#pop'} />
+                <Integrations />
                 <SiteFooter />
             </main>
         );

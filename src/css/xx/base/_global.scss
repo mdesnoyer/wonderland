@@ -56,25 +56,3 @@ blockquote {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-pre {
-    margin-bottom: 1em;
-    white-space: pre;
-    word-wrap: normal;
-    font-family: "Source Code Pro","Monaco","Inconsolata",monospace;
-    line-height: 1.25;
-}
-
-code {
-    background-color: #fff;
-    color: #121212;
-    font-size: 12px;
-}
-
-pre code {
-    display: block;
-    overflow-x: auto;
-    padding: 16px 20px;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
