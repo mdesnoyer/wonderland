@@ -8,12 +8,9 @@ import T from '../../modules/translation';
 
 var PasswordBrothers = React.createClass({
     // mixins: [ReactDebugMixin],
-    _minLength: 8,
-    _maxLength: 64,
     propTypes: {
         handlePasswordInitialChange: React.PropTypes.func,
         handlePasswordConfirmChange: React.PropTypes.func,
-        mode: React.PropTypes.string.isRequired
     },
     handlePasswordInitialChange: function(e) {
         var self = this;
@@ -26,28 +23,36 @@ var PasswordBrothers = React.createClass({
     render: function() {
         var self = this;
         return (
-            <p className={'control is-grouped is-' + self.props.mode}>
-                <input className="input is-medium"
-                    type="password"
-                    ref="passwordInitial"
-                    required
-                    minLength={self._minLength}
-                    maxLength={self._maxLength}
-                    placeholder={T.get('copy.passwordInitial')}
-                    onChange={self.handlePasswordInitialChange}
-                    autoComplete="off"
-                />
-                <input className="input is-medium"
-                    type="password"
-                    ref="passwordConfirm"
-                    required
-                    minLength={self._minLength}
-                    maxLength={self._maxLength}
-                    placeholder={T.get('copy.passwordConfirm')}
-                    onChange={self.handlePasswordConfirmChange}
-                    autoComplete="off"
-                />
-            </p>
+            <div>
+                <div className="xxFormField">
+                     <label className="xxLabel">{T.get('label.newPassword')}</label>
+                     <input
+                         className="xxInputText"
+                         type="password"
+                         data-ref="passwordInitial"
+                         minLength="8"
+                         maxLength="64"
+                         placeholder={T.get('copy.passwordInitial')}
+                         onChange={self.handlePasswordInitialChange}
+                         autoComplete="off"
+                         required
+                     />
+                 </div>
+                 <div className="xxFormField">
+                     <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
+                     <input
+                         className="xxInputText"
+                         type="password"
+                         data-ref="passwordConfirm"
+                         minLength="8"
+                         maxLength="64"
+                         placeholder={T.get('copy.passwordConfirm')}
+                         onChange={self.handlePasswordConfirmChange}
+                         autoComplete="off"
+                         required
+                     />
+                 </div>
+            </div>
         )
     }
 });
@@ -57,5 +62,3 @@ var PasswordBrothers = React.createClass({
 export default PasswordBrothers
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
