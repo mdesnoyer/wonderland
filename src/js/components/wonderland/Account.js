@@ -59,7 +59,7 @@ var Account = React.createClass({
                 <h1 className="xxSubtitle">{T.get('nav.account')}</h1>
                 <h2 className="xxTitle">{T.get('copy.account.heading', {'@displayName': self.state.displayName})}</h2>
                 {
-                    (self.state.isPaidUser) ? (
+                    (!self.state.isPaidUser) ? (
                         <div className="xxText">
                             <p dangerouslySetInnerHTML={{__html: T.get('copy.account.body', {
                                 '@link': UTILS.PRICING_EXTERNAL_URL
@@ -71,7 +71,7 @@ var Account = React.createClass({
                     <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('logOut')}</button>
                 </div>
                 {
-                    (self.state.isPaidUser) ? '' : (
+                    (!self.state.isPaidUser) ? '' : (
                         <section className="xxSection">
                             <h2 className="xxTitle">{T.get('nav.settings')}</h2>
                             <a href="/settings/user/">{T.get('nav.userSettings')}</a><br></br>

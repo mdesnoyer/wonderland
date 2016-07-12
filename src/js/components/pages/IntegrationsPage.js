@@ -15,24 +15,15 @@ var IntegrationsPage = React.createClass({
     mixins: [Secured],
     render: function() {
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.plugins.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="container">
-                        <h1>{T.get('copy.plugins.heading')}</h1>
-                        <div className="content">
-                            {T.get('copy.plugins.body')}
-                        </div>
-                        <Integrations
-                            pop={window.location.hash === '#pop'}
-                        />
-                    </div>
-                </section>
+                <h1 className="xxTitle">{T.get('copy.plugins.heading')}</h1>
+                <Integrations pop={window.location.hash === '#pop'} />
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

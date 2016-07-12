@@ -42,19 +42,15 @@ var SupportPage = React.createClass({
             ]
         ;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.support.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="container">
-                        <h1>{T.get('copy.support.heading')}</h1>
-                        <WonderTabs tabs={tabs} />
-                    </div>
-                </section>
+                <h1 className="xxTitle">{T.get('copy.support.heading')}</h1>
+                <WonderTabs tabs={tabs} />
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });
