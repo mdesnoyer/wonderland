@@ -21,7 +21,8 @@ var ThumbnailCollection = React.createClass({
                                     key={i}
                                     score={thumbnail.neon_score}
                                     src={thumbnail.url}
-                                    thumbnail_id={thumbnail.thumbnail_id}
+                                    thumbnailId={thumbnail.thumbnail_id}
+                                    handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                                 />
                             )
                         }

@@ -56,7 +56,6 @@ render((
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
 
-        <Redirect from={UTILS.DRY_NAV.HOME.URL} to={UTILS.DRY_NAV.SIGNIN.URL} />
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />

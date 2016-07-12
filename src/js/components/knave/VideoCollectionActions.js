@@ -6,7 +6,7 @@ import React from 'react';
 
 var VideoCollectionActions = React.createClass({
     render: function() {
-        var self = this; 
+        var self = this;
         return (
             <ul className="xxCollectionActions">
                 <li className="xxCollectionActions-item">
@@ -45,7 +45,7 @@ var VideoCollectionActions = React.createClass({
         );
     },
     handleClick: function(e) {
-        var self = this; 
+        var self = this;
         self.props.handleMenuChange(e);
     }
 })
