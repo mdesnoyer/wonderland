@@ -4,8 +4,6 @@ import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
 import Lift from './Lift';
-import ReactDOM from 'react-dom';
-import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,15 +17,6 @@ var ZoomThumbnail = React.createClass({
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
         valence: React.PropTypes.array.isRequired
-    },
-    componentDidMount: function() {
-        ReactDOM.findDOMNode(this).scrollTop = 0;
-        document.body.classList.add('has-overlayWithScroll', 'has-overlayDark');
-        document.body.style.marginRight = `${scrollbarWidth}px`;
-    },
-    componentWillUnmount: function() {
-        document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
-        document.body.style.marginRight = 0;
     },
     render: function() {
         var self = this,
