@@ -7,15 +7,15 @@ import React from 'react';
 // timings which would need to be re-worked
 
 var images = [
-    '/img/thumbnail-5.jpg',
-    '/img/thumbnail-4.jpg',
-    '/img/thumbnail-3.jpg',
-    '/img/thumbnail-5.jpg',
-    '/img/thumbnail-4.jpg',
-    '/img/thumbnail-5.jpg',
-    '/img/thumbnail-5.jpg',
-    '/img/thumbnail-3.jpg',
-    '/img/thumbnail-4.jpg',
+    '/img/drift/scaled/drift-1.jpg',
+    '/img/drift/scaled/drift-2.jpg',
+    '/img/drift/scaled/drift-3.jpg',
+    '/img/drift/scaled/drift-4.jpg',
+    '/img/drift/scaled/drift-5.jpg',
+    '/img/drift/scaled/drift-6.jpg',
+    '/img/drift/scaled/drift-7.jpg',
+    '/img/drift/scaled/drift-8.jpg',
+    '/img/drift/scaled/drift-9.jpg',
 ];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
