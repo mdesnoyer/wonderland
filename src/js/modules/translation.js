@@ -98,7 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.notFound.title': 'Page Not Found (Error 404)',
             'copy.notFound.heading': 'Page Not Found (Error 404)',
-            'copy.notFound.body.1': 'Whoops! The page you are looking for doesn&rsquo;t exist.',
+            'copy.notFound.body.1': 'Oops! We can\u2019t find what you\u2019re looking for. Please try again.',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
