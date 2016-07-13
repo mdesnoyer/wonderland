@@ -45,7 +45,7 @@ export default class XXCollectionInfo extends React.Component {
     }
 
     render() {
-        const { hasFilters, isMobile, title, activeContent, setActiveContent, updateStage } = this.props;
+        const { hasFilters, isMobile, title, activeContent, stage, setActiveContent, updateStage } = this.props;
         const { time } = this.state;
 
         return (
@@ -87,9 +87,22 @@ export default class XXCollectionInfo extends React.Component {
                     )
                 }
 
+                {/* Display max of 200% lift, above that bars are same as 200% */}
                 {
                     isMobile ? null : (
-                        <XXLift />
+                        stage && stage === 'image-hover' ? (
+                            <XXLift
+                                lift="200%"
+                                barWidth="100%"
+                                barOriginalWidth="33.3%"
+                            />
+                        ) : (
+                            <XXLift
+                                lift="48%"
+                                barWidth="49%"
+                                barOriginalWidth="33.3%"
+                            />
+                        )
                     )
                 }
 

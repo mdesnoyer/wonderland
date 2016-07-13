@@ -51,12 +51,18 @@ export default class XXCollectionImages extends React.Component {
                         size="large"
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        onMouseEnter={e => updateStage('image-hover')}
+                        onMouseLeave={e => updateStage('')}
                     />
                 </div>
 
                 {
                     isMobile ? (
-                        <XXLift />
+                        <XXLift
+                            lift="48%"
+                            barWidth="49%"
+                            barOriginalWidth="33%"
+                        />
                     ) : null
                 }
 
