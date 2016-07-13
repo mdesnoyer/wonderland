@@ -251,6 +251,9 @@ const _DEFAULT_LOCALE = 'en-US',
             // Updated
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
+            'label.filters': 'Filters',
+            'label.gender': 'Gender',
+            'label.age': 'Age',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

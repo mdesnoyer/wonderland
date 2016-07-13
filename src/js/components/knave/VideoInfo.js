@@ -18,9 +18,8 @@ var VideoInfo = React.createClass({
                 <a className="xxCollectionFilterToggle"
                     data-action-label="refilter"
                     onClick={self.props.handleMenuChange} >
-                    <span>Refilter</span>
                 </a>
-                <div className="xxCollectionFilters has-dropdown">
+                <div className="xxCollectionFilters">
                     <strong className="xxCollectionFilters-title">Filters</strong>
                     <span className="xxCollectionFilters-value">None</span>
                 </div>

@@ -6,6 +6,7 @@
     z-index: 1;
     top: 14px;
     color: $accent-color;
+    cursor: pointer;
 
     @include breakpoint-mobile {
         display: none;
@@ -90,6 +91,7 @@
     margin: 14px 0 0;
     padding: 4px 0;
     color: $tertiary-color;
+    cursor: default;
 
     @include breakpoint-mobile {
         margin-top: 7px;
