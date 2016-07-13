@@ -47,14 +47,14 @@ var Videos = React.createClass({
     },
     render: function() {
         var self = this,
-            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : false,
+            errorMessage = self.state.isError ? <Message message={self.state.errorMessageArray} isError={true} /> : false,
             prevPageAPICall = '',
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
-        if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
+        if ((self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
             prevPageAPICall = self.state.previousPseudoPageUrl;
-            alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
+            alertMessage = <Message message={T.get('warning.noMoreVideosBody')} isError={true} />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -62,6 +62,7 @@ var Videos = React.createClass({
         }
         return (
             <div>
+                {alertMessage}
                 <VideoUploadForm
                     postHookSearch={self.doVideoSearch}
                     postHookAnalysis={null}
