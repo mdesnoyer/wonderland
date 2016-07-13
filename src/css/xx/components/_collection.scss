@@ -57,9 +57,7 @@ $collection-content-padding-top: 17px;
         line-height: 21px;
     }
 
-    .xxCollection--video &::after {
-        @include font-awesome('f03d');
-
+    &::after {
         position: relative;
         top: -2px;
         margin: 0 0 0 10px;
@@ -69,6 +67,14 @@ $collection-content-padding-top: 17px;
         @include breakpoint-mobile {
             top: -1px;
             font-size: 9px;
+        }
+
+        .xxCollection--photo & {
+            @include font-awesome('f030'); // fa-camera
+        }
+
+        .xxCollection--video & {
+            @include font-awesome('f03d'); // fa-video-camera
         }
     }
 
