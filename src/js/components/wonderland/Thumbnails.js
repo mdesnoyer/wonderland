@@ -13,6 +13,7 @@ import FeatureThumbnail from '../knave/FeatureThumbnail';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 import ThumbnailCollection from '../knave/ThumbnailCollection';
 import TRACKING from '../../modules/tracking';
+import Lift from '../knave/Lift';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -102,7 +103,20 @@ var Thumbnails = React.createClass({
                         handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                         handleClick={self.toggleThumbnailOverlay}
                     />
+
+                    {
+                        this.props.isMobile ? (
+                            <Lift displayThumbLift={this.props.displayThumbLift} />
+                        ) : null
+                    }
+
                     <div className="xxCollectionImages-all">
+                        {
+                            this.props.isMobile ? (
+                                <h2 className="xxCollection-subtitle">{T.get('copy.videos.topSelects')}</h2>
+                            ) : null
+                        }
+
                         <ThumbnailCollection
                             videoId={self.props.videoId}
                             thumbnails={self.state.thumbnails}

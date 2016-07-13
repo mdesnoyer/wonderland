@@ -115,6 +115,7 @@ var VideoMain = React.createClass({
                         accountId={self.props.accountId}
                         handleChildOnMouseEnter={self.handleChildOnMouseEnter}
                         displayThumbLift={self.state.displayThumbLift}
+                        isMobile={self.props.isMobile}
                     />
                 </article>
             );

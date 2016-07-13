@@ -63,14 +63,18 @@ var VideoOwner = React.createClass({
         clearInterval(self.timer);
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-        return ((nextState.title !== this.state.title) || (nextState.videoState !== this.state.videoState));
+        return (
+            (nextState.title !== this.state.title) ||
+            (nextState.videoState !== this.state.videoState) ||
+            (nextProps.isMobile !== this.props.isMobile)
+        );
     },
     render: function() {
         var self = this;
-            if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) { 
+            if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
                 return <VideoProcessing title={self.state.title} videoState={self.state.videoState}/>;
             }
-            else { 
+            else {
                 return (
                     <VideoMain
                         isGuest={false}
@@ -82,6 +86,7 @@ var VideoOwner = React.createClass({
                         url={self.state.url}
                         shareToken={self.state.shareToken}
                         title={self.state.title}
+                        isMobile={self.props.isMobile}
                     />
                 );
             }

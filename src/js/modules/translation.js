@@ -354,11 +354,17 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
-            'copy.onboarding.uploadHelpText': 'Upload a video at any time by clicking here',
+            'copy.onboarding.uploadHelpText': 'Analyze a video at any time by clicking here',
+            'copy.onboarding.uploadPageTitle': 'Analyze a Video',
 
             // Videos
             'copy.videos.upload.filter.title': 'Filters',
             'copy.videos.upload.filter.description': 'Get images for a specific audience.',
+            'copy.videos.topSelects': 'Top Neon Selects',
+
+            // Mobile
+            'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
+            'copy.mobile.warning.description': 'Let us email you a link to check it out on desktop later. You can analyze your videos and get your own NeonScores for free.',
 
         },
         'en-GB': {

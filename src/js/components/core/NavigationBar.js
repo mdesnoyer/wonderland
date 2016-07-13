@@ -56,7 +56,7 @@ var NavigationBar = React.createClass({
             return false;
         }
         return (
-            <div>
+            <div className="xxCollectionNavBar">
                 {self.props.alertMessage}
                 <nav className="level">
                     <div className="level-left">
