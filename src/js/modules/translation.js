@@ -57,6 +57,7 @@ const _DEFAULT_LOCALE = 'en-US',
             rememberMe: 'Remember',
 
             'copy.xOfY': '@x of @y',
+            'copy.pageN': 'Page @n',
 
             'copy.whyThisImage': 'Why did Neon pick this image? We understand all of the different features that give rise to image preference. In your image, these particular features showed up.',
 

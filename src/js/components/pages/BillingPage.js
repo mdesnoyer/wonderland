@@ -27,7 +27,7 @@ var BillingPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.billing.heading')}</h1>
+                        <h1>{T.get('copy.billing.heading')}</h1>
                         <div className="content">
                             <p><span dangerouslySetInnerHTML={{__html: T.get('copy.billing.body')}} /></p>
                         </div>

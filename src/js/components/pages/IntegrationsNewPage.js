@@ -29,13 +29,13 @@ var IntegrationsNewPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.plugins.new.heading')}</h1>
+                        <h1>{T.get('copy.plugins.new.heading')}</h1>
                         <div className="content">
                             {T.get('copy.plugins.new.body')}
                         </div>
                         <div className="columns">
                             <div className="card column is-one-third">
-                                <div className="card-content has-text-centered">
+                                <div className="card-content">
                                     <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>

@@ -7,7 +7,6 @@ import React from 'react';
 
 import Message from './Message';
 import AjaxMixin from '../../mixins/Ajax';
-import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
