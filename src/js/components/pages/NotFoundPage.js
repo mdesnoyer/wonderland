@@ -11,11 +11,13 @@ import UTILS from '../../modules/utils';
 
 var NotFoundPage = React.createClass({
     render: function() {
-        var body1 = T.get('copy.notFound.body.1'),
+        var self = this,
+            body1 = T.get('copy.notFound.body.1'),
             body2 = T.get('copy.notFound.body.2',{
                 '@link': UTILS.CORP_EXTERNAL_URL
             })
         ;
+        debugger 
         return (
             <main className="xxPage">
                 <Helmet title={UTILS.buildPageTitle(T.get('copy.notFound.title'))} />
