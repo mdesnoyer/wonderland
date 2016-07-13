@@ -6,11 +6,12 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import reqwest from 'reqwest';
 import Message from '../wonderland/Message';
-import Icon from '../core/Icon';
+import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var URLShortenerForm = React.createClass({
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             mode: 'quiet', // quiet|error|loading|success
@@ -18,7 +19,7 @@ var URLShortenerForm = React.createClass({
         }
     },
     componentDidMount: function() {
-        var self = this
+        var self = this,
             c = new Clipboard(self.refs.copyUrl)
         ;
     },
@@ -42,42 +43,16 @@ var URLShortenerForm = React.createClass({
         else {
             self.setState({
                 mode: 'error',
-                shortUrl: ''
+                shortUrl: self.refs.url.value.trim()
             });
         }
     },
     render: function() {
         var self = this,
-            messageNeededComponent = false,
-            output = false
+            messageNeededComponent = false
         ;
         if (self.state.mode === 'error') {
             messageNeededComponent = <Message message={T.get('copy.urlShortener.messageBody')} />
-        }
-        if (self.state.mode === 'success') {
-            output = (
-                <div>
-                    <div className="xxFormField">
-                        <input
-                            className="xxInputText"
-                            type="url"
-                            readOnly
-                            refs="outputUrl"
-                            value={self.state.shortUrl}
-                        />
-                    </div>
-                    <div className="xxFormButtons">
-                        <button
-                            className="xxButton"
-                            type="button"
-                            ref="copyUrl"
-                            data-clipboard-test={self.state.shortUrl}
-                        >
-                            {T.get('copy')}
-                        </button>
-                    </div>
-                </div>
-            );
         }
         return (
             <div>
@@ -104,7 +79,27 @@ var URLShortenerForm = React.createClass({
                                 {T.get('action.shortenURL')}
                             </button>
                         </div>
-                        {output}
+                        <div className="xxFormField">
+                            <input
+                                className="xxInputText"
+                                type="url"
+                                readOnly
+                                refs="outputUrl"
+                                value={self.state.shortUrl}
+                            />
+                        </div>
+                        <div className="xxFormButtons">
+                            <button
+                                className="xxButton"
+                                data-clipboard-text={self.state.shortUrl}
+                                value={self.state.shortUrl}
+                                ref="copyUrl"
+                                type="button"
+                                onClick={self.handleCopyClick}
+                            >
+                                {T.get('copy')}
+                            </button>
+                        </div>
                     </fieldset>
                 </form>
             </div>
