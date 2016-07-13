@@ -8,7 +8,6 @@ import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
-import Icon from '../core/Icon';
 import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,35 +88,34 @@ var UserForgotForm = React.createClass({
                 break;
         }
         return (
-            <div>
-                {messageNeededComponent}
-                <form onSubmit={self.handleSubmit} className={self.state.mode === 'success' ? 'is-hidden' : ''}>
-                    <fieldset>
+            <fieldset className="xxMainForm">
+                <form onSubmit={self.handleSubmit}>
+                    {messageNeededComponent}
+                    <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
+                    <h1 className="xxSubtitle">{T.get('copy.userForgot.body')}</h1>
                         {legendElement}
-                        <p className={'control is-' + self.state.mode}>
-                            <input
-                                className={'input is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                                type="email"
-                                ref="email"
-                                required
-                                minLength="6"
-                                maxLength="1024"
-                                placeholder={T.get('email')}
-                                defaultValue={SESSION.rememberedEmail()}
-                            />
-                        </p>
-                        <p className="has-text-centered">
-                            <button
-                                className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                                type="submit"
-                            >
-                                <Icon type="envelope" />
-                                {T.get('action.resetPassword')}
-                            </button>
-                        </p>
-                    </fieldset>
+                    <div className="xxFormField">
+                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                        <input className="xxInputText"
+                            type="email"
+                            ref="email"
+                            required
+                            minLength="6"
+                            maxLength="1024"
+                            placeholder={T.get('email')}
+                            defaultValue={SESSION.rememberedEmail()}
+                        />
+                    </div>
+                    <div className="xxFormButtons">
+                        <button
+                            className="xxButton"
+                            type="submit"
+                        >
+                            {T.get('action.resetPassword')}
+                        </button>
+                    </div>
                 </form>
-            </div>
+            </fieldset>
         );
     }
 })

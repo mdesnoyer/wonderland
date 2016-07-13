@@ -6,7 +6,7 @@ import React from 'react';
 
 var BrightcoveSmartPlayerContent = React.createClass({
     render: function() {
-        return(
+        return (
             <ol>
                 <li>Copy the Neon Telemetry Player URL to the plugin</li>
                 <li>Log in to your Brightcove Account</li>

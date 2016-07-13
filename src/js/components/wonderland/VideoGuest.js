@@ -119,9 +119,9 @@ var VideoGuest = React.createClass({
                             duration={self.state.duration}
                             created={self.state.created}
                             url={self.state.url}
-                            isServingEnabled={false}
                             shareToken={self.state.shareToken}
                             accountId={self.state.accountId}
+                            title={self.state.title}
                         />
                 );
                 break;

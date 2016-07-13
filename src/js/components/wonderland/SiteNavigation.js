@@ -3,6 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
+import SESSION from '../../modules/session';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12,15 +13,34 @@ var SiteNavigation = React.createClass({
     getDefaultProps: function() {
         var self = this;
         return {
-            isSignedIn: false,
+            hasUser: null, // null|true|false
             displayName: ''
         }
     },
     getInitialState: function() {
         var self = this;
         return {
-            isSignedIn: self.props.isSignedIn,
             sidebarContent: self.props.sidebarContent
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function (user) {
+                    self.setState({
+                        hasUser: true
+                    });
+                })
+                .catch(function () {
+                    self.setState({
+                        hasUser: false
+                    });
+                });
+        } else {
+            self.setState({
+                hasUser: false
+            });
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -46,16 +66,12 @@ var SiteNavigation = React.createClass({
             },
             constructedNav = []
         ;
-        if (self.state.isSignedIn) {
-            // Signed In
-            constructedNav.push(items.learnMore);
-            constructedNav.push(items.contactPage);
+        constructedNav.push(items.learnMore);
+        constructedNav.push(items.contactPage);
+        if (self.state.hasUser === true) {
             constructedNav.push(items.account);
         }
-        else {
-            // Signed Out
-            constructedNav.push(items.learnMore);
-            constructedNav.push(items.contactPage);
+        else if (self.state.hasUser === false) {
             constructedNav.push(items.signUp);
         }
         return (

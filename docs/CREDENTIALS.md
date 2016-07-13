@@ -51,3 +51,22 @@
 - USERNAME = 'neonlab'
 - EMAIL = 'holler@neon'
 - PASSWORD = 'yMPJR4oV8MXVZY'
+
+## Mandrill Account
+
+*Do not share outside Neon*
+
+- EMAIL = 'ops@neon-lab.com'
+- PASSWORD = 'c6PCPUpr7g$eupjSV'
+
+*Mandrill Security Questions*
+
+- Q: If your company had a one-word mission statement, it would be
+- A: Pringles
+
+- Q: Name of the street you grew up on?
+- A: Wonderland
+
+- Q: What is the name of your best friend from childhood?
+- A: Rebase
+

@@ -95,6 +95,9 @@ var Session = {
     },
     // Returns current state of the session
     active: function() {
+        // NOTE: SESSION.active will determine whether there is an ACCOUNT active; not a USER active.
+        // A "demo" account, for example, will have an account, but no user.
+        // Use the SESSION.user() Promise to check for a signed-in user
         return !!this.state.accessToken;
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
@@ -119,6 +122,8 @@ var Session = {
             }
             if (userData && (userData.first_name || userData.username)) {
                 userData.displayName = userData.first_name || userData.username;
+            } else if (!userData) {
+                reject();
             }
             resolve(userData);
         });

@@ -18,22 +18,22 @@ var VideosResults = React.createClass({
                 {
                     self.props.videos.map(function(video, i) {
                         return (
-                                <VideoOwner
-                                    key={video.video_id}
-                                    videoId={video.video_id}
-                                    pingInitial={false}
-                                    pingInterval={true}
-                                    videoState={video.state}
-                                    thumbnails={video.thumbnails}
-                                    title={video.title}
-                                    error={video.error}
-                                    duration={video.duration}
-                                    url={video.url}
-                                    // publish_date
-                                    // updated
-                                    created={video.created}
-                                    isServingEnabled={self.props.isServingEnabled}
-                                />
+                            <VideoOwner
+                                key={video.video_id}
+                                videoId={video.video_id}
+                                pingInitial={false}
+                                pingInterval={true}
+                                videoState={video.state}
+                                thumbnails={video.thumbnails}
+                                title={video.title}
+                                error={video.error}
+                                duration={video.duration}
+                                url={video.url}
+                                // publish_date
+                                // updated
+                                created={video.created}
+                                isMobile={self.props.isMobile}
+                            />
                         );
                     })
                 }

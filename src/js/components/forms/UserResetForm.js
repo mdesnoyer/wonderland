@@ -2,15 +2,13 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import PasswordBrothers from '../wonderland/PasswordBrothers';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
-import Message from '../wonderland/Message';
-import Icon from '../core/Icon';
-import SignInForm from '../forms/SignInForm';
 import AjaxMixin from '../../mixins/Ajax';
+import Message from '../wonderland/Message';
+import PasswordBrothers from '../wonderland/PasswordBrothers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -91,44 +89,49 @@ var UserResetForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.userForgot.heading')}</legend> : false,
-            messageNeededComponent = false  
+            messageNeededComponent = false,
+            sendClassName = ['xxButton', 'xxButton--highlight'],
+            isValid = (self.state.passwordInitial && self.state.passwordConfirm 
+                && (self.state.passwordInitial === self.state.passwordConfirm) 
+                && (self.state.mode !== 'loading'))
         ;
+        if (isValid) {
+            sendClassName.push('xxButton--important');
+        }
         switch(self.state.mode) {
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message header={T.get('copy.userReset.heading')} body={E.getErrors()} flavour="danger" />;
+                messageNeededComponent = <Message message={E.getErrors()} />;
                 break;
             case 'loading':
+                messageNeededComponent = <Message message={T.get('copy.loading')} />;
                 break;
             case 'success':
-                messageNeededComponent = <div><Message header={T.get('copy.userReset.heading')} body={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} flavour="success" /><SignInForm showLegend={true} /></div>;
+                messageNeededComponent = <Message message={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} />;
                 break;
         }
-        return(
-            <div>
-                {messageNeededComponent}
-                <form onSubmit={self.handleSubmit} className={self.state.mode === 'success' ? 'is-hidden' : ''}>
-                    <fieldset>
-                        {legendElement}
-                        <PasswordBrothers
-                            mode={self.state.mode}
-                            handlePasswordInitialChange={self.handlePasswordInitialChange}
-                            handlePasswordConfirmChange={self.handlePasswordConfirmChange}
-                        />
-                        <p className="has-text-centered">
-                            <button
-                                className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
-                                type="submit"
-                            >
-                                <Icon type="check-circle" />
-                                {T.get('action.resetPassword')}
-                            </button>
-                        </p>
-                    </fieldset>
+        return (
+            <fieldset className="xxMainForm">
+                <form onSubmit={self.handleSubmit}>
+                    <h2 className="xxTitle">{T.get('copy.userReset.heading')}</h2>
+                    <h1 className="xxSubtitle">{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</h1>
+                    {messageNeededComponent}
+                    <PasswordBrothers 
+                        handlePasswordInitialChange={self.handlePasswordInitialChange}
+                        handlePasswordConfirmChange={self.handlePasswordConfirmChange}
+                    />
+                    <div className="xxFormButtons">
+                        <button  
+                            className={sendClassName.join(' ')} 
+                            type="submit" 
+                            disabled={!isValid}
+                        >
+                            {T.get('action.resetPassword')}
+                        </button>
+                    </div>
                 </form>
-            </div>
+            </fieldset>
         );
     }
 })

@@ -1,6 +1,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
+import SESSION from '../../modules/session';
 import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -18,6 +19,16 @@ var SignUpForm = React.createClass({
             password: '',
             verifyPassword: '',
             mode: 'quiet' // quiet, loading, error, success
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            // If there's an active session with a user, there's no reason to be here
+            SESSION.user()
+                .then(function() {
+                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                });
         }
     },
     componentWillUnmount: function(e) {
@@ -179,52 +190,71 @@ var SignUpForm = React.createClass({
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
                 {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
-            ]
+            ],
+            userPromise
         ;
         e.preventDefault();
         self.setState({
             mode: 'loading'
-        }, function() {
-            if (!E.checkForErrors(errorList)) {
-                self.setState({
-                    mode: 'error'
-                });
-            }
-            else {
-                if (!self._isSubmitted) {
-                    self._isSubmitted = true;
-                    TRACKING.sendEvent(self, arguments, self.state.email.trim());
+        });
+        if (!E.checkForErrors(errorList)) {
+            self.setState({
+                mode: 'error'
+            });
+        }
+        else {
+            if (!self._isSubmitted) {
+                self._isSubmitted = true;
+                // If the session is active, we just need to create the user; not the whole account
+                if (SESSION.active()) {
+                    userDataObject = {
+                        username: self.state.email.trim(),
+                        password: self.state.password.trim(),
+                        first_name: self.state.firstName.trim()
+                    };
+                    // Only add the last name if it exists #1194
+                    if (self.state.lastName.trim()) {
+                        userDataObject.last_name = self.state.lastName.trim();
+                    }
+                    userPromise = self.POST('users', {
+                        host: CONFIG.AUTH_HOST,
+                        headers: {
+                            Authorization: 'Bearer ' + SESSION.state.accessToken
+                        },
+                        data: userDataObject
+                    });
+                } else {
                     userDataObject = {
                         email: self.state.email.trim(),
                         admin_user_username: self.state.email.trim(),
                         admin_user_password: self.state.password.trim(),
-                        admin_user_first_name: self.state.firstName.trim(),
+                        admin_user_first_name: self.state.firstName.trim()
                     };
                     // Only add the last name if it exists #1194
                     if (self.state.lastName.trim()) {
                         userDataObject['admin_user_last_name'] = self.state.lastName.trim();
                     }
-                    self.POST('accounts', {
-                            host: CONFIG.AUTH_HOST,
-                            data: userDataObject
-                        })
-                        .then(function (account) {
-                            self._isSubmitted = false;
-                            self.setState({
-                                mode: 'success'
-                            });
-                        })
-                        .catch(function (err) {
-                            E.raiseError(err);
-                            self._isSubmitted = false;
-                            self.setState({
-                                mode: 'error'
-                            });
+                    userPromise = self.POST('accounts', {
+                        host: CONFIG.AUTH_HOST,
+                        data: userDataObject
                     });
                 }
+                userPromise
+                    .then(function (account) {
+                        self._isSubmitted = false;
+                        self.setState({
+                            mode: 'success'
+                        });
+                    })
+                    .catch(function (err) {
+                        E.raiseError(err);
+                        self._isSubmitted = false;
+                        self.setState({
+                            mode: 'error'
+                        });
+                    })
             }
-        });
-
+        }
     }
 });
 

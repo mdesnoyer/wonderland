@@ -8,6 +8,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
+import VideosMobileWarning from './VideosMobileWarning';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -59,24 +60,34 @@ var Videos = React.createClass({
             prevPageAPICall = self.state.prevPageAPICall;
             alertMessage = '';
         }
+
         return (
             <div>
-                    <VideoUploadForm
-                        postHook={self.doVideoSearch}
-                        videoCountServed={self.state.videoCountServed}
-                    />
-                    <VideosResults
-                        videos={self.state.videos}
-                        handleNewSearch={self.handleNewSearch}
-                        prevPageAPICall={prevPageAPICall}
-                        nextPageAPICall={self.state.nextPageAPICall}
-                        errorMessage={errorMessage}
-                        alertMessage={alertMessage}
-                        currentPage={self.state.currentPage}
-                        isLoading={self.state.isLoading}
-                        videoCountServed={self.state.videoCountServed}
-                        videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                    />
+                <VideoUploadForm
+                    postHook={self.doVideoSearch}
+                    videoCountServed={self.state.videoCountServed}
+                />
+                <VideosResults
+                    videos={self.state.videos}
+                    handleNewSearch={self.handleNewSearch}
+                    prevPageAPICall={prevPageAPICall}
+                    nextPageAPICall={self.state.nextPageAPICall}
+                    errorMessage={errorMessage}
+                    alertMessage={alertMessage}
+                    currentPage={self.state.currentPage}
+                    isLoading={self.state.isLoading}
+                    isMobile={self.props.isMobile}
+                    videoCountServed={self.state.videoCountServed}
+                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                />
+
+                {
+                    self.props.isMobile ? (
+                        <div className="xxCollection">
+                            <VideosMobileWarning />
+                        </div>
+                    ) : null
+                }
             </div>
         );
     },

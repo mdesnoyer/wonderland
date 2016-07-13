@@ -31,11 +31,11 @@ var NavigationBar = React.createClass({
         // or less than the page size.
         videoCountServed: React.PropTypes.number.isRequired
     },
-    componentDidMount: function(e) {
+    componentDidMount: function() {
         var self = this;
         document.body.onkeydown = self.handleKeyEvent;
     },
-    componentWillUnmount: function(e) {
+    componentWillUnmount: function() {
         var self = this;
         document.body.onkeydown = '';
     },
@@ -56,7 +56,7 @@ var NavigationBar = React.createClass({
             return false;
         }
         return (
-            <div>
+            <div className="xxCollectionNavBar">
                 {self.props.alertMessage}
                 <nav className="level">
                     <div className="level-left">

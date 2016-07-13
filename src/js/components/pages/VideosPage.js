@@ -16,41 +16,60 @@ import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const BREAKPOINT_MOBILE = 768;
+
 var VideosPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     mixins: [Secured, Account, AjaxMixin],
+
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+
     getInitialState: function () {
         return {
-            isServingEnabled: false,
-            displayName: ''
+            displayName: '',
+            windowWidth: window.outerWidth,
         };
     },
-    componentWillMount: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    isServingEnabled: account.isServingEnabled
-                });
-            })
-            .catch(function (err) {
-                E.raiseError(err);
-            });
+
+    componentDidMount: function() {
+        window.addEventListener('resize', this.handleWindowResize);
+        this.handleWindowResize();
     },
+
+    componentWillUnmount: function() {
+        window.removeEventListener('resize', this.handleWindowResize);
+    },
+
+    handleWindowResize: function() {
+        const windowWidth = window.outerWidth;
+
+        if (this.state.windowWidth !== windowWidth) {
+            this.setState({
+                windowWidth,
+            });
+        }
+
+        if (windowWidth < BREAKPOINT_MOBILE) {
+            document.documentElement.classList.add('is-mobile');
+        } else {
+            document.documentElement.classList.remove('is-mobile');
+        }
+    },
+
     render: function() {
-        var self = this;
+        const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
+
         return (
             <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
+                    meta={[
+                        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
+                    ]}
                 />
                 <SiteHeader />
-                <Videos
-                    isServingEnabled={self.state.isServingEnabled}
-                />
+                <Videos isMobile={isMobile} />
                 <SiteFooter />
             </main>
         );
