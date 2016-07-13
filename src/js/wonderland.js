@@ -42,6 +42,7 @@ import XXPageMobile from './xx/XXPageMobile';
 import XXOnboarding from './xx/XXOnboarding';
 import XXBlankCanvas from './xx/XXBlankCanvas';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
+import OnboardingVideoUpload from './components/pages/OnboardingVideoUpload';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -72,6 +73,7 @@ render((
         <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />
 
         <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
+        <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={OnboardingVideoUpload} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/" component={VideoPageGuest} />

@@ -28,26 +28,19 @@ var SignInPage = React.createClass({
     render: function() {
         var self = this;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
-                            <div className="content">
-                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
-                            </div>
-                            <SignInForm showLegend={false} />
-                        </div>
-                    </div>
-                </section>
+                <SignInForm />
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
+
+
+
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
