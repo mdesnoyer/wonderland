@@ -5,6 +5,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
+import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +13,7 @@ var ContactForm = React.createClass({
     mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            mode: 'quiet', // quiet, error, loading, success
+            mode: 'error', // quiet, error, loading, success
             name: '',
             email: '',
             message: ''

@@ -48,8 +48,8 @@ var SignInForm = React.createClass({
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeededComponent}
                     <h2 className="xxTitle">{T.get('signIn')}</h2>
+                    {messageNeededComponent}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
                             <input className="xxInputText"
