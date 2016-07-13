@@ -51,6 +51,7 @@ var FeatureThumbnail = React.createClass({
                     thumbnailId={thumbnailId}
                     handleChildOnMouseEnter={handleChildOnMouseEnter}
                     type={self.props.type}
+                    isMobile={self.props.isMobile}
                     showHref={showHref}
                 />
             </div>

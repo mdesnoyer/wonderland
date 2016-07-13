@@ -46,7 +46,8 @@ var VideoOwner = React.createClass({
             status: 200,
             size: 'big',
             duration: self.props.duration || 0,
-            url: self.props.url || ''
+            url: self.props.url || '',
+            badThumbs: self.props.badThumbs
         }
     },
     componentDidMount: function() {
@@ -87,6 +88,7 @@ var VideoOwner = React.createClass({
                         shareToken={self.state.shareToken}
                         title={self.state.title}
                         isMobile={self.props.isMobile}
+                        badThumbs={self.state.badThumbs}
                     />
                 );
             }
@@ -129,7 +131,8 @@ var VideoOwner = React.createClass({
                             // publish_date
                             // updated
                             created: video.created,
-                            isLoading: false
+                            isLoading: false,
+                            badThumbs: video.bad_thumbnails
                         })
                     }
                     else {
