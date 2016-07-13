@@ -256,24 +256,34 @@ var UTILS = {
     ],
     FILTERS_GENDER: [
         {
-            value: 'Female',
+            value: 'F',
+            label: 'Female'
         },
         {
-            value: 'Male',
-        }     
+            value: 'M',
+            label: 'Male'
+        }
     ],  
-    FILTERS_AGE: [    
+    FILTERS_AGE: [
         {
-            value: '18-29',
+            value: '18-19',
+            label: '18-19'
+        },
+        {
+            value: '20-29',
+            label: '20-29'
         },
         {
             value: '30-39',
+            label: '30-39'
         },
         {
             value: '40-49',
+            label: '40-49'
         },
         {
-            value: '50+'
+            value: '50+',
+            label: '50+'
         }
     ], 
     LOWSCORE_LIMIT: 60,

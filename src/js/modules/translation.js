@@ -255,6 +255,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
+            'label.filters': 'Filters',
+            'label.gender': 'Gender',
+            'label.age': 'Age',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -63,7 +63,12 @@ var VideoContent = React.createClass({
                 alert("TODO SAVE LINKED TO SIGN UP")
                 break;
             case 'refilter':
-                contents = <VideoFilters handleMenuChange={self.handleMenuChange}/>;
+                contents = (
+                    <VideoFilters
+                        handleMenuChange={self.handleMenuChange}
+                        videoId={self.props.videoId}
+                    />
+                );
                 break;
         }
         return <div>{contents}</div>;
@@ -71,7 +76,7 @@ var VideoContent = React.createClass({
     handleMenuChange: function(e) {
         var self = this;
         self.setState({
-            contents: e.target.dataset.actionLabel
+            contents: e && e.target ? e.target.dataset.actionLabel : e || 'info'
         });
     }
 })
