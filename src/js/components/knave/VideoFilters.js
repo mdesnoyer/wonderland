@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
-import Select from 'react-select';
+import ReactSelect from 'react-select';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import UTILS from '../../modules/utils';
@@ -44,7 +44,7 @@ var VideoFilters = React.createClass({
                 { errMsg }
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>
-                    <Select
+                    <ReactSelect
                         name="gender"
                         placeholder={T.get('label.gender')}
                         onChange={self.onGenderChange}
@@ -53,8 +53,8 @@ var VideoFilters = React.createClass({
                     />
                 </div>
                 <div className="xxFormField">
-                    <Select
-                        name="Age"
+                    <ReactSelect
+                        name="age"
                         placeholder={T.get('label.age')}
                         onChange={self.onAgeChange}
                         value={self.state.age}
@@ -101,18 +101,25 @@ var VideoFilters = React.createClass({
                 }
             }
         ;
-        self.POST('videos', options)
-            .then(function(json) {
-                if (self.props.handleMenuChange) {
-                    self.props.handleMenuChange('info');
-                }
-            })
-            .catch(function(err) {
-                E.raiseError(err);
-                self.setState({
-                    isError: true
-                });
-            });
+        // TEMP until API is ready
+        alert('TODO: POST .../videos');
+        if (self.props.handleMenuChange) {
+            self.props.handleMenuChange();
+        }
+        // END TEMP
+
+        // self.POST('videos', options)
+        //     .then(function(json) {
+        //         if (self.props.handleMenuChange) {
+        //             self.props.handleMenuChange();
+        //         }
+        //     })
+        //     .catch(function(err) {
+        //         E.raiseError(err);
+        //         self.setState({
+        //             isError: true
+        //         });
+        //     });
     }
 })
 

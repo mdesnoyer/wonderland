@@ -11,6 +11,8 @@ import VideoFilters from './VideoFilters';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+var defaultContent = 'info';
+
 var VideoContent = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
@@ -18,7 +20,7 @@ var VideoContent = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            contents: 'info'
+            contents: defaultContent
         }
     },
     render: function() {
@@ -76,7 +78,7 @@ var VideoContent = React.createClass({
     handleMenuChange: function(e) {
         var self = this;
         self.setState({
-            contents: e && e.target ? e.target.dataset.actionLabel : e || 'info'
+            contents: e && e.target ? e.target.dataset.actionLabel : e || defaultContent
         });
     }
 })
