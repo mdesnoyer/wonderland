@@ -16,29 +16,21 @@ var NotFoundPage = React.createClass({
         var body1 = T.get('copy.notFound.body.1'),
             body2 = T.get('copy.notFound.body.2',{
                 '@link': UTILS.CORP_EXTERNAL_URL
-            }),
-            body3 = T.get('copy.notFound.body.3')
+            })
         ;
         return (
-            <div>
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.notFound.title'))}
-                />
+            <main className="xxPage">
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.notFound.title'))} />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.notFound.heading')}</h1>
-                            <div className="content">
-                                <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
-                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
-                                <p><span dangerouslySetInnerHTML={{__html: body3}} /></p>
-                            </div>
-                        </div>
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('copy.notFound.heading')}</h1>
+                    <div className="xxText">
+                        <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
+                        <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
                     </div>
                 </section>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });
