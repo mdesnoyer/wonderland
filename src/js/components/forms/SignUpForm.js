@@ -30,8 +30,7 @@ var SignUpForm = React.createClass({
                 .then(function() {
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 });
-        }
-    },
+            mode: 'error' // quiet, loading, error, success
     componentWillUnmount: function(e) {
         E.clearErrors();
     },
@@ -85,10 +84,13 @@ var SignUpForm = React.createClass({
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <Message message={E.getErrors()} />;
+                userMessage = <Message message={E.getErrors()} isError={true} />;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message message={T.get('copy.loading')} isError={false} />;
+                break;
+            case 'success':
+                userMessage = <Message message={T.get('copy.confirmAccount.body')} isError={false} />;
                 break;
             default:
                 break;
@@ -247,7 +249,7 @@ var SignUpForm = React.createClass({
                         self.props.completeSubmission();
                     })
                     .catch(function (err) {
-                        if (err.code === 409){
+                        if (err.code === 409) {
                             E.raiseError(err.data, false);    
                         }
                         else {

@@ -48,7 +48,6 @@ var UserForgotForm = React.createClass({
                 });
             })
             .catch(function(err) {
-                debugger 
                 switch (err.code) {
                     case 400:
                     case 404:
@@ -78,12 +77,12 @@ var UserForgotForm = React.createClass({
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} />;
+                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} isError={false} />;
                 break;
             case 'loading':
                 break;
             case 'success':
-            messageNeededComponent = <Message message={T.get('copy.userForgot.success')} />;
+                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} isError={false} />;
                 break;
         }
         return (

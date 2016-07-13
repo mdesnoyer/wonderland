@@ -20,14 +20,6 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    propTypes: {
-        showLegend: React.PropTypes.bool.isRequired
-    },
-    getDefaultProps: function() {
-        return {
-            showLegend: true
-        }
-    },
     getInitialState: function() {
         return {
             isError: false,
@@ -43,7 +35,7 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message message={E.getErrors()} /> : false
+            messageNeededComponent = self.state.isError ? <Message isError={true} message={E.getErrors()} /> : false
         ;
         return (
             <fieldset className="xxMainForm">
