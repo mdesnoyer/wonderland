@@ -77,7 +77,7 @@ var IntegrationsBrightcovePage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">
+                            <h1>
                                 <img src={T.get('copy.plugins.types.brightcove.img')} />
                             </h1>
                             <section className="container">

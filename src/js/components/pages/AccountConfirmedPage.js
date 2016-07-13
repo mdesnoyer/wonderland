@@ -24,7 +24,7 @@ var AccountConfirmedPage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                           <h1 className="title is-2">{T.get('copy.accountConfirmed.heading')}</h1>
+                           <h1>{T.get('copy.accountConfirmed.heading')}</h1>
                             <div className="content">
                                 <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
                                 <p><em>{T.get('app.companySig')}</em></p>

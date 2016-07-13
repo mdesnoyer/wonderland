@@ -72,7 +72,7 @@ var UserForgotForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.userForgot.heading')}</legend> : false,
+            legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
             messageNeededComponent = false
         ;
         switch(self.state.mode) {

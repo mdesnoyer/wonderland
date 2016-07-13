@@ -163,7 +163,7 @@ var BillingForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.billing.heading')}</legend> : false,
+            legendElement = self.props.showLegend ? <legend>{T.get('copy.billing.heading')}</legend> : false,
             buttonClassName = '',
             inputClassName = '',
             selectClassName = '',
@@ -362,7 +362,7 @@ var BillingForm = React.createClass({
                                                 />
                                             </p>
                                         </div>
-                                        <div className="column">
+                                        <div>
                                             <label htmlFor="cc_exp_month">{T.get('copy.billing.form.ccExpiration')}</label>
                                             <p className="control is-grouped">
                                                 <span className={selectClassName}>
@@ -406,7 +406,7 @@ var BillingForm = React.createClass({
                                                 </span>
                                             </p>
                                         </div>
-                                        <div className="column">
+                                        <div>
                                             <label htmlFor="cc_cvc">{T.get('copy.billing.form.ccCVC')}</label>
                                             <p className="control is-grouped">
                                                 <input

@@ -36,7 +36,7 @@ var CookiesPage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.cookies.heading')}</h1>
+                            <h1>{T.get('copy.cookies.heading')}</h1>
                             <div className="content">
                                 <p>{T.get('copy.cookies.body')}</p>
                                 {

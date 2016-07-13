@@ -3,8 +3,7 @@
 import React from 'react';
 // import ReactDebugMixin from 'react-debug-mixin';
 import VideoOwner from './VideoOwner';
-import NavigationBar from '../core/NavigationBar';
-import VideoProcessing from '../knave/VideoProcessing';
+import PagingControls from '../core/PagingControls';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -14,7 +13,6 @@ var VideosResults = React.createClass({
         var self = this;
         return (
             <div>
-                <NavigationBar {...self.props} />
                 {
                     self.props.videos.map(function(video, i) {
                         return (
@@ -29,8 +27,6 @@ var VideosResults = React.createClass({
                                 error={video.error}
                                 duration={video.duration}
                                 url={video.url}
-                                // publish_date
-                                // updated
                                 created={video.created}
                                 isMobile={self.props.isMobile}
                                 badThumbs={video.bad_thumbnails}
@@ -38,6 +34,7 @@ var VideosResults = React.createClass({
                         );
                     })
                 }
+                <PagingControls {...self.props} />
             </div>
         );
     }

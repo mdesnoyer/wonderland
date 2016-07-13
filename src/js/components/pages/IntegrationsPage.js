@@ -23,7 +23,7 @@ var IntegrationsPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.plugins.heading')}</h1>
+                        <h1>{T.get('copy.plugins.heading')}</h1>
                         <div className="content">
                             {T.get('copy.plugins.body')}
                         </div>

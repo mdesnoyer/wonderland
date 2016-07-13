@@ -51,7 +51,7 @@ var SupportPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.support.heading')}</h1>
+                        <h1>{T.get('copy.support.heading')}</h1>
                         <WonderTabs tabs={tabs} />
                     </div>
                 </section>

@@ -25,7 +25,7 @@ var AccountSettingsPage = React.createClass({
                     <div className="container">
                         <div className="columns is-desktop">
                             <div className="column is-half is-offset-one-quarter">
-                                <h1 className="title is-2">{T.get('copy.accountSettings.title')}</h1>
+                                <h1>{T.get('copy.accountSettings.title')}</h1>
                                 <div className="is-hidden content">
                                     <p><span dangerouslySetInnerHTML={{__html: T.get('copy.accountSettings.body')}} /></p>
                                 </div>

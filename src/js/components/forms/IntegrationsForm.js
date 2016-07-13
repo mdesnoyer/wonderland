@@ -73,7 +73,7 @@ var IntegrationsForm = React.createClass({
                     <form onSubmit={self.handleSubmit}>
                         {messageNeededComponent}
                         <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
+                            <legend>{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
 
                             <label htmlFor="publisherId">{T.get('copy.integration.bc.accountId')}</label>
                             <p className="control is-grouped">
