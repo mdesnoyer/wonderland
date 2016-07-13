@@ -1,5 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$lift-padding-top: 25px;
+
 $lift-bar-height: 7px;
 $mobile-lift-bar-height: 3px;
 
@@ -7,7 +9,8 @@ $mobile-lift-bar-height: 3px;
 
 
 .xxLift {
-    padding: 25px 0 0;
+    position: relative;
+    padding: $lift-padding-top 0 0;
 
     @include breakpoint-mobile {
         clear: both;
@@ -15,13 +18,25 @@ $mobile-lift-bar-height: 3px;
     }
 }
 
+.xxLift-container {
+    display: table;
+    width: 100%;
+
+    &.xxFadeInOutSequential-enter {
+        position: absolute;
+        top: $lift-padding-top;
+        left: 0;
+    }
+}
+
 .xxLift-title {
-    float: left;
+    display: table-cell;
     padding: 0 20px 0 0;
     color: $accent-color;
     font-size: 31px;
     font-weight: 100;
     line-height: 1;
+    white-space: nowrap;
 
     @include breakpoint-mobile {
         padding-right: 12px;
@@ -30,8 +45,8 @@ $mobile-lift-bar-height: 3px;
 }
 
 .xxLift-chart {
-    float: left;
-    width: 50%;
+    display: table-cell;
+    width: 100%;
     margin: 4px 0 0;
 }
 
