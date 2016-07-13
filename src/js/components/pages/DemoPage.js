@@ -9,14 +9,14 @@ import SESSION from '../../modules/session';
 
 var DemoPage = React.createClass({
     mixins: [AjaxMixin],
+
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+
     componentWillMount: function() {
         var self = this;
         if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
             self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
         } else {
             self.POST('accounts', {
@@ -24,7 +24,7 @@ var DemoPage = React.createClass({
             })
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                // Route to the dashboard (upload video) page
+
                 self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
             })
             .catch(function (err) {
@@ -33,6 +33,7 @@ var DemoPage = React.createClass({
             });
         }
     },
+
     render: function() {
         return false;
     }
