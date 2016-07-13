@@ -10,13 +10,30 @@ import SiteHeader from '../wonderland/SiteHeader';
 import HomeImages from '../wonderland/HomeImages';
 
 export default class HomePage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { sidebarContent: null };
+        this.openSignUp = this.openSignUp.bind(this);
+    }
+
+    openSignUp(e) {
+        e.preventDefault();
+
+        this.setState({
+            sidebarContent: 'signUp',
+        });
+    }
+
     render() {
+        const { sidebarContent } = this.state;
+
         return (
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
                 />
-                <SiteHeader />
+                <SiteHeader sidebarContent={sidebarContent} />
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     <div>
                         <article className="xxFeatureContent" key="home-featureContent">
@@ -24,8 +41,12 @@ export default class HomePage extends React.Component {
                             <h1 className="xxTitle xxFeatureContent-title">{T.get('copy.homePage.title')}</h1>
                             <p>{T.get('copy.homePage.description')}</p>
                             <div className="xxFormButtons xxFeatureContent-buttons">
-                                <a href="#" className="xxButton xxButton--transparent">{T.get('signUp')}</a>
-                                <Link 
+                                <a
+                                    className="xxButton xxButton--transparent"
+                                    href="#"
+                                    onClick={this.openSignUp}
+                                >{T.get('signUp')}</a>
+                                <Link
                                     to={UTILS.DRY_NAV.DEMO.URL}
                                     className="xxButton xxButton--highlight"
                                 >{T.get('tryItOut')}</Link>

@@ -1,39 +1,45 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteBanner from './SiteBanner';
 import AccountMasqueradeBar from './AccountMasqueradeBar';
 import T from '../../modules/translation';
 import Sidebar from './Sidebar';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 var SiteHeader = React.createClass({
-    // mixins: [ReactDebugMixin],
     getInitialState: function() {
+        const { sidebarContent } = this.props;
+
         return {
-            sidebarContent: null // null, learnMore, contact, signUp, account 
+            sidebarContent: sidebarContent || null // null, learnMore, contact, signUp, account
         }
     },
+
     setSidebarContent: function(content) {
-        var self = this;
-        self.setState({
+        this.setState({
             sidebarContent: content
         });
     },
+
+    componentWillReceiveProps(nextProps) {
+        const { sidebarContent } = nextProps;
+
+        if (sidebarContent) {
+            this.setState({ sidebarContent });
+        }
+    },
+
     render: function() {
-        var self = this;
+        const { sidebarContent } = this.state;
+
         return (
             <div>
                 <AccountMasqueradeBar />
                 <SiteBanner
-                    setSidebarContent={self.setSidebarContent}
-                    sidebarContent={self.state.sidebarContent}
+                    setSidebarContent={this.setSidebarContent}
+                    sidebarContent={sidebarContent}
                 />
                 <Sidebar
-                    content={self.state.sidebarContent}
-                    setContent={self.setSidebarContent}
+                    content={sidebarContent}
+                    setContent={this.setSidebarContent}
                 />
             </div>
         );
