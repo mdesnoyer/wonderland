@@ -354,7 +354,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
-            'copy.onboarding.uploadHelpText': 'Upload a video at any time by clicking here',
+            'copy.onboarding.uploadHelpText': 'Analyze a video at any time by clicking here',
+            'copy.onboarding.uploadPageTitle': 'Analyze a Video',
 
             // Videos
             'copy.videos.upload.filter.title': 'Filters',

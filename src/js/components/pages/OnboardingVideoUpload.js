@@ -1,5 +1,7 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 import VideoUploadForm from '../knave/VideoUploadForm';
 
 export default class OnboardingVideoUpload extends React.Component {
@@ -22,6 +24,10 @@ export default class OnboardingVideoUpload extends React.Component {
 
         return (
             <div className="xxUpload">
+                <Helmet
+                    title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
+                />
+
                 <VideoUploadForm isOnboarding postHook={this.showAnalyzingPage} />
 
                 <div className="xxUploadButton-help">
