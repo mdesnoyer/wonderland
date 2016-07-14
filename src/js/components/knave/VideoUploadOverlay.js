@@ -26,7 +26,7 @@ var VideoUploadOverlay = React.createClass({
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = !!self.state.url,
-            messageNeeded = self.state.isMessageNeeded ? <Message message={T.get('copy.urlShortener.messageBody')}/> : null
+            messageNeeded = self.state.isMessageNeeded ? <Message message={T.get('copy.urlShortener.messageBody')} type={'formError'}/> : null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
