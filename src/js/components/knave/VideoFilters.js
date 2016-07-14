@@ -100,25 +100,18 @@ var VideoFilters = React.createClass({
                 }
             }
         ;
-        // TEMP until API is ready
-        alert('TODO: POST .../videos');
-        if (self.props.handleMenuChange) {
-            self.props.handleMenuChange();
-        }
-        // END TEMP
-
-        // self.POST('videos', options)
-        //     .then(function(json) {
-        //         if (self.props.handleMenuChange) {
-        //             self.props.handleMenuChange();
-        //         }
-        //     })
-        //     .catch(function(err) {
-        //         E.raiseError(err);
-        //         self.setState({
-        //             isError: true
-        //         });
-        //     });
+        self.POST('videos', options)
+            .then(function(json) {
+                if (self.props.handleMenuChange) {
+                    self.props.handleMenuChange();
+                }
+            })
+            .catch(function(err) {
+                E.raiseError(err);
+                self.setState({
+                    isError: true
+                });
+            });
     }
 })
 
