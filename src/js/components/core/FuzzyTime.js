@@ -1,14 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import moment from 'moment';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var FuzzyTime = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this;
         if (UTILS.isValidDate(self.props.date)) {

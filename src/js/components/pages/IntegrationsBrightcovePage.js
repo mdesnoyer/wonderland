@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
@@ -17,7 +16,7 @@ import Account from '../../mixins/Account';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsBrightcovePage = React.createClass({
-    mixins: [Secured, AjaxMixin, Account], // ReactDebugMixin
+    mixins: [Secured, AjaxMixin, Account],
     getInitialState: function() {
         var self = this,
             params = self.props.routeParams,

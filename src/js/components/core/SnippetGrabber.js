@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
 import AjaxMixin from '../../mixins/Ajax';
 import Account from '../../mixins/Account';
@@ -11,7 +10,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SnippetGrabber = React.createClass({
-    mixins: [AjaxMixin, Account], // ReactDebugMixin
+    mixins: [AjaxMixin, Account],
     propTypes: {
         isActive: React.PropTypes.bool
     },

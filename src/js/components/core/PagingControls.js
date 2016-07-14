@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
@@ -9,7 +8,6 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PagingControls = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool.isRequired,
         alertMessage: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]),

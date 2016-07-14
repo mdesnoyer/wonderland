@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
@@ -12,7 +11,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var BillingForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     propTypes: {
         showLegend: React.PropTypes.bool.isRequired
     },

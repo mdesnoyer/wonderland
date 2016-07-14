@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Secured from '../../mixins/Secured';
@@ -12,7 +11,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PluginsBrightcoveWizardPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
+    mixins: [Secured],
     render: function() {
         return (
             <div>

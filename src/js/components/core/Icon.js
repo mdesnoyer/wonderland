@@ -1,12 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Icon = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         type: React.PropTypes.string.isRequired,
         title: React.PropTypes.string,

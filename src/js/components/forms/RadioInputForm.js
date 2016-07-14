@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
@@ -21,7 +20,7 @@ import SnippetGrabber from '../core/SnippetGrabber';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var RadioInputForm = React.createClass({
-    mixins: [AjaxMixin, Account], // ReactDebugMixin
+    mixins: [AjaxMixin, Account],
     propTypes: {
         isActive: React.PropTypes.bool,
         formMode: React.PropTypes.string,

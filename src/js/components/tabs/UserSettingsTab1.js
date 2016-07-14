@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 import moment from 'moment';
@@ -11,7 +10,6 @@ import gravatar from 'gravatar';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserSettingsTab1 = React.createClass({
-    // mixins: [ReactDebugMixin],
     getInitialState: function() {
         var self = this;
         return {

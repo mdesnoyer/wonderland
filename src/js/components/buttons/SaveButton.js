@@ -2,13 +2,11 @@
 
 import React from 'react';
 import T from '../../modules/translation';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SaveButton = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         isLoading: React.PropTypes.bool,
         isDisabled: React.PropTypes.bool

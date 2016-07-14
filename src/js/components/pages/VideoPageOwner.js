@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import VideoOwner from '../wonderland/VideoOwner';
@@ -17,7 +16,7 @@ var VideoPageOwner = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Secured, Account, AjaxMixin],
     propTypes: {
         videoId: React.PropTypes.string
     },

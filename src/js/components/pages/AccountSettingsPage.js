@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -13,7 +12,7 @@ import AccountSettingsForm from '../forms/AccountSettingsForm';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountSettingsPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
+    mixins: [Secured],
     render: function() {
         return (
             <div>

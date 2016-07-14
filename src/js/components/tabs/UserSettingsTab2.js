@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
@@ -13,7 +12,7 @@ import TRACKING from '../../modules/tracking';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserSettingsTab2 = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     getInitialState: function() {
         var self = this;
         return {

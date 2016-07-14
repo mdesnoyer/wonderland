@@ -7,7 +7,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var FeatureThumbnail = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         type: React.PropTypes.string.isRequired,
         handleClick: React.PropTypes.func

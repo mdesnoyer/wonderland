@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
 import UTILS from '../../modules/utils';
@@ -9,7 +8,6 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
-    // mixins: [ReactDebugMixin],
     getDefaultProps: function() {
         var self = this;
         return {
