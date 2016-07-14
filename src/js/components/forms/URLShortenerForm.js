@@ -5,11 +5,12 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import reqwest from 'reqwest';
 import Message from '../wonderland/Message';
-import Icon from '../core/Icon';
+import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var URLShortenerForm = React.createClass({
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             mode: 'quiet', // quiet|error|loading|success
@@ -41,7 +42,7 @@ var URLShortenerForm = React.createClass({
         else {
             self.setState({
                 mode: 'error',
-                shortUrl: ''
+                shortUrl: self.refs.url.value.trim()
             });
         }
     },
@@ -50,55 +51,54 @@ var URLShortenerForm = React.createClass({
             messageNeededComponent = false
         ;
         if (self.state.mode === 'error') {
-            messageNeededComponent = <Message header={T.get('copy.urlShortener.messageHeading')} body={T.get('copy.urlShortener.messageBody')} flavour="danger" />
+            messageNeededComponent = <Message message={T.get('copy.urlShortener.messageBody')} />
         }
         return (
             <div>
                 <form onSubmit={self.handleSubmit}>
                     {messageNeededComponent}
                     <fieldset>
-                        <p className={'control is-' + self.state.mode}>
+                        <div className="xxFormField">
                             <textarea
-                                className={'textarea is-medium' + (self.state.mode === 'loading' ? ' is-loading' : '')}
+                                className="xxTextArea"
                                 type="url"
                                 ref="url"
-                                required
                                 minLength="6"
                                 maxLength="1024"
                                 placeholder={T.get('url')}
+                                required
                             >
                             </textarea>
-                        </p>
-                        <p className="has-text-centered">
+                        </div>
+                        <div className="xxFormButtons">
                             <button
-                                className={'button is-medium is-primary' + (self.state.mode === 'loading' ? ' is-loading' : '')}
+                                className="xxButton xxButton--highlight xxButton--important"
                                 type="submit"
                             >
-                                <Icon type="compress" />
                                 {T.get('action.shortenURL')}
                             </button>
-                        </p>
-
-
-                        <p className={'control is-grouped' + (self.state.mode === 'success' ? '' : ' is-hidden')}>
-                            <output
-                                className="input small"
+                        </div>
+                        <div className="xxFormField">
+                            <input
+                                className="xxInputText"
                                 type="url"
                                 readOnly
                                 refs="outputUrl"
                                 value={self.state.shortUrl}
                             />
-
+                        </div>
+                        <div className="xxFormButtons">
                             <button
-                                className="button small is-primary"
-                                type="button"
-                                ref="copyUrl"
+                                className="xxButton"
                                 data-clipboard-text={self.state.shortUrl}
+                                value={self.state.shortUrl}
+                                ref="copyUrl"
+                                type="button"
+                                onClick={self.handleCopyClick}
                             >
                                 {T.get('copy')}
                             </button>
-                        </p>
-
+                        </div>
                     </fieldset>
                 </form>
             </div>
