@@ -28,9 +28,6 @@ var SignOutPage = React.createClass({
                 })
             ;
         }
-        else {
-            self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
-        }
     },
     render: function() {
         var self = this;

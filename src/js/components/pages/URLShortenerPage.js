@@ -13,24 +13,18 @@ import UTILS from '../../modules/utils';
 var URLShortenerPage = React.createClass({
     render: function() {
         return (
-            <div>
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.urlShortener.title'))}
-                />
+            <main className="xxPage">
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.urlShortener.title'))} />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1>{T.get('copy.urlShortener.heading')}</h1>
-                            <div className="content">
-                                <p>{T.get('copy.urlShortener.body')}</p>
-                            </div>
-                            <URLShortenerForm />
-                        </div>
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('copy.urlShortener.heading')}</h1>
+                    <div className="xxText">
+                        <p>{T.get('copy.urlShortener.body')}</p>
                     </div>
+                    <URLShortenerForm />
                 </section>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

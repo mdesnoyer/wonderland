@@ -8,9 +8,9 @@ var BrightcoveClientIdContent = React.createClass({
     render: function() {
         return (
             <div>
-                <h4>Brightcove Video Cloud API Authentication Credentials</h4>
+                <h1 className="xxPage-Subtitle">Brightcove Video Cloud API Authentication Credentials</h1>
                 <p>In order to set up your API authentication credentials, go to the <a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings" rel="external">API Authentication</a> page in your Brightcove account.</p>
-                <ol>
+                <ol className="simple-ol-list">
                     <li>Click &ldquo;Register New Application&rdquo;</li>
                     <li>Enter &ldquo;Neon&rdquo; in the name field</li>
                     <li>Select the following permissions:

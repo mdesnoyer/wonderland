@@ -18,21 +18,13 @@ mixins: [AjaxMixin, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    propTypes: {
-        pop: React.PropTypes.bool.isRequired
-    },
-    getDefaultProps: function() {
-        return {
-            pop: false
-        };
-    },
     getInitialState: function() {
         var self = this;
         return {
             errorMessageArray: [],
             isError: false,
             integrations: [],
-            activeModal: false || self.props.pop
+            activeModal: false
         }
     },
     componentWillMount: function() {
