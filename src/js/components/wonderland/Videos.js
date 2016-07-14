@@ -65,7 +65,7 @@ var Videos = React.createClass({
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
-        if ((self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
+        if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }

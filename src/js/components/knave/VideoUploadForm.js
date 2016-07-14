@@ -78,10 +78,10 @@ var VideoUploadForm = React.createClass({
         ;
         if (self.state.isOpen) {
             className.push('is-open');
-        } 
+        }; 
         if (self.props.isMaxLimit) {
             className.push('is-hidden')
-        }
+        };
         return (
             <div className={className.join(' ')}>
             <a

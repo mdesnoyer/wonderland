@@ -13,7 +13,7 @@ var ContactForm = React.createClass({
     mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            mode: 'error', // quiet, error, loading, success
+            mode: 'quiet', // quiet, error, loading, success
             name: '',
             email: '',
             message: ''

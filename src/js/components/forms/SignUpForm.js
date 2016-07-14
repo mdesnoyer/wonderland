@@ -22,7 +22,7 @@ var SignUpForm = React.createClass({
             email: '',
             password: '',
             verifyPassword: '',
-            mode: 'quiet' // quiet, loading, error
+            mode: 'quite' // quiet, loading, error, success
         }
     },
     componentWillMount: function() {
@@ -248,12 +248,10 @@ var SignUpForm = React.createClass({
                 }
                 userPromise
                     .then(function (account) {
-                        debugger
                         self._isSubmitted = false;
                         self.props.completeSubmission();
                     })
                     .catch(function (err) {
-                        debugger
                         if (err.code === 409) {
                             E.raiseError(err.data, false);    
                         }
