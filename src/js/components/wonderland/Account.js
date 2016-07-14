@@ -50,6 +50,7 @@ var Account = React.createClass({
     handleLogOut: function(e) {
         var self = this;
         e.preventDefault();
+        SESSION.end();
         self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
     },
     render: function() {
