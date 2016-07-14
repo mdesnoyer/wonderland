@@ -13,7 +13,6 @@ var VideosResults = React.createClass({
             <div>
                 {
                     self.props.videos.map(function(video, i) {
-                        debugger
                         return (
                             <VideoOwner
                                 key={video.video_id}
