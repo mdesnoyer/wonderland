@@ -46,20 +46,6 @@ var VideoUploadOverlay = React.createClass({
                             onChange={e => self.updateField('url', e.target.value)}
                         />
                     </div>
-
-                    {
-                        !isOnboarding ? (
-                            <div>
-                                <div className="xxFormField">
-                                    <label className="xxLabel">{T.get('copy.videos.upload.filter.title')}</label>
-                                    <DropDown label={T.get('label.gender')} options={UTILS.FILTERS_GENDER}/>
-                                    <DropDown label={T.get('label.age')} options={UTILS.FILTERS_AGE}/>
-                                </div>
-                                <p className="xxFormNote">{T.get('copy.videos.upload.filter.description')}</p>
-                            </div>
-                        ) : null
-                    }
-
                     <button
                         disabled={!isValid}
                         className={submitClassName.join(' ')}
