@@ -29,6 +29,7 @@ var VideosResults = React.createClass({
                                 pingInterval={true}
                                 videoState={video.state}
                                 thumbnails={newThumbnails.thumbnails}
+                                demographicThumbnails={video.demographic_thumbnails}
                                 title={video.title}
                                 error={video.error}
                                 duration={video.duration}
