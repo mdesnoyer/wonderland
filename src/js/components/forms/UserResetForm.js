@@ -7,7 +7,6 @@ import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
-import PasswordBrothers from '../wonderland/PasswordBrothers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -101,7 +100,7 @@ var UserResetForm = React.createClass({
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message message={E.getErrors()} />;
+                messageNeededComponent = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
                 messageNeededComponent = <Message message={T.get('copy.loading')} />;

@@ -72,7 +72,14 @@ var VideoOwner = React.createClass({
     render: function() {
         var self = this;
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
-                return <VideoProcessing title={self.state.title} error={self.props.error} videoState={self.state.videoState}/>;
+                return (
+                    <VideoProcessing 
+                        videoId={self.state.videoId} 
+                        title={self.state.title} 
+                        error={self.props.error} 
+                        videoState={self.state.videoState}
+                    />
+                );
             }
             else {
                 return (

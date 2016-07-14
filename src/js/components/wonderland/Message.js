@@ -10,6 +10,19 @@ var Message = React.createClass({
         var self = this,
             style = self.props.isError ? "has-error" : ""
         ;
+        switch(self.props.type) {
+            case 'processing':
+                style = 'has-processing-error';
+                break;
+            case 'video':
+                style = 'has-videos-error';
+                break;
+            case 'formError':
+                style = 'has-error'
+                break;
+            default:
+                style = ''
+        }
         return (
             <div className={style}>
                 <p 

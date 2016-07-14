@@ -35,7 +35,7 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message isError={true} message={E.getErrors()} /> : false
+            messageNeededComponent = self.state.isError ? <Message type="formError" message={E.getErrors()} /> : false
         ;
         return (
             <fieldset className="xxMainForm">

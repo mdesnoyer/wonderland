@@ -87,13 +87,13 @@ var SignUpForm = React.createClass({
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <Message message={E.getErrors()} isError={true} />;
+                userMessage = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
-                userMessage = <Message message={T.get('copy.loading')} isError={false} />;
+                userMessage = <Message message={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <Message message={T.get('copy.confirmAccount.body')} isError={false} />;
+                userMessage = <Message message={T.get('copy.confirmAccount.body')} />;
                 break;
             default:
                 break;
