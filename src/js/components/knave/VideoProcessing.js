@@ -25,7 +25,7 @@ var VideoProcessing = React.createClass({
         errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');  
         switch (self.props.videoState) {
             case 'failed': 
-                title = '';
+                title = 'Oops';
                 errorMessageComponent = <Message type="processing" message={errorMessage} />;
                 deleteButton = (
                     <button
@@ -36,7 +36,7 @@ var VideoProcessing = React.createClass({
                 );
                 break;
             case 'processing':
-                title = self.props.title ? ' : ' + self.props.title : '';
+                title = self.props.title ? 'PROCESSING:' + self.props.title : 'PROCESSING: ...';
                 errorMessageComponent = '';
                 deleteButton = '';
                 break;
@@ -47,7 +47,7 @@ var VideoProcessing = React.createClass({
                     self.state.isHidden ? null : (
                         <article className="xxCollection xxCollection--video xxCollection--processing">
                             <h1 className="xxCollection-title">
-                                {self.props.videoState.toUpperCase() + title}
+                                {title}
                                 {deleteButton}
                             </h1>
                             { 
