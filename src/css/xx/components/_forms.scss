@@ -15,16 +15,8 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxFormPage {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: $header-margin-bottom;
-}
-
 .xxFormField {
     @include clearfix;
-
     margin: 0 0 14px;
 }
 

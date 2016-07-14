@@ -34,9 +34,30 @@ $base-mobile-type: normal #{$default-mobile-font-size} / #{$default-mobile-verti
 
 .xxPage-Subtitle {
     @include all-caps-title;
-
     margin: 0 0 9px;
     color: $secondary-color;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPre {
+    margin-bottom: 1em;
+    white-space: pre;
+    word-wrap: normal;
+    font-family: "Source Code Pro", "Monaco", "Inconsolata", monospace;
+    line-height: 1.25;
+}
+
+.xxCode {
+    background-color: $primary-white-color;
+    color: $secondary-color;
+    font-size: 12px;
+}
+
+.xxPre .xxCode {
+    display: block;
+    overflow-x: auto;
+    padding: 16px 20px;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
