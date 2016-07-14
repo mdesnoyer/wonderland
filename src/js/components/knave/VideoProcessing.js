@@ -21,6 +21,7 @@ var VideoProcessing = React.createClass({
             errorMessage,
             deleteButton
         ;
+        debugger 
         switch (self.props.videoState) {
             case 'failed': 
                 title = '';
