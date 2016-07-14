@@ -112,29 +112,21 @@
     float: left;
     position: relative;
     padding: 4px 0;
+    width: 220px;
 
-    .has-dropdown > & {
-        padding-right: 52px;
-        cursor: pointer;
+    .Select-control {
+        border: none;
+        height: inherit;
 
-        @include arrow(S, 1px, 11px, $bg-tertiary-color);
-
-        &::before,
-        &::after {
-            top: 3px;
-            right: 28px;
-            bottom: auto;
-            left: auto;
+        .Select-value {
+            line-height: inherit;
         }
-    }
+        .Select-input {
+            height: inherit;
 
-    .is-open > & {
-        &::before,
-        &::after {
-            top: 6px;
-            z-index: $zindex-above-everything;
-            pointer-events: none;
-            transform-origin: 50% 0%;
+            input {
+                padding: 0;
+            }
         }
     }
 }

@@ -29,7 +29,8 @@ var VideoMain = React.createClass({
             isHidden: false,
             liftArray: [],
             displayThumbLift: 0,
-            thumbnails: self.props.thumbnails
+            thumbnails: self.props.thumbnails,
+            useDemographic: false // default to not showing demographic thumbs
         }
     },
     componentWillMount: function() {
@@ -177,6 +178,21 @@ var VideoMain = React.createClass({
             isHidden: true
         });
     },
+    handleDemographicChange: function(value) {
+        var self = this,
+            thumbs;
+        // false === use standard thumbnails; true === use demographic thumbnails
+        if (value && self.props.demographicThumbnails && self.props.demographicThumbnails.thumbnails) {
+            thumbs = self.props.demographicThumbnails.thumbnails;
+        } else {
+            thumbs = self.props.thumbnails;
+            value = false;
+        }
+        self.setState({
+            useDemographic: value,
+            thumbnails: thumbs
+        });
+    },
     render: function() {
         var self = this;
         if (self.state.isHidden) {
@@ -189,7 +205,10 @@ var VideoMain = React.createClass({
                         <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
+                            demographicThumbnails={self.props.demographicThumbnails}
+                            useDemographic={self.state.useDemographic}
                             handleDelete={self.handleDelete}
+                            handleDemographicChange={self.handleDemographicChange}
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}
                             openSignUp={self.props.openSignUp}
