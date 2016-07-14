@@ -30,10 +30,10 @@
 
     .has-error > & {
         color: $accent-color;
-        font-size: 10px
+        font-size: 9px
     }
     .has-videos-error > & {
-        width: 60%;
+        width: 65%;
         margin: 0 auto; 
         text-align: center;
         background: $primary-white-color;
@@ -48,7 +48,7 @@
         margin: 0 auto; 
         text-align: center;
         color: $accent-color;
-        font-size: 14px
+        font-size: 12px;
     }
 
     .xxFormField + .xxFormField & {

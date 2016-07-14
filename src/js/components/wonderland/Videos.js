@@ -67,10 +67,10 @@ var Videos = React.createClass({
         // Edge Case - when we hit a Next page with 0 results, limbo
         if ((self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
             prevPageAPICall = self.state.previousPseudoPageUrl;
-            alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="formError" />;
+            alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
         else if (self.state.isMaxLimit) {
-            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="formError" type="video" />;
+            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -109,7 +109,7 @@ var Videos = React.createClass({
     },
     doFindMaxVideos: function(count, max) {
         var self = this; 
-        if (count !== max){
+        if (count === max){
             self.setState({
                 isMaxLimit: true
             })

@@ -248,10 +248,12 @@ var SignUpForm = React.createClass({
                 }
                 userPromise
                     .then(function (account) {
+                        debugger
                         self._isSubmitted = false;
                         self.props.completeSubmission();
                     })
                     .catch(function (err) {
+                        debugger
                         if (err.code === 409) {
                             E.raiseError(err.data, false);    
                         }

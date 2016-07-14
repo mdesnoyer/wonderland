@@ -79,7 +79,7 @@ var ChangePasswordForm = React.createClass({
                 userMessage = <Message message={E.getErrors()} type="formError"/>;
                 break;
             case 'loading':
-                userMessage = <Message messsage={T.get('copy.loading')}  />;
+                userMessage = <Message messsage={T.get('copy.loading')} />;
                 break;
             case 'success':
                 userMessage = <Message message={T.get('copy.userForgot.success')} />;
