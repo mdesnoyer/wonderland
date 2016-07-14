@@ -28,9 +28,16 @@ var VideosPage = React.createClass({
         return {
             displayName: '',
             windowWidth: window.outerWidth,
+            sidebarContent: null 
         };
     },
-
+    openSignUp: function(e) {
+        var self = this; 
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'signUp',
+        });
+    },
     componentDidMount: function() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
@@ -58,7 +65,7 @@ var VideosPage = React.createClass({
 
     render: function() {
         const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
-
+        const { sidebarContent } = this.state;
         return (
             <main className="xxPage">
                 <Helmet
@@ -67,8 +74,8 @@ var VideosPage = React.createClass({
                         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
                     ]}
                 />
-                <SiteHeader />
-                <Videos isMobile={isMobile} />
+                <SiteHeader sidebarContent={sidebarContent}/>
+                <Videos isMobile={isMobile} openSignUp={this.openSignUp}/>
                 <SiteFooter />
             </main>
         );
