@@ -69,7 +69,8 @@ var Videos = React.createClass({
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
-        else if (self.state.isMaxLimit) {
+        // else if (self.state.isMaxLimit) {
+            else if (true) {
             alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
