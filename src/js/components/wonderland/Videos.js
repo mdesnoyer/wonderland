@@ -8,11 +8,12 @@ import UTILS from '../../modules/utils';
 import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
 import VideosMobileWarning from './VideosMobileWarning';
+import Secured from '../../mixins/Secured';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-    mixins: [AjaxMixin],
+    mixins: [AjaxMixin, Secured],
     getInitialState: function() {
         return {
             errorMessageArray: [],
