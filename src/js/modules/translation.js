@@ -57,6 +57,7 @@ const _DEFAULT_LOCALE = 'en-US',
             rememberMe: 'Remember',
 
             'copy.xOfY': '@x of @y',
+            'copy.pageN': 'Page @n',
 
             'copy.whyThisImage': 'Why did Neon pick this image? We understand all of the different features that give rise to image preference. In your image, these particular features showed up.',
 
@@ -175,7 +176,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
             'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
-            
+
             'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails. Please look for an email to verify your account. If you don\u2019t see it within 30 minutes, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
@@ -251,7 +252,13 @@ const _DEFAULT_LOCALE = 'en-US',
             // Updated
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
+            'label.filters': 'Filters',
+            'label.gender': 'Gender',
+            'label.age': 'Age',
 
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            'copy.thumbnails.high': 'Hide Low Scores',
+            'copy.thumbnails.low': 'View Low Scores',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
@@ -361,6 +368,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videos.upload.filter.title': 'Filters',
             'copy.videos.upload.filter.description': 'Get images for a specific audience.',
             'copy.videos.topSelects': 'Top Neon Selects',
+            'copy.videos.lowest': 'Lowest Neon Scores',
 
             // Mobile
             'copy.mobile.warning.title': 'This experience is currently designed for desktop.',

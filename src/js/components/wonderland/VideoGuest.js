@@ -1,13 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import Message from './Message';
 import AjaxMixin from '../../mixins/Ajax';
-import VideoHeader from './VideoHeader';
 import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
@@ -17,7 +15,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoGuest = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     propTypes: {
         videoId: React.PropTypes.string.isRequired,
         accountId: React.PropTypes.string.isRequired,
@@ -64,7 +62,8 @@ var VideoGuest = React.createClass({
                         sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-                        created: video.created
+                        created: video.created,
+                        badThumbs: video.bad_thumbnails
                     });
                 })
                 .catch(function(err) {
@@ -112,6 +111,7 @@ var VideoGuest = React.createClass({
                 return (
                         <VideoMain
                             isGuest={true}
+                            title={self.state.title}
                             videoId={self.state.videoId}
                             messageNeededComponent={false}
                             thumbnails={self.state.sortedThumbnails}
@@ -121,7 +121,7 @@ var VideoGuest = React.createClass({
                             url={self.state.url}
                             shareToken={self.state.shareToken}
                             accountId={self.state.accountId}
-                            title={self.state.title}
+                            badThumbs={self.state.badThumbs}
                         />
                 );
                 break;

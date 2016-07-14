@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -13,7 +12,7 @@ import UserSettingsForm from '../forms/UserSettingsForm';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserSettingsPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
+    mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -28,7 +27,7 @@ var UserSettingsPage = React.createClass({
                     <div className="container">
                         <div className="columns is-desktop">
                             <div className="column is-half is-offset-one-quarter">
-                                <h1 className="title is-2">{T.get('copy.userSettings.heading')}</h1>
+                                <h1>{T.get('copy.userSettings.heading')}</h1>
                                 <UserSettingsForm />
                             </div>
                         </div>

@@ -1,16 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-import Icon from '../core/Icon';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var NavigationBar = React.createClass({
-    // mixins: [ReactDebugMixin],
+var PagingControls = React.createClass({
     propTypes: {
         isLoading: React.PropTypes.bool.isRequired,
         alertMessage: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]),
@@ -48,49 +45,44 @@ var NavigationBar = React.createClass({
             // - if we don't have a Next API Call, Next is disabled
             // - if we bring back, less videos than we requested, we know we have run out, so Next is disabled
             prevDisabledAttribute = self.props.isLoading || (self.props.prevPageAPICall === '') || (self.props.currentPage === 1),
-            nextDisabledAttribute = self.props.isLoading || (self.props.nextPageAPICall === '') || (self.props.videoCountServed < self.props.videoCountRequested),
-            loadingClass = 'button is-primary is-medium' + (self.props.isLoading ? ' is-loading' : '')
+            nextDisabledAttribute = self.props.isLoading || (self.props.nextPageAPICall === '') || (self.props.videoCountServed < self.props.videoCountRequested)
         ;
         // Edge Case - when we first hit the site, Virgin Mode
         if ((self.props.prevPageAPICall === '') && (self.props.nextPageAPICall === '') && (self.props.currentPage === 1)) {
-            return false;
+            return null;
         }
         return (
-            <div className="xxCollectionNavBar">
+            <div className="xxPagingControls">
                 {self.props.alertMessage}
-                <nav className="level">
-                    <div className="level-left">
-                        <div className="level-item">
-                            <button
-                                ref="prevButton"
-                                data-loc={self.props.prevPageAPICall}
-                                disabled={prevDisabledAttribute}
-                                onClick={self.handlePrevButton}
-                                className={loadingClass}
-                                title={T.get('action.previous')}
-                            >
-                                <Icon type="chevron-circle-left" />
-                                {T.get('action.previous')}
-                            </button>
-                        </div>
+                <nav className="xxPagingControls-navigation">
+                    <div className="xxPagingControls-navigation-item">
+                        <button
+                            ref="prevButton"
+                            data-loc={self.props.prevPageAPICall}
+                            disabled={prevDisabledAttribute}
+                            onClick={self.handlePrevButton}
+                            className={'xxButton xxButton--highlight'}
+                            title={T.get('action.previous')}
+                        >
+                            {T.get('action.previous')}
+                        </button>
                     </div>
-                    <div className="level-item has-text-centered">
-                        <p className="subtitle is-5">Page {self.props.currentPage}</p>
+                    <div className="xxPagingControls-navigation-item">
+                        {T.get('copy.pageN', {
+                            '@n': self.props.currentPage
+                        })}
                     </div>
-                    <div className="level-right">
-                        <div className="level-item">
-                            <button
-                                ref="nextButton"
-                                data-loc={self.props.nextPageAPICall}
-                                disabled={nextDisabledAttribute}
-                                onClick={self.handleNextButton}
-                                className={loadingClass}
-                                title={T.get('action.next')}
-                            >
-                                {T.get('action.next')}
-                                <Icon type="chevron-circle-right" />
-                            </button>
-                        </div>
+                    <div className="xxPagingControls-navigation-item">
+                        <button
+                            ref="nextButton"
+                            data-loc={self.props.nextPageAPICall}
+                            disabled={nextDisabledAttribute}
+                            onClick={self.handleNextButton}
+                            className={'xxButton xxButton--highlight'}
+                            title={T.get('action.next')}
+                        >
+                            {T.get('action.next')}
+                        </button>
                     </div>
                 </nav>
             </div>
@@ -133,6 +125,6 @@ var NavigationBar = React.createClass({
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default NavigationBar;
+export default PagingControls;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

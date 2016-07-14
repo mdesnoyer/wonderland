@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
 import VideosResults from './VideosResults';
 import AjaxMixin from '../../mixins/Ajax';
@@ -13,7 +12,7 @@ import VideosMobileWarning from './VideosMobileWarning';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             errorMessageArray: [],

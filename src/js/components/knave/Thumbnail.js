@@ -18,7 +18,8 @@ import UTILS from '../../modules/utils';
         src: React.PropTypes.string.isRequired,
         thumbnailId: React.PropTypes.string,
         showHref: React.PropTypes.bool,
-        style: React.PropTypes.object
+        style: React.PropTypes.object,
+        isMobile: React.PropTypes.bool
     },
     getDefaultProps: function() {
         return {
@@ -28,7 +29,7 @@ import UTILS from '../../modules/utils';
     render: function() {
         var self = this,
             className = ['xxThumbnail'],
-            opts = self.props.showHref ? {href: '#'} : {}
+            opts = !self.props.isMobile && self.props.showHref ? {href: '#'} : {}
         ; 
         if (self.props.extraClass) {
             className.push(self.props.extraClass);

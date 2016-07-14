@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import Icon from '../core/Icon';
 
@@ -12,7 +11,7 @@ var AccountMasqueradeBar = React.createClass({
         var self = this;
         if (SESSION.active() && SESSION.getMasqueradeAccountId()) {
             return (
-                <div className="notification is-warning is-marginless has-text-centered">
+                <div>
                     <p><Icon type="universal-access" /> Masquerading as <strong>{SESSION.getMasqueradeAccountId()}</strong></p>
                 </div>
             );

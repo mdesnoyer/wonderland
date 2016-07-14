@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -14,7 +13,7 @@ import AjaxMixin from '../../mixins/Ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TelemetryPage = React.createClass({
-    mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Secured, Account, AjaxMixin],
     getInitialState: function () {
         return {
             snippetElement: '',
@@ -45,12 +44,12 @@ var TelemetryPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.telemetry.heading')}</h1>
+                        <h1>{T.get('copy.telemetry.heading')}</h1>
 
                         <div className={'content' + (self.state.isBrightCoveGalleryIntegration ? '' : ' is-hidden')}>
-                            <h2 className="title is-3">Brightcove Gallery integration</h2>
+                            <h2>Brightcove Gallery integration</h2>
                             <p>Inserting the Neon Telemetry Tag into your site allows us to understand how your users are interacting with images across your site. Our technology uses this anonymized data to ensure that your most effective images are always representing your content. Below, you can find your custom Neon Telemetry Tag, instructions for how to insert the Telemetry Tag into your Gallery site, and a status indicator to let you know whether the Telemetry Tag is working properly.</p>
-                            <h3 className="title is-4">Your custom Neon Telemetry Tag</h3>
+                            <h3>Your custom Neon Telemetry Tag</h3>
                             <textarea
                                 readOnly
                                 className="textarea"
@@ -58,7 +57,7 @@ var TelemetryPage = React.createClass({
                             >
                             </textarea>
                             {/*Last active on your site: [auto updated with date and time to reflect when we last saw data from their site via this tag; if we’ve never seen data from this tag, then it should say "Never"]*/}
-                            <h3 className="title is-4">Insert the Telemetry Tag</h3>
+                            <h3>Insert the Telemetry Tag</h3>
                             <p>To insert the Telemetry Tag into your Gallery site:</p>
                             <ol>
                                 <li>Log in to your Brightcove Account</li>
@@ -69,11 +68,11 @@ var TelemetryPage = React.createClass({
                         </div>
                         
                         <div className={'content' + (!self.state.isBrightCoveGalleryIntegration ? '' : ' is-hidden')}>
-                            <h2 className="title is-3">Other Integrations</h2>
+                            <h2>Other Integrations</h2>
 
                             <p>Inserting the Neon Telemetry Tag into your site allows us to understand how your users are interacting with images across your site. Our technology uses this anonymized data to ensure that your most effective images are always representing your content. Below, you can find your custom Neon Telemetry Tag, instructions for how to insert the Telemetry Tag into your site, and a status indicator to let you know whether the Telemetry Tag is working properly.</p> 
 
-                            <h3 className="title is-4">Your custom Neon Telemetry Tag</h3>
+                            <h3>Your custom Neon Telemetry Tag</h3>
                             <textarea
                                 readOnly
                                 className="textarea"
@@ -82,7 +81,7 @@ var TelemetryPage = React.createClass({
                             </textarea>
                             {/*Last active on your site: [auto updated with date and time to reflect when we last saw data from their site via this tag; if we’ve never seen data from this tag, then it should say "Never"]*/}
 
-                            <h3 className="title is-4">Insert the Telemetry Tag</h3>
+                            <h3>Insert the Telemetry Tag</h3>
                             <p>To use this tag, your site must meet the following two criteria:</p>
                             <p>1. Your thumbnails are inside an anchor tag. Each thumbnail can be either an img tag or a background-image CSS property. For example:</p>
 <pre className="wonderland-pre"><code>{`<a href="http://www.mysite.com/play_video1">

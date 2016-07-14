@@ -174,17 +174,20 @@ export default class XXPage extends React.Component {
                     hasFilters
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"
+                    stage={stage}
                     updateStage={updateStage}
                 />
 
                 <XXCollection
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"
+                    stage={stage}
                     updateStage={updateStage}
                 />
 
                 <XXCollection
                     title="Thursday evening at Daniel’s"
+                    stage={stage}
                     updateStage={updateStage}
                 />
         </main>

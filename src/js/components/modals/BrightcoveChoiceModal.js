@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -18,7 +17,7 @@ var BrightcoveChoiceModal = React.createClass({
         var self = this;
         return (
             <section className="box wonderland-box is-desktop">
-                <h1 className="title is-4">
+                <h1>
                     Which type of Brightcove account do you have?
                 </h1>
                 <div className={'box wonderland-brick'} onClick={self.handleGalleryClick}>

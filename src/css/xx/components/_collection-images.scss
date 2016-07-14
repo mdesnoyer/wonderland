@@ -113,7 +113,7 @@ $mobile-all-images-gutter-width: 3px;
     }
 }
 
-.xxCollectionNavBar {
+.xxPagingControls {
     @include breakpoint-mobile {
         display: none;
     }

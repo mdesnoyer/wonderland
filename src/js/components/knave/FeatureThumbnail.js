@@ -7,7 +7,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var FeatureThumbnail = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         type: React.PropTypes.string.isRequired,
         handleClick: React.PropTypes.func
@@ -51,6 +50,7 @@ var FeatureThumbnail = React.createClass({
                     thumbnailId={thumbnailId}
                     handleChildOnMouseEnter={handleChildOnMouseEnter}
                     type={self.props.type}
+                    isMobile={self.props.isMobile}
                     showHref={showHref}
                 />
             </div>

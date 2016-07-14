@@ -15,6 +15,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
+    EXAMPLE_EMAIL = 'example@email.com',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -245,7 +246,7 @@ var UTILS = {
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },
-    FILTERS_GENDER_AGE: [    
+    FILTERS_GENDER_AGE: [
         {
             value: 'Female / 35-44',
         },
@@ -258,26 +259,36 @@ var UTILS = {
     ],
     FILTERS_GENDER: [
         {
-            value: 'Female',
+            value: 'F',
+            label: 'Female'
         },
         {
-            value: 'Male',
-        }     
+            value: 'M',
+            label: 'Male'
+        }
     ],  
-    FILTERS_AGE: [    
+    FILTERS_AGE: [
         {
-            value: '18-29',
+            value: '18-19',
+            label: '18-19'
+        },
+        {
+            value: '20-29',
+            label: '20-29'
         },
         {
             value: '30-39',
+            label: '30-39'
         },
         {
             value: '40-49',
+            label: '40-49'
         },
         {
-            value: '50+'
+            value: '50+',
+            label: '50+'
         }
-    ], 
+    ],
     LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
@@ -294,7 +305,7 @@ var UTILS = {
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
-    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'bad_thumbnails'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',

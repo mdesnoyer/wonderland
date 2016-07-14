@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SESSION from '../../modules/session';
 import AjaxMixin from '../../mixins/Ajax';
 import Account from '../../mixins/Account';
@@ -12,7 +11,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountMasqueradeModal = React.createClass({
-    mixins: [AjaxMixin, Account], // ReactDebugMixin
+    mixins: [AjaxMixin, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

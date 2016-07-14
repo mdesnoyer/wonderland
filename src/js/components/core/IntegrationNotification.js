@@ -12,14 +12,14 @@ var IntegrationNotification = React.createClass({
         return (
             <nav className="wonderland-video__header level columns box">
                 <div className="level-left column is-9">
-                    <div className="level-item">
+                    <div>
                         <p>
                             {T.get('copy.integration.manualswitch')}
                         </p>
                     </div>
                 </div>
-                <div className="level-right column is-3">
-                    <div className="level-item has-text-centered">
+                <div>
+                    <div>
                         <a className="wonderland-toggle button is-medium" onClick={self.toggleOpen}>
                             <Icon
                                 type="chevron-circle-down"

@@ -1,12 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TermsOfService = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         return (
             <div className="xxText">

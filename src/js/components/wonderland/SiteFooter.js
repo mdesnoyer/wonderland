@@ -1,14 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteFooter = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         return (
             <footer className="Footer">

@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
@@ -12,11 +11,11 @@ var SupportTab1 = React.createClass({
         var self = this;
         return (
             <section className="content">
-            <h2 className="title is-3">Overview</h2>
+            <h2>Overview</h2>
 
             <p>Neon surfaces the most engaging imagery for your content. Our software is built on science- and machine learning-based models that can predict how people will subconsciously engage with different images. Using this software, we analyze your videos, identify and surface the most engaging still images from the video, and serve and test the images on your site as video thumbnails.</p>
 
-            <h3 className="title is-4">Get Started</h3>
+            <h3>Get Started</h3>
 
             <p>It&rsquo;s simple. Just sign up for an account at <a href="http://app.neon-lab.com" rel="external">http://app.neon-lab.com</a> to try the service. Within minutes, you can see the most engaging images from almost any video on the internet.</p> 
             <p>Follow these simple steps:</p>
@@ -43,13 +42,13 @@ var SupportTab1 = React.createClass({
             <p>For a more automated video upload and processing experience, you can integrate your backend systems directly with Neon&rsquo;s. This allows us to automatically analyze each of your videos, run A/B testing, and provide analytics.</p>
             <p>If you are a Brightcove customer, then you can use the <a href={UTILS.DRY_NAV.SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE.URL}>Brightcove Plugin</a> to integrate in just a few steps. Otherwise, please see our <a href={UTILS.DRY_NAV.SUPPORT_CUSTOM_PLUGIN_GUIDE.URL}>Custom Plugin Guide</a>.</p>
             
-            <h3 className="title is-4">What&rsquo;s happening under the hood?</h3>
+            <h3>What&rsquo;s happening under the hood?</h3>
 
-            <h4 className="title is-5">Video Analysis</h4>
+            <h4>Video Analysis</h4>
 
             <p>We analyze your videos to extract and surface the best images to use as video thumbnails. We&rsquo;re able to analyze videos that are hosted on the internet and are publicly accessible. You can submit a video in two ways: via our UI, or via the CMS API. Once you&rsquo;ve submitted video content, our software analyzes your video, identifies engaging frames using our deep neural net-based model of the human visual system, and surfaces the images most likely to engage your users. This process takes approximately the same amount of time as the length of the video being processed.</p>
             
-            <h4 className="title is-5">Editorial Partnering</h4>
+            <h4>Editorial Partnering</h4>
 
             <p>Once your content has been analyzed, your Neon account will be populated with the top most effective images from your video. While our models are highly adept at understanding and predicting a user&rsquo;s gut reaction to an image, they&rsquo;re not quite as good as humans at understanding image context. This is why we give you the ability to disable some or all of a video&rsquo;s Neon images or add other images in your Neon Account. As with most complex systems, ours works best as a partnership between human and machine.</p>
 
@@ -67,7 +66,7 @@ var SupportTab1 = React.createClass({
 
             <p>If you&rsquo;d like to re-enable a disabled image, simply click on the checkmark on the left sidebar of the image. The orange X over the image should disappear, and the image will now be served alongside your other enabled images for that video.</p>
 
-            <h4 className="title is-5">Automated A/B Testing, Optimization, and Realtime Analytics</h4>
+            <h4>Automated A/B Testing, Optimization, and Realtime Analytics</h4>
 
             <p>Though our models are very good at predicting the best image for your content, let&rsquo;s be honest: people are complex. They will always surprise us. So, to ensure that we are always showing the best image to your users, we run an A/B test with the set of images that represent your content. Once we are statistically confident that the best image has been found, we then make sure that we show only that image to the rest of your users, thus creating the most value possible for you.</p>
             <p>Running the A/B test provides a secondary valuable insight: being able to measure how effective each image is. This gives you some insight into how your users interact with images on your site, and additionally allows our models to constantly learn and improve.</p>

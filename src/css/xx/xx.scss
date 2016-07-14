@@ -14,7 +14,8 @@
 
 // 2. Vendors
 @import
-    '../../../node_modules/normalize.css/normalize.css'
+    '../../../node_modules/normalize.css/normalize.css',
+    '../../../node_modules/react-select/dist/react-select.css'
 ;
 
 // 3. Base stuff
@@ -51,6 +52,7 @@
     'components/collection-images',
     'components/collection-share',
     'components/collection-mobile-notification',
+    'components/paging-controls',
     'components/onboarding-countdown',
     'components/onboarding-email',
     'components/onboarding-slides',

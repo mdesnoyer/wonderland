@@ -1,16 +1,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default () => (
+export default ({ lift, barWidth, barOriginalWidth }) => (
     <div className="xxLift">
-        <strong className="xxLift-title">48% Lift</strong>
-        <div className="xxLift-chart">
-            <div className="xxLift-chartLine" style={{width: '100%'}}></div>
-            <div className="xxLift-chartLine xxLift-chartLine--original" style={{width: '67.5%'}}></div>
-        </div>
+        <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+            <div className="xxLift-container" key={`lift-${lift}-${barWidth}-${barOriginalWidth}`}>
+                <strong className="xxLift-title">{lift} Lift</strong>
+                <div className="xxLift-chart">
+                    <div className="xxLift-chartLine" style={{width: barWidth}}></div>
+                    <div className="xxLift-chartLine xxLift-chartLine--original" style={{width: barOriginalWidth}}></div>
+                </div>
+            </div>
+        </ReactCSSTransitionGroup>
         <p className="xxLift-text">Compared to the default thumbnail for this video, with our select top scoring image.</p>
     </div>
 );

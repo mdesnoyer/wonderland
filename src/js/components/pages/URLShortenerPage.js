@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import URLShortenerForm from '../forms/URLShortenerForm';
 import SiteFooter from '../wonderland/SiteFooter';
@@ -12,7 +11,6 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var URLShortenerPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         return (
             <div>
@@ -23,7 +21,7 @@ var URLShortenerPage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.urlShortener.heading')}</h1>
+                            <h1>{T.get('copy.urlShortener.heading')}</h1>
                             <div className="content">
                                 <p>{T.get('copy.urlShortener.body')}</p>
                             </div>
