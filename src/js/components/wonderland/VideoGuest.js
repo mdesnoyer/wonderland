@@ -77,11 +77,7 @@ var VideoGuest = React.createClass({
                         case 403:
                             E.raiseError(T.get('error.403'));
                         case 404:
-                        debugger 
-                            self.context.router.push({
-                                pathname: '*',
-                                query: { code: 404 }
-                            })
+                            self.context.router.push('*')
                             E.raiseError(T.get('error.404'));
                             break;
                         default:

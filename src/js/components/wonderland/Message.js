@@ -12,11 +12,12 @@ var Message = React.createClass({
         ;
         return (
             <div className={style}>
-                <p className="xxLabel" dangerouslySetInnerHTML={{__html: self.props.message}} >
-                </p>
+                <p 
+                    className="xxLabel"
+                    dangerouslySetInnerHTML={{__html: self.props.message}} 
+                ></p>
             </div>
         );
-        
     }
 });
 
