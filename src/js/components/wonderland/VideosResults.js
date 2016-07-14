@@ -3,7 +3,6 @@
 import React from 'react';
 import VideoOwner from './VideoOwner';
 import PagingControls from '../core/PagingControls';
-import Message from '../wonderland/Message'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

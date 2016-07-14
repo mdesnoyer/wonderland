@@ -109,7 +109,7 @@ var Videos = React.createClass({
     },
     doFindMaxVideos: function(count, max) {
         var self = this; 
-        if (count !== max){
+        if (count === max){
             self.setState({
                 isMaxLimit: true
             })
