@@ -30,7 +30,7 @@
 
     .has-error > & {
         color: $accent-color;
-        font-size: 9px
+        font-size: 10px
     }
     .has-videos-error > & {
         width: 100%;
@@ -44,11 +44,12 @@
     }
 
     .has-processing-error > & {
-        width: 60%;
+        width: 65%;
         margin: 0 auto; 
         text-align: center;
         color: $accent-color;
-        font-size: 12px;
+        font-size: 13px;
+        margin-top: -2em;
     }
 
     .xxFormField + .xxFormField & {
@@ -291,17 +292,23 @@
         &,
         &[disabled],
         &[disabled]:hover {
-            border-color: $base-color;
-            background: $base-color;
-            color: $primary-white-color;
-            margin: 0 auto; 
+            border-color: transparent;
+            background: transparent;
+            color: $base-color;
+            position: absolute;
+            top: 20px;
+            right: 0px;
+            width: 10%;
         }
 
         &:hover {
-            border-color: $accent-color;
-            background: $accent-color;
-            color: $primary-white-color;
-            margin: 0 auto; 
+            border-color: transparent;
+            background: transparent;
+            color: $accent-color;
+            position: absolute;
+            top: 20px;
+            right: 0px;
+            width: 10%;
         }
     }
 

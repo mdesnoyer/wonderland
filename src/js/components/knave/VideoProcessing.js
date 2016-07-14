@@ -32,7 +32,7 @@ var VideoProcessing = React.createClass({
                         className="xxButton xxButton--delete-failed"
                         type="button"
                         onClick={self.handleDeleteClick}
-                    >{T.get('delete')}</button>
+                    >x</button>
                 );
                 break;
             case 'processing':
@@ -48,6 +48,7 @@ var VideoProcessing = React.createClass({
                         <article className="xxCollection xxCollection--video xxCollection--processing">
                             <h1 className="xxCollection-title">
                                 {self.props.videoState.toUpperCase() + title}
+                                {deleteButton}
                             </h1>
                             { 
                                 self.props.error ? null : (
@@ -63,7 +64,6 @@ var VideoProcessing = React.createClass({
                                 )
                             }
                             {errorMessageComponent}
-                            {deleteButton}
                         </article>
                     )
                 }
