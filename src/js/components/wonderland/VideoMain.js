@@ -34,7 +34,9 @@ var VideoMain = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        self.sendForLiftData();
+        if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score){
+            self.sendForLiftData();    
+        }
     },
     sendForLiftData: function() {
         var self = this,
@@ -125,9 +127,11 @@ var VideoMain = React.createClass({
         var self = this,
             liftArray = self.state.liftArray
         ;
-        self.setState({
-            displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
-        });
+        if (liftArray.length > 1) {
+            self.setState({
+                displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
+            });    
+        }
     }
 });
 
