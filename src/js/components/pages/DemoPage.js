@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
@@ -9,7 +8,7 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var DemoPage = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

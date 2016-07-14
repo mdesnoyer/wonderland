@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Thumbnails from './Thumbnails';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
@@ -11,7 +10,7 @@ import VideoContent from '../knave/VideoContent';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoMain = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     propTypes: {
         isGuest: React.PropTypes.bool.isRequired,
         accountId: React.PropTypes.string,

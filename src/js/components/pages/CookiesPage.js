@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
@@ -12,7 +11,6 @@ import cookie from 'react-cookie';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var CookiesPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey) || 'None',

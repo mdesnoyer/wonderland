@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import WonderTabs from '../core/WonderTabs';
 import AccountSettingsTab1 from '../tabs/AccountSettingsTab1';
 import AccountSettingsTab2 from '../tabs/AccountSettingsTab2';

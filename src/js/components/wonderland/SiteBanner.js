@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteNavigation from '../wonderland/SiteNavigation';
 import SESSION from '../../modules/session';
 import gravatar from 'gravatar';
@@ -10,7 +9,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteBanner = React.createClass({
-    // mixins: [ReactDebugMixin],
     getInitialState: function() {
         return {
             displayName: ''

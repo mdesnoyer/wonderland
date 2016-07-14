@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -14,7 +13,7 @@ import AjaxMixin from '../../mixins/Ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TelemetryPage = React.createClass({
-    mixins: [Secured, Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Secured, Account, AjaxMixin],
     getInitialState: function () {
         return {
             snippetElement: '',

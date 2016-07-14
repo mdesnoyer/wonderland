@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -13,7 +12,6 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignOutPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

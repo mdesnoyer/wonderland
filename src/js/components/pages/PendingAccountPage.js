@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
@@ -11,7 +10,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PendingAccountPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         var body1 = T.get('copy.pendingAccount.body.1'),
             body2 = T.get('copy.pendingAccount.body.2'),

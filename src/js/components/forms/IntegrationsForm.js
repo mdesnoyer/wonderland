@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -15,7 +14,7 @@ import BrightcoveClientIdModal from '../modals/BrightcoveClientIdModal';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import moment from 'moment';
@@ -10,7 +9,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountSettingsTab3 = React.createClass({
-    mixins: [Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
             isLoading: true,

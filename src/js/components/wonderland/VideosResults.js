@@ -1,14 +1,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import VideoOwner from './VideoOwner';
 import PagingControls from '../core/PagingControls';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideosResults = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this;
         return (

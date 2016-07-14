@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
 import SESSION from '../../modules/session';
 import AjaxMixin from '../../mixins/Ajax';
@@ -10,7 +9,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             firstName: '',

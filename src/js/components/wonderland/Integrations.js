@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
@@ -15,7 +14,7 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Integrations = React.createClass({
-mixins: [AjaxMixin, Account], // ReactDebugMixin
+mixins: [AjaxMixin, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

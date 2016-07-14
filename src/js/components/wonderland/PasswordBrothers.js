@@ -1,13 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PasswordBrothers = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         handlePasswordInitialChange: React.PropTypes.func,
         handlePasswordConfirmChange: React.PropTypes.func,

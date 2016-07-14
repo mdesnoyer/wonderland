@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
@@ -13,7 +12,7 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserForgotForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     propTypes: {
         showLegend: React.PropTypes.bool.isRequired
     },

@@ -8,7 +8,6 @@ import Lift from './Lift';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ZoomThumbnail = React.createClass({
-    // mixins: [ReactDebugMixin],
     propTypes: {
         thumbnail: React.PropTypes.object.isRequired,
         index: React.PropTypes.number.isRequired,

@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -13,7 +12,7 @@ import DropDown from './DropDown';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadForm = React.createClass({
-    mixins: [AjaxMixin, Account], // ReactDebugMixin
+    mixins: [AjaxMixin, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },

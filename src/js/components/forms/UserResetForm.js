@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
@@ -13,7 +12,7 @@ import PasswordBrothers from '../wonderland/PasswordBrothers';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UserResetForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             passwordInitial: '',

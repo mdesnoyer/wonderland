@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import BillingForm from '../forms/BillingForm';
@@ -13,7 +12,7 @@ import Secured from '../../mixins/Secured';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var BillingPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
+    mixins: [Secured],
     render: function() {
         return (
             <div>

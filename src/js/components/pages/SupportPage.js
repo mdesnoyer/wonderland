@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
@@ -17,7 +16,6 @@ import SupportTab5 from '../tabs/SupportTab5';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SupportPage = React.createClass({
-    // mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
             tabs = [
