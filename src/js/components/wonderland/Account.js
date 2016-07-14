@@ -35,18 +35,8 @@ var Account = React.createClass({
     handleLogOut: function(e) {
         var self = this;
         e.preventDefault();
-        if (SESSION.active()) {
-            SESSION.user()
-                .then(function(userData) {
-                    SESSION.end();
-                    self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
-                })
-                .catch(function(err) {
-                    SESSION.end();
-                    self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
-                })
-            ;
-        }
+        SESSION.end();
+        self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
     },
     render: function() {
         var self = this,
