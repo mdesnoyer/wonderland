@@ -335,7 +335,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
 
-            'error.longVideo': 'Please upload a video shorter than 15 minutes long.',
+            'error.longVideo': 'Video too long! Please upload a video under 15 minutes long.',
+            'error.genericVideo': ' Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
             'error.loginlessLimit': 'You\'ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
             'error.unpaidAccountLimit': 'You\'ve hit your upload limit. Check out your options for increasing your limits on our <a href="@link1">pricing page</a> or <a href="@link2">get in touch</a> with us.',
             'error.generic': 'Oops! Something went wrong. Please refresh the page or come back later.',

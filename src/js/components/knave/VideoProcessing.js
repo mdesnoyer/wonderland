@@ -19,13 +19,14 @@ var VideoProcessing = React.createClass({
         var self = this,
             title,
             errorMessage,
-            deleteButton
+            deleteButton,
+            errorMessageComponent
         ;
-        debugger 
+        errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');  
         switch (self.props.videoState) {
             case 'failed': 
                 title = '';
-                errorMessage = <Message type="processing" message={self.props.error} />;
+                errorMessageComponent = <Message type="processing" message={errorMessage} />;
                 deleteButton = (
                     <button
                         className="xxButton xxButton--delete-failed"
@@ -35,8 +36,8 @@ var VideoProcessing = React.createClass({
                 );
                 break;
             case 'processing':
-                title = ' : ' + self.props.title;
-                errorMessage = '';
+                title = self.props.title ? ' : ' + self.props.title : '';
+                errorMessageComponent = '';
                 deleteButton = '';
                 break;
         }
@@ -61,7 +62,7 @@ var VideoProcessing = React.createClass({
                                     </div>
                                 )
                             }
-                            {errorMessage}
+                            {errorMessageComponent}
                             {deleteButton}
                         </article>
                     )
