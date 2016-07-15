@@ -30,7 +30,6 @@ export default class Countdown extends React.Component {
                 this.props.onFinish();
             }
 
-            } 
             this.setState({
                 seconds: seconds - 1,
             });
@@ -39,10 +38,20 @@ export default class Countdown extends React.Component {
 
     render() {
         const { seconds } = this.state;
-
+        const {spanStyle, divStyle}; 
+        switch(self.props.type) {
+            case 'processing':
+                divStyle = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown";
+                spanStyle = "xxCollectionFilterToggle-label";
+                break;
+            default
+                divStyle = "xxOnboardingCountdown";
+                spanStyle = "xxOnboardingCountdown-label";
+        }
+        // className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
         return (
-            <div className="xxOnboardingCountdown">
-                <span className="xxOnboardingCountdown-label">
+            <div className={divStyle}>
+                <span className={spanStyle}>
                     {
                         UTILS.formatTime(
                             Math.floor(seconds / 60),

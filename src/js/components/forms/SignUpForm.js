@@ -33,7 +33,8 @@ var SignUpForm = React.createClass({
                 .then(function() {
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                 });
-            mode: 'error' // quiet, loading, error, success
+        }
+    },
     componentWillUnmount: function(e) {
         E.clearErrors();
     },
