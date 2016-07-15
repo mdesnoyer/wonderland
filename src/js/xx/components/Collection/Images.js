@@ -80,6 +80,8 @@ export default class XXCollectionImages extends React.Component {
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                         className="xxThumbnail--highLight"
+                        onMouseEnter={e => updateStage('image-hover2')}
+                        onMouseLeave={e => updateStage('')}
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
@@ -87,6 +89,8 @@ export default class XXCollectionImages extends React.Component {
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                         className="xxThumbnail--highLight"
+                        onMouseEnter={e => updateStage('image-hover')}
+                        onMouseLeave={e => updateStage('')}
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
