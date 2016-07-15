@@ -60,7 +60,6 @@ var Videos = React.createClass({
             prevPageAPICall = self.state.prevPageAPICall;
             alertMessage = '';
         }
-
         return (
             <div>
                 <VideoUploadForm
@@ -79,6 +78,7 @@ var Videos = React.createClass({
                     isMobile={self.props.isMobile}
                     videoCountServed={self.state.videoCountServed}
                     videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                    openSignUp={self.props.openSignUp}
                 />
 
                 {
