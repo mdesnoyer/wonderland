@@ -61,9 +61,6 @@ var VideoContent = React.createClass({
                     />
                 );
                 break;
-            // case 'save':
-            //     self.props.openSignUp;
-            //     break;
             case 'refilter':
                 contents = (
                     <VideoFilters
