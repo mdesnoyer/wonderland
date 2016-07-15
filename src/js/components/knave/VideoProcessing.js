@@ -5,6 +5,7 @@ import Message from '../wonderland/Message';
 import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
+import Countdown from '../wonderland/Countdown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -20,7 +21,8 @@ var VideoProcessing = React.createClass({
             title,
             errorMessage,
             deleteButton,
-            errorMessageComponent
+            errorMessageComponent,
+            isError
         ;
         errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');  
         switch (self.props.videoState) {
@@ -34,11 +36,13 @@ var VideoProcessing = React.createClass({
                         onClick={self.handleDeleteClick}
                     >x</button>
                 );
+                isError = true
                 break;
             case 'processing':
-                title = self.props.title ? 'PROCESSING:' + self.props.title : 'PROCESSING: ...';
+                title = self.props.title ? 'PROCESSING: ' + self.props.title : 'PROCESSING: ...';
                 errorMessageComponent = '';
                 deleteButton = '';
+                isError = false
                 break;
         }
         return (
@@ -51,11 +55,9 @@ var VideoProcessing = React.createClass({
                                 {deleteButton}
                             </h1>
                             { 
-                                self.props.error ? null : (
+                                isError ? null : (
                                     <div>
-                                        <a className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
-                                            <span>11:11</span>
-                                        </a>
+                                        <Countdown seconds={self.props.seconds} test="test"/>
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>

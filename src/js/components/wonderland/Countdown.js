@@ -30,6 +30,7 @@ export default class Countdown extends React.Component {
                 this.props.onFinish();
             }
 
+            } 
             this.setState({
                 seconds: seconds - 1,
             });

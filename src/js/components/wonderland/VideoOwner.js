@@ -46,7 +46,9 @@ var VideoOwner = React.createClass({
             size: 'big',
             duration: self.props.duration || 0,
             url: self.props.url || '',
-            badThumbs: self.props.badThumbs
+            badThumbs: self.props.badThumbs,
+            isAnalyzing: false,
+            seconds: 0,
         }
     },
     componentDidMount: function() {
@@ -79,6 +81,7 @@ var VideoOwner = React.createClass({
                         error={self.props.error} 
                         videoState={self.state.videoState}
                         duration={self.state.duration}
+                        seconds={self.props.estimatedTimeRemaining}
                     />
                 );
             }
@@ -160,7 +163,7 @@ var VideoOwner = React.createClass({
                 });
             })
         ;
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
