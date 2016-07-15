@@ -54,7 +54,7 @@ import UTILS from '../../modules/utils';
             >
                 <img
                     className="xxThumbnail-image"
-                    src={self.props.src}
+                    src={UTILS.stripProtocol(self.props.src)}
                     onMouseEnter={self.handleMouseEnter}
                     alt={self.props.title}
                     title={self.props.title}
