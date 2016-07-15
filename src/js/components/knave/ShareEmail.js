@@ -40,7 +40,7 @@ var ShareEmail = React.createClass({
                 userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
                 break;
             case 'success':
-                userMessage = <div className="xxLabel"><p>TODO</p></div>;
+                userMessage = <div className="xxLabel"><p>Your results have been sent.</p></div>; // TODO
                 break;
             default:
                 break;
@@ -91,7 +91,6 @@ var ShareEmail = React.createClass({
             mode: 'loading'
         }, function() {
             var options = self.dataMaker();
-            console.log(options);
             self.POST('email', options)
                 .then(function(res) {
                     self.setState({
@@ -120,7 +119,8 @@ var ShareEmail = React.createClass({
                 switch (thumbnail.rank) {
                     case 0:
                         top_thumbnail = thumbnail.url;
-                        lift = thumbnail.lift;
+                        lift = thumbnail.lift * 100;
+                        console.log(thumbnail.lift * 100);
                         break;
                     case 1:
                         thumbnail_one = thumbnail.url
