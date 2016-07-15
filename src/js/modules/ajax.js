@@ -60,7 +60,7 @@ var AJAXModule = {
             }
 
             var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
-            _options.url = _options.host + (_options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
+            _options.url = _options.host + (!_options.noAccountId && _options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
             
             _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)

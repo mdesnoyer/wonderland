@@ -2,6 +2,7 @@
 
 import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
+import Account from '../../mixins/Account';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
@@ -9,7 +10,7 @@ import E from '../../modules/errors';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ContactForm = React.createClass({
-    mixins: [AjaxMixin],
+    mixins: [AjaxMixin, Account],
     getInitialState: function() {
         return {
             mode: 'quiet', // quiet, error, loading, success
@@ -41,65 +42,35 @@ var ContactForm = React.createClass({
         }
     },
     handleSubmit: function(e) {
-        var self = this;
+        var self = this,
+            options = {
+                noAccountId: true,
+                data: {
+                    from_name: self.state.name.trim(),
+                    from_email: self.state.email.trim(),
+                    message: self.state.message.trim()
+                }
+            }
+        ;
         e.preventDefault();
         self.setState({
             mode: 'loading'
         }, function() {
-            var options = self.dataMaker('support');
-            self.POST('email', options)
+            console.log(options);
+            self.POST('email/support', options)
                 .then(function(res) {
-                    var optionsNew = self.dataMaker('confirm');
-                    self.POST('email', optionsNew)
-                        .then(function(res) {
-                            self.setState({
-                                mode: 'success'
-                            });
-                        })
-                        .catch(function(err) {
-                            E.raiseError(err);
-                            self.setState({
-                                mode: 'error'
-                            });
-                        });
+                    self.setState({
+                        mode: 'success'
+                    });
                 })
                 .catch(function(err) {
                     E.raiseError(err);
                     self.setState({
                         mode: 'error'
                     });
-                });
+                })
+                ;
         });
-    },
-    dataMaker: function(emailType) {
-        var self = this,
-            email,
-            slug,
-            data
-        ;
-        switch(emailType) {
-            case 'support':
-                email = UTILS.SUPPORT_EMAIL;
-                slug =  UTILS.SUPPORT_MANDRILL_SLUG;
-            break; 
-            case 'confirm':
-                email = self.state.email.trim();
-                slug = UTILS.CONFIRM_MANDRILL_SLUG;
-            break;
-        }
-        data = {
-            data: {
-                    subject: UTILS.SUPPORT_EMAIL_SUBJECT,
-                    to_email_address: email,
-                    template_slug: slug,
-                    template_args: {
-                        'first_name': self.state.name.trim(),
-                        'contact_email': self.state.email.trim(),
-                        'support_message': self.state.message.trim()
-                    }
-                }
-        }
-        return data; 
     },
     render: function() {
         var self = this,
