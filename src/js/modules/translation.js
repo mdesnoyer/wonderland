@@ -257,6 +257,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.filters': 'Filters',
             'label.gender': 'Gender',
             'label.age': 'Age',
+            'label.submit': 'Submit',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             'copy.thumbnails.high': 'Hide Low Scores',
@@ -388,6 +389,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.onboarding.link.learnMore': 'Learn More',
             'copy.onboarding.resultsEmail.error': "I'm sorry, we weren't able to complete your request at this time",
             'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
+            'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
 
             // Videos
             'copy.videos.upload.filter.title': 'Filters',
