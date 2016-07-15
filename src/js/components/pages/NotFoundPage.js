@@ -13,7 +13,7 @@ var NotFoundPage = React.createClass({
     render: function() {
         var body1 = T.get('copy.notFound.body.1'),
             body2 = T.get('copy.notFound.body.2',{
-                '@link': UTILS.CORP_EXTERNAL_URL
+                '@link': UTILS.DRY_NAV.HOME.URL
             })
         ;
         return (
