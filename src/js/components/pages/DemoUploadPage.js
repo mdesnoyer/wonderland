@@ -87,6 +87,7 @@ export default React.createClass({
             if (video.state === 'processed') {
                 router.push({
                     pathname: UTILS.DRY_NAV.VIDEO_LIBRARY.URL,
+                    state: { fromDemo: true },
                 });
             } else if (video.state === 'failed') {
                 this.showError();

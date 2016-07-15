@@ -401,6 +401,16 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
             'copy.mobile.warning.description': 'Let us email you a link to check it out on desktop later. You can analyze your videos and get your own NeonScores for free.',
 
+            // Tutorial
+            'copy.tutorial.checkItOut': 'Check it Out',
+            'copy.tutorial.skip': 'Skip Tutorial',
+            'copy.tutorial.ready.title': 'Your images are ready!',
+            'copy.tutorial.neonscore.title': 'What is a NeonScore?',
+            'copy.tutorial.neonscore.description': 'The NeonScore is a 0-99 scale that represents how clickable your image is. The higher the score, the more clicks.',
+            'copy.tutorial.lift.title': 'What is lift?',
+            'copy.tutorial.lift.description': 'Lift is the percentage increase in clicks your video would get by using Neon images as your video thumbnails.',
+            'copy.tutorial.upload.title': 'Upload your own videos.',
+            'copy.tutorial.upload.description': 'If you like what you see, you can upload your own videos to get your most clickable images. Just click on the orange button on the next screen and enter a video URL.',
         },
         'en-GB': {
         },
