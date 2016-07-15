@@ -56,7 +56,6 @@ var ContactForm = React.createClass({
         self.setState({
             mode: 'loading'
         }, function() {
-            console.log(options);
             self.POST('email/support', options)
                 .then(function(res) {
                     self.setState({
@@ -69,7 +68,7 @@ var ContactForm = React.createClass({
                         mode: 'error'
                     });
                 })
-                ;
+            ;
         });
     },
     render: function() {
