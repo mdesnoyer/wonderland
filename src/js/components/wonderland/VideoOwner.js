@@ -36,6 +36,7 @@ var VideoOwner = React.createClass({
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             demographicThumbnails: self.props.demographicThumbnails,
+            timeRemaining: self.props.timeRemaining,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
             title: self.props.title,
@@ -94,6 +95,7 @@ var VideoOwner = React.createClass({
                     videoId={self.state.videoId}
                     thumbnails={self.state.sortedThumbnails}
                     demographicThumbnails={self.state.demographicThumbnails}
+                    timeRemaining={self.state.timeRemaining}
                     videoState={self.state.videoState}
                     duration={self.state.duration}
                     created={self.state.created}
