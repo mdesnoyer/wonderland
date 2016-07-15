@@ -7,6 +7,7 @@ export default class Countdown extends React.Component {
 
         this.state = {
             seconds: props.seconds,
+            classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
 
@@ -34,8 +35,9 @@ export default class Countdown extends React.Component {
 
             if (seconds > 1) {
                 this.setProcessingTimer();
-            } else {
-                if (this.props.onFinish){
+            }
+            else {
+                if (this.props.onFinish) {
                     this.props.onFinish();
                 }
             }
@@ -47,21 +49,13 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        const { seconds } = this.state;
-        var spanStyle, divStyle;
-        switch(this.props.type) {
-            case 'processing':
-                divStyle = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown";
-                spanStyle = "xxCollectionFilterToggle-label";
-                break;
-            default:
-                divStyle = "xxOnboardingCountdown";
-                spanStyle = "xxOnboardingCountdown-label";
-        }
+        const { seconds, classPrefix } = this.state;
+        let classPrefixLabel = classPrefix + 'label';
+
         if (this.props.seconds > 1) {
             return (
-                <a className={divStyle}>
-                    <span className={spanStyle}>
+                <div className={classPrefix}>
+                    <span className={classPrefixLabel}>
                         {
                             UTILS.formatTime(
                                 Math.floor(seconds / 60),
@@ -69,12 +63,10 @@ export default class Countdown extends React.Component {
                             )
                         }
                     </span>
-                </a>
-            )
-        }
+                </div>
+            );
         else {
             return null;
         }
-
     }
 };

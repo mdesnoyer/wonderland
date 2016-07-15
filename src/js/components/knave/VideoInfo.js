@@ -4,6 +4,7 @@ import React from 'react';
 import ReactSelect from 'react-select';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import Countdown from '../wonderland/Countdown';
 import Lift from './Lift';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -34,7 +35,8 @@ var VideoInfo = React.createClass({
             videoState: self.props.videoState,
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: demographicOptions
+            demographicOptions: demographicOptions,
+            timeRemaining: self.props.timeRemaining
         }
     },
     onDemographicChange: function(value) {
@@ -56,7 +58,9 @@ var VideoInfo = React.createClass({
                     if (self.state.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                         return (
                             <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
-                                <span>TODO</span>
+                                <span>
+                                    <Countdown seconds={self.state.timeRemaining} classPrefix="xxCollectionFilterCountdown" />
+                                </span>
                             </div>
                         );   
                     } else {

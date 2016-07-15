@@ -30,15 +30,21 @@ var VideoMain = React.createClass({
             liftArray: [],
             displayThumbLift: 0,
             thumbnails: self.props.thumbnails,
-            selectedDemographic: false // default to not showing demographic thumbs (support old videos)
+            selectedDemographic: false, // default to not showing demographic thumbs (support old videos)
+            videoState: self.props.videoState
         }
     },
     componentWillMount: function() {
         var self = this;
+<<<<<<< 860a30fe2506aa6224f9d3a30884c05a0b7de5aa
         if (self.state.thumbnails.length > 1 ) {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
             }
+=======
+        if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
+            self.sendForLiftData();
+>>>>>>> Getting close...
         }
     },
     sendForLiftData: function() {
@@ -104,7 +110,12 @@ var VideoMain = React.createClass({
         }
         self.setState({
             selectedDemographic: value,
-            thumbnails: thumbs
+            thumbnails: thumbs,
+            videoState: UTILS.VIDEO_STATE_ENUM.processing
+        }, function () {
+            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
+                self.sendForLiftData();
+            }
         });
     },
     render: function() {
@@ -119,8 +130,9 @@ var VideoMain = React.createClass({
                         <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
-                            videoState={self.props.videoState}
+                            videoState={self.state.videoState}
                             demographicThumbnails={self.props.demographicThumbnails}
+                            timeRemaining={self.props.timeRemaining}
                             selectedDemographic={self.state.selectedDemographic}
                             handleDelete={self.handleDelete}
                             handleDemographicChange={self.handleDemographicChange}
