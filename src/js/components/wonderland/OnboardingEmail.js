@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import AjaxMixin from '../../mixins/ajax';
+import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 
 export default React.createClass({
