@@ -30,7 +30,7 @@ var VideoMain = React.createClass({
             liftArray: [],
             displayThumbLift: 0,
             thumbnails: self.props.thumbnails,
-            useDemographic: false // default to not showing demographic thumbs
+            selectedDemographic: false // default to not showing demographic thumbs (support old videos)
         }
     },
     componentWillMount: function() {
@@ -43,37 +43,36 @@ var VideoMain = React.createClass({
     },
     sendForLiftData: function() {
         var self = this,
-            options = {}
+            options = {
+                data: {
+                    base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
+                    thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+                }
+            }
         ;
-        options.data = {
-            base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
-            thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
-        }
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
-                self.setState({
-                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
-                    liftArray: res.lift
-                }, function() {
-                    // We need to inject the lift into the Thumbnail object
-                    let tempThumbnails = self.state.thumbnails;
-                    for (let l of self.state.liftArray) {
-                        for (let t of tempThumbnails) {
-                            if (t.thumbnail_id === l.thumbnail_id) {
-                                t.lift = l.lift;
-                                break;
-                            }
+                // We need to inject the lift into the Thumbnail object
+                let tempThumbnails = self.state.thumbnails;
+                for (let l of res.lift) {
+                    for (let t of tempThumbnails) {
+                        if (t.thumbnail_id === l.thumbnail_id) {
+                            t.lift = l.lift;
+                            break;
                         }
                     }
-                    self.setState({
-                        thumbnails: tempThumbnails
-                    }, function() {
-                        return true;
-                    });
+                }
+                self.setState({
+                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
+                    liftArray: res.lift,
+                    thumbnails: tempThumbnails
                 });
             })
             .catch(function(err) {
                 console.log(err);
+                self.setState({
+                    isHidden: true
+                });
             })
         ;
     },
@@ -97,15 +96,14 @@ var VideoMain = React.createClass({
     handleDemographicChange: function(value) {
         var self = this,
             thumbs;
-        // false === use standard thumbnails; true === use demographic thumbnails
-        if (value && self.props.demographicThumbnails && self.props.demographicThumbnails.thumbnails) {
-            thumbs = self.props.demographicThumbnails.thumbnails;
+        if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
+            thumbs = self.props.demographicThumbnails[value].thumbnails;
         } else {
             thumbs = self.props.thumbnails;
             value = false;
         }
         self.setState({
-            useDemographic: value,
+            selectedDemographic: value,
             thumbnails: thumbs
         });
     },
@@ -121,8 +119,9 @@ var VideoMain = React.createClass({
                         <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
+                            videoState={self.props.videoState}
                             demographicThumbnails={self.props.demographicThumbnails}
-                            useDemographic={self.state.useDemographic}
+                            selectedDemographic={self.state.selectedDemographic}
                             handleDelete={self.handleDelete}
                             handleDemographicChange={self.handleDemographicChange}
                             shareToken={self.props.shareToken}
