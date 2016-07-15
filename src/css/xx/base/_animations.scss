@@ -34,10 +34,12 @@
 
 .xxFadeInOut,
 .xxFadeInOutFast {
+    &-appear,
     &-enter {
         opacity: 0;
     }
 
+    &-appear-active,
     &-enter-active {
         opacity: 1;
         transition: opacity $default-transition-speed * 2 $default-transition-easing;

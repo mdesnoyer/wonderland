@@ -26,6 +26,10 @@ export default React.createClass({
       const { email } = this.state;
       const { videoId } = this.props;
 
+      if (!email) {
+          return;
+      }
+
       this.setState({
           isSubmitted: true,
       });
@@ -57,20 +61,22 @@ export default React.createClass({
                     {
                         isNotSubmitted ? (
                             <div key="onboarding-email-form">
-                                <h2 className="xxOnboardingEmail-title">Don’t want to wait? We’ll email you when your results are ready.</h2>
-                                <input
-                                    className="xxInputText"
-                                    type="text"
-                                    placeholder="example@email.com"
-                                    value={email}
-                                    onChange={this.updateEmail}
-                                />
-                                <button
-                                    disabled={!isValid}
-                                    className={sendClassName.join(' ')}
-                                    type="button"
-                                    onClick={this.submitEmail}
-                                >Submit</button>
+                                <form onSubmit={this.submitEmail}>
+                                    <h2 className="xxOnboardingEmail-title">{T.get('copy.onboarding.resultsEmail.title')}</h2>
+                                    <input
+                                        className="xxInputText"
+                                        type="text"
+                                        placeholder="example@email.com"
+                                        value={email}
+                                        onChange={this.updateEmail}
+                                    />
+                                    <button
+                                        disabled={!isValid}
+                                        className={sendClassName.join(' ')}
+                                        type="button"
+                                        onClick={this.submitEmail}
+                                    >{T.get('label.submit')}</button>
+                                </form>
                             </div>
                         ) : (
                             <div className="xxOnboardingEmail-success" key="onboarding-email-success">

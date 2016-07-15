@@ -17,7 +17,7 @@ var DemoPage = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
+            self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
         } else {
             self.POST('accounts', {
                 host: CONFIG.AUTH_HOST
@@ -25,7 +25,7 @@ var DemoPage = React.createClass({
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
 
-                self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
+                self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
             })
             .catch(function (err) {
                 // TODO: Error result?

@@ -78,9 +78,9 @@ var VideoUploadForm = React.createClass({
             <div className={className.join(' ')}>
             <a
                 className="xxUploadButton"
-                title={T.get('upload')}
+                title={T.get('action.analyze')}
                 onClick={self.toggleOpen}
-            >{T.get('upload')}</a>
+            >{T.get('action.analyze')}</a>
             {
                 self.state.isOpen ? (
                     <div className="xxOverlay" >

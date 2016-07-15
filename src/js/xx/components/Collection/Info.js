@@ -97,11 +97,19 @@ export default class XXCollectionInfo extends React.Component {
                                 barOriginalWidth="33.3%"
                             />
                         ) : (
-                            <XXLift
-                                lift="48%"
-                                barWidth="49%"
-                                barOriginalWidth="33.3%"
-                            />
+                            stage && stage === 'image-hover2' ? (
+                                <XXLift
+                                    lift="125%"
+                                    barWidth="75%"
+                                    barOriginalWidth="33.3%"
+                                />
+                            ) : (
+                                <XXLift
+                                    lift="48%"
+                                    barWidth="49%"
+                                    barOriginalWidth="33.3%"
+                                />
+                            )
                         )
                     )
                 }

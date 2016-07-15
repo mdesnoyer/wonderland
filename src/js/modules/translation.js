@@ -53,6 +53,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.resetPassword': 'Reset Password',
             'action.shortenURL': 'Shorten URL',
             'action.close': 'Close',
+            'action.analyze': 'Analyze',
 
             rememberMe: 'Remember',
 
@@ -73,6 +74,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.title': 'Analyze More Videos',
             'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
             'copy.signUp.logIn': 'Already have an account? <a href="@link">Log In</a>.',
+
+            'copy.signUp.success.title': 'Thank you for signing up for a Neon account',
+            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, let us know.',
 
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
@@ -178,8 +182,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
             'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
 
-            'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails. Please look for an email to verify your account. If you don\u2019t see it within 30 minutes, please contact us.',
-
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
             'copy.accountConfirmed.body': 'Thanks for creating a Neon account. Your account is confirmed, so you can start your free demo by signing in now.',
@@ -218,12 +220,11 @@ const _DEFAULT_LOCALE = 'en-US',
 
             returnSignIn: 'Return to Sign In',
 
-            //analyze page
+            // Analyze page
             'upload.videoUrl': 'Video URL',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
-            //navigation bar
 
             // Labels
             'label.username' : 'Username',
@@ -256,6 +257,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.filters': 'Filters',
             'label.gender': 'Gender',
             'label.age': 'Age',
+            'label.submit': 'Submit',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             'copy.thumbnails.high': 'Hide Low Scores',
@@ -387,6 +389,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.onboarding.link.learnMore': 'Learn More',
             'copy.onboarding.resultsEmail.error': "I'm sorry, we weren't able to complete your request at this time",
             'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
+            'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
 
             // Videos
             'copy.videos.upload.filter.title': 'Filters',
@@ -398,6 +401,16 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
             'copy.mobile.warning.description': 'Let us email you a link to check it out on desktop later. You can analyze your videos and get your own NeonScores for free.',
 
+            // Tutorial
+            'copy.tutorial.checkItOut': 'Check it Out',
+            'copy.tutorial.skip': 'Skip Tutorial',
+            'copy.tutorial.ready.title': 'Your images are ready!',
+            'copy.tutorial.neonscore.title': 'What is a NeonScore?',
+            'copy.tutorial.neonscore.description': 'The NeonScore is a 0-99 scale that represents how clickable your image is. The higher the score, the more clicks.',
+            'copy.tutorial.lift.title': 'What is lift?',
+            'copy.tutorial.lift.description': 'Lift is the percentage increase in clicks your video would get by using Neon images as your video thumbnails.',
+            'copy.tutorial.upload.title': 'Upload your own videos.',
+            'copy.tutorial.upload.description': 'If you like what you see, you can upload your own videos to get your most clickable images. Just click on the orange button on the next screen and enter a video URL.',
         },
         'en-GB': {
         },

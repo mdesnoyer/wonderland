@@ -12,6 +12,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
+import OnboardingTutorial from '../wonderland/OnboardingTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -27,6 +28,7 @@ var VideosPage = React.createClass({
     getInitialState: function () {
         return {
             displayName: '',
+            showTutorial: false,
             windowWidth: window.outerWidth,
         };
     },
@@ -34,6 +36,12 @@ var VideosPage = React.createClass({
     componentDidMount: function() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
+
+        if (this.props.location.state.fromDemo) {
+            this.setState({
+                showTutorial: true,
+            });
+        }
     },
 
     componentWillUnmount: function() {
@@ -56,7 +64,16 @@ var VideosPage = React.createClass({
         }
     },
 
+    onTutorialClose: function(e) {
+        e.preventDefault();
+
+        this.setState({
+            showTutorial: false,
+        });
+    },
+
     render: function() {
+        const { showTutorial } = this.state;
         const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
 
         return (
@@ -69,6 +86,13 @@ var VideosPage = React.createClass({
                 />
                 <SiteHeader />
                 <Videos isMobile={isMobile} />
+
+                {
+                    showTutorial ? (
+                        <OnboardingTutorial onClose={this.onTutorialClose} />
+                    ) : null
+                }
+
                 <SiteFooter />
             </main>
         );

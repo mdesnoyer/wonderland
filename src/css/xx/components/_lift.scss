@@ -22,10 +22,12 @@ $mobile-lift-bar-height: 3px;
     display: table;
     width: 100%;
 
-    &.xxFadeInOutSequential-enter {
+    & + & {
         position: absolute;
         top: $lift-padding-top;
         left: 0;
+        opacity: 0;
+        transition: opacity $default-transition;
     }
 }
 

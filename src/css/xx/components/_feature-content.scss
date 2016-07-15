@@ -10,6 +10,10 @@
     margin: 0 auto;
     text-align: center;
     transform: translateY(-50%);
+
+    @include breakpoint-mobile {
+        width: 315px;
+    }
 }
 
 .xxFeatureContent-image {
@@ -34,6 +38,10 @@
 
         + .xxButton {
             margin-left: $gutter-width;
+        }
+
+        @include breakpoint-mobile {
+            width: 130px;
         }
     }
 }

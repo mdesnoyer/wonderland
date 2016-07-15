@@ -3,34 +3,54 @@
 import React from 'react';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Lift = React.createClass({
+    _maxLift: 2, // 200%
+    _minLift: -2, // -200%
+    _animationTime: 400, // ms
+    propTypes: {
+        displayThumbLift: React.PropTypes.number
+    },
     render: function() {
         var self = this,
-            lift = isNaN(self.props.displayThumbLift) ? 0 : self.props.displayThumbLift,
-            humanLiftPercent = UTILS.makePercentage(lift, 0, true)
+            rawLift = isNaN(self.props.displayThumbLift) ? 0 : self.props.displayThumbLift,
+            cookedLift,
+            displayLiftPercent,
+            defaultThumbnailLift,
+            defaultThumbnailLiftPercent,
+            neonThumbnailLift,
+            neonThumbnailLiftPercent
         ;
-        if (lift < 0) {
-            var originalBarSize = 1;
-            var neonBarSize = originalBarSize * (1 + lift); // this will make the multiplier < 1
+        if (rawLift < 0) {
+            cookedLift = Math.max(rawLift, self._minLift);
+            defaultThumbnailLift = 1;
+            neonThumbnailLift = defaultThumbnailLift * (1 + cookedLift); // this will make the multiplier < 1
         }
         else {
-            var neonBarSize = 1;
-            var originalBarSize = neonBarSize / (1 + lift); // this will make the denominator >= 1
+            // >=0
+            cookedLift = Math.min(rawLift, self._maxLift);
+            neonThumbnailLift = 1;
+            defaultThumbnailLift = neonThumbnailLift / (1 + cookedLift); // this will make the denominator >= 1
         }
-        var neonBarSizePercent = UTILS.makePercentage(neonBarSize, 2, true);
-        var originalBarSizePercent = UTILS.makePercentage(originalBarSize, 2, true);
+        displayLiftPercent = UTILS.makePercentage(rawLift, 0, true);
+        defaultThumbnailLiftPercent = UTILS.makePercentage(defaultThumbnailLift, 2, true);
+        neonThumbnailLiftPercent = UTILS.makePercentage(neonThumbnailLift, 2, true);
         return (
             <div className="xxLift">
-                <strong className="xxLift-title">{T.get('copy.lift.units', {
-                    '@lift': humanLiftPercent
-                })}</strong>
-                <div className="xxLift-chart">
-                    <div title={neonBarSizePercent} className="xxLift-chartLine" style={{width: neonBarSizePercent}}></div>
-                    <div title={originalBarSizePercent} className="xxLift-chartLine xxLift-chartLine--original" style={{width: originalBarSizePercent}}></div>
-                </div>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={self._animationTime} transitionLeaveTimeout={self._animationTime}>
+                    <div className="xxLift-container" key={`lift-${displayLiftPercent}-${neonThumbnailLiftPercent}-${defaultThumbnailLiftPercent}`}>
+                        <strong className="xxLift-title">{T.get('copy.lift.units', {
+                            '@lift': displayLiftPercent
+                        })}</strong>
+                        <div className="xxLift-chart">
+                            <div data-percent={neonThumbnailLiftPercent} className="xxLift-chartLine" style={{width: neonThumbnailLiftPercent}}></div>
+                            <div data-percent={defaultThumbnailLiftPercent} className="xxLift-chartLine xxLift-chartLine--original" style={{width: defaultThumbnailLiftPercent}}></div>
+                        </div>
+                    </div>
+                </ReactCSSTransitionGroup>
                 <p className="xxLift-text">{T.get('copy.lift.explanation')}</p>
             </div>
         );
