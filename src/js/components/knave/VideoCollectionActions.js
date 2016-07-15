@@ -28,7 +28,7 @@ var VideoCollectionActions = React.createClass({
                 <li className="xxCollectionActions-item">
                     <a
                         data-action-label="save"
-                        onClick={self.props.openSignUp}
+                        onClick={self.handleClick}
                         className="xxCollectionActions-anchor xxCollectionActions-save">
                         <span>Save</span>
                     </a>
