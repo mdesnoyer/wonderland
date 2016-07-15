@@ -53,11 +53,15 @@ var VideoOwner = React.createClass({
             seconds: self.props.seconds,
         }
     },
-    componentDidMount: function() {
+    startTimer: function () {
         var self = this;
         if (self.props.pingInterval) {
             self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL_BASE));
         }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self.startTimer();
         if (self.props.pingInitial) {
             setTimeout(self.pingVideo, 0);
         }
@@ -104,11 +108,12 @@ var VideoOwner = React.createClass({
                     title={self.state.title}
                     isMobile={self.props.isMobile}
                     badThumbs={self.state.badThumbs}
+                    refreshVideo={self.pingVideo}
                 />
             );
         }
     },
-    pingVideo: function() {
+    pingVideo: function(forceRefresh) {
         var self = this,
             options = {
                 data: {
@@ -120,7 +125,7 @@ var VideoOwner = React.createClass({
         // If the video is 'serving' or 'processed' its going nowhere, so don't
         // bother checking. There is a known latency issue in Back End, #1103.
         // We still need to poll 'failed'.
-        if (self.state.videoState === 'serving' || self.state.videoState === 'processed') {
+        if (!forceRefresh && (self.state.videoState === 'serving' || self.state.videoState === 'processed')) {
             clearInterval(self.timer);
             return false;
         }
@@ -138,13 +143,15 @@ var VideoOwner = React.createClass({
                         var newThumbnails = video;
                         var badThumbs = [];
                     }
-                    if (video.state !== self.state.videoState) {
+                    if (video.state !== self.state.videoState || forceRefresh) {
                         // Only bother if the state has changed
                         self.setState({
                             status: 200,
                             thumbnails: newThumbnails.thumbnails,
-                            sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
+                            
                             demographicThumbnails: video.demographic_thumbnails,
+                            timeRemaining: video.estimated_time_remaining,
+                            sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
@@ -157,10 +164,14 @@ var VideoOwner = React.createClass({
                             created: video.created,
                             isLoading: false,
                             seconds: video.estimated_time_remaining,
-                            badThumbs: badThumbs
-                        })
+                            badThumbs: video.bad_thumbnails
+                        }, function () {
+                            // Stop and restart the timer, just in case it was not running before
+                            clearInterval(self.timer);
+                            self.startTimer();
+                        });
                     }
-                    else {
+                    else if(!forceRefresh) {
                         self.setState({
                             title: video.title,
                             isLoading: false,

@@ -103,7 +103,7 @@ var VideoFilters = React.createClass({
         self.POST('videos', options)
             .then(function(json) {
                 if (self.props.handleMenuChange) {
-                    self.props.handleMenuChange();
+                    self.props.handleMenuChange('refresh');
                 }
             })
             .catch(function(err) {

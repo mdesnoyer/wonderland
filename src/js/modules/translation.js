@@ -215,6 +215,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
+            'copy.pending': 'Pending',
 
             returnSignIn: 'Return to Sign In',
 

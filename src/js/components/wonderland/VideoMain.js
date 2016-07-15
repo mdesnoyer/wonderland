@@ -31,20 +31,12 @@ var VideoMain = React.createClass({
             displayThumbLift: 0,
             thumbnails: self.props.thumbnails,
             selectedDemographic: false, // default to not showing demographic thumbs (support old videos)
-            videoState: self.props.videoState
         }
     },
     componentWillMount: function() {
         var self = this;
-<<<<<<< 860a30fe2506aa6224f9d3a30884c05a0b7de5aa
-        if (self.state.thumbnails.length > 1 ) {
-            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
-                self.sendForLiftData();
-            }
-=======
         if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
             self.sendForLiftData();
->>>>>>> Getting close...
         }
     },
     sendForLiftData: function() {
@@ -130,7 +122,7 @@ var VideoMain = React.createClass({
                         <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
-                            videoState={self.state.videoState}
+                            videoState={self.props.videoState}
                             demographicThumbnails={self.props.demographicThumbnails}
                             timeRemaining={self.props.timeRemaining}
                             selectedDemographic={self.state.selectedDemographic}
@@ -141,6 +133,7 @@ var VideoMain = React.createClass({
                             openSignUp={self.props.openSignUp}
                             thumbnails={self.state.thumbnails}
                             isGuest={self.props.isGuest}
+                            refreshVideo={self.props.refreshVideo}
                         />
                     </div>
                     <Thumbnails

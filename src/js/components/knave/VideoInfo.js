@@ -32,11 +32,9 @@ var VideoInfo = React.createClass({
             });
         }
         return {
-            videoState: self.props.videoState,
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: demographicOptions,
-            timeRemaining: self.props.timeRemaining
+            demographicOptions: demographicOptions
         }
     },
     onDemographicChange: function(value) {
@@ -47,22 +45,33 @@ var VideoInfo = React.createClass({
             self.props.handleDemographicChange(value.value);
         });
     },
+    onTimerFinished: function() {
+        this.props.handleMenuChange('refresh');
+    },
     render: function() {
-        var self = this;
+        var self = this,
+            countdown;
         return (
             <div>
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
                 {(() => {
-                    if (self.state.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
+                    if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
+                        if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
+                            countdown = (
+                                <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
+                            );
+                        } else {
+                            countdown = (
+                                <span>{T.get('copy.pending')}</span>
+                            );
+                        }
                         return (
                             <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
-                                <span>
-                                    <Countdown seconds={self.state.timeRemaining} classPrefix="xxCollectionFilterCountdown" />
-                                </span>
+                                {countdown}
                             </div>
-                        );   
+                        );
                     } else {
                         return (
                             <a className="xxCollectionFilterToggle"
