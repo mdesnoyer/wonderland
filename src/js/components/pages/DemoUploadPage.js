@@ -67,7 +67,7 @@ export default React.createClass({
             } else {
                 this.setState({
                     isAnalyzing: true,
-                    seconds: estimatedTimeRemaining,
+                    seconds: parseInt(estimatedTimeRemaining),
                     videoId,
                 });
             }
