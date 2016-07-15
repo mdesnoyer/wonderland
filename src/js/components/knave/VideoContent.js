@@ -8,6 +8,8 @@ import ShareLink from './ShareLink';
 import ShareEmail from './ShareEmail';
 import VideoDelete from './VideoDelete';
 import VideoFilters from './VideoFilters';
+import Account from '../../mixins/account';
+import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,11 +19,36 @@ var VideoContent = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    mixins: [AjaxMixin, Account],
     getInitialState: function() {
         var self = this;
         return {
-            contents: defaultContent
+            contents: defaultContent,
+            shareUrl: ''
         }
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.getAccount()
+            .then(function(account) {
+                self.GET('videos/share', {
+                    data: {
+                        video_id: self.props.videoId
+                    }
+                })
+                .then(function(json) {
+                    self.setState({
+                        shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+        ;
     },
     render: function() {
         var self = this,
@@ -44,13 +71,16 @@ var VideoContent = React.createClass({
                 contents = (
                     <ShareLink 
                         handleMenuChange={self.handleMenuChange} 
-                        shareToken={self.props.shareToken} 
-                        videoId={self.props.videoId}
+                        shareUrl={self.state.shareUrl}
                     />
                 );
                 break;
             case 'email':
-                contents = <ShareEmail handleMenuChange={self.handleMenuChange}/>;
+                contents = <ShareEmail 
+                                handleMenuChange={self.handleMenuChange}
+                                thumbnails={self.props.thumbnails}
+                                collectionUrl={self.state.shareUrl}
+                            />;
                 break;
             case 'delete':
                 contents = (

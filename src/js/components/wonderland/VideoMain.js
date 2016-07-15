@@ -109,6 +109,7 @@ var VideoMain = React.createClass({
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}
                             openSignUp={self.props.openSignUp}
+                            thumbnails={self.state.thumbnails}
                         />
                     </div>
                     <Thumbnails
