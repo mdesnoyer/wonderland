@@ -53,6 +53,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.resetPassword': 'Reset Password',
             'action.shortenURL': 'Shorten URL',
             'action.close': 'Close',
+            'action.analyze': 'Analyze',
 
             rememberMe: 'Remember',
 
@@ -218,12 +219,11 @@ const _DEFAULT_LOCALE = 'en-US',
 
             returnSignIn: 'Return to Sign In',
 
-            //analyze page
+            // Analyze page
             'upload.videoUrl': 'Video URL',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
-            //navigation bar
 
             // Labels
             'label.username' : 'Username',
