@@ -59,6 +59,7 @@ var ThumbnailOverlay = React.createClass({
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}
                                         valence={[tempValenceArray[Math.floor(Math.random() * tempValenceArray.length)]]}
+                                        extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
                                     />
                                 );
                             })

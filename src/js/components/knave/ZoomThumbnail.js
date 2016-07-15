@@ -15,11 +15,13 @@ var ZoomThumbnail = React.createClass({
         total: React.PropTypes.number.isRequired,
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
-        valence: React.PropTypes.array.isRequired
+        valence: React.PropTypes.array.isRequired,
+        extraClass: React.PropTypes.string
     },
     render: function() {
         var self = this,
             activeClass = (self.props.index === self.props.selectedItem ? ' is-active' : ''),
+            extraClass = ['xxThumbnail--zoom'],
             w = self.props.thumbnail.width,
             h = self.props.thumbnail.height,
             orientation = (w === h) ? 'square' : ((w > h) ? 'landscape' : 'portrait'),
@@ -27,6 +29,9 @@ var ZoomThumbnail = React.createClass({
                 maxWidth: 'calc((100vh - 242px) / (' + h + ' / ' + w + '))'
             }
         ;
+        if (self.props.extraClass) {
+            extraClass.push(self.props.extraClass);
+        }
         return (
             <div className={'xxImageZoom-inner' + activeClass}>
                 <div
@@ -34,7 +39,7 @@ var ZoomThumbnail = React.createClass({
                     style={styleOpts}
                 >
                     <Thumbnail
-                        extraClass="xxThumbnail--zoom"
+                        extraClass={extraClass.join(' ')}
                         handleClick={null}
                         handleMouseEnter={null}
                         type={self.props.thumbnail.type}

@@ -40,6 +40,7 @@ export default class XXCollectionImages extends React.Component {
                         score={49}
                         size="large"
                         src="/img/xx/temporary/thumbnail-1.jpg"
+                        className="xxThumbnail--lowLight"
                     />
                 </div>
 
@@ -53,6 +54,7 @@ export default class XXCollectionImages extends React.Component {
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
                         onMouseEnter={e => updateStage('image-hover')}
                         onMouseLeave={e => updateStage('')}
+                        className="xxThumbnail--highLight"
                     />
                 </div>
 
@@ -77,30 +79,35 @@ export default class XXCollectionImages extends React.Component {
                         score={75}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        className="xxThumbnail--highLight"
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
                         score={74}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        className="xxThumbnail--highLight"
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
                         score={71}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        className="xxThumbnail--highLight"
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
                         score={69}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        className="xxThumbnail--highLight"
                     />
                     <XXThumbnail
                         href={isMobile ? null : '#'}
                         score={60}
                         src="/img/xx/temporary/thumbnail-2.jpg"
                         onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                        className="xxThumbnail--highLight"
                     />
                     {
                         isMobile ? null : (
@@ -128,36 +135,42 @@ export default class XXCollectionImages extends React.Component {
                                     score={55}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                                 <XXThumbnail
                                     href={isMobile ? null : '#'}
                                     score={52}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                                 <XXThumbnail
                                     href={isMobile ? null : '#'}
                                     score={49}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                                 <XXThumbnail
                                     href={isMobile ? null : '#'}
                                     score={48}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                                 <XXThumbnail
                                     href={isMobile ? null : '#'}
                                     score={46}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                                 <XXThumbnail
                                     href={isMobile ? null : '#'}
                                     score={43}
                                     src="/img/xx/temporary/thumbnail-1.jpg"
                                     onClick={e => {e.preventDefault(); updateStage('image-zoom');}}
+                                    className="xxThumbnail--lowLight"
                                 />
                             </div>
                         ) : null

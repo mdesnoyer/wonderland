@@ -27,7 +27,8 @@ var FeatureThumbnail = React.createClass({
             uid,
             handleChildOnMouseEnter,
             showHref,
-            src
+            src,
+            extraClass
         ;
         switch(self.props.type) {
             case 'default':
@@ -36,6 +37,7 @@ var FeatureThumbnail = React.createClass({
                 thumbnailId = null;
                 handleChildOnMouseEnter = null;
                 showHref = false;
+                extraClass = 'xxThumbnail--lowLight';
                 break;
             case 'neon':
                 uid = 0;
@@ -43,6 +45,7 @@ var FeatureThumbnail = React.createClass({
                 thumbnailId = self.props.thumbnails[uid].thumbnail_id;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 showHref = true;
+                extraClass = 'xxThumbnail--highLight';
                 break;
         }
         src = (self.state.renditionNumber === RENDITIONS.NO_RENDITION ? self.props.thumbnails[uid].url : self.props.thumbnails[uid].renditions[self.state.renditionNumber].url);
@@ -63,6 +66,7 @@ var FeatureThumbnail = React.createClass({
                     type={self.props.type}
                     isMobile={self.props.isMobile}
                     showHref={showHref}
+                    extraClass={extraClass}
                 />
             </div>
         );

@@ -40,6 +40,7 @@ var ThumbnailCollection = React.createClass({
                                     type={'regular'}
                                     src={src}
                                     isMobile={self.props.isMobile}
+                                    extraClass='xxThumbnail--lowLight'
                                 />
                             )
                         })
@@ -70,6 +71,7 @@ var ThumbnailCollection = React.createClass({
                                         handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                                         handleClick={self.props.handleClick}
                                         isMobile={self.props.isMobile}
+                                        extraClass='xxThumbnail--highLight'
                                     />
                                 )
                             }
