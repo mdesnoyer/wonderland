@@ -8,44 +8,45 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
-    getDefaultProps: function() {
-        var self = this;
-        return {
-            hasUser: null, // null|true|false
-            displayName: ''
-        }
-    },
     getInitialState: function() {
         var self = this;
         return {
-            sidebarContent: self.props.sidebarContent
+            sidebarContent: self.props.sidebarContent,
+            hasUser: false
         }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
     },
     componentWillMount: function() {
         var self = this;
         if (SESSION.active()) {
             SESSION.user()
-                .then(function (user) {
-                    self.setState({
-                        hasUser: true
-                    });
+                .then(function(user) {
+                    if (self._isMounted) {
+                        self.setState({
+                            hasUser: true
+                        });
+                    }
                 })
-                .catch(function () {
-                    self.setState({
-                        hasUser: false
-                    });
-                });
-        } else {
-            self.setState({
-                hasUser: false
-            });
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
         }
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        self.setState({
-            sidebarContent: nextProps.sidebarContent
-        });
+        if (self._isMounted) {
+            self.setState({
+                sidebarContent: nextProps.sidebarContent
+            });
+        }
     },
     handleClick: function(e) {
         var self = this,
