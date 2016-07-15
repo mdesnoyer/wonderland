@@ -56,7 +56,13 @@ var VideoContent = React.createClass({
         ;
         switch(self.state.contents) {
             case 'info':
-                contents = (
+                contents = (self.props.isGuest) ? (
+                    <VideoInfo
+                        title={self.props.title}
+                        handleMenuChange={self.handleMenuChange}
+                        displayThumbLift={self.props.displayThumbLift}
+                    />
+                ) : (
                     <div>
                         <VideoInfo
                             title={self.props.title}

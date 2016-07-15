@@ -39,9 +39,6 @@ var ShareEmail = React.createClass({
             case 'loading':
                 userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
                 break;
-            case 'success':
-                userMessage = <div className="xxLabel"><p>Your results have been sent.</p></div>; // TODO
-                break;
             default:
                 break;
         }
@@ -49,34 +46,53 @@ var ShareEmail = React.createClass({
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">{T.get('email')}</h2>
                 <p>{T.get('copy.videoContent.email')}</p>
-                {userMessage}
-                <div className="xxFormField">
-                    <label
-                        className="xxLabel"
-                        htmlFor="xx-email-from"
-                    >{T.get('label.yourEmail')}</label>
-                    <input
-                        ref="email"
-                        className="xxInputText"
-                        id="xx-email-from"
-                        type="text"
-                        ref="email"
-                        placeholder="you@email.com"
-                    />
-                </div>
-                <div className="xxCollectionAction-buttons">
-                    <button
-                        className="xxButton"
-                        type="button"
-                        data-action-label="info"
-                        onClick={self.handleBackClick}
-                    >{T.get('back')}</button>
-                    <button
-                        className="xxButton xxButton--highlight"
-                        type="button"
-                        onClick={self.handleSubmit}
-                    >{T.get('send')}</button>
-                </div>
+                
+                {
+                    (self.state.mode === 'success') ? (
+                        <div>
+                            <p>{T.get('copy.videoContent.email.success')}</p>
+                            <div className="xxCollectionAction-buttons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    data-action-label="info"
+                                    onClick={self.handleBackClick}
+                                >{T.get('back')}</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div>
+                            {userMessage}
+                            <div className="xxFormField">
+                                <label
+                                    className="xxLabel"
+                                    htmlFor="xx-email-from"
+                                >{T.get('label.yourEmail')}</label>
+                                <input
+                                    ref="email"
+                                    className="xxInputText"
+                                    id="xx-email-from"
+                                    type="text"
+                                    ref="email"
+                                    placeholder="you@email.com"
+                                />
+                            </div>
+                            <div className="xxCollectionAction-buttons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    data-action-label="info"
+                                    onClick={self.handleBackClick}
+                                >{T.get('back')}</button>
+                                <button
+                                    className="xxButton xxButton--highlight"
+                                    type="button"
+                                    onClick={self.handleSubmit}
+                                >{T.get('send')}</button>
+                            </div>
+                        </div>
+                    )
+                }
             </div>
         );
     },
@@ -120,7 +136,6 @@ var ShareEmail = React.createClass({
                     case 0:
                         top_thumbnail = thumbnail.url;
                         lift = thumbnail.lift * 100;
-                        console.log(thumbnail.lift * 100);
                         break;
                     case 1:
                         thumbnail_one = thumbnail.url
