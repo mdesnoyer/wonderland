@@ -18,6 +18,13 @@
     .xxFeatureContent-small {
         margin-top: $default-vertical-rhythm;
     }
+
+
+    @include breakpoint-mobile {
+        .xxTitle {
+            font-size: 28px;
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
