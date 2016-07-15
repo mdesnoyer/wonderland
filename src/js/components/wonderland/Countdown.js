@@ -6,7 +6,7 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: props.seconds,
+            seconds: parseInt(props.seconds || 1),
             classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
