@@ -1,4 +1,4 @@
-# Credentials (This is out of date, do not use)
+# Credentials
 
 *Do not share outside Neon*
 
@@ -70,3 +70,14 @@
 - Q: What is the name of your best friend from childhood?
 - A: Rebase
 
+# WebType
+un: holler@neon-lab.com
+pw: 8P8XQDCmeEUagH
+
+# WebType
+un: holler@neon-lab.com
+pw: 8P8XQDCmeEUagH
+
+# Type Supply
+un: holler@neon-lab.com
+pw: XzW9si4oGofsmm
