@@ -79,8 +79,8 @@ var Account = React.createClass({
                             {/*
                             <a href="/billing/">{T.get('nav.billing')}</a><br></br>
                             <a href="/plugins/">{T.get('nav.plugins')}</a><br></br>
-                            */}
                             <a href="/telemetry/">{T.get('nav.telemetry')}</a><br></br>
+                            */}
                             <a href="/support/">{T.get('nav.support')}</a><br></br>
                             <a href="http://api.docs.neon-lab.com/">{T.get('nav.api')}</a>
                         </section>
