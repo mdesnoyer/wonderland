@@ -5,7 +5,6 @@ import Message from '../wonderland/Message';
 import SESSION from '../../modules/session';
 import moment from 'moment';
 import T from '../../modules/translation';
-import gravatar from 'gravatar';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,7 +29,6 @@ var UserSettingsInfo = React.createClass({
                     username: userData.username,
                     created: userData.created,
                     updated: userData.updated,
-                    avatar: gravatar.url(userData.username, {s: '200', d: 'identicon'})
                 })
             })
             .catch(function(err) {
