@@ -74,10 +74,6 @@
 un: holler@neon-lab.com
 pw: 8P8XQDCmeEUagH
 
-# WebType
-un: holler@neon-lab.com
-pw: 8P8XQDCmeEUagH
-
 # Type Supply
 un: holler@neon-lab.com
 pw: XzW9si4oGofsmm
