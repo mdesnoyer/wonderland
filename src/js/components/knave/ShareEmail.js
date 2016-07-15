@@ -13,13 +13,12 @@ var ShareEmail = React.createClass({
         var self = this;
         return {
             mode: 'quiet', // quiet, error, loading, success
-            thumbnails: self.props.thumbnails,
             collectionUrl: self.props.collectionUrl
         }
     },
     componentWillMount: function() {
         var self = this;
-        UTILS.shortenUrl(self.state.collectionUrl, self.handleUrlCallback);
+        UTILS.shortenUrl(self.props.collectionUrl, self.handleUrlCallback);
     },
     handleUrlCallback: function(response) {
         var self = this;
@@ -30,11 +29,27 @@ var ShareEmail = React.createClass({
         }
     },
     render: function() {
-        var self = this;
+        var self = this,
+            userMessage = false
+        ;
+        switch (self.state.mode) {
+            case 'error':
+                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                break;
+            case 'loading':
+                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                break;
+            case 'success':
+                userMessage = <div className="xxLabel"><p>TODO</p></div>;
+                break;
+            default:
+                break;
+        }
         return (
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">{T.get('email')}</h2>
                 <p>{T.get('copy.videoContent.email')}</p>
+                {userMessage}
                 <div className="xxFormField">
                     <label
                         className="xxLabel"
@@ -77,19 +92,19 @@ var ShareEmail = React.createClass({
         }, function() {
             var options = self.dataMaker();
             console.log(options);
-            // self.POST('email', options)
-            //     .then(function(res) {
-            //         self.setState({
-            //             mode: 'success'
-            //         });
-            //     })
-            //     .catch(function(err) {
-            //         E.raiseError(err);
-            //         self.setState({
-            //             mode: 'error'
-            //         });
-            //     })
-            // ;
+            self.POST('email', options)
+                .then(function(res) {
+                    self.setState({
+                        mode: 'success'
+                    });
+                })
+                .catch(function(err) {
+                    E.raiseError(err);
+                    self.setState({
+                        mode: 'error'
+                    });
+                })
+            ;
         })
     },
     dataMaker: function() {
