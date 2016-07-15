@@ -40,9 +40,6 @@ import UTILS from '../../modules/utils';
         if (self.props.type) {
             className.push('xxThumbnail--'+ self.props.type);
         }
-        if (self.props.score < UTILS.LOWSCORE_LIMIT) {
-            className.push('xxThumbnail--lowScore');
-        }
         return (
             <a
                 {...opts}

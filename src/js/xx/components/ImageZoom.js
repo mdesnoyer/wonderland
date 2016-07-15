@@ -56,6 +56,7 @@ export default class XXPageOverlay extends React.Component {
                                 size="large"
                                 src="/img/xx/temporary/thumbnail-5.jpg"
                                 style={{paddingBottom: `${356 / 636 * 100}%`}}
+                                className="xxThumbnail--highLight"
                             />
                         </div>*/}
                         {/*<div className="xxImageZoom-image xxImageZoom-image--square">
@@ -65,6 +66,7 @@ export default class XXPageOverlay extends React.Component {
                                 size="large"
                                 src="/img/xx/temporary/thumbnail-4.jpg"
                                 style={{paddingBottom: `${636 / 636 * 100}%`}}
+                                className="xxThumbnail--highLight"
                             />
                         </div>*/}
                         {/*
@@ -81,7 +83,7 @@ export default class XXPageOverlay extends React.Component {
                             style={{maxWidth: `calc((100vh - 242px) / (496 / 370))`}}
                         >
                             <XXThumbnail
-                                className="xxThumbnail--zoom"
+                                className="xxThumbnail--zoom xxThumbnail--highLight"
                                 score={75}
                                 size="large"
                                 src="/img/xx/temporary/thumbnail-3.jpg"

@@ -289,7 +289,6 @@ var UTILS = {
             label: '50+'
         }
     ],
-    LOWSCORE_LIMIT: 60,
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
