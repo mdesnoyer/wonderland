@@ -3,7 +3,6 @@
 import React from 'react';
 import SiteNavigation from '../wonderland/SiteNavigation';
 import SESSION from '../../modules/session';
-import gravatar from 'gravatar';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -24,25 +23,21 @@ var SiteBanner = React.createClass({
     },
     componentWillMount: function() {
         var self = this,
-            displayName = '',
-            avatar = ''
+            displayName = ''
         ;
         if (SESSION.active()) {
             SESSION.user()
                 .then(function(userData) {
                     if (userData) {
-                        // https://en.gravatar.com/site/implement/images/
-                        avatar = gravatar.url(userData.username, {s: '60', d: 'identicon'});
                         if (self._isMounted) {
                             self.setState({
                                 displayName: userData.displayName,
-                                avatar: avatar
                             });
                         }
                     }
                 })
                 .catch(function(err) {
-                    console.log(err);
+                    // Do nothing
                 })
             ;
         }
