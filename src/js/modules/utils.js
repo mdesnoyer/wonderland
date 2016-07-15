@@ -370,6 +370,14 @@ var UTILS = {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
         return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
+
+    formatTime: (minutes, seconds) => {
+        const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
+        const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    },
+
     makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
         return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },

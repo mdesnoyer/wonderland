@@ -56,7 +56,7 @@ var VideoUploadForm = React.createClass({
         self.POST('videos', options)
             .then(function(json) {
                 if (self.props.postHook) {
-                    self.props.postHook();
+                    self.props.postHook(json);
                 }
                 else {
                     self.context.router.push('/video/' + videoId + '/');
