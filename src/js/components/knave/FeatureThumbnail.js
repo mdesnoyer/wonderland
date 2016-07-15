@@ -3,6 +3,7 @@
 import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
+import RENDITIONS from '../../modules/renditions';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,13 +12,22 @@ var FeatureThumbnail = React.createClass({
         type: React.PropTypes.string.isRequired,
         handleClick: React.PropTypes.func
     },
+    componentWillMount: function() {
+        var self = this,
+            renditionNumber = RENDITIONS.findRendition(self.props.thumbnails, 350, 350)
+        ;
+        self.setState({
+            renditionNumber: renditionNumber 
+        });
+    },
     render: function() {
         var self = this,
             title,
             thumbnailId,
             uid,
             handleChildOnMouseEnter,
-            showHref
+            showHref,
+            src
         ;
         switch(self.props.type) {
             case 'default':
@@ -35,6 +45,7 @@ var FeatureThumbnail = React.createClass({
                 showHref = true;
                 break;
         }
+        src = (self.state.renditionNumber === RENDITIONS.NO_RENDITION ? self.props.thumbnails[uid].url : self.props.thumbnails[uid].renditions[self.state.renditionNumber].url);
         return (
             <div className="xxCollectionImages-featured">
                 <h2 className="xxCollection-subtitle">
@@ -46,7 +57,7 @@ var FeatureThumbnail = React.createClass({
                     title={title}
                     size="large"
                     handleClick={self.props.handleClick}
-                    src={self.props.thumbnails[uid].url}
+                    src={src}
                     thumbnailId={thumbnailId}
                     handleChildOnMouseEnter={handleChildOnMouseEnter}
                     type={self.props.type}
