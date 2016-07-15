@@ -17,7 +17,7 @@ var SignUpForm = React.createClass({
             email: '',
             password: '',
             verifyPassword: '',
-            mode: 'quiet' // quiet, loading, error, success
+            mode: 'quiet' // quiet, loading, error
         }
     },
     componentWillMount: function() {
@@ -87,9 +87,6 @@ var SignUpForm = React.createClass({
                 break;
             case 'loading':
                 userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
-                break;
-            case 'success':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.confirmAccount.body')}</p></div>;
                 break;
             default:
                 break;
@@ -241,9 +238,7 @@ var SignUpForm = React.createClass({
                 userPromise
                     .then(function (account) {
                         self._isSubmitted = false;
-                        self.setState({
-                            mode: 'success'
-                        });
+                        self.props.completeSubmission();
                     })
                     .catch(function (err) {
                         E.raiseError(err);

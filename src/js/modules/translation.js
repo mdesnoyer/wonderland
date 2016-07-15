@@ -75,6 +75,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
             'copy.signUp.logIn': 'Already have an account? <a href="@link">Log In</a>.',
 
+            'copy.signUp.success.title': 'Thank you for signing up for a Neon account',
+            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, let us know.',
+
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
@@ -178,8 +181,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
             'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
-
-            'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails. Please look for an email to verify your account. If you don\u2019t see it within 30 minutes, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
