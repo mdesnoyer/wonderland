@@ -13,7 +13,8 @@ import AjaxMixin from '../../mixins/Ajax';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var TelemetryPage = React.createClass({
-    mixins: [Secured, Account, AjaxMixin],
+    // mixins: [Secured, Account, AjaxMixin],
+    mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
             snippetElement: '',
