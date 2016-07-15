@@ -74,6 +74,9 @@ var VideoOwner = React.createClass({
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
                 return <VideoProcessing title={self.state.title} videoState={self.state.videoState}/>;
             }
+            else if(!this.props.thumbnails.find(x => x.type === 'neon' || x.type === 'default')) {
+                return <VideoProcessing title={self.state.title} videoState={self.state.videoState}/>;
+            }
             else {
                 return (
                     <VideoMain
