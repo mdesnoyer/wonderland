@@ -51,6 +51,8 @@
             color: $white;
             transform: rotate(0deg);
             animation: rotate 2s infinite linear;
+            display: inline-block;
+            margin-left: .5em;
         }
     }
 }
@@ -112,7 +114,7 @@
     float: left;
     position: relative;
     padding: 4px 0;
-    width: 220px;
+    width: 145px;
 
     .Select-control {
         border: none;

@@ -93,7 +93,7 @@ var VideoFilters = React.createClass({
         var self = this,
             options = {
                 data: {
-                    video_id: self.props.videoId,
+                    external_video_ref: self.props.videoId,
                     reprocess: true,
                     gender: self.state.gender,
                     age: self.state.age

@@ -75,37 +75,36 @@ var VideoOwner = React.createClass({
     },
     render: function() {
         var self = this;
-            if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
-                return (
-                    <VideoProcessing
-                        videoId={self.state.videoId}
-                        title={self.state.title}
-                        error={self.state.error}
-                        videoState={self.state.videoState}
-                        duration={self.state.duration}
-                        seconds={self.state.seconds}
-                    />
-                );
-            }
-            else {
-                return (
-                    <VideoMain
-                        isGuest={false}
-                        videoId={self.state.videoId}
-                        thumbnails={self.state.sortedThumbnails}
-                        demographicThumbnails={self.state.demographicThumbnails}
-                        videoState={self.state.videoState}
-                        duration={self.state.duration}
-                        created={self.state.created}
-                        url={self.state.url}
-                        shareToken={self.state.shareToken}
-                        title={self.state.title}
-                        isMobile={self.props.isMobile}
-                        badThumbs={self.state.badThumbs}
-                        openSignUp={self.props.openSignUp}
-                    />
-                );
-            }
+        if (!self.state.demographicThumbnails || self.state.demographicThumbnails.length === 0) {
+            return (
+                <VideoProcessing
+                    videoId={self.state.videoId}
+                    title={self.state.title}
+                    error={self.state.error}
+                    videoState={self.state.videoState}
+                    duration={self.state.duration}
+                    seconds={self.state.seconds}
+                />
+            );
+        }
+        else {
+            return (
+                <VideoMain
+                    isGuest={false}
+                    videoId={self.state.videoId}
+                    thumbnails={self.state.sortedThumbnails}
+                    demographicThumbnails={self.state.demographicThumbnails}
+                    videoState={self.state.videoState}
+                    duration={self.state.duration}
+                    created={self.state.created}
+                    url={self.state.url}
+                    shareToken={self.state.shareToken}
+                    title={self.state.title}
+                    isMobile={self.props.isMobile}
+                    badThumbs={self.state.badThumbs}
+                />
+            );
+        }
     },
     pingVideo: function() {
         var self = this,
