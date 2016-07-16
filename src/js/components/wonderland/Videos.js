@@ -64,7 +64,8 @@ var Videos = React.createClass({
         return (
             <div>
                 <VideoUploadForm
-                    postHook={self.doVideoSearch}
+                    postHookSearch={self.doVideoSearch}
+                    postHookAnalysis={null}
                     videoCountServed={self.state.videoCountServed}
                 />
                 <VideosResults

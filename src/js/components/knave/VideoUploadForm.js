@@ -55,11 +55,16 @@ var VideoUploadForm = React.createClass({
         ;
         self.POST('videos', options)
             .then(function(json) {
-                if (self.props.postHook) {
-                    self.props.postHook(json);
+                if (self.props.postHookAnalysis) {
+                    self.props.postHookAnalysis(json);
                 }
                 else {
-                    self.context.router.push('/video/' + videoId + '/');
+                    if (self.props.postHookSearch) {
+                        self.props.postHookSearch();
+                    }
+                    else {
+                        self.context.router.push('/video/' + videoId + '/');
+                    }
                 }
             })
             .catch(function(err) {

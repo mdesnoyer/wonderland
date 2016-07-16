@@ -126,8 +126,11 @@ export default React.createClass({
                         </div>
                     ) : (
                         <div className="xxUpload">
-                            <VideoUploadForm isOnboarding postHook={this.onAnalysisStart} />
-
+                            <VideoUploadForm
+                                isOnboarding
+                                postHookSearch={null}
+                                postHookAnalysis={this.onAnalysisStart}
+                            />
                             <div className="xxUploadButton-help">
                                 <span className="xxUploadButton-helpCircle"></span>
                                 <span className="xxUploadButton-helpLine"></span>
