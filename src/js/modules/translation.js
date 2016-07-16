@@ -169,7 +169,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.account.heading': 'Hi, @displayName',
             'copy.account.body' : 'Enjoying your Neon Demo, but want to analyze more content more quickly? <a href="@link">Get More!</a>',
             'copy.heading.changePassword' : 'Change Password',
-            'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link. Please verify your email below.',
+            'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link.',
 
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
