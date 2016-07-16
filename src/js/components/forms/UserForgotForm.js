@@ -76,6 +76,11 @@ var UserForgotForm = React.createClass({
             });
         });
     },
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.props.updateState();
+    },
     render: function() {
         var self = this,
             legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
@@ -83,7 +88,7 @@ var UserForgotForm = React.createClass({
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = (self.state.email ? true : false)
         ;
-        if (isValid) {
+        if (self.state.email) {
             submitClassName.push('xxButton--important');
         }
         switch(self.state.mode) {
@@ -94,40 +99,46 @@ var UserForgotForm = React.createClass({
                 break;
             case 'loading':
                 break;
-            case 'success':
-                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} />;
-                break;
         }
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
-                        {messageNeededComponent}
-                    <div className="xxText">
-                        <p>{T.get('copy.userForgot.body')}</p>
-                    </div>
-                        {legendElement}
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                        <input className="xxInputText"
-                            type="email"
-                            ref="email"
-                            required
-                            minLength="6"
-                            maxLength="1024"
-                            placeholder={T.get('email')}
-                            onChange={self.updateEmail}
-                        />
-                    </div>
-                    <div className="xxFormButtons">
-                        <button
-                            className={submitClassName.join(' ')}
-                            type="submit"
-                            disabled={!isValid}
-                        >
-                            {T.get('action.resetPassword')}
-                        </button>
-                    </div>
+                    {
+                        (self.state.mode === 'success') ? (
+                            <div className="xxText">
+                                <p>If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour, so keep an eye on your inbox and spam folders. In the meantime, you can learn more about the science powering Neon <a href="#" onClick={self.openLearnMore}>here</a>.</p>
+                            </div>
+                        ) : (
+                            <div>
+                                <div className="xxText">
+                                    <p>{T.get('copy.userForgot.body')}</p>
+                                </div>
+                                {legendElement}
+                                <div className="xxFormField">
+                                    <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                                    <input className="xxInputText"
+                                        type="email"
+                                        ref="email"
+                                        required
+                                        minLength="6"
+                                        maxLength="1024"
+                                        placeholder={T.get('email')}
+                                        onChange={self.updateEmail}
+                                    />
+                                </div>
+                                <div className="xxFormButtons">
+                                    <button
+                                        className={submitClassName.join(' ')}
+                                        type="submit"
+                                        disabled={!isValid}
+                                    >
+                                        {T.get('action.resetPassword')}
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    }
                 </form>
             </fieldset>
         );
