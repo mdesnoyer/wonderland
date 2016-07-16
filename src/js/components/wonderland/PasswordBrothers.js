@@ -30,7 +30,6 @@ var PasswordBrothers = React.createClass({
                          data-ref="passwordInitial"
                          minLength="8"
                          maxLength="64"
-                         placeholder={T.get('copy.passwordInitial')}
                          onChange={self.handlePasswordInitialChange}
                          autoComplete="off"
                          required
@@ -44,7 +43,6 @@ var PasswordBrothers = React.createClass({
                          data-ref="passwordConfirm"
                          minLength="8"
                          maxLength="64"
-                         placeholder={T.get('copy.passwordConfirm')}
                          onChange={self.handlePasswordConfirmChange}
                          autoComplete="off"
                          required
