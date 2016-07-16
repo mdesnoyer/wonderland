@@ -36,7 +36,7 @@ var VideoContent = React.createClass({
                             handleMenuChange={self.handleMenuChange}
                             displayThumbLift={self.props.displayThumbLift}
                         />
-                        <VideoCollectionActions handleMenuChange={self.handleMenuChange} />
+                        <VideoCollectionActions openSignUp={self.props.openSignUp} handleMenuChange={self.handleMenuChange} />
                     </div>
                 );
                 break;
@@ -60,9 +60,6 @@ var VideoContent = React.createClass({
                         handleDelete={self.props.handleDelete}
                     />
                 );
-                break;
-            case 'save':
-                alert("TODO SAVE LINKED TO SIGN UP")
                 break;
             case 'refilter':
                 contents = (

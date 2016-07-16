@@ -88,6 +88,7 @@ var VideoOwner = React.createClass({
                         title={self.state.title}
                         isMobile={self.props.isMobile}
                         badThumbs={self.state.badThumbs}
+                        openSignUp={self.props.openSignUp}
                     />
                 );
             }
