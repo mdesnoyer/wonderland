@@ -23,11 +23,18 @@ var UserForgotForm = React.createClass({
     },
     getInitialState: function() {
         return {
-            mode: 'quiet' // quiet|error|loading|success
+            mode: 'quiet', // quiet|error|loading|success
+            email: ''
         }
     },
     componentWillUnmount: function(e) {
         E.clearErrors();
+    },
+    updateEmail: function(e) {
+        var self = this;
+        self.setState({
+            email: e.target.value
+        });
     },
     handleSubmit: function(e) {
         var self = this;
@@ -71,8 +78,14 @@ var UserForgotForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = false
+            legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
+            messageNeededComponent = false,
+            submitClassName = ['xxButton', 'xxButton--highlight'],
+            isValid = (self.state.email ? true : false)
         ;
+        if (isValid) {
+            submitClassName.push('xxButton--important');
+        }
         switch(self.state.mode) {
             case 'quiet':
                 break;
@@ -90,6 +103,10 @@ var UserForgotForm = React.createClass({
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
                         {messageNeededComponent}
+                    <div className="xxText">
+                        <p>{T.get('copy.userForgot.body')}</p>
+                    </div>
+                        {legendElement}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
                         <input className="xxInputText"
@@ -99,13 +116,14 @@ var UserForgotForm = React.createClass({
                             minLength="6"
                             maxLength="1024"
                             placeholder={T.get('email')}
-                            defaultValue={SESSION.rememberedEmail()}
+                            onChange={self.updateEmail}
                         />
                     </div>
                     <div className="xxFormButtons">
                         <button
-                            className="xxButton"
+                            className={submitClassName.join(' ')}
                             type="submit"
+                            disabled={!isValid}
                         >
                             {T.get('action.resetPassword')}
                         </button>
