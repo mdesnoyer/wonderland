@@ -75,7 +75,6 @@ var VideoOwner = React.createClass({
     render: function() {
         var self = this;
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
-                debugger
                 return (
                     <VideoProcessing
                         videoId={self.state.videoId}
