@@ -127,12 +127,20 @@ var VideoOwner = React.createClass({
             self.GET('videos', options)
                 .then(function(json) {
                     var video = json.videos[0];
+                    if (video.demographic_thumbnails.length > 0) {
+                        var thumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender))
+                        var badThumbs = thumbnails.bad_thumbnails
+                    }
+                    else {
+                        var thumbnails = video
+                        var badThumbs = []
+                    }
                     if (video.state !== self.state.videoState) {
                         // Only bother if the state has changed
                         self.setState({
                             status: 200,
-                            thumbnails: video.thumbnails,
-                            sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
+                            thumbnails: thumbnails.thumbnails,
+                            sortedThumbnails: UTILS.fixThumbnails(thumbnails.thumbnails),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,
@@ -144,8 +152,8 @@ var VideoOwner = React.createClass({
                             // updated
                             created: video.created,
                             isLoading: false,
-                            badThumbs: video.bad_thumbnails,
-                            seconds: video.estimated_time_remaining
+                            seconds: video.estimated_time_remaining,
+                            badThumbs: badThumbs
                         })
                     }
                     else {
