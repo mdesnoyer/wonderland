@@ -98,7 +98,7 @@ var SupportTab2 = React.createClass({
                 <h1 className="xxPage-Subtitle">Gallery</h1>
                 <p>To insert the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into your Gallery site:</p>
                 <ol className="simple-ol-list">
-                    <li>Log in to your Brightcove Account</li>
+                    <li>{T.get('action.signIn')} to your Brightcove Account</li>
                     <li>Navigate to your <a href="https://studio.brightcove.com/products/videocloud/gallery#settings" rel="external">Gallery settings</a></li>
                     <li>Select &ldquo;Settings&rdquo;</li>
                     <li>Paste the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into the &ldquo;Custom Footer HTML&rdquo; field</li>

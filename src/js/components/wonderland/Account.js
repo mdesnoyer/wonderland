@@ -69,7 +69,7 @@ var Account = React.createClass({
                     ) : ''
                 }
                 <div className="xxFormButtons">
-                    <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('logOut')}</button>
+                    <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('action.signOut')}</button>
                 </div>
                 {
                     // (!self.state.isPaidUser) ? '' : (

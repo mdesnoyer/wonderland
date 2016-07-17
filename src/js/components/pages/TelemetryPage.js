@@ -61,7 +61,7 @@ var TelemetryPage = React.createClass({
                             <h1 className="xxCollection-title">Insert the Telemetry Tag</h1>
                             <p>To insert the Telemetry Tag into your Gallery site:</p>
                             <ol>
-                                <li>Log in to your Brightcove Account</li>
+                                <li>{T.get('action.signIn')} to your Brightcove Account</li>
                                 <li>Navigate to your <a href="https://studio.brightcove.com/products/videocloud/gallery#settings" rel="external">Gallery settings</a></li>
                                 <li>Select &ldquo;Settings&rdquo;</li>
                                 <li>Paste the <a href={UTILS.DRY_NAV.TELEMETRY.URL}>Telemetry Tag</a> into the &ldquo;Custom Footer HTML&rdquo; field</li>
