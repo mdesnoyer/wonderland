@@ -23,9 +23,9 @@
 }
 
 .xxTabs li.is-active {
-    background-color: $primary-white-color;
+    background-color: $white;
     border: 1px solid $bg-tertiary-color;
-    border-bottom: 1px solid $primary-white-color;
+    border-bottom: 1px solid $white;
     border-top-right-radius: $processing-ribbon-height;
     border-top-left-radius: $processing-ribbon-height;
 }

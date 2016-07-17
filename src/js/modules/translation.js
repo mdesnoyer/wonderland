@@ -59,7 +59,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.xOfY': '@x of @y',
             'copy.pageN': 'Page @n',
 
-            'copy.whyThisImage': 'Why did Neon pick this image? We understand all of the different features that give rise to image preference. In your image, these particular features showed up.',
+            'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image. <a href="@link" rel="external">Learn More</a>',
 
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
@@ -101,7 +101,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation': 'Compared to the default thumbnail for this video, with our select top scoring image.',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images.',
             'copy.lift.units': '@lift Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -232,7 +232,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.lastName' : 'Your Last Name',
             'label.lastName.optional' : 'Your Last Name (Optional)',
             'label.title' : 'Title',
-            'label.defaultThumbnailId' : 'Default Thumbnail ID',
+            'label.defaultThumbnailId' : 'Default Image ID',
             'label.defaultSizeWidthXHeight' : 'Default Size (width x height)',
             'label.trackerAccountId' : 'Tracker Account ID',
             'label.stagingTrackerAccountId' : 'Staging Tracker Account ID',
@@ -262,8 +262,8 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
-            'copy.defaultThumbnail': 'Default Thumbnail',
-            'copy.neonSelect': 'Neon Select',
+            'copy.defaultImage': 'Default Image',
+            'copy.topNeonImage': 'Top Neon Image',
             'copy.valenceFeatures': 'Valence Features',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -286,7 +286,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            'copy.share.facebook': '#neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.facebook': '@neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
             'copy.share.twitter': '@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
             'copy.share.linkedin': 'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
             'copy.share.description': 'Copy the link below to share this collection. Anyone with this link can view your images for this video.',

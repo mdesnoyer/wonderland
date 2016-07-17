@@ -86,7 +86,7 @@
     height: auto;
     top: 100vh;
     right: 0;
-    border: 5px solid #fff;
+    border: 5px solid $white;
     @include generate-home-image-animation(1, 30s, 14s);
 
     &:nth-child(2) {

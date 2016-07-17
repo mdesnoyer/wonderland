@@ -10,7 +10,7 @@ $collection-content-padding-top: 17px;
     position: relative;
     margin: 0 0 $collection-margin-bottom;
     padding: $collection-padding-top $gutter-width $collection-padding-bottom;
-    background: #fff;
+    background: $white;
 
     @include breakpoint-mobile {
         padding-top: $mobile-collection-padding-top;

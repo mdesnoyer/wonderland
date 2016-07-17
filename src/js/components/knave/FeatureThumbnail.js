@@ -33,7 +33,7 @@ var FeatureThumbnail = React.createClass({
         switch(self.props.type) {
             case 'default':
                 uid = self.props.thumbnails.length - 1;
-                title= T.get('copy.defaultThumbnail');
+                title= T.get('copy.defaultImage');
                 thumbnailId = null;
                 handleChildOnMouseEnter = null;
                 showHref = false;
@@ -41,7 +41,7 @@ var FeatureThumbnail = React.createClass({
                 break;
             case 'neon':
                 uid = 0;
-                title = T.get('copy.neonSelect');
+                title = T.get('copy.topNeonImage');
                 thumbnailId = self.props.thumbnails[uid].thumbnail_id;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 showHref = true;
