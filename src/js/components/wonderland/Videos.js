@@ -32,7 +32,7 @@ var Videos = React.createClass({
         }
     },
     componentWillMount: function() {
-        var self = this; 
+        var self = this;
         self.GET('limits')
             .then(function(res) {
                 self.doFindMaxVideos( res.max_video_posts, res.max_video_size)
@@ -77,10 +77,11 @@ var Videos = React.createClass({
             alertMessage = '';
         }
         return (
-            <div> 
+            <div>
                 <VideoUploadForm
                     postHookSearch={self.doVideoSearch}
                     postHookAnalysis={null}
+                    isVideoResults={true}
                     videoCountServed={self.state.videoCountServed}
                     isMaxLimit={self.state.isMaxLimit}
                 />
@@ -108,12 +109,12 @@ var Videos = React.createClass({
         );
     },
     doFindMaxVideos: function(count, max) {
-        var self = this; 
+        var self = this;
         if (count === max){
             self.setState({
                 isMaxLimit: true
             })
-        } 
+        }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;

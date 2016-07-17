@@ -30,6 +30,7 @@ var VideosResults = React.createClass({
                                 badThumbs={video.bad_thumbnails}
                                 openSignUp={self.props.openSignUp}
                                 estimatedTimeRemaining={video.estimated_time_remaining}
+                                seconds={video.estimated_time_remaining}
                             />
                         );
                     })

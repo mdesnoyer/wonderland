@@ -6,12 +6,17 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: props.seconds,
+            seconds: props.seconds || 1,
         };
     }
 
     componentDidMount() {
         this.setProcessingTimer();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        debugger
+
     }
 
     componentWillUnmount() {
@@ -27,7 +32,7 @@ export default class Countdown extends React.Component {
             if (seconds > 1) {
                 this.setProcessingTimer();
             } else {
-                if (this.props.onFinish()){
+                if (this.props.onFinish){
                     this.props.onFinish();
                 }
             }

@@ -266,7 +266,7 @@ var UTILS = {
             value: 'M',
             label: 'Male'
         }
-    ],  
+    ],
     FILTERS_AGE: [
         {
             value: '18-19',
@@ -367,7 +367,7 @@ var UTILS = {
     },
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
 
     formatTime: (minutes, seconds) => {
@@ -440,6 +440,7 @@ var UTILS = {
         return url.replace(/^(https?):/, '');
     },
     formatTime: (minutes, seconds) => {
+
         const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
         const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
 

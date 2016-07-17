@@ -48,7 +48,7 @@ var VideoOwner = React.createClass({
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
             isAnalyzing: false,
-            seconds: 0,
+            seconds: self.props.seconds,
         }
     },
     componentDidMount: function() {
@@ -68,20 +68,21 @@ var VideoOwner = React.createClass({
         return (
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
-            (nextProps.isMobile !== this.props.isMobile)
+            (nextProps.isMobile !== this.props.isMobile) ||
+            (nextProps.seconds !== this.props.seconds)
         );
     },
     render: function() {
         var self = this;
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
                 return (
-                    <VideoProcessing 
-                        videoId={self.state.videoId} 
-                        title={self.state.title} 
-                        error={self.props.error} 
+                    <VideoProcessing
+                        videoId={self.state.videoId}
+                        title={self.state.title}
+                        error={self.props.error}
                         videoState={self.state.videoState}
                         duration={self.state.duration}
-                        seconds={self.props.estimatedTimeRemaining}
+                        seconds={self.props.seconds}
                     />
                 );
             }
@@ -143,13 +144,15 @@ var VideoOwner = React.createClass({
                             // updated
                             created: video.created,
                             isLoading: false,
-                            badThumbs: video.bad_thumbnails
+                            badThumbs: video.bad_thumbnails,
+                            seconds: video.estimated_time_remaining
                         })
                     }
                     else {
                         self.setState({
                             title: video.title,
-                            isLoading: false
+                            isLoading: false,
+                            seconds: video.estimated_time_remaining
                         });
                     }
                 }).catch(function(err) {

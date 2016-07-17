@@ -22,11 +22,12 @@ var VideoProcessing = React.createClass({
             errorMessage,
             deleteButton,
             errorMessageComponent,
-            isError
+            isError,
+            seconds
         ;
-        errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');  
+        errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
-            case 'failed': 
+            case 'failed':
                 title = 'Oops';
                 errorMessageComponent = <Message type="processing" message={errorMessage} />;
                 deleteButton = (
@@ -36,28 +37,30 @@ var VideoProcessing = React.createClass({
                         onClick={self.handleDeleteClick}
                     >x</button>
                 );
-                isError = true
+                isError = true;
+                seconds = 1;
                 break;
             case 'processing':
                 title = self.props.title ? 'PROCESSING: ' + self.props.title : 'PROCESSING: ...';
                 errorMessageComponent = '';
                 deleteButton = '';
                 isError = false
+                seconds = self.props.seconds
                 break;
         }
         return (
             <div>
-                { 
+                {
                     self.state.isHidden ? null : (
                         <article className="xxCollection xxCollection--video xxCollection--processing">
                             <h1 className="xxCollection-title">
                                 {title}
                                 {deleteButton}
                             </h1>
-                            { 
+                            {
                                 isError ? null : (
                                     <div>
-                                        <Countdown seconds={self.props.seconds} type="processing"/>
+                                        <Countdown seconds={seconds} type="processing" onFinish={false}/>
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>
