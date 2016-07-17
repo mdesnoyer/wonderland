@@ -82,7 +82,7 @@ var VideoOwner = React.createClass({
                         error={self.props.error}
                         videoState={self.state.videoState}
                         duration={self.state.duration}
-                        seconds={self.props.seconds}
+                        seconds={self.state.seconds}
                     />
                 );
             }

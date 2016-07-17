@@ -15,8 +15,11 @@ export default class Countdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        debugger
-
+        this.setState({
+            seconds: nextProps.seconds
+        }, function() {
+            this.setProcessingTimer()
+        });
     }
 
     componentWillUnmount() {
