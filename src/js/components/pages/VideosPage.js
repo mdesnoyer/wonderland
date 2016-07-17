@@ -30,11 +30,11 @@ var VideosPage = React.createClass({
             displayName: '',
             showTutorial: false,
             windowWidth: window.outerWidth,
-            sidebarContent: null 
+            sidebarContent: null
         };
     },
     openSignUp: function(e) {
-        var self = this; 
+        var self = this;
         e.preventDefault();
         self.setState({
             sidebarContent: 'signUp',
@@ -43,11 +43,12 @@ var VideosPage = React.createClass({
     componentDidMount: function() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
-
-        if (this.props.location.state.fromDemo) {
-            this.setState({
-                showTutorial: true,
-            });
+        if(this.props.location.state){
+            if (this.props.location.state.fromDemo) {
+                this.setState({
+                    showTutorial: true,
+                });
+            }
         }
     },
 

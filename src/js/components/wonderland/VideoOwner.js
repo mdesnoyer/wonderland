@@ -75,11 +75,12 @@ var VideoOwner = React.createClass({
     render: function() {
         var self = this;
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
+                debugger
                 return (
                     <VideoProcessing
                         videoId={self.state.videoId}
                         title={self.state.title}
-                        error={self.props.error}
+                        error={self.state.error}
                         videoState={self.state.videoState}
                         duration={self.state.duration}
                         seconds={self.state.seconds}
@@ -152,7 +153,8 @@ var VideoOwner = React.createClass({
                         self.setState({
                             title: video.title,
                             isLoading: false,
-                            seconds: video.estimated_time_remaining
+                            seconds: video.estimated_time_remaining,
+                            error: video.error ? video.error : ''
                         });
                     }
                 }).catch(function(err) {
