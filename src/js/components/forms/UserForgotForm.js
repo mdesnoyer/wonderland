@@ -86,7 +86,7 @@ var UserForgotForm = React.createClass({
             legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
             messageNeededComponent = false,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = (self.state.email ? true : false)
+            isValid = (self.state.email)
         ;
         if (self.state.email) {
             submitClassName.push('xxButton--important');
