@@ -41,6 +41,7 @@ var ThumbnailCollection = React.createClass({
                                     src={src}
                                     isMobile={self.props.isMobile}
                                     extraClass='xxThumbnail--lowLight'
+                                    showHref={false}
                                 />
                             )
                         })

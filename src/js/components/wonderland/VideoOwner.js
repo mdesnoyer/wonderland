@@ -36,7 +36,7 @@ var VideoOwner = React.createClass({
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             thumbnails: self.props.thumbnails,
-            sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails),
+            sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
             title: self.props.title,
             created: self.props.created,
             error: self.props.error,
@@ -140,7 +140,7 @@ var VideoOwner = React.createClass({
                         self.setState({
                             status: 200,
                             thumbnails: newThumbnails.thumbnails,
-                            sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails),
+                            sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                             title: video.title,

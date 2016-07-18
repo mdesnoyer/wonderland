@@ -47,6 +47,7 @@ $thumbnail-hover-border: 2px;
     }
 
     &--lowLight {
+        cursor: default;
         &::after {
             background-color: $base-color;
         }
@@ -76,7 +77,6 @@ $thumbnail-hover-border: 2px;
         cursor: default;
     }
 
-    &--regular,
     &--neon {
         cursor: pointer;
     }
