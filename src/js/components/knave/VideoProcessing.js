@@ -18,7 +18,6 @@ var VideoProcessing = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        debugger
         self.GET('limits')
             .then(function(res) {
                 self.setState({
@@ -26,7 +25,6 @@ var VideoProcessing = React.createClass({
                 })
             })
             .catch(function(err) {
-
             })
     },
     render: function() {

@@ -15,7 +15,6 @@ export default class Countdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        debugger
         this.setState({
             seconds: nextProps.seconds
         }, function() {
@@ -59,17 +58,23 @@ export default class Countdown extends React.Component {
                 divStyle = "xxOnboardingCountdown";
                 spanStyle = "xxOnboardingCountdown-label";
         }
-        return (
-            <a className={divStyle}>
-                <span className={spanStyle}>
-                    {
-                        UTILS.formatTime(
-                            Math.floor(seconds / 60),
-                            Math.floor(seconds % 60),
-                        )
-                    }
-                </span>
-            </a>
-        );
+        if (this.props.seconds > 0){
+            return (
+                <a className={divStyle}>
+                    <span className={spanStyle}>
+                        {
+                            UTILS.formatTime(
+                                Math.floor(seconds / 60),
+                                Math.floor(seconds % 60),
+                            )
+                        }
+                    </span>
+                </a>
+            )
+        }
+        else {
+            return null;
+        }
+
     }
 };
