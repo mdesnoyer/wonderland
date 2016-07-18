@@ -35,7 +35,7 @@ var Videos = React.createClass({
         var self = this;
         self.GET('limits')
             .then(function(res) {
-                self.doFindMaxVideos( res.max_video_posts, res.max_video_size)
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
             })
             .catch(function(err) {
                 self.context.router.push('*')
@@ -111,7 +111,7 @@ var Videos = React.createClass({
     },
     doFindMaxVideos: function(count, max) {
         var self = this;
-        if (count === max){
+        if (count === max) {
             self.setState({
                 isMaxLimit: true
             })

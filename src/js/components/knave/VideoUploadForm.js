@@ -68,6 +68,9 @@ var VideoUploadForm = React.createClass({
                 }
             })
             .catch(function(err) {
+                self.setState({
+                    error: err.message
+                })
                 console.log(err)
             });
     },
@@ -95,6 +98,7 @@ var VideoUploadForm = React.createClass({
                         <VideoUploadOverlay
                             handleUpload={self.handleUpload}
                             isOnboarding={isOnboarding}
+                            error={self.state.error || null}
                         />
                     </div>
                 ) : null
