@@ -65,6 +65,7 @@ export default class Countdown extends React.Component {
                     </span>
                 </div>
             );
+        }
         else {
             return null;
         }
