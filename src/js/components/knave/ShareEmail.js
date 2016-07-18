@@ -101,12 +101,28 @@ var ShareEmail = React.createClass({
         self.props.handleMenuChange(e);
     },
     handleSubmit: function(e) {
-        var self = this;
+        var self = this,
+            sortedThumbnails = UTILS.fixThumbnails(self.props.thumbnails, true)
+        ;
         e.preventDefault();
         self.setState({
             mode: 'loading'
         }, function() {
-            var options = self.dataMaker();
+            var options = {
+                data: {
+                    subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                    to_email_address: self.refs.email.value.trim(),
+                    template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+                    template_args: {
+                        'top_thumbnail': sortedThumbnails[0].url,
+                        'lift': ((parseInt(sortedThumbnails[0].lift * 100)).toString() + '%'),
+                        'thumbnail_one': sortedThumbnails[1].url,
+                        'thumbnail_two': sortedThumbnails[2].url,
+                        'thumbnail_three': sortedThumbnails[3].url,
+                        'collection_url': self.state.collectionUrl,
+                    }
+                }
+            };
             self.POST('email', options)
                 .then(function(res) {
                     self.setState({
@@ -121,52 +137,6 @@ var ShareEmail = React.createClass({
                 })
             ;
         })
-    },
-    dataMaker: function() {
-        var self = this,
-            top_thumbnail = false,
-            lift = 0,
-            thumbnail_one = false,
-            thumbnail_two = false,
-            thumbnail_three = false
-        ;
-        self.props.thumbnails.forEach(function(thumbnail) {
-            if (thumbnail.type === 'neon') {
-                switch (thumbnail.rank) {
-                    case 0:
-                        top_thumbnail = thumbnail.url;
-                        lift = thumbnail.lift * 100;
-                        break;
-                    case 1:
-                        thumbnail_one = thumbnail.url
-                        break;
-                    case 2:
-                        thumbnail_two = thumbnail.url
-                        break;
-                    case 3:
-                        thumbnail_three = thumbnail.url
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-        var data = {
-            data: {
-                subject: UTILS.RESULTS_EMAIL_SUBJECT,
-                to_email_address: self.refs.email.value.trim(),
-                template_slug: UTILS.RESULTS_MANDRILL_SLUG,
-                template_args: {
-                    'top_thumbnail': top_thumbnail,
-                    'lift': (lift.toString() + '%'),
-                    'thumbnail_one': thumbnail_one,
-                    'thumbnail_two': thumbnail_two,
-                    'thumbnail_three': thumbnail_three,
-                    'collection_url': self.state.collectionUrl,
-                }
-            }
-        }
-        return data; 
     }
 });
 
