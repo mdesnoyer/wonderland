@@ -49,7 +49,7 @@ var VideoMain = React.createClass({
             base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
             thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
         }
-        if (self.props.shareToken) {
+        if (self.props.isGuest) {
             options.data.share_token = self.props.shareToken;
             options.overrideAccountId = self.props.accountId;
         }
