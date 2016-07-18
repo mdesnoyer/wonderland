@@ -6,7 +6,7 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: props.seconds || 1,
+            seconds: props.seconds,
         };
     }
 
@@ -58,7 +58,7 @@ export default class Countdown extends React.Component {
                 divStyle = "xxOnboardingCountdown";
                 spanStyle = "xxOnboardingCountdown-label";
         }
-        if (this.props.seconds > 0){
+        if (this.props.seconds > 1) {
             return (
                 <a className={divStyle}>
                     <span className={spanStyle}>
