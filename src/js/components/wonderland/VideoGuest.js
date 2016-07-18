@@ -56,17 +56,25 @@ var VideoGuest = React.createClass({
             })
                 .then(function(json) {
                     var video = json.videos[0];
+                    if (video.demographic_thumbnails.length > 0) {
+                        var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
+                        var badThumbs = newThumbnails.bad_thumbnails;
+                    }
+                    else {
+                        var newThumbnails = video;
+                        var badThumbs = [];
+                    }
                     self.setState({
                         mode: 'success',
                         title: video.title,
                         duration: video.duration,
                         url: video.url,
-                        thumbnails: video.thumbnails,
-                        sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
+                        thumbnails: newThumbnails.thumbnails,
+                        sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails),
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                         created: video.created,
-                        badThumbs: video.bad_thumbnails
+                        badThumbs: badThumbs
                     });
                 })
                 .catch(function(err) {

@@ -90,7 +90,7 @@ var Thumbnails = React.createClass({
                 />
             ) : null
         ;
-        return (                
+        return (
             <div className="xxCollectionImages">
                 {
                     self.props.isMobile ? null : ThumbnailOverlayComponent
@@ -128,7 +128,7 @@ var Thumbnails = React.createClass({
                         type="highScores"
                         isMobile={self.props.isMobile}
                     />
-                    {/*{
+                    {
                         self.props.isMobile ? null : (
                             <strong className="xxCollectionImages-allAnchor">
                                 <span onClick={self.toggleLowScoresVisibility}>
@@ -152,7 +152,7 @@ var Thumbnails = React.createClass({
                                 isMobile={self.props.isMobile}
                             />
                         ): null
-                    }*/}
+                    }
                 </div>
             </div>
         );

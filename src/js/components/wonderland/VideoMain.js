@@ -34,7 +34,7 @@ var VideoMain = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (self.state.thumbnails.length > 1 ){
+        if (self.state.thumbnails.length > 1 ) {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
             }
