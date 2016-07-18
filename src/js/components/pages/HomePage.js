@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Helmet from 'react-helmet';
 
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
+import SESSION from '../../modules/session';
 
 import SiteHeader from '../wonderland/SiteHeader';
 import HomeImages from '../wonderland/HomeImages';
@@ -15,6 +16,22 @@ export default class HomePage extends React.Component {
 
         this.state = { sidebarContent: null };
         this.openSignUp = this.openSignUp.bind(this);
+    }
+
+    static contextTypes = {
+        router: PropTypes.object
+    };
+
+    componentWillMount() {
+        var self = this;
+        SESSION.user()
+            .then(function(userData) {
+                self.context.router.push(UTILS.DRY_NAV.VIDEO_LIBRARY.URL);
+            })
+            .catch(function(err) {
+                // Do nothing, user not signed in
+            })
+        ;
     }
 
     openSignUp(e) {
