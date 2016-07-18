@@ -130,8 +130,11 @@ var Thumbnails = React.createClass({
                     />
                     {
                         self.props.isMobile || self.state.badThumbs.length < 1 ? null : (
-                            <strong className="xxCollectionImages-allAnchor">
-                                <span onClick={self.toggleLowScoresVisibility}>
+                            <strong 
+                                className="xxCollectionImages-allAnchor"
+                                onClick={self.toggleLowScoresVisibility}
+                            >
+                                <span>
                                     {self.state.showLowScores ? T.get('copy.thumbnails.high') : T.get('copy.thumbnails.low')}
                                 </span>
                             </strong>
