@@ -32,7 +32,8 @@ var SignUpForm = React.createClass({
             SESSION.user()
                 .then(function() {
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-                });
+                })
+            ;
         }
     },
     componentWillUnmount: function(e) {
