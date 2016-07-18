@@ -64,6 +64,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
             'copy.videoContent.email': 'Get an email summary of your image results for this video.',
+            'copy.videoContent.email.success': 'Your image results email is on the way! If you don\u2019t receive an email from us soon, check your spam box in case our email got misplaced.',
             'copy.videoContent.share': 'Copy the link below to share this collection directly with your friends and peers',
 
             'copy.signIn.title': 'Sign In',
