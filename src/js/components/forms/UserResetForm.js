@@ -7,6 +7,7 @@ import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
+import PasswordBrothers from '../wonderland/PasswordBrothers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
