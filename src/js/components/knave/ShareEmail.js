@@ -74,7 +74,7 @@ var ShareEmail = React.createClass({
                                     id="xx-email-from"
                                     type="text"
                                     ref="email"
-                                    placeholder="you@email.com"
+                                    placeholder={UTILS.EXAMPLE_EMAIL}
                                 />
                             </div>
                             <div className="xxCollectionAction-buttons">
