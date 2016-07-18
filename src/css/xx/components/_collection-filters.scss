@@ -21,7 +21,7 @@
         height: 27px;
         border-radius: 50%;
         border: 1px solid $accent-color;
-        background: #fff;
+        background: $white;
         font-size: 15px;
         line-height: 26px;
         text-align: center;
@@ -37,7 +37,7 @@
 
         &::after {
             background: $accent-color;
-            color: #fff;
+            color: $white;
             transform: rotate(0deg);
         }
     }
@@ -48,7 +48,7 @@
         &::after {
             z-index: 2;
             background: $accent-color;
-            color: #fff;
+            color: $white;
             transform: rotate(0deg);
             animation: rotate 2s infinite linear;
         }
@@ -146,7 +146,7 @@
     left: -16px;
     z-index: $zindex-above-everything - 1;
     box-shadow: 0 0 5px rgba(0, 0, 0, .22);
-    background: #fff;
+    background: $white;
 }
 
 .xxCollectionFilters-version {
@@ -195,7 +195,7 @@
     border-radius: 50%;
     border: 1px solid $base-color;
     margin-right: 115px;
-    background: #fff;
+    background: $white;
 
     @include arrow(S, 1px, 11px, $bg-tertiary-color);
 }
