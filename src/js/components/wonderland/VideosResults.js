@@ -14,12 +14,12 @@ var VideosResults = React.createClass({
                 {
                     self.props.videos.map(function(video, i) {
                         if (video.demographic_thumbnails.length > 0) {
-                            var thumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender))
-                            var badThumbs = thumbnails.bad_thumbnails
+                            var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
+                            var badThumbs = newThumbnails.bad_thumbnails;
                         }
                         else {
-                            var thumbnails = video
-                            var badThumbs = []
+                            var newThumbnails = video;
+                            var badThumbs = [];
                         }
                         return (
                             <VideoOwner
@@ -28,7 +28,7 @@ var VideosResults = React.createClass({
                                 pingInitial={false}
                                 pingInterval={true}
                                 videoState={video.state}
-                                thumbnails={thumbnails.thumbnails}
+                                thumbnails={newThumbnails.thumbnails}
                                 title={video.title}
                                 error={video.error}
                                 duration={video.duration}
