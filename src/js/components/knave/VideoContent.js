@@ -8,7 +8,7 @@ import ShareLink from './ShareLink';
 import ShareEmail from './ShareEmail';
 import VideoDelete from './VideoDelete';
 import VideoFilters from './VideoFilters';
-import Account from '../../mixins/account';
+import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
