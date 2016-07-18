@@ -23,7 +23,7 @@ var RENDITIONS = {
         // We assume each thumbnail is the same so we only need to check the
         // first one
         for (let r of thumbnails[0].renditions) {
-            if (this.equal(r.width, width, r.height, height)) {
+            if (this.equal(r.width, r.height, width, height)) {
                 return i;
             }
             if (this.fuzzyEqual(r.width, width, this.FUZZ) && this.fuzzyEqual(r.height, height, this.FUZZ)) {
