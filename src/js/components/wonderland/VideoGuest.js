@@ -15,7 +15,10 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoGuest = React.createClass({
-    mixins: [AjaxMixin],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string.isRequired,
         accountId: React.PropTypes.string.isRequired,
@@ -53,17 +56,25 @@ var VideoGuest = React.createClass({
             })
                 .then(function(json) {
                     var video = json.videos[0];
+                    if (video.demographic_thumbnails.length > 0) {
+                        var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
+                        var badThumbs = newThumbnails.bad_thumbnails;
+                    }
+                    else {
+                        var newThumbnails = video;
+                        var badThumbs = [];
+                    }
                     self.setState({
                         mode: 'success',
                         title: video.title,
                         duration: video.duration,
                         url: video.url,
-                        thumbnails: video.thumbnails,
-                        sortedThumbnails: UTILS.fixThumbnails(video.thumbnails),
+                        thumbnails: newThumbnails.thumbnails,
+                        sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                         created: video.created,
-                        badThumbs: video.bad_thumbnails
+                        badThumbs: badThumbs
                     });
                 })
                 .catch(function(err) {
@@ -74,6 +85,7 @@ var VideoGuest = React.createClass({
                         case 403:
                             E.raiseError(T.get('error.403'));
                         case 404:
+                            self.context.router.push('*')
                             E.raiseError(T.get('error.404'));
                             break;
                         default:

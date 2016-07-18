@@ -6,6 +6,8 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import TRACKING from '../../modules/tracking';
+import Message from '../wonderland/Message';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -13,27 +15,20 @@ var ChangePasswordForm = React.createClass({
     mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            mode: 'quiet', // quiet, error, loading, success
-            email: ''
+            mode: 'quiet' // quiet, error, loading, success
         }
-    },
-    updateField: function(e) {
-        var self = this;
-        self.setState({
-            email: e.target.value.trim()
-        });
     },
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, self.state.email);
+        TRACKING.sendEvent(self, arguments, self.props.username);
         self.setState({
             mode: 'loading'
         }, function() {
             self.POST('users/forgot_password', {
                 host: CONFIG.AUTH_HOST,
                 data: {
-                    username: self.state.email
+                    username: self.props.username
                 }
             })
             .then(function(json) {
@@ -65,22 +60,18 @@ var ChangePasswordForm = React.createClass({
     },
     render: function() {
         var self = this,
-        	sendClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = (self.state.email && (self.state.mode !== 'loading')),
+            isValid = (self.state.mode !== 'loading'),
             userMessage = null
         ;
-        if (isValid) {
-            sendClassName.push('xxButton--important');
-        }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={E.getErrors()} type="formError"/>;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message messsage={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.userForgot.success')}</p></div>;
+                userMessage = <Message message={T.get('copy.userForgot.success')} />;
                 break;
             default:
                 break;
@@ -92,27 +83,13 @@ var ChangePasswordForm = React.createClass({
                 </div>
                 {userMessage} 
                 <fieldset>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                        <input
-                            className="xxInputText"
-                            type="email"
-                            data-ref="email"
-                            minLength="6"
-                            maxLength="1024"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormButtons">
-                        <button 
-                            className={sendClassName.join(' ')} 
-                            type="submit" 
-                            disabled={!isValid}
-                        >
-                            {T.get('label.emailMe')}
-                        </button>
-                    </div>
+                    <button 
+                        className="xxButton xxButton--highlight xxButton--important"
+                        type="submit"
+                        disabled={!isValid}
+                    >
+                        {T.get('label.emailMe')}
+                    </button>
                 </fieldset>
             </form>
         );

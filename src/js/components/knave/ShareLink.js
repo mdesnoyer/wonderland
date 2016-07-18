@@ -3,25 +3,30 @@
 import React from 'react';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
-import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ShareLink = React.createClass({
-    mixins: [AjaxMixin, Account],
+    mixins: [AjaxMixin],
     getInitialState: function() {
         var self = this;
         return {
-            shareToken: self.props.shareToken,
-            videoId: self.props.videoId,
-            shortUrl: ''
+            shareUrl: self.props.shareUrl
         }
     },
     componentWillMount: function() {
         var self = this;
-        self.generateShareUrl();
+        UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback);
+    },
+    handleUrlCallback: function(response) {
+        var self = this;
+        if (response.status_code === 200) {
+            self.setState({
+                shareUrl: response.data.url
+            });
+        }
     },
     componentDidMount: function() {
         var self = this,
@@ -29,9 +34,7 @@ var ShareLink = React.createClass({
         ;
     },
     render: function(){
-        var self = this,  
-            urlToDisplay = self.determineUrl()
-        ;
+        var self = this;
         return (
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">{T.get('copy.share.main')}</h2>
@@ -70,7 +73,7 @@ var ShareLink = React.createClass({
                         className="xxInputText"
                         id="xx-share-link"
                         type="text"
-                        value={urlToDisplay}
+                        value={self.state.shareUrl}
                         readOnly
                     />
                 </div>
@@ -83,8 +86,8 @@ var ShareLink = React.createClass({
                     >{T.get('back')}</button>
                     <button
                         className="xxButton xxButton--highlight"
-                        data-clipboard-text={urlToDisplay}
-                        value={urlToDisplay}
+                        data-clipboard-text={self.state.shareUrl}
+                        value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
                         onClick={self.handleCopyClick}
@@ -111,59 +114,10 @@ var ShareLink = React.createClass({
                 break;
         }
     },
-    generateShareUrl: function() {
-        var self = this;
-        self.getAccount()
-            .then(function (account) {
-                self.setState({
-                    accountId: account.accountId,
-                }, function() {
-                        self.GET('videos/share', {
-                            data: {
-                                video_id: self.state.videoId
-                            }
-                        })
-                        .then(function(json) {
-                            self.setState({
-                                shareToken: json.share_token,
-                            },
-                                function(){
-                                    self.shortenUrlWithBitly();
-                                }
-                            );
-                        })
-                        .catch(function(err) {
-                            console.log(err);
-                        });
-                });
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
-    },
-    returnLongUrl: function() {
-        var self = this;
-        return window.location.origin + '/share/video/' + self.state.videoId + '/account/' + self.state.accountId + '/token/' + self.state.shareToken + '/';
-    },
-    shortenUrlWithBitly: function() {
-        var self = this;
-        UTILS.shortenUrl(self.returnLongUrl(), self.handleUrlCallback);
-    },
-    handleUrlCallback: function(response) {
-        var self = this;
-        if (response.status_code === 200) {
-            self.setState({shortUrl: response.data.url})
-        }
-    },
-    determineUrl: function() {
-        var self = this;
-        return self.state.shortUrl !== '' ? self.state.shortUrl : self.returnLongUrl()
-    },
     sendFacebookShare: function() {
         var self = this,  
-            urlToDisplay = self.determineUrl(),
             url = UTILS.SHARE_LINK_FACEBOOK + objectToGetParams({ 
-                u: urlToDisplay,
+                u: self.state.shareUrl,
                 title: T.get('copy.share.title'),
                 quote: T.get('copy.share.facebook')
             })
@@ -172,10 +126,9 @@ var ShareLink = React.createClass({
     },
     sendTwitterShare: function() {
         var self = this,  
-            urlToDisplay = self.determineUrl(),
             hashtags = [],
             url = UTILS.SHARE_LINK_TWITTER + objectToGetParams({
-                url: urlToDisplay,
+                url: self.state.shareUrl,
                 text: T.get('copy.share.twitter')
             })
         ;
@@ -183,9 +136,8 @@ var ShareLink = React.createClass({
     },
     sendLinkedinShare: function() {
         var self = this,  
-            urlToDisplay = self.determineUrl(),
             url = UTILS.SHARE_LINK_LINKEDIN + objectToGetParams({ 
-                url: urlToDisplay, 
+                url: self.state.shareUrl, 
                 title: T.get('copy.share.title'), 
                 summary: T.get('copy.share.linkedin') 
             })

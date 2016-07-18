@@ -30,17 +30,25 @@ var VideosPage = React.createClass({
             displayName: '',
             showTutorial: false,
             windowWidth: window.outerWidth,
+            sidebarContent: null
         };
     },
-
+    openSignUp: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'signUp',
+        });
+    },
     componentDidMount: function() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
-
-        if (this.props.location.state.fromDemo) {
-            this.setState({
-                showTutorial: true,
-            });
+        if(this.props.location.state){
+            if (this.props.location.state.fromDemo) {
+                this.setState({
+                    showTutorial: true,
+                });
+            }
         }
     },
 
@@ -75,7 +83,7 @@ var VideosPage = React.createClass({
     render: function() {
         const { showTutorial } = this.state;
         const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
-
+        const { sidebarContent } = this.state;
         return (
             <main className="xxPage">
                 <Helmet
@@ -84,15 +92,14 @@ var VideosPage = React.createClass({
                         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
                     ]}
                 />
-                <SiteHeader />
-                <Videos isMobile={isMobile} />
+                <SiteHeader sidebarContent={sidebarContent}/>
+                <Videos isMobile={isMobile} openSignUp={this.openSignUp} />
 
                 {
                     showTutorial ? (
                         <OnboardingTutorial onClose={this.onTutorialClose} />
                     ) : null
                 }
-
                 <SiteFooter />
             </main>
         );

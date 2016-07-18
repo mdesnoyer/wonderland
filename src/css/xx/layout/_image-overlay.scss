@@ -56,9 +56,22 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
     display: inline-block;
     max-width: calc((99.9% - #{$gutter-width}) * 1/3 - #{$gutter-width});
     margin: 0 0 0 #{$gutter-width};
-    color: #fff;
+    color: $white;
     text-align: left;
     vertical-align: middle;
+
+    a {
+        &:link,
+        &:visited {
+            color: $accent-color;
+        }
+        &:focus,
+        &:hover,
+        &:active {
+            color: $white;
+        }
+
+    }
 
     .xxLift {
         border-top: 1px solid #5d5d5d;
@@ -69,7 +82,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
 
 .xxImageZoom-subtitle {
     margin-bottom: 24px;
-    color: #fff;
+    color: $white;
 }
 
 .xxImageZoom-nav {
@@ -99,7 +112,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
     &:hover {
         &::before,
         &::after {
-            background: #fff;
+            background: $white;
         }
     }
 }

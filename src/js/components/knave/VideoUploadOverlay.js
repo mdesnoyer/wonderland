@@ -4,13 +4,15 @@ import React from 'react';
 import DropDown from './DropDown';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import Message from '../wonderland/Message'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadOverlay = React.createClass({
     getInitialState: function() {
         return {
-            url: ''
+            url: '',
+            isMessageNeeded: false
         }
     },
     updateField: function(field, value) {
@@ -23,7 +25,8 @@ var VideoUploadOverlay = React.createClass({
         const { isOnboarding } = this.props;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!self.state.url
+            isValid = !!self.state.url,
+            messageNeeded = self.state.isMessageNeeded ? <Message message={T.get('copy.urlShortener.messageBody')} type={'formError'}/> : null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
@@ -32,6 +35,7 @@ var VideoUploadOverlay = React.createClass({
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
                     <h2 className="xxTitle">Let’s analyze a video</h2>
+                    {messageNeeded}
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-url">
                             {T.get('url')}
@@ -43,6 +47,7 @@ var VideoUploadOverlay = React.createClass({
                             value={self.state.url}
                             placeholder={T.get('upload.videoUrl')}
                             type="url"
+                            required
                             onChange={e => self.updateField('url', e.target.value)}
                         />
                     </div>
@@ -63,7 +68,7 @@ var VideoUploadOverlay = React.createClass({
                     <button
                         disabled={!isValid}
                         className={submitClassName.join(' ')}
-                        type="button"
+                        type="submit"
                         onClick={self.handleClick}
                     >{T.get('upload.submit')}</button>
                 </div>
@@ -72,8 +77,15 @@ var VideoUploadOverlay = React.createClass({
     },
     handleClick: function() {
         var self = this;
-        if (self.props.handleUpload) {
-            self.props.handleUpload(self.state.url);
+        if (!UTILS.validateUrl(self.state.url)) {
+            self.setState({
+                isMessageNeeded: true
+            });
+        }
+        else {
+            if (self.props.handleUpload) {
+                self.props.handleUpload(self.state.url);
+            }
         }
     }
 });

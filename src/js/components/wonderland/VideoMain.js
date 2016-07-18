@@ -34,8 +34,10 @@ var VideoMain = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
-            self.sendForLiftData();    
+        if (self.state.thumbnails.length > 1 ) {
+            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
+                self.sendForLiftData();
+            }
         }
     },
     sendForLiftData: function() {
@@ -106,6 +108,9 @@ var VideoMain = React.createClass({
                             handleDelete={self.handleDelete}
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}
+                            openSignUp={self.props.openSignUp}
+                            thumbnails={self.state.thumbnails}
+                            isGuest={self.props.isGuest}
                         />
                     </div>
                     <Thumbnails
@@ -130,7 +135,7 @@ var VideoMain = React.createClass({
         if (liftArray.length > 1) {
             self.setState({
                 displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
-            });    
+            });
         }
     }
 });

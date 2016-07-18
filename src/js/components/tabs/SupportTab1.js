@@ -18,7 +18,7 @@ var SupportTab1 = React.createClass({
                 <p>It&rsquo;s simple. Just sign up for an account at <a href="http://app.neon-lab.com" rel="external">http://app.neon-lab.com</a> to try the service. Within minutes, you can see the most engaging images from almost any video on the internet.</p> 
                 <p>Follow these simple steps:</p>
                 <ol className="simple-ol-list">
-                    <li>Log in to your Neon account.</li>
+                    <li>{T.get('action.signIn')} to your Neon account.</li>
                     <li>Paste a URL that links to a video stored online into the Video URL field.
                         <figure>
                             <img src="/img/support/overview/1-analyze-video.png" />

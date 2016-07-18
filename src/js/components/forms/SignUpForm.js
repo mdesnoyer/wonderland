@@ -5,11 +5,16 @@ import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
+import Message from '../wonderland/Message';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-    mixins: [AjaxMixin],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             firstName: '',
@@ -17,7 +22,7 @@ var SignUpForm = React.createClass({
             email: '',
             password: '',
             verifyPassword: '',
-            mode: 'quiet' // quiet, loading, error
+            mode: 'quiet' // quiet, loading, error, success
         }
     },
     componentWillMount: function() {
@@ -27,7 +32,8 @@ var SignUpForm = React.createClass({
             SESSION.user()
                 .then(function() {
                     self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-                });
+                })
+            ;
         }
     },
     componentWillUnmount: function(e) {
@@ -83,10 +89,13 @@ var SignUpForm = React.createClass({
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message message={T.get('copy.loading')} />;
+                break;
+            case 'success':
+                userMessage = <Message message={T.get('copy.confirmAccount.body')} />;
                 break;
             default:
                 break;
@@ -94,6 +103,8 @@ var SignUpForm = React.createClass({
         return (
             <form onSubmit={self.handleSubmit}>
                 {userMessage}
+                {
+                self.state.mode === 'loading' || self.state.mode === 'success' ? null : (
                 <fieldset>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.firstName')}</label>
@@ -173,10 +184,12 @@ var SignUpForm = React.createClass({
                             type="submit"
                             disabled={!isValid}
                         >
-                            {T.get('signUp')}
+                            {T.get('action.signUp')}
                         </button>
                     </div>
                 </fieldset>
+                )
+            }
             </form>
         );
     },
@@ -241,7 +254,12 @@ var SignUpForm = React.createClass({
                         self.props.completeSubmission();
                     })
                     .catch(function (err) {
-                        E.raiseError(err);
+                        if (err.code === 409) {
+                            E.raiseError(err.data, false);
+                        }
+                        else {
+                            E.raiseError(err)
+                        }
                         self._isSubmitted = false;
                         self.setState({
                             mode: 'error'

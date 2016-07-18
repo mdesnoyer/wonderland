@@ -266,7 +266,7 @@ var UTILS = {
             value: 'M',
             label: 'Male'
         }
-    ],  
+    ],
     FILTERS_AGE: [
         {
             value: '18-19',
@@ -293,10 +293,12 @@ var UTILS = {
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
     SHARE_LINK_LINKEDIN: 'https://linkedin.com/shareArticle',
-    SUPPORT_EMAIL:'support@neon-lab.com',
-    SUPPORT_EMAIL_SUBJECT:'Question about Neon',
-    SUPPORT_MANDRILL_SLUG:'support-email-admin',
-    CONFIRM_MANDRILL_SLUG:'support-email',
+    SUPPORT_EMAIL: 'support@neon-lab.com',
+    SUPPORT_EMAIL_SUBJECT: 'Question about Neon',
+    SUPPORT_MANDRILL_SLUG: 'support-email-admin',
+    CONFIRM_MANDRILL_SLUG: 'support-email',
+    RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
+    RESULTS_MANDRILL_SLUG: 'video-results',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
@@ -304,7 +306,7 @@ var UTILS = {
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
-    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'bad_thumbnails'],
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
@@ -313,17 +315,34 @@ var UTILS = {
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    fixThumbnails: function(rawThumbnails) {
+    _sortThumbnails: function(a, b) {
+        var aScore = (a.neon_score ? a.neon_score : 0),
+            bScore = (b.neon_score ? b.neon_score : 0)
+        ;
+        return bScore - aScore;
+    },
+    fixThumbnails: function(rawThumbnails, ignoreBad) {
+
+        if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
+            return [];
+        }
+
         var defaults = [],
             customs = [],
             neons = [],
             nonNeons = []
         ;
+
         // Pass 1 - sort into `default`, `custom` and `neon`
         rawThumbnails.map(function(rawThumbnail, i) {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
+                    break;                    
+                case 'bad_neon':
+                    if (!ignoreBad) {
+                        neons.push(rawThumbnail);
+                    }
                     break;
                 case 'custom':
                     customs.push(rawThumbnail);
@@ -336,14 +355,13 @@ var UTILS = {
                     break;
             }
         });
-        // Pass 2 - sort `custom` by rank ASC
-        customs.sort(function(a, b) {
-            return a.rank - b.rank;
-        });
-        // Pass 3 - sort `neon` by rank ASC
-        neons.sort(function(a, b) {
-            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
-        });
+
+        // Pass 2 - sort `custom` by neon_score DESC
+        customs.sort(this._sortThumbnails);
+
+        // Pass 3 - sort `neon` by neon_score DESC
+        neons.sort(this._sortThumbnails);
+
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
         if (nonNeons.length > 0) {
@@ -367,7 +385,7 @@ var UTILS = {
     },
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
 
     formatTime: (minutes, seconds) => {
@@ -439,6 +457,13 @@ var UTILS = {
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
     },
+    formatTime: (minutes, seconds) => {
+
+        const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
+        const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    },
     shortenUrl: function(url, callback) {
         var self = this;
         reqwest({
@@ -457,6 +482,9 @@ var UTILS = {
             console.log(error);
             callback(error);
         })
+    },
+    validateUrl: function(value) {
+          return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
 };
 

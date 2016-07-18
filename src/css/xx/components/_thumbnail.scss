@@ -26,7 +26,7 @@ $thumbnail-hover-border: 2px;
         left: 0;
         width: $thumbnail-small-score-size;
         height: $thumbnail-small-score-size;
-        color: #fff;
+        color: $white;
         font-size: 14px;
         line-height: $thumbnail-small-score-size;
         vertical-align: middle;
@@ -47,6 +47,7 @@ $thumbnail-hover-border: 2px;
     }
 
     &--lowLight {
+        cursor: default;
         &::after {
             background-color: $base-color;
         }
@@ -76,7 +77,6 @@ $thumbnail-hover-border: 2px;
         cursor: default;
     }
 
-    &--regular,
     &--neon {
         cursor: pointer;
     }
@@ -100,6 +100,8 @@ $thumbnail-hover-border: 2px;
     border-radius: 2px;
     border: $thumbnail-hover-border solid rgba($accent-color, 0);
     transition: border-color $default-transition;
+    // helps with old(er) warped videos - #1408
+    object-fit: cover;
 
     .xxThumbnail[href]:hover > & {
         border-color: $accent-color;
@@ -112,7 +114,7 @@ $thumbnail-hover-border: 2px;
         width: 100%;
         height: 100%;
         border-radius: 0;
-        border-color: #fff;
+        border-color: $white;
     }
 }
 

@@ -7,7 +7,6 @@ import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
-import PasswordBrothers from '../wonderland/PasswordBrothers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -101,7 +100,7 @@ var UserResetForm = React.createClass({
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message message={E.getErrors()} />;
+                messageNeededComponent = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
                 messageNeededComponent = <Message message={T.get('copy.loading')} />;
@@ -114,7 +113,9 @@ var UserResetForm = React.createClass({
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userReset.heading')}</h2>
-                    <h1 className="xxSubtitle">{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</h1>
+                    <div className="xxText">
+                        <p>{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</p>
+                    </div>
                     {messageNeededComponent}
                     <PasswordBrothers 
                         handlePasswordInitialChange={self.handlePasswordInitialChange}
