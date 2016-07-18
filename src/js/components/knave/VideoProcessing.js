@@ -11,6 +11,24 @@ import Countdown from '../wonderland/Countdown';
 
 var VideoProcessing = React.createClass({
     mixins: [AjaxMixin],
+    getInitialState: function() {
+        return {
+            maxVideoSize: 900
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        debugger
+        self.GET('limits')
+            .then(function(res) {
+                self.setState({
+                    maxVideoSize: res.max_video_size
+                })
+            })
+            .catch(function(err) {
+
+            })
+    },
     render: function() {
         var self = this,
             title,
@@ -20,7 +38,7 @@ var VideoProcessing = React.createClass({
             isError,
             seconds
         ;
-        errorMessage = self.props.duration >= 900 ? T.get('error.longVideo') : T.get('error.genericVideo');
+        errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
             case 'failed':
                 title = 'Oops';
