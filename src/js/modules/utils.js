@@ -332,13 +332,13 @@ var UTILS = {
                     break;
             }
         });
-        // Pass 2 - sort `custom` by rank ASC
+        // Pass 2 - sort `custom` by neon_score descending
         customs.sort(function(a, b) {
-            return a.rank - b.rank;
+            return b.neon_score - a.neon_score;
         });
-        // Pass 3 - sort `neon` by rank ASC
+        // Pass 3 - sort `neon` by neon_score descending
         neons.sort(function(a, b) {
-            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
+            return (b.neon_score === '?' ? 0 : b.neon_score) - (a.neon_score === '?' ? 0 : a.neon_score);
         });
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
