@@ -147,7 +147,7 @@ var Thumbnails = React.createClass({
                     {
                         self.state.showLowScores || self.props.isMobile ? (
                             <ThumbnailCollection
-                                thumbnails={self.state.badThumbs}
+                                thumbnails={UTILS.fixThumbnails(self.state.badThumbs, false)}
                                 type="lowScores"
                                 isMobile={self.props.isMobile}
                             />

@@ -315,17 +315,34 @@ var UTILS = {
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    fixThumbnails: function(rawThumbnails) {
+    _sortThumbnails: function(a, b) {
+        var aScore = (a.neon_score ? a.neon_score : 0),
+            bScore = (b.neon_score ? b.neon_score : 0)
+        ;
+        return bScore - aScore;
+    },
+    fixThumbnails: function(rawThumbnails, ignoreBad) {
+
+        if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
+            return [];
+        }
+
         var defaults = [],
             customs = [],
             neons = [],
             nonNeons = []
         ;
+
         // Pass 1 - sort into `default`, `custom` and `neon`
         rawThumbnails.map(function(rawThumbnail, i) {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
+                    break;                    
+                case 'bad_neon':
+                    if (!ignoreBad) {
+                        neons.push(rawThumbnail);
+                    }
                     break;
                 case 'custom':
                     customs.push(rawThumbnail);
@@ -338,14 +355,13 @@ var UTILS = {
                     break;
             }
         });
-        // Pass 2 - sort `custom` by rank ASC
-        customs.sort(function(a, b) {
-            return a.rank - b.rank;
-        });
-        // Pass 3 - sort `neon` by rank ASC
-        neons.sort(function(a, b) {
-            return (a.rank === '?' ? 0 : a.rank) - (b.rank === '?' ? 0 : b.rank);
-        });
+
+        // Pass 2 - sort `custom` by neon_score DESC
+        customs.sort(this._sortThumbnails);
+
+        // Pass 3 - sort `neon` by neon_score DESC
+        neons.sort(this._sortThumbnails);
+
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
         if (nonNeons.length > 0) {

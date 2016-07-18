@@ -70,7 +70,7 @@ var VideoGuest = React.createClass({
                         duration: video.duration,
                         url: video.url,
                         thumbnails: newThumbnails.thumbnails,
-                        sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails),
+                        sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                         created: video.created,
