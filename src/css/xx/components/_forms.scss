@@ -29,7 +29,27 @@
     line-height: 26px;
 
     .has-error > & {
-        color: $error-color;
+        color: $accent-color;
+        font-size: 10px
+    }
+    .has-videos-error > & {
+        width: 100%;
+        margin: 0 auto; 
+        text-align: center;
+        background: $primary-white-color;
+        color: $accent-color;
+        font-size: 14px;
+        padding: 2%;
+        margin-bottom: 1em;
+    }
+
+    .has-processing-error > & {
+        width: 65%;
+        margin: 0 auto; 
+        text-align: center;
+        color: $accent-color;
+        font-size: 13px;
+        margin-top: -2em;
     }
 
     .xxFormField + .xxFormField & {
@@ -266,6 +286,31 @@
             border-color: $accent-color;
             background: $accent-color;
             color: $primary-white-color;
+        }
+    }
+    &--delete-failed {
+        &,
+        &[disabled],
+        &[disabled]:hover {
+            border-color: transparent;
+            background: transparent;
+            color: $base-color;
+            position: absolute;
+            top: 20px;
+            right: 0px;
+            width: 10%;
+            font: normal 25px/32px $serif-family;
+        }
+
+        &:hover {
+            border-color: transparent;
+            background: transparent;
+            color: $accent-color;
+            position: absolute;
+            top: 20px;
+            right: 0px;
+            width: 10%;
+            font: normal 25px/32px $serif-family;
         }
     }
 

@@ -266,7 +266,7 @@ var UTILS = {
             value: 'M',
             label: 'Male'
         }
-    ],  
+    ],
     FILTERS_AGE: [
         {
             value: '18-19',
@@ -304,7 +304,7 @@ var UTILS = {
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     RESULTS_PAGE_SIZE: 10,
-    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails'],
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
@@ -367,7 +367,7 @@ var UTILS = {
     },
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
 
     formatTime: (minutes, seconds) => {
@@ -439,6 +439,13 @@ var UTILS = {
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
     },
+    formatTime: (minutes, seconds) => {
+
+        const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
+        const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    },
     shortenUrl: function(url, callback) {
         var self = this;
         reqwest({
@@ -457,6 +464,9 @@ var UTILS = {
             console.log(error);
             callback(error);
         })
+    },
+    validateUrl: function(value) {
+          return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
 };
 

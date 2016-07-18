@@ -13,7 +13,10 @@ import Secured from '../../mixins/Secured';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-    mixins: [AjaxMixin, Secured],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -27,6 +30,16 @@ var Videos = React.createClass({
             pseudoPageUrl: '?', // used to hold the Prev / Next choice
             previousPseudoPageUrl: '' // used to hold the Page before
         }
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.GET('limits')
+            .then(function(res) {
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
+            })
+            .catch(function(err) {
+                self.context.router.push('*')
+            })
     },
     componentDidMount: function() {
         var self = this;
@@ -47,14 +60,17 @@ var Videos = React.createClass({
     },
     render: function() {
         var self = this,
-            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : false,
+            errorMessage = self.state.isError ? <Message message={self.state.errorMessageArray} type="formError" /> : false,
             prevPageAPICall = '',
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
         if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
             prevPageAPICall = self.state.previousPseudoPageUrl;
-            alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
+            alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
+        }
+        else if (self.state.isMaxLimit) {
+            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -65,23 +81,24 @@ var Videos = React.createClass({
                 <VideoUploadForm
                     postHookSearch={self.doVideoSearch}
                     postHookAnalysis={null}
+                    isVideoResults={true}
                     videoCountServed={self.state.videoCountServed}
+                    isMaxLimit={self.state.isMaxLimit}
                 />
+                 {alertMessage}
                 <VideosResults
                     videos={self.state.videos}
                     handleNewSearch={self.handleNewSearch}
                     prevPageAPICall={prevPageAPICall}
                     nextPageAPICall={self.state.nextPageAPICall}
-                    errorMessage={errorMessage}
-                    alertMessage={alertMessage}
                     currentPage={self.state.currentPage}
                     isLoading={self.state.isLoading}
                     isMobile={self.props.isMobile}
                     videoCountServed={self.state.videoCountServed}
                     videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                     openSignUp={self.props.openSignUp}
+                    isMaxLimit={self.state.isMaxLimit}
                 />
-
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
@@ -91,6 +108,14 @@ var Videos = React.createClass({
                 }
             </div>
         );
+    },
+    doFindMaxVideos: function(count, max) {
+        var self = this;
+        if (count === max) {
+            self.setState({
+                isMaxLimit: true
+            })
+        }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;

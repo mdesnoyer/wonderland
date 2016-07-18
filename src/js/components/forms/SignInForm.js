@@ -20,14 +20,6 @@ var SignInForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    propTypes: {
-        showLegend: React.PropTypes.bool.isRequired
-    },
-    getDefaultProps: function() {
-        return {
-            showLegend: true
-        }
-    },
     getInitialState: function() {
         return {
             isError: false,
@@ -43,13 +35,13 @@ var SignInForm = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeededComponent = self.state.isError ? <Message header={T.get('signIn') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false
-;
+            messageNeededComponent = self.state.isError ? <Message type="formError" message={E.getErrors()} /> : false
+        ;
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeededComponent}
                     <h2 className="xxTitle">{T.get('signIn')}</h2>
+                    {messageNeededComponent}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
                             <input className="xxInputText"
@@ -138,8 +130,8 @@ var SignInForm = React.createClass({
                         self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                     }
                 })
-                .catch(function (err) {
-                    E.checkForError('Sorry, we could not sign you in.', false);
+                .catch(function (err) { 
+                    E.checkForError(T.get('error.unableToSignIn', {'@link': UTILS.DRY_NAV.USER_FORGOT.URL }), false);
                     self._isSubmitted = false;
                     self.setState({
                         isError: true,

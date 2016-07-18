@@ -5,6 +5,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
+import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

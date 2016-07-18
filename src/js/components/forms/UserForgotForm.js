@@ -71,28 +71,25 @@ var UserForgotForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
             messageNeededComponent = false
         ;
         switch(self.state.mode) {
             case 'quiet':
                 break;
             case 'error':
-                messageNeededComponent = <Message header={T.get('copy.userForgot.heading')} body={E.getErrors()} flavour="danger" />;
+                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} type="formError" />;
                 break;
             case 'loading':
                 break;
             case 'success':
-                messageNeededComponent = <Message header={T.get('copy.userForgot.heading')} body={T.get('copy.userForgot.success')} flavour="success" />;
+                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} />;
                 break;
         }
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
-                    {messageNeededComponent}
                     <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
-                    <h1 className="xxSubtitle">{T.get('copy.userForgot.body')}</h1>
-                        {legendElement}
+                        {messageNeededComponent}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>
                         <input className="xxInputText"

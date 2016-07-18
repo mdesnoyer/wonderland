@@ -15,7 +15,10 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoGuest = React.createClass({
-    mixins: [AjaxMixin],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    mixins: [AjaxMixin], // ReactDebugMixin
     propTypes: {
         videoId: React.PropTypes.string.isRequired,
         accountId: React.PropTypes.string.isRequired,
@@ -74,6 +77,7 @@ var VideoGuest = React.createClass({
                         case 403:
                             E.raiseError(T.get('error.403'));
                         case 404:
+                            self.context.router.push('*')
                             E.raiseError(T.get('error.404'));
                             break;
                         default:

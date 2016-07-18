@@ -38,7 +38,7 @@ var VideoUploadForm = React.createClass({
     handleUpload: function(url) {
         var self = this;
         self.setState({
-            isOpen: false,
+            isOpen: false
         }, function() {
             self.sendVideoUrl(url)
         });
@@ -68,6 +68,9 @@ var VideoUploadForm = React.createClass({
                 }
             })
             .catch(function(err) {
+                self.setState({
+                    error: err.message
+                })
                 console.log(err)
             });
     },
@@ -78,7 +81,10 @@ var VideoUploadForm = React.createClass({
         ;
         if (self.state.isOpen) {
             className.push('is-open');
-        } 
+        };
+        if (self.props.isMaxLimit) {
+            className.push('is-hidden')
+        };
         return (
             <div className={className.join(' ')}>
             <a
@@ -92,6 +98,7 @@ var VideoUploadForm = React.createClass({
                         <VideoUploadOverlay
                             handleUpload={self.handleUpload}
                             isOnboarding={isOnboarding}
+                            error={self.state.error || null}
                         />
                     </div>
                 ) : null

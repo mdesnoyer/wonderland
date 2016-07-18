@@ -29,6 +29,7 @@ var VideosResults = React.createClass({
                                 isMobile={self.props.isMobile}
                                 badThumbs={video.bad_thumbnails}
                                 openSignUp={self.props.openSignUp}
+                                seconds={video.estimated_time_remaining}
                             />
                         );
                     })

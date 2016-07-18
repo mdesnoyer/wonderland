@@ -63,6 +63,9 @@ $upload-button-help-line-length: 190px;
             transform: rotate(45deg);
         }
     }
+    .is-hidden > & {
+        display: none;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -46,7 +46,9 @@ var VideoOwner = React.createClass({
             size: 'big',
             duration: self.props.duration || 0,
             url: self.props.url || '',
-            badThumbs: self.props.badThumbs
+            badThumbs: self.props.badThumbs,
+            isAnalyzing: false,
+            seconds: self.props.seconds,
         }
     },
     componentDidMount: function() {
@@ -66,13 +68,23 @@ var VideoOwner = React.createClass({
         return (
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
-            (nextProps.isMobile !== this.props.isMobile)
+            (nextProps.isMobile !== this.props.isMobile) ||
+            (nextProps.seconds !== this.props.seconds)
         );
     },
     render: function() {
         var self = this;
             if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
-                return <VideoProcessing title={self.state.title} videoState={self.state.videoState}/>;
+                return (
+                    <VideoProcessing
+                        videoId={self.state.videoId}
+                        title={self.state.title}
+                        error={self.state.error}
+                        videoState={self.state.videoState}
+                        duration={self.state.duration}
+                        seconds={self.state.seconds}
+                    />
+                );
             }
             else {
                 return (
@@ -132,13 +144,16 @@ var VideoOwner = React.createClass({
                             // updated
                             created: video.created,
                             isLoading: false,
-                            badThumbs: video.bad_thumbnails
+                            badThumbs: video.bad_thumbnails,
+                            seconds: video.estimated_time_remaining
                         })
                     }
                     else {
                         self.setState({
                             title: video.title,
-                            isLoading: false
+                            isLoading: false,
+                            seconds: video.estimated_time_remaining,
+                            error: video.error ? video.error : ''
                         });
                     }
                 }).catch(function(err) {
@@ -152,7 +167,7 @@ var VideoOwner = React.createClass({
                 });
             })
         ;
-    },
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

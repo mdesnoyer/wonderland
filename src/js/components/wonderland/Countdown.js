@@ -14,6 +14,14 @@ export default class Countdown extends React.Component {
         this.setProcessingTimer();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            seconds: nextProps.seconds
+        }, function() {
+            this.setProcessingTimer()
+        });
+    }
+
     componentWillUnmount() {
         if (this.__processingTimer) {
             clearTimeout(this.__processingTimer);
@@ -27,7 +35,9 @@ export default class Countdown extends React.Component {
             if (seconds > 1) {
                 this.setProcessingTimer();
             } else {
-                this.props.onFinish();
+                if (this.props.onFinish){
+                    this.props.onFinish();
+                }
             }
 
             this.setState({
@@ -38,18 +48,33 @@ export default class Countdown extends React.Component {
 
     render() {
         const { seconds } = this.state;
+        var spanStyle, divStyle;
+        switch(this.props.type) {
+            case 'processing':
+                divStyle = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown";
+                spanStyle = "xxCollectionFilterToggle-label";
+                break;
+            default:
+                divStyle = "xxOnboardingCountdown";
+                spanStyle = "xxOnboardingCountdown-label";
+        }
+        if (this.props.seconds > 1) {
+            return (
+                <a className={divStyle}>
+                    <span className={spanStyle}>
+                        {
+                            UTILS.formatTime(
+                                Math.floor(seconds / 60),
+                                Math.floor(seconds % 60),
+                            )
+                        }
+                    </span>
+                </a>
+            )
+        }
+        else {
+            return null;
+        }
 
-        return (
-            <div className="xxOnboardingCountdown">
-                <span className="xxOnboardingCountdown-label">
-                    {
-                        UTILS.formatTime(
-                            Math.floor(seconds / 60),
-                            Math.floor(seconds % 60),
-                        )
-                    }
-                </span>
-            </div>
-        );
     }
 };

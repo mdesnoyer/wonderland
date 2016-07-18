@@ -90,7 +90,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
             'copy.analyzeVideo.body': '',
-            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your video upload limit. Increase your limit on the <a href="@link">Billing page</a> in just a few clicks.',
+            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',
@@ -98,7 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.notFound.title': 'Page Not Found (Error 404)',
             'copy.notFound.heading': 'Page Not Found (Error 404)',
-            'copy.notFound.body.1': 'Whoops! The page you are looking for doesn&rsquo;t exist.',
+            'copy.notFound.body.1': 'Oops! We can\u2019t find what you\u2019re looking for. Please try again.',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
@@ -110,8 +110,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
             'copy.passwordVerify': 'Verify Password',
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.userForgot.title': 'Forgot Password',
             'copy.userForgot.heading': 'Forgot Password',
@@ -334,9 +332,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
-            'error.unableToSignIn': 'Unable to Sign In',
+            'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
-            'error.longVideo': 'Please upload a video shorter than 15 minutes long.',
+
+            'error.longVideo': 'Video too long! Please upload a video under 15 minutes long.',
+            'error.genericVideo': ' Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
             'error.loginlessLimit': 'You\'ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
             'error.unpaidAccountLimit': 'You\'ve hit your upload limit. Check out your options for increasing your limits on our <a href="@link1">pricing page</a> or <a href="@link2">get in touch</a> with us.',
             'error.generic': 'Oops! Something went wrong. Please refresh the page or come back later.',

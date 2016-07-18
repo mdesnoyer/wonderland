@@ -6,6 +6,8 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
 import TRACKING from '../../modules/tracking';
+import Message from '../wonderland/Message';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,13 +76,13 @@ var ChangePasswordForm = React.createClass({
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={E.getErrors()} type="formError"/>;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message messsage={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.userForgot.success')}</p></div>;
+                userMessage = <Message message={T.get('copy.userForgot.success')} />;
                 break;
             default:
                 break;
