@@ -158,7 +158,7 @@ var ShareEmail = React.createClass({
                 template_slug: UTILS.RESULTS_MANDRILL_SLUG,
                 template_args: {
                     'top_thumbnail': top_thumbnail,
-                    'lift': lift,
+                    'lift': (lift.toString() + '%'),
                     'thumbnail_one': thumbnail_one,
                     'thumbnail_two': thumbnail_two,
                     'thumbnail_three': thumbnail_three,
