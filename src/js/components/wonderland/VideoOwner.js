@@ -100,6 +100,7 @@ var VideoOwner = React.createClass({
                     thumbnails={self.state.sortedThumbnails}
                     demographicThumbnails={self.state.demographicThumbnails}
                     timeRemaining={self.state.timeRemaining}
+                    refreshVideo={self.pingVideo}
                     videoState={self.state.videoState}
                     duration={self.state.duration}
                     created={self.state.created}
@@ -108,7 +109,7 @@ var VideoOwner = React.createClass({
                     title={self.state.title}
                     isMobile={self.props.isMobile}
                     badThumbs={self.state.badThumbs}
-                    refreshVideo={self.pingVideo}
+                    openSignUp={self.props.openSignUp}
                 />
             );
         }

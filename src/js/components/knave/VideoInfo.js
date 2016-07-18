@@ -12,7 +12,8 @@ import Lift from './Lift';
 var VideoInfo = React.createClass({
     getInitialState: function() {
         var self = this,
-            demographicOptions = [];
+            demographicOptions = []
+        ;
         if (self.props.demographicThumbnails && self.props.demographicThumbnails.length > 0) {
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
@@ -62,7 +63,8 @@ var VideoInfo = React.createClass({
                             countdown = (
                                 <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
                             );
-                        } else {
+                        }
+                        else {
                             countdown = (
                                 <span>{T.get('copy.pending')}</span>
                             );

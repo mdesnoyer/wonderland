@@ -41,13 +41,12 @@ var VideoMain = React.createClass({
     },
     sendForLiftData: function() {
         var self = this,
-            options = {
-                data: {
-                    base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
-                    thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
-                }
-            }
+            options = {}
         ;
+        options.data = {
+            base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
+            thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+        };
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
@@ -93,10 +92,12 @@ var VideoMain = React.createClass({
     },
     handleDemographicChange: function(value) {
         var self = this,
-            thumbs;
+            thumbs
+        ;
         if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
             thumbs = self.props.demographicThumbnails[value].thumbnails;
-        } else {
+        }
+        else {
             thumbs = self.props.thumbnails;
             value = false;
         }
@@ -126,14 +127,14 @@ var VideoMain = React.createClass({
                             demographicThumbnails={self.props.demographicThumbnails}
                             timeRemaining={self.props.timeRemaining}
                             selectedDemographic={self.state.selectedDemographic}
-                            handleDelete={self.handleDelete}
                             handleDemographicChange={self.handleDemographicChange}
+                            refreshVideo={self.props.refreshVideo}
+                            handleDelete={self.handleDelete}
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}
                             openSignUp={self.props.openSignUp}
                             thumbnails={self.state.thumbnails}
                             isGuest={self.props.isGuest}
-                            refreshVideo={self.props.refreshVideo}
                         />
                     </div>
                     <Thumbnails

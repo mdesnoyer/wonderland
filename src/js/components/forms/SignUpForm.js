@@ -11,10 +11,10 @@ import Message from '../wonderland/Message';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-    mixins: [AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             firstName: '',
