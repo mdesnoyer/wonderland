@@ -45,7 +45,7 @@ export default class HomePage extends React.Component {
                                     className="xxButton xxButton--transparent"
                                     href="#"
                                     onClick={this.openSignUp}
-                                >{T.get('signUp')}</a>
+                                >{T.get('action.signUp')}</a>
                                 <Link
                                     to={UTILS.DRY_NAV.DEMO.URL}
                                     className="xxButton xxButton--highlight"
@@ -57,7 +57,7 @@ export default class HomePage extends React.Component {
                             <a
                                 href={UTILS.DRY_NAV.SIGNIN.URL}
                                 className="xxHomeLogIn-anchor"
-                            >{T.get('logIn')}</a>
+                            >{T.get('action.signIn')}</a>
                         </div>
                         <HomeImages key="home-images" />
                     </div>

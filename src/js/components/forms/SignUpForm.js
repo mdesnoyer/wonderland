@@ -183,7 +183,7 @@ var SignUpForm = React.createClass({
                             type="submit"
                             disabled={!isValid}
                         >
-                            {T.get('signUp')}
+                            {T.get('action.signUp')}
                         </button>
                     </div>
                 </fieldset>

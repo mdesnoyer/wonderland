@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -9,7 +10,7 @@ var BrightcoveSmartPlayerContent = React.createClass({
         return(
             <ol className="simple-ol-list">
                 <li>Copy the Neon Telemetry Player URL to the plugin</li>
-                <li>Log in to your Brightcove Account</li>
+                <li>{T.get('action.signIn')} to your Brightcove Account</li>
                 <li>Go to <a href="https://videocloud.brightcove.com/publishing" rel="external">https://videocloud.brightcove.com/publishing</a></li>
                 <li>For each player you want to add the plugin to
                     <ol className="simple-ol-list">
