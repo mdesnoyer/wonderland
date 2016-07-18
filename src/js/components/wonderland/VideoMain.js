@@ -45,8 +45,13 @@ var VideoMain = React.createClass({
             options = {}
         ;
         options.data = {
+            video_id: self.props.videoId,
             base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
             thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+        }
+        if (self.props.shareToken) {
+            options.data.share_token = self.props.shareToken;
+            options.overrideAccountId = self.props.accountId;
         }
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
