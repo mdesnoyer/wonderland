@@ -319,7 +319,6 @@ var UTILS = {
             neons = [],
             nonNeons = []
         ;
-        debugger
         // Pass 1 - sort into `default`, `custom` and `neon`
         rawThumbnails.map(function(rawThumbnail, i) {
             switch (rawThumbnail.type) {
