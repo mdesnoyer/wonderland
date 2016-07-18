@@ -5,6 +5,7 @@ import UTILS from '../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function normalizeAccount(res) {
+    debugger
     return {
         integrationIds: res.integration_ids,
         // users

@@ -11,11 +11,6 @@ import Countdown from '../wonderland/Countdown';
 
 var VideoProcessing = React.createClass({
     mixins: [AjaxMixin],
-    getInitialState: function() {
-        return {
-            isHidden: false
-        }
-    },
     render: function() {
         var self = this,
             title,
@@ -44,8 +39,8 @@ var VideoProcessing = React.createClass({
                 title = self.props.title ? 'PROCESSING: ' + self.props.title : 'PROCESSING: ...';
                 errorMessageComponent = '';
                 deleteButton = '';
-                isError = false
-                seconds = self.props.seconds
+                isError = false;
+                seconds = self.props.seconds;
                 break;
         }
         return (

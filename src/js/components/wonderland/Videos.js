@@ -97,6 +97,7 @@ var Videos = React.createClass({
                     videoCountServed={self.state.videoCountServed}
                     videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                     openSignUp={self.props.openSignUp}
+                    isMaxLimit={self.state.isMaxLimit}
                 />
                 {
                     self.props.isMobile ? (

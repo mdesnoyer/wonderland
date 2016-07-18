@@ -22,7 +22,7 @@ var SignUpForm = React.createClass({
             email: '',
             password: '',
             verifyPassword: '',
-            mode: 'quite' // quiet, loading, error, success
+            mode: 'quiet' // quiet, loading, error, success
         }
     },
     componentWillMount: function() {
@@ -254,7 +254,7 @@ var SignUpForm = React.createClass({
                     })
                     .catch(function (err) {
                         if (err.code === 409) {
-                            E.raiseError(err.data, false);    
+                            E.raiseError(err.data, false);
                         }
                         else {
                             E.raiseError(err)
