@@ -39,9 +39,11 @@ export default class Countdown extends React.Component {
                     this.props.onFinish();
                 }
             }
-            this.setState({
-                seconds: seconds - 1
-            });
+            if (seconds > 0) { 
+                this.setState({
+                    seconds: seconds - 1
+                });
+            } 
         }, 1000);
     }
 
@@ -71,7 +73,7 @@ export default class Countdown extends React.Component {
                 </a>
             )
         }
-        else {
+        else if (this.props.seconds === null) {
             return (
                 <a className={divStyle}>
                     <span className={spanStyle}>
@@ -81,6 +83,9 @@ export default class Countdown extends React.Component {
                     </span>
                 </a>
             )
+        }
+        else { 
+            return null; 
         }
 
     }
