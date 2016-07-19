@@ -29,7 +29,7 @@ var Thumbnails = React.createClass({
             selectedItem: 0,
             isThumbnailOverlayActive: false,
             isPageOverlayActive: false,
-            badThumbs: self.props.badThumbs,
+            badThumbs: self.props.badThumbs || [],
             showLowScores: false
         };
     },
@@ -48,7 +48,7 @@ var Thumbnails = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps){
-        var self = this; 
+        var self = this;
         if (nextProps.thumbnails !== self.state.thumbnails){
 
             self.setState({thumbnails: UTILS.fixThumbnails(nextProps.thumbnails)})
@@ -82,7 +82,7 @@ var Thumbnails = React.createClass({
             selectedItem: selectedItem
         });
     },
-    render: function() { 
+    render: function() {
         var self = this,
             ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
                 <ThumbnailOverlay
@@ -137,7 +137,7 @@ var Thumbnails = React.createClass({
                     />
                     {
                         self.props.isMobile || self.state.badThumbs.length === 0 ? null : (
-                            <strong 
+                            <strong
                                 className="xxCollectionImages-allAnchor"
                                 onClick={self.toggleLowScoresVisibility}
                             >
