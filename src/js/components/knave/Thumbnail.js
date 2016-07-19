@@ -62,7 +62,7 @@ import UTILS from '../../modules/utils';
     handleThumbnailClick: function(e) {
         var self = this;
         if (self.props.handleClick) {
-            self.props.handleClick(self.props.uid);
+            self.props.handleClick(e, self.props.uid);
         }
     },
     handleMouseEnter: function() {
