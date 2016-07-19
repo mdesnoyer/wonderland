@@ -37,9 +37,83 @@ var VideoMain = React.createClass({
         if (self.state.thumbnails.length > 1 ) {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
+                self.sendForValenceFeatureKeys(); 
             }
         }
     },
+    sendForValenceFeatureKeys: function() {  
+        var tidArray = [], 
+            self=this, 
+            options={}, 
+            tToF={}
+        ; 
+        for (let t of self.state.thumbnails) {
+            tidArray.push(t.thumbnail_id); 
+        }
+        var tids = tidArray.join(',');
+        options.data = {
+            thumbnail_id: tids, 
+            fields: ['feature_ids', 'thumbnail_id'] 
+        }
+        self.GET('thumbnails', options)
+            .then(function(res) {
+                for (let t of res.thumbnails) {
+                    var filtered = t.feature_ids.filter(
+                        x => x[1] > 0.0005 && !(x[0].split('_')[1] in [0,1]));
+                    tToF[t.thumbnail_id] = filtered; 
+                }
+                let tempThumbnails = self.state.thumbnails;
+                for (let t of tempThumbnails) { 
+                    t.prelim_valence_features = tToF[t.thumbnail_id];
+                    t.final_valence_features = []; 
+                }
+                self.setState({
+                    thumbnails: tempThumbnails
+                }, function() {
+                    return true;
+                });
+            }) 
+            .catch(function(err) {
+                console.log(err);
+            }) // TODO clean up this nested then...
+            .then(function() {
+                var keys = [];  
+                for (let t of self.state.thumbnails) {
+                    for (let f of t.prelim_valence_features) { 
+                        keys.push(f[0]); 
+                    }  
+                } 
+                options = { 
+                    noAccountId: true
+                } 
+                options.data = {
+                    key: keys
+                } 
+                self.GET('feature', options)
+                    .then(function(res) {
+                        var fhash = {};
+                        for (let f of res.features) { 
+                            fhash[f.model_name+'_'+f.index] = f.name; 
+                        }
+                        let tempThumbnails = self.state.thumbnails;
+                        for (let t of tempThumbnails) {
+                            for (let pvf of t.prelim_valence_features) {
+                                t.final_valence_features.push(fhash[pvf[0]]);  
+                            } 
+                        }
+                        self.setState({
+                            thumbnails: tempThumbnails
+                        }, function() {
+                            return true;
+                        });
+                    }) 
+                    .catch(function(err) {
+                        console.log(err);
+                    })
+                ; 
+            }) 
+        ;
+    },  
     sendForLiftData: function() {
         var self = this,
             options = {}
