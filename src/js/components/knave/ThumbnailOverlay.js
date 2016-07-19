@@ -39,9 +39,7 @@ var ThumbnailOverlay = React.createClass({
         document.body.style.marginRight = 0;
     },
     render: function() {
-        var self = this,
-            tempValenceArray = ['sunshine', 'rainbows', 'unicorns', 'happiness', 'kittens'] // TODO
-        ;
+        var self = this;
         return (
             <article className="xxOverlay xxOverlay--dark xxOverlay--scroll">
                 <a href="#" className="xxOverlay-close" onClick={self.props.closeThumbnailOverlay}>{T.get('action.close')}</a>

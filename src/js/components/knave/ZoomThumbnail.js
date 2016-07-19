@@ -15,7 +15,7 @@ var ZoomThumbnail = React.createClass({
         total: React.PropTypes.number.isRequired,
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
-        valence: React.PropTypes.array.isRequired,
+        valence: React.PropTypes.array,
         extraClass: React.PropTypes.string
     },
     render: function() {
@@ -35,6 +35,9 @@ var ZoomThumbnail = React.createClass({
         if (self.props.extraClass) {
             extraClass.push(self.props.extraClass);
         }
+        if (!self.props.valence) { 
+            self.props.valence = [] 
+        } 
         return (
             <div className={'xxImageZoom-inner' + activeClass}>
                 <div
