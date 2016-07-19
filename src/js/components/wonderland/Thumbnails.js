@@ -47,6 +47,14 @@ var Thumbnails = React.createClass({
                 break;
         }
     },
+    componentWillReceiveProps: function(nextProps){
+        var self = this;
+        debugger 
+        if (nextProps.thumbnails !== self.state.thumbnails){
+            debugger
+            self.setState({thumbnails: UTILS.fixThumbnails(nextProps.thumbnails)})
+        }
+    },
     handleClickPrevious: function(e) {
         e.preventDefault();
         var self = this;
@@ -75,7 +83,7 @@ var Thumbnails = React.createClass({
             selectedItem: selectedItem
         });
     },
-    render: function() {
+    render: function() { 
         var self = this,
             ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
                 <ThumbnailOverlay
@@ -90,6 +98,7 @@ var Thumbnails = React.createClass({
                 />
             ) : null
         ;
+        debugger
         return (
             <div className="xxCollectionImages">
                 {
@@ -129,7 +138,7 @@ var Thumbnails = React.createClass({
                         isMobile={self.props.isMobile}
                     />
                     {
-                        self.props.isMobile || self.state.badThumbs.length < 1 ? null : (
+                        self.props.isMobile || self.state.badThumbs.length === 0 ? null : (
                             <strong 
                                 className="xxCollectionImages-allAnchor"
                                 onClick={self.toggleLowScoresVisibility}

@@ -50,7 +50,7 @@ var VideoOwner = React.createClass({
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
             isAnalyzing: false,
-            seconds: self.props.seconds,
+            seconds: self.props.seconds
         }
     },
     startTimer: function () {
@@ -67,7 +67,6 @@ var VideoOwner = React.createClass({
         }
     },
     componentWillUnmount: function() {
-        debugger
         var self = this;
         clearInterval(self.timer);
     },
@@ -81,7 +80,7 @@ var VideoOwner = React.createClass({
     },
     render: function() {
         var self = this;
-        if (self.state.videoState === 'processing' || self.state.videoState === 'failed' )  {
+        if (!self.state.demographicThumbnails || self.state.demographicThumbnails.length === 0) {
             return (
                 <VideoProcessing
                     videoId={self.state.videoId}
@@ -165,7 +164,7 @@ var VideoOwner = React.createClass({
                             created: video.created,
                             isLoading: false,
                             seconds: video.estimated_time_remaining,
-                            badThumbs: bad_thumbnails
+                            badThumbs: badThumbs
                         }, function () {
                             // Stop and restart the timer, just in case it was not running before
                             clearInterval(self.timer);

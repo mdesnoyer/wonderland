@@ -130,10 +130,10 @@ var VideoMain = React.createClass({
                 }
             }
         ;
-        if (self.props.isGuest) {
-            options.data.share_token = self.props.shareToken;
-            options.overrideAccountId = self.props.accountId;
-        }
+        // if (self.props.isGuest) {
+        //     options.data.share_token = self.props.shareToken;
+        //     options.overrideAccountId = self.props.accountId;
+        // }
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
@@ -181,6 +181,7 @@ var VideoMain = React.createClass({
         var self = this,
             thumbs
         ;
+        debugger 
         if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
             thumbs = self.props.demographicThumbnails[value].thumbnails;
         }
@@ -188,12 +189,15 @@ var VideoMain = React.createClass({
             thumbs = self.props.thumbnails;
             value = false;
         }
+        debugger
         self.setState({
             selectedDemographic: value,
             thumbnails: thumbs,
-            videoState: UTILS.VIDEO_STATE_ENUM.processing
+            videoState: 'processing'
         }, function () {
+            debugger
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
+                debugger
                 self.sendForLiftData();
             }
         });

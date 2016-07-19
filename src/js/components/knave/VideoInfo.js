@@ -18,7 +18,7 @@ var VideoInfo = React.createClass({
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
                 if (thumb.gender) {
-                    demographicLabel = UTILS.FILTERS_GENER_ENUM[thumb.gender];
+                    demographicLabel = UTILS.FILTERS_GENDER[thumb.gender];
                 }
                 if (thumb.age) {
                     demographicLabel = demographicLabel ? demographicLabel + ' / ' + thumb.age : thumb.age;
@@ -60,8 +60,10 @@ var VideoInfo = React.createClass({
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                         if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
+                        
                             countdown = (
-                                <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
+                                <span><Countdown seconds={self.props.timeRemaining} onFinish={false} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
+                                // <span><Countdown seconds={self.props.timeRemaining} onFinish={false} classPrefix="xxCollectionFilterCountdown" /></span>
                             );
                         }
                         else {
