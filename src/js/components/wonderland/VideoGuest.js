@@ -58,7 +58,7 @@ var VideoGuest = React.createClass({
                     var video = json.videos[0];
                     if (video.demographic_thumbnails.length > 0) {
                         var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
-                        var badThumbs = newThumbnails.bad_thumbnails;
+                        var badThumbs = newThumbnails.bad_thumbnails || [];
                     }
                     else {
                         var newThumbnails = video;

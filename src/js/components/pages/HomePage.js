@@ -1,28 +1,27 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 import React, {PropTypes} from 'react';
 import { Link } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Helmet from 'react-helmet';
-
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
-
 import SiteHeader from '../wonderland/SiteHeader';
 import HomeImages from '../wonderland/HomeImages';
 
-export default class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        this.state = { sidebarContent: null };
-        this.openSignUp = this.openSignUp.bind(this);
-    }
-
-    static contextTypes = {
-        router: PropTypes.object
-    };
-
-    componentWillMount() {
+var HomePage = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function() {
+        return {
+            sidebarContent: null
+        };
+    },
+    componentWillMount: function() {
         var self = this;
         SESSION.user()
             .then(function(userData) {
@@ -32,25 +31,22 @@ export default class HomePage extends React.Component {
                 // Do nothing, user not signed in
             })
         ;
-    }
-
-    openSignUp(e) {
+    },
+    openSignUp: function(e) {
+        var self = this;
         e.preventDefault();
-
-        this.setState({
+        self.setState({
             sidebarContent: 'signUp',
         });
-    }
-
+    },
     render() {
-        const { sidebarContent } = this.state;
-
+        var self = this;
         return (
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
                 />
-                <SiteHeader sidebarContent={sidebarContent} />
+                <SiteHeader sidebarContent={self.state.sidebarContent} />
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     <div>
                         <article className="xxFeatureContent" key="home-featureContent">
@@ -61,7 +57,7 @@ export default class HomePage extends React.Component {
                                 <a
                                     className="xxButton xxButton--transparent"
                                     href="#"
-                                    onClick={this.openSignUp}
+                                    onClick={self.openSignUp}
                                 >{T.get('action.signUp')}</a>
                                 <Link
                                     to={UTILS.DRY_NAV.DEMO.URL}
@@ -82,4 +78,10 @@ export default class HomePage extends React.Component {
             </div>
         );
     }
-};
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export default HomePage;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
