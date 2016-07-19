@@ -18,7 +18,14 @@ export default class VideosMobileWarning extends React.Component {
         });
     }
 
+    handleSubmit(e) {
+        console.log('here');
+        e.preventDefault();
+    }
+
     render() {
+        var self = this;
+
         const isValid = this.state.email;
 
         const sendClassName = ['xxButton', 'xxButton--highlight'];
@@ -34,23 +41,27 @@ export default class VideosMobileWarning extends React.Component {
                 <p className="xxCollectionMobileNotification-text">
                     {T.get('copy.mobile.warning.description')}
                 </p>
-                <div className="xxFormField">
-                    <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                    <input
-                        className="xxInputText"
-                        type="text"
-                        placeholder="example@email.com"
-                        value={this.state.email}
-                        onChange={e => this.updateField('email', e.target.value)}
-                    />
-                </div>
-                <div className="xxFormButtons">
-                    <button
-                        disabled={!isValid}
-                        className={sendClassName.join(' ')}
-                        type="button"
-                    >{T.get('send')}</button>
-                </div>
+                <form onSubmit={self.handleSubmit}>
+                    <fieldset>
+                        <div className="xxFormField">
+                            <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                            <input
+                                className="xxInputText"
+                                type="text"
+                                placeholder="example@email.com"
+                                value={this.state.email}
+                                onChange={e => this.updateField('email', e.target.value)}
+                            />
+                        </div>
+                        <div className="xxFormButtons">
+                            <button
+                                disabled={!isValid}
+                                className={sendClassName.join(' ')}
+                                type="submit"
+                            >{T.get('send')}</button>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
         );
     }
