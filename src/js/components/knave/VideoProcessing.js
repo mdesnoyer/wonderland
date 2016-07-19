@@ -59,6 +59,7 @@ var VideoProcessing = React.createClass({
                 seconds = self.props.seconds;
                 break;
         }
+        debugger
         return (
             <div>
                 {
@@ -71,7 +72,7 @@ var VideoProcessing = React.createClass({
                             {
                                 isError ? null : (
                                     <div>
-                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false}/>
+                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false} classPrefix=" xxCollectionFilterToggle--countdown"/>
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>

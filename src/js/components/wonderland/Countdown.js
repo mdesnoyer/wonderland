@@ -58,6 +58,7 @@ export default class Countdown extends React.Component {
         let classPrefixLabel = classPrefix + 'label';
 
         if (this.props.seconds > 1) {
+            debugger
             return (
                 <div className={classPrefix}>
                     <span className={classPrefixLabel}>

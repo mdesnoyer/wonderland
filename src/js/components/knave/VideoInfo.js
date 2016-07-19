@@ -60,9 +60,9 @@ var VideoInfo = React.createClass({
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                         if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
-                        
+
                             countdown = (
-                                <span><Countdown seconds={self.props.timeRemaining} onFinish={false} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
+                                <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
                                 // <span><Countdown seconds={self.props.timeRemaining} onFinish={false} classPrefix="xxCollectionFilterCountdown" /></span>
                             );
                         }
