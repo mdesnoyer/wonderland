@@ -6,20 +6,25 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: props.seconds
+            seconds: parseInt(props.seconds || 1),
+            classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
 
     componentDidMount() {
-        this.setProcessingTimer();
+        if (this.props.onFinish) {
+            this.setProcessingTimer();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            seconds: nextProps.seconds
-        }, function() {
-            this.setProcessingTimer()
-        });
+        if (!this.props.onFinish) {
+            this.setState({
+                seconds: nextProps.seconds
+            }, function() {
+                this.setProcessingTimer()
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -34,8 +39,9 @@ export default class Countdown extends React.Component {
 
             if (seconds > 1) {
                 this.setProcessingTimer();
-            } else {
-                if (this.props.onFinish){
+            }
+            else {
+                if (this.props.onFinish) {
                     this.props.onFinish();
                 }
             }
@@ -48,21 +54,18 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        const { seconds } = this.state;
-        var spanStyle, divStyle;
-        switch(this.props.type) {
-            case 'processing':
-                divStyle = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown";
-                spanStyle = "xxCollectionFilterToggle-label";
-                break;
-            default:
-                divStyle = "xxOnboardingCountdown";
-                spanStyle = "xxOnboardingCountdown-label";
+        var seconds = this.state.seconds,
+            classPrefix = this.state.classPrefix,
+            classPrefixLabel = classPrefix + '-label'
+        ;
+        if (this.props.type === 'processing') {
+            classPrefix = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+            classPrefixLabel = "xxCollectionFilterToggle-label"
         }
         if (this.props.seconds > 1) {
             return (
-                <a className={divStyle}>
-                    <span className={spanStyle}>
+                <div className={classPrefix}>
+                    <span className={classPrefixLabel}>
                         {
                             UTILS.formatTime(
                                 Math.floor(seconds / 60),
@@ -70,7 +73,7 @@ export default class Countdown extends React.Component {
                             )
                         }
                     </span>
-                </a>
+                </div>
             )
         }
         else if (this.props.seconds === null) {
@@ -87,6 +90,5 @@ export default class Countdown extends React.Component {
         else { 
             return null; 
         }
-
     }
 };

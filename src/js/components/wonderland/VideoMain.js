@@ -29,12 +29,13 @@ var VideoMain = React.createClass({
             isHidden: false,
             liftArray: [],
             displayThumbLift: 0,
-            thumbnails: self.props.thumbnails
+            thumbnails: self.props.thumbnails,
+            selectedDemographic: false, // default to not showing demographic thumbs (support old videos)
         }
     },
     componentWillMount: function() {
         var self = this;
-        if (self.state.thumbnails.length > 1 ) {
+        if (self.state.thumbnails.length > 1) {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
                 self.sendForValenceFeatureKeys(); 
@@ -121,42 +122,41 @@ var VideoMain = React.createClass({
     },  
     sendForLiftData: function() {
         var self = this,
-            options = {}
+            options = {
+                data: {
+                    video_id: self.props.videoId,
+                    base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
+                    thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+                }
+            }
         ;
-        options.data = {
-            video_id: self.props.videoId,
-            base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
-            thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
-        }
-        if (self.props.isGuest) {
-            options.data.share_token = self.props.shareToken;
-            options.overrideAccountId = self.props.accountId;
-        }
+        // if (self.props.isGuest) {
+        //     options.data.share_token = self.props.shareToken;
+        //     options.overrideAccountId = self.props.accountId;
+        // }
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
-                self.setState({
-                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
-                    liftArray: res.lift
-                }, function() {
-                    // We need to inject the lift into the Thumbnail object
-                    let tempThumbnails = self.state.thumbnails;
-                    for (let l of self.state.liftArray) {
-                        for (let t of tempThumbnails) {
-                            if (t.thumbnail_id === l.thumbnail_id) {
-                                t.lift = l.lift;
-                                break;
-                            }
+                // We need to inject the lift into the Thumbnail object
+                let tempThumbnails = self.state.thumbnails;
+                for (let l of res.lift) {
+                    for (let t of tempThumbnails) {
+                        if (t.thumbnail_id === l.thumbnail_id) {
+                            t.lift = l.lift;
+                            break;
                         }
                     }
-                    self.setState({
-                        thumbnails: tempThumbnails
-                    }, function() {
-                        return true;
-                    });
+                }
+                self.setState({
+                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
+                    liftArray: res.lift,
+                    thumbnails: tempThumbnails
                 });
             })
             .catch(function(err) {
                 console.log(err);
+                self.setState({
+                    isHidden: true
+                });
             })
         ;
     },
@@ -177,6 +177,28 @@ var VideoMain = React.createClass({
             isHidden: true
         });
     },
+    handleDemographicChange: function(value) {
+        var self = this,
+            thumbs
+        ;
+
+        if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
+            thumbs = self.props.demographicThumbnails[value].thumbnails;
+        }
+        else {
+            thumbs = self.props.thumbnails;
+            value = false;
+        }
+        self.setState({
+            selectedDemographic: value,
+            thumbnails: thumbs,
+            videoState: 'processing'
+        }, function () {
+            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
+                self.sendForLiftData();
+            }
+        });
+    },
     render: function() {
         var self = this;
         if (self.state.isHidden) {
@@ -189,6 +211,12 @@ var VideoMain = React.createClass({
                         <VideoContent
                             title={self.props.title}
                             videoId={self.props.videoId}
+                            videoState={self.props.videoState}
+                            demographicThumbnails={self.props.demographicThumbnails}
+                            timeRemaining={self.props.timeRemaining}
+                            selectedDemographic={self.state.selectedDemographic}
+                            handleDemographicChange={self.handleDemographicChange}
+                            refreshVideo={self.props.refreshVideo}
                             handleDelete={self.handleDelete}
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}

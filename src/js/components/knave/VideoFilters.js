@@ -93,32 +93,25 @@ var VideoFilters = React.createClass({
         var self = this,
             options = {
                 data: {
-                    video_id: self.props.videoId,
+                    external_video_ref: self.props.videoId,
                     reprocess: true,
                     gender: self.state.gender,
                     age: self.state.age
                 }
             }
         ;
-        // TEMP until API is ready
-        alert('TODO: POST .../videos');
-        if (self.props.handleMenuChange) {
-            self.props.handleMenuChange();
-        }
-        // END TEMP
-
-        // self.POST('videos', options)
-        //     .then(function(json) {
-        //         if (self.props.handleMenuChange) {
-        //             self.props.handleMenuChange();
-        //         }
-        //     })
-        //     .catch(function(err) {
-        //         E.raiseError(err);
-        //         self.setState({
-        //             isError: true
-        //         });
-        //     });
+        self.POST('videos', options)
+            .then(function(json) {
+                if (self.props.handleMenuChange) {
+                    self.props.handleMenuChange('refresh');
+                }
+            })
+            .catch(function(err) {
+                E.raiseError(err);
+                self.setState({
+                    isError: true
+                });
+            });
     }
 })
 

@@ -14,7 +14,7 @@ var SignUpForm = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             firstName: '',

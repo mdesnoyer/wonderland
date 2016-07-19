@@ -149,6 +149,13 @@ var UTILS = {
             mapping: 'danger'
         }
     },
+    VIDEO_STATE_ENUM: {
+        unknown: 'unknown',
+        processing: 'processing',
+        processed: 'processed',
+        serving: 'serving',
+        failed: 'failed'
+    },
     DRY_NAV: {
         HOME: {
             URL: '/'
@@ -289,6 +296,10 @@ var UTILS = {
             label: '50+'
         }
     ],
+    FILTERS_GENDER_ENUM: {
+            M: 'Male',
+            F: 'Female'
+    },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
