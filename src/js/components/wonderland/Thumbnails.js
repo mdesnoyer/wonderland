@@ -48,10 +48,9 @@ var Thumbnails = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps){
-        var self = this;
-        debugger 
+        var self = this; 
         if (nextProps.thumbnails !== self.state.thumbnails){
-            debugger
+
             self.setState({thumbnails: UTILS.fixThumbnails(nextProps.thumbnails)})
         }
     },
@@ -98,7 +97,6 @@ var Thumbnails = React.createClass({
                 />
             ) : null
         ;
-        debugger
         return (
             <div className="xxCollectionImages">
                 {
