@@ -50,7 +50,7 @@ var VideoOwner = React.createClass({
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
             isAnalyzing: false,
-            seconds: self.props.seconds,
+            seconds: self.props.seconds
         }
     },
     startTimer: function () {

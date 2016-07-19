@@ -12,15 +12,19 @@ export default class Countdown extends React.Component {
     }
 
     componentDidMount() {
-        this.setProcessingTimer();
+        if (this.props.onFinish) {
+            this.setProcessingTimer();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            seconds: nextProps.seconds
-        }, function() {
-            this.setProcessingTimer()
-        });
+        if (!this.props.onFinish) {
+            this.setState({
+                seconds: nextProps.seconds
+            }, function() {
+                this.setProcessingTimer()
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -30,6 +34,9 @@ export default class Countdown extends React.Component {
     }
 
     setProcessingTimer() {
+        if (this.__processingTimer) {
+            clearTimeout(this.__processingTimer);
+        }
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
 

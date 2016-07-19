@@ -18,7 +18,7 @@ var VideoInfo = React.createClass({
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
                 if (thumb.gender) {
-                    demographicLabel = UTILS.FILTERS_GENER_ENUM[thumb.gender];
+                    demographicLabel = UTILS.FILTERS_GENDER_ENUM[thumb.gender];
                 }
                 if (thumb.age) {
                     demographicLabel = demographicLabel ? demographicLabel + ' / ' + thumb.age : thumb.age;
@@ -36,7 +36,7 @@ var VideoInfo = React.createClass({
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
             demographicOptions: demographicOptions
-        }
+        };
     },
     onDemographicChange: function(value) {
         var self = this;

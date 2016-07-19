@@ -274,6 +274,10 @@ var UTILS = {
             label: 'Male'
         }
     ],
+    FILTERS_GENDER_ENUM: {
+        M: 'Male',
+        F: 'Female'
+    },
     FILTERS_AGE: [
         {
             value: '18-19',
