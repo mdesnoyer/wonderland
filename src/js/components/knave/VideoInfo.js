@@ -15,14 +15,6 @@ var VideoInfo = React.createClass({
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
-                <a className="xxCollectionFilterToggle"
-                    data-action-label="refilter"
-                    onClick={self.props.handleMenuChange} >
-                </a>
-                <div className="xxCollectionFilters">
-                    <strong className="xxCollectionFilters-title">Filters</strong>
-                    <span className="xxCollectionFilters-value">None</span>
-                </div>
                 <Lift displayThumbLift={self.props.displayThumbLift}/>
             </div>
         );
