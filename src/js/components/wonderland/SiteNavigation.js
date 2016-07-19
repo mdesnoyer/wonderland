@@ -70,7 +70,7 @@ var SiteNavigation = React.createClass({
         if (self.state.hasUser) {
             constructedNav.push(items.account);
         }
-        else if (!self.state.hasUser) {
+        else {
             constructedNav.push(items.signUp);
         }
         return (
