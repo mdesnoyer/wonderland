@@ -149,6 +149,13 @@ var UTILS = {
             mapping: 'danger'
         }
     },
+    VIDEO_STATE_ENUM: {
+        unknown: 'unknown',
+        processing: 'processing',
+        processed: 'processed',
+        serving: 'serving',
+        failed: 'failed'
+    },
     DRY_NAV: {
         HOME: {
             URL: '/'
@@ -267,6 +274,10 @@ var UTILS = {
             label: 'Male'
         }
     ],
+    FILTERS_GENDER_ENUM: {
+        M: 'Male',
+        F: 'Female'
+    },
     FILTERS_AGE: [
         {
             value: '18-19',

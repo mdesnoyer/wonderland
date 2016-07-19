@@ -39,7 +39,7 @@ var Videos = React.createClass({
             })
             .catch(function(err) {
                 self.context.router.push('*')
-            })
+            });
     },
     componentDidMount: function() {
         var self = this;
@@ -114,7 +114,7 @@ var Videos = React.createClass({
         if (count === max) {
             self.setState({
                 isMaxLimit: true
-            })
+            });
         }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {

@@ -35,6 +35,8 @@ var VideoOwner = React.createClass({
             videoId: self.props.videoId,
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
+            demographicThumbnails: self.props.demographicThumbnails,
+            timeRemaining: self.props.timeRemaining,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
             title: self.props.title,
@@ -48,14 +50,18 @@ var VideoOwner = React.createClass({
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
             isAnalyzing: false,
-            seconds: self.props.seconds,
+            seconds: self.props.seconds
         }
     },
-    componentDidMount: function() {
+    startTimer: function () {
         var self = this;
         if (self.props.pingInterval) {
             self.timer = setInterval(self.pingVideo, UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL_BASE));
         }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self.startTimer();
         if (self.props.pingInitial) {
             setTimeout(self.pingVideo, 0);
         }
@@ -74,38 +80,41 @@ var VideoOwner = React.createClass({
     },
     render: function() {
         var self = this;
-            if (self.state.videoState === 'processing' || self.state.videoState === 'failed' ) {
-                return (
-                    <VideoProcessing
-                        videoId={self.state.videoId}
-                        title={self.state.title}
-                        error={self.state.error}
-                        videoState={self.state.videoState}
-                        duration={self.state.duration}
-                        seconds={self.state.seconds}
-                    />
-                );
-            }
-            else {
-                return (
-                    <VideoMain
-                        isGuest={false}
-                        videoId={self.state.videoId}
-                        thumbnails={self.state.sortedThumbnails}
-                        videoState={self.state.videoState}
-                        duration={self.state.duration}
-                        created={self.state.created}
-                        url={self.state.url}
-                        shareToken={self.state.shareToken}
-                        title={self.state.title}
-                        isMobile={self.props.isMobile}
-                        badThumbs={self.state.badThumbs}
-                        openSignUp={self.props.openSignUp}
-                    />
-                );
-            }
+        if (!self.state.demographicThumbnails || self.state.demographicThumbnails.length === 0) {
+            return (
+                <VideoProcessing
+                    videoId={self.state.videoId}
+                    title={self.state.title}
+                    error={self.state.error}
+                    videoState={self.state.videoState}
+                    duration={self.state.duration}
+                    seconds={self.state.seconds}
+                />
+            );
+        }
+        else {
+            return (
+                <VideoMain
+                    isGuest={false}
+                    videoId={self.state.videoId}
+                    thumbnails={self.state.sortedThumbnails}
+                    demographicThumbnails={self.state.demographicThumbnails}
+                    timeRemaining={self.state.timeRemaining}
+                    refreshVideo={self.pingVideo}
+                    videoState={self.state.videoState}
+                    duration={self.state.duration}
+                    created={self.state.created}
+                    url={self.state.url}
+                    shareToken={self.state.shareToken}
+                    title={self.state.title}
+                    isMobile={self.props.isMobile}
+                    badThumbs={self.state.badThumbs}
+                    openSignUp={self.props.openSignUp}
+                />
+            );
+        }
     },
-    pingVideo: function() {
+    pingVideo: function(forceRefresh) {
         var self = this,
             options = {
                 data: {
@@ -117,7 +126,7 @@ var VideoOwner = React.createClass({
         // If the video is 'serving' or 'processed' its going nowhere, so don't
         // bother checking. There is a known latency issue in Back End, #1103.
         // We still need to poll 'failed'.
-        if (self.state.videoState === 'serving' || self.state.videoState === 'processed') {
+        if (!forceRefresh && (self.state.videoState === 'serving' || self.state.videoState === 'processed')) {
             clearInterval(self.timer);
             return false;
         }
@@ -135,11 +144,14 @@ var VideoOwner = React.createClass({
                         var newThumbnails = video;
                         var badThumbs = [];
                     }
-                    if (video.state !== self.state.videoState) {
+                    if (video.state !== self.state.videoState || forceRefresh) {
                         // Only bother if the state has changed
                         self.setState({
                             status: 200,
                             thumbnails: newThumbnails.thumbnails,
+                            
+                            demographicThumbnails: video.demographic_thumbnails,
+                            timeRemaining: video.estimated_time_remaining,
                             sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
@@ -153,10 +165,14 @@ var VideoOwner = React.createClass({
                             created: video.created,
                             isLoading: false,
                             seconds: video.estimated_time_remaining,
-                            badThumbs: badThumbs
-                        })
+                            badThumbs: video.bad_thumbnails
+                        }, function () {
+                            // Stop and restart the timer, just in case it was not running before
+                            clearInterval(self.timer);
+                            self.startTimer();
+                        });
                     }
-                    else {
+                    else if(!forceRefresh) {
                         self.setState({
                             title: video.title,
                             isLoading: false,
