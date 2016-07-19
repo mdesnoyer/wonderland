@@ -22,7 +22,7 @@ var SignUp = React.createClass({
     },
 
     render: function() {
-        const signIn = T.get('action.signIn', {
+        const signIn = T.get('copy.signUp.signIn', {
             '@link' : UTILS.DRY_NAV.SIGNIN.URL
         });
         const { submissionComplete } = this.state;
