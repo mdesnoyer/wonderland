@@ -61,10 +61,12 @@ var VideoMain = React.createClass({
                     // feature_ids is all the features that are in our 
                     // system, and a confidence score, only grab those with 
                     // a threshold of above 0.0005 and not in indexes 0, 1 
-                    // since all of them have them. 
-                    tidToFeatures[t.thumbnail_id] = t.feature_ids.filter(
-                        x => x[1] > UTILS.VALENCE_THRESHOLD && 
-                        !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
+                    // since all of them have them.
+                    if (t.feature_ids) {  
+                        tidToFeatures[t.thumbnail_id] = t.feature_ids.filter(
+                            x => x[1] > UTILS.VALENCE_THRESHOLD && 
+                            !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
+                    }
                 }
                 let tempThumbnails = self.state.thumbnails;
                 for (let t of tempThumbnails) { 
@@ -79,10 +81,16 @@ var VideoMain = React.createClass({
             .then(function(tempThumbnails) {
                 var keys = [];  
                 for (let t of tempThumbnails) {
+                    if (!t.prelim_valence_features) { 
+                        continue; 
+                    } 
                     for (let f of t.prelim_valence_features) { 
                         keys.push(f[0]); 
                     }  
-                } 
+                }
+                if (keys.length === 0) { 
+                    return 
+                }  
                 options = { 
                     noAccountId: true
                 } 
