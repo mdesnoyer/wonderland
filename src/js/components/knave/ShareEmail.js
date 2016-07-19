@@ -5,6 +5,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import E from '../../modules/errors';
 import UTILS from '../../modules/utils';
+import RENDITIONS from '../../modules/renditions';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 var ShareEmail = React.createClass({
@@ -102,7 +103,9 @@ var ShareEmail = React.createClass({
     },
     handleSubmit: function(e) {
         var self = this,
-            sortedThumbnails = UTILS.fixThumbnails(self.props.thumbnails, true)
+            sortedThumbnails = UTILS.fixThumbnails(self.props.thumbnails, true),
+            smallRendition = RENDITIONS.findRendition(self.props.thumbnails, 140, 79),
+            largeRendition = RENDITIONS.findRendition(self.props.thumbnails, 425, 240)
         ;
         e.preventDefault();
         self.setState({
@@ -114,12 +117,12 @@ var ShareEmail = React.createClass({
                     to_email_address: self.refs.email.value.trim(),
                     template_slug: UTILS.RESULTS_MANDRILL_SLUG,
                     template_args: {
-                        'top_thumbnail': sortedThumbnails[0].url,
-                        'lift': ((parseInt(sortedThumbnails[0].lift * 100)).toString() + '%'),
-                        'thumbnail_one': sortedThumbnails[1].url,
-                        'thumbnail_two': sortedThumbnails[2].url,
-                        'thumbnail_three': sortedThumbnails[3].url,
-                        'collection_url': self.state.collectionUrl,
+                        'top_thumbnail': self.renditionCheck(largeRendition, sortedThumbnails[0]),
+                        'lift': UTILS.makePercentage(sortedThumbnails[0].lift, 0, true),
+                        'thumbnail_one': self.renditionCheck(smallRendition, sortedThumbnails[1]),
+                        'thumbnail_two': self.renditionCheck(smallRendition, sortedThumbnails[2]),
+                        'thumbnail_three': self.renditionCheck(smallRendition, sortedThumbnails[3]),
+                        'collection_url': self.state.collectionUrl
                     }
                 }
             };
@@ -137,6 +140,9 @@ var ShareEmail = React.createClass({
                 })
             ;
         })
+    },
+    renditionCheck: function(renditionNumber, thumbnail) {
+        return (renditionNumber === RENDITIONS.NO_RENDITION ? thumbnail.url : thumbnail.rendition[renditionNumber].url);
     }
 });
 
