@@ -11,20 +11,18 @@ export default class Countdown extends React.Component {
         };
     }
 
-    componentDidMount() {
-        if (this.props.onFinish) {
-            this.setProcessingTimer();
-        }
-    }
+    // componentDidMount() {
+    //     if (this.props.onFinish) {
+    //         this.setProcessingTimer();
+    //     }
+    // }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.onFinish) {
             this.setState({
                 seconds: nextProps.seconds
             }, function() {
                 this.setProcessingTimer()
             });
-        }
     }
 
     componentWillUnmount() {
@@ -78,8 +76,8 @@ export default class Countdown extends React.Component {
         }
         else if (this.props.seconds === null) {
             return (
-                <a className={divStyle}>
-                    <span className={spanStyle}>
+                <a className={classPrefix}>
+                    <span className={classPrefixLabel}>
                         {
                             "Loading..."
                         }
