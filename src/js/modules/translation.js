@@ -361,7 +361,6 @@ const _DEFAULT_LOCALE = 'en-US',
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
             'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
-            'copy.homePage.neonBeta': 'NeonScore for Video (beta 1.0)',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
