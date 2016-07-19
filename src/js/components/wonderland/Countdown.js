@@ -78,8 +78,8 @@ export default class Countdown extends React.Component {
         }
         else if (this.props.seconds === null) {
             return (
-                <a className={divStyle}>
-                    <span className={spanStyle}>
+                <a className={classPrefix}>
+                    <span className={classPrefixLabel}>
                         {
                             "Loading..."
                         }
