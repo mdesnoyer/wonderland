@@ -62,8 +62,6 @@ export default class Countdown extends React.Component {
             classPrefix = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
             classPrefixLabel = "xxCollectionFilterToggle-label"
         }
-        debugger 
-
         if (this.props.seconds > 1) {
             return (
                 <div className={classPrefix}>
