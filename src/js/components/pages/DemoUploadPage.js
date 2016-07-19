@@ -29,10 +29,6 @@ export default React.createClass({
     },
 
     componentWillUnmount: function() {
-        if (this.__timeRemainingTimer) {
-            clearTimeout(this.__timeRemainingTimer);
-        }
-
         if (this.__videoProcessingTimer) {
             clearTimeout(this.__videoProcessingTimer);
         }
@@ -55,35 +51,31 @@ export default React.createClass({
     onAnalysisStart: function(postResp) {
         const { video } = postResp;
         const videoId = video.video_id;
-        const timeEstimatePollingWait = 1000;
-
-        this.getVideo(videoId).then(getResp => {
-            const estimatedTimeRemaining = getResp.videos[0].estimated_time_remaining;
-
-            if (!estimatedTimeRemaining) {
-                this.__timeRemainingTimer = setTimeout(() => {
-                    this.onAnalysisStart(postResp);
-                }, timeEstimatePollingWait);
-            } else {
-                this.setState({
-                    isAnalyzing: true,
-                    seconds: parseInt(estimatedTimeRemaining),
-                    videoId,
-                });
-            }
-        }).catch(() => {
-            this.showError();
+        this.setState({
+            isAnalyzing: true,
+            seconds: null,
+            videoId,
         });
     },
-
     onCountdownFinish: function() {
         const { router } = this.context;
         const { videoId } = this.state;
-        const videoStatePollingWait = 5 * 1000;
+        var videoStatePollingWait = 5 * 1000; 
 
         this.getVideo(videoId).then(resp => {
             const video = resp.videos[0]
-
+            if (!this.state.seconds) { 
+                videoStatePollingWait = 10;
+                const estimatedTimeRemaining = video.estimated_time_remaining || null;
+                if (estimatedTimeRemaining) {
+                    this.setState({
+                        seconds: estimatedTimeRemaining
+                    });
+                }
+            }
+            else { 
+                videoStatePollingWait = 5000;
+            }  
             if (video.state === 'processed') {
                 router.push({
                     pathname: UTILS.DRY_NAV.VIDEO_LIBRARY.URL,
@@ -109,7 +101,6 @@ export default React.createClass({
 
     render: function() {
         const { isAnalyzing, seconds, uploadText, sidebarContent } = this.state;
-
         return (
             <main className="xxPage">
                 <Helmet
@@ -120,7 +111,7 @@ export default React.createClass({
                     isAnalyzing ? (
                         <div>
                             <SiteHeader sidebarContent={sidebarContent} />
-                            <Countdown onFinish={this.onCountdownFinish} seconds={seconds} />
+                            <Countdown onFinish={this.onCountdownFinish} seconds={this.state.seconds} />
                             <OnboardingSlides toggleLearnMore={this.toggleLearnMore} />
                             <OnboardingEmail videoId={this.state.videoId} />
                         </div>
