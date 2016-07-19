@@ -37,9 +37,80 @@ var VideoMain = React.createClass({
         if (self.state.thumbnails.length > 1 ) {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
+                self.sendForValenceFeatureKeys(); 
             }
         }
     },
+    sendForValenceFeatureKeys: function() {  
+        var tidArray = [], 
+            self = this, 
+            options = {}, 
+            tidToFeatures = {}
+        ; 
+        for (let t of self.state.thumbnails) {
+            tidArray.push(t.thumbnail_id); 
+        }
+        var tids = tidArray.join(',');
+        options.data = {
+            thumbnail_id: tids, 
+            fields: ['feature_ids', 'thumbnail_id'] 
+        }
+        self.GET('thumbnails', options)
+            .then(function(res) {
+                for (let t of res.thumbnails) {
+                    // feature_ids is all the features that are in our 
+                    // system, and a confidence score, only grab those with 
+                    // a threshold of above 0.0005 and not in indexes 0, 1 
+                    // since all of them have them. 
+                    tidToFeatures[t.thumbnail_id] = t.feature_ids.filter(
+                        x => x[1] > UTILS.VALENCE_THRESHOLD && 
+                        !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
+                }
+                let tempThumbnails = self.state.thumbnails;
+                for (let t of tempThumbnails) { 
+                    t.prelim_valence_features = tidToFeatures[t.thumbnail_id];
+                    t.final_valence_features = []; 
+                }
+                return tempThumbnails; 
+            }) 
+            .catch(function(err) {
+                console.log(err);
+            })
+            .then(function(tempThumbnails) {
+                var keys = [];  
+                for (let t of tempThumbnails) {
+                    for (let f of t.prelim_valence_features) { 
+                        keys.push(f[0]); 
+                    }  
+                } 
+                options = { 
+                    noAccountId: true
+                } 
+                options.data = {
+                    key: keys
+                } 
+                self.GET('feature', options)
+                    .then(function(res) {
+                        var fhash = {};
+                        for (let f of res.features) { 
+                            fhash[f.model_name+'_'+f.index] = f.name; 
+                        }
+                        for (let t of tempThumbnails) {
+                            for (let pvf of t.prelim_valence_features) {
+                                t.final_valence_features.push(fhash[pvf[0]]);  
+                            } 
+                        }
+                        self.setState({
+                            thumbnails: tempThumbnails
+                        });  
+                    }) 
+                    .catch(function(err) {
+                        console.log(err);
+                    })
+                ; 
+            }) 
+        ;
+    },  
     sendForLiftData: function() {
         var self = this,
             options = {}
