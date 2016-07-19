@@ -59,7 +59,6 @@ var VideoProcessing = React.createClass({
                 seconds = self.props.seconds;
                 break;
         }
-        debugger
         return (
             <div>
                 {
