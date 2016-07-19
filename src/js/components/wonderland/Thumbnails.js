@@ -64,11 +64,11 @@ var Thumbnails = React.createClass({
         });
     },
     closeThumbnailOverlay: function(e) {
-        e.preventDefault();
         var self = this;
-        self.toggleThumbnailOverlay(self.state.selectedItem);
+        self.toggleThumbnailOverlay(e, self.state.selectedItem);
     },
-    toggleThumbnailOverlay: function(selectedItem) {
+    toggleThumbnailOverlay: function(e, selectedItem) {
+        e.preventDefault();
         var self = this;
         self.setState({
             isThumbnailOverlayActive: !self.state.isThumbnailOverlayActive,
