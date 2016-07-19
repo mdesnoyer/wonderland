@@ -312,6 +312,8 @@ var UTILS = {
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
+    VALENCE_THRESHOLD: 0.0005,
+    VALENCE_IGNORE_INDEXES: [0,1],  
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },

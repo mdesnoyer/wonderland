@@ -43,9 +43,9 @@ var VideoMain = React.createClass({
     },
     sendForValenceFeatureKeys: function() {  
         var tidArray = [], 
-            self=this, 
-            options={}, 
-            tToF={}
+            self = this, 
+            options = {}, 
+            tidToFeatures = {}
         ; 
         for (let t of self.state.thumbnails) {
             tidArray.push(t.thumbnail_id); 
@@ -58,27 +58,27 @@ var VideoMain = React.createClass({
         self.GET('thumbnails', options)
             .then(function(res) {
                 for (let t of res.thumbnails) {
-                    var filtered = t.feature_ids.filter(
-                        x => x[1] > 0.0005 && !(x[0].split('_')[1] in [0,1]));
-                    tToF[t.thumbnail_id] = filtered; 
+                    // feature_ids is all the features that are in our 
+                    // system, and a confidence score, only grab those with 
+                    // a threshold of above 0.0005 and not in indexes 0, 1 
+                    // since all of them have them. 
+                    tidToFeatures[t.thumbnail_id] = t.feature_ids.filter(
+                        x => x[1] > UTILS.VALENCE_THRESHOLD && 
+                        !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
                 }
                 let tempThumbnails = self.state.thumbnails;
                 for (let t of tempThumbnails) { 
-                    t.prelim_valence_features = tToF[t.thumbnail_id];
+                    t.prelim_valence_features = tidToFeatures[t.thumbnail_id];
                     t.final_valence_features = []; 
                 }
-                self.setState({
-                    thumbnails: tempThumbnails
-                }, function() {
-                    return true;
-                });
+                return tempThumbnails; 
             }) 
             .catch(function(err) {
                 console.log(err);
-            }) // TODO clean up this nested then...
-            .then(function() {
+            })
+            .then(function(tempThumbnails) {
                 var keys = [];  
-                for (let t of self.state.thumbnails) {
+                for (let t of tempThumbnails) {
                     for (let f of t.prelim_valence_features) { 
                         keys.push(f[0]); 
                     }  
@@ -95,7 +95,6 @@ var VideoMain = React.createClass({
                         for (let f of res.features) { 
                             fhash[f.model_name+'_'+f.index] = f.name; 
                         }
-                        let tempThumbnails = self.state.thumbnails;
                         for (let t of tempThumbnails) {
                             for (let pvf of t.prelim_valence_features) {
                                 t.final_valence_features.push(fhash[pvf[0]]);  
@@ -103,9 +102,7 @@ var VideoMain = React.createClass({
                         }
                         self.setState({
                             thumbnails: tempThumbnails
-                        }, function() {
-                            return true;
-                        });
+                        });  
                     }) 
                     .catch(function(err) {
                         console.log(err);
