@@ -62,7 +62,7 @@ var VideoMain = React.createClass({
                     // system, and a confidence score, only grab those with 
                     // a threshold of above 0.0005 and not in indexes 0, 1 
                     // since all of them have them.
-                    if (t.feature_ids) {  
+                    if (t.feature_ids && t.feature_ids.length > 0) {  
                         tidToFeatures[t.thumbnail_id] = t.feature_ids.filter(
                             x => x[1] > UTILS.VALENCE_THRESHOLD && 
                             !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
