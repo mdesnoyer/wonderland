@@ -38,6 +38,9 @@ var ThumbnailOverlay = React.createClass({
         document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = 0;
     },
+    getValenceFeatures: function(thumbnail) { 
+        return (thumbnail.final_valence_features ? thumbnail.final_valence_features : []) 
+    }, 
     render: function() {
         var self = this;
         return (
@@ -56,7 +59,7 @@ var ThumbnailOverlay = React.createClass({
                                         handleClickPrevious={self.props.handleClickPrevious}
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}
-                                        valence={thumbnail.final_valence_features}
+                                        valence={self.getValenceFeatures(thumbnail)}
                                         extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
                                     />
                                 );
