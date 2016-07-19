@@ -36,7 +36,7 @@ var ZoomThumbnail = React.createClass({
             extraClass.push(self.props.extraClass);
         }
         if (!self.props.valence) { 
-            self.props.valence = [] 
+            self.props.valence = [];  
         } 
         return (
             <div className={'xxImageZoom-inner' + activeClass}>
