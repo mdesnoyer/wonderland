@@ -40,6 +40,7 @@ var PasswordBrothers = React.createClass({
                         className="xxInputText"
                         type="password"
                         data-ref="passwordInitial"
+                        minLength="8"
                         maxLength="64"
                         onChange={self.handlePasswordInitialChange}
                         autoComplete="off"
