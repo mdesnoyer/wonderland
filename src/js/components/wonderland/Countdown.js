@@ -12,13 +12,17 @@ export default class Countdown extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         if (this.props.onFinish) {
+            debugger
             this.setProcessingTimer();
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.onFinish) {
+        debugger
+        if (!this.props.onFinish || !this.state.seconds) {
+            debugger
             this.setState({
                 seconds: nextProps.seconds
             }, function() {
@@ -62,7 +66,7 @@ export default class Countdown extends React.Component {
             classPrefix = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
             classPrefixLabel = "xxCollectionFilterToggle-label"
         }
-        if (this.props.seconds > 1) {
+        if (this.state.seconds > 1) {
             return (
                 <div className={classPrefix}>
                     <span className={classPrefixLabel}>
@@ -87,8 +91,8 @@ export default class Countdown extends React.Component {
                 </a>
             )
         }
-        else { 
-            return null; 
-        }
+        // else { 
+        //     return null; 
+        // }
     }
 };

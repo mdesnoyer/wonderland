@@ -36,7 +36,6 @@ var VideoOwner = React.createClass({
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             demographicThumbnails: self.props.demographicThumbnails,
-            timeRemaining: self.props.timeRemaining,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
             title: self.props.title,
@@ -74,8 +73,8 @@ var VideoOwner = React.createClass({
         return (
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
-            (nextProps.isMobile !== this.props.isMobile) ||
-            (nextProps.seconds !== this.props.seconds)
+            (nextProps.isMobile !== this.state.isMobile) ||
+            (nextProps.seconds !== this.state.seconds)
         );
     },
     render: function() {
@@ -99,7 +98,7 @@ var VideoOwner = React.createClass({
                     videoId={self.state.videoId}
                     thumbnails={self.state.sortedThumbnails}
                     demographicThumbnails={self.state.demographicThumbnails}
-                    timeRemaining={self.state.timeRemaining}
+                    seconds={self.state.seconds}
                     refreshVideo={self.pingVideo}
                     videoState={self.state.videoState}
                     duration={self.state.duration}
@@ -150,7 +149,6 @@ var VideoOwner = React.createClass({
                             status: 200,
                             thumbnails: newThumbnails.thumbnails,
                             demographicThumbnails: video.demographic_thumbnails,
-                            timeRemaining: video.estimated_time_remaining,
                             sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
                             videoState: video.state,
                             videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
