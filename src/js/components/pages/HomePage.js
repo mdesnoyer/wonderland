@@ -51,7 +51,7 @@ var HomePage = React.createClass({
                     <div>
                         <article className="xxFeatureContent" key="home-featureContent">
                             <h1 className="xxTitle xxFeatureContent-title">{T.get('copy.homePage.title')}</h1>
-                            <p>{T.get('copy.homePage.description')}</p>
+                            <p dangerouslySetInnerHTML={{__html: T.get('copy.homePage.description')}}></p>
                             <div className="xxFormButtons xxFeatureContent-buttons">
                                 <a
                                     className="xxButton xxButton--transparent"
