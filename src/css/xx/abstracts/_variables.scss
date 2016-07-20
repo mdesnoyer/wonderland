@@ -13,8 +13,12 @@ $gutter-width: 24px; // gutters are fixed width, columns are fluid
 $breakpoint-mobile: 767px; // below iPad size but could be anything
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// naming is style-guide style to allow easy color replacement without
-// changing every file that uses the colour
+// Colours
+
+$alto: #d0d0d0;
+$white: #fff;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $base-color: #989898;
 $secondary-color: #3d3d3d;
@@ -27,8 +31,6 @@ $accent-color: #ff6b31;
 $bg-color: #f5f5f5;
 $bg-secondary-color: #f0f0f0;
 $bg-tertiary-color: #d8d8d8;
-
-$white: #fff;
 
 $error-color: #f00;
 
