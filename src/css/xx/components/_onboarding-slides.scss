@@ -64,6 +64,10 @@
         opacity: 1;
         transition: opacity .25s ease-in-out .25s, visibility 0s .25s;
     }
+
+    & .xxSubtitle {
+        display: none;
+    }
 }
 
 .xxOnboardingSlide-content {
