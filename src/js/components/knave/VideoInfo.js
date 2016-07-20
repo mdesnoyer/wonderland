@@ -58,10 +58,8 @@ var VideoInfo = React.createClass({
                     {self.props.title}
                 </h1>
                 {(() => {
-                    debugger
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                         if (self.props.seconds !== null || self.props.seconds <= 1) {
-                            debugger
                             countdown = (
                                 <span><Countdown seconds={self.props.seconds} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
                             );

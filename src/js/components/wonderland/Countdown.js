@@ -6,27 +6,30 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: parseInt(props.seconds || 1),
+            seconds: parseInt(props.seconds),
             classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
 
     componentDidMount() {
-        debugger
         this.setProcessingTimer();
     }
-
 
     componentWillUnmount() {
         if (this.__processingTimer) {
             clearTimeout(this.__processingTimer);
         }
     }
-
-    setProcessingTimer() {
-        if (this.__processingTimer) {
-            clearTimeout(this.__processingTimer);
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.seconds) {
+            this.setState({
+                seconds: nextProps.seconds
+            }, function() {
+                this.setProcessingTimer()
+            });
         }
+    }
+    setProcessingTimer() {
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
 
@@ -34,11 +37,8 @@ export default class Countdown extends React.Component {
                 this.setProcessingTimer();
             }
             else {
-                if (this.props.onFinish) {
-                    this.props.onFinish();
-                }
+                this.props.onFinish();
             }
-
             this.setState({
                 seconds: seconds - 1,
             });
@@ -48,7 +48,6 @@ export default class Countdown extends React.Component {
     render() {
         const { seconds, classPrefix } = this.state;
         let classPrefixLabel = classPrefix + 'label';
-
         if (this.props.seconds > 1) {
             return (
                 <div className={classPrefix}>

@@ -18,11 +18,6 @@ var VideoProcessingCountdown = React.createClass({
             this.setProcessingTimer()
         });
     },
-    // componentWillUnmount: function() {
-    //     if (this.__processingTimer) {
-    //         clearTimeout(this.__processingTimer);
-    //     }
-    // },
     setProcessingTimer: function() {
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
