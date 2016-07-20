@@ -13,23 +13,9 @@ export default class Countdown extends React.Component {
 
     componentDidMount() {
         debugger
-        if (this.props.onFinish) {
-            debugger
-            this.setProcessingTimer();
-        }
+        this.setProcessingTimer();
     }
 
-    componentWillReceiveProps(nextProps) {
-        debugger
-        if (!this.props.onFinish || !this.state.seconds) {
-            debugger
-            this.setState({
-                seconds: nextProps.seconds
-            }, function() {
-                this.setProcessingTimer()
-            });
-        }
-    }
 
     componentWillUnmount() {
         if (this.__processingTimer) {
@@ -38,6 +24,9 @@ export default class Countdown extends React.Component {
     }
 
     setProcessingTimer() {
+        if (this.__processingTimer) {
+            clearTimeout(this.__processingTimer);
+        }
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
 
@@ -49,24 +38,18 @@ export default class Countdown extends React.Component {
                     this.props.onFinish();
                 }
             }
-            if (seconds > 0) { 
-                this.setState({
-                    seconds: seconds - 1
-                });
-            } 
+
+            this.setState({
+                seconds: seconds - 1,
+            });
         }, 1000);
     }
 
     render() {
-        var seconds = this.state.seconds,
-            classPrefix = this.state.classPrefix,
-            classPrefixLabel = classPrefix + '-label'
-        ;
-        if (this.props.type === 'processing') {
-            classPrefix = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
-            classPrefixLabel = "xxCollectionFilterToggle-label"
-        }
-        if (this.state.seconds > 1) {
+        const { seconds, classPrefix } = this.state;
+        let classPrefixLabel = classPrefix + 'label';
+
+        if (this.props.seconds > 1) {
             return (
                 <div className={classPrefix}>
                     <span className={classPrefixLabel}>
@@ -78,21 +61,10 @@ export default class Countdown extends React.Component {
                         }
                     </span>
                 </div>
-            )
+            );
         }
-        else if (this.props.seconds === null) {
-            return (
-                <a className={classPrefix}>
-                    <span className={classPrefixLabel}>
-                        {
-                            "Loading..."
-                        }
-                    </span>
-                </a>
-            )
+        else {
+            return null;
         }
-        // else { 
-        //     return null; 
-        // }
     }
 };

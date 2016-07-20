@@ -73,8 +73,8 @@ var VideoOwner = React.createClass({
         return (
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
-            (nextProps.isMobile !== this.state.isMobile) ||
-            (nextProps.seconds !== this.state.seconds)
+            (nextProps.isMobile !== this.props.isMobile) ||
+            (nextProps.seconds !== this.props.seconds)
         );
     },
     render: function() {
