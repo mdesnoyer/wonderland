@@ -22,9 +22,6 @@ var SignUp = React.createClass({
     },
 
     render: function() {
-        const signIn = T.get('copy.signUp.signIn', {
-            '@link' : UTILS.DRY_NAV.SIGNIN.URL
-        });
         const { submissionComplete } = this.state;
 
         if (submissionComplete) {
@@ -41,10 +38,6 @@ var SignUp = React.createClass({
                 <div className="xxPageOverlay-content">
                     <h1 className="xxSubtitle">{T.get('action.signUp')}</h1>
                     <h2 className="xxTitle">{T.get('copy.signUp.title')}</h2>
-                    <div className="xxText">
-                        <p>{T.get('copy.signUp.body')}</p>
-                        <p dangerouslySetInnerHTML={{__html: signIn}} />
-                    </div>
                     <SignUpForm
                         completeSubmission={this.completeSubmission}
                         handleClose={this.props.handleClose}

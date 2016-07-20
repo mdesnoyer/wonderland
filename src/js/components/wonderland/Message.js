@@ -26,7 +26,7 @@ var Message = React.createClass({
         return (
             <div className={style}>
                 <p 
-                    className="xxLabel"
+                    className="xxFormNote"
                     dangerouslySetInnerHTML={{__html: self.props.message}} 
                 ></p>
             </div>
