@@ -284,7 +284,7 @@ var SignUpForm = React.createClass({
                             E.raiseError(err);
                             self.setState({
                                 mode: 'error',
-                                errorMessage: 'Please enter a valid email address'
+                                errorMessage: T.get('error.invalidEmail')
                             });
                         }
                         self._isSubmitted = false;

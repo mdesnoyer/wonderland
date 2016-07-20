@@ -334,6 +334,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
+            'error.invalidEmail': 'Please enter a valid email address.',
             'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
 
