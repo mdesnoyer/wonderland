@@ -19,7 +19,8 @@ var ConfirmAccountPage = React.createClass({
     getInitialState: function() {
         return {
             errorMessageArray: [],
-            isError: false
+            isError: false,
+            sidebarContent: null
         }  
     },
     handleError: function (errorMessage) {
@@ -50,30 +51,29 @@ var ConfirmAccountPage = React.createClass({
             }
         });
     },
+    openContactUs: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'contact'
+        });
+    },
     render: function() {
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : '',
-            body1 = T.get('copy.confirmAccount.body.1'),
-            body2 = T.get('copy.confirmAccount.body.2', {
-                '@link': UTILS.CONTACT_EXTERNAL_URL
-            })
+            messageNeeded = self.state.isError ? <Message message={self.state.errorMessageArray} type="formError" /> : ''
         ;
         return (
             <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
-                <SiteHeader />
+                <SiteHeader sidebarContent={self.state.sidebarContent} />
                 <section>
-                        <div>
-                            {messageNeeded}
-                            <h1>{T.get('copy.confirmAccount.heading')}</h1>
-                            <div>
-                                <a href="/signin/">sign in here</a>
-                                <p>{body1}</p>
-                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
-                            </div>
-                        </div>
+                    <h1 className="xxTitle">{T.get('copy.confirmAccount.heading')}</h1>
+                    {messageNeeded}
+                    <div className="xxText">
+                        <p>{T.get('copy.confirmAccount.body.1')} Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="#" onClick={self.openContactUs}>contact us</a>.</p>
+                    </div>
                 </section>
                 <SiteFooter />
             </main> 
