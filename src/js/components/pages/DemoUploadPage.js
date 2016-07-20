@@ -68,7 +68,6 @@ export default React.createClass({
                 videoStatePollingWait = 10;
                 const estimatedTimeRemaining = video.estimated_time_remaining || null;
                 if (estimatedTimeRemaining) {
-                    debugger
                     this.setState({
                         seconds: estimatedTimeRemaining
                     });

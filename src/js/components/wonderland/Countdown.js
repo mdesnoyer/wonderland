@@ -20,6 +20,7 @@ export default class Countdown extends React.Component {
             clearTimeout(this.__processingTimer);
         }
     }
+
     componentWillReceiveProps(nextProps) {
         if (!this.state.seconds) {
             this.setState({
@@ -29,6 +30,7 @@ export default class Countdown extends React.Component {
             });
         }
     }
+
     setProcessingTimer() {
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
