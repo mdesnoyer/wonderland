@@ -22,7 +22,8 @@ var SignUpForm = React.createClass({
             email: '',
             password: '',
             verifyPassword: '',
-            mode: 'quiet' // quiet, loading, error, success
+            mode: 'quiet', // quiet, loading, error, success
+            errorMessage: '' // TODO: default generic message
         }
     },
     componentWillMount: function() {
@@ -80,116 +81,133 @@ var SignUpForm = React.createClass({
             terms = T.get('copy.agreeTerms', {
                 '@link': UTILS.DRY_NAV.TERMS.URL
             }),
+            signIn = T.get('copy.signUp.signIn', {
+                '@link' : UTILS.DRY_NAV.SIGNIN.URL
+            }),
             isValid = self.state.firstName && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            userMessage = null
+            userMessage = false
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <Message message={E.getErrors()} type="formError" />;
+                userMessage = <Message message={self.state.errorMessage} type="formError" />;
                 break;
             case 'loading':
                 userMessage = <Message message={T.get('copy.loading')} />;
-                break;
-            case 'success':
-                userMessage = <Message message={T.get('copy.confirmAccount.body')} />;
                 break;
             default:
                 break;
         }
         return (
             <form onSubmit={self.handleSubmit}>
-                {userMessage}
                 {
-                self.state.mode === 'loading' || self.state.mode === 'success' ? null : (
-                <fieldset>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.firstName')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="firstName"
-                            minLength="1"
-                            maxLength="256"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.lastName.optional')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="lastName"
-                            minLength="1"
-                            maxLength="256"
-                            onChange={self.updateField}
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                        <input
-                            className="xxInputText"
-                            type="email"
-                            data-ref="email"
-                            minLength="6"
-                            maxLength="1024"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('copy.passwordInitial')}</label>
-                        <input
-                            className="xxInputText"
-                            type="password"
-                            data-ref="password"
-                            minLength="8"
-                            maxLength="64"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        {
-                            self.state.verifyPassword && self.state.password !== self.state.verifyPassword ? (
-                                <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
-                            ) : null
-                        }
-                        <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
-                        <input
-                            className="xxInputText"
-                            type="password"
-                            data-ref="verifyPassword"
-                            minLength="8"
-                            maxLength="64"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <span dangerouslySetInnerHTML={{__html: terms}} />
-                    <div className="xxFormButtons">
-                        <button
-                            className="xxButton"
-                            type="button"
-                            onClick={self.props.handleClose}
-                        >
-                            {T.get('back')}
-                        </button>
-                        <button
-                            className={submitClassName.join(' ')}
-                            type="submit"
-                            disabled={!isValid}
-                        >
-                            {T.get('action.signUp')}
-                        </button>
-                    </div>
-                </fieldset>
-                )
-            }
+                    self.state.mode === 'success' ? (
+                        <div>
+                            <div className="xxText"><p>{T.get('copy.confirmAccount.body')}</p></div>
+                            <div className="xxFormButtons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    onClick={self.props.handleClose}
+                                >
+                                    {T.get('back')}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <fieldset>
+                            <div className="xxText">
+                                <p>{T.get('copy.signUp.body')}</p>
+                                <p dangerouslySetInnerHTML={{__html: signIn}} />
+                            </div>
+                            {userMessage}
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.firstName')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="text"
+                                    data-ref="firstName"
+                                    minLength="1"
+                                    maxLength="256"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.lastName.optional')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="text"
+                                    data-ref="lastName"
+                                    minLength="1"
+                                    maxLength="256"
+                                    onChange={self.updateField}
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                                <input
+                                    className="xxInputText"
+                                    
+                                    data-ref="email"
+                                    minLength="6"
+                                    maxLength="1024"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('copy.passwordInitial')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="password"
+                                    data-ref="password"
+                                    minLength="8"
+                                    maxLength="64"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                {
+                                    self.state.verifyPassword && self.state.password !== self.state.verifyPassword ? (
+                                        <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
+                                    ) : null
+                                }
+                                <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="password"
+                                    data-ref="verifyPassword"
+                                    minLength="8"
+                                    maxLength="64"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <span dangerouslySetInnerHTML={{__html: terms}} />
+                            <div className="xxFormButtons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    onClick={self.props.handleClose}
+                                >
+                                    {T.get('back')}
+                                </button>
+                                <button
+                                    className={submitClassName.join(' ')}
+                                    type="submit"
+                                    disabled={!isValid}
+                                >
+                                    {T.get('action.signUp')}
+                                </button>
+                            </div>
+                        </fieldset>
+                    )
+                }
             </form>
         );
     },
@@ -208,7 +226,8 @@ var SignUpForm = React.createClass({
         });
         if (!E.checkForErrors(errorList)) {
             self.setState({
-                mode: 'error'
+                mode: 'error',
+                errorMessage: T.get('error.passwordFormatInvalid')
             });
         }
         else {
@@ -256,15 +275,21 @@ var SignUpForm = React.createClass({
                     .catch(function (err) {
                         if (err.code === 409) {
                             E.raiseError(err.data, false);
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: err.message
+                            });
                         }
                         else {
-                            E.raiseError(err)
+                            E.raiseError(err);
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: 'Please enter a valid email address'
+                            });
                         }
                         self._isSubmitted = false;
-                        self.setState({
-                            mode: 'error'
-                        });
                     })
+                ;
             }
         }
     }
