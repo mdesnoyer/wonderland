@@ -71,7 +71,7 @@ var VideoProcessing = React.createClass({
                             {
                                 isError ? null : (
                                     <div>
-                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false}/>
+                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false} />
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>

@@ -50,7 +50,7 @@ var SiteNavigation = React.createClass({
     },
     handleClick: function(e) {
         var self = this,
-            content = e.target.getAttribute('content')
+            content = e.target.name
         ;
         e.preventDefault();
         self.props.setSidebarContent(content);
@@ -58,19 +58,19 @@ var SiteNavigation = React.createClass({
     render: function() {
         var self = this,
             items = {
-                learnMore: <a className="xxNav-anchor" href="#" content="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
-                contactPage: <a className="xxNav-anchor" href="#" content="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
-                signUp: <a className="xxNav-anchor" href="#" content="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
-                account: <a className="xxNav-anchor" href="#" content="account" onClick={self.handleClick}>{T.get('nav.account')}</a>
+                learnMore: <a className="xxNav-anchor" href="#" name="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
+                contactPage: <a className="xxNav-anchor" href="#" name="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
+                signUp: <a className="xxNav-anchor" href="#" name="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
+                account: <a className="xxNav-anchor" href="#" name="account" onClick={self.handleClick}>{T.get('nav.account')}</a>
             },
             constructedNav = []
         ;
         constructedNav.push(items.learnMore);
         constructedNav.push(items.contactPage);
-        if (self.state.hasUser === true) {
+        if (self.state.hasUser) {
             constructedNav.push(items.account);
         }
-        else if (self.state.hasUser === false) {
+        else {
             constructedNav.push(items.signUp);
         }
         return (
@@ -78,7 +78,7 @@ var SiteNavigation = React.createClass({
                 <ul>
                     {
                         constructedNav.map(function(levelItem, i) {
-                            if (levelItem.props['content'] === self.state.sidebarContent) {
+                            if (levelItem.props['name'] === self.state.sidebarContent) {
                                 return (
                                     <li key={i} className="xxNav-item is-active">{levelItem}</li>
                                 );

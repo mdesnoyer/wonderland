@@ -29,7 +29,7 @@ var Thumbnails = React.createClass({
             selectedItem: 0,
             isThumbnailOverlayActive: false,
             isPageOverlayActive: false,
-            badThumbs: self.props.badThumbs,
+            badThumbs: self.props.badThumbs || [],
             showLowScores: false
         };
     },
@@ -45,6 +45,13 @@ var Thumbnails = React.createClass({
             case 39: // Right Arrow
                 self.handleClickNext(e);
                 break;
+        }
+    },
+    componentWillReceiveProps: function(nextProps){
+        var self = this;
+        if (nextProps.thumbnails !== self.state.thumbnails){
+
+            self.setState({thumbnails: UTILS.fixThumbnails(nextProps.thumbnails)})
         }
     },
     handleClickPrevious: function(e) {
@@ -64,11 +71,11 @@ var Thumbnails = React.createClass({
         });
     },
     closeThumbnailOverlay: function(e) {
-        e.preventDefault();
         var self = this;
-        self.toggleThumbnailOverlay(self.state.selectedItem);
+        self.toggleThumbnailOverlay(e, self.state.selectedItem);
     },
-    toggleThumbnailOverlay: function(selectedItem) {
+    toggleThumbnailOverlay: function(e, selectedItem) {
+        e.preventDefault();
         var self = this;
         self.setState({
             isThumbnailOverlayActive: !self.state.isThumbnailOverlayActive,
@@ -129,8 +136,8 @@ var Thumbnails = React.createClass({
                         isMobile={self.props.isMobile}
                     />
                     {
-                        self.props.isMobile || self.state.badThumbs.length < 1 ? null : (
-                            <strong 
+                        self.props.isMobile || self.state.badThumbs.length === 0 ? null : (
+                            <strong
                                 className="xxCollectionImages-allAnchor"
                                 onClick={self.toggleLowScoresVisibility}
                             >

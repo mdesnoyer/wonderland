@@ -67,6 +67,11 @@ var VideoContent = React.createClass({
                         <VideoInfo
                             title={self.props.title}
                             handleMenuChange={self.handleMenuChange}
+                            videoState={self.props.videoState}
+                            handleDemographicChange={self.props.handleDemographicChange}
+                            selectedDemographic={self.props.selectedDemographic}
+                            demographicThumbnails={self.props.demographicThumbnails}
+                            timeRemaining={self.props.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
                         />
                         <VideoCollectionActions openSignUp={self.props.openSignUp} handleMenuChange={self.handleMenuChange} />
@@ -109,10 +114,21 @@ var VideoContent = React.createClass({
         return <div>{contents}</div>;
     },
     handleMenuChange: function(e) {
-        var self = this;
-        self.setState({
-            contents: e && e.target ? e.target.dataset.actionLabel : e || defaultContent
-        });
+        var self = this,
+            value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
+        ;
+        if (value === 'refresh') {
+            self.setState({
+                contents: 'info'
+            }, function () {
+                self.props.refreshVideo(true);
+            });
+        }
+        else {
+            self.setState({
+                contents: value
+            });
+        }
     }
 })
 

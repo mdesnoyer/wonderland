@@ -149,6 +149,13 @@ var UTILS = {
             mapping: 'danger'
         }
     },
+    VIDEO_STATE_ENUM: {
+        unknown: 'unknown',
+        processing: 'processing',
+        processed: 'processed',
+        serving: 'serving',
+        failed: 'failed'
+    },
     DRY_NAV: {
         HOME: {
             URL: '/'
@@ -289,6 +296,10 @@ var UTILS = {
             label: '50+'
         }
     ],
+    FILTERS_GENDER_ENUM: {
+            M: 'Male',
+            F: 'Female'
+    },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
@@ -312,6 +323,8 @@ var UTILS = {
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
+    VALENCE_THRESHOLD: 0.0005,
+    VALENCE_IGNORE_INDEXES: [0,1],  
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
