@@ -38,9 +38,8 @@ var SignInForm = React.createClass({
             messageNeededComponent = self.state.isError ? <Message type="formError" message={E.getErrors()} /> : false
         ;
         return (
-            <fieldset className="xxMainForm">
+            <fieldset>
                 <form onSubmit={self.handleSubmit}>
-                    <h2 className="xxTitle">{T.get('action.signIn')}</h2>
                     {messageNeededComponent}
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('label.yourEmail')}</label>

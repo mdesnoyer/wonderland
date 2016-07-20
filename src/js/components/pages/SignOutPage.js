@@ -37,7 +37,10 @@ var SignOutPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.signOut.title'))}
                 />
                 <SiteHeader />
-                <SignInForm />
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('action.signIn')}</h1>
+                    <SignInForm />
+                </section>
                 <SiteFooter />
             </main>
         );
