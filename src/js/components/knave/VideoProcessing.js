@@ -52,7 +52,7 @@ var VideoProcessing = React.createClass({
                 seconds = 1;
                 break;
             case 'processing':
-                title = self.props.title ? 'PROCESSING: ' + self.props.title : 'PROCESSING: ...';
+                title = self.props.title;
                 errorMessageComponent = '';
                 deleteButton = '';
                 isError = false;
@@ -64,6 +64,7 @@ var VideoProcessing = React.createClass({
                 {
                     self.state.isHidden ? null : (
                         <article className="xxCollection xxCollection--video xxCollection--processing">
+                            <h1 className="xxSubtitle">PROCESSING</h1>
                             <h1 className="xxCollection-title">
                                 {title}
                                 {deleteButton}
