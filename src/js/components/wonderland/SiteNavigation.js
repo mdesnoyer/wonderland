@@ -12,7 +12,8 @@ var SiteNavigation = React.createClass({
         var self = this;
         return {
             sidebarContent: self.props.sidebarContent,
-            hasUser: false
+            hasUser: false,
+            name: ''
         }
     },
     componentDidMount: function() {
@@ -30,7 +31,8 @@ var SiteNavigation = React.createClass({
                 .then(function(user) {
                     if (self._isMounted) {
                         self.setState({
-                            hasUser: true
+                            hasUser: true,
+                            name: user.displayName
                         });
                     }
                 })
@@ -61,7 +63,7 @@ var SiteNavigation = React.createClass({
                 learnMore: <a className="xxNav-anchor" href="#" name="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
                 contactPage: <a className="xxNav-anchor" href="#" name="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
                 signUp: <a className="xxNav-anchor" href="#" name="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
-                account: <a className="xxNav-anchor" href="#" name="account" onClick={self.handleClick}>{T.get('nav.account')}</a>
+                account: <a className="xxNav-anchor" href="#" name="account" onClick={self.handleClick}>{self.state.name}</a>
             },
             constructedNav = []
         ;
