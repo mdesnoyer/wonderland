@@ -179,6 +179,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
             'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
+            'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails! Please look for an email that will verify you account. It should arrive very quickly. If not, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
@@ -333,6 +334,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
+            'error.invalidEmail': 'Please enter a valid email address.',
             'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
 
