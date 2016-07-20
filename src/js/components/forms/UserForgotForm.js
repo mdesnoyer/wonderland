@@ -76,14 +76,8 @@ var UserForgotForm = React.createClass({
             });
         });
     },
-    openLearnMore: function(e) {
-        var self = this;
-        e.preventDefault();
-        self.props.updateState();
-    },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend>{T.get('copy.userForgot.heading')}</legend> : false,
             messageNeededComponent = false,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = (self.state.email)
@@ -92,12 +86,13 @@ var UserForgotForm = React.createClass({
             submitClassName.push('xxButton--important');
         }
         switch(self.state.mode) {
-            case 'quiet':
-                break;
             case 'error':
-                messageNeededComponent = <Message message={T.get('copy.userForgot.success')} type="formError" />;
+                messageNeededComponent = <Message message={T.get('copy.userForgot.error')} type="formError" />;
                 break;
             case 'loading':
+                messageNeededComponent = <Message message={T.get('copy.loading')} />;
+                break;
+            default:
                 break;
         }
         return (
@@ -107,14 +102,14 @@ var UserForgotForm = React.createClass({
                     {
                         (self.state.mode === 'success') ? (
                             <div className="xxText">
-                                <p>If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour, so keep an eye on your inbox and spam folders. In the meantime, you can learn more about the science powering Neon <a href="#" onClick={self.openLearnMore}>here</a>.</p>
+                                <p>{T.get('copy.userForgot.success')}</p>
                             </div>
                         ) : (
                             <div>
                                 <div className="xxText">
                                     <p>{T.get('copy.userForgot.body')}</p>
                                 </div>
-                                {legendElement}
+                                {messageNeededComponent}
                                 <div className="xxFormField">
                                     <label className="xxLabel">{T.get('label.yourEmail')}</label>
                                     <input className="xxInputText"
