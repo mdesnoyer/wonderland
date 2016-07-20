@@ -5,7 +5,6 @@ import AjaxMixin from '../../mixins/Ajax';
 import Account from '../../mixins/Account';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import E from '../../modules/errors';
 import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17,7 +16,8 @@ var ContactForm = React.createClass({
             mode: 'quiet', // quiet, error, loading, success
             name: '',
             email: '',
-            message: ''
+            message: '',
+            errorMessage: ''
         }
     },
     updateField: function(e) {
@@ -64,10 +64,20 @@ var ContactForm = React.createClass({
                     });
                 })
                 .catch(function(err) {
-                    E.raiseError(err);
-                    self.setState({
-                        mode: 'error'
-                    });
+                    switch(err.message) {
+                        case "not a valid email address for dictionary value @ data[u'from_email']":
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: T.get('error.invalidEmail')
+                            });
+                            break;
+                        default:
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: T.get('error.contactUs')
+                            });
+                            break;
+                    }
                 })
             ;
         });
@@ -83,55 +93,70 @@ var ContactForm = React.createClass({
         }
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={self.state.errorMessage} type="formError" />;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
-                break;
-            case 'success':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.contactUs.success')}</p></div>;
+                userMessage = <Message message={T.get('copy.loading')} />;
                 break;
             default:
                 break;
         }
         return (
             <form onSubmit={self.handleSubmit}>
-                {userMessage}
-                <fieldset>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourName')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="name"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.yourEmail')}</label>
-                        <input
-                            className="xxInputText"
-                            type="email"
-                            data-ref="email"
-                            onChange={self.updateField}
-                            required
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.message')}</label>
-                        <textarea
-                            className="xxTextArea"
-                            data-ref="message"
-                            onChange={self.updateField}
-                            required
-                        ></textarea>
-                    </div>
-                    <div className="xxFormButtons">
-                        <button className="xxButton" type="button" onClick={self.props.handleClose}>{T.get('back')}</button>
-                        <button className={sendClassName.join(' ')} type="submit" disabled={!isValid}>{T.get('send')}</button>
-                    </div>
-                </fieldset>
+                {
+                    (self.state.mode === 'success') ? (
+                        <div>
+                            <div className="xxText">
+                                <p>{T.get('copy.contactUs.success')}</p>
+                            </div>
+                            <div className="xxFormButtons">
+                                <button className="xxButton" type="button" onClick={self.props.handleClose}>{T.get('back')}</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="xxText">
+                                <p>Get in touch with questions or comments. We&rsquo;d love to hear from you!</p>
+                            </div>
+                            {userMessage}
+                            <fieldset>
+                                <div className="xxFormField">
+                                    <label className="xxLabel">{T.get('label.yourName')}</label>
+                                    <input
+                                        className="xxInputText"
+                                        type="text"
+                                        data-ref="name"
+                                        onChange={self.updateField}
+                                        required
+                                    />
+                                </div>
+                                <div className="xxFormField">
+                                    <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                                    <input
+                                        className="xxInputText"
+                                        type="email"
+                                        data-ref="email"
+                                        onChange={self.updateField}
+                                        required
+                                    />
+                                </div>
+                                <div className="xxFormField">
+                                    <label className="xxLabel">{T.get('label.message')}</label>
+                                    <textarea
+                                        className="xxTextArea"
+                                        data-ref="message"
+                                        onChange={self.updateField}
+                                        required
+                                    ></textarea>
+                                </div>
+                                <div className="xxFormButtons">
+                                    <button className="xxButton" type="button" onClick={self.props.handleClose}>{T.get('back')}</button>
+                                    <button className={sendClassName.join(' ')} type="submit" disabled={!isValid}>{T.get('send')}</button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    )
+                }                
             </form>
         );
     }
