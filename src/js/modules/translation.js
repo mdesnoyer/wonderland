@@ -333,6 +333,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
             'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
             'error.invalidEmail': 'Please enter a valid email address.',
+            'error.contactUs': 'Oops! We can’t receive your message right now. Please try again or email us at ask@neon-lab.com.',
             'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
 
