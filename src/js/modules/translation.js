@@ -399,7 +399,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Mobile
             'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
-            'copy.mobile.warning.description': 'Let us email you a link to check it out on desktop later. You can analyze your videos and get your own NeonScores for free.',
+            'copy.mobile.warning.description': 'Check out the full site at app.neon-lab.com.',
 
             // Tutorial
             'copy.tutorial.checkItOut': 'Check it Out',
