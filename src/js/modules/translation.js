@@ -59,7 +59,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.xOfY': '@x of @y',
             'copy.pageN': 'Page @n',
 
-            'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image. <a href="@link" rel="external">Learn More</a>',
+            'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
