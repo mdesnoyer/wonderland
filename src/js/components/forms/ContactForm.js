@@ -65,6 +65,7 @@ var ContactForm = React.createClass({
                 })
                 .catch(function(err) {
                     switch(err.message) {
+                        // Checking with message rather than code because there are two 400 errors, one for invalid email and another related to #1449 Once #1449 is resolved we should be able to check on code instead - AK
                         case "not a valid email address for dictionary value @ data[u'from_email']":
                             self.setState({
                                 mode: 'error',
