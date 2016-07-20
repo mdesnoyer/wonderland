@@ -86,7 +86,7 @@ var SignUpForm = React.createClass({
             }),
             isValid = self.state.firstName && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            userMessage = false
+            userMessage = null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
@@ -151,7 +151,7 @@ var SignUpForm = React.createClass({
                                 <label className="xxLabel">{T.get('label.yourEmail')}</label>
                                 <input
                                     className="xxInputText"
-                                    
+                                    type="email"
                                     data-ref="email"
                                     minLength="6"
                                     maxLength="1024"
