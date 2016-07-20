@@ -10,7 +10,7 @@
 }
 
 .xxHomeLogIn-anchor {
-    border-bottom: 1px solid #d0d0d0;
+    border-bottom: 1px solid $alto;
     margin-left: 20px;
     padding-bottom: 7px;
 }
@@ -62,6 +62,7 @@
 }
 
 @mixin generate-home-image-animation($id, $total-duration, $duration, $delay: 0s) {
+    $speed-force: -0.25; // reduce speed by 25%
     $percentage: percentage($duration / $total-duration);
     $animation-name: animate-home-image- + $id;
 
@@ -77,7 +78,7 @@
         }
     }
 
-    animation: $animation-name $total-duration linear $delay infinite;
+    animation: $animation-name ($total-duration / (1 + $speed-force)) linear ($delay / (1 + $speed-force)) infinite;
 }
 
 .xxHomeImages-image {

@@ -28,9 +28,7 @@ var ZoomThumbnail = React.createClass({
             styleOpts = {
                 maxWidth: 'calc((100vh - 242px) / (' + h + ' / ' + w + '))'
             },
-            whyThisImage = T.get('copy.whyThisImage', {
-                '@link' : 'https://neon-lab.com/neonscore/'
-            })
+            whyThisImage = T.get('copy.whyThisImage')
         ;
         if (self.props.extraClass) {
             extraClass.push(self.props.extraClass);
@@ -67,7 +65,7 @@ var ZoomThumbnail = React.createClass({
                             })
                         }
                     </ul>
-                    <p dangerouslySetInnerHTML={{__html: whyThisImage}} />
+                    <p>{whyThisImage}</p>
                     <Lift displayThumbLift={self.props.thumbnail.lift}/>
                     <nav className="xxImageZoom-nav">
                         <a

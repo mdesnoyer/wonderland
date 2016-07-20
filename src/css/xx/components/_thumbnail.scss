@@ -4,7 +4,7 @@ $thumbnail-small-score-size: 30px;
 $thumbnail-large-score-size: 42px;
 $mobile-thumbnail-score-size: 24px;
 
-$thumbnail-hover-border: 2px;
+$thumbnail-hover-size-px: 2px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -88,17 +88,23 @@ $thumbnail-hover-border: 2px;
         }
     }
 
+    &--zoom#{&}--highLight {
+        &::after {
+            background-color: $accent-color;
+        }
+    }
+
 }
 
 .xxThumbnail-image {
     box-sizing: content-box;
     position: absolute;
-    top: -1 * $thumbnail-hover-border;
-    left: -1 * $thumbnail-hover-border;
+    top: -1 * $thumbnail-hover-size-px;
+    left: -1 * $thumbnail-hover-size-px;
     width: 100%;
     height: 100%;
     border-radius: 2px;
-    border: $thumbnail-hover-border solid rgba($accent-color, 0);
+    border: $thumbnail-hover-size-px solid rgba($accent-color, 0);
     transition: border-color $default-transition;
     // helps with old(er) warped videos - #1408
     object-fit: cover;
