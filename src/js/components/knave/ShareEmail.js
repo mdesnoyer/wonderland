@@ -74,7 +74,6 @@ var ShareEmail = React.createClass({
                                     className="xxInputText"
                                     id="xx-email-from"
                                     type="text"
-                                    ref="email"
                                     placeholder={UTILS.EXAMPLE_EMAIL}
                                 />
                             </div>

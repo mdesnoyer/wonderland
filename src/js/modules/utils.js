@@ -470,13 +470,6 @@ var UTILS = {
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
     },
-    formatTime: (minutes, seconds) => {
-
-        const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
-        const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
-
-        return `${formattedMinutes}:${formattedSeconds}`;
-    },
     shortenUrl: function(url, callback) {
         var self = this;
         reqwest({
