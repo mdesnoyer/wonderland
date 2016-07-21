@@ -51,7 +51,7 @@ var VideoUploadOverlay = React.createClass({
                         />
                     </div>
 
-                    {
+                    {/*
                         !isOnboarding ? (
                             <div>
                                 <div className="xxFormField">
@@ -62,7 +62,7 @@ var VideoUploadOverlay = React.createClass({
                                 <p className="xxFormNote">{T.get('copy.videos.upload.filter.description')}</p>
                             </div>
                         ) : null
-                    }
+                    */}
 
                     <button
                         disabled={!isValid}
