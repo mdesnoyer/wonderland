@@ -295,7 +295,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
             'copy.share.url.copied': 'Copied!',
-            'copy.share.url.selected': 'Press Ctrl-C to copy',
+            // todo, if this is osx then ⌘ else ctrl.
+            'copy.share.url.selected': 'Press ⌘-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

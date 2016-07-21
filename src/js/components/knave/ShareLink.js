@@ -33,13 +33,11 @@ var ShareLink = React.createClass({
         var self = this,
             clipboard = new Clipboard(self.refs.copyUrl);
             clipboard.on('success', e => {
-                self.props.copyClickTipText = "Copied!"
+                // Set the tooltip to reflect successful copy.
+                self.refs.copyUrlTip.setState({
+                    placeholder: T.get('copy.share.url.copied')});
                 e.clearSelection();
-
             });
-            clipboard.on('error', e => {
-                // This is expected on Safart, i.e., no copy api available.
-            })
         ;
     },
     render: function(){
@@ -99,11 +97,13 @@ var ShareLink = React.createClass({
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
-                        data-tip="Press Ctrl-C to copy"
+                        data-tip={T.get('copy.share.url.selected')}
                     >{T.get('copy')}</button>
                     <ReactTooltip
+                        ref="copyUrlTip"
                         event="click"
                         effect="solid"
+                        delayHide={1000}
                     />
                 </div>
             </div>
