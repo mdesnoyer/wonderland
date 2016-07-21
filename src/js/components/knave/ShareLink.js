@@ -123,6 +123,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     sendTwitterShare: function() {
         var self = this,  
@@ -133,6 +134,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     sendLinkedinShare: function() {
         var self = this,  
@@ -143,6 +145,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     }
 })
 

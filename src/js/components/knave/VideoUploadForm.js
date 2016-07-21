@@ -73,6 +73,7 @@ var VideoUploadForm = React.createClass({
                 })
                 console.log(err)
             });
+        TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
     render: function() {
         const { isOnboarding } = this.props;

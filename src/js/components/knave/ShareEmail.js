@@ -137,7 +137,8 @@ var ShareEmail = React.createClass({
                     });
                 })
             ;
-        })
+        });
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     renditionCheck: function(renditionNumber, thumbnail) {
         return (renditionNumber === RENDITIONS.NO_RENDITION ? thumbnail.url : thumbnail.rendition[renditionNumber].url);

@@ -30,6 +30,8 @@ export default React.createClass({
           return;
       }
 
+      TRACKING.sendEvent(self, arguments, email);
+
       this.setState({
           isSubmitted: true,
       });
