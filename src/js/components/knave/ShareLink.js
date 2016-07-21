@@ -102,6 +102,7 @@ var ShareLink = React.createClass({
                     <ReactTooltip
                         ref="copyUrlTip"
                         event="click"
+                        eventOff="mouseout"
                         effect="solid"
                         delayHide={1000}
                     />
