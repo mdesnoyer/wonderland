@@ -13,7 +13,7 @@ var SiteNavigation = React.createClass({
         return {
             sidebarContent: self.props.sidebarContent,
             hasUser: false,
-            name: 'Account' // default to account just in case
+            name: T.get('nav.account') // default to account just in case
         }
     },
     componentDidMount: function() {
