@@ -52,13 +52,15 @@ var VideoMain = React.createClass({
             tidArray.push(t.thumbnail_id);
         }
         var tids = tidArray.join(',');
-        // Guest's request needs host's account id.
-        if (self.props.isGuest) {
-            options.overrideAccountId = self.props.accountId;
-        }
         options.data = {
+            video_id: self.props.videoId,
             thumbnail_id: tids,
             fields: ['feature_ids', 'thumbnail_id']
+        }
+        // Guest's request needs host's account id and share token.
+        if (self.props.isGuest) {
+            options.overrideAccountId = self.props.accountId;
+            options.data.share_token = self.props.shareToken;
         }
         self.GET('thumbnails', options)
             .then(function(res) {
