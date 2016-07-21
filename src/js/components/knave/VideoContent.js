@@ -61,6 +61,7 @@ var VideoContent = React.createClass({
                         title={self.props.title}
                         handleMenuChange={self.handleMenuChange}
                         displayThumbLift={self.props.displayThumbLift}
+                        isGuest={self.props.isGuest}
                     />
                 ) : (
                     <div>
