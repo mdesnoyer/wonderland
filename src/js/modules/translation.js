@@ -115,7 +115,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.userForgot.heading': 'Forgot Password',
             'copy.userForgot.body': 'Enter your email address below to receive an email with password reset instructions.',
 
-            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour.',
+            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour, so keep an eye on your inbox and spam folders.',
             'copy.userForgot.error': 'TODO',
 
             'copy.userReset.title': 'Reset Password',
