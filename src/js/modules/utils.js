@@ -316,7 +316,7 @@ var UTILS = {
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
-    RESULTS_PAGE_SIZE: 10,
+    RESULTS_PAGE_SIZE: 5,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
@@ -324,7 +324,7 @@ var UTILS = {
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
-    VALENCE_IGNORE_INDEXES: [0,1],  
+    VALENCE_IGNORE_INDEXES: [0,1],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -351,7 +351,7 @@ var UTILS = {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
-                    break;                    
+                    break;
                 case 'bad_neon':
                     if (!ignoreBad) {
                         neons.push(rawThumbnail);
