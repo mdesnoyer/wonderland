@@ -12,6 +12,8 @@ var VideoUploadOverlay = React.createClass({
     getInitialState: function() {
         return {
             url: '',
+            gender: null, // null, F, M
+            age: null, // null, 18-19, 20-29, 30-29, 40-49
             isMessageNeeded: false
         }
     },
@@ -20,6 +22,23 @@ var VideoUploadOverlay = React.createClass({
         this.setState({
             [field]: value
         });
+    },
+    handleFilter: function(value, label) {
+        var self = this;
+        switch(label) {
+            case 'gender':
+                self.setState({
+                    gender: value
+                });
+                break;
+            case 'age':
+                self.setState({
+                    age: value
+                });
+                break;
+            default:
+                break;
+        }
     },
     render() {
         const { isOnboarding } = this.props;
@@ -50,31 +69,29 @@ var VideoUploadOverlay = React.createClass({
                             onChange={e => self.updateField('url', e.target.value)}
                         />
                     </div>
-
                     {
                         !isOnboarding ? (
                             <div>
                                 <div className="xxFormField">
                                     <label className="xxLabel">{T.get('copy.videos.upload.filter.title')}</label>
-                                    <DropDown label={T.get('label.gender')} options={UTILS.FILTERS_GENDER}/>
-                                    <DropDown label={T.get('label.age')} options={UTILS.FILTERS_AGE}/>
+                                    <DropDown label={T.get('label.gender')} options={UTILS.FILTERS_GENDER} handleFilter={self.handleFilter} />
+                                    <DropDown label={T.get('label.age')} options={UTILS.FILTERS_AGE} handleFilter={self.handleFilter}/>
                                 </div>
                                 <p className="xxFormNote">{T.get('copy.videos.upload.filter.description')}</p>
                             </div>
                         ) : null
                     }
-
                     <button
                         disabled={!isValid}
                         className={submitClassName.join(' ')}
                         type="submit"
-                        onClick={self.handleClick}
+                        onClick={self.handleSubmit}
                     >{T.get('upload.submit')}</button>
                 </div>
             </section>
         );
     },
-    handleClick: function() {
+    handleSubmit: function() {
         var self = this;
         if (!UTILS.validateUrl(self.state.url)) {
             self.setState({

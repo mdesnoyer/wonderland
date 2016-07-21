@@ -9,13 +9,14 @@ var DropDown = React.createClass({
         var self = this;
         return {
             isOpen: false,
+            currentLabel: self.props.label,
             currentValue: self.props.label,
             label: self.props.label
         }
     },
     render: function() {
         var self = this,
-            optionLabel = self.state.currentValue,
+            optionLabel = self.state.currentLabel,
             options = self.props.options,
             className = ['xxSelect']
         ;
@@ -45,8 +46,9 @@ var DropDown = React.createClass({
                                             className={'xxSelect-option'}
                                             key={i}
                                             data-value={option.value}
+                                            data-label={option.label}
                                             onClick={self.handleClick}
-                                        >{option.value}</li>
+                                        >{option.label}</li>
                                     )
                                 })
                             }
@@ -58,11 +60,14 @@ var DropDown = React.createClass({
     },
     handleClick: function(e) {
         var self = this,
-            value = e.target.dataset.value
+            value = e.target.dataset.value,
+            label = e.target.dataset.label
         ;
         self.setState({
-            currentValue: value
+            currentValue: value,
+            currentLabel: label
         });
+        self.props.handleFilter(value, self.state.label.toLowerCase());
     },
     toggleOpen: function(e) {
         var self = this;
