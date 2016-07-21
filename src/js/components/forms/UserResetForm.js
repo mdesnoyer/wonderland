@@ -89,6 +89,9 @@ var UserResetForm = React.createClass({
     render: function() {
         var self = this,
             messageNeededComponent = false,
+            successMessage = T.get('copy.userReset.success', {
+                '@link': UTILS.DRY_NAV.SIGNIN.URL
+            }),
             sendClassName = ['xxButton', 'xxButton--highlight'],
             isValid = (self.state.passwordInitial && self.state.passwordConfirm 
                 && (self.state.passwordInitial === self.state.passwordConfirm) 
@@ -98,39 +101,46 @@ var UserResetForm = React.createClass({
             sendClassName.push('xxButton--important');
         }
         switch(self.state.mode) {
-            case 'quiet':
-                break;
             case 'error':
                 messageNeededComponent = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
                 messageNeededComponent = <Message message={T.get('copy.loading')} />;
                 break;
-            case 'success':
-                messageNeededComponent = <Message message={T.get('copy.userReset.success', {'@link': UTILS.DRY_NAV.SIGNIN.URL})} />;
+            default:
                 break;
         }
         return (
             <fieldset className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userReset.heading')}</h2>
-                    <div className="xxText">
-                        <p>{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</p>
-                    </div>
-                    {messageNeededComponent}
-                    <PasswordBrothers 
-                        handlePasswordInitialChange={self.handlePasswordInitialChange}
-                        handlePasswordConfirmChange={self.handlePasswordConfirmChange}
-                    />
-                    <div className="xxFormButtons">
-                        <button  
-                            className={sendClassName.join(' ')} 
-                            type="submit" 
-                            disabled={!isValid}
-                        >
-                            {T.get('action.resetPassword')}
-                        </button>
-                    </div>
+                    {
+                        (self.state.mode === 'success') ? (
+                            <div className="xxText">
+                                <p><span dangerouslySetInnerHTML={{__html: successMessage}} /></p>
+                            </div>
+                        ) : (
+                            <div>
+                                <div className="xxText">
+                                    <p>{T.get('copy.userReset.body')} {T.get('error.passwordFormatInvalid')}</p>
+                                </div>
+                                {messageNeededComponent}
+                                <PasswordBrothers 
+                                    handlePasswordInitialChange={self.handlePasswordInitialChange}
+                                    handlePasswordConfirmChange={self.handlePasswordConfirmChange}
+                                />
+                                <div className="xxFormButtons">
+                                    <button  
+                                        className={sendClassName.join(' ')} 
+                                        type="submit" 
+                                        disabled={!isValid}
+                                    >
+                                        {T.get('action.resetPassword')}
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    }
                 </form>
             </fieldset>
         );
