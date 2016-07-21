@@ -14,6 +14,16 @@ var VideoInfo = React.createClass({
         var self = this,
             demographicOptions = []
         ;
+        return {
+            selectedDemographic: self.props.selectedDemographic,
+            demographicThumbnails: self.props.demographicThumbnails,
+            demographicOptions: self.getDemographicOptions()
+        }
+    },
+    getDemographicOptions: function() { 
+        var self = this,
+            demographicOptions = []
+        ; 
         if (self.props.demographicThumbnails && self.props.demographicThumbnails.length > 0) {
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
@@ -32,11 +42,7 @@ var VideoInfo = React.createClass({
                 });
             });
         }
-        return {
-            selectedDemographic: self.props.selectedDemographic,
-            demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: demographicOptions
-        }
+        return demographicOptions; 
     },
     onDemographicChange: function(value) {
         var self = this;
@@ -47,7 +53,7 @@ var VideoInfo = React.createClass({
         });
     },
     onTimerFinished: function() {
-        this.props.handleMenuChange('refresh');
+        return
     },
     render: function() {
         var self = this,
@@ -94,8 +100,8 @@ var VideoInfo = React.createClass({
                                     id="selectedDemographic"
                                     className="xxCollectionFilters-value"
                                     onChange={self.onDemographicChange}
-                                    value={self.state.selectedDemographic || 0}
-                                    options={self.state.demographicOptions}
+                                    options={self.getDemographicOptions()}
+                                    value={self.props.selectedDemographic || 0}
                                     clearable={false}
                                 />
                             );
