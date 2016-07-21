@@ -5,6 +5,7 @@ import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,7 +31,15 @@ var ShareLink = React.createClass({
     },
     componentDidMount: function() {
         var self = this,
-            c = new Clipboard(self.refs.copyUrl)
+            clipboard = new Clipboard(self.refs.copyUrl);
+            clipboard.on('success', e => {
+                self.props.copyClickTipText = "Copied!"
+                e.clearSelection();
+
+            });
+            clipboard.on('error', e => {
+                // This is expected on Safart, i.e., no copy api available.
+            })
         ;
     },
     render: function(){
@@ -86,12 +95,16 @@ var ShareLink = React.createClass({
                     >{T.get('back')}</button>
                     <button
                         className="xxButton xxButton--highlight"
-                        data-clipboard-text={self.state.shareUrl}
+                        data-clipboard-target="#xx-share-link"
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
-                        onClick={self.handleCopyClick}
+                        data-tip="Press Ctrl-C to copy"
                     >{T.get('copy')}</button>
+                    <ReactTooltip
+                        event="click"
+                        effect="solid"
+                    />
                 </div>
             </div>
         );

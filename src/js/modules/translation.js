@@ -294,6 +294,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.share.title': 'Neon Labs',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
+            'copy.share.url.copied': 'Copied!',
+            'copy.share.url.selected': 'Press Ctrl-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
