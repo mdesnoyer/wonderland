@@ -7,6 +7,7 @@ import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
+import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 var ShareEmail = React.createClass({
@@ -15,7 +16,8 @@ var ShareEmail = React.createClass({
         var self = this;
         return {
             mode: 'quiet', // quiet, error, loading, success
-            collectionUrl: self.props.collectionUrl
+            collectionUrl: self.props.collectionUrl,
+            errorMessage: T.get('error.unableToSendEmail')
         }
     },
     componentWillMount: function() {
@@ -36,10 +38,10 @@ var ShareEmail = React.createClass({
         ;
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={self.state.errorMessage} type="formError" />;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message message={T.get('copy.loading')} />;
                 break;
             default:
                 break;
@@ -135,7 +137,6 @@ var ShareEmail = React.createClass({
                     });
                 })
                 .catch(function(err) {
-                    E.raiseError(err);
                     self.setState({
                         mode: 'error'
                     });
