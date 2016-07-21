@@ -14,25 +14,21 @@ var AccountConfirmedPage = React.createClass({
     render: function() {
         var body = T.get('copy.accountConfirmed.body');
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.accountConfirmed.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                           <h1>{T.get('copy.accountConfirmed.heading')}</h1>
-                            <div className="content">
-                                <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
-                                <p><em>{T.get('app.companySig')}</em></p>
-                            </div>
-                            <SignInForm />
-                        </div>
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('copy.accountConfirmed.heading')}</h1>
+                    <div className="xxText">
+                        <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
+                        <p><em>{T.get('app.companySig')}</em></p>
                     </div>
+                    <SignInForm />
                 </section>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

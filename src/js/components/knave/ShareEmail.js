@@ -46,8 +46,6 @@ var ShareEmail = React.createClass({
         return (
             <div className="xxCollectionAction">
                 <h2 className="xxTitle">{T.get('email')}</h2>
-                <p>{T.get('copy.videoContent.email')}</p>
-                
                 {
                     (self.state.mode === 'success') ? (
                         <div>
@@ -63,6 +61,7 @@ var ShareEmail = React.createClass({
                         </div>
                     ) : (
                         <div>
+                            <p>{T.get('copy.videoContent.email')}</p>
                             {userMessage}
                             <div className="xxFormField">
                                 <label
@@ -74,7 +73,6 @@ var ShareEmail = React.createClass({
                                     className="xxInputText"
                                     id="xx-email-from"
                                     type="text"
-                                    ref="email"
                                     placeholder={UTILS.EXAMPLE_EMAIL}
                                 />
                             </div>

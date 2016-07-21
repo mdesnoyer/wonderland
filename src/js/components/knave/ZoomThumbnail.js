@@ -59,9 +59,11 @@ var ZoomThumbnail = React.createClass({
                     <ul className="xxTagList">
                         {
                             self.props.valence.map(function(v, i) {
-                                return (
-                                    <li className="xxTagList-item" key={i}>{v}</li>
-                                );
+                                while (i < 3) {
+                                    return (
+                                        <li className="xxTagList-item" key={i}>{v}</li>
+                                    );
+                                }
                             })
                         }
                     </ul>

@@ -42,7 +42,6 @@ var VideoUploadOverlay = React.createClass({
                         </label>
                         <input
                             className="xxInputText"
-                            type="text"
                             id="xx-upload-url"
                             value={self.state.url}
                             placeholder={T.get('upload.videoUrl')}

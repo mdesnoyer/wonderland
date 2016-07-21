@@ -102,7 +102,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images.',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
             'copy.lift.units': '@lift Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,7 +115,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.userForgot.heading': 'Forgot Password',
             'copy.userForgot.body': 'Enter your email address below to receive an email with password reset instructions.',
 
-            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour.',
+            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour, so keep an eye on your inbox and spam folders.',
             'copy.userForgot.error': 'TODO',
 
             'copy.userReset.title': 'Reset Password',
@@ -255,8 +255,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
             'label.filters': 'Filters',
-            'label.gender': 'Gender',
-            'label.age': 'Age',
             'label.submit': 'Submit',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,6 +294,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.share.title': 'Neon Labs',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
+            'copy.share.url.copied': 'Copied!',
+            // todo, if this is osx then ⌘ else ctrl.
+            'copy.share.url.selected': 'Press ⌘-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -333,8 +334,9 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'error.unknown': 'An unknown error has occurred.',
             'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
-            'error.passwordMatchInvalid': 'Passwords don\u2019t match.',
+            'error.passwordMatchInvalid': 'Passwords don\u2019t match',
             'error.invalidEmail': 'Please enter a valid email address.',
+            'error.contactUs': 'Oops! We can’t receive your message right now. Please try again or email us at ask@neon-lab.com.',
             'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
 
 
@@ -401,7 +403,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Mobile
             'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
-            'copy.mobile.warning.description': 'Let us email you a link to check it out on desktop later. You can analyze your videos and get your own NeonScores for free.',
+            'copy.mobile.warning.description': 'Check out the full site at app.neon-lab.com.',
 
             // Tutorial
             'copy.tutorial.checkItOut': 'Check it Out',
