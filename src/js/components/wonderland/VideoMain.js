@@ -52,6 +52,10 @@ var VideoMain = React.createClass({
             tidArray.push(t.thumbnail_id);
         }
         var tids = tidArray.join(',');
+        // Guest's request needs host's account id.
+        if (self.props.isGuest) {
+            options.overrideAccountId = self.props.accountId;
+        }
         options.data = {
             thumbnail_id: tids,
             fields: ['feature_ids', 'thumbnail_id']
