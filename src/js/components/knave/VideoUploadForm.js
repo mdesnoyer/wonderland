@@ -4,6 +4,7 @@ import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import Account from '../../mixins/Account';
 import cookie from 'react-cookie';
 import VideoUploadOverlay from './VideoUploadOverlay';

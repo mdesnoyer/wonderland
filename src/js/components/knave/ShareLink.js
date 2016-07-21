@@ -2,6 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';

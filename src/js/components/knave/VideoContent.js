@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import VideoCollectionActions from './VideoCollectionActions';
 import VideoInfo from './VideoInfo';

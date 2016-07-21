@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 
 export default React.createClass({
     mixins: [AjaxMixin],
@@ -30,8 +31,6 @@ export default React.createClass({
           return;
       }
 
-      TRACKING.sendEvent(self, arguments, email);
-
       this.setState({
           isSubmitted: true,
       });
@@ -44,6 +43,7 @@ export default React.createClass({
               didError: true,
           });
       });
+      TRACKING.sendEvent(self, arguments, email);
     },
 
     render: function() {
