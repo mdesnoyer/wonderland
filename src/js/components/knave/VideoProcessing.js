@@ -5,7 +5,7 @@ import Message from '../wonderland/Message';
 import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
-import Countdown from '../wonderland/Countdown';
+import VideoProcessingCountdown from './VideoProcessingCountdown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -71,7 +71,7 @@ var VideoProcessing = React.createClass({
                             {
                                 isError ? null : (
                                     <div>
-                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false} />
+                                        <VideoProcessingCountdown seconds={self.props.seconds} />
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>
