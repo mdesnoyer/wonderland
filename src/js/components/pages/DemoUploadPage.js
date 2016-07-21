@@ -60,11 +60,11 @@ export default React.createClass({
     onCountdownFinish: function() {
         const { router } = this.context;
         const { videoId } = this.state;
-        var videoStatePollingWait = 5 * 1000; 
+        var videoStatePollingWait = 5 * 1000;
 
         this.getVideo(videoId).then(resp => {
             const video = resp.videos[0]
-            if (!this.state.seconds) { 
+            if (!this.state.seconds) {
                 videoStatePollingWait = 10;
                 const estimatedTimeRemaining = video.estimated_time_remaining || null;
                 if (estimatedTimeRemaining) {
@@ -73,9 +73,9 @@ export default React.createClass({
                     });
                 }
             }
-            else { 
+            else {
                 videoStatePollingWait = 5000;
-            }  
+            }
             if (video.state === 'processed') {
                 router.push({
                     pathname: UTILS.DRY_NAV.VIDEO_LIBRARY.URL,

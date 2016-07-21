@@ -6,30 +6,28 @@ export default class Countdown extends React.Component {
         super(props);
 
         this.state = {
-            seconds: parseInt(props.seconds || 1),
+            seconds: parseInt(props.seconds),
             classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
 
     componentDidMount() {
-        if (this.props.onFinish) {
-            this.setProcessingTimer();
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.onFinish) {
-            this.setState({
-                seconds: nextProps.seconds
-            }, function() {
-                this.setProcessingTimer()
-            });
-        }
+        this.setProcessingTimer();
     }
 
     componentWillUnmount() {
         if (this.__processingTimer) {
             clearTimeout(this.__processingTimer);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.seconds) {
+            this.setState({
+                seconds: nextProps.seconds
+            }, function() {
+                this.setProcessingTimer()
+            });
         }
     }
 
@@ -41,27 +39,17 @@ export default class Countdown extends React.Component {
                 this.setProcessingTimer();
             }
             else {
-                if (this.props.onFinish) {
-                    this.props.onFinish();
-                }
+                this.props.onFinish();
             }
-            if (seconds > 0) { 
-                this.setState({
-                    seconds: seconds - 1
-                });
-            } 
+            this.setState({
+                seconds: seconds - 1,
+            });
         }, 1000);
     }
 
     render() {
-        var seconds = this.state.seconds,
-            classPrefix = this.state.classPrefix,
-            classPrefixLabel = classPrefix + '-label'
-        ;
-        if (this.props.type === 'processing') {
-            classPrefix = "xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
-            classPrefixLabel = "xxCollectionFilterToggle-label"
-        }
+        const { seconds, classPrefix } = this.state;
+        let classPrefixLabel = classPrefix + 'label';
         if (this.props.seconds > 1) {
             return (
                 <div className={classPrefix}>
@@ -74,21 +62,10 @@ export default class Countdown extends React.Component {
                         }
                     </span>
                 </div>
-            )
+            );
         }
-        else if (this.props.seconds === null) {
-            return (
-                <a className={classPrefix}>
-                    <span className={classPrefixLabel}>
-                        {
-                            "Loading..."
-                        }
-                    </span>
-                </a>
-            )
-        }
-        else { 
-            return null; 
+        else {
+            return null;
         }
     }
 };

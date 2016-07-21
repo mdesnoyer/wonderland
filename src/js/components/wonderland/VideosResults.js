@@ -30,7 +30,6 @@ var VideosResults = React.createClass({
                                 videoState={video.state}
                                 thumbnails={newThumbnails.thumbnails}
                                 demographicThumbnails={video.demographic_thumbnails}
-                                timeRemaining={video.estimated_time_remaining}
                                 title={video.title}
                                 error={video.error}
                                 duration={video.duration}

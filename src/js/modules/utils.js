@@ -324,7 +324,7 @@ var UTILS = {
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
-    VALENCE_IGNORE_INDEXES: [0,1],  
+    VALENCE_IGNORE_INDEXES: [0,1],
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -351,7 +351,7 @@ var UTILS = {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
-                    break;                    
+                    break;
                 case 'bad_neon':
                     if (!ignoreBad) {
                         neons.push(rawThumbnail);
