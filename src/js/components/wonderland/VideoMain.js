@@ -181,7 +181,6 @@ var VideoMain = React.createClass({
         var self = this,
             thumbs
         ;
-
         if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
             thumbs = self.props.demographicThumbnails[value].thumbnails;
         }
@@ -191,11 +190,12 @@ var VideoMain = React.createClass({
         }
         self.setState({
             selectedDemographic: value,
-            thumbnails: thumbs,
+            thumbnails: UTILS.fixThumbnails(thumbs, true), 
             videoState: 'processing'
         }, function () {
             if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData();
+                self.sendForValenceFeatureKeys(); 
             }
         });
     },

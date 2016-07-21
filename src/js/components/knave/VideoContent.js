@@ -105,7 +105,9 @@ var VideoContent = React.createClass({
             case 'refilter':
                 contents = (
                     <VideoFilters
-                        handleMenuChange={self.handleMenuChange}
+                        handleMenuChange={self.refilterMenuChange}
+                        handleDemographicChange={self.props.handleDemographicChange}
+                        selectedDemographic={self.props.selectedDemographic}
                         videoId={self.props.videoId}
                     />
                 );
@@ -113,6 +115,16 @@ var VideoContent = React.createClass({
         }
         return <div>{contents}</div>;
     },
+    refilterMenuChange: function(age, gender, is_new_video) {
+        var self = this;
+        self.setState({
+            contents: 'info'
+        }, function () {
+            if (is_new_video) { 
+                self.props.refreshVideo(true, age, gender, self.props.handleDemographicChange);
+            } 
+        });
+    }, 
     handleMenuChange: function(e) {
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent

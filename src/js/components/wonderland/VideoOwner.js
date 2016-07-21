@@ -36,6 +36,7 @@ var VideoOwner = React.createClass({
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             demographicThumbnails: self.props.demographicThumbnails,
+            selectedDemographic: self.props.selectedDemographic || 0, 
             timeRemaining: self.props.timeRemaining,
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
@@ -50,6 +51,9 @@ var VideoOwner = React.createClass({
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
             isAnalyzing: false,
+            age: null, 
+            gender: null, 
+            pingVideoCallback: null, 
             seconds: self.props.seconds
         }
     },
@@ -99,6 +103,7 @@ var VideoOwner = React.createClass({
                     videoId={self.state.videoId}
                     thumbnails={self.state.sortedThumbnails}
                     demographicThumbnails={self.state.demographicThumbnails}
+                    selectedDemographic={self.state.selectedDemographic}
                     timeRemaining={self.state.timeRemaining}
                     refreshVideo={self.pingVideo}
                     videoState={self.state.videoState}
@@ -114,7 +119,7 @@ var VideoOwner = React.createClass({
             );
         }
     },
-    pingVideo: function(forceRefresh) {
+    pingVideo: function(forceRefresh, age, gender, callback=null) {
         var self = this,
             options = {
                 data: {
@@ -130,14 +135,34 @@ var VideoOwner = React.createClass({
             clearInterval(self.timer);
             return false;
         }
+        if (!self.state.age) { 
+            self.state.age = age; 
+        } 
+        if (!self.state.gender) { 
+            self.state.gender = gender; 
+        }
+        if (!self.state.pingVideoCallback) {
+            self.state.pingVideoCallback = callback; 
+        }  
         self.setState({
-            isLoading: true
+            isLoading: true 
         }, function() {
             self.GET('videos', options)
                 .then(function(json) {
                     var video = json.videos[0];
                     if (video.demographic_thumbnails.length > 0) {
-                        var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
+                        var newThumbnails = null 
+                        if (self.state.age && self.state.gender) { 
+                            var temps = video.demographic_thumbnails.find(
+                                x=>((x.age && x.age == self.state.age) && 
+                                    (x.gender && x.gender == self.state.gender)));
+                            if (temps && temps.thumbnails && temps.thumbnails.length > 0) {  
+                                newThumbnails = temps; 
+                            } 
+                        }
+                        if (!newThumbnails) {  
+                            newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
+                        } 
                         var badThumbs = newThumbnails.bad_thumbnails || [];
                     }
                     else {
@@ -148,7 +173,7 @@ var VideoOwner = React.createClass({
                         // Only bother if the state has changed
                         self.setState({
                             status: 200,
-                            thumbnails: newThumbnails.thumbnails,
+                            thumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true), 
                             demographicThumbnails: video.demographic_thumbnails,
                             timeRemaining: video.estimated_time_remaining,
                             sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
@@ -159,14 +184,15 @@ var VideoOwner = React.createClass({
                             duration: video.duration,
                             url: video.url,
                             shareToken: video.share_token ? video.shareToken : '',
-                            // publish_date
-                            // updated
                             created: video.created,
                             isLoading: false,
                             seconds: video.estimated_time_remaining,
                             badThumbs: badThumbs
                         }, function () {
                             // Stop and restart the timer, just in case it was not running before
+                            // this is a dirty dirty hack that i cant seem to get around 
+                            // videoinfo will not refresh without calling this stupid callback 
+                            self.state.pingVideoCallback(self.state.demographicThumbnails.length - 1); 
                             clearInterval(self.timer);
                             self.startTimer();
                         });
