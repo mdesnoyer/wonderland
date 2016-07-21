@@ -5,6 +5,7 @@ import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,7 +31,13 @@ var ShareLink = React.createClass({
     },
     componentDidMount: function() {
         var self = this,
-            c = new Clipboard(self.refs.copyUrl)
+            clipboard = new Clipboard(self.refs.copyUrl);
+            clipboard.on('success', e => {
+                // Set the tooltip to reflect successful copy.
+                self.refs.copyUrlTip.setState({
+                    placeholder: T.get('copy.share.url.copied')});
+                e.clearSelection();
+            });
         ;
     },
     render: function(){
@@ -86,12 +93,19 @@ var ShareLink = React.createClass({
                     >{T.get('back')}</button>
                     <button
                         className="xxButton xxButton--highlight"
-                        data-clipboard-text={self.state.shareUrl}
+                        data-clipboard-target="#xx-share-link"
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
-                        onClick={self.handleCopyClick}
+                        data-tip={T.get('copy.share.url.selected')}
                     >{T.get('copy')}</button>
+                    <ReactTooltip
+                        ref="copyUrlTip"
+                        event="click"
+                        eventOff="mouseout"
+                        effect="solid"
+                        delayHide={1000}
+                    />
                 </div>
             </div>
         );
