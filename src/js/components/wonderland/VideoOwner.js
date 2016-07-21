@@ -142,7 +142,6 @@ var VideoOwner = React.createClass({
             self.state.gender = gender; 
         }
         if (!self.state.pingVideoCallback) {
-            console.log('testcallback' + callback);  
             self.state.pingVideoCallback = callback; 
         }  
         self.setState({
