@@ -17,11 +17,15 @@ var SignInPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-        }
+        var self = this;
+        SESSION.user()
+            .then(function(userData) {
+                self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+            })
+            .catch(function(err) {
+                // do nothing
+            })
+        ;
     },
     render: function() {
         var self = this;
