@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 
 import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 
 import SiteHeader from '../wonderland/SiteHeader';
@@ -97,6 +98,7 @@ export default React.createClass({
         this.setState({
             sidebarContent: 'learnMore',
         });
+        TRACKING.sendEvent(self, arguments, 'None');
     },
 
     render: function() {

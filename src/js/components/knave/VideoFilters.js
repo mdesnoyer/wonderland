@@ -6,6 +6,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,6 +115,8 @@ var VideoFilters = React.createClass({
                     isError: true
                 });
             });
+        TRACKING.sendEvent(self, arguments, 
+                           self.state.gender + "/" + self.state.age);
     }
 })
 

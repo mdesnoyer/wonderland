@@ -2,6 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
@@ -137,6 +138,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     sendTwitterShare: function() {
         var self = this,  
@@ -147,6 +149,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     sendLinkedinShare: function() {
         var self = this,  
@@ -157,6 +160,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     }
 })
 

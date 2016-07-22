@@ -3,6 +3,7 @@
 import React from 'react';
 import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
@@ -137,7 +138,8 @@ var ShareEmail = React.createClass({
                     });
                 })
             ;
-        })
+        });
+        TRACKING.sendEvent(self, arguments, self.props.videoId);
     },
     renditionCheck: function(renditionNumber, thumbnail) {
         return (renditionNumber === RENDITIONS.NO_RENDITION ? thumbnail.url : thumbnail.rendition[renditionNumber].url);

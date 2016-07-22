@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import VideoCollectionActions from './VideoCollectionActions';
 import VideoInfo from './VideoInfo';
@@ -84,6 +85,7 @@ var VideoContent = React.createClass({
                     <ShareLink 
                         handleMenuChange={self.handleMenuChange} 
                         shareUrl={self.state.shareUrl}
+                        videoId={self.props.videoId}
                     />
                 );
                 break;
@@ -92,6 +94,7 @@ var VideoContent = React.createClass({
                                 handleMenuChange={self.handleMenuChange}
                                 thumbnails={self.props.thumbnails}
                                 collectionUrl={self.state.shareUrl}
+                                videoId={self.props.videoId}
                             />;
                 break;
             case 'delete':
