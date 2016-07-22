@@ -20,6 +20,11 @@ var VideoInfo = React.createClass({
             demographicOptions: self.getDemographicOptions()
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
+    },
     getDemographicOptions: function() { 
         var self = this,
             demographicOptions = []
@@ -63,6 +68,9 @@ var VideoInfo = React.createClass({
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
+                <h1 className="xxCollection-title">
+                    {self.props.selectedDemographic || 0}
+                </h1>
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                         if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
@@ -101,7 +109,7 @@ var VideoInfo = React.createClass({
                                     className="xxCollectionFilters-value"
                                     onChange={self.onDemographicChange}
                                     options={self.getDemographicOptions()}
-                                    value={self.props.selectedDemographic || 0}
+                                    value={self.state.selectedDemographic || 0}
                                     clearable={false}
                                 />
                             );

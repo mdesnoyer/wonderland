@@ -24,9 +24,21 @@ var VideoContent = React.createClass({
         var self = this;
         return {
             contents: defaultContent,
-            shareUrl: ''
+            shareUrl: '', 
+            selectedDemographic: self.props.selectedDemographic || 0
         }
     },
+    /*
+    getDefaultProps: function() {
+        return {
+            selectedDemographic: 2
+        }
+    },*/
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
+    }, 
     componentWillMount: function() {
         var self = this;
         self.getAccount()
@@ -106,6 +118,7 @@ var VideoContent = React.createClass({
                 contents = (
                     <VideoFilters
                         handleMenuChange={self.refilterMenuChange}
+                        handleBackClick={self.handleBackClick}
                         handleDemographicChange={self.props.handleDemographicChange}
                         selectedDemographic={self.props.selectedDemographic}
                         videoId={self.props.videoId}
@@ -115,16 +128,25 @@ var VideoContent = React.createClass({
         }
         return <div>{contents}</div>;
     },
-    refilterMenuChange: function(age, gender, is_new_video) {
+    refilterMenuChange: function(age, gender, is_new_video=false) {
         var self = this;
         self.setState({
             contents: 'info'
         }, function () {
-            if (is_new_video) { 
+            if (is_new_video) {
+                console.log('test'); 
                 self.props.refreshVideo(true, age, gender, self.props.handleDemographicChange);
             } 
         });
-    }, 
+    },
+    handleBackClick: function(e) { 
+        var self = this,
+            value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
+        ;
+        self.setState({
+           contents: value
+        });
+    },  
     handleMenuChange: function(e) {
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent

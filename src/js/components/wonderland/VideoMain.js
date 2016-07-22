@@ -30,7 +30,7 @@ var VideoMain = React.createClass({
             liftArray: [],
             displayThumbLift: 0,
             thumbnails: self.props.thumbnails,
-            selectedDemographic: false, // default to not showing demographic thumbs (support old videos)
+            selectedDemographic: self.props.selectedDemographic || 0 // default to not showing demographic thumbs (support old videos)
         }
     },
     componentWillMount: function() {
@@ -41,6 +41,11 @@ var VideoMain = React.createClass({
                 self.sendForValenceFeatureKeys();
             }
         }
+    },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
     },
     sendForValenceFeatureKeys: function() {
         var tidArray = [],
@@ -146,13 +151,17 @@ var VideoMain = React.createClass({
                         }
                     }
                 }
-                self.setState({
-                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
-                    liftArray: res.lift,
-                    thumbnails: tempThumbnails
-                });
+                var foundLift = res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id); 
+                if (foundLift && foundLift.lift) { 
+                    self.setState({
+                        displayThumbLift: foundLift.lift,
+                        liftArray: res.lift,
+                        thumbnails: tempThumbnails
+                    });
+                } 
             })
             .catch(function(err) {
+                console.log(options);
                 console.log(err);
                 self.setState({
                     isHidden: true
@@ -188,6 +197,9 @@ var VideoMain = React.createClass({
             thumbs = self.props.thumbnails;
             value = false;
         }
+        if (self.props.onDemoChange) { 
+            self.props.onDemoChange(value); 
+        } 
         self.setState({
             selectedDemographic: value,
             thumbnails: UTILS.fixThumbnails(thumbs, true),
@@ -202,9 +214,11 @@ var VideoMain = React.createClass({
     render: function() {
         var self = this;
         if (self.state.isHidden) {
+            console.log('is hidden'); 
             return null;
         }
         else {
+            console.log('not hidden'); 
             return (
                 <article className="xxCollection xxCollection--video">
                     <div className="xxCollection-content">
@@ -242,11 +256,16 @@ var VideoMain = React.createClass({
     },
     handleChildOnMouseEnter: function(thumbnailId) {
         var self = this,
-            liftArray = self.state.liftArray
+            liftArray = self.state.liftArray, 
+            lift = null 
         ;
         if (liftArray.length > 1) {
+            var found_obj = liftArray.find(x => x.thumbnail_id === thumbnailId);
+            if (found_obj) { 
+                lift = found_obj.lift; 
+            } 
             self.setState({
-                displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
+                displayThumbLift: lift 
             });
         }
     }

@@ -65,7 +65,7 @@ var VideoFilters = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={self.props.handleMenuChange}
+                        onClick={self.props.handleBackClick}
                         >{T.get('back')}</button>
                     <button
                         className={submitClassName.join(' ')}
@@ -100,7 +100,13 @@ var VideoFilters = React.createClass({
                 }
             }
         ;
-        self.POST('videos', options)
+        console.log('BLAM'); 
+        if (self.props.handleMenuChange) {
+            self.props.handleMenuChange(self.state.age, 
+            self.state.gender, 
+            true);
+        }
+        /*self.POST('videos', options)
             .then(function(json) {
                 if (self.props.handleMenuChange) {
                     self.props.handleMenuChange(self.state.age, 
@@ -113,7 +119,7 @@ var VideoFilters = React.createClass({
                 self.setState({
                     isError: true
                 });
-            });
+            });*/
     }
 })
 

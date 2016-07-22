@@ -29,6 +29,11 @@ var VideoOwner = React.createClass({
             created: ''
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
+    }, 
     getInitialState: function() {
         var self = this;
         return {
@@ -36,8 +41,8 @@ var VideoOwner = React.createClass({
             videoState: self.props.videoState,
             videoStateMapping: UTILS.VIDEO_STATE[self.props.videoState].mapping,
             demographicThumbnails: self.props.demographicThumbnails,
-            selectedDemographic: self.props.selectedDemographic || 0, 
             timeRemaining: self.props.timeRemaining,
+            selectedDemographic: 0, 
             thumbnails: self.props.thumbnails,
             sortedThumbnails: UTILS.fixThumbnails(self.props.thumbnails, true),
             title: self.props.title,
@@ -54,7 +59,8 @@ var VideoOwner = React.createClass({
             age: null, 
             gender: null, 
             pingVideoCallback: null, 
-            seconds: self.props.seconds
+            seconds: self.props.seconds,
+            set_seconds: false 
         }
     },
     startTimer: function () {
@@ -64,11 +70,12 @@ var VideoOwner = React.createClass({
         }
     },
     componentDidMount: function() {
-        var self = this;
-        self.startTimer();
-        if (self.props.pingInitial) {
-            setTimeout(self.pingVideo, 0);
-        }
+        //var self = this;
+        //self.startTimer();
+        //if (self.props.pingInitial) {
+        //    setTimeout(self.pingVideo, 0);
+        //}
+        return true; 
     },
     componentWillUnmount: function() {
         var self = this;
@@ -79,7 +86,8 @@ var VideoOwner = React.createClass({
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
             (nextProps.isMobile !== this.props.isMobile) ||
-            (nextProps.seconds !== this.props.seconds)
+            (nextProps.seconds !== this.props.seconds) || 
+            (nextState.selectedDemographic !== this.state.selectedDemographic) 
         );
     },
     render: function() {
@@ -104,6 +112,7 @@ var VideoOwner = React.createClass({
                     thumbnails={self.state.sortedThumbnails}
                     demographicThumbnails={self.state.demographicThumbnails}
                     selectedDemographic={self.state.selectedDemographic}
+                    onDemoChange={self.onDemoChange} 
                     timeRemaining={self.state.timeRemaining}
                     refreshVideo={self.pingVideo}
                     videoState={self.state.videoState}
@@ -119,32 +128,154 @@ var VideoOwner = React.createClass({
             );
         }
     },
-    pingVideo: function(forceRefresh, age, gender, callback=null) {
-        var self = this,
-            options = {
+    onDemoChange: function(value) { 
+        this.setState({ 
+            selectedDemographic: value 
+        });  
+    },
+    pingVideo: function(forceRefresh, age=null, gender=null, callback=null) {
+        var self = this;
+        // If the video is 'serving' or 'processed' its going nowhere, so don't
+        // bother checking. There is a known latency issue in Back End, #1103.
+        // We still need to poll 'failed'.
+        if (!forceRefresh) { 
+            if (self.state.videoState in ['serving', 'processed']) 
+                return false;
+        }
+        var checkVideo = function() {
+            var options = {
                 data: {
                     video_id: self.state.videoId,
                     fields: UTILS.VIDEO_FIELDS
                 }
+            };
+            self.setState({  
+                isLoading: true 
+            }, function() { self.GET('videos', options)
+                .then(function(json) { 
+                    handleGetVideo(json); 
+                })
+                .catch(function(err) {
+                    self.setState({
+                        status: err.code,
+                        error: err.message,
+                        isLoading: false
+                    });
+                })
+            })
+        }; 
+        var handleGetVideo = function(json) { 
+            var video = json.videos[0];
+            console.log(video);
+            if (video.state !== self.state.videoState) {
+                console.log('in this state'); 
+                setTimeout(
+                    checkVideo,
+                    UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
+                        UTILS.VIDEO_CHECK_INTERVAL_BASE))
+
+                handleChangingVideoState(video); 
             }
-        ;
-        // If the video is 'serving' or 'processed' its going nowhere, so don't
-        // bother checking. There is a known latency issue in Back End, #1103.
-        // We still need to poll 'failed'.
-        if (!forceRefresh && (self.state.videoState === 'serving' || self.state.videoState === 'processed')) {
-            clearInterval(self.timer);
-            return false;
-        }
-        if (!self.state.age) { 
-            self.state.age = age; 
-        } 
-        if (!self.state.gender) { 
-            self.state.gender = gender; 
-        }
-        if (!self.state.pingVideoCallback) {
-            self.state.pingVideoCallback = callback; 
-        }  
-        self.setState({
+            else if (forceRefresh) { 
+                setTimeout(
+                    checkVideo,
+                    UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
+                        UTILS.VIDEO_CHECK_INTERVAL_BASE))
+
+                handleChangingVideoState(video); 
+
+                forceRefresh = false; 
+            } 
+            else {
+                // this means that the video state hasn't changed 
+                // and we don't want to force a refresh (new filter) 
+                console.log('no state change');  
+                handleNoChangeVideoState(video); 
+
+            }  
+        };
+        var getThumbSets = function(video) { 
+            var demographicSet = null,
+                selDemographic = 0
+            ; 
+ 
+            if (video.demographic_thumbnails.length > 0) {
+                var findex = video.demographic_thumbnails.find(
+                    x=>((x.age && x.age == age) && 
+                        (x.gender && x.gender == gender)));
+                findex = video.demographic_thumbnails.indexOf(findex); 
+                console.log('blam3' + findex); 
+                if (findex > -1) {  
+                    selDemographic = findex; 
+                    demographicSet = video.demographic_thumbnails[findex]; 
+                }
+                else { 
+                    // we didn't find anything, we are probably in a 
+                    // video processing state, let's set the demographicSelection 
+                    // to the previous one. 
+                    selDemographic = self.state.selectedDemographic; 
+                    console.log(selDemographic);  
+                    demographicSet = video.demographic_thumbnails[self.state.selectedDemographic]; 
+                }  
+            }
+            return { 'demographic_thumbs' : demographicSet, 
+                     'demographic_index' : selDemographic }; 
+        }; 
+        var handleChangingVideoState = function(video) { 
+            var thumbs = getThumbSets(video);
+            console.log(thumbs);  
+            self.setState({ 
+                //status: 200,
+                title: video.title,
+                selectedDemographic: 2, 
+                shareToken: video.share_token ? video.share_token : '',
+                videoState: video.state,
+                error: video.error ? video.error : '',
+                duration: video.duration,
+                url: video.url,
+                created: video.created,
+                seconds: video.estimated_time_remaining,
+                timeRemaining: video.estimated_time_remaining,
+                videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
+                demographicThumbnails: thumbs.demographic_thumbs,
+                isLoading: false/*,
+                // TODO REMOVE should be able to use demographic thumbanils here as well 
+                badThumbs: thumbs.demographic_thumbs.bad_thumbnails || [], 
+                // TODO REMOVE replace with selecteddemo, and demothumbs 
+                thumbnails: UTILS.fixThumbnails(thumbs.demographic_thumbs.thumbnails, true), 
+                // TODO REMOVE should not be needed 
+                sortedThumbnails: UTILS.fixThumbnails(thumbs.demographic_thumbnails.thumbnails, true)*/ 
+            });  
+        }; 
+        var handleNoChangeVideoState = function(video) { 
+            self.setState({
+                title: video.title,
+                isLoading: false,
+                seconds: video.estimated_time_remaining,
+                error: video.error ? video.error : ''
+            });
+        }; 
+        // Check the video, and handle state changes 
+        checkVideo();
+        console.log("BLAM");
+        //var in_progress = false;
+        //var result = $.Deferred(); 
+        /*var interval = setInterval(function() { 
+            times += 1; 
+            if (times >= 3) { 
+                clearInterval(interval); 
+            }
+            self.GET('videos', options)
+                .then(function(json) {
+                    var video = json.videos[0];
+                    console.log(video);
+                    self.setState({ 
+                        title: times 
+                    });  
+                })
+            ; 
+        }, 20);  */ 
+        /*self.setState({
             isLoading: true 
         }, function() {
             self.GET('videos', options)
@@ -187,12 +318,13 @@ var VideoOwner = React.createClass({
                             created: video.created,
                             isLoading: false,
                             seconds: video.estimated_time_remaining,
-                            badThumbs: badThumbs
+                            badThumbs: badThumbs,
+                            set_seconds: false 
                         }, function () {
-                            // Stop and restart the timer, just in case it was not running before
                             // this is a dirty dirty hack that i cant seem to get around 
                             // videoinfo will not refresh without calling this stupid callback 
                             self.state.pingVideoCallback(self.state.demographicThumbnails.length - 1); 
+                            // Stop and restart the timer, just in case it was not running before
                             clearInterval(self.timer);
                             self.startTimer();
                         });
@@ -215,7 +347,7 @@ var VideoOwner = React.createClass({
                     });
                 });
             })
-        ;
+        ;*/ 
     }
 });
 
