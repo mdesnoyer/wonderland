@@ -32,7 +32,6 @@ export default React.createClass({
     componentWillMount: function() {
         var self = this; 
         if (!SESSION.active()) {
-            debugger
             self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
         }
     },
@@ -48,28 +47,12 @@ export default React.createClass({
             video_id: videoId,
         } });
     },
-
     showError: function(err) {
-            debugger
-             
         this.setState({
             isAnalyzing: false,
             uploadText: T.get('copy.onboarding.uploadErrorText'),
         });
     },
-    // throwUploadError: function(err) {
-    //     var self = this; 
-    //     switch(err.code) {
-    //         case 401:
-    //             // unauthorized try again
-    //         break;
-    //         case 402;
-    //             //limits for day message
-    //         break;
-    //         default:
-    //             //error please try again
-    //     }
-    // },
     onAnalysisStart: function(postResp) {
         const { video } = postResp;
         const videoId = video.video_id;
@@ -104,7 +87,7 @@ export default React.createClass({
                     state: { fromDemo: true },
                 });
             } else if (video.state === 'failed') {
-                this.showError();
+                this.showError(resp);
             } else {
                 this.__videoProcessingTimer = setTimeout(() => {
                     this.onCountdownFinish();

@@ -16,6 +16,7 @@ var DemoPage = React.createClass({
 
     componentWillMount: function() {
         var self = this;
+        debugger
         if (SESSION.active()) {
             self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
         } else {

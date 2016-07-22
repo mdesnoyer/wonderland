@@ -44,8 +44,7 @@ var VideoUploadForm = React.createClass({
             self.sendVideoUrl(url)
         });
     },
-    sendVideoUrl: function(url) {
-        
+    sendVideoUrl: function(url) {        
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -71,26 +70,28 @@ var VideoUploadForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                
-                self.props.onDemoError(err)
+                debugger
+                // self.props.onDemoError(err)
                 // self.props.isOnboarding ? self.props.throwError : self.throwUploadError;
+                self.throwUploadError()
                 console.log(err)
             });
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
-    // throwUploadError: function(err) {
-    //     var self = this; 
-    //     switch(err.code) {
-    //         case 401:
-    //             // unauthorized try again
-    //         break;
-    //         case 402;
-    //             //limits for day message
-    //         break;
-    //         default:
-    //             //error please try again
-    //     }
-    // },
+    throwUploadError: function(err) {
+        var self = this;
+        debugger 
+        switch(err.code) {
+            case 401:
+                // unauthorized try again
+            break;
+            case 402:
+                //limits for day message
+            break;
+            default:
+                //error please try again
+        }
+    },
     render: function() {
         const { isOnboarding } = this.props;
         var self = this,
@@ -99,9 +100,9 @@ var VideoUploadForm = React.createClass({
         if (self.state.isOpen) {
             className.push('is-open');
         };
-        if (self.props.isMaxLimit) {
-            className.push('is-hidden')
-        };
+        // if (self.props.isMaxLimit) {
+        //     className.push('is-hidden')
+        // };
         return (
             <div className={className.join(' ')}>
             <a
@@ -116,7 +117,6 @@ var VideoUploadForm = React.createClass({
                             handleUpload={self.handleUpload}
                             isOnboarding={isOnboarding}
                             error={self.state.error || null}
-                            onDemoError={this.showError}
                         />
                     </div>
                 ) : null
