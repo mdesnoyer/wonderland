@@ -238,6 +238,8 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'c
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/* TODO: Get this to work. For now, runnings tests can be done by: npm test
+
 gulp.task('jest', function() {
     return gulp.src('__tests__').pipe(jest({
         unmockedModulePathPatterns: [
@@ -254,5 +256,5 @@ gulp.task('jest', function() {
         ]
     }));
 });
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
