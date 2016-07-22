@@ -76,16 +76,16 @@ var VideoUploadOverlay = React.createClass({
     },
     handleClick: function() {
         var self = this;
-        if (!UTILS.validateUrl(self.state.url)) {
-            self.setState({
-                isMessageNeeded: true
-            });
-        }
-        else {
+        // if (!UTILS.validateUrl(self.state.url)) {
+        //     self.setState({
+        //         isMessageNeeded: true
+        //     });
+        // }
+        // else {
             if (self.props.handleUpload) {
                 self.props.handleUpload(self.state.url);
             }
-        }
+        // }
     }
 });
 

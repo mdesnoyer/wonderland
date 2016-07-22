@@ -5,6 +5,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
+import SESSION from '../../modules/session';
 
 import SiteHeader from '../wonderland/SiteHeader';
 import Countdown from '../wonderland/Countdown';
@@ -28,7 +29,13 @@ export default React.createClass({
             videoId: null,
         };
     },
-
+    componentWillMount: function() {
+        var self = this; 
+        if (!SESSION.active()) {
+            debugger
+            self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
+        }
+    },
     componentWillUnmount: function() {
         if (this.__videoProcessingTimer) {
             clearTimeout(this.__videoProcessingTimer);
@@ -42,13 +49,27 @@ export default React.createClass({
         } });
     },
 
-    showError: function() {
+    showError: function(err) {
+            debugger
+             
         this.setState({
             isAnalyzing: false,
             uploadText: T.get('copy.onboarding.uploadErrorText'),
         });
     },
-
+    // throwUploadError: function(err) {
+    //     var self = this; 
+    //     switch(err.code) {
+    //         case 401:
+    //             // unauthorized try again
+    //         break;
+    //         case 402;
+    //             //limits for day message
+    //         break;
+    //         default:
+    //             //error please try again
+    //     }
+    // },
     onAnalysisStart: function(postResp) {
         const { video } = postResp;
         const videoId = video.video_id;
@@ -123,6 +144,7 @@ export default React.createClass({
                                 isOnboarding
                                 postHookSearch={null}
                                 postHookAnalysis={this.onAnalysisStart}
+                                onDemoError={this.showError}
                             />
                             <div className="xxUploadButton-help">
                                 <span className="xxUploadButton-helpCircle"></span>

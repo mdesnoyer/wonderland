@@ -45,6 +45,7 @@ var VideoUploadForm = React.createClass({
         });
     },
     sendVideoUrl: function(url) {
+        
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -56,6 +57,7 @@ var VideoUploadForm = React.createClass({
         ;
         self.POST('videos', options)
             .then(function(json) {
+                
                 if (self.props.postHookAnalysis) {
                     self.props.postHookAnalysis(json);
                 }
@@ -69,13 +71,26 @@ var VideoUploadForm = React.createClass({
                 }
             })
             .catch(function(err) {
-                self.setState({
-                    error: err.message
-                })
+                
+                self.props.onDemoError(err)
+                // self.props.isOnboarding ? self.props.throwError : self.throwUploadError;
                 console.log(err)
             });
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
+    // throwUploadError: function(err) {
+    //     var self = this; 
+    //     switch(err.code) {
+    //         case 401:
+    //             // unauthorized try again
+    //         break;
+    //         case 402;
+    //             //limits for day message
+    //         break;
+    //         default:
+    //             //error please try again
+    //     }
+    // },
     render: function() {
         const { isOnboarding } = this.props;
         var self = this,
@@ -101,6 +116,7 @@ var VideoUploadForm = React.createClass({
                             handleUpload={self.handleUpload}
                             isOnboarding={isOnboarding}
                             error={self.state.error || null}
+                            onDemoError={this.showError}
                         />
                     </div>
                 ) : null
