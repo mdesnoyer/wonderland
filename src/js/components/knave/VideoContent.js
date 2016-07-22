@@ -30,26 +30,28 @@ var VideoContent = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        self.getAccount()
-            .then(function(account) {
-                self.GET('videos/share', {
-                    data: {
-                        video_id: self.props.videoId
-                    }
-                })
-                .then(function(json) {
-                    self.setState({
-                        shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
                     });
                 })
                 .catch(function(err) {
                     console.log(err);
-                });
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
-        ;
+                })
+            ;
+        }
     },
     render: function() {
         var self = this,
