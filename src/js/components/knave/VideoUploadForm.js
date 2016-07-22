@@ -73,7 +73,7 @@ var VideoUploadForm = React.createClass({
                 debugger
                 // self.props.onDemoError(err)
                 // self.props.isOnboarding ? self.props.throwError : self.throwUploadError;
-                self.throwUploadError()
+                self.throwUploadError(err)
                 console.log(err)
             });
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
@@ -83,10 +83,13 @@ var VideoUploadForm = React.createClass({
         debugger 
         switch(err.code) {
             case 401:
-                // unauthorized try again
+                self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
             break;
             case 402:
-                //limits for day message
+                self.setState({
+                    isOpen: true,
+                    error: T.get('error.unpaidAccountLimit')
+                })//limits for day message
             break;
             default:
                 //error please try again
@@ -100,9 +103,6 @@ var VideoUploadForm = React.createClass({
         if (self.state.isOpen) {
             className.push('is-open');
         };
-        // if (self.props.isMaxLimit) {
-        //     className.push('is-hidden')
-        // };
         return (
             <div className={className.join(' ')}>
             <a

@@ -64,7 +64,7 @@ var VideoProcessing = React.createClass({
                 {
                     self.state.isHidden ? null : (
                         <article className="xxCollection xxCollection--video xxCollection--processing">
-                            <h1 className="xxSubtitle">PROCESSING</h1>
+                            <h1 className="xxSubtitle">{self.props.videoState}</h1>
                             <h1 className="xxCollection-title">
                                 {title}
                                 {deleteButton}
