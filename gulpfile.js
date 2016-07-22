@@ -17,6 +17,7 @@ var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
+var jest = require('gulp-jest');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -233,6 +234,25 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'c
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+gulp.task('jest', function() {
+    return gulp.src('__tests__').pipe(jest({
+        unmockedModulePathPatterns: [
+            "node_modules/react"
+        ],
+        testDirectoryName: "spec",
+        testPathIgnorePatterns: [
+            "node_modules"
+        ],
+        moduleFileExtensions: [
+            "js",
+            "json",
+            "react"
+        ]
+    }));
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
