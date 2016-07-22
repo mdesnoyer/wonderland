@@ -12,14 +12,6 @@ var FeatureThumbnail = React.createClass({
         type: React.PropTypes.string.isRequired,
         handleClick: React.PropTypes.func
     },
-    componentWillMount: function() {
-        var self = this,
-            renditionNumber = RENDITIONS.findRendition(self.props.thumbnails, 350, 350)
-        ;
-        self.setState({
-            renditionNumber: renditionNumber 
-        });
-    },
     render: function() {
         var self = this,
             title,
@@ -48,7 +40,7 @@ var FeatureThumbnail = React.createClass({
                 extraClass = 'xxThumbnail--highLight';
                 break;
         }
-        src = (self.state.renditionNumber === RENDITIONS.NO_RENDITION ? self.props.thumbnails[uid].url : self.props.thumbnails[uid].renditions[self.state.renditionNumber].url);
+        src = (RENDITIONS.findRendition(self.props.thumbnails[uid], 350, 350));
         return (
             <div className="xxCollectionImages-featured">
                 <h2 className="xxCollection-subtitle">
