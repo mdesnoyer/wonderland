@@ -32,8 +32,10 @@ var VideoMain = React.createClass({
         }
     },
     componentWillMount: function() {
+        
         var self = this, 
-            thumbs = self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails
+            selectedDemographic = self.props.selectedDemographic || 0,
+            thumbs = self.props.demographicThumbnails[selectedDemographic].thumbnails
         ;
         if (thumbs.length > 1) {
             if (thumbs[thumbs.length - 1].neon_score) {
@@ -172,7 +174,7 @@ var VideoMain = React.createClass({
                     liftHash[l.thumbnail_id] = l.lift; 
                     if (l.lift > maxLift) { 
                         maxLift = l.lift; 
-                    } 
+                    }
                 }
                 for (let t of in_thumbnails) {
                     t.lift = liftHash[t.thumbnail_id]; 
