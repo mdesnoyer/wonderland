@@ -80,7 +80,7 @@ export default class Countdown extends React.Component {
             )
         }
         else {
-            return null;
+            return <div/>
         }
     }
 };
