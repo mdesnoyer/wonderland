@@ -13,7 +13,7 @@ var VideoProcessing = React.createClass({
     mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            maxVideoSize: 900
+            maxVideoSize: UTILS.MAX_VIDEO_SIZE
         }
     },
     componentWillMount: function() {
@@ -21,7 +21,7 @@ var VideoProcessing = React.createClass({
         self.GET('limits')
             .then(function(res) {
                 self.setState({
-                    maxVideoSize: res.max_video_size
+                    maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE
                 })
             })
             .catch(function(err) {
