@@ -3,8 +3,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var RENDITIONS = {
-
-    NO_RENDITION: -1,
     FUZZ: 6, // px
 
     // check if a & b approx equal i.e in the range of the fuzz
@@ -15,24 +13,64 @@ var RENDITIONS = {
     equal: function(w1, h1, w2, h2) {
         return ((w1 === w2) && (h1 === h2));
     },
-    findRendition: function(thumbnails, width, height) {
+    aspectRatioEquals: function(w1, h1, w2, h2) {
+        if (h1 === 0 || h2 === 0) {
+            return false;
+        } else if (Math.abs(w1*h2 - h1*w2) < (h2*3)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    findRendition: function(thumbnail, width, height) {
+        // Returns the url for the image to put in a requested size
+        //
+        // Inputs:
+        // thumbnail - The thumbnail object from the backend
+        // width - Requested width
+        // height - Requested height
+        // 
+        // Outputs:
+        // url to display the thumbnail
         var i = 0;
-        if (!thumbnails || thumbnails.length === 0 || width === 0 || height === 0 || thumbnails[0].renditions.length === 0) {
-            return this.NO_RENDITION;
+        if (!thumbnail) {
+            return null;
+        } else if (width === 0 || height === 0 || 
+                   thumbnail.renditions.length === 0) {
+            return thumbnail.url;
         }
-        // We assume each thumbnail is the same so we only need to check the
-        // first one
-        for (let r of thumbnails[0].renditions) {
+        var near_match = null;
+        var aspect_ratio_match = null;
+        var best_diff = Number.MIN_SAFE_INTEGER;
+        for (let r of thumbnail.renditions) {
+            // Look for the exact match
             if (this.equal(r.width, r.height, width, height)) {
-                return i;
+                return r.url;
             }
-            if (this.fuzzyEqual(r.width, width, this.FUZZ) && this.fuzzyEqual(r.height, height, this.FUZZ)) {
-                return i;    
+            // Look for the match where the size is almost equals
+            if (this.fuzzyEqual(r.width, width, this.FUZZ) && 
+                this.fuzzyEqual(r.height, height, this.FUZZ)) {
+                near_match = r.url 
             }
-            // Aspect Ratio check TODO - future ticket, for now see #1408
-            i++;
+            // Look for the same aspect ratio, taking the image that
+            // is bigger and closest in size.
+            if (this.aspectRatioEquals(r.width, r.height, width, height)) {
+                var diff = r.width - width;
+                
+                if (best_diff > 0) {
+                    if (diff > 0 && diff < best_diff) {
+                        best_diff = diff;
+                        aspect_ratio_match = r.url;
+                    }
+                } else if (diff > best_diff) {
+                    best_diff = diff;
+                    aspect_ratio_match = r.url;
+                }
+            }
         }
-        return this.NO_RENDITION;
+
+        return near_match || aspect_ratio_match || thumbnail.url;
+        
     }
 }
 
