@@ -65,11 +65,6 @@ var VideoOwner = React.createClass({
         if (self.props.pingInitial) {
             self.pingVideo(); 
         }
-        if (self.props.pingInterval) { 
-            // TODO this should be a longer poll
-            // to check for videos that got in a failed 
-            // state and came back out of it.  
-        } 
     },
     componentWillUnmount: function() {
         var self = this;
@@ -160,8 +155,10 @@ var VideoOwner = React.createClass({
         var handleGetVideo = function(json) { 
             var video = json.videos[0];
             if (video.state !== self.state.videoState) {
-                // We have a video that changed state, lets check it 
-                // to see what its doing.   
+                /*  
+                   We have a video that changed state 
+                     lets check to see what its up to 
+                */ 
                 setTimeout(
                     checkVideo,
                     UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
@@ -182,10 +179,13 @@ var VideoOwner = React.createClass({
                 handleChangingVideoState(video); 
                 forceRefresh = false; 
             }
-            else if (video.state === 'processing') {
+            else if (video.state == UTILS.VIDEO_STATE_ENUM.processing) {
                 /* 
                    If we are in processing state : 
-                    set the timeout based on estimated_time_remaining 
+                    set the timeout based on estimated_time_remaining,
+                     move this down as we get closer. but only have a 
+                     max poll of the enum. 
+ 
                     possible update of title, and seconds_remaining 
                 */
                 var base = UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
@@ -197,9 +197,11 @@ var VideoOwner = React.createClass({
                         if (video.estimated_time_remaining < 30) {  
                             video_remaining_millis = UTILS.VIDEO_CHECK_INTERVAL_BASE;
                         } 
-                        else { 
-                            video_remaining_millis = (
-                                video.estimated_time_remaining - 35) * 1000;
+                        else {
+                            video_remaining_millis = Math.min(
+                                (video.estimated_time_remaining - 35) * 1000, 
+                                UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
+                            console.log(video_remaining_millis); 
                         }  
                     } 
                 } 
@@ -210,6 +212,14 @@ var VideoOwner = React.createClass({
                 
                 handleProcessingVideoState(video); 
             }  
+            else if (video.state == UTILS.VIDEO_STATE_ENUM.failed) {
+                /* 
+                   If we have a video in failed state, lets continue 
+                      to check it, to see if it will get requeued 
+                      and succeed. 
+                */ 
+                setTimeout(checkVideo, UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
+            } 
             else {
                 /* 
                    This means that the video state hasn't changed 

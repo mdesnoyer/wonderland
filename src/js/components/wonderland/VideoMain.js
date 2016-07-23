@@ -157,19 +157,22 @@ var VideoMain = React.createClass({
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
-                var liftHash = {} 
+                var liftHash = {}
+                var maxLift = 0;  
                 for (let l of res.lift) {
                     liftHash[l.thumbnail_id] = l.lift; 
+                    if (l.lift > maxLift) { 
+                        maxLift = l.lift; 
+                    } 
                 }
                 for (let t of in_thumbnails) {
                     t.lift = liftHash[t.thumbnail_id]; 
                 }
-                var foundLift = res.lift.find(x => x.thumbnail_id === in_thumbnails[0].thumbnail_id);
-                if (foundLift && foundLift.lift >= 0) { 
+                if (maxLift) { 
                     var dThumbSet = self.props.demographicThumbnails; 
                     dThumbSet[self.props.selectedDemographic].thumbnails = in_thumbnails;
                     self.setState({
-                        displayThumbLift: foundLift.lift,
+                        displayThumbLift: maxLift,
                         liftArray: res.lift,
                         demographicThumbnails: dThumbSet 
                     });

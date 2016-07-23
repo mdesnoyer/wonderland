@@ -54,7 +54,7 @@ var Thumbnails = React.createClass({
                 var goods = UTILS.fixThumbnails(
                     nextProps.demographicThumbnails[nextProps.selectedDemographic].thumbnails, true); 
                 var bads = UTILS.fixThumbnails(
-                    nextProps.demographicThumbnails[nextProps.selectedDemographic].bad_thumbnails, false); 
+                    nextProps.demographicThumbnails[nextProps.selectedDemographic].bad_thumbnails || [], false); 
                 self.setState({ thumbnails: goods, 
                                 badThumbs: bads, 
                                 selectedDemographic: nextProps.selectedDemographic }); 
