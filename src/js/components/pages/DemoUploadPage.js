@@ -102,7 +102,7 @@ export default React.createClass({
                     state: { fromDemo: true },
                 });
             } else if (video.state === 'failed') {
-                this.showError(resp);
+                this.showError();
             } else {
                 this.__videoProcessingTimer = setTimeout(() => {
                     this.onCountdownFinish();
