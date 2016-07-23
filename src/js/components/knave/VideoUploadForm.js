@@ -54,33 +54,35 @@ var VideoUploadForm = React.createClass({
                 }
             }
         ;
-        self.POST('videos', options)
-            .then(function(json) {
-                
-                if (self.props.postHookAnalysis) {
-                    self.props.postHookAnalysis(json);
-                }
-                else {
-                    if (self.props.postHookSearch) {
-                        self.props.postHookSearch();
+        if (!UTILS.validateUrl(url)) {
+            self.setState({
+                isOpen: true,
+                error: T.get('copy.urlShortener.messageBody')
+            });
+        }
+        else {
+            self.POST('videos', options)
+                .then(function(json) {
+                    if (self.props.postHookAnalysis) {
+                        self.props.postHookAnalysis(json);
                     }
                     else {
-                        self.context.router.push('/video/' + videoId + '/');
+                        if (self.props.postHookSearch) {
+                            self.props.postHookSearch();
+                        }
+                        else {
+                            self.context.router.push('/video/' + videoId + '/');
+                        }
                     }
-                }
-            })
-            .catch(function(err) {
-                debugger
-                // self.props.onDemoError(err)
-                // self.props.isOnboarding ? self.props.throwError : self.throwUploadError;
-                self.throwUploadError(err)
-                console.log(err)
-            });
+                })
+                .catch(function(err) {
+                    self.throwUploadError(err)
+                });    
+        }
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
     throwUploadError: function(err) {
         var self = this;
-        debugger 
         switch(err.code) {
             case 401:
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
@@ -89,10 +91,13 @@ var VideoUploadForm = React.createClass({
                 self.setState({
                     isOpen: true,
                     error: T.get('error.unpaidAccountLimit')
-                })//limits for day message
+                })
             break;
             default:
-                //error please try again
+                self.setState({
+                    isOpen: true,
+                    error: T.get('copy.onboarding.uploadErrorText')
+                });
         }
     },
     render: function() {
