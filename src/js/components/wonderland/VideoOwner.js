@@ -201,7 +201,6 @@ var VideoOwner = React.createClass({
                             video_remaining_millis = Math.min(
                                 (video.estimated_time_remaining - 35) * 1000, 
                                 UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
-                            console.log(video_remaining_millis); 
                         }  
                     } 
                 } 
