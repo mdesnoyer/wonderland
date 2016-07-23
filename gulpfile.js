@@ -28,7 +28,7 @@ var argv = require('yargs').argv;
 var env = argv.env ? argv.env : 'dev';
 var configSrc   = './env/config.json.' + env;
 
-var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico', './src/_headers'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
