@@ -126,7 +126,7 @@ var VideoMain = React.createClass({
                                 t.final_valence_features.push(fhash[pvf[0]]);
                             }
                         }
-                        var dThumbSet = self.props.demographicThumbnails; 
+                        var dThumbSet = self.props.demographicThumbnails;
                         dThumbSet[self.props.selectedDemographic].thumbnails = tempThumbnails;
                         self.setState({
                             demographicThumbnails: dThumbSet
@@ -165,8 +165,7 @@ var VideoMain = React.createClass({
                     t.lift = liftHash[t.thumbnail_id]; 
                 }
                 var foundLift = res.lift.find(x => x.thumbnail_id === in_thumbnails[0].thumbnail_id);
-                 
-                if (foundLift && foundLift.lift) { 
+                if (foundLift && foundLift.lift >= 0) { 
                     var dThumbSet = self.props.demographicThumbnails; 
                     dThumbSet[self.props.selectedDemographic].thumbnails = in_thumbnails;
                     self.setState({
