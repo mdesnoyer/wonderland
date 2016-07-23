@@ -37,7 +37,6 @@ var VideoProcessing = React.createClass({
             isError,
             seconds
         ;
-        debugger
         errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
             case 'failed':
