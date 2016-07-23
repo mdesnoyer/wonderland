@@ -18,14 +18,9 @@ var SignInPage = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        SESSION.user()
-            .then(function(userData) {
-                self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-            })
-            .catch(function(err) {
-                // do nothing
-            })
-        ;
+        if (SESSION.isUser()) {
+            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        }
     },
     render: function() {
         var self = this;
