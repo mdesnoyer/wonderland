@@ -86,13 +86,13 @@ var VideoUploadForm = React.createClass({
         switch(err.code) {
             case 401:
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
-            break;
+                break;
             case 402:
                 self.setState({
                     isOpen: true,
                     error: T.get('error.unpaidAccountLimit')
-                })
-            break;
+                });
+                break;
             default:
                 self.setState({
                     isOpen: true,

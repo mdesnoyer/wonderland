@@ -32,6 +32,7 @@ export default React.createClass({
     componentWillMount: function() {
         var self = this; 
         if (!SESSION.active()) {
+            debugger
             self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
         }
     },
@@ -48,10 +49,18 @@ export default React.createClass({
         } });
     },
     showError: function(err) {
-        this.setState({
-            isAnalyzing: false,
-            uploadText: T.get('copy.onboarding.uploadErrorText'),
-        });
+        if (err === 'time') {
+            this.setState({
+                isAnalyzing: false,
+                uploadText: T.get('error.longVideo'),
+            });
+        }
+        else {
+            this.setState({
+                isAnalyzing: false,
+                uploadText: T.get('copy.onboarding.uploadErrorText'),
+            });  
+        }
     },
     onAnalysisStart: function(postResp) {
         const { video } = postResp;
@@ -73,9 +82,7 @@ export default React.createClass({
                 videoStatePollingWait = 10;
                 const estimatedTimeRemaining = video.estimated_time_remaining || null;
                 if (estimatedTimeRemaining) {
-                    this.setState({
-                        seconds: estimatedTimeRemaining
-                    });
+                    estimatedTimeRemaining > 900 ? this.showError('time') : this.setState({ seconds: estimatedTimeRemaining });
                 }
             }
             else { 
@@ -112,7 +119,6 @@ export default React.createClass({
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
                 />
-
                 {
                     isAnalyzing ? (
                         <div>
