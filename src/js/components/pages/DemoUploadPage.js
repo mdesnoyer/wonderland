@@ -32,7 +32,6 @@ export default React.createClass({
     componentWillMount: function() {
         var self = this; 
         if (!SESSION.active()) {
-            debugger
             self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
         }
     },
