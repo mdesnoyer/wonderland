@@ -21,9 +21,11 @@ var VideoInfo = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps) {
-        this.setState({
-            selectedDemographic: nextProps.selectedDemographic
-        });
+        if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
+            this.setState({
+                selectedDemographic: nextProps.selectedDemographic
+            });
+        } 
     },
     getDemographicOptions: function() { 
         var self = this,
