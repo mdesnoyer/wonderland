@@ -15,6 +15,16 @@ var VideoUploadOverlay = React.createClass({
             isMessageNeeded: false
         }
     },
+    componentWillMount: function() { 
+        var self = this;
+        if (self.props.error) {
+            self.setState({ isMessageNeeded: true });
+        }
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self.setState({ isMessageNeeded: false });
+    },
     updateField: function(field, value) {
         var self = this;
         this.setState({
@@ -26,7 +36,7 @@ var VideoUploadOverlay = React.createClass({
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = !!self.state.url,
-            messageNeeded = self.state.isMessageNeeded ? <Message message={T.get('copy.urlShortener.messageBody')} type={'formError'}/> : null
+            messageNeeded = self.state.isMessageNeeded ? <Message message={self.props.error} type={'formError'}/> : null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
@@ -76,16 +86,9 @@ var VideoUploadOverlay = React.createClass({
     },
     handleClick: function() {
         var self = this;
-        if (!UTILS.validateUrl(self.state.url)) {
-            self.setState({
-                isMessageNeeded: true
-            });
-        }
-        else {
             if (self.props.handleUpload) {
                 self.props.handleUpload(self.state.url);
             }
-        }
     }
 });
 

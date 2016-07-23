@@ -26,20 +26,23 @@ var VideoUploadForm = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isOpen: false
+            isOpen: false,
+            error: null
         };
     },
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
         self.setState({
-            isOpen: !self.state.isOpen
+            isOpen: !self.state.isOpen,
+            error: null
         });
     },
     handleUpload: function(url) {
         var self = this;
         self.setState({
-            isOpen: false
+            isOpen: false,
+            error: false
         }, function() {
             self.sendVideoUrl(url)
         });
@@ -54,27 +57,51 @@ var VideoUploadForm = React.createClass({
                 }
             }
         ;
-        self.POST('videos', options)
-            .then(function(json) {
-                if (self.props.postHookAnalysis) {
-                    self.props.postHookAnalysis(json);
-                }
-                else {
-                    if (self.props.postHookSearch) {
-                        self.props.postHookSearch();
+        if (!UTILS.validateUrl(url)) {
+            self.setState({
+                isOpen: true,
+                error: T.get('copy.urlShortener.messageBody')
+            });
+        }
+        else {
+            self.POST('videos', options)
+                .then(function(json) {
+                    if (self.props.postHookAnalysis) {
+                        self.props.postHookAnalysis(json);
                     }
                     else {
-                        self.context.router.push('/video/' + videoId + '/');
+                        if (self.props.postHookSearch) {
+                            self.props.postHookSearch();
+                        }
+                        else {
+                            self.context.router.push('/video/' + videoId + '/');
+                        }
                     }
-                }
-            })
-            .catch(function(err) {
-                self.setState({
-                    error: err.message
                 })
-                console.log(err)
-            });
+                .catch(function(err) {
+                    self.throwUploadError(err)
+                });    
+        }
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
+    },
+    throwUploadError: function(err) {
+        var self = this;
+        switch(err.code) {
+            case 401:
+                self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
+                break;
+            case 402:
+                self.setState({
+                    isOpen: true,
+                    error: T.get('error.unpaidAccountLimit')
+                });
+                break;
+            default:
+                self.setState({
+                    isOpen: true,
+                    error: T.get('copy.onboarding.uploadErrorText')
+                });
+        }
     },
     render: function() {
         const { isOnboarding } = this.props;
@@ -83,9 +110,6 @@ var VideoUploadForm = React.createClass({
         ;
         if (self.state.isOpen) {
             className.push('is-open');
-        };
-        if (self.props.isMaxLimit) {
-            className.push('is-hidden')
         };
         return (
             <div className={className.join(' ')}>
