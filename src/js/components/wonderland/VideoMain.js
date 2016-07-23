@@ -34,7 +34,7 @@ var VideoMain = React.createClass({
     componentWillMount: function() {
         
         var self = this, 
-            selectedDemographic = self.props.selectedDemographic || 0,
+            selectedDemographic = self.state.selectedDemographic || 0,
             thumbs = self.props.demographicThumbnails[selectedDemographic].thumbnails
         ;
         if (thumbs.length > 1) {
@@ -135,10 +135,13 @@ var VideoMain = React.createClass({
                             }
                         }
                         var dThumbSet = self.props.demographicThumbnails;
-                        dThumbSet[self.props.selectedDemographic].thumbnails = tempThumbnails;
-                        self.setState({
-                            demographicThumbnails: dThumbSet
-                        });
+                        var selectedDemographic = self.state.selectedDemographic || 0; 
+                        if (dThumbSet) { 
+                            dThumbSet[selectedDemographic].thumbnails = tempThumbnails;
+                            self.setState({
+                                demographicThumbnails: dThumbSet
+                            });
+                        }
                     })
                     .catch(function(err) {
                         console.log(err);
