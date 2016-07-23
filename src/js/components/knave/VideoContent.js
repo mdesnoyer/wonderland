@@ -28,12 +28,6 @@ var VideoContent = React.createClass({
             selectedDemographic: self.props.selectedDemographic || 0
         }
     },
-    /*
-    getDefaultProps: function() {
-        return {
-            selectedDemographic: 2
-        }
-    },*/
     componentWillReceiveProps: function(nextProps) {
         this.setState({
             selectedDemographic: nextProps.selectedDemographic
@@ -101,7 +95,7 @@ var VideoContent = React.createClass({
             case 'email':
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
-                                thumbnails={self.props.thumbnails}
+                                thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
                             />;
                 break;
@@ -134,8 +128,7 @@ var VideoContent = React.createClass({
             contents: 'info'
         }, function () {
             if (is_new_video) {
-                console.log('test'); 
-                self.props.refreshVideo(true, age, gender, self.props.handleDemographicChange);
+                self.props.refreshVideo(true, age, gender);
             } 
         });
     },

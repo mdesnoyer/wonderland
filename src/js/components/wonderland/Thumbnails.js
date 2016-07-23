@@ -19,17 +19,16 @@ import Lift from '../knave/Lift';
 var Thumbnails = React.createClass({
     mixins: [AjaxMixin],
     propTypes: {
-        thumbnails: React.PropTypes.array.isRequired
+        demographicThumbnails: React.PropTypes.array.isRequired
     },
     getInitialState: function() {
         var self = this;
         return {
-            thumbnails: self.props.thumbnails,
-            total: self.props.thumbnails.length,
+            thumbnails: UTILS.fixThumbnails(self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails, true),
             selectedItem: 0,
             isThumbnailOverlayActive: false,
             isPageOverlayActive: false,
-            badThumbs: self.props.badThumbs || [],
+            badThumbs: UTILS.fixThumbnails(self.props.demographicThumbnails[self.props.selectedDemographic].bad_thumbnails || [], false),
             showLowScores: false
         };
     },
@@ -47,11 +46,19 @@ var Thumbnails = React.createClass({
                 break;
         }
     },
-    componentWillReceiveProps: function(nextProps){
+    componentWillReceiveProps: function(nextProps, nextState){
         var self = this;
-        if (nextProps.thumbnails !== self.state.thumbnails){
-
-            self.setState({thumbnails: UTILS.fixThumbnails(nextProps.thumbnails)})
+        if (nextProps.selectedDemographic !== self.state.selectedDemographic) {
+            if (nextProps.demographicThumbnails &&
+              nextProps.demographicThumbnails[nextProps.selectedDemographic]) {  
+                var goods = UTILS.fixThumbnails(
+                    nextProps.demographicThumbnails[nextProps.selectedDemographic].thumbnails, true); 
+                var bads = UTILS.fixThumbnails(
+                    nextProps.demographicThumbnails[nextProps.selectedDemographic].bad_thumbnails, false); 
+                self.setState({ thumbnails: goods, 
+                                badThumbs: bads, 
+                                selectedDemographic: nextProps.selectedDemographic }); 
+            }
         }
     },
     handleClickPrevious: function(e) {
@@ -59,7 +66,7 @@ var Thumbnails = React.createClass({
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.thumbnails[self.state.selectedItem]);
         self.setState({
-            selectedItem: (self.state.selectedItem === 0) ? (self.state.total - 1) : (self.state.selectedItem - 1)
+            selectedItem: (self.state.selectedItem === 0) ? (self.state.thumbnails.length - 1) : (self.state.selectedItem - 1)
         });
     },
     handleClickNext: function(e) {
@@ -67,7 +74,7 @@ var Thumbnails = React.createClass({
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.thumbnails[self.state.selectedItem]);
         self.setState({
-            selectedItem: (self.state.selectedItem === self.state.total - 1) ? (0) : (self.state.selectedItem + 1)
+            selectedItem: (self.state.selectedItem === self.state.thumbnails.length - 1) ? (0) : (self.state.selectedItem + 1)
         });
     },
     closeThumbnailOverlay: function(e) {
@@ -89,7 +96,7 @@ var Thumbnails = React.createClass({
                     closeThumbnailOverlay={self.closeThumbnailOverlay}
                     thumbnails={self.state.thumbnails}
                     selectedItem={self.state.selectedItem}
-                    total={self.state.total}
+                    total={self.state.thumbnails.length}
                     handleClickPrevious={self.handleClickPrevious}
                     handleClickNext={self.handleClickNext}
                     handleKeyEvent={self.handleKeyEvent}
@@ -103,13 +110,13 @@ var Thumbnails = React.createClass({
                     self.props.isMobile ? null : ThumbnailOverlayComponent
                 }
                 <FeatureThumbnail
-                    thumbnails={self.props.thumbnails}
+                    thumbnails={self.state.thumbnails}
                     videoId={self.props.videoId}
                     type="default"
                     isMobile={self.props.isMobile}
                 />
                 <FeatureThumbnail
-                    thumbnails={self.props.thumbnails}
+                    thumbnails={self.state.thumbnails}
                     videoId={self.props.videoId}
                     type="neon"
                     handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}

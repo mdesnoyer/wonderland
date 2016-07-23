@@ -28,7 +28,7 @@ var VideoInfo = React.createClass({
     getDemographicOptions: function() { 
         var self = this,
             demographicOptions = []
-        ; 
+        ;
         if (self.props.demographicThumbnails && self.props.demographicThumbnails.length > 0) {
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
@@ -67,9 +67,6 @@ var VideoInfo = React.createClass({
             <div>
                 <h1 className="xxCollection-title">
                     {self.props.title}
-                </h1>
-                <h1 className="xxCollection-title">
-                    {self.props.selectedDemographic || 0}
                 </h1>
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
