@@ -129,7 +129,8 @@ var SignInForm = React.createClass({
                         self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
                     }
                 })
-                .catch(function (err) { 
+                .catch(function (err) {
+                    console.log(err);
                     E.checkForError(T.get('error.unableToSignIn', {'@link': UTILS.DRY_NAV.USER_FORGOT.URL }), false);
                     self._isSubmitted = false;
                     self.setState({
