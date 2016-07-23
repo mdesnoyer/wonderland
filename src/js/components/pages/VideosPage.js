@@ -81,6 +81,7 @@ var VideosPage = React.createClass({
     },
 
     render: function() {
+        debugger
         const { showTutorial } = this.state;
         const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
         const { sidebarContent } = this.state;

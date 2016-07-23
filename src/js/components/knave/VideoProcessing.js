@@ -5,6 +5,7 @@ import Message from '../wonderland/Message';
 import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
+import UTILS from '../../modules/utils';
 import VideoProcessingCountdown from './VideoProcessingCountdown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -36,6 +37,7 @@ var VideoProcessing = React.createClass({
             isError,
             seconds
         ;
+        debugger
         errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
             case 'failed':
