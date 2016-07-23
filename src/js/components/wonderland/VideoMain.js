@@ -73,6 +73,12 @@ var VideoMain = React.createClass({
             thumbnail_id: tids,
             fields: ['feature_ids', 'thumbnail_id']
         }
+        // Guest's request needs host's account id, share token and video id.
+        if (self.props.isGuest) {
+            options.overrideAccountId = self.props.accountId;
+            options.data.share_token = self.props.shareToken;
+            options.data.video_id = self.props.videoId;
+        }
         self.GET('thumbnails', options)
             .then(function(res) {
                 for (let t of res.thumbnails) {

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import VideoCollectionActions from './VideoCollectionActions';
 import VideoInfo from './VideoInfo';
@@ -35,26 +36,28 @@ var VideoContent = React.createClass({
     }, 
     componentWillMount: function() {
         var self = this;
-        self.getAccount()
-            .then(function(account) {
-                self.GET('videos/share', {
-                    data: {
-                        video_id: self.props.videoId
-                    }
-                })
-                .then(function(json) {
-                    self.setState({
-                        shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
                     });
                 })
                 .catch(function(err) {
                     console.log(err);
-                });
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
-        ;
+                })
+            ;
+        }
     },
     render: function() {
         var self = this,
@@ -67,6 +70,7 @@ var VideoContent = React.createClass({
                         title={self.props.title}
                         handleMenuChange={self.handleMenuChange}
                         displayThumbLift={self.props.displayThumbLift}
+                        isGuest={self.props.isGuest}
                     />
                 ) : (
                     <div>
@@ -89,6 +93,7 @@ var VideoContent = React.createClass({
                     <ShareLink 
                         handleMenuChange={self.handleMenuChange} 
                         shareUrl={self.state.shareUrl}
+                        videoId={self.props.videoId}
                     />
                 );
                 break;
@@ -97,6 +102,7 @@ var VideoContent = React.createClass({
                                 handleMenuChange={self.handleMenuChange}
                                 thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
+                                videoId={self.props.videoId}
                             />;
                 break;
             case 'delete':

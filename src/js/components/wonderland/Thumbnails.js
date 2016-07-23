@@ -88,6 +88,8 @@ var Thumbnails = React.createClass({
             isThumbnailOverlayActive: !self.state.isThumbnailOverlayActive,
             selectedItem: selectedItem
         });
+        TRACKING.sendEvent(self, arguments,
+                           self.state.isThumbnailOverlayActive);
     },
     render: function() {
         var self = this,
@@ -179,6 +181,7 @@ var Thumbnails = React.createClass({
         self.setState({
             showLowScores: !self.state.showLowScores
         });
+        TRACKING.sendEvent(self, arguments, self.state.showLowScores);
     }
 });
 

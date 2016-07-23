@@ -35,7 +35,7 @@ var Session = {
         cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
         cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, cookiePath);
         if (user) {
-            localStorage.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(user));
+            cookie.save(UTILS.COOKIES_KEY.userKey, user, cookiePath);
         }
     },
     setAccountId: function(accountId) {
@@ -83,7 +83,7 @@ var Session = {
         cookie.remove(UTILS.COOKIES_KEY.refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        localStorage.removeItem(UTILS.COOKIES_KEY.userKey);
+        cookie.remove(UTILS.COOKIES_KEY.userKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
@@ -100,20 +100,24 @@ var Session = {
         // Use the SESSION.user() Promise to check for a signed-in user
         return !!this.state.accessToken;
     },
+    // Returns if there is an active session with a user (has an email account)
+    isUser: function() {
+        return (cookie.load(UTILS.COOKIES_KEY.userKey) ? true : false);
+    },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function(userData) {
         var self = this;
         return new Promise(function (resolve, reject) {
             if (userData) {
                 self.state.user = userData;
-                localStorage.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(userData));
+                cookie.save(UTILS.COOKIES_KEY.userKey, userData, UTILS.COOKIE_DEFAULT_PATH);
             }
             else if (self.state.user) {
                 userData = self.state.user;
             }
             else {
                 try {
-                    userData = JSON.parse(localStorage.getItem(UTILS.COOKIES_KEY.userKey));
+                    userData = cookie.load(UTILS.COOKIES_KEY.userKey);
                 }
                 catch (e) {
                     // TODO: Get user from API based on session

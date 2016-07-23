@@ -5,7 +5,8 @@ import Message from '../wonderland/Message';
 import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
-import Countdown from '../wonderland/Countdown';
+import UTILS from '../../modules/utils';
+import VideoProcessingCountdown from './VideoProcessingCountdown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -13,7 +14,7 @@ var VideoProcessing = React.createClass({
     mixins: [AjaxMixin],
     getInitialState: function() {
         return {
-            maxVideoSize: 900
+            maxVideoSize: UTILS.MAX_VIDEO_SIZE
         }
     },
     componentWillMount: function() {
@@ -21,7 +22,7 @@ var VideoProcessing = React.createClass({
         self.GET('limits')
             .then(function(res) {
                 self.setState({
-                    maxVideoSize: res.max_video_size
+                    maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE
                 })
             })
             .catch(function(err) {
@@ -52,7 +53,7 @@ var VideoProcessing = React.createClass({
                 seconds = 1;
                 break;
             case 'processing':
-                title = self.props.title ? 'PROCESSING: ' + self.props.title : 'PROCESSING: ...';
+                title = self.props.title;
                 errorMessageComponent = '';
                 deleteButton = '';
                 isError = false;
@@ -64,6 +65,7 @@ var VideoProcessing = React.createClass({
                 {
                     self.state.isHidden ? null : (
                         <article className="xxCollection xxCollection--video xxCollection--processing">
+                            <h1 className="xxSubtitle">{self.props.videoState}</h1>
                             <h1 className="xxCollection-title">
                                 {title}
                                 {deleteButton}
@@ -71,7 +73,7 @@ var VideoProcessing = React.createClass({
                             {
                                 isError ? null : (
                                     <div>
-                                        <Countdown seconds={self.props.seconds} type="processing" onFinish={false} />
+                                        <VideoProcessingCountdown seconds={self.props.seconds} />
                                         <div className="xxCollectionFilters">
                                             <strong className="xxCollectionFilters-title">Filters</strong>
                                             <span className="xxCollectionFilters-value">None</span>

@@ -20,39 +20,32 @@ var CookiesPage = React.createClass({
             rememberMe: cookie.load(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
             rememberedEmail: cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
             viewShare: cookie.load(UTILS.COOKIES_KEY.viewShareKey) || 'None',
-            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None'
+            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None',
+            userKey: cookie.load(UTILS.COOKIES_KEY.userKey).username || 'None'
         };
     },
     render: function() {
         var self = this;
         return (
-            <div>
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.cookies.title'))}
-                />
+            <main className="xxPage">
+                <Helmet title={UTILS.buildPageTitle(T.get('copy.cookies.title'))} />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1>{T.get('copy.cookies.heading')}</h1>
-                            <div className="content">
-                                <p>{T.get('copy.cookies.body')}</p>
-                                {
-                                    Object.keys(self.state).map(function(key) {
-                                        return (
-                                            <dl>
-                                                <dt>{key}:</dt>
-                                                <dd>{self.state[key]}</dd>
-                                            </dl>
-                                        );
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <h1 className="xxTitle">{T.get('copy.cookies.heading')}</h1>
+                <div className="xxText">
+                    <p>{T.get('copy.cookies.body')}</p>
+                    {
+                        Object.keys(self.state).map(function(key) {
+                            return (
+                                <dl>
+                                    <dt>{key}:</dt>
+                                    <dd>{self.state[key]}</dd>
+                                </dl>
+                            );
+                        })
+                    }
+                </div>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

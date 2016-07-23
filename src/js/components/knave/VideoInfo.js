@@ -87,7 +87,7 @@ var VideoInfo = React.createClass({
                                 {countdown}
                             </div>
                         );
-                    } else {
+                    } else if (!self.props.isGuest) {
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"

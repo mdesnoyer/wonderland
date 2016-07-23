@@ -102,7 +102,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images.',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
             'copy.lift.units': '@lift Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -294,6 +294,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.share.title': 'Neon Labs',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
+            'copy.share.url.copied': 'Copied!',
+            // todo, if this is osx then ⌘ else ctrl.
+            'copy.share.url.selected': 'Press ⌘-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
