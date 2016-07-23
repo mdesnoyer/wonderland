@@ -20,10 +20,17 @@ var VideoInfo = React.createClass({
             demographicOptions: self.getDemographicOptions()
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
+            this.setState({
+                selectedDemographic: nextProps.selectedDemographic
+            });
+        } 
+    },
     getDemographicOptions: function() { 
         var self = this,
             demographicOptions = []
-        ; 
+        ;
         if (self.props.demographicThumbnails && self.props.demographicThumbnails.length > 0) {
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
@@ -101,7 +108,7 @@ var VideoInfo = React.createClass({
                                     className="xxCollectionFilters-value"
                                     onChange={self.onDemographicChange}
                                     options={self.getDemographicOptions()}
-                                    value={self.props.selectedDemographic || 0}
+                                    value={self.state.selectedDemographic || 0}
                                     clearable={false}
                                 />
                             );

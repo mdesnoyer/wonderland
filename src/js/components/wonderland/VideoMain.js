@@ -15,7 +15,6 @@ var VideoMain = React.createClass({
         isGuest: React.PropTypes.bool.isRequired,
         accountId: React.PropTypes.string,
         videoId: React.PropTypes.string.isRequired,
-        thumbnails: React.PropTypes.array.isRequired,
         videoState: React.PropTypes.string.isRequired,
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
@@ -29,26 +28,46 @@ var VideoMain = React.createClass({
             isHidden: false,
             liftArray: [],
             displayThumbLift: 0,
-            thumbnails: self.props.thumbnails,
-            selectedDemographic: false, // default to not showing demographic thumbs (support old videos)
+            selectedDemographic: self.props.selectedDemographic || 0 // default to not showing demographic thumbs (support old videos)
         }
     },
     componentWillMount: function() {
-        var self = this;
-        if (self.state.thumbnails.length > 1) {
-            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
-                self.sendForLiftData();
-                self.sendForValenceFeatureKeys();
+        
+        var self = this, 
+            selectedDemographic = self.state.selectedDemographic || 0,
+            thumbs = self.props.demographicThumbnails[selectedDemographic].thumbnails
+        ;
+        if (thumbs.length > 1) {
+            if (thumbs[thumbs.length - 1].neon_score) {
+                self.sendForLiftData(thumbs);
+                self.sendForValenceFeatureKeys(thumbs);
             }
+        } 
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
+            if (nextProps.demographicThumbnails && 
+              nextProps.demographicThumbnails[nextProps.selectedDemographic]) { 
+                var thumbs = nextProps.demographicThumbnails[nextProps.selectedDemographic].thumbnails;
+                if (thumbs[thumbs.length - 1].neon_score) {
+                    this.sendForLiftData(thumbs);
+                    this.sendForValenceFeatureKeys(thumbs);
+                }
+                var demoSet = this.props.demographicThumbnails[nextProps.selectedDemographic];
+            } 
+            this.setState({
+                selectedDemographic: nextProps.selectedDemographic,
+                demographicThumbnails: demoSet
+            });
         }
     },
-    sendForValenceFeatureKeys: function() {
+    sendForValenceFeatureKeys: function(in_thumbnails) {
         var tidArray = [],
             self = this,
             options = {},
             tidToFeatures = {}
         ;
-        for (let t of self.state.thumbnails) {
+        for (let t of in_thumbnails) {
             tidArray.push(t.thumbnail_id);
         }
         var tids = tidArray.join(',');
@@ -75,7 +94,7 @@ var VideoMain = React.createClass({
                             !(x[0].split('_')[1] in UTILS.VALENCE_IGNORE_INDEXES));
                     }
                 }
-                let tempThumbnails = self.state.thumbnails;
+                let tempThumbnails = in_thumbnails;
                 for (let t of tempThumbnails) {
                     t.prelim_valence_features = tidToFeatures[t.thumbnail_id];
                     t.final_valence_features = [];
@@ -115,9 +134,14 @@ var VideoMain = React.createClass({
                                 t.final_valence_features.push(fhash[pvf[0]]);
                             }
                         }
-                        self.setState({
-                            thumbnails: tempThumbnails
-                        });
+                        var dThumbSet = self.props.demographicThumbnails;
+                        var selectedDemographic = self.state.selectedDemographic || 0; 
+                        if (dThumbSet) { 
+                            dThumbSet[selectedDemographic].thumbnails = tempThumbnails;
+                            self.setState({
+                                demographicThumbnails: dThumbSet
+                            });
+                        }
                     })
                     .catch(function(err) {
                         console.log(err);
@@ -126,13 +150,17 @@ var VideoMain = React.createClass({
             })
         ;
     },
-    sendForLiftData: function() {
+    sendForLiftData: function(in_thumbnails) {
+        var default_thumbnail = in_thumbnails.find(x => x.type == 'default'); 
+        if (!default_thumbnail) { 
+            default_thumbnail = in_thumbnails[0]; 
+        } 
         var self = this,
             options = {
                 data: {
                     video_id: self.props.videoId,
-                    base_id: self.state.thumbnails[self.state.thumbnails.length - 1].thumbnail_id,
-                    thumbnail_ids: self.parseLiftThumbnails(self.state.thumbnails)
+                    base_id: default_thumbnail.thumbnail_id,
+                    thumbnail_ids: self.parseLiftThumbnails(in_thumbnails)
                 }
             }
         ;
@@ -143,23 +171,28 @@ var VideoMain = React.createClass({
         self.GET('statistics/estimated_lift/', options)
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
-                let tempThumbnails = self.state.thumbnails;
+                var liftHash = {}
+                var maxLift = 0;  
                 for (let l of res.lift) {
-                    for (let t of tempThumbnails) {
-                        if (t.thumbnail_id === l.thumbnail_id) {
-                            t.lift = l.lift;
-                            break;
-                        }
+                    liftHash[l.thumbnail_id] = l.lift; 
+                    if (l.lift > maxLift) { 
+                        maxLift = l.lift; 
                     }
                 }
-                self.setState({
-                    displayThumbLift: res.lift.find(x => x.thumbnail_id === self.state.thumbnails[0].thumbnail_id).lift,
-                    liftArray: res.lift,
-                    thumbnails: tempThumbnails
-                });
+                for (let t of in_thumbnails) {
+                    t.lift = liftHash[t.thumbnail_id]; 
+                }
+                if (maxLift) { 
+                    var dThumbSet = self.props.demographicThumbnails; 
+                    dThumbSet[self.props.selectedDemographic].thumbnails = in_thumbnails;
+                    self.setState({
+                        displayThumbLift: maxLift,
+                        liftArray: res.lift,
+                        demographicThumbnails: dThumbSet 
+                    });
+                } 
             })
             .catch(function(err) {
-                console.log(err);
                 self.setState({
                     isHidden: true
                 });
@@ -170,11 +203,9 @@ var VideoMain = React.createClass({
         var self = this,
             parseLiftThumbnailsArray = []
         ;
-        thumbnails.map(function(thumbnail, i) {
-            if (i < thumbnails.length - 1) {
-                parseLiftThumbnailsArray.push(thumbnail.thumbnail_id);
-            }
-        });
+        for (let t of thumbnails) { 
+            parseLiftThumbnailsArray.push(t.thumbnail_id);
+        } 
         return parseLiftThumbnailsArray.join(',');
     },
     handleDelete: function(e) {
@@ -190,19 +221,12 @@ var VideoMain = React.createClass({
         if (self.props.demographicThumbnails[value] && self.props.demographicThumbnails[value].thumbnails) {
             thumbs = self.props.demographicThumbnails[value].thumbnails;
         }
-        else {
-            thumbs = self.props.thumbnails;
-            value = false;
-        }
+        if (self.props.onDemoChange) { 
+            self.props.onDemoChange(value); 
+        } 
         self.setState({
             selectedDemographic: value,
-            thumbnails: UTILS.fixThumbnails(thumbs, true),
-            videoState: 'processing'
-        }, function () {
-            if (self.state.thumbnails[self.state.thumbnails.length - 1].neon_score) {
-                self.sendForLiftData();
-                self.sendForValenceFeatureKeys();
-            }
+            demographicThumbnails: self.props.demographicThumbnails
         });
     },
     render: function() {
@@ -219,20 +243,20 @@ var VideoMain = React.createClass({
                             videoId={self.props.videoId}
                             videoState={self.props.videoState}
                             demographicThumbnails={self.props.demographicThumbnails}
-                            timeRemaining={self.props.timeRemaining}
                             selectedDemographic={self.state.selectedDemographic}
+                            timeRemaining={self.props.timeRemaining}
                             handleDemographicChange={self.handleDemographicChange}
                             refreshVideo={self.props.refreshVideo}
                             handleDelete={self.handleDelete}
                             shareToken={self.props.shareToken}
                             displayThumbLift={self.state.displayThumbLift}
                             openSignUp={self.props.openSignUp}
-                            thumbnails={self.state.thumbnails}
                             isGuest={self.props.isGuest}
                         />
                     </div>
                     <Thumbnails
-                        thumbnails={self.state.thumbnails}
+                        demographicThumbnails={self.props.demographicThumbnails}
+                        selectedDemographic={self.state.selectedDemographic}
                         videoState={self.props.videoState}
                         videoId={self.props.videoId}
                         shareToken={self.props.shareToken}
@@ -240,7 +264,6 @@ var VideoMain = React.createClass({
                         handleChildOnMouseEnter={self.handleChildOnMouseEnter}
                         displayThumbLift={self.state.displayThumbLift}
                         isMobile={self.props.isMobile}
-                        badThumbs={self.props.badThumbs}
                     />
                 </article>
             );
@@ -248,11 +271,16 @@ var VideoMain = React.createClass({
     },
     handleChildOnMouseEnter: function(thumbnailId) {
         var self = this,
-            liftArray = self.state.liftArray
+            liftArray = self.state.liftArray, 
+            lift = null 
         ;
         if (liftArray.length > 1) {
+            var found_obj = liftArray.find(x => x.thumbnail_id === thumbnailId);
+            if (found_obj) { 
+                lift = found_obj.lift; 
+            } 
             self.setState({
-                displayThumbLift: liftArray.find(x => x.thumbnail_id === thumbnailId).lift
+                displayThumbLift: lift 
             });
         }
     }

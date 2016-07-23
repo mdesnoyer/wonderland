@@ -25,9 +25,15 @@ var VideoContent = React.createClass({
         var self = this;
         return {
             contents: defaultContent,
-            shareUrl: ''
+            shareUrl: '', 
+            selectedDemographic: self.props.selectedDemographic || 0
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
+    }, 
     componentWillMount: function() {
         var self = this;
         if (!self.props.isGuest) {
@@ -94,7 +100,7 @@ var VideoContent = React.createClass({
             case 'email':
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
-                                thumbnails={self.props.thumbnails}
+                                thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
                                 videoId={self.props.videoId}
                             />;
@@ -112,6 +118,7 @@ var VideoContent = React.createClass({
                 contents = (
                     <VideoFilters
                         handleMenuChange={self.refilterMenuChange}
+                        handleBackClick={self.handleBackClick}
                         handleDemographicChange={self.props.handleDemographicChange}
                         selectedDemographic={self.props.selectedDemographic}
                         videoId={self.props.videoId}
@@ -121,16 +128,24 @@ var VideoContent = React.createClass({
         }
         return <div>{contents}</div>;
     },
-    refilterMenuChange: function(age, gender, is_new_video) {
+    refilterMenuChange: function(age, gender, is_new_video=false) {
         var self = this;
         self.setState({
             contents: 'info'
         }, function () {
-            if (is_new_video) { 
-                self.props.refreshVideo(true, age, gender, self.props.handleDemographicChange);
+            if (is_new_video) {
+                self.props.refreshVideo(true, age, gender);
             } 
         });
-    }, 
+    },
+    handleBackClick: function(e) { 
+        var self = this,
+            value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
+        ;
+        self.setState({
+           contents: value
+        });
+    },  
     handleMenuChange: function(e) {
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent

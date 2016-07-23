@@ -56,25 +56,16 @@ var VideoGuest = React.createClass({
             })
                 .then(function(json) {
                     var video = json.videos[0];
-                    if (video.demographic_thumbnails.length > 0) {
-                        var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
-                        var badThumbs = newThumbnails.bad_thumbnails || [];
-                    }
-                    else {
-                        var newThumbnails = video;
-                        var badThumbs = [];
-                    }
                     self.setState({
                         mode: 'success',
                         title: video.title,
                         duration: video.duration,
                         url: video.url,
-                        thumbnails: newThumbnails.thumbnails,
-                        sortedThumbnails: UTILS.fixThumbnails(newThumbnails.thumbnails, true),
+                        demographicThumbnails: video.demographic_thumbnails, 
+                        selectedDemographic: 0, 
                         videoState: video.state,
                         videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
-                        created: video.created,
-                        badThumbs: badThumbs
+                        created: video.created
                     });
                 })
                 .catch(function(err) {
@@ -126,14 +117,14 @@ var VideoGuest = React.createClass({
                             title={self.state.title}
                             videoId={self.state.videoId}
                             messageNeededComponent={false}
-                            thumbnails={self.state.sortedThumbnails}
+                            demographicThumbnails={self.state.demographicThumbnails} 
+                            selectedDemographic={self.state.selectedDemographic}
                             videoState={self.state.videoState}
                             duration={self.state.duration}
                             created={self.state.created}
                             url={self.state.url}
                             shareToken={self.state.shareToken}
                             accountId={self.state.accountId}
-                            badThumbs={self.state.badThumbs}
                         />
                 );
                 break;
