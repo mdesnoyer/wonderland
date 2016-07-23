@@ -147,6 +147,9 @@ var VideoMain = React.createClass({
     },
     sendForLiftData: function(in_thumbnails) {
         var default_thumbnail = in_thumbnails.find(x => x.type == 'default'); 
+        if (!default_thumbnail) { 
+            default_thumbnail = in_thumbnails[0]; 
+        } 
         var self = this,
             options = {
                 data: {
