@@ -26,25 +26,28 @@ var VideoUploadForm = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            isOpen: false
+            isOpen: false,
+            error: null
         };
     },
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
         self.setState({
-            isOpen: !self.state.isOpen
+            isOpen: !self.state.isOpen,
+            error: null
         });
     },
     handleUpload: function(url) {
         var self = this;
         self.setState({
-            isOpen: false
+            isOpen: false,
+            error: false
         }, function() {
             self.sendVideoUrl(url)
         });
     },
-    sendVideoUrl: function(url) {        
+    sendVideoUrl: function(url) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {

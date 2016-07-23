@@ -27,12 +27,21 @@ export default React.createClass({
             sidebarContent: null,
             uploadText: T.get('copy.onboarding.uploadHelpText'),
             videoId: null,
+            maxVideoSize: 900
         };
     },
     componentWillMount: function() {
         var self = this; 
         if (!SESSION.active()) {
             self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
+        }
+        else{
+            self.GET('limits')
+                .then(function(res) {
+                    self.setState({ maxVideoSize: res.max_video_size || 900 })
+                })
+                .catch(function(err) {
+                })
         }
     },
     componentWillUnmount: function() {
@@ -81,7 +90,7 @@ export default React.createClass({
                 videoStatePollingWait = 10;
                 const estimatedTimeRemaining = video.estimated_time_remaining || null;
                 if (estimatedTimeRemaining) {
-                    estimatedTimeRemaining > 900 ? this.showError('time') : this.setState({ seconds: estimatedTimeRemaining });
+                    estimatedTimeRemaining > this.state.maxVideoSize ? this.showError('time') : this.setState({ seconds: estimatedTimeRemaining });
                 }
             }
             else { 
