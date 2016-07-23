@@ -17,10 +17,9 @@ var SignInPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        var self = this;
+        if (SESSION.isUser()) {
+            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
     },
     render: function() {
