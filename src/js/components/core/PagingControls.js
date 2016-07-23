@@ -56,16 +56,19 @@ var PagingControls = React.createClass({
                 {self.props.alertMessage}
                 <nav className="xxPagingControls-navigation">
                     <div className="xxPagingControls-navigation-item">
-                        <button
-                            ref="prevButton"
-                            data-loc={self.props.prevPageAPICall}
-                            disabled={prevDisabledAttribute}
-                            onClick={self.handlePrevButton}
-                            className={'xxButton xxButton--highlight'}
-                            title={T.get('action.previous')}
-                        >
-                            {T.get('action.previous')}
-                        </button>
+                        { prevDisabledAttribute ? null : (                    
+                            <button
+                                ref="prevButton"
+                                data-loc={self.props.prevPageAPICall}
+                                disabled={prevDisabledAttribute}
+                                onClick={self.handlePrevButton}
+                                className={'xxButton xxButton--highlight'}
+                                title={T.get('action.previous')}
+                            >
+                                {T.get('action.previous')}
+                            </button>
+                            )
+                        }
                     </div>
                     <div className="xxPagingControls-navigation-item">
                         {T.get('copy.pageN', {
@@ -73,16 +76,19 @@ var PagingControls = React.createClass({
                         })}
                     </div>
                     <div className="xxPagingControls-navigation-item">
-                        <button
-                            ref="nextButton"
-                            data-loc={self.props.nextPageAPICall}
-                            disabled={nextDisabledAttribute}
-                            onClick={self.handleNextButton}
-                            className={'xxButton xxButton--highlight'}
-                            title={T.get('action.next')}
-                        >
-                            {T.get('action.next')}
-                        </button>
+                    { nextDisabledAttribute  ? null : (
+                            <button
+                                ref="nextButton"
+                                data-loc={self.props.nextPageAPICall}
+                                disabled={nextDisabledAttribute}
+                                onClick={self.handleNextButton}
+                                className={'xxButton xxButton--highlight'}
+                                title={T.get('action.next')}
+                            >
+                                {T.get('action.next')}
+                            </button>
+                        )
+                    }
                     </div>
                 </nav>
             </div>
