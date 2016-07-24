@@ -25,7 +25,12 @@ var VideoInfo = React.createClass({
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic
             });
-        } 
+        }
+        if (!this.props.timeRemaining) { 
+            this.setState({
+                timeRemaining: nextProps.timeRemaining
+            });
+        }
     },
     getDemographicOptions: function() { 
         var self = this,

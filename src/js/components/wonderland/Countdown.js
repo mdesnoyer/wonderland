@@ -7,6 +7,7 @@ export default class Countdown extends React.Component {
 
         this.state = {
             seconds: parseInt(props.seconds || 1),
+            initialState: true, 
             classPrefix: props.classPrefix || 'xxOnboardingCountdown'
         };
     }
@@ -16,11 +17,13 @@ export default class Countdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (!this.state.seconds) {
             this.setState({
                 seconds: nextProps.seconds
             }, function() {
                 this.setProcessingTimer()
             });
+        } 
     }
 
     componentWillUnmount() {
@@ -54,7 +57,7 @@ export default class Countdown extends React.Component {
             classPrefix = this.state.classPrefix,
             classPrefixLabel = classPrefix + '-label'
         ;
-        if (this.props.seconds > 1) {
+        if (this.state.seconds > 1) {
             return (
                 <div className={classPrefix}>
                     <span className={classPrefixLabel}>
@@ -68,7 +71,7 @@ export default class Countdown extends React.Component {
                 </div>
             )
         }
-        else if (this.props.seconds === null) {
+        else if (this.state.seconds === null) {
             return (
                 <a className={classPrefix}>
                     <span className={classPrefixLabel}>
@@ -80,7 +83,7 @@ export default class Countdown extends React.Component {
             )
         }
         else {
-            return <div/>
+            return (<div/>) 
         }
     }
 };

@@ -32,6 +32,11 @@ var VideoOwner = React.createClass({
         this.setState({
             selectedDemographic: nextProps.selectedDemographic
         });
+        if (!this.props.timeRemaining) { 
+            this.setState({
+                timeRemaining: nextProps.timeRemaining
+            });
+        }   
     }, 
     getInitialState: function() {
         var self = this;
@@ -56,8 +61,7 @@ var VideoOwner = React.createClass({
             age: null, 
             gender: null, 
             pingVideoCallback: null, 
-            seconds: self.props.seconds,
-            set_seconds: false 
+            seconds: self.props.seconds
         }
     },
     componentDidMount: function() {
@@ -76,6 +80,7 @@ var VideoOwner = React.createClass({
             (nextState.videoState !== this.state.videoState) ||
             (nextProps.isMobile !== this.props.isMobile) ||
             (nextProps.seconds !== this.props.seconds) || 
+            (!this.state.timeRemaining && nextState.timeRemaining) || 
             (nextState.selectedDemographic !== this.state.selectedDemographic) 
         );
     },
