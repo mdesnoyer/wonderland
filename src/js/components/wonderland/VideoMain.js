@@ -79,7 +79,6 @@ var VideoMain = React.createClass({
         if (self.props.isGuest) {
             options.overrideAccountId = self.props.accountId;
             options.data.share_token = self.props.shareToken;
-            options.data.video_id = self.props.videoId;
         }
         self.GET('thumbnails', options)
             .then(function(res) {
