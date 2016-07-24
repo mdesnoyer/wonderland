@@ -89,22 +89,22 @@ var VideoUploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
-            <a
-                className="xxUploadButton"
-                title={T.get('action.analyze')}
-                onClick={self.toggleOpen}
-            >{T.get('action.analyze')}</a>
-            {
-                self.state.isOpen ? (
-                    <div className="xxOverlay" >
-                        <VideoUploadOverlay
-                            handleUpload={self.handleUpload}
-                            isOnboarding={isOnboarding}
-                            error={self.state.error || null}
-                        />
-                    </div>
-                ) : null
-            }
+                <a
+                    className="xxUploadButton"
+                    title={T.get('action.analyze')}
+                    onClick={self.toggleOpen}
+                >{T.get('action.analyze')}</a>
+                {
+                    self.state.isOpen ? (
+                        <div className="xxOverlay" >
+                            <VideoUploadOverlay
+                                handleUpload={self.handleUpload}
+                                isOnboarding={isOnboarding}
+                                error={self.state.error || null}
+                            />
+                        </div>
+                    ) : null
+                }
             </div>
         );
     }
