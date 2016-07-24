@@ -61,7 +61,7 @@ var VideoProcessingCountdown = React.createClass({
                 );
                 break;
             default:
-                return null;
+                return <div/>
         }
     }
 });
