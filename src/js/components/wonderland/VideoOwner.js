@@ -94,7 +94,7 @@ var VideoOwner = React.createClass({
                     error={self.state.error}
                     videoState={self.state.videoState}
                     duration={self.state.duration}
-                    seconds={self.state.seconds}
+                    timeRemaining={self.state.timeRemaining}
                 />
             );
         }
@@ -288,6 +288,11 @@ var VideoOwner = React.createClass({
             if (!self.state.seconds) { 
                 self.setState({ 
                     seconds: video.estimated_time_remaining 
+                });
+            } 
+            if (!self.state.timeRemaining) { 
+                self.setState({ 
+                    timeRemaining: video.estimated_time_remaining 
                 });
             } 
             if (!self.state.title) { 

@@ -6,7 +6,7 @@ import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import VideoProcessingCountdown from './VideoProcessingCountdown';
+import Countdown from '../wonderland/Countdown'; 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -28,6 +28,13 @@ var VideoProcessing = React.createClass({
             .catch(function(err) {
             })
     },
+    componentWillReceiveProps: function(nextProps) {
+        if (!this.props.timeRemaining) {
+            this.setState({
+                timeRemaining: nextProps.timeRemaining
+            });
+        }
+    }, 
     render: function() {
         var self = this,
             title,
@@ -35,7 +42,9 @@ var VideoProcessing = React.createClass({
             deleteButton,
             errorMessageComponent,
             isError,
-            seconds
+            seconds,
+            timeRemaining, 
+            countdown
         ;
         errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
@@ -58,35 +67,45 @@ var VideoProcessing = React.createClass({
                 deleteButton = '';
                 isError = false;
                 seconds = self.props.seconds;
+                timeRemaining = self.props.timeRemaining;
                 break;
         }
-        return (
-            <div>
-                {
-                    self.state.isHidden ? null : (
-                        <article className="xxCollection xxCollection--video xxCollection--processing">
-                            <h1 className="xxSubtitle">{self.props.videoState}</h1>
-                            <h1 className="xxCollection-title">
-                                {title}
-                                {deleteButton}
-                            </h1>
-                            {
-                                isError ? null : (
-                                    <div>
-                                        <VideoProcessingCountdown seconds={self.props.seconds} />
-                                        <div className="xxCollectionFilters">
-                                            <strong className="xxCollectionFilters-title">Filters</strong>
-                                            <span className="xxCollectionFilters-value">None</span>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {errorMessageComponent}
-                        </article>
-                    )
-                }
-            </div>
-        );
+        if (self.state.isHidden) { 
+            return (<div></div>);
+        }  
+
+        if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {  
+            countdown = (<Countdown 
+                            seconds={self.props.timeRemaining}
+                            classPrefix="xxCollectionFilterCountdown"
+                        />);
+        } 
+        else {
+            countdown = (
+                <span>{T.get('timer.loading')}</span> 
+            );
+        }
+        return ( 
+            <div> 
+                <article className="xxCollection xxCollection--video xxCollection--processing">
+                    <h1 className="xxSubtitle">{self.props.videoState}</h1>
+                    <h1 className="xxCollection-title">
+                        {title}
+                        {deleteButton}
+                    </h1>
+                    <div>
+                        <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"> 
+                            {countdown} 
+                        </div> 
+                        <div className="xxCollectionFilters">
+                            <strong className="xxCollectionFilters-title">Filters</strong>
+                            <span className="xxCollectionFilters-value">None</span>
+                        </div>
+                    </div> 
+                    {errorMessageComponent}
+                </article>
+            </div> 
+        )
     },
     handleDeleteClick: function() {
         var self = this, options = {}
