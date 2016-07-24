@@ -30,6 +30,7 @@ var VideosResults = React.createClass({
                                 isMobile={self.props.isMobile}
                                 openSignUp={self.props.openSignUp}
                                 seconds={video.estimated_time_remaining}
+                                setTooltipText={self.props.setTooltipText}
                             />
                         );
                     })

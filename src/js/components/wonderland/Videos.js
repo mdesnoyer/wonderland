@@ -9,6 +9,7 @@ import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
 import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -98,6 +99,16 @@ var Videos = React.createClass({
                     videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                     openSignUp={self.props.openSignUp}
                     isMaxLimit={self.state.isMaxLimit}
+                    setTooltipText={self.setTooltipText}
+                />
+                <ReactTooltip
+                    ref="tooltip"
+                    event="click"
+                    eventOff="mouseout"
+                    effect="solid"
+                    place="bottom"
+                    delayHide={1000}
+                    getContent={self.getTooltipText}
                 />
                 {
                     self.props.isMobile ? (
@@ -108,6 +119,14 @@ var Videos = React.createClass({
                 }
             </div>
         );
+    },
+    getTooltipText: function() {
+        return this.refs.tooltip.state.placeholder;
+    },
+    setTooltipText: function(textKey) {
+        this.refs.tooltip.setState({
+            placeholder: T.get(textKey)
+        });
     },
     doFindMaxVideos: function(count, max) {
         var self = this;
