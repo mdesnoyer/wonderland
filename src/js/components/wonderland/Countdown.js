@@ -1,5 +1,6 @@
 import React from 'react';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 export default class Countdown extends React.Component {
     constructor(props) {
@@ -70,19 +71,16 @@ export default class Countdown extends React.Component {
                 </div>
             )
         }
-        else if (this.state.seconds === null) {
+        else {
             return (
-                <a className={classPrefix}>
+                <div className={classPrefix}>
                     <span className={classPrefixLabel}>
                         {
-                            "Loading..."
+                            T.get('timer.close')
                         }
                     </span>
-                </a>
+                </div>
             )
-        }
-        else {
-            return (<div/>) 
         }
     }
 };
