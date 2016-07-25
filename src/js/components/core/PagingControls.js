@@ -60,7 +60,7 @@ var PagingControls = React.createClass({
                 {self.props.alertMessage}
                 <nav className="xxPagingControls-navigation">
                     <div className="xxPagingControls-navigation-item">
-                        { false ? null : (                    
+                        { prevDisabledAttribute ? null : (                    
                             <button
                                 ref="prevButton"
                                 data-loc={self.props.prevPageAPICall}
@@ -129,7 +129,6 @@ var PagingControls = React.createClass({
     doNext: function() {
         var self = this;
         if (!self.refs.nextButton.attributes.disabled) {
-            debugger
             self.props.handleNewSearch(self.props.nextPageAPICall, 1);
         }
     }

@@ -13,22 +13,26 @@
 }
 
 .xxPagingControls-navigation-item {
-    // empty    
+    width: 10%;
+    text-align: center;
 }
 
 
 
 .xxPagingControls-prev,
 .xxPagingControls-next  {
-	// float: left;
+	border: none;
+	background-color: transparent;
 	position: relative;
-	width: 30px;
+	width: 50px;
 	height: 29px;
 	margin-top: -3px;
 	margin-left: -8px;
 	text-indent: $indent-off-screen;
+	cursor: pointer;
+	outline: none;
 
-	@include arrow(W, 12px, 1px, $quaternary-color);
+	@include arrow(W, 24px, 2px, $quaternary-color);
 
 	&:hover {
 	    &::before,
