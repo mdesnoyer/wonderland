@@ -50,7 +50,7 @@ var VideoPageGuest = React.createClass({
                 />
                 {
                     self.state.showTutorial ? (
-                        <OnboardingTutorial onClose={self.onTutorialClose} />
+                        <OnboardingTutorial onClose={self.onTutorialClose} isGuest={true} />
                     ) : null
                 }
                 {

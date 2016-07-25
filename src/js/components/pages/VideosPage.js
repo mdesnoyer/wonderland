@@ -97,7 +97,7 @@ var VideosPage = React.createClass({
 
                 {
                     showTutorial ? (
-                        <OnboardingTutorial onClose={this.onTutorialClose} />
+                        <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />
                     ) : null
                 }
                 <SiteFooter />
