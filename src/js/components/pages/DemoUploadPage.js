@@ -122,6 +122,9 @@ export default React.createClass({
 
     render: function() {
         const { isAnalyzing, seconds, uploadText, sidebarContent } = this.state;
+        var countdown = null; 
+
+        countdown = (<Countdown onFinish={this.onCountdownFinish} seconds={this.state.seconds} displayLoading={true} />); 
         return (
             <main className="xxPage">
                 <Helmet
@@ -131,7 +134,7 @@ export default React.createClass({
                     isAnalyzing ? (
                         <div>
                             <SiteHeader sidebarContent={sidebarContent} />
-                            <Countdown onFinish={this.onCountdownFinish} seconds={this.state.seconds} />
+                            {countdown} 
                             <OnboardingSlides toggleLearnMore={this.toggleLearnMore} />
                             <OnboardingEmail videoId={this.state.videoId} />
                         </div>

@@ -35,11 +35,15 @@ var ShareLink = React.createClass({
             clipboard = new Clipboard(self.refs.copyUrl);
             clipboard.on('success', e => {
                 // Set the tooltip to reflect successful copy.
-                self.refs.copyUrlTip.setState({
-                    placeholder: T.get('copy.share.url.copied')});
+                self.props.setTooltipText('copy.share.url.copied');
                 e.clearSelection();
             });
+            clipboard.on('error', e => {
+                // Ask the user to Ctrl-C.
+                self.props.setTooltipText('copy.share.url.selected');
+            });
         ;
+        ReactTooltip.rebuild();
     },
     render: function(){
         var self = this;
@@ -79,7 +83,7 @@ var ShareLink = React.createClass({
                     >{T.get('copy.share.label')}</label>
                     <input
                         className="xxInputText"
-                        id="xx-share-link"
+                        id={"xx-share-link" + self.props.videoId}
                         type="text"
                         value={self.state.shareUrl}
                         readOnly
@@ -94,19 +98,12 @@ var ShareLink = React.createClass({
                     >{T.get('back')}</button>
                     <button
                         className="xxButton xxButton--highlight"
-                        data-clipboard-target="#xx-share-link"
+                        data-clipboard-target={"#xx-share-link" + self.props.videoId}
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
-                        data-tip={T.get('copy.share.url.selected')}
+                        data-tip
                     >{T.get('copy')}</button>
-                    <ReactTooltip
-                        ref="copyUrlTip"
-                        event="click"
-                        eventOff="mouseout"
-                        effect="solid"
-                        delayHide={1000}
-                    />
                 </div>
             </div>
         );

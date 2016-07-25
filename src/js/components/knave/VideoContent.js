@@ -33,6 +33,11 @@ var VideoContent = React.createClass({
         this.setState({
             selectedDemographic: nextProps.selectedDemographic
         });
+        if (nextProps.timeRemaining) {
+            this.setState({
+                timeRemaining: nextProps.timeRemaining,
+            });
+        }
     }, 
     componentWillMount: function() {
         var self = this;
@@ -81,10 +86,13 @@ var VideoContent = React.createClass({
                             handleDemographicChange={self.props.handleDemographicChange}
                             selectedDemographic={self.props.selectedDemographic}
                             demographicThumbnails={self.props.demographicThumbnails}
-                            timeRemaining={self.props.timeRemaining}
+                            timeRemaining={self.state.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
                         />
-                        <VideoCollectionActions openSignUp={self.props.openSignUp} handleMenuChange={self.handleMenuChange} />
+                        <VideoCollectionActions
+                            openSignUp={self.props.openSignUp}
+                            handleMenuChange={self.handleMenuChange}
+                        />
                     </div>
                 );
                 break;
@@ -94,6 +102,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange} 
                         shareUrl={self.state.shareUrl}
                         videoId={self.props.videoId}
+                        setTooltipText={self.props.setTooltipText}
                     />
                 );
                 break;
