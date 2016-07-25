@@ -93,15 +93,19 @@ var VideoProcessing = React.createClass({
                         {title}
                         {deleteButton}
                     </h1>
-                    <div>
-                        <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"> 
-                            {countdown} 
-                        </div> 
-                        <div className="xxCollectionFilters">
-                            <strong className="xxCollectionFilters-title">Filters</strong>
-                            <span className="xxCollectionFilters-value">None</span>
-                        </div>
-                    </div> 
+                    { 
+                        isError ? null : ( 
+                            <div>
+                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"> 
+                                    {countdown} 
+                                </div> 
+                                <div className="xxCollectionFilters">
+                                    <strong className="xxCollectionFilters-title">Filters</strong>
+                                    <span className="xxCollectionFilters-value">None</span>
+                                </div>
+                            </div>
+                        )  
+                    } 
                     {errorMessageComponent}
                 </article>
             </div> 
