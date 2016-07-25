@@ -55,7 +55,8 @@
     top: 0;
     right: 0;
     left: 0;
-    max-width: $page-max-width + $gutter-width * 2;
+    width: $page-max-width + $gutter-width * 2;
+    max-width: 100%;
     min-width: $page-min-width + $gutter-width * 2;
     height: 100vh;
     margin: 0 auto;
@@ -69,11 +70,11 @@
     @at-root {
         @keyframes #{$animation-name} {
             #{$percentage} {
-                transform: translateY(-200vh);
+                top: -200%;
             }
 
             100% {
-                transform: translateY(-200vh);
+                top: -200%;
             }
         }
     }
@@ -85,9 +86,10 @@
     position: absolute;
     width: 30%;
     height: auto;
-    top: 100vh;
+    top: 100%;
     right: 0;
     border: 5px solid $white;
+    transform: translateZ(0);
     @include generate-home-image-animation(1, 30s, 14s);
 
     &:nth-child(2) {
