@@ -83,7 +83,7 @@ var ShareLink = React.createClass({
                     >{T.get('copy.share.label')}</label>
                     <input
                         className="xxInputText"
-                        id="xx-share-link"
+                        id={"xx-share-link" + self.props.videoId}
                         type="text"
                         value={self.state.shareUrl}
                         readOnly
@@ -98,7 +98,7 @@ var ShareLink = React.createClass({
                     >{T.get('back')}</button>
                     <button
                         className="xxButton xxButton--highlight"
-                        data-clipboard-target="#xx-share-link"
+                        data-clipboard-target={"#xx-share-link" + self.props.videoId}
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
