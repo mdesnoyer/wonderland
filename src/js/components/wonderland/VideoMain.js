@@ -44,7 +44,7 @@ var VideoMain = React.createClass({
             }
         } 
     },
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps, nextState) {
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
             if (nextProps.demographicThumbnails && 
               nextProps.demographicThumbnails[nextProps.selectedDemographic]) { 
@@ -59,6 +59,11 @@ var VideoMain = React.createClass({
                 selectedDemographic: nextProps.selectedDemographic,
                 demographicThumbnails: demoSet
             });
+        }
+        if (nextProps.timeRemaining || nextState.timeRemaining) {
+            this.setState({
+                timeRemaining: nextProps.timeRemaining,
+            }); 
         }
     },
     sendForValenceFeatureKeys: function(in_thumbnails) {

@@ -17,7 +17,7 @@ var VideoInfo = React.createClass({
         return {
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: self.getDemographicOptions()
+            demographicOptions: self.getDemographicOptions() 
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -25,7 +25,12 @@ var VideoInfo = React.createClass({
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic
             });
-        } 
+        }
+        if (!this.props.timeRemaining) { 
+            this.setState({
+                timeRemaining: nextProps.timeRemaining
+            });
+        }
     },
     getDemographicOptions: function() { 
         var self = this,
@@ -72,16 +77,18 @@ var VideoInfo = React.createClass({
                 </h1>
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
-                        if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
-
+                        if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
                             countdown = (
-                                <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
-                                // <span><Countdown seconds={self.props.timeRemaining} onFinish={false} classPrefix="xxCollectionFilterCountdown" /></span>
+                                <span><Countdown 
+                                    seconds={self.props.timeRemaining} 
+                                    onFinish={self.onTimerFinished} 
+                                    classPrefix="xxCollectionFilterCountdown" />
+                                </span>
                             );
                         }
                         else {
                             countdown = (
-                                <span>{T.get('copy.pending')}</span>
+                                <span>{T.get('timer.loading')}</span>
                             );
                         }
                         return (
