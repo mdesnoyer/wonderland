@@ -159,7 +159,6 @@ var VideoMain = React.createClass({
         if (!default_thumbnail) { 
             default_thumbnail = thumbSet.thumbnails[0]; 
         } 
-        console.log(thumbSet.gender);
         var self = this,
             options = {
                 data: {
