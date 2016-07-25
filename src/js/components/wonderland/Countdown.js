@@ -8,7 +8,8 @@ export default class Countdown extends React.Component {
 
         this.state = {
             seconds: parseInt(props.seconds || 1),
-            classPrefix: props.classPrefix || 'xxOnboardingCountdown'
+            classPrefix: props.classPrefix || 'xxOnboardingCountdown', 
+            displayLoading: props.displayLoading || false  
         };
     }
 
@@ -71,6 +72,20 @@ export default class Countdown extends React.Component {
                 </div>
             )
         }
+        else if (this.state.displayLoading) {
+            if (this.state.seconds && this.state.seconds > 1) {  
+                this.state.displayLoading = false;
+            } 
+            return (  
+                <div className={classPrefix}>
+                    <span className={classPrefixLabel}>
+                        {
+                            T.get('timer.loading')
+                        }
+                    </span>
+                </div>
+            )
+        } 
         else {
             return (
                 <div className={classPrefix}>

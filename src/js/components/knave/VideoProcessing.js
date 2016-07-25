@@ -44,7 +44,7 @@ var VideoProcessing = React.createClass({
             isError,
             seconds,
             timeRemaining, 
-            countdown
+            countdown = null
         ;
         errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
@@ -68,23 +68,23 @@ var VideoProcessing = React.createClass({
                 isError = false;
                 seconds = self.props.seconds;
                 timeRemaining = self.props.timeRemaining;
+                if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {  
+                    countdown = (<Countdown 
+                        seconds={self.props.timeRemaining}
+                        classPrefix="xxCollectionFilterCountdown"
+                    />);
+                } 
+                else {
+                    countdown = (
+                        <span>{T.get('timer.loading')}</span> 
+                    );
+                }
                 break;
         }
         if (self.state.isHidden) { 
             return (<div></div>);
         }  
 
-        if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {  
-            countdown = (<Countdown 
-                            seconds={self.props.timeRemaining}
-                            classPrefix="xxCollectionFilterCountdown"
-                        />);
-        } 
-        else {
-            countdown = (
-                <span>{T.get('timer.loading')}</span> 
-            );
-        }
         return ( 
             <div> 
                 <article className="xxCollection xxCollection--video xxCollection--processing">
