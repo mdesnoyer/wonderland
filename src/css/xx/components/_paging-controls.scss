@@ -7,13 +7,44 @@
 .xxPagingControls-navigation {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: nowrap;
     align-items: center;
 }
 
 .xxPagingControls-navigation-item {
     // empty    
+}
+
+
+
+.xxPagingControls-prev,
+.xxPagingControls-next  {
+	// float: left;
+	position: relative;
+	width: 30px;
+	height: 29px;
+	margin-top: -3px;
+	margin-left: -8px;
+	text-indent: $indent-off-screen;
+
+	@include arrow(W, 12px, 1px, $quaternary-color);
+
+	&:hover {
+	    &::before,
+	    &::after {
+	        background: orange;
+	    }
+	}     
+}
+
+.xxPagingControls-next {
+    
+    margin-right: -8px;
+    &::before,
+    &::after {
+        transform-origin: 100% 50%;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
