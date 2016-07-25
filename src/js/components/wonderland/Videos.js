@@ -79,43 +79,46 @@ var Videos = React.createClass({
         }
         return (
             <div>
+                {alertMessage}
                 {
-                    false ? null : (
-                        <div className="xxVideoloadingSpinner">
-                        </div>
-                    )
+                    self.state.isLoading ? (
+                        <div className="xxVideoloadingSpinner"></div>
+                    ) : (
+                    <div>
+                        <VideoUploadForm
+                            postHookSearch={self.doVideoSearch}
+                            postHookAnalysis={null}
+                            isVideoResults={true}
+                            videoCountServed={self.state.videoCountServed}
+                            isMaxLimit={self.state.isMaxLimit}
+                        />
+                        <VideosResults
+                            videos={self.state.videos}
+                            handleNewSearch={self.handleNewSearch}
+                            prevPageAPICall={prevPageAPICall}
+                            nextPageAPICall={self.state.nextPageAPICall}
+                            currentPage={self.state.currentPage}
+                            isLoading={self.state.isLoading}
+                            isMobile={self.props.isMobile}
+                            videoCountServed={self.state.videoCountServed}
+                            videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                            openSignUp={self.props.openSignUp}
+                            isMaxLimit={self.state.isMaxLimit}
+                            setTooltipText={self.setTooltipText}
+                        />
+                        <ReactTooltip
+                            ref="tooltip"
+                            event="click"
+                            eventOff="mouseout"
+                            effect="solid"
+                            place="bottom"
+                            delayHide={1000}
+                            getContent={self.getTooltipText}
+                        />
+                    </div>
+                )
                 }
-                <VideoUploadForm
-                    postHookSearch={self.doVideoSearch}
-                    postHookAnalysis={null}
-                    isVideoResults={true}
-                    videoCountServed={self.state.videoCountServed}
-                    isMaxLimit={self.state.isMaxLimit}
-                />
-                 {alertMessage}
-                <VideosResults
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPageAPICall={prevPageAPICall}
-                    nextPageAPICall={self.state.nextPageAPICall}
-                    currentPage={self.state.currentPage}
-                    isLoading={self.state.isLoading}
-                    isMobile={self.props.isMobile}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                    openSignUp={self.props.openSignUp}
-                    isMaxLimit={self.state.isMaxLimit}
-                    setTooltipText={self.setTooltipText}
-                />
-                <ReactTooltip
-                    ref="tooltip"
-                    event="click"
-                    eventOff="mouseout"
-                    effect="solid"
-                    place="bottom"
-                    delayHide={1000}
-                    getContent={self.getTooltipText}
-                />
+                
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
