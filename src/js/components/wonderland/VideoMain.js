@@ -163,6 +163,12 @@ var VideoMain = React.createClass({
                 }
             }
         ;
+        var dThumbSet = self.props.demographicThumbnails;
+        var selectedDemographic = self.state.selectedDemographic || 0;
+        if (dThumbSet) {
+            options.gender = dThumbSet[selectedDemographic].gender;
+            options.age = dThumbSet[selectedDemographic].age;
+        }
         if (self.props.isGuest) {
             options.data.share_token = self.props.shareToken;
             options.overrideAccountId = self.props.accountId;
