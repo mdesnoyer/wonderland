@@ -23,14 +23,9 @@ var HomePage = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        SESSION.user()
-            .then(function(userData) {
-                self.context.router.push(UTILS.DRY_NAV.VIDEO_LIBRARY.URL);
-            })
-            .catch(function(err) {
-                // Do nothing, user not signed in
-            })
-        ;
+        if (SESSION.active()) {
+            self.context.router.push(UTILS.DRY_NAV.VIDEO_LIBRARY.URL);
+        }
     },
     openSignUp: function(e) {
         var self = this;

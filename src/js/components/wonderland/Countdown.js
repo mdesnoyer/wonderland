@@ -1,5 +1,6 @@
 import React from 'react';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 export default class Countdown extends React.Component {
     constructor(props) {
@@ -7,7 +8,8 @@ export default class Countdown extends React.Component {
 
         this.state = {
             seconds: parseInt(props.seconds || 1),
-            classPrefix: props.classPrefix || 'xxOnboardingCountdown'
+            classPrefix: props.classPrefix || 'xxOnboardingCountdown', 
+            displayLoading: props.displayLoading || false  
         };
     }
 
@@ -16,11 +18,13 @@ export default class Countdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (!this.state.seconds) {
             this.setState({
                 seconds: nextProps.seconds
             }, function() {
                 this.setProcessingTimer()
             });
+        } 
     }
 
     componentWillUnmount() {
@@ -54,7 +58,7 @@ export default class Countdown extends React.Component {
             classPrefix = this.state.classPrefix,
             classPrefixLabel = classPrefix + '-label'
         ;
-        if (this.props.seconds > 1) {
+        if (this.state.seconds > 1) {
             return (
                 <div className={classPrefix}>
                     <span className={classPrefixLabel}>
@@ -68,19 +72,30 @@ export default class Countdown extends React.Component {
                 </div>
             )
         }
-        else if (this.props.seconds === null) {
-            return (
-                <a className={classPrefix}>
+        else if (this.state.displayLoading) {
+            if (this.state.seconds && this.state.seconds > 1) {  
+                this.state.displayLoading = false;
+            } 
+            return (  
+                <div className={classPrefix}>
                     <span className={classPrefixLabel}>
                         {
-                            "Loading..."
+                            T.get('timer.loading')
                         }
                     </span>
-                </a>
+                </div>
             )
-        }
+        } 
         else {
-            return null;
+            return (
+                <div className={classPrefix}>
+                    <span className={classPrefixLabel}>
+                        {
+                            T.get('timer.close')
+                        }
+                    </span>
+                </div>
+            )
         }
     }
 };

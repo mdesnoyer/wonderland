@@ -6,6 +6,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +66,7 @@ var VideoFilters = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={self.props.handleMenuChange}
+                        onClick={self.props.handleBackClick}
                         >{T.get('back')}</button>
                     <button
                         className={submitClassName.join(' ')}
@@ -103,6 +104,7 @@ var VideoFilters = React.createClass({
         self.POST('videos', options)
             .then(function(json) {
                 if (self.props.handleMenuChange) {
+                    // TODO stateify age and gender at videoowner level
                     self.props.handleMenuChange(self.state.age, 
                         self.state.gender, 
                         true);
@@ -114,6 +116,8 @@ var VideoFilters = React.createClass({
                     isError: true
                 });
             });
+        TRACKING.sendEvent(self, arguments, 
+                           self.state.gender + "/" + self.state.age);
     }
 })
 

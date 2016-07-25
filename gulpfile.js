@@ -17,6 +17,7 @@ var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
+var jest = require('gulp-jest');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -27,7 +28,7 @@ var argv = require('yargs').argv;
 var env = argv.env ? argv.env : 'dev';
 var configSrc   = './env/config.json.' + env;
 
-var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico', './src/_headers'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -185,7 +186,8 @@ function buildScript(file, watch) {
         debug : true,
         cache: {},
         packageCache: {},
-        transform:  [babelify.configure({ stage : 0 })]
+        transform:  [babelify.configure({ presets : ["es2015", "react",
+                                                     "stage-0"] })]
     };
 
     // watchify() if watch requested, otherwise run browserify() once
@@ -235,4 +237,25 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'c
     return buildScript('wonderland.js', false);
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/* TODO: Get this to work. For now, runnings tests can be done by: npm test
+
+gulp.task('jest', function() {
+    return gulp.src('__tests__').pipe(jest({
+        unmockedModulePathPatterns: [
+            "node_modules/react"
+        ],
+        testDirectoryName: "spec",
+        testPathIgnorePatterns: [
+            "node_modules"
+        ],
+        moduleFileExtensions: [
+            "js",
+            "json",
+            "react"
+        ]
+    }));
+});
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

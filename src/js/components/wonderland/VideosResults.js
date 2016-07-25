@@ -13,22 +13,13 @@ var VideosResults = React.createClass({
             <div>
                 {
                     self.props.videos.map(function(video, i) {
-                        if (video.demographic_thumbnails.length > 0) {
-                            var newThumbnails = video.demographic_thumbnails.find(x=>(!x.age && !x.gender));
-                            var badThumbs = newThumbnails.bad_thumbnails || [];
-                        }
-                        else {
-                            var newThumbnails = video;
-                            var badThumbs = [];
-                        }
                         return (
                             <VideoOwner
                                 key={video.video_id}
                                 videoId={video.video_id}
-                                pingInitial={false}
+                                pingInitial={true}
                                 pingInterval={true}
                                 videoState={video.state}
-                                thumbnails={newThumbnails.thumbnails}
                                 demographicThumbnails={video.demographic_thumbnails}
                                 timeRemaining={video.estimated_time_remaining}
                                 title={video.title}
@@ -37,9 +28,9 @@ var VideosResults = React.createClass({
                                 url={video.url}
                                 created={video.created}
                                 isMobile={self.props.isMobile}
-                                badThumbs={badThumbs}
                                 openSignUp={self.props.openSignUp}
                                 seconds={video.estimated_time_remaining}
+                                setTooltipText={self.props.setTooltipText}
                             />
                         );
                     })

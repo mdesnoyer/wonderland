@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import VideoCollectionActions from './VideoCollectionActions';
 import VideoInfo from './VideoInfo';
@@ -24,31 +25,44 @@ var VideoContent = React.createClass({
         var self = this;
         return {
             contents: defaultContent,
-            shareUrl: ''
+            shareUrl: '', 
+            selectedDemographic: self.props.selectedDemographic || 0
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            selectedDemographic: nextProps.selectedDemographic
+        });
+        if (nextProps.timeRemaining) {
+            this.setState({
+                timeRemaining: nextProps.timeRemaining,
+            });
+        }
+    }, 
     componentWillMount: function() {
         var self = this;
-        self.getAccount()
-            .then(function(account) {
-                self.GET('videos/share', {
-                    data: {
-                        video_id: self.props.videoId
-                    }
-                })
-                .then(function(json) {
-                    self.setState({
-                        shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
                     });
                 })
                 .catch(function(err) {
                     console.log(err);
-                });
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
-        ;
+                })
+            ;
+        }
     },
     render: function() {
         var self = this,
@@ -61,6 +75,7 @@ var VideoContent = React.createClass({
                         title={self.props.title}
                         handleMenuChange={self.handleMenuChange}
                         displayThumbLift={self.props.displayThumbLift}
+                        isGuest={self.props.isGuest}
                     />
                 ) : (
                     <div>
@@ -71,10 +86,13 @@ var VideoContent = React.createClass({
                             handleDemographicChange={self.props.handleDemographicChange}
                             selectedDemographic={self.props.selectedDemographic}
                             demographicThumbnails={self.props.demographicThumbnails}
-                            timeRemaining={self.props.timeRemaining}
+                            timeRemaining={self.state.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
                         />
-                        <VideoCollectionActions openSignUp={self.props.openSignUp} handleMenuChange={self.handleMenuChange} />
+                        <VideoCollectionActions
+                            openSignUp={self.props.openSignUp}
+                            handleMenuChange={self.handleMenuChange}
+                        />
                     </div>
                 );
                 break;
@@ -83,14 +101,17 @@ var VideoContent = React.createClass({
                     <ShareLink 
                         handleMenuChange={self.handleMenuChange} 
                         shareUrl={self.state.shareUrl}
+                        videoId={self.props.videoId}
+                        setTooltipText={self.props.setTooltipText}
                     />
                 );
                 break;
             case 'email':
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
-                                thumbnails={self.props.thumbnails}
+                                thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
+                                videoId={self.props.videoId}
                             />;
                 break;
             case 'delete':
@@ -106,6 +127,7 @@ var VideoContent = React.createClass({
                 contents = (
                     <VideoFilters
                         handleMenuChange={self.refilterMenuChange}
+                        handleBackClick={self.handleBackClick}
                         handleDemographicChange={self.props.handleDemographicChange}
                         selectedDemographic={self.props.selectedDemographic}
                         videoId={self.props.videoId}
@@ -115,16 +137,24 @@ var VideoContent = React.createClass({
         }
         return <div>{contents}</div>;
     },
-    refilterMenuChange: function(age, gender, is_new_video) {
+    refilterMenuChange: function(age, gender, is_new_video=false) {
         var self = this;
         self.setState({
             contents: 'info'
         }, function () {
-            if (is_new_video) { 
-                self.props.refreshVideo(true, age, gender, self.props.handleDemographicChange);
+            if (is_new_video) {
+                self.props.refreshVideo(true, age, gender);
             } 
         });
-    }, 
+    },
+    handleBackClick: function(e) { 
+        var self = this,
+            value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
+        ;
+        self.setState({
+           contents: value
+        });
+    },  
     handleMenuChange: function(e) {
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent

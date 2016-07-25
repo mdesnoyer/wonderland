@@ -27,7 +27,7 @@ Optional
 
 - [DNSimple](https://dnsimple.com)
 - ops@neon-lab.com
-- !~E5>hs${<xLp+\`
+- Ask for password
 
 ## API
 
@@ -38,7 +38,6 @@ Optional
 ### Pingdom
 
 - ops@neon-lab.com
-- Neon-lab1
 - https://my.pingdom.com/dashboard
 
 ## Bit.ly/Hover Branded Domain Set Up

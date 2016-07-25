@@ -17,13 +17,25 @@ var VideoInfo = React.createClass({
         return {
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: self.getDemographicOptions()
+            demographicOptions: self.getDemographicOptions() 
+        }
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
+            this.setState({
+                selectedDemographic: nextProps.selectedDemographic
+            });
+        }
+        if (!this.props.timeRemaining) { 
+            this.setState({
+                timeRemaining: nextProps.timeRemaining
+            });
         }
     },
     getDemographicOptions: function() { 
         var self = this,
             demographicOptions = []
-        ; 
+        ;
         if (self.props.demographicThumbnails && self.props.demographicThumbnails.length > 0) {
             self.props.demographicThumbnails.forEach(function (thumb, idx) {
                 var demographicLabel = null;
@@ -65,16 +77,18 @@ var VideoInfo = React.createClass({
                 </h1>
                 {(() => {
                     if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
-                        if (self.props.timeRemaining !== null || self.props.timeRemaining <= 1) {
-
+                        if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
                             countdown = (
-                                <span><Countdown seconds={self.props.timeRemaining} onFinish={self.onTimerFinished} classPrefix="xxCollectionFilterCountdown" /></span>
-                                // <span><Countdown seconds={self.props.timeRemaining} onFinish={false} classPrefix="xxCollectionFilterCountdown" /></span>
+                                <span><Countdown 
+                                    seconds={self.props.timeRemaining} 
+                                    onFinish={self.onTimerFinished} 
+                                    classPrefix="xxCollectionFilterCountdown" />
+                                </span>
                             );
                         }
                         else {
                             countdown = (
-                                <span>{T.get('copy.pending')}</span>
+                                <span>{T.get('timer.loading')}</span>
                             );
                         }
                         return (
@@ -82,7 +96,7 @@ var VideoInfo = React.createClass({
                                 {countdown}
                             </div>
                         );
-                    } else {
+                    } else if (!self.props.isGuest) {
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"
@@ -101,7 +115,7 @@ var VideoInfo = React.createClass({
                                     className="xxCollectionFilters-value"
                                     onChange={self.onDemographicChange}
                                     options={self.getDemographicOptions()}
-                                    value={self.props.selectedDemographic || 0}
+                                    value={self.state.selectedDemographic || 0}
                                     clearable={false}
                                 />
                             );
