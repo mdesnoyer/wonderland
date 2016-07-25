@@ -128,6 +128,7 @@ var PagingControls = React.createClass({
     doNext: function() {
         var self = this;
         if (!self.refs.nextButton.attributes.disabled) {
+            debugger
             self.props.handleNewSearch(self.props.nextPageAPICall, 1);
         }
     }
