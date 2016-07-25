@@ -35,12 +35,12 @@ var VideoMain = React.createClass({
         
         var self = this, 
             selectedDemographic = self.state.selectedDemographic || 0,
-            thumbs = self.props.demographicThumbnails[selectedDemographic].thumbnails
+            thumbs = self.props.demographicThumbnails[selectedDemographic]
         ;
-        if (thumbs.length > 1) {
-            if (thumbs[thumbs.length - 1].neon_score) {
+        if (thumbs.thumbnails.length > 1) {
+            if (thumbs.thumbnails[thumbs.thumbnails.length - 1].neon_score) {
                 self.sendForLiftData(thumbs);
-                self.sendForValenceFeatureKeys(thumbs);
+                self.sendForValenceFeatureKeys(thumbs.thumbnails);
             }
         } 
     },
@@ -48,10 +48,10 @@ var VideoMain = React.createClass({
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
             if (nextProps.demographicThumbnails && 
               nextProps.demographicThumbnails[nextProps.selectedDemographic]) { 
-                var thumbs = nextProps.demographicThumbnails[nextProps.selectedDemographic].thumbnails;
-                if (thumbs[thumbs.length - 1].neon_score) {
+                var thumbs = nextProps.demographicThumbnails[nextProps.selectedDemographic];
+                if (thumbs.thumbnails[thumbs.thumbnails.length-1].neon_score) {
                     this.sendForLiftData(thumbs);
-                    this.sendForValenceFeatureKeys(thumbs);
+                    this.sendForValenceFeatureKeys(thumbs.thumbnails);
                 }
                 var demoSet = this.props.demographicThumbnails[nextProps.selectedDemographic];
             } 
@@ -154,26 +154,22 @@ var VideoMain = React.createClass({
             })
         ;
     },
-    sendForLiftData: function(in_thumbnails) {
-        var default_thumbnail = in_thumbnails.find(x => x.type == 'default'); 
+    sendForLiftData: function(thumbSet) {
+        var default_thumbnail = thumbSet.thumbnails.find(x => x.type == 'default'); 
         if (!default_thumbnail) { 
-            default_thumbnail = in_thumbnails[0]; 
+            default_thumbnail = thumbSet.thumbnails[0]; 
         } 
+        console.log(thumbSet.gender);
         var self = this,
             options = {
                 data: {
-                    video_id: self.props.videoId,
                     base_id: default_thumbnail.thumbnail_id,
-                    thumbnail_ids: self.parseLiftThumbnails(in_thumbnails)
+                    thumbnail_ids: self.parseLiftThumbnails(thumbSet.thumbnails),
+                    gender : thumbSet.gender,
+                    age : thumbSet.age
                 }
             }
         ;
-        var dThumbSet = self.props.demographicThumbnails;
-        var selectedDemographic = self.state.selectedDemographic || 0;
-        if (dThumbSet) {
-            options.gender = dThumbSet[selectedDemographic].gender;
-            options.age = dThumbSet[selectedDemographic].age;
-        }
         if (self.props.isGuest) {
             options.data.share_token = self.props.shareToken;
             options.overrideAccountId = self.props.accountId;
@@ -189,12 +185,12 @@ var VideoMain = React.createClass({
                         maxLift = l.lift; 
                     }
                 }
-                for (let t of in_thumbnails) {
+                for (let t of thumbSet.thumbnails) {
                     t.lift = liftHash[t.thumbnail_id]; 
                 }
                 if (maxLift) { 
                     var dThumbSet = self.props.demographicThumbnails; 
-                    dThumbSet[self.props.selectedDemographic].thumbnails = in_thumbnails;
+                    dThumbSet[self.props.selectedDemographic].thumbnails = thumbSet.thumbnails;
                     self.setState({
                         displayThumbLift: maxLift,
                         liftArray: res.lift,
