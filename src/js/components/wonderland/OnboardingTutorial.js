@@ -2,34 +2,7 @@ import React from 'react';
 import TutorialSlide from './TutorialSlide';
 import T from '../../modules/translation';
 
-const slides = [
-    // {
-    //     id: 'ready',
-    //     title: T.get('copy.tutorial.ready.title'),
-    //     description: null,
-    //     image: null,
-    //     first: true,
-    // },
-    // {
-    //     id: 'neonscore',
-    //     title: T.get('copy.tutorial.neonscore.title'),
-    //     description: T.get('copy.tutorial.neonscore.description'),
-    //     image: '/img/tutorial-neonscore.png',
-    // },
-    // {
-    //     id: 'lift',
-    //     title: T.get('copy.tutorial.lift.title'),
-    //     description: T.get('copy.tutorial.lift.description'),
-    //     image: '/img/tutorial-lift.png',
-    // },
-    // {
-    //     id: 'upload',
-    //     title: T.get('copy.tutorial.upload.title'),
-    //     description: T.get('copy.tutorial.upload.description'),
-    //     image: '/img/tutorial-upload.png',
-    //     last: true,
-    // },
-];
+const slides = [];
 
 export default class OnboardingTutorial extends React.Component {
     constructor(props) {
