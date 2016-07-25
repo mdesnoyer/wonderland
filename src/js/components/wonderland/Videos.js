@@ -79,6 +79,12 @@ var Videos = React.createClass({
         }
         return (
             <div>
+                {
+                    false ? null : (
+                        <div className="xxVideoloadingSpinner">
+                        </div>
+                    )
+                }
                 <VideoUploadForm
                     postHookSearch={self.doVideoSearch}
                     postHookAnalysis={null}
