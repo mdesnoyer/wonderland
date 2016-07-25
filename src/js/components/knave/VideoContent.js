@@ -89,7 +89,10 @@ var VideoContent = React.createClass({
                             timeRemaining={self.state.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
                         />
-                        <VideoCollectionActions openSignUp={self.props.openSignUp} handleMenuChange={self.handleMenuChange} />
+                        <VideoCollectionActions
+                            openSignUp={self.props.openSignUp}
+                            handleMenuChange={self.handleMenuChange}
+                        />
                     </div>
                 );
                 break;
@@ -99,6 +102,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange} 
                         shareUrl={self.state.shareUrl}
                         videoId={self.props.videoId}
+                        setTooltipText={self.props.setTooltipText}
                     />
                 );
                 break;

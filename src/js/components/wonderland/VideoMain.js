@@ -256,6 +256,7 @@ var VideoMain = React.createClass({
                             displayThumbLift={self.state.displayThumbLift}
                             openSignUp={self.props.openSignUp}
                             isGuest={self.props.isGuest}
+                            setTooltipText={self.props.setTooltipText}
                         />
                     </div>
                     <Thumbnails
