@@ -6,6 +6,7 @@ import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Countdown from '../wonderland/Countdown';
 import Lift from './Lift';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,6 +20,9 @@ var VideoInfo = React.createClass({
             demographicThumbnails: self.props.demographicThumbnails,
             demographicOptions: self.getDemographicOptions() 
         }
+    },
+    componentDidMount: function() {
+        ReactTooltip.rebuild();
     },
     componentWillReceiveProps: function(nextProps) {
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
@@ -72,9 +76,6 @@ var VideoInfo = React.createClass({
             countdown;
         return (
             <div>
-                <button data-for="staticTooltip" data-tip="buts" data-event="click">
-                   Wat
-                </button>
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
@@ -103,7 +104,6 @@ var VideoInfo = React.createClass({
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"
-                                data-event="hover"
                                 data-for="staticTooltip"
                                 data-tip={T.get('tooltip.refilter.button')}
                                 onClick={self.props.handleMenuChange} >

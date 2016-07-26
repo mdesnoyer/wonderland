@@ -113,13 +113,16 @@ var Videos = React.createClass({
                                 eventOff="mouseout"
                                 effect="solid"
                                 place="bottom"
-                                delayHide={1000}
+                                delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
+                                type="dark"
                                 getContent={self.getTooltipText}
                             />
                             <ReactTooltip
                                 id="staticTooltip"
-                                event="hover"
+                                class="xxHoverTooltip"
+                                effect="solid"
                                 place="left"
+                                type="light"
                             />
                         </div>
                     )

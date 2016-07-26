@@ -11,6 +11,7 @@ import VideoDelete from './VideoDelete';
 import VideoFilters from './VideoFilters';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -159,6 +160,7 @@ var VideoContent = React.createClass({
         });
     },  
     handleMenuChange: function(e) {
+        ReactTooltip.hide();
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
         ;
