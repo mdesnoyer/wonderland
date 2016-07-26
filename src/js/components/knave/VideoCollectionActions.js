@@ -2,6 +2,7 @@
 
 import React from 'react';
 import SESSION from '../../modules/session';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -32,6 +33,9 @@ var VideoCollectionActions = React.createClass({
             <ul className="xxCollectionActions">
                 <li className="xxCollectionActions-item">
                     <a
+                        data-tip={T.get('label.emailMe')}
+                        data-for="staticTooltip"
+                        data-place="bottom"
                         data-action-label="email"
                         onClick={self.handleClick}
                         className="xxCollectionActions-anchor xxCollectionActions-email">
@@ -40,6 +44,9 @@ var VideoCollectionActions = React.createClass({
                 </li>
                 <li className="xxCollectionActions-item">
                     <a
+                        data-tip={T.get('copy.share.main')}
+                        data-for="staticTooltip"
+                        data-place="bottom"
                         data-action-label="share"
                         onClick={self.handleClick}
                         className="xxCollectionActions-anchor xxCollectionActions-share">
@@ -50,6 +57,9 @@ var VideoCollectionActions = React.createClass({
                     self.state.isSaveHidden ? null : (
                         <li className="xxCollectionActions-item">
                             <a
+                                data-tip={T.get('action.saveMyImages')}
+                                data-for="staticTooltip"
+                                data-place="bottom"
                                 data-action-label="save"
                                 onClick={self.props.openSignUp}
                                 className="xxCollectionActions-anchor xxCollectionActions-save">
@@ -60,6 +70,9 @@ var VideoCollectionActions = React.createClass({
                 }
                 <li className="xxCollectionActions-item">
                     <a
+                        data-tip={T.get('delete')}
+                        data-for="staticTooltip"
+                        data-place="bottom"
                         data-action-label="delete"
                         onClick={self.handleClick}
                         className="xxCollectionActions-anchor xxCollectionActions-delete">

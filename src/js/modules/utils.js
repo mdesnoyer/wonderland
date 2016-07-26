@@ -328,6 +328,7 @@ var UTILS = {
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
+    TOOLTIP_DELAY_MILLIS: 500,
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
