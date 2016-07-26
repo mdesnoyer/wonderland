@@ -74,7 +74,9 @@ var Videos = React.createClass({
                 {alertMessage}
                 {
                     self.state.isLoading ? (
+                        <div className="xxOverlay" >
                         <div className="xxVideoloadingSpinner"></div>
+                        </div>
                     ) : null
                 }
                             <VideoUploadForm
