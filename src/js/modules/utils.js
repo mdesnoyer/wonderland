@@ -2,6 +2,7 @@
 
 import T from './translation';
 import moment from 'moment';
+import reqwest from 'reqwest';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -14,8 +15,8 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
+    EXAMPLE_EMAIL = 'example@email.com',
     NA_STRING = '?',
-    COOKIE_DEFAULT_PATH = '/',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -122,6 +123,16 @@ var UNKNOWN_STRING = '?',
 ;
 
 var UTILS = {
+    ACCESS_LEVEL: {
+        NONE: 0,
+        READ: 1 << 0,
+        UPDATE: 1 << 1,
+        CREATE: 1 << 2,
+        DELETE: 1 << 3,
+        ACCOUNT_EDITOR: 1 << 4,
+        INTERNAL_ONLY_USER: 1 << 5,
+        GLOBAL_ADMIN: 1 << 6,
+    },
     VIDEO_STATE: {
         unknown: {
             mapping: 'dark'
@@ -138,6 +149,13 @@ var UTILS = {
         failed: {
             mapping: 'danger'
         }
+    },
+    VIDEO_STATE_ENUM: {
+        unknown: 'unknown',
+        processing: 'processing',
+        processed: 'processed',
+        serving: 'serving',
+        failed: 'failed'
     },
     DRY_NAV: {
         HOME: {
@@ -157,9 +175,6 @@ var UTILS = {
         },
         PLUGINS_BRIGHTCOVE_WIZARD: {
             URL: '/plugins/new/brightcove/wizard/'
-        },
-        SIGNUP: {
-            URL: '/signup/'
         },
         SIGNIN: {
             URL: '/signin/'
@@ -197,6 +212,9 @@ var UTILS = {
         USER_FORGOT: {
             URL: '/user/forgot/'
         },
+        USER_RESET: {
+            URL: '/user/reset/'
+        },
         API: {
             URL: '/support/#api'
         },
@@ -211,24 +229,163 @@ var UTILS = {
         },
         VIDEO_ANALYZE: {
             URL: '/video/analyze/'
-        }
+        },
+        URL_SHORTENER: {
+            URL: '/shorturl/'
+        },
+        DEMO: {
+            URL: '/demo/'
+        },
+        COOKIES: {
+            URL: '/cookies/'
+        },
+        ONBOARDING_VIDEO_UPLOAD: {
+            URL: '/demo/upload/'
+        },
     },
+    COOKIES_KEY: {
+        accessTokenKey: 'at',
+        accountIdKey: 'actId',
+        masqueradeAccountIdKey: 'msqactId',
+        refreshTokenKey: 'rt',
+        rememberMeKey: 'rme',
+        rememberedEmailKey: 'ru',
+        userKey: 'user_info',
+        viewShareKey: 'footprintCookieViewShare',
+        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
+    },
+    FILTERS_GENDER_AGE: [
+        {
+            value: 'Female / 35-44',
+        },
+        {
+            value: 'Male / 25 - 34',
+        },
+        {
+            value: 'None',
+        }
+    ],
+    FILTERS_GENDER: [
+        {
+            value: 'F',
+            label: 'Female'
+        },
+        {
+            value: 'M',
+            label: 'Male'
+        }
+    ],
+    FILTERS_AGE: [
+        {
+            value: '18-19',
+            label: '18-19'
+        },
+        {
+            value: '20-29',
+            label: '20-29'
+        },
+        {
+            value: '30-39',
+            label: '30-39'
+        },
+        {
+            value: '40-49',
+            label: '40-49'
+        },
+        {
+            value: '50+',
+            label: '50+'
+        }
+    ],
+    FILTERS_GENDER_ENUM: {
+            M: 'Male',
+            F: 'Female'
+    },
+    TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
+    SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
+    SHARE_LINK_TWITTER: 'https://twitter.com/share',
+    SHARE_LINK_LINKEDIN: 'https://linkedin.com/shareArticle',
+    SUPPORT_EMAIL: 'support@neon-lab.com',
+    SUPPORT_EMAIL_SUBJECT: 'Question about Neon',
+    SUPPORT_MANDRILL_SLUG: 'support-email-admin',
+    CONFIRM_MANDRILL_SLUG: 'support-email',
+    RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
+    RESULTS_MANDRILL_SLUG: 'video-results',
     VERSION: '1.9.1',
     NEON_SCORE_ENABLED: true,
-    DEFAULT_SERVING_STATE: false,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
+    PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
-    RESULTS_PAGE_SIZE: 10,
-    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails'],
+    MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes 
+    RESULTS_PAGE_SIZE: 5,
+    MAX_VIDEO_SIZE: 900,
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining'],
+    THUMBNAIL_FIELDS: ['thumbnail_id'],
+    VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
+    BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
+    BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
+    COOKIE_DEFAULT_PATH: '/',
+    VALENCE_THRESHOLD: 0.0005,
+    VALENCE_IGNORE_INDEXES: [0,1],  
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    enabledDisabledIcon: function(isEnabled) {
-        return isEnabled ? 'check' : 'times';
+    _sortThumbnails: function(a, b) {
+        var aScore = (a.neon_score ? a.neon_score : 0),
+            bScore = (b.neon_score ? b.neon_score : 0)
+        ;
+        return bScore - aScore;
     },
-    modalActiveIcon: function(isActive) {
-        return isActive ? 'search-plus' : 'search-minus';
+    fixThumbnails: function(rawThumbnails, ignoreBad) {
+
+        if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
+            return [];
+        }
+
+        var defaults = [],
+            customs = [],
+            neons = [],
+            nonNeons = []
+        ;
+
+        // Pass 1 - sort into `default`, `custom` and `neon`
+        rawThumbnails.map(function(rawThumbnail, i) {
+            switch (rawThumbnail.type) {
+                case 'neon':
+                    neons.push(rawThumbnail);
+                    break;                    
+                case 'bad_neon':
+                    if (!ignoreBad) {
+                        neons.push(rawThumbnail);
+                    }
+                    break;
+                case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'default':
+                    defaults.push(rawThumbnail);
+                    break;
+                default:
+                    // WE DON'T CARE. OK WE DO. BUT NOT ENOUGH TO DO ANYTHING.
+                    break;
+            }
+        });
+
+        // Pass 2 - sort `custom` by neon_score DESC
+        customs.sort(this._sortThumbnails);
+
+        // Pass 3 - sort `neon` by neon_score DESC
+        neons.sort(this._sortThumbnails);
+
+        // Pass 4 - assemble the output
+        nonNeons = customs.concat(defaults);
+        if (nonNeons.length > 0) {
+            return neons.concat(nonNeons[0]);
+        }
+        else {
+            return neons;
+        }
     },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {
@@ -239,18 +396,23 @@ var UTILS = {
     leadingZero: function(x) {
         return (x < 10) ? ('0' + x) : x;
     },
+    hasAccessLevel: function(userAccessLevel, accessLevelToCheck) {
+        return userAccessLevel & accessLevelToCheck;
+    },
     formatDuration: function(durationSeconds) {
         var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-        return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
+            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
     },
-    formatCtr: function(rawCtr) {
-        return UTILS.makePercentage(rawCtr, 2);
+
+    formatTime: (minutes, seconds) => {
+        const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
+        const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
+
+        return `${formattedMinutes}:${formattedSeconds}`;
     },
-    formatServingFrac: function(rawServingFrac) {
-        return UTILS.makePercentage(rawServingFrac, 2);
-    },
-    makePercentage: function(rawNumber, decimalPlaces) {
-        return (rawNumber * 100).toFixed(decimalPlaces) + '%';
+
+    makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
+        return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -258,9 +420,13 @@ var UTILS = {
         ;
         return hash64.str();
     },
-    // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
     isValidDate: function(d) {
-        return !isNaN(Date.parse(d));
+        var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
+        return !isNaN(Date.parse(niceDate));
+    },
+    buildTooltipClass: function(existingClass, position) {
+        // https://github.com/chinchang/hint.css
+        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
@@ -281,7 +447,7 @@ var UTILS = {
         }
         else {
             return {
-                neonScore: NA_STRING,
+                neonScore: UNKNOWN_STRING,
                 emoji: UNKNOWN_EMOJI
             };
         }
@@ -296,18 +462,38 @@ var UTILS = {
         return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
-        // (?=.*\d) ==== at least one digit
-        // (?=.*\W) === at least one special symbol
-        // {8} === length is at least 8
-        var re = /(?=.*\d)(?=.*\W).{8}/
+        // .{,8} === length is at least 8
+        var re = /.{8,}/
         return re.test(password);
     },
     isPasswordConfirm: function(state) {
-        return state.password === state.confirm;
+        return state.password === state.verifyPassword;
     },
     //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
+    },
+    shortenUrl: function(url, callback) {
+        var self = this;
+        reqwest({
+            url: self.BITLY_SHORTEN_URL,
+            method: 'GET',
+            type: 'jsonp',
+            data: {
+                longUrl: url,
+                access_token: self.BITLY_ACCESS_TOKEN
+            }
+        })
+        .then(function(response) {
+            callback(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+            callback(error);
+        })
+    },
+    validateUrl: function(value) {
+          return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
 };
 

@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -13,40 +12,37 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignOutPage = React.createClass({
-	// mixins: [ReactDebugMixin],
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     componentWillMount: function() {
-        SESSION.end()
-            .catch(function (err) {
-                console.error(err);
-            });
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(userData) {
+                    SESSION.end();
+                })
+                .catch(function(err) {
+                    SESSION.end();
+                    self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+                })
+            ;
+        }
     },
     render: function() {
-        var heading = T.get('copy.signOut.heading', { 
-                // '@username': 'TODO'
-            }),
-            body = T.get('copy.signOut.body', {
-                '@link': UTILS.DRY_NAV.SIGNIN.URL
-            })
-        ;
+        var self = this;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signOut.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{heading}</h1>
-                            <div className="content">
-                                <p><span dangerouslySetInnerHTML={{__html: body}} /></p>
-                            </div>
-                            <SignInForm showLegend={false} />
-                        </div>
-                    </div>
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('action.signIn')}</h1>
+                    <SignInForm />
                 </section>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
 });

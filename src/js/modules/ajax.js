@@ -45,8 +45,9 @@ var AJAXModule = {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
-            if (_options.host !== CONFIG.AUTH_HOST) {
-                _options.data.token = self.Session.state.accessToken;
+            if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
+                _options.headers = _options.headers || {};
+                _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
             }
             if (_options.method === 'GET') {
                 _url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(_options.data);
@@ -57,7 +58,11 @@ var AJAXModule = {
                 _options.type = 'json';
                 _options.contentType = 'application/json';
             }
-            _options.url = _options.host + (_options.host === CONFIG.API_HOST ? self.Session.state.accountId + '/' : '') + _url;
+
+            var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
+            _options.url = _options.host + (!_options.noAccountId && _options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
+            
+            _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
@@ -66,10 +71,14 @@ var AJAXModule = {
                 })
                 .catch(function (err) {
                     var retryUrl = '';
-                    if (_options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
-                        retryUrl = CONFIG.AUTH_HOST + 'refresh_token?token=' + self.Session.state.refreshToken;
+                    if (_options.shouldRetry === true && _options.host !== CONFIG.AUTH_HOST && err.status === 401 && self.Session.state.refreshToken) {
+                        retryUrl = CONFIG.AUTH_HOST + 'refresh_token';
                         reqwest({
                             url: retryUrl,
+                            data: JSON.stringify({
+                                token : self.Session.state.refreshToken
+                            }),
+                            contentType: 'application/json',
                             method: 'POST',
                             crossDomain: true,
                             type: 'json'
@@ -98,19 +107,9 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || self.handleApiError;
 
         promise = new Promise(function (resolve, reject) {
-            var authUrl = '',
-                err;
-            if (self.Session.active() === true || options.host === CONFIG.AUTH_HOST) {
-                fin.call(self, resolve, reject);
-            } else {
-                // We're missing an account id, so simulate an "unauthorized" response from the server
-                err = {
-                    error: 'Unauthorized',
-                    code: 401
-                };
-                options.errorHandler ? reject(options.errorHandler(err)) : reject(err);
-            }
+            fin.call(self, resolve, reject);
         });
+
         ret = {
             isCanceled: false,
             cancel: function() {

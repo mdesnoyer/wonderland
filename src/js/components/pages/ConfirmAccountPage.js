@@ -1,7 +1,6 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
@@ -10,17 +9,18 @@ import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 var ConfirmAccountPage = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+	mixins: [AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
         return {
             errorMessageArray: [],
-            isError: false
+            isError: false,
+            sidebarContent: null
         }  
     },
     handleError: function (errorMessage) {
@@ -36,58 +36,53 @@ var ConfirmAccountPage = React.createClass({
             }
         })
         .then(function (res) {
-            self.context.router.push(UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL);
+            self.context.router.push('/account/confirmed/');
         })
         .catch(function (err) {
             if (err.code === 409) {
-                self.handleError('It looks like you have already confirmed this account.', false);
-                self.setState({
-                    isError: true
-                });
+                alert('It looks like you have already confirmed this account.')
+                self.context.router.push('/account/confirmed/');
             }
             else {
-                self.raiseError(err);
+                self.handleError(JSON.parse(err.responseText).error.data, false);
                 self.setState({
                     isError: true
                 });
             }
         });
     },
+    openContactUs: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'contact'
+        });
+    },
     render: function() {
-        debugger
         var self = this,
-            messageNeeded = self.state.isError ? <Message header={T.get('confirmAccount') + ' ' + T.get('error')} body={self.state.errorMessageArray} flavour="danger" /> : '',
-            body1 = T.get('copy.confirmAccount.body.1'),
-            body2 = T.get('copy.confirmAccount.body.2', {
-                '@link': UTILS.CONTACT_EXTERNAL_URL
-            })
+            messageNeeded = self.state.isError ? <Message message={self.state.errorMessageArray} type="formError" /> : ''
         ;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.confirmAccount.title'))}
                 />
-                <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            {messageNeeded}
-                            <h1 className="title is-2">{T.get('copy.confirmAccount.heading')}</h1>
-                            <div className="content">
-                                <p>{body1}</p>
-                                <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>
-                            </div>
-                        </div>
+                <SiteHeader sidebarContent={self.state.sidebarContent} />
+                <section>
+                    <h1 className="xxTitle">{T.get('copy.confirmAccount.heading')}</h1>
+                    {messageNeeded}
+                    <div className="xxText">
+                        <p>{T.get('copy.confirmAccount.body.1')} Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="#" onClick={self.openContactUs}>contact us</a>.</p>
                     </div>
                 </section>
                 <SiteFooter />
-            </div>
+            </main> 
         );
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 export default ConfirmAccountPage;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

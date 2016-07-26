@@ -1,47 +1,40 @@
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import TRACKING from '../../modules/tracking';
-import AjaxMixin from '../../mixins/Ajax';
 import SESSION from '../../modules/session';
-import Message from '../wonderland/Message';
+import AjaxMixin from '../../mixins/Ajax';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import E from '../../modules/errors';
-import cookie from 'react-cookie';
+import Message from '../wonderland/Message';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignUpForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    propTypes: {
-        showLegend: React.PropTypes.bool.isRequired,
-        signUpRef: React.PropTypes.string
-    },
-    getDefaultProps: function() {
-        return {
-            showLegend: true,
-            signUpRef: ''
-        }
-    },
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
+            firstName: '',
+            lastName: '',
+            email: '',
             password: '',
-            confirm: '',
-            isError: false,
-            isAgreementChecked: false,
-            isLoading: false
+            verifyPassword: '',
+            mode: 'quiet', // quiet, loading, error, success
+            errorMessage: '' // TODO: default generic message
         }
     },
     componentWillMount: function() {
         var self = this;
-        if (self.props.signUpRef && !SESSION.active()) {
-            cookie.save('signUpRef', self.props.signUpRef, { path: UTILS.COOKIE_DEFAULT_PATH });
-        }
         if (SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+            // If there's an active session with a user, there's no reason to be here
+            SESSION.user()
+                .then(function() {
+                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                })
+            ;
         }
     },
     componentWillUnmount: function(e) {
@@ -51,132 +44,252 @@ var SignUpForm = React.createClass({
         var self = this;
         self._isSubmitted = false;
     },
+    updateField: function(e) {
+        var self = this;
+        switch (e.target.getAttribute('data-ref')) {
+            case 'firstName':
+                self.setState({
+                    firstName: e.target.value
+                });
+                break;
+            case 'lastName':
+                self.setState({
+                    lastName: e.target.value
+                });
+                break;
+            case 'email':
+                self.setState({
+                    email: e.target.value
+                });
+                break;
+            case 'password':
+                self.setState({
+                    password: e.target.value
+                });
+                break;
+            case 'verifyPassword':
+                self.setState({
+                    verifyPassword: e.target.value
+                });
+                break;
+            default:
+                break;
+        }
+    },
     render: function() {
         var self = this,
-            buttonClassName,
-            messageNeeded = self.state.isError === true ? <Message header="Sign Up Error" body={E.getErrors()} flavour="danger" /> : '',
-            copyTerms = T.get('copy.agreeTerms', {'@link': UTILS.DRY_NAV.TERMS.URL}),
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.signUp.heading')}</legend> : ''
-         ;
-        if (!self.state.isAgreementChecked) {
-             buttonClassName = 'button is-medium is-primary is-disabled';
+            terms = T.get('copy.agreeTerms', {
+                '@link': UTILS.DRY_NAV.TERMS.URL
+            }),
+            signIn = T.get('copy.signUp.signIn', {
+                '@link' : UTILS.DRY_NAV.SIGNIN.URL
+            }),
+            isValid = self.state.firstName && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
+            submitClassName = ['xxButton', 'xxButton--highlight'],
+            userMessage = null
+        ;
+        if (isValid) {
+            submitClassName.push('xxButton--important');
         }
-        else if (self.state.isLoading) {
-            buttonClassName = 'button is-medium is-primary is-disabled is-loading';
-        }
-        else {
-             buttonClassName = 'button is-medium is-primary';
+        switch (self.state.mode) {
+            case 'error':
+                userMessage = <Message message={self.state.errorMessage} type="formError" />;
+                break;
+            case 'loading':
+                userMessage = <Message message={T.get('copy.loading')} />;
+                break;
+            default:
+                break;
         }
         return (
             <form onSubmit={self.handleSubmit}>
-                {messageNeeded}
-                <fieldset>
-                    {legendElement}
-                    <p className="control">
-                        <input className="input is-medium" type="email" ref="email" required minLength="6" maxLength="1024" placeholder={T.get('email')} />
-                    </p>
-                    <p className="control is-grouped">
-                        <input className="input is-medium"
-                            type="password"
-                            ref="passwordInitial"
-                            required
-                            minLength="8"
-                            maxLength="64"
-                            placeholder={T.get('password')}
-                            onChange={self.handlePasswordInitialChange}
-                        />
-                        <input className="input is-medium"
-                            type="password"
-                            ref="passwordConfirm"
-                            required
-                            minLength="8"
-                            maxLength="64"
-                            placeholder={T.get('confirm')}
-                            onChange={self.handlePasswordConfirmChange}
-                        />
-                    </p>
-                    <p className="control is-grouped">
-                        <input className="input is-medium" type="text" ref="firstName" required minLength="1" maxLength="256" placeholder={T.get('firstName')} />
-                        <input className="input is-medium" type="text" ref="lastName" required minLength="1" maxLength="256" placeholder={T.get('lastName')} />
-                    </p>
-                    <p className="control">
-                        <label className="checkbox">
-                            <input className="wonderland-checkbox--checkbox" type="checkbox" required onChange={self.handleAgreementChange} checked={self.state.isAgreementChecked} />
-                            <span dangerouslySetInnerHTML={{__html: copyTerms}} />
-                        </label>
-                    </p>
-                    <p className="has-text-centered">
-                        <button className={buttonClassName} type="submit">{T.get('signUp')}</button>
-                    </p>
-                </fieldset>
+                {
+                    self.state.mode === 'success' ? (
+                        <div>
+                            <div className="xxText"><p>{T.get('copy.confirmAccount.body')}</p></div>
+                            <div className="xxFormButtons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    onClick={self.props.handleClose}
+                                >
+                                    {T.get('back')}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <fieldset>
+                            <div className="xxText">
+                                <p>{T.get('copy.signUp.body')}</p>
+                                <p dangerouslySetInnerHTML={{__html: signIn}} />
+                            </div>
+                            {userMessage}
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.firstName')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="text"
+                                    data-ref="firstName"
+                                    minLength="1"
+                                    maxLength="256"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.lastName.optional')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="text"
+                                    data-ref="lastName"
+                                    minLength="1"
+                                    maxLength="256"
+                                    onChange={self.updateField}
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('label.yourEmail')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="email"
+                                    data-ref="email"
+                                    minLength="6"
+                                    maxLength="1024"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('copy.passwordInitial')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="password"
+                                    data-ref="password"
+                                    minLength="8"
+                                    maxLength="64"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <div className="xxFormField">
+                                {
+                                    self.state.verifyPassword && self.state.password !== self.state.verifyPassword ? (
+                                        <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
+                                    ) : null
+                                }
+                                <label className="xxLabel">{T.get('copy.passwordVerify')}</label>
+                                <input
+                                    className="xxInputText"
+                                    type="password"
+                                    data-ref="verifyPassword"
+                                    minLength="8"
+                                    maxLength="64"
+                                    onChange={self.updateField}
+                                    required
+                                />
+                            </div>
+                            <span dangerouslySetInnerHTML={{__html: terms}} />
+                            <div className="xxFormButtons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    onClick={self.props.handleClose}
+                                >
+                                    {T.get('back')}
+                                </button>
+                                <button
+                                    className={submitClassName.join(' ')}
+                                    type="submit"
+                                    disabled={!isValid}
+                                >
+                                    {T.get('action.signUp')}
+                                </button>
+                            </div>
+                        </fieldset>
+                    )
+                }
             </form>
         );
     },
-    handlePasswordInitialChange: function (event) {
-        this.setState({
-            password: event.target.value
-        });
-    },
-    handlePasswordConfirmChange: function (event) {
-        this.setState({
-            confirm: event.target.value
-        });
-    },
-    handleAgreementChange: function(e) {
-        this.setState({
-            isAgreementChecked: !this.state.isAgreementChecked
-        });
-    },
     handleSubmit: function (e) {
         var self = this,
-            userDataObject,
+            userDataObject = {},
             errorList = [
                 {message: T.get('error.passwordFormatInvalid'), check: UTILS.isValidPassword(self.state.password)},
                 {message: T.get('error.passwordMatchInvalid'), check: UTILS.isPasswordConfirm(self.state)}
-            ]
+            ],
+            userPromise
         ;
         e.preventDefault();
-        TRACKING.sendEvent(self, arguments, self.refs.email.value.trim());
         self.setState({
-            isError: false,
-            isLoading: true
+            mode: 'loading'
         });
         if (!E.checkForErrors(errorList)) {
             self.setState({
-                isError: true,
-                isLoading: false
+                mode: 'error',
+                errorMessage: T.get('error.passwordFormatInvalid')
             });
         }
         else {
             if (!self._isSubmitted) {
                 self._isSubmitted = true;
-                userDataObject = {
-                    email: this.refs.email.value.trim(),
-                    admin_user_username: this.refs.email.value.trim(),
-                    admin_user_password: this.refs.passwordInitial.value.trim(),
-                    admin_user_first_name: this.refs.firstName.value.trim(),
-                    admin_user_last_name: this.refs.lastName.value.trim()
-                };
-                self.POST('accounts', {
+                // If the session is active, we just need to create the user; not the whole account
+                if (SESSION.active()) {
+                    userDataObject = {
+                        username: self.state.email.trim(),
+                        password: self.state.password.trim(),
+                        first_name: self.state.firstName.trim()
+                    };
+                    // Only add the last name if it exists #1194
+                    if (self.state.lastName.trim()) {
+                        userDataObject.last_name = self.state.lastName.trim();
+                    }
+                    userPromise = self.POST('users', {
+                        host: CONFIG.AUTH_HOST,
+                        headers: {
+                            Authorization: 'Bearer ' + SESSION.state.accessToken
+                        },
+                        data: userDataObject
+                    });
+                } else {
+                    userDataObject = {
+                        email: self.state.email.trim(),
+                        admin_user_username: self.state.email.trim(),
+                        admin_user_password: self.state.password.trim(),
+                        admin_user_first_name: self.state.firstName.trim()
+                    };
+                    // Only add the last name if it exists #1194
+                    if (self.state.lastName.trim()) {
+                        userDataObject['admin_user_last_name'] = self.state.lastName.trim();
+                    }
+                    userPromise = self.POST('accounts', {
                         host: CONFIG.AUTH_HOST,
                         data: userDataObject
-                    })
+                    });
+                }
+                userPromise
                     .then(function (account) {
                         self._isSubmitted = false;
-                        self.setState({
-                            isError: false,
-                            isLoading: false
-                        });
-                        self.context.router.push(UTILS.DRY_NAV.ACCOUNT_PENDING.URL);
+                        self.props.completeSubmission();
                     })
-                    .catch(function (err) { 
-                        E.raiseError(err);
+                    .catch(function (err) {
+                        if (err.code === 409) {
+                            E.raiseError(err.data, false);
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: err.message
+                            });
+                        }
+                        else {
+                            E.raiseError(err);
+                            self.setState({
+                                mode: 'error',
+                                errorMessage: T.get('error.invalidEmail')
+                            });
+                        }
                         self._isSubmitted = false;
-                        self.setState({
-                            isError: true,
-                            isLoading: false
-                        });
-                });
+                    })
+                ;
             }
         }
     }

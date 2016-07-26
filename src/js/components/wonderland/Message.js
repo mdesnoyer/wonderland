@@ -2,44 +2,34 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Message = React.createClass({
-	// mixins: [ReactDebugMixin],
     render: function() {
         var self = this,
-            message = self.props.body,
-            messageClass = 'message is-' + self.props.flavour,
-            finalMessage = ''
+            style = self.props.isError ? "has-error" : ""
         ;
-        if (message.constructor == Array) {
-            finalMessage = (
-                <div>
-                    <p className="message-header">{self.props.header}</p>
-                    <ul className="message-body">
-                        {message.map(function(message, index) {
-                            return <li key = {index}>
-                                <span dangerouslySetInnerHTML={{__html: message}} />
-                            </li>
-                        })}
-                    </ul>
-                </div>
-            );
-        } 
-        else {
-            finalMessage = (
-                <div>
-                    <p className="message-header">{self.props.header}</p>
-                    <p className="message-body"><span dangerouslySetInnerHTML={{__html: self.props.body}} /></p>
-                </div>
-            );
+        switch(self.props.type) {
+            case 'processing':
+                style = 'has-processing-error';
+                break;
+            case 'video':
+                style = 'has-videos-error';
+                break;
+            case 'formError':
+                style = 'has-error'
+                break;
+            default:
+                style = ''
         }
         return (
-            <blockquote className={messageClass}>
-                {finalMessage}
-            </blockquote>
+            <div className={style}>
+                <p 
+                    className="xxFormNote"
+                    dangerouslySetInnerHTML={{__html: self.props.message}} 
+                ></p>
+            </div>
         );
     }
 });

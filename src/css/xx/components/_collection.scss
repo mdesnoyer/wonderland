@@ -1,0 +1,121 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$collection-content-padding-top: 17px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollection {
+    @include clearfix;
+
+    position: relative;
+    margin: 0 0 $collection-margin-bottom;
+    padding: $collection-padding-top $gutter-width $collection-padding-bottom;
+    background: $white;
+
+    @include breakpoint-mobile {
+        padding-top: $mobile-collection-padding-top;
+        padding-bottom: $mobile-collection-padding-bottom;
+    }
+
+    &--processing {
+        border-top: $processing-ribbon-height solid rgba($accent-color, .2);
+        padding-top: $collection-padding-top - $processing-ribbon-height;
+        padding-bottom: $collection-padding-top - $processing-ribbon-height;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -1 * $processing-ribbon-height;
+            left: 0;
+            width: 100%;
+            height: $processing-ribbon-height;
+            background: linear-gradient(
+                to right,
+                rgba($accent-color, 0) 0%,
+                rgba($accent-color, 0.85) 30%,
+                rgba($accent-color, 1) 50%,
+                rgba($accent-color, 0.85) 70%,
+                rgba($accent-color, 0) 100%
+            ) -17% 0 / 34% 100% no-repeat;
+            animation: ribbon 5s infinite alternate ease-in-out;
+        }
+    }
+}
+
+.xxCollection-title {
+    color: $secondary-color;
+    font: normal 25px/32px $serif-family;
+
+    @include breakpoint-mobile {
+        font-size: 16px;
+        line-height: 21px;
+    }
+
+    .xxCollection--video &::after {
+        @include font-awesome('f03d');
+
+        position: relative;
+        top: -2px;
+        margin: 0 0 0 10px;
+        color: $quaternary-color;
+        font-size: 12px;
+
+        @include breakpoint-mobile {
+            top: -1px;
+            font-size: 9px;
+        }
+    }
+
+    .xxCollection--processing & {
+        width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width} * 2);
+    }
+}
+
+.xxCollection-subtitle {
+    margin: 0 0 6px;
+    color: $tertiary-color;
+
+    @include breakpoint-mobile {
+        margin-bottom: 3px;
+    }
+}
+
+.xxCollection-content {
+    float: right;
+    width: calc((99.9% + #{$gutter-width}) * 1/3 - #{$gutter-width});
+    padding: $collection-content-padding-top 0 0;
+
+    @include breakpoint-mobile {
+        float: none;
+        width: auto;
+        padding-top: 0;
+    }
+
+    .xxLift {
+        border-top: 1px solid #e0e0e0;
+        margin: 20px 0 0;
+
+        @include breakpoint-mobile {
+            display: none;
+        }
+    }
+}
+
+.xxCollectionInfo {
+
+    // Brittle. If this content grows to be taller than the images, then this
+    // will no longer work. Unfortunately, this is the only thing that allows
+    // a perfect animation that works in all browsers (namely: Chrome & Safari)
+    // Otherwise the action buttons like Back & Save don't animate due
+    // to an overflow bug (in combination with transition) in those two browsers.
+    // If bug is fixed, revert the following commit to get the bullet-proof solution:
+    // https://github.com/neon-lab/wonderland/commit/fe3c9f32b8989772b47c107f9cac96fcc19c899e
+    &.xxFadeInOutSequential-enter,
+    &.xxFadeInOutSequential-leave {
+        position: absolute;
+        top: $collection-padding-top + $collection-content-padding-top;
+        padding-right: $gutter-width;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -36,7 +36,7 @@ let E = {
                 self.checkForError(err.message);
                 break;
             default:
-                self.checkForError(errorMessage);
+                self.checkForError(err);
                 break;
         }
     },
@@ -77,6 +77,9 @@ let E = {
     },
     clearErrors: function() {
         this._errorMessageArray.length = 0;
+    },
+    isErrors: function() {
+        return this._errorMessageArray.length > 0;
     }
 }
 

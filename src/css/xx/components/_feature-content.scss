@@ -1,0 +1,55 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxFeatureContent {
+    position: absolute;
+    top: 50vh;
+    right: 0;
+    left: 0;
+    z-index: $zindex-feature-content;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    transform: translateY(-50%);
+
+    @include breakpoint-mobile {
+        width: 315px;
+    }
+}
+
+.xxFeatureContent-image {
+    display: block;
+    width: 176px;
+    height: 176px;
+    margin: 0 auto 22px;
+}
+
+.xxFeatureContent-title {
+    margin-bottom: 10px;
+    font-size: 45px;
+    line-height: 50px;
+}
+
+.xxFeatureContent-buttons {
+    display: table;
+    margin: 28px auto 0;
+
+    .xxButton {
+        float: left;
+
+        + .xxButton {
+            margin-left: $gutter-width;
+        }
+
+        @include breakpoint-mobile {
+            width: 130px;
+        }
+    }
+}
+
+.xxFeatureContent-small {
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

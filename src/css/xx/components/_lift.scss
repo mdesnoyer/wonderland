@@ -1,0 +1,85 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$lift-padding-top: 25px;
+
+$lift-bar-height: 7px;
+$mobile-lift-bar-height: 3px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+.xxLift {
+    position: relative;
+    padding: $lift-padding-top 0 0;
+
+    @include breakpoint-mobile {
+        clear: both;
+        padding-top: 16px;
+    }
+}
+
+.xxLift-container {
+    display: table;
+    width: 100%;
+
+    & + & {
+        position: absolute;
+        top: $lift-padding-top;
+        left: 0;
+        opacity: 0;
+        transition: opacity $default-transition;
+    }
+}
+
+.xxLift-title {
+    display: table-cell;
+    padding: 0 20px 0 0;
+    color: $accent-color;
+    font-size: 31px;
+    font-weight: 100;
+    line-height: 1;
+    white-space: nowrap;
+
+    @include breakpoint-mobile {
+        padding-right: 12px;
+        font-size: 20px;
+    }
+}
+
+.xxLift-chart {
+    display: table-cell;
+    width: 100%;
+    margin: 4px 0 0;
+}
+
+.xxLift-chartLine {
+    height: $lift-bar-height;
+    background: $accent-color;
+
+    @include breakpoint-mobile {
+        height:  $mobile-lift-bar-height;
+    }
+
+    &--original {
+        background: $tertiary-color;
+    }
+
+    & + & {
+        margin: $lift-bar-height 0 0;
+
+        @include breakpoint-mobile {
+            margin-top: $mobile-lift-bar-height;
+        }
+    }
+}
+
+.xxLift-text {
+    clear: both;
+    padding: 12px 0 0;
+
+    @include breakpoint-mobile {
+        padding-top: 5px;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

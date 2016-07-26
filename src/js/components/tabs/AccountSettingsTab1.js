@@ -1,18 +1,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountSettingsTab1 = React.createClass({
-    mixins: [Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
             isLoading: true,
@@ -58,6 +59,14 @@ var AccountSettingsTab1 = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
+        SESSION.user()
+            .then(function(userData) {
+                TRACKING.sendEvent(self, arguments, userData.username);
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+        ;
         if (!self._isSubmitted) {
             self._isSubmitted = true; 
             if (self._isMounted) {
@@ -106,12 +115,12 @@ var AccountSettingsTab1 = React.createClass({
     },
     render: function() {
         var self = this,
-            messageNeeded = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = E.getErrorsCount() ? <Message header={'Account Settings'} body={E.getErrors()} flavour="danger" /> : false
         ;
         return (
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
-                    {messageNeeded}
+                    {messageNeededComponent}
                     <label className="label">{T.get('label.defaultSizeWidthXHeight')}</label>
                     <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
                         <input

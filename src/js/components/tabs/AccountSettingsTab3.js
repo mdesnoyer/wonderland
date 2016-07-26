@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import moment from 'moment';
@@ -10,7 +9,7 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var AccountSettingsTab3 = React.createClass({
-    mixins: [Account, AjaxMixin], // ReactDebugMixin
+    mixins: [Account, AjaxMixin],
     getInitialState: function () {
         return {
             isLoading: true,
@@ -19,7 +18,6 @@ var AccountSettingsTab3 = React.createClass({
             updated: '',
             accountName: '',
             accountId: '',
-            isServingEnabled: false,
             accountEmail: ''
         };
     },
@@ -34,7 +32,6 @@ var AccountSettingsTab3 = React.createClass({
                     updated: account.updated,
                     accountName: account.accountName,
                     accountId: account.accountId,
-                    isServingEnabled: account.isServingEnabled,
                     accountEmail: account.accountEmail
                 });
             })
@@ -44,7 +41,8 @@ var AccountSettingsTab3 = React.createClass({
                     isLoading: false,
                     isError: true
                 });
-            });
+            })
+        ;
     },
     render: function() {
         var self = this,
@@ -68,10 +66,6 @@ var AccountSettingsTab3 = React.createClass({
                 <label className="label">{T.get('label.updated')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
                     <input className={'input'} type="text" value={updated} disabled />
-                </p>
-                <label className="is-hidden label">{T.get('label.servingEnabled')}</label>
-                <p className={'is-hidden control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'is-hidden input'} type="text" value={self.state.isServingEnabled} disabled />
                 </p>
                 <label className="label">{T.get('label.accountEmail')}</label>
                 <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>

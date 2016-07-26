@@ -7,37 +7,62 @@ import UTILS from './utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const accessTokenKey = 'at',
-    refreshTokenKey = 'rt',
-    accountIdKey ='actId',
-    rememberMeKey = 'rme',
-    rememberedEmailKey = 'ru',
-    userKey = 'user_info',
-    COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60 // 5 years approx.
-;
+const COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60; // 5 years approx.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Session = {
     state: {
-        accessToken: cookie.load(accessTokenKey),
-        refreshToken: cookie.load(refreshTokenKey),
-        accountId: cookie.load(accountIdKey),
+        accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey),
+        refreshToken: cookie.load(UTILS.COOKIES_KEY.refreshTokenKey),
+        accountId: cookie.load(UTILS.COOKIES_KEY.accountIdKey),
+        masqueradeAccountIdKey: undefined,
         user: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
-        this.state = {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state = {
             accessToken: accessToken,
             refreshToken: refreshToken,
             accountId: accountId,
-            user: user || this.state.user
+            user: user || self.state.user
         };
-        cookie.save(accessTokenKey, accessToken, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.save(refreshTokenKey, refreshToken, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.save(accountIdKey, accountId, { path: UTILS.COOKIE_DEFAULT_PATH });
+        cookie.save(UTILS.COOKIES_KEY.accessTokenKey, accessToken, cookiePath);
+        cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
+        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, cookiePath);
         if (user) {
-            localStorage.setItem(userKey, JSON.stringify(user));
+            cookie.save(UTILS.COOKIES_KEY.userKey, user, cookiePath);
         }
+    },
+    setAccountId: function(accountId) {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state.accountId = accountId;
+        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, {
+            path: UTILS.COOKIE_DEFAULT_PATH
+        });
+    },
+    setMasqueradeAccountId: function(masqueradeAccountId) {
+        var self = this,
+            cookiePath = {
+                path: UTILS.COOKIE_DEFAULT_PATH
+            }
+        ;
+        self.state.masqueradeAccountId = masqueradeAccountId;
+        cookie.save(UTILS.COOKIES_KEY.masqueradeAccountIdKey, masqueradeAccountId, {
+            path: UTILS.COOKIE_DEFAULT_PATH
+        });
+    },
+    getMasqueradeAccountId: function() {
+        var self = this;
+        return self.state.masqueradeAccountId;
     },
     end: function() {
         var ret;
@@ -54,21 +79,30 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(accessTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.remove(refreshTokenKey, { path: UTILS.COOKIE_DEFAULT_PATH });
-        cookie.remove(accountIdKey, { path: UTILS.COOKIE_DEFAULT_PATH });
-        localStorage.removeItem(userKey);
+        cookie.remove(UTILS.COOKIES_KEY.accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.userKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
+            masqueradeAccountId: undefined,
             user: undefined
         };
         return ret;
     },
     // Returns current state of the session
     active: function() {
+        // NOTE: SESSION.active will determine whether there is an ACCOUNT active; not a USER active.
+        // A "demo" account, for example, will have an account, but no user.
+        // Use the SESSION.user() Promise to check for a signed-in user
         return !!this.state.accessToken;
+    },
+    // Returns if there is an active session with a user (has an email account)
+    isUser: function() {
+        return (cookie.load(UTILS.COOKIES_KEY.userKey) ? true : false);
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function(userData) {
@@ -76,19 +110,24 @@ var Session = {
         return new Promise(function (resolve, reject) {
             if (userData) {
                 self.state.user = userData;
-                localStorage.setItem(userKey, JSON.stringify(userData));
+                cookie.save(UTILS.COOKIES_KEY.userKey, userData, UTILS.COOKIE_DEFAULT_PATH);
             }
             else if (self.state.user) {
                 userData = self.state.user;
             }
             else {
                 try {
-                    userData = JSON.parse(localStorage.getItem(userKey));
+                    userData = cookie.load(UTILS.COOKIES_KEY.userKey);
                 }
                 catch (e) {
                     // TODO: Get user from API based on session
                     return reject(e);
                 }
+            }
+            if (userData && (userData.first_name || userData.username)) {
+                userData.displayName = userData.first_name || userData.username;
+            } else if (!userData) {
+                reject();
             }
             resolve(userData);
         });
@@ -97,31 +136,31 @@ var Session = {
     rememberMe: function(bool) {
         if (bool !== undefined) {
             if (bool) {
-                cookie.save(rememberMeKey, (!!bool ? 1 : 0), {
+                cookie.save(UTILS.COOKIES_KEY.rememberMeKey, (!!bool ? 1 : 0), {
                     path: UTILS.COOKIE_DEFAULT_PATH,
                     maxAge: COOKIE_MAX_AGE
                 });
             }
             else {
-                cookie.remove(rememberMeKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-                cookie.remove(rememberedEmailKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+                cookie.remove(UTILS.COOKIES_KEY.rememberMeKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+                cookie.remove(UTILS.COOKIES_KEY.rememberedEmailKey, {path: UTILS.COOKIE_DEFAULT_PATH});
             }
         }
         else {
-            bool = cookie.load(rememberMeKey) ? true : false;
+            bool = cookie.load(UTILS.COOKIES_KEY.rememberMeKey) ? true : false;
         }
         return !!bool;
     },
     // Getter/setter for email stored during login
     rememberedEmail: function(email) {
         if (email) {
-            cookie.save(rememberedEmailKey, email, {
+            cookie.save(UTILS.COOKIES_KEY.rememberedEmailKey, email, {
                 path: UTILS.COOKIE_DEFAULT_PATH,
                 maxAge: COOKIE_MAX_AGE
             });
         }
         else {
-            email = cookie.load(rememberedEmailKey);
+            email = cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey);
         }
         return email;
     }

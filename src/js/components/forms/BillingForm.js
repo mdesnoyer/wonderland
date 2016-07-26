@@ -1,9 +1,9 @@
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import SESSION from '../../modules/session';
 import Message from '../wonderland/Message';
 import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
 import RadioGroup from 'react-radio-group';
 import UTILS from '../../modules/utils';
@@ -11,10 +11,7 @@ import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var BillingForm = React.createClass({
-    mixins: [AjaxMixin], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+    mixins: [AjaxMixin],
     propTypes: {
         showLegend: React.PropTypes.bool.isRequired
     },
@@ -165,12 +162,12 @@ var BillingForm = React.createClass({
     },
     render: function() {
         var self = this,
-            legendElement = self.props.showLegend ? <legend className="title is-4">{T.get('copy.billing.heading')}</legend> : '',
-            buttonClassName,
-            inputClassName,
-            selectClassName,
-            messageNeeded = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> :
-                            self.state.isSuccess !== false ? <Message header={T.get('copy.billing.title') + ' ' + T.get('success')} body={self.state.isSuccess} flavour="success" /> : ''
+            legendElement = self.props.showLegend ? <legend>{T.get('copy.billing.heading')}</legend> : false,
+            buttonClassName = '',
+            inputClassName = '',
+            selectClassName = '',
+            messageNeededComponent = self.state.isError === true ? <Message header={T.get('copy.billing.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> :
+                            self.state.isSuccess !== false ? <Message header={T.get('copy.billing.title') + ' ' + T.get('success')} body={self.state.isSuccess} flavour="success" /> : false
         ;
         if (self.state.isLoading) {
             buttonClassName = 'button is-primary is-medium is-disabled is-loading';
@@ -184,7 +181,7 @@ var BillingForm = React.createClass({
         }
         return (
             <form id="billingForm" onSubmit={self.handleSubmit}>
-                {messageNeeded}
+                {messageNeededComponent}
                 <fieldset>
                     {legendElement}
                     
@@ -364,7 +361,7 @@ var BillingForm = React.createClass({
                                                 />
                                             </p>
                                         </div>
-                                        <div className="column">
+                                        <div>
                                             <label htmlFor="cc_exp_month">{T.get('copy.billing.form.ccExpiration')}</label>
                                             <p className="control is-grouped">
                                                 <span className={selectClassName}>
@@ -408,7 +405,7 @@ var BillingForm = React.createClass({
                                                 </span>
                                             </p>
                                         </div>
-                                        <div className="column">
+                                        <div>
                                             <label htmlFor="cc_cvc">{T.get('copy.billing.form.ccCVC')}</label>
                                             <p className="control is-grouped">
                                                 <input
@@ -439,6 +436,14 @@ var BillingForm = React.createClass({
         var self = this
         ;
         e.preventDefault();
+        SESSION.user()
+            .then(function(userData) {
+                TRACKING.sendEvent(self, arguments, userData.username);
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+        ;
         if (!self._isSubmitted) {
             self._isSubmitted = true;
             E.clearErrors();

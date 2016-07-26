@@ -1,19 +1,23 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
-import TutorialPanels from './TutorialPanels';
 import VideosResults from './VideosResults';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import AnalyzeVideoForm from '../forms/AnalyzeVideoForm';
+import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
+import VideosMobileWarning from './VideosMobileWarning';
+import Secured from '../../mixins/Secured';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Videos = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    mixins: [AjaxMixin], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -26,12 +30,22 @@ var Videos = React.createClass({
             isLoading: false,
             pseudoPageUrl: '?', // used to hold the Prev / Next choice
             previousPseudoPageUrl: '' // used to hold the Page before
-        }  
+        }
+    },
+    componentWillMount: function() {
+        var self = this;
+        self.GET('limits')
+            .then(function(res) {
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
+            })
+            .catch(function(err) {
+                self.context.router.push('*')
+            })
     },
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
-        self.doVideoSearch(1, false);
+        self.doVideoSearch(1);
     },
     componentWillUnmount: function() {
         var self = this;
@@ -47,20 +61,17 @@ var Videos = React.createClass({
     },
     render: function() {
         var self = this,
-            errorMessage = self.state.isError ? <Message header='Videos Error' body={self.state.errorMessageArray} flavour="danger" /> : '',
-            panels = {
-                'files-o': T.get('copy.analyzeVideoPanel.panel.1'),
-                'upload': T.get('copy.analyzeVideoPanel.panel.2'),
-                'th-large': T.get('copy.analyzeVideoPanel.panel.3')
-            },
-            tutorialComponent = self.state.videoCountServed === 0 ? <section className="wonderland-section section"><TutorialPanels panels={panels}/></section> : '',
+            errorMessage = self.state.isError ? <Message message={self.state.errorMessageArray} type="formError" /> : false,
             prevPageAPICall = '',
             alertMessage = ''
         ;
         // Edge Case - when we hit a Next page with 0 results, limbo
         if ((self.state.prevPageAPICall === '') && (self.state.nextPageAPICall === '') && (self.state.currentPage > 1)) {
             prevPageAPICall = self.state.previousPseudoPageUrl;
-            alertMessage = <Message header={[T.get('warning.noMoreVideosHeader')]} body={[T.get('warning.noMoreVideosBody')]} flavour="warning" />;
+            alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
+        }
+        else if (self.state.isMaxLimit) {
+            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -68,31 +79,62 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                {tutorialComponent}
-                <section className="wonderland-section section">
-                    <AnalyzeVideoForm
-                        postHook={self.doVideoSearch}
-                        videoCountServed={self.state.videoCountServed}
-                    />
-                </section>
-                <section id="results" className="wonderland-section section">
-                    <VideosResults
-                        forceOpenFirstOverride={self.state.forceOpenFirstOverride}
-                        videos={self.state.videos}
-                        handleNewSearch={self.handleNewSearch}
-                        prevPageAPICall={prevPageAPICall}
-                        nextPageAPICall={self.state.nextPageAPICall}
-                        errorMessage={errorMessage}
-                        alertMessage={alertMessage}
-                        currentPage={self.state.currentPage}
-                        isLoading={self.state.isLoading}
-                        videoCountServed={self.state.videoCountServed}
-                        videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                        isServingEnabled={self.props.isServingEnabled}
-                    />
-                </section>
+                <VideoUploadForm
+                    postHookSearch={self.doVideoSearch}
+                    postHookAnalysis={null}
+                    isVideoResults={true}
+                    videoCountServed={self.state.videoCountServed}
+                    isMaxLimit={self.state.isMaxLimit}
+                />
+                 {alertMessage}
+                <VideosResults
+                    videos={self.state.videos}
+                    handleNewSearch={self.handleNewSearch}
+                    prevPageAPICall={prevPageAPICall}
+                    nextPageAPICall={self.state.nextPageAPICall}
+                    currentPage={self.state.currentPage}
+                    isLoading={self.state.isLoading}
+                    isMobile={self.props.isMobile}
+                    videoCountServed={self.state.videoCountServed}
+                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                    openSignUp={self.props.openSignUp}
+                    isMaxLimit={self.state.isMaxLimit}
+                    setTooltipText={self.setTooltipText}
+                />
+                <ReactTooltip
+                    ref="tooltip"
+                    event="click"
+                    eventOff="mouseout"
+                    effect="solid"
+                    place="bottom"
+                    delayHide={1000}
+                    getContent={self.getTooltipText}
+                />
+                {
+                    self.props.isMobile ? (
+                        <div className="xxCollection">
+                            <VideosMobileWarning />
+                        </div>
+                    ) : null
+                }
             </div>
         );
+    },
+    getTooltipText: function() {
+        return this.refs.tooltip.state.placeholder;
+    },
+    setTooltipText: function(textKey) {
+        this.refs.tooltip.setState({
+            placeholder: T.get(textKey)
+        });
+    },
+    doFindMaxVideos: function(count, max) {
+        var self = this;
+        if (count === max) {
+            self.setState({
+                isMaxLimit: true
+            })
+        }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;
@@ -104,10 +146,10 @@ var Videos = React.createClass({
             previousPseudoPageUrl: self.state.pseudoPageUrl,
             pseudoPageUrl: pseudoPageUrl
         }, function() {
-            self.doVideoSearch(pageAdjustment, false);
+            self.doVideoSearch(pageAdjustment);
         });
     },
-    doVideoSearch: function(pageAdjustment, forceOpenFirstOverride) {
+    doVideoSearch: function(pageAdjustment) {
         var self = this,
             options = {
                 data: {
@@ -118,7 +160,6 @@ var Videos = React.createClass({
         ;
         self.setState({
             isLoading: true,
-            forceOpenFirstOverride: forceOpenFirstOverride == null ? true : false,
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
@@ -137,6 +178,7 @@ var Videos = React.createClass({
                             prevPageAPICall: '',
                             nextPageAPICall: ''
                         });
+                        self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
                     }
                     else {
                         self.setState({

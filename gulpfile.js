@@ -14,6 +14,10 @@ var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
 var gulpif = require('gulp-if');
 var clean = require('gulp-clean');
+var concatCss = require('gulp-concat-css');
+var merge = require('merge-stream');
+var autoprefixer = require('gulp-autoprefixer');
+var jest = require('gulp-jest');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -24,7 +28,7 @@ var argv = require('yargs').argv;
 var env = argv.env ? argv.env : 'dev';
 var configSrc   = './env/config.json.' + env;
 
-var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico', './src/_headers'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -40,37 +44,45 @@ function handleErrors() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function buildStyle(isUglified) {
-    gulp.src('./src/css/**/*')
+    gutil.log('buildStyle');
+    var fontAwesomeStream = gulp.src('./node_modules/font-awesome/css/font-awesome.min.css');
+    var hintCssStream = gulp.src('./node_modules/hint.css/hint.min.css');
+    var sassStream = gulp.src('./src/css/neon/**/*')
         .pipe(sass()) // Using gulp-sass
-        .pipe(gulpif(isUglified, uglifycss()))
+    ;
+    var xxStream = gulp.src('./src/css/xx/**/*')
+        .pipe(sass())
+    ;
+    var mergedStream = merge(fontAwesomeStream,/* sassStream, hintCssStream,*/ xxStream)
+    // var mergedStream = merge(fontAwesomeStream, sassStream, hintCssStream, xxStream)
+        .pipe(concatCss('wonderland.css', {
+            rebaseUrls: false
+        }))
+        .pipe(gulpif(isUglified, uglifycss({
+            uglyComments: true
+        })))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions', '> 1% in US']
+        }))
         .pipe(gulp.dest('./build/css/'))
         .pipe(reload({
             stream: true
         }))
     ;
-    gulp.src('./node_modules/bulma/css/bulma.min.css')
-        .pipe(gulp.dest('./build/css'))
-        .pipe(reload({
-            stream: true
-        }))
-    ;
-    gulp.src('./node_modules/font-awesome/css/font-awesome.min.css')
-        .pipe(gulp.dest('./build/css'))
-        .pipe(reload({
-            stream: true
-        }))
-    ;
+    return mergedStream;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesDebug', function() {
+    gutil.log('stylesDebug');
     buildStyle(false);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesLive', function() {
+    gutil.log('stylesLive');
     buildStyle(true);
 });
 
@@ -96,16 +108,6 @@ gulp.task('clipboardJs', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-gulp.task('webfontJs', function() {
-    return gulp.src('./src/js/vendor/google.webfont.js')
-        .pipe(gulp.dest('./build/js/'))
-        .pipe(reload({
-            stream: true
-        }));
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 gulp.task('config',['clean:config'] ,function() {
     return gulp.src(configSrc)
         .pipe(rename('config.json'))
@@ -114,7 +116,7 @@ gulp.task('config',['clean:config'] ,function() {
             stream: true
         }));
 });
- 
+
 gulp.task('clean:config', function() {
       return gulp.src('./env/config.json', {read: false})
         .pipe(clean());
@@ -128,7 +130,11 @@ gulp.task('redirects', function() {
 });
 
 gulp.task('fonts', function() {
-    return gulp.src('node_modules/font-awesome/fonts/*')
+    var fontAwesome = gulp.src('node_modules/font-awesome/fonts/*');
+
+    var fonts = gulp.src('./src/fonts/*');
+
+    return merge(fontAwesome, fonts)
         .pipe(gulp.dest('./build/fonts/'));
 })
 
@@ -148,11 +154,24 @@ gulp.task('browser-sync', function() {
         },
         middleware: [historyApiFallback({
             // https://github.com/bripkens/connect-history-api-fallback#rewrites
-            rewrites: [{
-                from: /\/video\/.*/, to: '/index.html',
-                from: /\/account\/confirm\/.*/, to: '/index.html',
-                from: /\/user\/reset\/token\/.*/, to: '/index.html',
-            }]
+            rewrites: [
+                {
+                    from: /\/video\/.*/,
+                    to: '/index.html'
+                },
+                {
+                    from: /\/account\/confirm\/.*/,
+                    to: '/index.html'
+                },
+                {
+                    from: /\/user\/reset\/token\/.*/,
+                    to: '/index.html'
+                },
+                {
+                    from: /\/share\/.*/,
+                    to: '/index.html'
+                }
+            ]
         })],
         ghostMode: false
     });
@@ -167,10 +186,11 @@ function buildScript(file, watch) {
         debug : true,
         cache: {},
         packageCache: {},
-        transform:  [babelify.configure({ stage : 0 })]
+        transform:  [babelify.configure({ presets : ["es2015", "react",
+                                                     "stage-0"] })]
     };
 
-    // watchify() if watch requested, otherwise run browserify() once 
+    // watchify() if watch requested, otherwise run browserify() once
     var bundler = watch ? watchify(browserify(props)) : browserify(props);
 
     function rebundle() {
@@ -201,7 +221,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -211,10 +231,31 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'webfontJs', 'fonts'
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'webfontJs', 'fonts', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'config', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/* TODO: Get this to work. For now, runnings tests can be done by: npm test
+
+gulp.task('jest', function() {
+    return gulp.src('__tests__').pipe(jest({
+        unmockedModulePathPatterns: [
+            "node_modules/react"
+        ],
+        testDirectoryName: "spec",
+        testPathIgnorePatterns: [
+            "node_modules"
+        ],
+        moduleFileExtensions: [
+            "js",
+            "json",
+            "react"
+        ]
+    }));
+});
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

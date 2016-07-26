@@ -1,0 +1,175 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$maximum-nav-height: 5em;
+$smaller-ratio: 0.618;
+$smallest-ratio: 0.191;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-banner {
+    background-color: $grey-dark;
+}
+
+.wonderland-banner--header {
+    height: $maximum-nav-height;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-banner--footer {
+    color: $grey-light;
+    a {
+        color: $grey-lighter; 
+        &:link,
+        &:visited {
+            color: $grey-lighter; 
+        }
+        &:focus,
+        &:hover,
+        &:active {
+            color: $white; 
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level {
+    height: $maximum-nav-height;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__item {
+    margin-right: 2em !important;
+    height: $maximum-nav-height;
+    display: flex;
+    align-items: center;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__logo {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__logo {
+    display: block;
+    img {
+        width: auto;
+        height: $maximum-nav-height * $smaller-ratio;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__avatar {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__icon {
+    margin: ($maximum-nav-height * $smallest-ratio) 0;
+    transition: color 0.3333s;
+    border-radius: 50%;
+    width: $maximum-nav-height * $smaller-ratio;
+    height: $maximum-nav-height * $smaller-ratio;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fa {
+        font-size: $maximum-nav-height * 0.5;
+    }
+}
+
+.wonderland-level__icon--regular {
+    color: $grey-lighter;
+    transition: all 0.3333s;
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white;
+    }
+}
+
+.wonderland-level__icon--alternate {
+    background-color: $grey-light;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__text {
+    height: $maximum-nav-height;    
+    display: block;
+    line-height: $maximum-nav-height;
+    color: $white;
+    font-style: normal;
+    transition: color 0.3333s;
+    &:link,
+    &:visited {
+        color: $grey-light; 
+    }
+    &:focus,
+    &:hover,
+    &:active {
+        color: $white; 
+    }
+    &.wonderland-active {
+        border-bottom: 4px solid $orange;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.wonderland-level__subnav {
+    display: none;
+    position: absolute;
+    z-index: 1111;
+    padding: 0;
+    border-radius: 0;
+    top: 95%;
+    &:before {
+        position: absolute;
+        display: inline-block;
+        border: 7px solid transparent;
+        border-bottom-color: $white;
+        left: $maximum-nav-height * $smaller-ratio * 0.5;
+        bottom: 100%;
+        content: '';
+        transform: translateX(-50%);
+        z-index: 2222;
+    }
+    li {
+        min-width: 10em;
+        a {
+            display: block;
+            padding: $smaller-ratio * 1em;
+            transition: all 0.3333s;
+            &:link,
+            &:visited {
+                background-color: $white;
+                color: $grey-darker; 
+            }
+            &:focus,
+            &:hover,
+            &:active {
+                background-color: $grey-lighter;
+                color: $orange; 
+            }
+        }
+    }
+}
+
+.wonderland-level__item:hover {
+    .wonderland-level__subnav {
+        display: block;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

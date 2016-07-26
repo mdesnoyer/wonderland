@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Secured from '../../mixins/Secured';
@@ -13,34 +12,34 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var NewIntegrationPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
+    mixins: [Secured],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
     addBrightcove: function () {
-        this.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
+        var self = this;
+        self.context.router.push(UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL);
     },
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.new.integration.title')}
+                    title={UTILS.buildPageTitle(T.get('copy.new.integration.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.new.integration.heading')}</h1>
+                        <h1>{T.get('copy.new.integration.heading')}</h1>
                         <div className="content">
                             {T.get('copy.new.integration.body')}
                         </div>
                         <div className="columns">
                             <div className="card column is-one-third">
-                                <div className="card-content has-text-centered">
+                                <div className="card-content">
                                     <img src={T.get('copy.plugins.types.brightcove.img')} />
                                     <div>
                                         <a className="button is-primary is-medium" onClick={this.addBrightcove}>
                                             <Icon type="plus-circle" />
-                                            &nbsp;
                                             {T.get('add')}
                                         </a>
                                     </div>

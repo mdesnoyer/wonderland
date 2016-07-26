@@ -1,0 +1,22 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionMobileNotification {
+    clear: both;
+    padding-top: 12px;
+
+    .xxCollection-title {
+        margin-bottom: 5px;
+
+        &::after {
+            display: none;
+        }
+    }
+}
+
+.xxCollectionMobileNotification-text {
+    @include breakpoint-mobile {
+        margin-bottom: 8px;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

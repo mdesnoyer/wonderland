@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import BillingForm from '../forms/BillingForm';
@@ -13,10 +12,7 @@ import Secured from '../../mixins/Secured';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var BillingPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+    mixins: [Secured],
     render: function() {
         return (
             <div>
@@ -30,7 +26,7 @@ var BillingPage = React.createClass({
                 <SiteHeader />
                 <section className="wonderland-section section">
                     <div className="container">
-                        <h1 className="title is-2">{T.get('copy.billing.heading')}</h1>
+                        <h1>{T.get('copy.billing.heading')}</h1>
                         <div className="content">
                             <p><span dangerouslySetInnerHTML={{__html: T.get('copy.billing.body')}} /></p>
                         </div>

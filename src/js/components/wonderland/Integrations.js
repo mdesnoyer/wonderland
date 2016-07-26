@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import Message from './Message';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
@@ -15,17 +14,9 @@ import Icon from '../core/Icon';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Integrations = React.createClass({
-mixins: [AjaxMixin, Account], // ReactDebugMixin
+mixins: [AjaxMixin, Account],
     contextTypes: {
         router: React.PropTypes.object.isRequired
-    },
-    propTypes: {
-        pop: React.PropTypes.bool.isRequired
-    },
-    getDefaultProps: function() {
-        return {
-            pop: false
-        };
     },
     getInitialState: function() {
         var self = this;
@@ -33,7 +24,7 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
             errorMessageArray: [],
             isError: false,
             integrations: [],
-            activeModal: false || self.props.pop
+            activeModal: false
         }
     },
     componentWillMount: function() {
@@ -58,13 +49,13 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
     render: function() {
         var self = this,
             additionalClass = 'table is-striped' + (self.props.isLoading ? ' is-loading' : ''),
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : ''
+            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.heading') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false
         ;
         return (
         <div>
             <table className={additionalClass}>
                 <caption>
-                    {messageNeeded}
+                    {messageNeededComponent}
                 </caption>
                 <tbody>
                     {
@@ -93,7 +84,6 @@ mixins: [AjaxMixin, Account], // ReactDebugMixin
                         <th colSpan="3">
                             <a className="button is-primary is-medium is-pulled-right" onClick={self.openModal}>
                                 <Icon type="plus-circle" />
-                                &nbsp;
                                 {T.get('add')}
                             </a>
                         </th>

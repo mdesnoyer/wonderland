@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
@@ -54,8 +53,8 @@ var PlayerList = React.createClass({
             }
             return (
                     <div className="box wonderland-box">
-                        <h1 className="subtitle is-6">Select which Brightcove HTML5 players to enable:</h1>
-                        <table className={"table is-bordered is-striped is-narrow has-text-centered"}>
+                        <h1>Select which Brightcove HTML5 players to enable:</h1>
+                        <table className={"table is-bordered is-striped is-narrow"}>
                             <thead>
                                 <tr>
                                     <th>Player</th>
@@ -70,17 +69,8 @@ var PlayerList = React.createClass({
                                 {players}
                             </tbody>
                         </table>
-                        <p className="control">
-                            <button className="button is-primary" onClick={self.clicked}>Refresh</button>
-                        </p>
                     </div>
             );
-    },
-    clicked: function() {
-      var self = this;
-        if(self.props.refreshBrightCovePlayers) {
-            self.props.refreshBrightCovePlayers();
-        }
     }
 });
 

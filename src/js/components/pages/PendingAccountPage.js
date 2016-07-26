@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Helmet from 'react-helmet';
@@ -11,7 +10,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PendingAccountPage = React.createClass({
-	// mixins: [ReactDebugMixin],
     render: function() {
         var body1 = T.get('copy.pendingAccount.body.1'),
             body2 = T.get('copy.pendingAccount.body.2'),
@@ -28,7 +26,7 @@ var PendingAccountPage = React.createClass({
                 <section className="wonderland-section section">
                     <div className="columns is-desktop">
                         <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.pendingAccount.heading')}</h1>
+                            <h1>{T.get('copy.pendingAccount.heading')}</h1>
                             <div className="content">
                                 <p><span dangerouslySetInnerHTML={{__html: body1}} /></p>
                                 <p><span dangerouslySetInnerHTML={{__html: body2}} /></p>

@@ -1,0 +1,29 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxCollectionAction {
+    @include clearfix;
+    clear: both;
+
+    p {
+        margin: 12px 0 20px;
+    }
+
+    .xxTitle {
+        margin-top: -5px;
+    }
+}
+
+.xxCollectionAction-buttons {
+    @include clearfix;
+
+    .xxButton {
+        float: left;
+        width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+
+        + .xxButton {
+            float: right;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

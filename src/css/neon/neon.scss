@@ -1,0 +1,115 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Based on http://sass-guidelin.es/#the-7-1-pattern
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@charset 'UTF-8';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// http://chir.ag/projects/name-that-color/
+
+// Primary
+$colour-mine-shaft: #3d3d3d;
+$colour-gray-chateau: #95a1ab;
+$colour-dusty-gray: #989898;
+$colour-silver-chalice: #aaa;
+
+$colour-burning-orange: #ff6b31;
+
+// Secondary
+$colour-gallery: #ebebeb;
+$colour-alabaster: #f7f7f7;
+$colour-alto: #ddd;
+$colour-regent-gray: #84929d;
+
+// Tertiary
+$colour-pacific-blue: #0094ce;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Neon
+$curious-blue: #26a9e0;
+$flamingo: #f16122;
+$gray: #888;
+$silver-chalice: #aaa;
+$athens-gray: #edecee;
+$white: #fff;
+$blackish: #121212;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Overrides
+$family-sans-serif: 'Roboto', sans-serif;
+
+$blue: $colour-pacific-blue;
+$orange: $colour-burning-orange;
+
+$grey-darker: $colour-mine-shaft;
+$grey-dark: $colour-dusty-gray;
+$grey: $silver-chalice;
+$grey-light: $colour-alto;
+$grey-lighter: $colour-gallery;
+
+$primary: $blue;
+$red: $orange;
+$background: $colour-alabaster;
+$black: $blackish;
+
+@import '../../../node_modules/bulma/sass/utilities/utilities';
+@import '../../../node_modules/bulma/sass/utilities/variables';
+@import '../../../node_modules/bulma/sass/base/base';
+@import '../../../node_modules/bulma/sass/elements/elements';
+@import '../../../node_modules/bulma/sass/components/components';
+@import '../../../node_modules/bulma/sass/layout/layout';
+
+// 1. Configuration and helpers
+@import
+    'abstracts/variables',
+    'abstracts/functions',
+    'abstracts/mixins',
+    'abstracts/animation';
+
+// 2. Vendors
+// @import
+    // 'vendor/normalize';
+
+// 3. Base stuff
+@import
+    'base/base',
+    'base/fonts',
+    'base/typography',
+    'base/helpers';
+
+// 4. Layout-related sections
+// @import
+    // 'layout/header',
+    // 'layout/footer';
+
+// 5. Components
+@import
+    'components/video',
+    'components/videos',
+    'components/slides',
+    'components/infobox',
+    'components/checkbox',
+    'components/modal',
+    'components/section',
+    'components/brick',
+    'components/banner',
+    'components/toggle',
+    'components/icon',
+    'components/level',
+    'components/box',
+    'components/wondertabs',
+    'components/image',
+    'components/tooltip',
+    'components/pre',
+    'components/radioinputform'
+;
+
+// 6. Page-specific styles
+// @import
+    // 'pages/home';
+
+// 7. Themes
+// @import
+    // 'themes/default';

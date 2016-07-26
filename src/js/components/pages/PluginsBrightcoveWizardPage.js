@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import Secured from '../../mixins/Secured';
@@ -12,15 +11,12 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var PluginsBrightcoveWizardPage = React.createClass({
-    mixins: [Secured], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+    mixins: [Secured],
     render: function() {
         return (
             <div>
                 <Helmet
-                    title={T.get('copy.plugins.types.brightcove.title')}
+                    title={UTILS.buildPageTitle(T.get('copy.plugins.types.brightcove.title'))}
                 />
                 <SiteHeader />
                 <section className="wonderland-section section">

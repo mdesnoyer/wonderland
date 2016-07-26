@@ -1,8 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
-import {Link} from 'react-router';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import SignInForm from '../forms/SignInForm';
@@ -15,40 +13,34 @@ import SESSION from '../../modules/session';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignInPage = React.createClass({
-	// mixins: [ReactDebugMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
     componentWillMount: function() {
-        if (SESSION.active()) {
-            // Play nice, transport the user to the internal home
-            // page (dashboard)
-            this.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+        var self = this;
+        if (SESSION.isUser()) {
+            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
     },
     render: function() {
+        var self = this;
         return (
-            <div>
+            <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signIn.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="columns is-desktop">
-                        <div className="column is-half is-offset-one-quarter">
-                            <h1 className="title is-2">{T.get('copy.signIn.heading')}</h1>
-                            <div className="content">
-                                {/*<p>{T.get('copy.signIn.body')}</p>*/}
-                            </div>
-                            <SignInForm showLegend={false} />
-                            {/*<Link activeClassName="wonderland-active" to="/forgot/">{T.get('reset.forgot')}</Link>*/}
-                        </div>
-                    </div>
+                <section className="xxMainForm">
+                    <h1 className="xxTitle">{T.get('action.signIn')}</h1>
+                    <SignInForm />
                 </section>
                 <SiteFooter />
-            </div>
+            </main>
         );
     }
+
+
+
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

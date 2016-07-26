@@ -1,21 +1,20 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message';
+import SESSION from '../../modules/session';
 import E from '../../modules/errors';
 import ModalParent from '../core/ModalParent';
 import BrightcoveAccountIdModal from '../modals/BrightcoveAccountIdModal';
 import BrightcoveClientIdModal from '../modals/BrightcoveClientIdModal';
-import BrightcoveClientSecretModal from '../modals/BrightcoveClientSecretModal';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var IntegrationsForm = React.createClass({
-	mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin],
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -56,7 +55,7 @@ var IntegrationsForm = React.createClass({
         var self = this,
             buttonClassName,
             inputClassName,
-            messageNeeded = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : '';
+            messageNeededComponent = self.state.isError ? <Message header={T.get('copy.plugins.types.' + self.state.provider + '.title') + ' ' + T.get('error')} body={E.getErrors()} flavour="danger" /> : false;
         ;
         if (self.state.formMode === 'loading') {
             buttonClassName = 'button is-primary is-disabled is-loading';
@@ -71,9 +70,9 @@ var IntegrationsForm = React.createClass({
             return (
                 <div className="box wonderland-box">
                     <form onSubmit={self.handleSubmit}>
-                        {messageNeeded}
+                        {messageNeededComponent}
                         <fieldset>
-                            <legend className="subtitle is-5">{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
+                            <legend>{T.get('copy.plugins.types.brightcove.form.heading')}</legend>
 
                             <label htmlFor="publisherId">{T.get('copy.integration.bc.accountId')}</label>
                             <p className="control is-grouped">
@@ -151,9 +150,9 @@ var IntegrationsForm = React.createClass({
             // TODO: Ooyala form
             return false;
         default:
-            messageNeeded = 'Unknown Provider: ' + self.state.provider;
+            messageNeededComponent = 'Unknown Provider: ' + self.state.provider;
             return (
-                <Message body={messageNeeded} flavour="danger" />
+                <Message body={messageNeededComponent} flavour="danger" />
             );
         }
     },
@@ -196,13 +195,11 @@ var IntegrationsForm = React.createClass({
             formMode = self.state.formMode
         ;
         e.preventDefault();
-            self.setState({
-                formMode: 'loading'
-            },
-                function() {
-                    self.sendIntegrationData(formMode);
-                }
-            );
+        self.setState({
+            formMode: 'loading'
+        }, function() {
+            self.sendIntegrationData(formMode);
+        });
     },
     sendIntegrationData: function(formMode) {
         var self = this,

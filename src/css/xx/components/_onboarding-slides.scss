@@ -1,0 +1,124 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxOnboardingSlides-prev,
+.xxOnboardingSlides-next {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 59px;
+    margin-left: $page-max-width / -2 + 10px;
+    text-indent: $indent-off-screen;
+    transform: translateY(-50%);
+    transform-origin: 50% 50%;
+
+    @media (max-width: $page-max-width + $gutter-width * 2) {
+        left: $gutter-width + 10px;
+        margin-left: 0;
+    }
+
+    @include arrow(W, 12px, 1px, $secondary-color);
+
+    &:hover {
+        &::before,
+        &::after {
+            background: $accent-color;
+        }
+    }
+}
+
+.xxOnboardingSlides-next {
+    right: 50%;
+    left: auto;
+    margin-right: $page-max-width / -2 + 10px;
+    margin-left: 0;
+
+    @media (max-width: $page-max-width + $gutter-width * 2) {
+        right: $gutter-width + 10px;
+        margin-right: 0;
+    }
+
+    &::before,
+    &::after {
+        transform-origin: 100% 50%;
+    }
+}
+
+.xxOnboardingSlide {
+    @include clearfix;
+
+    position: absolute;
+    visibility: hidden;
+    top: 50%;
+    right: $gutter-width;
+    left: $gutter-width;
+    max-width: $page-max-width;
+    min-width: $page-min-width;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity .25s ease-in-out, visibility 0s .25s;
+
+    &.is-active {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .25s ease-in-out .25s, visibility 0s .25s;
+    }
+
+    & .xxSubtitle {
+        display: none;
+    }
+}
+
+.xxOnboardingSlide-content {
+    float: right;
+    width: 44%;
+    margin-right: 10%;
+}
+
+.xxOnboardingSlide-description {
+    margin-bottom: 10px;
+}
+
+.xxOnboardingSlide-anchor {
+    border-bottom: 1px solid $alto;
+    padding-bottom: 7px;
+    color: $secondary-color;
+}
+
+.xxOnboardingSlide-imageContainer {
+    position: absolute;
+    top: 50%;
+    width: 35%;
+    margin-left: 7.5%;
+    transform: translateY(-50%);
+}
+
+.xxOnboardingSlide-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+
+    .xxOnboardingSlide--import & {
+        width: 85%;
+    }
+
+    .xxOnboardingSlide--machine-vision & {
+        width: 91%;
+    }
+
+    .xxOnboardingSlide--valence & {
+        width: 94%;
+    }
+
+    .xxOnboardingSlide--best & {
+        width: 80%;
+    }
+
+    .xxOnboardingSlide--processing & {
+        width: 93%;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

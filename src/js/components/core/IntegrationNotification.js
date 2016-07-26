@@ -2,7 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
-
+import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -10,18 +10,21 @@ var IntegrationNotification = React.createClass({
     render: function() {
         var self = this;
         return (
-            <nav className="wonderland-video__header navbar columns box">
-                <div className="navbar-left column is-9">
-                    <div className="navbar-item">
-                        <h6 className="subtitle is-6">
+            <nav className="wonderland-video__header level columns box">
+                <div className="level-left column is-9">
+                    <div>
+                        <p>
                             {T.get('copy.integration.manualswitch')}
-                        </h6>
+                        </p>
                     </div>
                 </div>
-                <div className="navbar-right column is-3">
-                    <div className="navbar-item has-text-centered">
+                <div>
+                    <div>
                         <a className="wonderland-toggle button is-medium" onClick={self.toggleOpen}>
-                            <i className="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                            <Icon
+                                type="chevron-circle-down"
+                                nowrap={true}
+                            />
                         </a>
                     </div>
                 </div>
@@ -30,8 +33,8 @@ var IntegrationNotification = React.createClass({
     },
     toggleOpen: function() {
         var self = this;
-        if (self.props.toggeleOpen) {
-            self.props.toggeleOpen();
+        if (self.props.toggleOpen) {
+            self.props.toggleOpen();
         }
     }
 })

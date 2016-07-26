@@ -1,0 +1,122 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$page-overlay-padding-top: $header-height + $header-margin-bottom + 21px;
+$page-overlay-padding-bottom: 60px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPageOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    min-height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    padding: 0 $gutter-width 0 0;
+    background: $white;
+}
+
+.xxPageOverlay-content {
+    max-width: $page-max-width / 2;
+    padding: $page-overlay-padding-top $gutter-width $page-overlay-padding-bottom $gutter-width * 2;
+
+    &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50%;
+        z-index: $zindex-header + 1;
+        height: $page-overlay-padding-top;
+        background: linear-gradient(
+            to bottom,
+            rgba(255,255,255,1) 5%,
+            rgba(255,255,255,.75) 60%,
+            rgba(255,255,255,0) 100%
+        );
+        pointer-events: none;
+
+        @media (max-width: $page-min-width + $gutter-width * 2) {
+            display: none; // only until responsive code exists
+        }
+    }
+
+    &.xxFadeInOutSequential-enter {
+        position: absolute;
+        top: 0;
+        right: $gutter-width;
+        left: 0;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.transitionPageOverlay {
+    &-enter  {
+        &.xxOverlay {
+            background: transparent;
+        }
+
+        .xxOverlay-close {
+            opacity: 0;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: -50%;
+        }
+    }
+
+    &-enter-active {
+        &.xxOverlay {
+            background: rgba($bg-color, 0.95);
+            transition: background $default-transition-speed * 1.5 $default-transition-easing;
+        }
+
+        .xxOverlay-close {
+            opacity: 1;
+            transition: opacity $default-transition-speed $default-transition-easing $default-transition-speed;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: 0;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
+        }
+    }
+
+    &-leave  {
+        &.xxOverlay {
+            background: rgba($bg-color, 0.95);
+        }
+
+        .xxOverlay-close {
+            opacity: 1;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: 0;
+        }
+    }
+
+    &-leave-active {
+        &.xxOverlay {
+            background: transparent;
+            transition: background $default-transition-speed * 1.5 $default-transition-easing $default-transition-speed / 2;
+        }
+
+        .xxOverlay-close {
+            opacity: 0;
+            transition: opacity $default-transition-speed $default-transition-easing;
+        }
+
+        .xxPageOverlay,
+        .xxPageOverlay-content::before {
+            right: -50%;
+            transition: right $default-transition-speed * 2 $default-transition-easing;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

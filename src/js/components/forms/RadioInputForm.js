@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
 import IntegrationsForm from '../forms/IntegrationsForm';
@@ -21,10 +20,7 @@ import SnippetGrabber from '../core/SnippetGrabber';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var RadioInputForm = React.createClass({
-    mixins: [AjaxMixin, Account], // ReactDebugMixin
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+    mixins: [AjaxMixin, Account],
     propTypes: {
         isActive: React.PropTypes.bool,
         formMode: React.PropTypes.string,
@@ -72,7 +68,7 @@ var RadioInputForm = React.createClass({
                 case 'uses_bc_smart_player':
                     question =  "Do you use the legacy Smart player?";
                     modalToShow = <BrightcoveSmartPlayerModal />;
-                    snippetGrabber = <SnippetGrabber isActive={self.state.isActive}/>;
+                    snippetGrabber = <SnippetGrabber isActive={self.state.isActive} />;
                     usesGallery = '';
                     break;
                 case 'uses_bc_videojs_player':
@@ -85,22 +81,22 @@ var RadioInputForm = React.createClass({
         return (
             <div className={"box" + usesGallery}>
                 <div className="columns container">
-                    <span className="column is-5">
-                    <h1 className="subtitle is-6">{question}</h1>
+                    <span className="column">
+                    <h1>{question}</h1>
                     </span>
-                    <div className="column is-4 has-text-centered radio-buttons">
+                    <div className="column radio-buttons">
                         <RadioGroup className={'columns' + formModeDisable} name={self.props.radioType} selectedValue={self.state.isActive} onChange={self.handleChange}>
                           {Radio => (
                             <div>
                              <label>{T.get('copy.integration.bc.yes')}</label>
-                              <Radio className={formModeDisable + ' column is-1'} value={true} />
+                              <Radio className={formModeDisable + ' column'} value={true} />
                               <label>{T.get('copy.integration.bc.no')}</label>
-                              <Radio className={formModeDisable + ' column is-1'} value={false} />
+                              <Radio className={formModeDisable + ' column'} value={false} />
                             </div>
                           )}
                         </RadioGroup>
                     </div>
-                    <span className="column is-3 radio-modal-button has-text-right">
+                    <span className="column radio-modal-button has-text-right">
                         <a className="button is-medium" data-target="brightcove-writeToken" onClick={self.openModal}>?</a>
                     </span>
                     <ModalParent isModalActive={(self.state.activeModal)} handleToggleModal={self.closeModal}>
@@ -117,7 +113,7 @@ var RadioInputForm = React.createClass({
             isActive: e
         },  function(){
                 self.PUT('integrations/brightcove', {
-                    data:{
+                    data: {
                         integration_id: self.state.integrationId,
                         account_id: self.state.accountId,
                         [self.props.radioType]: e

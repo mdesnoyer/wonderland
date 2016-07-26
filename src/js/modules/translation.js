@@ -18,55 +18,79 @@ const _DEFAULT_LOCALE = 'en-US',
             lastName: 'Last Name',
             accountId: 'Account ID',
             email: 'Email',
-            password: 'Password',
-            confirm: 'Confirm',
             title: 'Title',
             company: 'Company',
             error: 'Error',
             success: 'Success',
-            signUp: 'Sign Up',
-            signIn: 'Sign In',
             confirmAccount: 'Confirm Account',
-            confirmedAccount: 'Congratulations; your account has been confirmed! Please sign in to continue.',
+            confirmedAccount: 'Your account is confirmed. Please sign in to continue.',
             configure: 'Configure',
             add: 'Add',
             cancel: 'Cancel',
             save: 'Save',
             update: 'Update',
-            
+            url: 'URL',
+            copy: 'Copy',
+            back: 'Back',
+            send: 'Send',
+            change: 'Change',
+            delete: 'Delete',
+            share: 'Share',
+            apply: 'Apply',
+            upload: 'Upload',
+            tryItOut: 'Try it Out',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
+            'action.signIn': 'Sign In',
+            'action.signUp': 'Sign Up',
+            'action.signOut': 'Sign Out',
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
+            'action.set': 'Set',
+            'action.resetPassword': 'Reset Password',
+            'action.shortenURL': 'Shorten URL',
+            'action.close': 'Close',
+            'action.analyze': 'Analyze',
 
             rememberMe: 'Remember',
 
-            'copy.signIn.title': 'Sign In',
-            'copy.signIn.heading': 'Welcome to Neon! Sign In Below',
-            'copy.signIn.body': 'Sign in using the form below.',
+            'copy.xOfY': '@x of @y',
+            'copy.pageN': 'Page @n',
 
-            'copy.signUp.title': 'Sign Up for Neon',
-            'copy.signUp.heading': 'Sign Up for Neon',
-            'copy.signUp.body': 'Start making high-performance video thumbnails now! Create an account, below.',
+            'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
+
+            'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
+            'copy.videoContent.delete.title': 'Delete Collection',
+            'copy.videoContent.email': 'Get an email summary of your image results for this video.',
+            'copy.videoContent.email.success': 'Your image results email is on the way! If you don\u2019t receive an email from us soon, check your spam box in case our email got misplaced.',
+            'copy.videoContent.share': 'Copy the link below to share this collection directly with your friends and peers',
+
+            'copy.signIn.title': 'Sign In',
+            'copy.signIn.heading': 'Welcome to Neon',
+            'copy.signIn.body': 'Sign in below.',
+
+            'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
+            'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
+
+            'copy.signUp.success.title': 'Thank you for signing up for a Neon account',
+            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, let us know.',
 
             'copy.signOut.title': 'Sign Out',
-            // TODO - needs @username to work
-            // 'copy.signOut.heading': '@username you are now signed out. Thanks for using Neon.',
-            'copy.signOut.heading': 'You are now signed out. Thanks for using Neon.',
-            'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign in</a> again!',
+            'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
+            'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign In</a> again!',
 
             'copy.videosPage.title': 'Video Library',
             'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
             'copy.videosPage.heading': 'Video Library',
-            // 'copy.videosPage.body': '@username, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
-            'copy.videosPage.body': 'Welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.videosPage.body': '@displayName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
             'copy.analyzeVideo.body': '',
-            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your video upload limit. Increase your limit on the <a href="@link">Billing page</a> in just a few clicks.',
+            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',
@@ -74,17 +98,34 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.notFound.title': 'Page Not Found (Error 404)',
             'copy.notFound.heading': 'Page Not Found (Error 404)',
-            'copy.notFound.body.1': 'Whoops! The page you are looking for doesn&rsquo;t exist.',
+            'copy.notFound.body.1': 'Oops! We can\u2019t find what you\u2019re looking for. Please try again.',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.forgotPassword.title': 'Forgot Password',
-            'copy.forgotPassword.heading': 'Forgot Password',
-            'copy.forgotPassword.body': 'Please enter your email address below to start the password reset process.',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
+            'copy.lift.units': '@lift Lift',
 
-            'copy.resetPassword.title': 'Reset Password',
-            'copy.resetPassword.heading': 'Reset Password',
-            'copy.resetPassword.body': 'TODO', // TODO
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            'copy.passwordPlaceholder': "••••••••••",
+            'copy.passwordInitial': 'Password',
+            'copy.passwordConfirm': 'Confirm Password',
+            'copy.passwordVerify': 'Verify Password',
+
+            'copy.userForgot.title': 'Forgot Password',
+            'copy.userForgot.heading': 'Forgot Password',
+            'copy.userForgot.body': 'Enter your email address below to receive an email with password reset instructions.',
+
+            'copy.userForgot.success': 'If your email address is in our system, you should receive an email with password reset instructions shortly. Password reset links expire in an hour, so keep an eye on your inbox and spam folders.',
+            'copy.userForgot.error': 'TODO',
+
+            'copy.userReset.title': 'Reset Password',
+            'copy.userReset.heading': 'Reset Password',
+            'copy.userReset.body': 'Enter your new password.',
+
+            'copy.userReset.success': 'Your password has been reset. <a href="@link">Sign In</a>.',
+            'copy.userReset.error': 'Something went wrong. <a href="@link">Try again</a>?',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.billing.title': 'Billing',
             'copy.billing.heading': 'Billing',
@@ -123,21 +164,26 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.accountSettings.title': 'Account Settings',
             'copy.accountSettings.heading': 'Account Settings',
             'copy.accountSettings.body': '',
+            'copy.account.heading': 'Hi, @displayName',
+            'copy.account.body' : 'Enjoying your Neon Demo, but want to analyze more content more quickly? <a href="@link">Get More!</a>',
+            'copy.heading.changePassword' : 'Change Password',
+            'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link.',
 
             'copy.pendingAccount.title': 'Pending Neon Account',
             'copy.pendingAccount.heading': 'Pending Neon Account',
             'copy.pendingAccount.body.1': 'Almost there! Get ready to start creating higher performing video thumbnails.',
-            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your Spam folders.',
+            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
             'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
 
             'copy.confirmAccount.title': 'Confirm Account',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
             'copy.confirmAccount.body.2': 'Please look for an email that will verify you account. It should arrive very quickly. If not, please <a href="@link" rel="external">contact us</a>.',
+            'copy.confirmAccount.body': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails! Please look for an email that will verify you account. It should arrive very quickly. If not, please contact us.',
 
             'copy.accountConfirmed.title': 'Account Confirmed',
             'copy.accountConfirmed.heading': 'Account Confirmed',
-            'copy.accountConfirmed.body': 'Thank you for creating an account at Neon. Your account is now confirmed, and you may start using your Demo account by signing in now. You are now ready to make your video thumbnails more clickable!',
+            'copy.accountConfirmed.body': 'Thanks for creating a Neon account. Your account is confirmed, so you can start your free demo by signing in now.',
 
             'copy.plugins.title': 'Plugins',
             'copy.plugins.heading': 'Plugins',
@@ -160,71 +206,114 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.plugins.types.brightcove.form.readToken': 'Read Token (with URL Access)',
             'copy.plugins.types.brightcove.form.writeToken': 'Write Token',
 
-            'copy.analyzeVideoPanel.panel.1': 'Find a video and paste the URL link Into the Analyze bar',
-            'copy.analyzeVideoPanel.panel.2': 'Click on the Analyze Button',
-            'copy.analyzeVideoPanel.panel.3': 'View the Results',
-
-            //integrations
-            //brightcove
             'copy.integration.bc.accountId': 'Account ID',
             'copy.integration.bc.clientId': 'Client ID',
             'copy.integration.bc.clientSecret': 'Client Secret',
             'copy.integration.bc.yes': 'Yes',
             'copy.integration.bc.no': 'No',
             'copy.integration.bc.playerNotFound': 'No Players Found',
-            'copy.integration.manualswitch': "You are currently use a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.",
-
-            'copy.type': 'Type',
-            'copy.dimensions': 'Dimensions',
-            'copy.thumbnailId': 'Thumbnail ID',
-            'copy.created' : 'Created',
-            'copy.updated' : 'Updated',
-            'copy.frame' : 'Frame',
-            'copy.ctr' : '<abbr title="Click Through Rate">CTR</abbr>',
+            'copy.integration.manualswitch': 'You are currently using a plugin or integration to ingest videos. To manually upload videos, click the button to the right. Doing this will not alter your integration or plugin.',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
+            'copy.pending': 'Pending',
 
             returnSignIn: 'Return to Sign In',
-            //password reset
-            'reset.forgot':  'Forgot your password?',
-            'reset.passwordReset': 'Password Reset',
-            'reset.sendReset': 'Send Reset Instructions',
-            'reset.message': 'Please Check your Email for Reset Instructions',
-            //analyze page
-            'analyzeVideo.videoUrl': 'Video URL',
-            'analyzeVideo.optionalTitle': 'Optional Title',
-            'analyzeVideo.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
-            //navigation bar
 
+            // Analyze page
+            'upload.videoUrl': 'Video URL',
+            'upload.submit': 'Submit',
+            'upload.optionalTitle': 'Optional Title',
+            'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+            // Timers 
+            'timer.loading' : 'loading...', 
+            'timer.close' : 'almost...',
+ 
             // Labels
             'label.username' : 'Username',
             'label.accessLevel' : 'Access Level',
             'label.created' : 'Created',
             'label.updated' : 'Updated',
-            'label.firstName' : 'First Name',
-            'label.lastName' : 'Last Name',
+            'label.firstName' : 'Your First Name',
+            'label.lastName' : 'Your Last Name',
+            'label.lastName.optional' : 'Your Last Name (Optional)',
             'label.title' : 'Title',
-            'label.defaultThumbnailId' : 'Default Thumbnail ID',
+            'label.defaultThumbnailId' : 'Default Image ID',
             'label.defaultSizeWidthXHeight' : 'Default Size (width x height)',
             'label.trackerAccountId' : 'Tracker Account ID',
             'label.stagingTrackerAccountId' : 'Staging Tracker Account ID',
             'label.accountName' : 'Account Name',
             'label.accountId' : 'Account ID',
             'label.avatar' : 'Avatar',
+            'label.yourName' : 'Your Name',
+            'label.yourEmail' : 'Your Email',
+            'label.emailMe' : 'Email Me',
+            'label.message' : 'Message',
+            'label.ourLocation' : 'Our Location',
+            'label.gender': 'Gender',
+            'label.age': 'Age',
+            'label.newPassword' : 'New Password',
             // Created
             // Updated
-            'label.servingEnabled' : 'Serving Enabled',
             'label.accountEmail' : 'Account Email',
+            'label.lift' : 'Lift',
+            'label.filters': 'Filters',
+            'label.submit': 'Submit',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            'copy.thumbnails.high': 'Hide Low Scores',
+            'copy.thumbnails.low': 'View Low Scores',
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.bestThumbnail': 'Best Thumbnail',
+            'copy.defaultImage': 'Default Image',
+            'copy.topNeonImage': 'Top Neon Image',
+            'copy.valenceFeatures': 'Valence Features',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.contactUs.success' : 'Thanks! We’ll be in touch shortly.',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.urlShortener.title': 'URL Shortener',
+            'copy.urlShortener.heading': 'URL Shortener',
+            'copy.urlShortener.body': 'Enter a Neon URL below to receive a shortened URL',
+            'copy.urlShortener.messageHeading': 'URL Shortener Error',
+            'copy.urlShortener.messageBody': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.cookies.title': 'Cookies Report',
+            'copy.cookies.heading': 'Cookies Report',
+            'copy.cookies.body': 'Listed below is the visibility status of each cookie',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            'copy.share.facebook': '@neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.twitter': '@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
+            'copy.share.linkedin': 'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.description': 'Copy the link below to share this collection. Anyone with this link can view your images for this video.',
+            'copy.share.title': 'Neon Labs',
+            'copy.share.main': 'Share Your Images',
+            'copy.share.label': 'COLLECTION LINK',
+            'copy.share.url.copied': 'Copied!',
+            // todo, if this is osx then ⌘ else ctrl.
+            'copy.share.url.selected': 'Press ⌘-C to copy',
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
             'nav.home': 'Home',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
+            'nav.account': 'Account',
+            'nav.forgotUser': 'Forgot Password?',
             'nav.signOut': 'Sign Out',
             'nav.videoLibrary': 'Video Library',
             'nav.analyze': 'Analyze',
-            'nav.contact': 'Contact',
+            'nav.contact': 'Contact Us',
             'nav.support': 'Support',
             'nav.plugins': 'Plugins',
             'nav.api': 'API Documentation',
@@ -232,28 +321,43 @@ const _DEFAULT_LOCALE = 'en-US',
             'nav.billing': 'Billing',
             'nav.accountSettings': 'Account Settings',
             'nav.userSettings': 'User Settings',
+            'nav.learnMore': 'Learn More',
+            'nav.settings' : 'Settings',
+
+            // Titles
+
+            'title.home': 'Go to the Home Page',
 
             // Error messages
 
-            'warning.noMoreVideosHeader': 'Videos Warning',
+            'error.invalidAccountId': 'Naughty naughty. This Account Id is not valid. Please try again.',
+
+            'warning.noMoreVideosHeader': 'Videos',
             'warning.noMoreVideosBody': 'There are no more Videos to show. Please go back using the Previous button below.',
 
             'error.unknown': 'An unknown error has occurred.',
-            'error.passwordFormatInvalid': 'Passwords must be at least eight characters and include one number and one special character.',
-            'error.passwordMatchInvalid': 'Password does not match the confirm password.',
-            'error.unableToSignIn': 'Unable to Sign In',
+            'error.passwordFormatInvalid': 'Passwords must be at least 8 characters long.',
+            'error.passwordMatchInvalid': 'Passwords don\u2019t match',
+            'error.invalidEmail': 'Please enter a valid email address.',
+            'error.unableToSendEmail': 'Oops! We\u2019re having trouble with your email at the moment. Please try again.',
+            'error.contactUs': 'Oops! We can’t receive your message right now. Please try again or email us at ask@neon-lab.com.',
+            'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
+
+
+            'error.longVideo': 'Video too long! Please upload a video under 15 minutes long.',
+            'error.genericVideo': ' Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
+            'error.loginlessLimit': 'You\'ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
+            'error.unpaidAccountLimit': 'You\'ve hit your upload limit. Check out your options for increasing your limits on our <a href="@link1">pricing page</a> or <a href="@link2">get in touch</a> with us.',
+            'error.generic': 'Oops! Something went wrong. Please refresh the page or come back later.',
+            'error.401': 'Oops! We can\'t find what you\'re looking for. Please refresh the page or try again.',
+            'error.403': 'Oops! We can\'t find what you\'re looking for. Please refresh the page or try again.',
+            'error.404': 'Oops! We can\'t find what you\'re looking for. Please try again.',
+
             //copy + marketing
             'copy.processingTime': 'The processing time depends on the length of the video. It takes our computers about the same amount of time to watch a video as it takes you, so longer videos take a while.',
-            'copy.agreeTerms': 'I agree to Neon\u2019s <a href="@link">Terms and Conditions</a> of use.',
-
-            'copy.processingSlide.1': 'Thank you for submitting your video to Neon. We are now analyzing your video to find the most clickable thumbnails.',
-            'copy.processingSlide.2': 'Please be patient - it takes about the same amount of time for Neon to analyze your video as it takes to watch it.',
-            'copy.processingSlide.3': 'Did you know that Neon is the leader in video analytics using our patented deep neural network technology to identify the highest-performing video thumbnails?',
-            // TODO 'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results. You will also get an email from Neon when your thumbnails are ready.',
-            'copy.processingSlide.4': 'When Neon is done analyzing your video, your thumbnails will appear below. If you don&rsquo;t want to wait, you can safely exit this page without interrupting the process and come back later to view the results.',
+            'copy.agreeTerms': 'By using this service, you agree to our <a href="@link" target="_blank">Terms of Service</a>.',
 
             'copy.copyright': String.fromCharCode(169) + ' 2016 @name All rights reserved.',
-            'copy.newsFlashMessage': 'Note: Please be aware this is a V2 DEMO only and should not be shared yet. Thank you. Neon.',
             'copy.PreviousLabel': 'Previous',
             'copy.NextLabel': 'Next',
             //image processing stages
@@ -261,7 +365,60 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.processingState': 'Processing',
             'copy.processedState': 'OK',
             'copy.servingState': 'OK',
-            'copy.failedState': 'Failed'
+            'copy.failedState': 'Failed',
+
+            // Home page
+            'copy.homePage.title': 'Find your most clickable images',
+            'copy.homePage.description': 'Upload a video and Neon will show you the<br/>thumbnails that will give you the most clicks.',
+            'copy.homePage.signedUp': 'Already Signed Up?',
+
+            // Onboarding
+            'copy.onboarding.uploadHelpText': 'Analyze a video at any time by clicking here',
+            'copy.onboarding.uploadPageTitle': 'Analyze a Video',
+            'copy.onboarding.uploadErrorText': "Oops! We weren't able to analyze that video. Try again with a different video.",
+            'copy.onboarding.slides.import.title': 'Import',
+            'copy.onboarding.slides.import.subtitle': 'Great! We’ve got it.',
+            'copy.onboarding.slides.import.description': 'We have your video and we’ve started processing it. This may take a few minutes. Stick around to learn about Neon or enter your email address below so we can let you know when your images are ready.',
+            'copy.onboarding.slides.machineVision.title': 'Machine Vision',
+            'copy.onboarding.slides.machineVision.subtitle': 'Think Fast',
+            'copy.onboarding.slides.machineVision.description': 'Our brains decide in under 100 milliseconds which images we want to click on. Neon’s deep learning software knows which images and video thumbnails evoke emotion and drive engagement for specific audiences, devices, and platforms.',
+            'copy.onboarding.slides.seedLibrary.title': 'Seed Library',
+            'copy.onboarding.slides.seedLibrary.subtitle': 'What’s happening to my video right now?',
+            'copy.onboarding.slides.seedLibrary.description': 'Your video is being analyzed by our deep learning software to identify the most appealing frames. Your frames are then compared to frames in our image library to predict engagement.',
+            'copy.onboarding.slides.valence.title': 'Valence',
+            'copy.onboarding.slides.valence.subtitle': '1,000+ Image Features',
+            'copy.onboarding.slides.valence.description': 'We analyze each image or video frame for over 1,000 unique features and assign a NeonScore. Some of these features include eye gaze, instability, color, texture, and flowing water.',
+            'copy.onboarding.slides.best.title': 'Best Performer',
+            'copy.onboarding.slides.best.subtitle': 'What is a NeonScore?',
+            'copy.onboarding.slides.best.description': 'The NeonScore is a number from 0-99 that represents how clickable your image is. The higher the score, the more engaging the image. Engaging images are more likely to get clicked online.',
+            'copy.onboarding.slides.processing.title': 'Processing',
+            'copy.onboarding.slides.processing.subtitle': 'Images for Your Audience',
+            'copy.onboarding.slides.processing.description': 'Neon finds the best images for a general audience by default, but can also surface the most engaging images for the specific audience you’re targeting with your content.',
+            'copy.onboarding.link.learnMore': 'Learn More',
+            'copy.onboarding.resultsEmail.error': "I'm sorry, we weren't able to complete your request at this time",
+            'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
+            'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
+
+            // Videos
+            'copy.videos.upload.filter.title': 'Filters',
+            'copy.videos.upload.filter.description': 'Get images for a specific audience.',
+            'copy.videos.topSelects': 'Top Neon Selects',
+            'copy.videos.lowest': 'Lowest Neon Scores',
+
+            // Mobile
+            'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
+            'copy.mobile.warning.description': 'Check out the full site at app.neon-lab.com.',
+
+            // Tutorial
+            'copy.tutorial.checkItOut': 'Check it Out',
+            'copy.tutorial.skip': 'Skip Tutorial',
+            'copy.tutorial.ready.title': 'Your images are ready!',
+            'copy.tutorial.neonscore.title': 'What is a NeonScore?',
+            'copy.tutorial.neonscore.description': 'The NeonScore is a number from 0 to 99 that measures the predicted emotional impact of an image. The higher the number, the more clicks, likes, and shares.',
+            'copy.tutorial.lift.title': 'What is lift?',
+            'copy.tutorial.lift.description': 'Lift is the percentage increase in clicks, likes, and shares your video would get if you used the images with the highest NeonScores as your video thumbnails.',
+            'copy.tutorial.upload.title': 'Upload your own videos.',
+            'copy.tutorial.upload.description': 'If you like what you see, you can upload your own videos to find your most clickable images. Just click on the orange button on the next screen and enter a video URL.',
         },
         'en-GB': {
         },
@@ -276,8 +433,9 @@ const _DEFAULT_LOCALE = 'en-US',
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function _getLocale() {
-    var locale = navigator.language.split('-');
-    locale = locale[1] ? `${locale[0]}-${locale[1].toUpperCase()}` : navigator.language;
+    var language = navigator.language || navigator.userLanguage;
+    var locale = language.split('-');
+    locale = locale[1] ? `${locale[0]}-${locale[1].toUpperCase()}` : language;
     return locale;
 }
 

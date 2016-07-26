@@ -1,128 +1,96 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-// import ReactDebugMixin from 'react-debug-mixin';
-import {Link} from 'react-router';
 import T from '../../modules/translation';
+import SESSION from '../../modules/session';
 import UTILS from '../../modules/utils';
-import Icon from '../core/Icon';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SiteNavigation = React.createClass({
-	// mixins: [ReactDebugMixin],
-    getDefaultProps: function() {
-        var self = this;
-        return {
-            isSignedIn: false,
-            displayName: ''
-        }
-    },
     getInitialState: function() {
         var self = this;
         return {
-            isSignedIn: self.props.isSignedIn
+            sidebarContent: self.props.sidebarContent,
+            hasUser: false,
+            name: T.get('nav.account') // default to account just in case
         }
+    },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
+    componentWillMount: function() {
+        var self = this;
+        if (SESSION.active()) {
+            SESSION.user()
+                .then(function(user) {
+                    if (self._isMounted) {
+                        self.setState({
+                            hasUser: true,
+                            name: user.displayName
+                        });
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        if (self._isMounted) {
+            self.setState({
+                sidebarContent: nextProps.sidebarContent
+            });
+        }
+    },
+    handleClick: function(e) {
+        var self = this,
+            content = e.target.name
+        ;
+        e.preventDefault();
+        self.props.setSidebarContent(content);
     },
     render: function() {
         var self = this,
-            itemClass = '',
             items = {
-                logo: <a className="wonderland-navbar__logo" href="/" title="Go to the Home page"><img src="/img/logo-fff.svg" alt="Neon" title="Neon" /></a>,
-                contactPagePlain: <a href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
-                contactPageFancy: <a className="wonderland-navbar__text" href={UTILS.CONTACT_EXTERNAL_URL}>{T.get('nav.contact')}</a>,
-                termsPagePlain: <a href={UTILS.DRY_NAV.TERMS.URL}>{T.get('nav.terms')}</a>,
-                dashboard: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.DASHBOARD.URL}>Dashboard</Link>,
-                analyzeVideo: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/analyze/video/">{T.get('nav.analyze')}</Link>,
-                videos: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/videos/">{T.get('nav.videoLibrary')}</Link>,
-                signUp: <Link className="wonderland-navbar__button button is-danger" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNUP.URL}>{T.get('nav.signUp')}</Link>,
-                forgotPassword: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to="/account/forgot/">Forgot Password</Link>,
-                signIn: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SIGNIN.URL}>{T.get('nav.signIn')}</Link>,
-                signOut: <Link to={UTILS.DRY_NAV.SIGNOUT.URL}>{T.get('nav.signOut')}</Link>,
-                username: <em className="wonderland-navbar__text">{self.props.displayName}</em>,
-                billingPage: <Link to={UTILS.DRY_NAV.BILLING.URL} title={T.get('nav.billing')}>{T.get('nav.billing')}</Link>,
-                telemetryPage: <Link to={UTILS.DRY_NAV.TELEMETRY.URL} title={T.get('nav.telemetry')}>{T.get('nav.telemetry')}</Link>,
-                apiPage: <Link to={UTILS.DRY_NAV.API.URL} title={T.get('nav.api')}>{T.get('nav.api')}</Link>,
-                supportPagePlain: <Link to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
-                supportPageFancy: <Link className="wonderland-navbar__text" activeClassName="wonderland-active" to={UTILS.DRY_NAV.SUPPORT.URL} title={T.get('nav.support')}>{T.get('nav.support')}</Link>,
-                accountSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} title={T.get('nav.accountSettings')}>{T.get('nav.accountSettings')}</Link>,
-                userSettingsPage: <Link to={UTILS.DRY_NAV.SETTINGS_USER.URL} title={T.get('nav.userSettings')}>{T.get('nav.userSettings')}</Link>,
-                integrationsPage: <Link to={UTILS.DRY_NAV.PLUGINS.URL} title={T.get('nav.plugins')}>{T.get('nav.plugins')}</Link>,
-                avatar: <img className="wonderland-navbar__avatar" src={self.props.avatar} alt={self.props.displayName} title={self.props.displayName} />
+                learnMore: <a className="xxNav-anchor" href="#" name="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
+                contactPage: <a className="xxNav-anchor" href="#" name="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
+                signUp: <a className="xxNav-anchor" href="#" name="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
+                account: <a className="xxNav-anchor" href="#" name="account" onClick={self.handleClick}>{self.state.name}</a>
             },
-            accountSettings = <span>
-                                    <div className="wonderland-navbar__icon wonderland-navbar__icon--regular">
-                                        <Icon type="cog" />
-                                    </div>
-                                    <nav className="wonderland-navbar__subnav">
-                                        <ul className="box wonderland-box is-paddingless">
-                                            <li>{items.accountSettingsPage}</li>
-                                            <li>{items.billingPage}</li>
-                                            <li>{items.integrationsPage}</li>
-                                            <li>{items.telemetryPage}</li>
-                                            <li>{items.apiPage}</li>
-                                            <li>{items.supportPagePlain}</li>
-                                        </ul>
-                                    </nav>
-                                </span>,
-            userSettings = <span>
-                                {items.avatar}
-                                    <nav className="wonderland-navbar__subnav">
-                                        <ul className="box wonderland-box is-paddingless">
-                                            <li>{items.userSettingsPage}</li>
-                                            <li>{items.signOut}</li>
-                                        </ul>
-                                    </nav>
-                            </span>,
-            constructedNav = [],
-            navClass = 'wonderland-navbar wonderland-navbar-' + self.props.pos + ' navbar-' + self.props.pos;
+            constructedNav = []
         ;
-        if (self.state.isSignedIn) {
-            // Signed In
-            if (self.props.pos === 'left') {
-                constructedNav.push(items.logo);
-                constructedNav.push(items.videos);
-            }
-            if (self.props.pos === 'right') {
-                constructedNav.push(items.username);
-                constructedNav.push(userSettings);
-                constructedNav.push(accountSettings);
-                constructedNav.push(items.contactPageFancy);
-            }
+        constructedNav.push(items.learnMore);
+        constructedNav.push(items.contactPage);
+        if (self.state.hasUser) {
+            constructedNav.push(items.account);
         }
         else {
-            // Signed Out
-            if (self.props.pos === 'left') {
-                constructedNav.push(items.logo);
-                // constructedNav.push(items.forgotPassword);
-            }
-            if (self.props.pos === 'right') {
-                constructedNav.push(items.contactPageFancy);
-                constructedNav.push(items.supportPageFancy);
-                constructedNav.push(items.signIn);
-                constructedNav.push(items.signUp);
-            }
-        }
-        if (self.props.pos === 'bottom') {
-            constructedNav.push(items.contactPagePlain);
-            constructedNav.push(items.supportPagePlain);
-            constructedNav.push(items.termsPagePlain);
-        }
-        if (self.props.pos === 'bottom') {
-            itemClass = 'wonderland-navbar-bottom__item';
-        }
-        else {
-            itemClass = 'wonderland-navbar__item navbar-item';
+            constructedNav.push(items.signUp);
         }
         return (
-            <div className={navClass}>
-                {
-                    constructedNav.map(function(navbarItem, i) {
-                        return (
-                            <div key={i} className={itemClass}>{navbarItem}</div>
-                        );
-                    })
-                }
+            <div>
+                <ul>
+                    {
+                        constructedNav.map(function(levelItem, i) {
+                            if (levelItem.props['name'] === self.state.sidebarContent) {
+                                return (
+                                    <li key={i} className="xxNav-item is-active">{levelItem}</li>
+                                );
+                            }
+                            return (
+                                <li key={i} className="xxNav-item">{levelItem}</li>
+                            );
+                        })
+                    }
+                </ul>
             </div>
         );
     }
@@ -133,5 +101,3 @@ var SiteNavigation = React.createClass({
 export default SiteNavigation;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-

@@ -1,0 +1,84 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+body {
+    overflow-x: auto;
+    overflow-y: scroll;
+    position: relative;
+    min-width: $page-min-width + $gutter-width * 2;
+    min-height: 100vh;
+    background: $bg-color;
+    color: $base-color;
+    font: $base-type;
+
+    @include breakpoint-mobile {
+        min-width: 0;
+        font: $base-mobile-type;
+    }
+}
+
+a {
+    color: $secondary-color;
+    text-decoration: none;
+    transition: color $default-transition;
+
+    &:hover {
+        color: $accent-color;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.u-inheritColor {
+    color: inherit !important;
+}
+
+.u-secondaryAnchor {
+    color: $secondary-color !important;
+
+    &:hover {
+        color: $accent-color !important;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+blockquote {
+    background-color: $bg-secondary-color;
+    border-left: 5px solid $bg-tertiary-color;
+    padding: 1.5em;
+    margin-bottom: $header-margin-bottom;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.simple-list {
+    list-style-type: disc;
+    margin-bottom: $collection-margin-bottom;
+}
+
+.simple-ol-list {
+    padding-left: 0;
+    margin-left: 2.14em;
+    margin-bottom: $collection-margin-bottom;
+    list-style-type: decimal;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxTable {
+    background: $white;
+    color: $secondary-color;
+    margin-bottom: $collection-margin-bottom;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.xxTable td, 
+.xxTable th {
+    border: 1px solid $bg-tertiary-color;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
