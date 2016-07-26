@@ -30,8 +30,7 @@ var VideosPage = React.createClass({
             displayName: '',
             showTutorial: false,
             windowWidth: window.outerWidth,
-            sidebarContent: null,
-            isMaxLimit: false
+            sidebarContent: null
         };
     },
     openSignUp: function(e) {
@@ -104,7 +103,6 @@ var VideosPage = React.createClass({
                 <Videos
                     isMobile={isMobile} 
                     openSignUp={this.openSignUp}
-                    isMaxLimit={this.state.isMaxLimit}
                 />
                 {
                     showTutorial ? (

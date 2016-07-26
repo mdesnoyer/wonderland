@@ -62,7 +62,20 @@ var Videos = React.createClass({
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
-        else if (self.props.isMaxLimit) {
+        else if (self.state.isMaxLimit) {
+            // alertMessage = (
+            //         <section className="xxOverlay">
+            //             <div className="xxOverlay-content">
+            //                 <h2 className="xxTitle">You have Hit your limit for the day!</h2>
+            //                 <button
+            //                     className="xxButton xxButton--highlight"
+            //                     type="button"
+            //                     onClick={this.props.onClick}
+            //                 >View Results</button>
+            //             </div>
+            //         </section>
+            // )
+            // 
             alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
@@ -75,7 +88,7 @@ var Videos = React.createClass({
                 {
                     self.state.isLoading ? (
                         <div className="xxOverlay" >
-                        <div className="xxVideoloadingSpinner"></div>
+                            <div className="xxVideoloadingSpinner"></div>
                         </div>
                     ) : null
                 }
@@ -84,7 +97,7 @@ var Videos = React.createClass({
                                 postHookAnalysis={null}
                                 isVideoResults={true}
                                 videoCountServed={self.state.videoCountServed}
-                                isMaxLimit={self.props.isMaxLimit}
+                                isMaxLimit={self.state.isMaxLimit}
                             />
                             <VideosResults
                                 videos={self.state.videos}
@@ -209,6 +222,7 @@ var Videos = React.createClass({
         var self = this;
         self.GET('limits')
             .then(function(res) {
+                debugger
                 self.doFindMaxVideos(res.video_posts, res.max_video_posts)
             })
             .catch(function(err) {
