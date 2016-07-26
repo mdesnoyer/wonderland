@@ -10,6 +10,7 @@ import T from '../../modules/translation';
 import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
+import Account from '../../mixins/Account';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,7 +18,7 @@ var Videos = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin, Account], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -34,13 +35,22 @@ var Videos = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
+        debugger
+        // self.getAccount()
+        //     .then(function(res){
+        //         debugger
+        //     })
         self.GET('limits')
             .then(function(res) {
-                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
+                debugger
+                console.log(res)
+                // self.doFindMaxVideos(res.video_posts, res.max_video_posts)
             })
             .catch(function(err) {
-                self.context.router.push('*')
+                debugger
+                // self.context.router.push('*')
             })
+            debugger
     },
     componentDidMount: function() {
         var self = this;
@@ -148,6 +158,7 @@ var Videos = React.createClass({
     },
     doFindMaxVideos: function(count, max) {
         var self = this;
+        debugger
         if (count === max) {
             self.setState({
                 isMaxLimit: true

@@ -117,6 +117,7 @@ var AJAXModule = {
             },
             promise: promise
         };
+        // debugger
         return ret;
     },
     doGet: function(url, options) {
