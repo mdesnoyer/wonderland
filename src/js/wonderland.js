@@ -80,6 +80,7 @@ render((
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/" component={VideoPageGuest} />
+        <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/index.html" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/index.html" component={VideoPageGuest} />
 
