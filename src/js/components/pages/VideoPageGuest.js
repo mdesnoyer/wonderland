@@ -44,6 +44,9 @@ var VideoPageGuest = React.createClass({
         } else {
             shareToken = self.props.params.shareToken;
         }
+        while (shareToken.indexOf('__dot') > -1) {
+            shareToken = shareToken.replace('__dot', '.');
+        }
 
         return (
             <main className="xxPage">
