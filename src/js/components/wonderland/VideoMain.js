@@ -177,10 +177,12 @@ var VideoMain = React.createClass({
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
                 var liftHash = {}
+                // The minimum lift possible mathematically is -100%
                 var maxLift = -1.0;  
                 for (let l of res.lift) {
                     liftHash[l.thumbnail_id] = l.lift; 
-                    if (l.lift > maxLift) { 
+                    if (l.lift > maxLift && 
+                        res.baseline_thumbnail_id !== l.thumbnail_id) { 
                         maxLift = l.lift; 
                     }
                 }

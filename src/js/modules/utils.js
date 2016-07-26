@@ -411,7 +411,13 @@ var UTILS = {
     },
 
     makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
-        return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
+        var hundreds = rawNumber * 100;
+        // Make sure we don't get -0%
+        const minDiff = 5/Math.pow(10, decimalPlaces+1);
+        if (hundreds < 0 && hundreds > -minDiff) {
+            hundreds += minDiff;
+        }
+        return hundreds.toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },
     generateId: function() {
         var id = shortid.generate(),
