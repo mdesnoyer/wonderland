@@ -33,29 +33,11 @@ var Videos = React.createClass({
             previousPseudoPageUrl: '' // used to hold the Page before
         }
     },
-    componentWillMount: function() {
-        var self = this;
-        debugger
-        // self.getAccount()
-        //     .then(function(res){
-        //         debugger
-        //     })
-        self.GET('limits')
-            .then(function(res) {
-                debugger
-                console.log(res)
-                // self.doFindMaxVideos(res.video_posts, res.max_video_posts)
-            })
-            .catch(function(err) {
-                debugger
-                // self.context.router.push('*')
-            })
-            debugger
-    },
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
         self.doVideoSearch(1);
+        self.doLimitsSearch();
     },
     componentWillUnmount: function() {
         var self = this;
@@ -80,7 +62,7 @@ var Videos = React.createClass({
             prevPageAPICall = self.state.previousPseudoPageUrl;
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
-        else if (self.state.isMaxLimit) {
+        else if (self.props.isMaxLimit) {
             alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
         }
         else {
@@ -93,14 +75,14 @@ var Videos = React.createClass({
                 {
                     self.state.isLoading ? (
                         <div className="xxVideoloadingSpinner"></div>
-                    ) : (
-                        <div>
+                    ) : null
+                }
                             <VideoUploadForm
                                 postHookSearch={self.doVideoSearch}
                                 postHookAnalysis={null}
                                 isVideoResults={true}
                                 videoCountServed={self.state.videoCountServed}
-                                isMaxLimit={self.state.isMaxLimit}
+                                isMaxLimit={self.props.isMaxLimit}
                             />
                             <VideosResults
                                 videos={self.state.videos}
@@ -128,16 +110,6 @@ var Videos = React.createClass({
                                 type="dark"
                                 getContent={self.getTooltipText}
                             />
-                            <ReactTooltip
-                                id="staticTooltip"
-                                class="xxHoverTooltip"
-                                effect="solid"
-                                place="left"
-                                type="light"
-                            />
-                        </div>
-                    )
-                }
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
@@ -155,15 +127,6 @@ var Videos = React.createClass({
         this.refs.settableTooltip.setState({
             placeholder: T.get(textKey)
         });
-    },
-    doFindMaxVideos: function(count, max) {
-        var self = this;
-        debugger
-        if (count === max) {
-            self.setState({
-                isMaxLimit: true
-            })
-        }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;
@@ -239,6 +202,24 @@ var Videos = React.createClass({
                 });
             })
         ;
+    },
+    doLimitsSearch: function() {
+        var self = this;
+        self.GET('limits')
+            .then(function(res) {
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
+            })
+            .catch(function(err) {
+                self.context.router.push('*')
+            })        
+    },
+    doFindMaxVideos: function(count, max) {
+        var self = this;
+        if (count === max) {
+            self.setState({
+                isMaxLimit: true
+            })
+        }
     },
 });
 

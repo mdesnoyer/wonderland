@@ -27,6 +27,7 @@ var AjaxMixin = {
         return ret.promise;
     },
     cancelApiCall: function (target) {
+        console.log(target);
         this.apiCalls.map(function (apiCall) {
             if (target === apiCall.promise) {
                 apiCall.cancel();

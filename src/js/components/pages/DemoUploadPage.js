@@ -38,7 +38,6 @@ export default React.createClass({
         else {
             self.GET('limits')
                 .then(function(res) {
-                    debugger
                     self.setState({ maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE })
                 })
                 .catch(function(err) {

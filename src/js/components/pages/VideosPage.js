@@ -30,7 +30,8 @@ var VideosPage = React.createClass({
             displayName: '',
             showTutorial: false,
             windowWidth: window.outerWidth,
-            sidebarContent: null
+            sidebarContent: null,
+            isMaxLimit: false
         };
     },
     openSignUp: function(e) {
@@ -100,8 +101,11 @@ var VideosPage = React.createClass({
                     ]}
                 />
                 <SiteHeader sidebarContent={sidebarContent}/>
-                <Videos isMobile={isMobile} openSignUp={this.openSignUp} openLearnMore={this.openLearnMore} />
-
+                <Videos
+                    isMobile={isMobile} 
+                    openSignUp={this.openSignUp}
+                    isMaxLimit={this.state.isMaxLimit}
+                />
                 {
                     showTutorial ? (
                         <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />
