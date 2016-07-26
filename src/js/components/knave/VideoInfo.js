@@ -72,6 +72,9 @@ var VideoInfo = React.createClass({
             countdown;
         return (
             <div>
+                <button data-for="staticTooltip" data-tip="buts" data-event="click">
+                   Wat
+                </button>
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
@@ -100,6 +103,8 @@ var VideoInfo = React.createClass({
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"
+                                data-event="hover"
+                                data-for="staticTooltip"
                                 data-tip={T.get('tooltip.refilter.button')}
                                 onClick={self.props.handleMenuChange} >
                             </a>
