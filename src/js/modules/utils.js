@@ -16,6 +16,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     EXAMPLE_EMAIL = 'example@email.com',
+    NA_STRING = '?',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
