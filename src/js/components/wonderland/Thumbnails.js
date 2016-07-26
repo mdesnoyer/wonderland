@@ -23,12 +23,14 @@ var Thumbnails = React.createClass({
     },
     getInitialState: function() {
         var self = this;
+        var curSelection = self.props.demographicThumbnails[self.props.selectedDemographic];
         return {
-            thumbnails: UTILS.fixThumbnails(self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails, true),
+            thumbnails: UTILS.fixThumbnails(curSelection.thumbnails, true),
             selectedItem: 0,
             isThumbnailOverlayActive: false,
             isPageOverlayActive: false,
-            badThumbs: UTILS.fixThumbnails(self.props.demographicThumbnails[self.props.selectedDemographic].bad_thumbnails || [], false),
+            badThumbs: self.organizeBadThumbs(curSelection.bad_thumbnails,
+                                              curSelection.thumbnails),
             showLowScores: false
         };
     },
@@ -48,16 +50,17 @@ var Thumbnails = React.createClass({
     },
     componentWillReceiveProps: function(nextProps, nextState){
         var self = this;
-        if (nextProps.selectedDemographic !== self.state.selectedDemographic) {
+        if (nextProps.selectedDemographic !== self.props.selectedDemographic) {
             if (nextProps.demographicThumbnails &&
               nextProps.demographicThumbnails[nextProps.selectedDemographic]) {  
-                var goods = UTILS.fixThumbnails(
-                    nextProps.demographicThumbnails[nextProps.selectedDemographic].thumbnails, true); 
-                var bads = UTILS.fixThumbnails(
-                    nextProps.demographicThumbnails[nextProps.selectedDemographic].bad_thumbnails || [], false); 
+                var nextSelection = nextProps.demographicThumbnails[nextProps.selectedDemographic];
+                var goods = UTILS.fixThumbnails(nextSelection.thumbnails,
+                                                true); 
+                var bads = self.organizeBadThumbs(
+                    nextSelection.bad_thumbnails,
+                    nextSelection.thumbnails);
                 self.setState({ thumbnails: goods, 
-                                badThumbs: bads, 
-                                selectedDemographic: nextProps.selectedDemographic }); 
+                                badThumbs: bads }); 
             }
         }
     },
@@ -166,7 +169,7 @@ var Thumbnails = React.createClass({
                     {
                         self.state.showLowScores || self.props.isMobile ? (
                             <ThumbnailCollection
-                                thumbnails={UTILS.fixThumbnails(self.state.badThumbs, false)}
+                                thumbnails={self.state.badThumbs}
                                 type="lowScores"
                                 isMobile={self.props.isMobile}
                             />
@@ -182,6 +185,23 @@ var Thumbnails = React.createClass({
             showLowScores: !self.state.showLowScores
         });
         TRACKING.sendEvent(self, arguments, self.state.showLowScores);
+    },
+    organizeBadThumbs: function(allBadThumbs, goodThumbs) {
+        // Filters a list of bad thumbnails so that we only have a the
+        // set which is worse than the worst good thumb. Also, sorts
+        // the bad thumbs by score.
+        var self = this;
+        var goodScores = goodThumbs.filter(
+            x => x.type === 'neon' || x.type ==='customupload').map(
+                x => x.neon_score);
+        var filteredThumbs = allBadThumbs || [];
+        if (goodScores != undefined && goodScores.length > 0) {
+            var minGoodScore = Math.min.apply(Math, goodScores);
+            filteredThumbs = filteredThumbs.filter(
+                x => x.neon_score < minGoodScore);
+        }
+        var v = UTILS.fixThumbnails(filteredThumbs, false);
+        return v;
     }
 });
 
