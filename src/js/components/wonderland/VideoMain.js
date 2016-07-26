@@ -28,6 +28,7 @@ var VideoMain = React.createClass({
             isHidden: false,
             liftArray: [],
             displayThumbLift: 0,
+            maxLift: 0,
             selectedDemographic: self.props.selectedDemographic || 0 // default to not showing demographic thumbs (support old videos)
         }
     },
@@ -155,15 +156,25 @@ var VideoMain = React.createClass({
         ;
     },
     sendForLiftData: function(thumbSet) {
-        var default_thumbnail = thumbSet.thumbnails.find(x => x.type == 'default'); 
+        var default_thumbnail = thumbSet.thumbnails.find(
+            x => x.type === 'default'); 
+        var interesting_thumbnails = thumbSet.thumbnails.filter(
+            x => x.type === 'neon' || x.type === 'customupload');
         if (!default_thumbnail) { 
-            default_thumbnail = thumbSet.thumbnails[0]; 
-        } 
+            // Pick the interesting thumb with the lowest score
+            default_thumbnail = interesting_thumbnails.filter(
+                x => x.neon_score > 0).sort(
+                    (a,b) => a.neon_score - b.neon_score)[0];
+            if (!default_thumbnail) {
+                return;
+            }
+        }
         var self = this,
             options = {
                 data: {
                     base_id: default_thumbnail.thumbnail_id,
-                    thumbnail_ids: self.parseLiftThumbnails(thumbSet.thumbnails),
+                    thumbnail_ids: self.parseLiftThumbnails(
+                        interesting_thumbnails),
                     gender : thumbSet.gender,
                     age : thumbSet.age
                 }
@@ -177,25 +188,27 @@ var VideoMain = React.createClass({
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
                 var liftHash = {}
-                var maxLift = 0;  
+                // The minimum lift possible mathematically is -100%
+                var maxLift = -1.0;  
                 for (let l of res.lift) {
                     liftHash[l.thumbnail_id] = l.lift; 
-                    if (l.lift > maxLift) { 
+                    if (l.lift > maxLift && 
+                        res.baseline_thumbnail_id !== l.thumbnail_id) { 
                         maxLift = l.lift; 
                     }
                 }
                 for (let t of thumbSet.thumbnails) {
                     t.lift = liftHash[t.thumbnail_id]; 
                 }
-                if (maxLift) { 
-                    var dThumbSet = self.props.demographicThumbnails; 
-                    dThumbSet[self.props.selectedDemographic].thumbnails = thumbSet.thumbnails;
-                    self.setState({
-                        displayThumbLift: maxLift,
-                        liftArray: res.lift,
-                        demographicThumbnails: dThumbSet 
-                    });
-                } 
+
+                var dThumbSet = self.props.demographicThumbnails; 
+                dThumbSet[self.props.selectedDemographic].thumbnails = thumbSet.thumbnails;
+                self.setState({
+                    displayThumbLift: maxLift,
+                    maxLift: maxLift,
+                    liftArray: res.lift,
+                    demographicThumbnails: dThumbSet 
+                });
             })
             .catch(function(err) {
                 self.setState({
@@ -241,7 +254,8 @@ var VideoMain = React.createClass({
         }
         else {
             return (
-                <article className="xxCollection xxCollection--video">
+                    <article className="xxCollection xxCollection--video"
+                             onMouseLeave={self.displayMaxLift}>
                     <div className="xxCollection-content">
                         <VideoContent
                             title={self.props.title}
@@ -289,6 +303,12 @@ var VideoMain = React.createClass({
                 displayThumbLift: lift 
             });
         }
+    },
+    displayMaxLift: function() {
+        var self = this;
+        self.setState({
+            displayThumbLift: self.state.maxLift
+        });
     }
 });
 

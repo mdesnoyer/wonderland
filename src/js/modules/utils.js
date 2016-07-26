@@ -328,6 +328,7 @@ var UTILS = {
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
+    TOOLTIP_DELAY_MILLIS: 500,
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -412,7 +413,13 @@ var UTILS = {
     },
 
     makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
-        return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
+        var hundreds = rawNumber * 100;
+        // Make sure we don't get -0%
+        const minDiff = 5/Math.pow(10, decimalPlaces+1);
+        if (hundreds < 0 && hundreds > -minDiff) {
+            hundreds += minDiff;
+        }
+        return hundreds.toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -423,10 +430,6 @@ var UTILS = {
     isValidDate: function(d) {
         var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
         return !isNaN(Date.parse(niceDate));
-    },
-    buildTooltipClass: function(existingClass, position) {
-        // https://github.com/chinchang/hint.css
-        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;

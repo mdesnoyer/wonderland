@@ -79,37 +79,54 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                <VideoUploadForm
-                    postHookSearch={self.doVideoSearch}
-                    postHookAnalysis={null}
-                    isVideoResults={true}
-                    videoCountServed={self.state.videoCountServed}
-                    isMaxLimit={self.state.isMaxLimit}
-                />
-                 {alertMessage}
-                <VideosResults
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPageAPICall={prevPageAPICall}
-                    nextPageAPICall={self.state.nextPageAPICall}
-                    currentPage={self.state.currentPage}
-                    isLoading={self.state.isLoading}
-                    isMobile={self.props.isMobile}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                    openSignUp={self.props.openSignUp}
-                    isMaxLimit={self.state.isMaxLimit}
-                    setTooltipText={self.setTooltipText}
-                />
-                <ReactTooltip
-                    ref="tooltip"
-                    event="click"
-                    eventOff="mouseout"
-                    effect="solid"
-                    place="bottom"
-                    delayHide={1000}
-                    getContent={self.getTooltipText}
-                />
+                {alertMessage}
+                {
+                    self.state.isLoading ? (
+                        <div className="xxVideoloadingSpinner"></div>
+                    ) : (
+                        <div>
+                            <VideoUploadForm
+                                postHookSearch={self.doVideoSearch}
+                                postHookAnalysis={null}
+                                isVideoResults={true}
+                                videoCountServed={self.state.videoCountServed}
+                                isMaxLimit={self.state.isMaxLimit}
+                            />
+                            <VideosResults
+                                videos={self.state.videos}
+                                handleNewSearch={self.handleNewSearch}
+                                prevPageAPICall={prevPageAPICall}
+                                nextPageAPICall={self.state.nextPageAPICall}
+                                currentPage={self.state.currentPage}
+                                isLoading={self.state.isLoading}
+                                isMobile={self.props.isMobile}
+                                videoCountServed={self.state.videoCountServed}
+                                videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                                openSignUp={self.props.openSignUp}
+                                isMaxLimit={self.state.isMaxLimit}
+                                setTooltipText={self.setTooltipText}
+                            />
+                            <ReactTooltip
+                                id="settableTooltip"
+                                ref="settableTooltip"
+                                event="click"
+                                eventOff="mouseout"
+                                effect="solid"
+                                place="bottom"
+                                delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
+                                type="dark"
+                                getContent={self.getTooltipText}
+                            />
+                            <ReactTooltip
+                                id="staticTooltip"
+                                class="xxHoverTooltip"
+                                effect="solid"
+                                place="left"
+                                type="light"
+                            />
+                        </div>
+                    )
+                }
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
@@ -121,10 +138,10 @@ var Videos = React.createClass({
         );
     },
     getTooltipText: function() {
-        return this.refs.tooltip.state.placeholder;
+        return this.refs.settableTooltip.state.placeholder;
     },
     setTooltipText: function(textKey) {
-        this.refs.tooltip.setState({
+        this.refs.settableTooltip.setState({
             placeholder: T.get(textKey)
         });
     },
@@ -178,7 +195,6 @@ var Videos = React.createClass({
                             prevPageAPICall: '',
                             nextPageAPICall: ''
                         });
-                        self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
                     }
                     else {
                         self.setState({
