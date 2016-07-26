@@ -42,9 +42,14 @@ git push origin --delete branchname
 - Site should build on `staging` - please check Staging site for new changes.
 - Post note in `#wonderland` Slack channel along with note that `development` has been pushed to `staging`.
 
-## Development -> Production
+## Staging -> Production
 
-- Similar to above but you want to go `development` -> `production`
+As above, BUT:
+
+- Start a [new PR](https://github.com/neon-lab/wonderland/compare/production...staging).
+- Set the title to `staging -> production`.
+- - Site should build on `production` - please check Staging site for new changes.
+- Post note in `#wonderland` Slack channel along with note that `staging` has been pushed to `production`.
 
 ## Production (Hot Fixes)
 
