@@ -12,7 +12,7 @@ var SupportTab3 = React.createClass({
         return (
             <section className="xxText">
                 <h1 className="xxCollection-title">Overview</h1>
-                <p>If we have not yet created a plugin for your video and web platform, then you can always interface directly with our APIs. To successfully interface with our <a href="http://api.docs.neon-lab.com" rel="external">APIs</a>, there are three major integration points that need to be wired up:</p>
+                <p>Neon Enterprise customers can integrate directly using our APIs in order to get automatic processing and serving, realtime A/B testing, and performance analytics. To successfully interface with our <a href="http://api.docs.neon-lab.com" rel="external">APIs</a>, there are three major integration points that need to be wired up:</p>
                 <ol className="simple-ol-list">
                     <li>Video Ingestion</li>
                     <li>Image Serving</li>
