@@ -17,8 +17,7 @@ var Account = React.createClass({
     getInitialState: function() {
         return {
             displayName: '',
-            username: '',
-            isPaidUser: false
+            username: ''
         }
     },
     componentWillMount: function() {
@@ -32,18 +31,6 @@ var Account = React.createClass({
             })
             .catch(function(err) {
                 console.error(err);
-            })
-        ;
-        self.GET('billing/account')
-            .then(function (res) {
-                self.setState({
-                    isPaidUser: true
-                });
-            })
-            .catch(function (err) {
-                self.setState({
-                    isPaidUser: false
-                });
             })
         ;
     },
@@ -72,19 +59,16 @@ var Account = React.createClass({
                     <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('action.signOut')}</button>
                 </div>
                 {
-                    // (!self.state.isPaidUser) ? '' : (
-                        <section className="xxSection">
-                            <h2 className="xxTitle">{T.get('nav.settings')}</h2>
-                            <a href="/settings/user/">{T.get('nav.userSettings')}</a><br></br>
-                            {/*
-                            <a href="/billing/">{T.get('nav.billing')}</a><br></br>
-                            <a href="/plugins/">{T.get('nav.plugins')}</a><br></br>
-                            <a href="/telemetry/">{T.get('nav.telemetry')}</a><br></br>
-                            */}
-                            <a href="/support/">{T.get('nav.support')}</a><br></br>
-                            <a href="http://api.docs.neon-lab.com/">{T.get('nav.api')}</a>
-                        </section>
-                    // )
+                    <section className="xxSection">
+                        <h2 className="xxTitle">{T.get('nav.settings')}</h2>
+                        <a href="/settings/user/">{T.get('nav.userSettings')}</a><br></br>
+                        {/*
+                        <a href="/plugins/">{T.get('nav.plugins')}</a><br></br>
+                        <a href="/telemetry/">{T.get('nav.telemetry')}</a><br></br>
+                        */}
+                        <a href="/support/">{T.get('nav.support')}</a><br></br>
+                        <a href="http://api.docs.neon-lab.com/">{T.get('nav.api')}</a>
+                    </section>
                 }
                 <section className="xxSection">
                     <h2 className="xxTitle">{T.get('copy.heading.changePassword')}</h2>
