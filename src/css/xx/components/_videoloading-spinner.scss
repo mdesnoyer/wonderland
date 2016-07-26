@@ -6,6 +6,7 @@ $onboarding-text-padding: 18px;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxVideoloadingSpinner {
+	background: white
 	@media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
 	    right: $upload-button-offset + floor($upload-button-size / 2);
 	    margin-right: 0;
