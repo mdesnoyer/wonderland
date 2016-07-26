@@ -48,7 +48,7 @@ As above, BUT:
 
 - Start a [new PR](https://github.com/neon-lab/wonderland/compare/production...staging).
 - Set the title to `staging -> production`.
-- - Site should build on `production` - please check Staging site for new changes.
+- Site should build on `production` - please check Staging site for new changes.
 - Post note in `#wonderland` Slack channel along with note that `staging` has been pushed to `production`.
 
 ## Production (Hot Fixes)
