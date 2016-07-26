@@ -19,19 +19,19 @@ var SupportPage = React.createClass({
         var self = this,
             tabs = [
                 {
-                    label: 'Overview',
+                    label: 'Neon Pro Guide',
                     body: <SupportTab1 />
                 },
+                // {
+                //     label: 'Brightcove Plugin Guide',
+                //     body: <SupportTab2 />
+                // },
                 {
-                    label: 'Brightcove Plugin Guide',
-                    body: <SupportTab2 />
-                },
-                {
-                    label: 'Custom Plugin Guide',
+                    label: 'Neon Enterprise Guide',
                     body: <SupportTab3 />
                 },
                 {
-                    label: 'API',
+                    label: 'API Docs',
                     body: <SupportTab4 />
                 }
             ]
