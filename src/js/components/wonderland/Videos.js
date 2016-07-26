@@ -116,7 +116,7 @@ var Videos = React.createClass({
                                 getContent={self.getTooltipText}
                             />
                         </div>
-                )
+                    )
                 }
                 {
                     self.props.isMobile ? (
