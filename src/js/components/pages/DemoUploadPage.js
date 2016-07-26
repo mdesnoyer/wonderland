@@ -122,11 +122,12 @@ export default React.createClass({
 
     render: function() {
         const { isAnalyzing, seconds, uploadText, sidebarContent } = this.state;
-        var countdown = null; 
+        var countdown = null;
+        var pageStyle = isAnalyzing ? "xxPage is-processing" : "xxPage";
 
         countdown = (<Countdown onFinish={this.onCountdownFinish} seconds={this.state.seconds} displayLoading={true} />); 
         return (
-            <main className="xxPage">
+            <main className={pageStyle}>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
                 />
