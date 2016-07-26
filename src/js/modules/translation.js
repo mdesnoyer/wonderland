@@ -53,6 +53,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.shortenURL': 'Shorten URL',
             'action.close': 'Close',
             'action.analyze': 'Analyze',
+            'action.textCopied': 'Copied!',
+            // todo, if this is osx then ⌘ else ctrl.
+            'action.textSelected': 'Press ⌘-C to copy',
+            'action.saveMyImages': 'Save Images',
 
             rememberMe: 'Remember',
 
@@ -300,9 +304,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.share.title': 'Neon Labs',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
-            'copy.share.url.copied': 'Copied!',
-            // todo, if this is osx then ⌘ else ctrl.
-            'copy.share.url.selected': 'Press ⌘-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
