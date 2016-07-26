@@ -273,7 +273,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
-            'copy.defaultImage': 'Current Image',
+            'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
             'copy.valenceFeatures': 'Valence Features',
 
