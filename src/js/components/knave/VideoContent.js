@@ -30,13 +30,14 @@ var VideoContent = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps) {
+        var self = this;
         if (nextProps.selectedDemographic !== undefined) {
-            this.setState({
+            self.setState({
                 selectedDemographic: nextProps.selectedDemographic
             });
         }
         if (nextProps.timeRemaining) {
-            this.setState({
+            self.setState({
                 timeRemaining: nextProps.timeRemaining,
             });
         }
