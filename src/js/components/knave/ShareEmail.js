@@ -105,8 +105,6 @@ var ShareEmail = React.createClass({
     handleSubmit: function(e) {
         var self = this,
             sortedThumbnails = UTILS.fixThumbnails(self.props.thumbnails, true),
-            smallRendition = RENDITIONS.findRendition(self.props.thumbnails, 140, 79),
-            largeRendition = RENDITIONS.findRendition(self.props.thumbnails, 425, 240),
             email = self.refs.email.value.trim(),
             re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         ;
@@ -121,11 +119,11 @@ var ShareEmail = React.createClass({
                         to_email_address: email,
                         template_slug: UTILS.RESULTS_MANDRILL_SLUG,
                         template_args: {
-                            'top_thumbnail': self.renditionCheck(largeRendition, sortedThumbnails[0]),
+                            'top_thumbnail': RENDITIONS.findRendition(sortedThumbnails[0], 425, 240),
                             'lift': UTILS.makePercentage(sortedThumbnails[0].lift, 0, true),
-                            'thumbnail_one': self.renditionCheck(smallRendition, sortedThumbnails[1]),
-                            'thumbnail_two': self.renditionCheck(smallRendition, sortedThumbnails[2]),
-                            'thumbnail_three': self.renditionCheck(smallRendition, sortedThumbnails[3]),
+                            'thumbnail_one': RENDITIONS.findRendition(sortedThumbnails[1], 140, 79),
+                            'thumbnail_two': RENDITIONS.findRendition(sortedThumbnails[2], 140, 79),
+                            'thumbnail_three': RENDITIONS.findRendition(sortedThumbnails[3], 140, 79),
                             'collection_url': self.state.collectionUrl
                         }
                     }
@@ -151,9 +149,6 @@ var ShareEmail = React.createClass({
                 errorMessage: T.get('error.invalidEmail')
             })
         }
-    },
-    renditionCheck: function(renditionNumber, thumbnail) {
-        return (renditionNumber === RENDITIONS.NO_RENDITION ? thumbnail.url : thumbnail.rendition[renditionNumber].url);
     }
 });
 
