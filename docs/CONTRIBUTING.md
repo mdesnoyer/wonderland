@@ -32,7 +32,7 @@ git push origin --delete branchname
 
 ## Development -> Staging
 
-- Start a [new PR])https://github.com/neon-lab/wonderland/compare/staging...development).
+- Start a [new PR](https://github.com/neon-lab/wonderland/compare/staging...development).
 - Set the title to `development -> staging`.
 - Check that the proposed changes are accurate (what has been merged to `development` since last time we pushed to `staging`).
 - Make a short note of these changes, e.g. `#1234 - Brief description of ticket / change / fix`.
@@ -42,9 +42,14 @@ git push origin --delete branchname
 - Site should build on `staging` - please check Staging site for new changes.
 - Post note in `#wonderland` Slack channel along with note that `development` has been pushed to `staging`.
 
-## Development -> Production
+## Staging -> Production
 
-- TODO
+As above, BUT:
+
+- Start a [new PR](https://github.com/neon-lab/wonderland/compare/production...staging).
+- Set the title to `staging -> production`.
+- Site should build on `production` - please check Staging site for new changes.
+- Post note in `#wonderland` Slack channel along with note that `staging` has been pushed to `production`.
 
 ## Production (Hot Fixes)
 

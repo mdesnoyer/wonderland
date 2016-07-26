@@ -16,6 +16,7 @@ shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 var UNKNOWN_STRING = '?',
     UNKNOWN_EMOJI = '',
     EXAMPLE_EMAIL = 'example@email.com',
+    NA_STRING = '?',
     // DO NOT RELY ON THESE MODELSCORES
     NEONSCORES = [
         { modelScore: 0.000, emoji: '❓' },
@@ -428,10 +429,6 @@ var UTILS = {
     isValidDate: function(d) {
         var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
         return !isNaN(Date.parse(niceDate));
-    },
-    buildTooltipClass: function(existingClass, position) {
-        // https://github.com/chinchang/hint.css
-        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;

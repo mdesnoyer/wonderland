@@ -52,7 +52,7 @@ export default React.createClass({
 
     getVideo: function(videoId) {
         return this.GET('videos/', { data: {
-            fields: ['state', 'estimated_time_remaining'],
+            fields: ['state', 'estimated_time_remaining', 'duration'],
             video_id: videoId,
         } });
     },
@@ -82,27 +82,46 @@ export default React.createClass({
     onCountdownFinish: function() {
         const { router } = this.context;
         const { videoId } = this.state;
-        var videoStatePollingWait = 5 * 1000; 
 
         this.getVideo(videoId).then(resp => {
             const video = resp.videos[0]
-            if (!this.state.seconds) { 
-                videoStatePollingWait = 10;
-                const estimatedTimeRemaining = video.estimated_time_remaining || null;
-                if (estimatedTimeRemaining) {
-                    estimatedTimeRemaining > this.state.maxVideoSize ? this.showError('time') : this.setState({ seconds: estimatedTimeRemaining });
+            const timeRemaining = video.estimated_time_remaining || null;
+            const duration = video.duration || null;
+
+            // Update state
+            if (duration !== null && duration > this.state.maxVideoSize) {
+                this.showError('time');
+            }
+
+            if (timeRemaining !== null) {
+                this.setState({seconds: timeRemaining});
+            }
+
+            // Determine when to poll next based on the estimated time
+            // remaining
+            var videoStatePollingWait = 5000;
+            if (timeRemaining !== null) {
+                if (timeRemaining < 30.0) {
+                    // It should be ready soon, so speed up the polling
+                    videoStatePollingWait = 3000;
+                } else {
+                    // It should be a while until the video is ready
+                    videoStatePollingWait = 10000;
                 }
             }
-            else { 
-                videoStatePollingWait = 5000;
-            }  
-            if (video.state === 'processed') {
+
+            if (video.state === 'processed' || video.state === 'serving') {
                 router.push({
                     pathname: UTILS.DRY_NAV.VIDEO_LIBRARY.URL,
                     state: { fromDemo: true },
                 });
             } else if (video.state === 'failed') {
-                this.showError();
+                var lengthRe = /Video length .* is too long/;
+                if (video.error && video.error.search(lengthRe) >= 0) {
+                    this.showError('time');
+                } else {
+                    this.showError();
+                }
             } else {
                 this.__videoProcessingTimer = setTimeout(() => {
                     this.onCountdownFinish();
@@ -122,11 +141,12 @@ export default React.createClass({
 
     render: function() {
         const { isAnalyzing, seconds, uploadText, sidebarContent } = this.state;
-        var countdown = null; 
+        var countdown = null;
+        var pageStyle = isAnalyzing ? "xxPage is-processing" : "xxPage";
 
         countdown = (<Countdown onFinish={this.onCountdownFinish} seconds={this.state.seconds} displayLoading={true} />); 
         return (
-            <main className="xxPage">
+            <main className={pageStyle}>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
                 />

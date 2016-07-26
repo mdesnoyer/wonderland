@@ -52,7 +52,7 @@ var ThumbnailCollection = React.createClass({
                             }
                             else {
                                 var src = RENDITIONS.findRendition(thumbnail, 
-                                                                   100, 100);
+                                                                   350, 350);
                                 return (
                                     <Thumbnail
                                         key={i}

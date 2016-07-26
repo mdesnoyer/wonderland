@@ -30,11 +30,14 @@ var VideoContent = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps) {
-        this.setState({
-            selectedDemographic: nextProps.selectedDemographic
-        });
+        var self = this;
+        if (nextProps.selectedDemographic !== undefined) {
+            self.setState({
+                selectedDemographic: nextProps.selectedDemographic
+            });
+        }
         if (nextProps.timeRemaining) {
-            this.setState({
+            self.setState({
                 timeRemaining: nextProps.timeRemaining,
             });
         }
@@ -109,7 +112,7 @@ var VideoContent = React.createClass({
             case 'email':
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
-                                thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
+                                thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
                                 videoId={self.props.videoId}
                             />;
