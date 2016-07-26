@@ -53,10 +53,11 @@ var VideoPageGuest = React.createClass({
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                     meta={[
-                        {property: "og:url", content:"http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html"},
+                        {property: "og:url", content: self.props.location},
                         {property: "og:type", content:"article"}, 
-                        {property: "og:title", content:"When Great Minds Don’t Think Alike"},
-                        {property: "og:description", content:"How much does culture influence creative thinking?"},
+                        {property: "og:title", content:"What's your Neon score?"},
+                        {property: "og:description", content:"Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image."},
+                        {property: "og:site_name", content:"Neon Lab"},
                         {property: "og:image", content:"http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"}
                     ]}
                 />
