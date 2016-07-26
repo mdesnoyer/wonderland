@@ -107,13 +107,19 @@ var Videos = React.createClass({
                                 setTooltipText={self.setTooltipText}
                             />
                             <ReactTooltip
-                                ref="tooltip"
+                                id="settableTooltip"
+                                ref="settableTooltip"
                                 event="click"
                                 eventOff="mouseout"
                                 effect="solid"
                                 place="bottom"
                                 delayHide={1000}
                                 getContent={self.getTooltipText}
+                            />
+                            <ReactTooltip
+                                id="staticTooltip"
+                                event="hover"
+                                place="left"
                             />
                         </div>
                     )
@@ -129,10 +135,10 @@ var Videos = React.createClass({
         );
     },
     getTooltipText: function() {
-        return this.refs.tooltip.state.placeholder;
+        return this.refs.settableTooltip.state.placeholder;
     },
     setTooltipText: function(textKey) {
-        this.refs.tooltip.setState({
+        this.refs.settableTooltip.setState({
             placeholder: T.get(textKey)
         });
     },

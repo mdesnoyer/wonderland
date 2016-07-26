@@ -102,6 +102,7 @@ var ShareLink = React.createClass({
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
+                        data-for="settableTooltip"
                         data-tip
                     >{T.get('copy')}</button>
                 </div>

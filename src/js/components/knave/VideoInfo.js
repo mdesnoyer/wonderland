@@ -100,6 +100,7 @@ var VideoInfo = React.createClass({
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"
+                                data-tip={T.get('tooltip.refilter.button')}
                                 onClick={self.props.handleMenuChange} >
                             </a>
                         );
@@ -108,7 +109,8 @@ var VideoInfo = React.createClass({
                 <div className="xxCollectionFilters">
                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     {(() => {
-                        if (self.state.demographicThumbnails) {
+                        // Show the demographic selector if they've run more than just the default.
+                        if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
                             return (
                                 <ReactSelect
                                     id="selectedDemographic"
@@ -120,9 +122,7 @@ var VideoInfo = React.createClass({
                                 />
                             );
                         } else {
-                            return (
-                                <span className="xxCollectionFilters-value">None</span>
-                            );
+                            return (<div/>);
                         }
                     })()}
                 </div>

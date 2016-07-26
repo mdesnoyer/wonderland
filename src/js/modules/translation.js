@@ -228,6 +228,9 @@ const _DEFAULT_LOCALE = 'en-US',
             // Timers 
             'timer.loading' : 'loading...', 
             'timer.close' : 'almost...',
+
+            // Tooltips
+            'tooltip.refilter.button': 'Refilter',
  
             // Labels
             'label.username' : 'Username',
