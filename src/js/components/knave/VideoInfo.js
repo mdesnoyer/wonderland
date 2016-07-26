@@ -127,7 +127,7 @@ var VideoInfo = React.createClass({
                                 />
                             );
                         } else {
-                            return (<div/>);
+                            return null;
                         }
                     })()}
                 </div>
