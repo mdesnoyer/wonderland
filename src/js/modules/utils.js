@@ -424,10 +424,6 @@ var UTILS = {
         var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
         return !isNaN(Date.parse(niceDate));
     },
-    buildTooltipClass: function(existingClass, position) {
-        // https://github.com/chinchang/hint.css
-        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
-    },
     dropboxUrlFilter: function(s) {
         var returnValue = s;
         returnValue = returnValue.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
