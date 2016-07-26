@@ -177,7 +177,7 @@ var VideoMain = React.createClass({
             .then(function(res) {
                 // We need to inject the lift into the Thumbnail object
                 var liftHash = {}
-                var maxLift = 0;  
+                var maxLift = -1.0;  
                 for (let l of res.lift) {
                     liftHash[l.thumbnail_id] = l.lift; 
                     if (l.lift > maxLift) { 
@@ -187,15 +187,14 @@ var VideoMain = React.createClass({
                 for (let t of thumbSet.thumbnails) {
                     t.lift = liftHash[t.thumbnail_id]; 
                 }
-                if (maxLift) { 
-                    var dThumbSet = self.props.demographicThumbnails; 
-                    dThumbSet[self.props.selectedDemographic].thumbnails = thumbSet.thumbnails;
-                    self.setState({
-                        displayThumbLift: maxLift,
-                        liftArray: res.lift,
-                        demographicThumbnails: dThumbSet 
-                    });
-                } 
+
+                var dThumbSet = self.props.demographicThumbnails; 
+                dThumbSet[self.props.selectedDemographic].thumbnails = thumbSet.thumbnails;
+                self.setState({
+                    displayThumbLift: maxLift,
+                    liftArray: res.lift,
+                    demographicThumbnails: dThumbSet 
+                });
             })
             .catch(function(err) {
                 self.setState({
