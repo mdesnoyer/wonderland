@@ -37,6 +37,14 @@ var VideoPageGuest = React.createClass({
     },
     render: function() {
         var self = this;
+
+        var shareToken;
+        if ('shareToken' in self.props.location.query) {
+            shareToken = self.props.location.query.shareToken;
+        } else {
+            shareToken = self.props.params.shareToken;
+        }
+
         return (
             <main className="xxPage">
                 <Helmet
@@ -46,7 +54,7 @@ var VideoPageGuest = React.createClass({
                 <VideoGuest
                     videoId={self.props.params.videoId}
                     accountId={self.props.params.accountId}
-                    shareToken={self.props.params.shareToken}
+                    shareToken={shareToken}
                 />
                 {
                     self.state.showTutorial ? (

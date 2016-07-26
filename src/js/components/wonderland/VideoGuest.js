@@ -42,6 +42,7 @@ var VideoGuest = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
+
         cookie.save(UTILS.COOKIES_KEY.viewShareKey, self.props.shareToken, {path: UTILS.COOKIE_DEFAULT_PATH});
         self.setState({
             mode: 'loading'

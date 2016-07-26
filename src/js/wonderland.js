@@ -80,6 +80,7 @@ render((
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/" component={VideoPageGuest} />
+        <Route path="/share/video/:videoId/account/:accountId/token/" component={VideoPageGuest} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         {/* <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} /> */}
