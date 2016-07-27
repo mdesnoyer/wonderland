@@ -28,9 +28,10 @@ var VideoPageGuest = React.createClass({
         {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
         {property: 'og:type', content: 'article'},
         {property: 'og:title', content: T.get('copy.share.contentTitle')},
-        {property: 'og:description', content: T.get('copy.share.facebook')}
+        {property: 'og:description', content: T.get('copy.share.facebook')},
         {property: 'twitter:card', content: 'summary_large_image'},
-        {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE}
+        {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
+        {property: 'twitter:description', content: T.get('copy.share.twitter')}
     ],
     getInitialState: function () {
         return {
