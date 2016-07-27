@@ -29,7 +29,6 @@ var HomePage = React.createClass({
     },
     openSignUp: function(e) {
         var self = this;
-        e.preventDefault();
         self.setState({
             sidebarContent: 'signUp',
         });

@@ -8,7 +8,7 @@ import TRACKING from '../../modules/tracking';
 import Account from '../../mixins/Account';
 import cookie from 'react-cookie';
 import VideoUploadOverlay from './VideoUploadOverlay';
-import DropDown from './DropDown';
+import OverLayMessage from './OverLayMessage'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -20,7 +20,8 @@ var VideoUploadForm = React.createClass({
     getDefaultProps: function() {
         return {
             isOnboarding: false,
-            videoCountServed: 0
+            videoCountServed: 0,
+            openMessage: false
         }
     },
     getInitialState: function() {
@@ -79,6 +80,7 @@ var VideoUploadForm = React.createClass({
                     }
                 })
                 .catch(function(err) {
+                    debugger
                     self.throwUploadError(err)
                 });    
         }
@@ -92,8 +94,8 @@ var VideoUploadForm = React.createClass({
                 break;
             case 402:
                 self.setState({
-                    isOpen: true,
-                    error: T.get('error.unpaidAccountLimit')
+                    openMessage: true,
+                    isOpen: false
                 });
                 break;
             default:
@@ -113,6 +115,13 @@ var VideoUploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
+                { self.state.openMessage ? (
+                        <OverLayMessage 
+                            message={T.get('error.unpaidAccountLimit')}
+                            messageFunction={self.props.openSignUp}
+                        />
+                    ) : null
+                }
                 <a
                     className="xxUploadButton"
                     title={T.get('action.analyze')}
