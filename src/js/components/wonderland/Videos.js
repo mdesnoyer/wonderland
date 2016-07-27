@@ -222,7 +222,6 @@ var Videos = React.createClass({
         var self = this; 
         var offset = moment().utcOffset();
         var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('h:mm a');
-        debugger
         self.setState({
             refreshTime: timeOfRefresh
         });
