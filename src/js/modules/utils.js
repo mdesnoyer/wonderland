@@ -329,6 +329,7 @@ var UTILS = {
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
     TOOLTIP_DELAY_MILLIS: 500,
+    FACEBOOK_APP_ID: '315978068791558',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },

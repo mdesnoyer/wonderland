@@ -303,6 +303,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.share.facebook': '@neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.content.title': 'What\'s your Neon Score?',
             'copy.share.twitter': '@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
             'copy.share.linkedin': 'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
             'copy.share.description': 'Copy the link below to share this collection. Anyone with this link can view your images for this video.',

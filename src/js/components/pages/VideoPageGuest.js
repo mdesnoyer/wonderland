@@ -24,13 +24,19 @@ var VideoPageGuest = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    _baseMetaTags: [
+        {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
+        {property: 'og:type', content: 'article'},
+        {property: 'og:title', content: T.get('copy.share.content.title')},
+        {property: 'og:description', content: T.get('copy.share.facebook')}
+    ],
     getInitialState: function () {
         return {
             mode: 'loading',
             showTutorial: false,
             noAccount: false,
             // List of object with property "property" and "content".
-            metaTags: [],
+            metaTags: self._baseMetaTags,
             duration: null,
             title: null,
             url: null,
@@ -102,14 +108,13 @@ var VideoPageGuest = React.createClass({
         try {
             const best_thumb = UTILS.getBestThumbnail(video.thumbnails);
             const image_url = RENDITIONS.findRendition(best_thumb, 1200, 630);
-            return [
-                // TODO fill in the others.
-                {property: 'og:image', content:image_url}
-            ];
+            return this._baseMetaTags.concat([
+                {property: 'og:image', content:image_url}]);
         } catch(e) {
             console.error(e);
         }
-        return [];
+        return this._baseMetaTags;
+
     },
     render: function() {
         var self = this;
