@@ -54,16 +54,16 @@ var VideoMain = React.createClass({
               nextProps.demographicThumbnails[nextProps.selectedDemographic]) { 
                 var thumbs = nextProps.demographicThumbnails[nextProps.selectedDemographic];
                 if (thumbs.thumbnails[thumbs.thumbnails.length-1].neon_score) {
-                    this.sendForLiftData(thumbs);
-                    this.sendForValenceFeatureKeys(thumbs.thumbnails);
+                    this.setState({ 
+                        defaultThumbnail: UTILS.findDefaultThumbnail(thumbs), 
+                        selectedDemographic: nextProps.selectedDemographic,
+                        demographicThumbnails: thumbs 
+                    }, function() { 
+                        this.sendForLiftData(thumbs);
+                        this.sendForValenceFeatureKeys(thumbs.thumbnails);
+                    }); 
                 }
-                var demoSet = this.props.demographicThumbnails[nextProps.selectedDemographic];
             } 
-            this.setState({
-                selectedDemographic: nextProps.selectedDemographic,
-                demographicThumbnails: demoSet, 
-                defaultThumbnail: UTILS.findDefaultThumbnail(demoSet) 
-            });
         }
         if (nextProps.timeRemaining || nextState.timeRemaining) {
             this.setState({
