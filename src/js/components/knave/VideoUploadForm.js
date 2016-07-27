@@ -68,7 +68,13 @@ var VideoUploadForm = React.createClass({
         else {
             self.POST('videos', options)
                 .then(function(json) {
-                    if (self.props.postHookAnalysis) {
+                    // if the a video is uploaded past the first page(greate than 1)
+                    if (self.props.currentPage > 1) {
+                        //we use the newsearch function in videos to adjust the page 
+                        // 1 minus by the current page 
+                        self.props.handleNewSearch('?', 1 - self.props.currentPage)
+                    }
+                    else if (self.props.postHookAnalysis) {
                         self.props.postHookAnalysis(json);
                     }
                     else {
