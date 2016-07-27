@@ -33,6 +33,18 @@ var VideoPageGuest = React.createClass({
         {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
         {property: 'twitter:description', content: T.get('copy.share.twitter')}
     ],
+    _buildMetaTagsFromProps: function() {
+        const image_url = CONFIG.API_HOST +
+            this.props.params.accountId +
+            '/social/image/?share_token=' +
+            this.props.params.shareToken
+        
+        return this._baseMetaTags.concat([
+            {property: 'og:image', content: image_url},
+            {property: 'og:image:width', content: 800},
+            {property: 'og:image:height', content: 800},
+        ]);
+    },
     getInitialState: function () {
         return {
             mode: 'loading',
@@ -59,6 +71,10 @@ var VideoPageGuest = React.createClass({
             });
         }
 
+        self.setState({
+            metaTags: self._buildMetaTagsFromProps()
+        });
+
         cookie.save(UTILS.COOKIES_KEY.viewShareKey, self.props.params.shareToken, {path: UTILS.COOKIE_DEFAULT_PATH});
 
         self.GET('videos', {
@@ -78,8 +94,7 @@ var VideoPageGuest = React.createClass({
                 demographicThumbnails: video.demographic_thumbnails, 
                 selectedDemographic: 0, 
                 videoState: video.state,
-                created: video.created,
-                metaTags: self._buildMetaFromVideo(video)
+                created: video.created
             });
         }).catch(function(err) {
             switch (err.code) {
