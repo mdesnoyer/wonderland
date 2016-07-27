@@ -330,6 +330,7 @@ var UTILS = {
     VALENCE_IGNORE_INDEXES: [0,1],  
     TOOLTIP_DELAY_MILLIS: 500,
     FACEBOOK_APP_ID: '315978068791558',
+    NEON_TWITTER_HANDLE: 'neonlab',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
