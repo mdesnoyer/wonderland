@@ -22,6 +22,18 @@ var RENDITIONS = {
             return false;
         }
     },
+    // Get the tallest rendition in thumbnail or null.
+    findTallest: function(thumbnail) {
+        if (!thumbnail || !thumbnail.renditions) {
+            return null;
+        }
+        return thumbnail.renditions.reduce((tallest, item) => {
+            if (!tallest || item.height > tallest.height) {
+                tallest = item;
+            }
+            return tallest;
+        }, null);
+    },
     findRendition: function(thumbnail, width, height) {
         // Returns the url for the image to put in a requested size
         //
