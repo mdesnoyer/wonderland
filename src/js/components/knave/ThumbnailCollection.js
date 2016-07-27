@@ -14,7 +14,9 @@ var ThumbnailCollection = React.createClass({
         isMobile: React.PropTypes.bool
     },
     render: function() {
-        var self = this;
+        var self = this, 
+            keyStart = self.props.keyStart || 0 
+        ;
         switch(self.props.type) {
             case 'lowScores':
                 return (
@@ -22,7 +24,8 @@ var ThumbnailCollection = React.createClass({
                     {
                         self.props.thumbnails.map(function(thumbnail, i) {
                             var src = RENDITIONS.findRendition(thumbnail, 
-                                                               100, 100);
+                                                               350, 350);
+                            i = i + keyStart; 
                             return (
                                 <Thumbnail
                                     key={i}
@@ -30,11 +33,13 @@ var ThumbnailCollection = React.createClass({
                                     title=""
                                     size="small"
                                     score={thumbnail.neon_score}
+                                    thumbnailId={thumbnail.thumbnail_id}
                                     type={'regular'}
                                     src={src}
                                     isMobile={self.props.isMobile}
+                                    handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
+                                    handleClick={self.props.handleClick}
                                     extraClass='xxThumbnail--lowLight'
-                                    showHref={false}
                                 />
                             )
                         })
@@ -53,6 +58,7 @@ var ThumbnailCollection = React.createClass({
                             else {
                                 var src = RENDITIONS.findRendition(thumbnail, 
                                                                    350, 350);
+                                i = i + keyStart; 
                                 return (
                                     <Thumbnail
                                         key={i}

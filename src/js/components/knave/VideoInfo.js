@@ -25,6 +25,22 @@ var VideoInfo = React.createClass({
         ReactTooltip.rebuild();
     },
     componentWillReceiveProps: function(nextProps) {
+        if (this.props.demographicThumbnails.length !== 
+              nextProps.demographicThumbnails.length) { 
+            var dos = this.getDemographicOptions(); 
+            this.setState({ 
+                demographicOptions: dos, 
+                demographicThumbnails: nextProps.demographicThumbnails        
+            });
+            // Since we default to not showing the None, we need to 
+            // see if the length is exactly 2 -- after a thumbnail change 
+            // if it is set the selectedDemographic to 1 instead of 0
+            if (nextProps.demographicThumbnails.length === 2) { 
+                this.setState({ 
+                    selectedDemographic: 1 
+                }); 
+            }  
+        } 
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic

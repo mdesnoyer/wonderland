@@ -63,7 +63,7 @@
 }
 
 @mixin generate-home-image-animation($id, $total-duration, $duration, $delay: 0s) {
-    $speed-force: -0.25; // reduce speed by 25%
+    $speed-force: -0.4; // reduce speed by 40%
     $percentage: percentage($duration / $total-duration);
     $animation-name: animate-home-image- + $id;
 
@@ -96,7 +96,7 @@
         right: auto;
         left: 0;
         width: 33%;
-        @include generate-home-image-animation(2, 30s, 8s, 2s);
+        @include generate-home-image-animation(2, 30s, 12s, 2s);
     }
 
     &:nth-child(3) {
@@ -113,7 +113,7 @@
 
     &:nth-child(5) {
         right: 2%;
-        @include generate-home-image-animation(5, 30s, 10s, 16s);
+        @include generate-home-image-animation(5, 30s, 10s, 14s);
     }
 
     &:nth-child(6) {

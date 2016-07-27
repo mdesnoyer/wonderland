@@ -100,8 +100,10 @@ var VideosPage = React.createClass({
                     ]}
                 />
                 <SiteHeader sidebarContent={sidebarContent}/>
-                <Videos isMobile={isMobile} openSignUp={this.openSignUp} openLearnMore={this.openLearnMore} />
-
+                <Videos
+                    isMobile={isMobile} 
+                    openSignUp={this.openSignUp}
+                />
                 {
                     showTutorial ? (
                         <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />

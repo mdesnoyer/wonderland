@@ -23,7 +23,9 @@ var VideoCollectionActions = React.createClass({
                 }
             })
             .catch(function(err) {
-                console.log(err)
+                self.setState({
+                    isSaveHidden: false
+                })
             })
         ;
     },

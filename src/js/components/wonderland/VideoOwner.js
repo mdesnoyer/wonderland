@@ -22,6 +22,7 @@ var VideoOwner = React.createClass({
     getDefaultProps: function() {
         var self = this;
         return {
+            selectedDemographic: 0,
             videoState: 'unknown',
             title: 'Unknown',
             error: '',

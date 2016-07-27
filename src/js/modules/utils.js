@@ -329,6 +329,12 @@ var UTILS = {
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
     TOOLTIP_DELAY_MILLIS: 500,
+
+    // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
+    // TODO migrate to an official Neon Facebook app.
+    FACEBOOK_APP_ID: '315978068791558',
+
+    NEON_TWITTER_HANDLE: 'neonlab',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -338,6 +344,25 @@ var UTILS = {
         ;
         return bScore - aScore;
     },
+    findDefaultThumbnail: function(thumbSet) {
+        defaultThumbnail = null; 
+        if (thumbSet && thumbSet.thumbnails) { 
+            var defaultThumbnail = thumbSet.thumbnails.find(
+                x => x.type === 'default');
+            var interestingThumbnails = thumbSet.thumbnails.filter(
+                x => x.type === 'neon' || x.type === 'customupload');
+            if (!defaultThumbnail) {
+                // Pick the interesting thumb with the lowest score
+                defaultThumbnail = interestingThumbnails.filter(
+                    x => x.neon_score > 0).sort(
+                        (a,b) => a.neon_score - b.neon_score)[0];
+                if (!defaultThumbnail) {
+                    return;
+                }
+            }
+        } 
+        return defaultThumbnail; 
+    }, 
     fixThumbnails: function(rawThumbnails, ignoreBad) {
 
         if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
