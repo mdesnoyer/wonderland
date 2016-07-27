@@ -80,7 +80,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
 
             'copy.signUp.success.title': 'Thank you for signing up for a Neon account',
-            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, let us know.',
+            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, check your spam folders in case the email got misplaced.',
 
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
@@ -273,7 +273,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
-            'copy.defaultImage': 'Default Image',
+            'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
             'copy.valenceFeatures': 'Valence Features',
 

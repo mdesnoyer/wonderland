@@ -61,6 +61,8 @@ var ThumbnailOverlay = React.createClass({
                                         displayThumbLift={self.props.displayThumbLift}
                                         valence={self.getValenceFeatures(thumbnail)}
                                         extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
+                                        handleClose={self.props.closeThumbnailOverlay}
+                                        openLearnMore={self.props.openLearnMore}
                                     />
                                 );
                             })
