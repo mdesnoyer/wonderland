@@ -3,19 +3,19 @@
 import React from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+
 import AjaxMixin from '../../mixins/Ajax';
+import cookie from 'react-cookie';
 import E from '../../modules/errors';
+import T from '../../modules/translation';
+import SiteHeader from '../wonderland/SiteHeader';
+import SiteFooter from '../wonderland/SiteFooter';
+import VideoGuest from '../wonderland/VideoGuest';
 import Helmet from 'react-helmet';
-import OnboardingTutorial from '../wonderland/OnboardingTutorial';
+import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
 import SESSION from '../../modules/session';
-import SiteFooter from '../wonderland/SiteFooter';
-import SiteHeader from '../wonderland/SiteHeader';
-import T from '../../modules/translation';
-import UTILS from '../../modules/utils';
-import VideoGuest from '../wonderland/VideoGuest';
-import cookie from 'react-cookie';
+import OnboardingTutorial from '../wonderland/OnboardingTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
