@@ -11,6 +11,7 @@ import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
 import Account from '../../mixins/Account';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,7 +64,7 @@ var Videos = React.createClass({
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
         else if (self.state.isMaxLimit) {
-            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
+            alertMessage = <Message message={T.get('copy.analyzeVideo.limitdate', {'@date': self.state.refreshTime})} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -210,11 +211,20 @@ var Videos = React.createClass({
         var self = this;
         self.GET('limits')
             .then(function(res) {
+                self.doFormatTime(res)
                 self.doFindMaxVideos(res.video_posts, res.max_video_posts)
             })
             .catch(function(err) {
                 self.context.router.push('*')
             })        
+    },
+    doFormatTime: function(res) {
+        var self = this; 
+        var offset = moment().utcOffset();
+        var timeOfRefresh  = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('MMMM Do YYYY, [at] h:mm:ss a');
+        self.setState({
+            refreshTime: timeOfRefresh
+        });
     },
     doFindMaxVideos: function(count, max) {
         var self = this;

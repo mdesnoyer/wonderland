@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,7 +17,7 @@ var OverLayMessage = React.createClass({
         if (nextProps.isOpenMessage !== self.props.isOpenMessage) {
             self.setState({
                 isOpen: nextProps.isOpenMessage
-            })
+            });
         }
     },
     render: function() {
@@ -27,8 +28,8 @@ var OverLayMessage = React.createClass({
                     self.state.isOpen ? (
                         <section className="xxOverlay">
                             <div className="xxOverlay-content">
-                            <h2 className="xxTitle">You've hit your limit!</h2>
-                            <h3 className="xxOnboardingSlide-description">Come back tomorrow to process more videos, or sign up to increase your limit.</h3>
+                            <h2 className="xxTitle">{T.get('copy.analyzeVideo.maxLimitHit')}</h2>
+                            <h3 className="xxOnboardingSlide-description">{T.get('copy.analyzeVideo.limitMessage')}</h3>
                             <fieldset>
                                 <div className="xxCollectionAction-buttons">
                                     <button
@@ -62,7 +63,7 @@ var OverLayMessage = React.createClass({
             if (self.props.messageFunction && buttonType) {
                 self.props.messageFunction(e); 
             }
-        })
+        });
     },
     getDefaultProps: function() {
         return {
