@@ -8,26 +8,11 @@ $onboarding-text-padding: 18px;
 .xxVideoloadingSpinner {
     @include all-caps-title;
 
-    @keyframes flickerAnimation {
-      0%   { opacity:1; }
-      50%  { opacity:0.7; }
-      100% { opacity:1; }
-    }
-    @-o-keyframes flickerAnimation{
-      0%   { opacity:1; }
-      50%  { opacity:0.7; }
-      100% { opacity:1; }
-    }
-    @-moz-keyframes flickerAnimation{
-      0%   { opacity:1; }
-      50%  { opacity:0.7; }
-      100% { opacity:1; }
-    }
-    @-webkit-keyframes flickerAnimation{
-      0%   { opacity:1; }
-      50%  { opacity:0.7; }
-      100% { opacity:1; }
-    }
+	@keyframes flickerAnimation {
+	  0%   { opacity: 1; }
+	  50%  { opacity: 0.7; }
+	  100% { opacity: 1; }
+	}
 
     position: absolute;
     top: 50vh;

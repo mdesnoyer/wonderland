@@ -76,7 +76,7 @@ var Videos = React.createClass({
                 {
                     self.state.isLoading ? (
                         <div className="xxOverlay" >
-                            <div className="xxVideoloadingSpinner">Loading...</div>
+                            <div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div>
                         </div>
                     ) : null
                 }
