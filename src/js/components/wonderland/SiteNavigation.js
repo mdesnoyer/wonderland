@@ -37,7 +37,10 @@ var SiteNavigation = React.createClass({
                     }
                 })
                 .catch(function(err) {
-                    console.log(err);
+                    self.setState({
+                            hasUser: false,
+                            name: T.get('nav.account')
+                        });
                 })
             ;
         }
