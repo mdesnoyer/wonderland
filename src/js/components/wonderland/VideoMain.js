@@ -19,7 +19,7 @@ var VideoMain = React.createClass({
         duration: React.PropTypes.number.isRequired,
         url: React.PropTypes.string.isRequired,
         created: React.PropTypes.string,
-        shareToken: React.PropTypes.string.isRequired
+        shareToken: React.PropTypes.string
     },
     getInitialState: function() {
         var self = this;

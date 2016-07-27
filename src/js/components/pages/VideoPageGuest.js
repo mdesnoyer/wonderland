@@ -33,16 +33,32 @@ var VideoPageGuest = React.createClass({
         {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
         {property: 'twitter:description', content: T.get('copy.share.twitter')}
     ],
+    // Build urls for the share image service endpoints.
     _buildMetaTagsFromProps: function() {
-        const image_url = CONFIG.API_HOST +
+
+        var _url = CONFIG.API_HOST +
             this.props.params.accountId +
-            '/social/image/?share_token=' +
-            this.props.params.shareToken
+            '/social/image/'
+
+        // Config is missing the protocol. @TODO
+        if(_url.indexOf('http:') == -1 &&
+           _url.indexOf('https:') == -1) {
+            _url = 'https:' + _url;
+        }
+
+        const twitter_image_url = _url + 'twitter/' +
+            '?share_token=' +
+            this.props.params.shareToken;
+        const image_url = _url + 
+            '?share_token=' +
+            this.props.params.shareToken;
+
         
         return this._baseMetaTags.concat([
             {property: 'og:image', content: image_url},
             {property: 'og:image:width', content: 800},
             {property: 'og:image:height', content: 800},
+            {property: 'twitter:image', content: twitter_image_url}
         ]);
     },
     getInitialState: function () {
