@@ -99,7 +99,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.body': '',
             'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit!',
             'copy.analyzeVideo.limitMessage': 'Come back tomorrow to process more videos, or sign up to increase your limit.',
-            'copy.analyzeVideo.limitdate': 'Come back tomorrow at @date or sign up to increase your limit.', 
+            'copy.analyzeVideo.limitdate': 'Come back @date or sign up to increase your limit.', 
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',

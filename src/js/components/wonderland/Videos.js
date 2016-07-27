@@ -219,9 +219,10 @@ var Videos = React.createClass({
             });
     },
     doFormatTime: function(res) {
+        debugger
         var self = this; 
         var offset = moment().utcOffset();
-        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('h:mm a');
+        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').calendar();
         self.setState({
             refreshTime: timeOfRefresh
         });
