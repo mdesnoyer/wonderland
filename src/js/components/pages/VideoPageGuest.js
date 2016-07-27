@@ -138,21 +138,6 @@ var VideoPageGuest = React.createClass({
             showTutorial: false,
         });
     },
-    _buildMetaFromVideo(video) {
-        try {
-            const best_thumb = UTILS.getBestThumbnail(video.thumbnails);
-            const image =  RENDITIONS.findTallest(best_thumb);
-            return this._baseMetaTags.concat([
-                {property: 'og:image', content:image.url},
-                {property: 'og:image:width', content:image.width},
-                {property: 'og:image:height', content:image.height}
-            ]);
-        } catch(e) {
-            console.error(e);
-        }
-        return this._baseMetaTags;
-
-    },
     render: function() {
         var self = this;
         try {

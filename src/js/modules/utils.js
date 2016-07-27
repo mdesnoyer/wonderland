@@ -413,16 +413,6 @@ var UTILS = {
             return neons;
         }
     },
-    // Given a list of thumbnail, return the one with highest neon_score.
-    // On a tie, use the earliest item with the highest value. Empty list returns null.
-    getBestThumbnail: function(list) {
-       return list.reduce((best, item) => {
-           if (!best || item.neon_score > best.neon_score) {
-               best = item;
-           }
-           return best;
-       }, null);
-    },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {
         return text.toString().toLowerCase()
