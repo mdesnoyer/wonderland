@@ -21,15 +21,35 @@ var OverLayMessage = React.createClass({
         }
     },
     render: function() {
-        var self = this; 
+        var self = this,
+            title,
+            description,
+            firstButtonLabel,
+            secondButtonLabel
+
+        ;
+
+        switch(self.props.type) {
+            case 'limit':
+                title = T.get('copy.analyzeVideo.maxLimitHit');
+                description = T.get('copy.analyzeVideo.limitMessage');
+                firstButtonLabel = T.get('gotIt');
+                secondButtonLabel = T.get('action.signUp');
+                break;
+            default:
+                title ='title';
+                description ='description';
+                firstButtonLabel ='firstButtonLabel';
+                secondButtonLabel ='secondButtonLabel';
+        }
         return (
             <div>
                 {
                     self.state.isOpen ? (
                         <section className="xxOverlay">
                             <div className="xxOverlay-content">
-                            <h2 className="xxTitle">{T.get('copy.analyzeVideo.maxLimitHit')}</h2>
-                            <h3 className="xxOnboardingSlide-description">{T.get('copy.analyzeVideo.limitMessage')}</h3>
+                            <h2 className="xxTitle">{title}</h2>
+                            <h3 className="xxOnboardingSlide-description">{description}</h3>
                             <fieldset>
                                 <div className="xxCollectionAction-buttons">
                                     <button
@@ -37,13 +57,13 @@ var OverLayMessage = React.createClass({
                                         type="button"
                                         data-button-type="close"
                                         onClick={self.handleClick}
-                                    >Got It!</button>
+                                    >{firstButtonLabel}</button>
                                     <button
                                         className="xxButton xxButton--highlight"
                                         type="button"
                                         data-button-type="action"
                                         onClick={self.handleClick}
-                                    >Sign Up</button>
+                                    >{secondButtonLabel}</button>
                                 </div>
                             </fieldset>
                             </div>
@@ -74,7 +94,8 @@ var OverLayMessage = React.createClass({
     propTypes: {
         message: React.PropTypes.string,
         messageFunction: React.PropTypes.func,
-        isOpenMessage: React.PropTypes.bool
+        isOpenMessage: React.PropTypes.bool,
+        type: React.PropTypes.string
     }
 })
 

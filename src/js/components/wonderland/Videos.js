@@ -215,13 +215,14 @@ var Videos = React.createClass({
                 self.doFindMaxVideos(res.video_posts, res.max_video_posts);
             })
             .catch(function(err) {
-                self.context.router.push(UTILS.DRY_NAV.HOME.URL);
+                console.log(err);
             });
     },
     doFormatTime: function(res) {
         var self = this; 
         var offset = moment().utcOffset();
         var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('h:mm a');
+        debugger
         self.setState({
             refreshTime: timeOfRefresh
         });

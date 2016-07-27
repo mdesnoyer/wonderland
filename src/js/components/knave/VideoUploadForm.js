@@ -118,6 +118,7 @@ var VideoUploadForm = React.createClass({
                         message={T.get('error.unpaidAccountLimit')}
                         messageFunction={self.props.openSignUp}
                         isOpenMessage={self.state.isOpenMessage}
+                        type="limit"
                     />
                 <a
                     className="xxUploadButton"
