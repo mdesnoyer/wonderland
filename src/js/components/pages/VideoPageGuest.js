@@ -110,7 +110,7 @@ var VideoPageGuest = React.createClass({
     _buildMetaFromVideo(video) {
         try {
             const best_thumb = UTILS.getBestThumbnail(video.thumbnails);
-            const tallest =  RENDITIONS.findTallest(best_thumb);
+            const image =  RENDITIONS.findTallest(best_thumb);
             return this._baseMetaTags.concat([
                 {property: 'og:image', content:image.url},
                 {property: 'og:image:width', content:image.width},
