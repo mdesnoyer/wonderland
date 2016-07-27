@@ -20,15 +20,15 @@ var VideoUploadForm = React.createClass({
     getDefaultProps: function() {
         return {
             isOnboarding: false,
-            videoCountServed: 0,
-            openMessage: false
+            videoCountServed: 0
         }
     },
     getInitialState: function() {
         var self = this;
         return {
             isOpen: false,
-            error: null
+            error: null,
+            isOpenMessage: false
         };
     },
     toggleOpen: function(e) {
@@ -43,7 +43,8 @@ var VideoUploadForm = React.createClass({
         var self = this;
         self.setState({
             isOpen: false,
-            error: false
+            error: false,
+            isOpenMessage: false
         }, function() {
             self.sendVideoUrl(url)
         });
@@ -80,7 +81,6 @@ var VideoUploadForm = React.createClass({
                     }
                 })
                 .catch(function(err) {
-                    debugger
                     self.throwUploadError(err)
                 });    
         }
@@ -94,8 +94,8 @@ var VideoUploadForm = React.createClass({
                 break;
             case 402:
                 self.setState({
-                    openMessage: true,
-                    isOpen: false
+                    isOpenMessage: true,
+                    // isOpen: false
                 });
                 break;
             default:
@@ -115,13 +115,11 @@ var VideoUploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
-                { self.state.openMessage ? (
-                        <OverLayMessage 
-                            message={T.get('error.unpaidAccountLimit')}
-                            messageFunction={self.props.openSignUp}
-                        />
-                    ) : null
-                }
+                    <OverLayMessage 
+                        message={T.get('error.unpaidAccountLimit')}
+                        messageFunction={self.props.openSignUp}
+                        isOpenMessage={self.state.isOpenMessage}
+                    />
                 <a
                     className="xxUploadButton"
                     title={T.get('action.analyze')}

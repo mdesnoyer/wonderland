@@ -6,22 +6,25 @@ import React from 'react';
 
 var OverLayMessage = React.createClass({
     getInitialState: function(){
+        var self = this;
         return {
-            isOpen: true
+            isOpen: false
         }
     },
-    componentWillUnMount: function() {
-        var self = this; 
-        self.setState({
-            isOpen: true 
-        })
+    componentWillReceiveProps: function(nextProps, nextState) {
+        var self = this;
+        if (nextProps.isOpenMessage !== self.props.isOpenMessage) {
+            self.setState({
+                isOpen: nextProps.isOpenMessage
+            })
+        }
     },
     render: function() {
         var self = this; 
         return (
             <div>
                 {
-                    !self.state.isOpen ? null : (
+                    self.state.isOpen ? (
                         <section className="xxOverlay">
                             <div className="xxOverlay-content">
                             <h2 className="xxTitle">You've hit your limit!</h2>
@@ -44,7 +47,7 @@ var OverLayMessage = React.createClass({
                             </fieldset>
                             </div>
                         </section>
-                    )
+                    ): null
                 }
             </div>
         );
@@ -53,23 +56,24 @@ var OverLayMessage = React.createClass({
         var self = this,
             buttonType = e.target.dataset.buttonType === "action"
         ;
-        e.persist();
         self.setState({
-            isOpen: false
-        }, function() {   
+            isOpen: !self.state.isOpen
+        }, function() {
             if (self.props.messageFunction && buttonType) {
-                self.props.messageFunction(e);   
+                self.props.messageFunction(e); 
             }
         })
     },
     getDefaultProps: function() {
         return {
-            message: 'There Seems to be and Error!'
+            message: 'There Seems to be and Error!',
+            isOpenMessage: false
         };
      },
     propTypes: {
         message: React.PropTypes.string,
-        messageFunction: React.PropTypes.func
+        messageFunction: React.PropTypes.func,
+        isOpenMessage: React.PropTypes.bool
     }
 })
 
