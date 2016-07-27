@@ -51,7 +51,9 @@ var ShareEmail = React.createClass({
                 {
                     (self.state.mode === 'success') ? (
                         <div>
-                            <p>{T.get('copy.videoContent.email.success')}</p>
+                            <div className="xxText">
+                                <p>{T.get('copy.videoContent.email.success')}</p>
+                            </div>
                             <div className="xxCollectionAction-buttons">
                                 <button
                                     className="xxButton"
@@ -63,7 +65,9 @@ var ShareEmail = React.createClass({
                         </div>
                     ) : (
                         <div>
-                            <p>{T.get('copy.videoContent.email')}</p>
+                            <div className="xxText">
+                                <p>{T.get('copy.videoContent.email')}</p>
+                            </div>
                             {userMessage}
                             <div className="xxFormField">
                                 <label

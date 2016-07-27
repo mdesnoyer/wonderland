@@ -32,7 +32,7 @@ var OverLayMessage = React.createClass({
         switch(self.props.type) {
             case 'limit':
                 title = T.get('copy.analyzeVideo.maxLimitHit');
-                description = T.get('copy.analyzeVideo.limitMessage');
+                description = T.get('copy.analyzeVideo.limitdate');
                 firstButtonLabel = T.get('gotIt');
                 secondButtonLabel = T.get('action.signUp');
                 break;

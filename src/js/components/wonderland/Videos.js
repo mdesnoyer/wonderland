@@ -64,7 +64,7 @@ var Videos = React.createClass({
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
         else if (self.state.isMaxLimit) {
-            alertMessage = <Message message={T.get('copy.analyzeVideo.limitdate', {'@date': self.state.refreshTime})} type="video" />;
+            alertMessage = <Message message={T.get('copy.analyzeVideo.limitMessage')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -76,7 +76,7 @@ var Videos = React.createClass({
                 {
                     self.state.isLoading ? (
                         <div className="xxOverlay" >
-                            <div className="xxVideoloadingSpinner"></div>
+                            <div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div>
                         </div>
                     ) : null
                 }
@@ -184,6 +184,7 @@ var Videos = React.createClass({
                             prevPageAPICall: '',
                             nextPageAPICall: ''
                         });
+                        self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
                     }
                     else {
                         self.setState({
