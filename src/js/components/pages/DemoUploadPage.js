@@ -35,7 +35,7 @@ export default React.createClass({
         if (!SESSION.active()) {
             self.context.router.push(UTILS.DRY_NAV.DEMO.URL)
         }
-        else{
+        else {
             self.GET('limits')
                 .then(function(res) {
                     self.setState({ maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE })
