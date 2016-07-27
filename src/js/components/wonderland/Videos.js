@@ -221,7 +221,7 @@ var Videos = React.createClass({
     doFormatTime: function(res) {
         var self = this; 
         var offset = moment().utcOffset();
-        var timeOfRefresh  = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('MMMM Do YYYY, [at] h:mm:ss a');
+        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('MMMM Do YYYY, [at] h:mm:ss a');
         self.setState({
             refreshTime: timeOfRefresh
         });
@@ -231,7 +231,7 @@ var Videos = React.createClass({
         if (count === max) {
             self.setState({
                 isMaxLimit: true
-            })
+            });
         }
     },
 });
