@@ -87,6 +87,9 @@ var Videos = React.createClass({
                                 videoCountServed={self.state.videoCountServed}
                                 isMaxLimit={self.state.isMaxLimit}
                                 openSignUp={self.props.openSignUp}
+                                currentPage={self.state.currentPage}
+                                handleNewSearch={self.handleNewSearch}
+
                             />
                             <VideosResults
                                 videos={self.state.videos}

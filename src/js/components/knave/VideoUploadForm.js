@@ -68,7 +68,10 @@ var VideoUploadForm = React.createClass({
         else {
             self.POST('videos', options)
                 .then(function(json) {
-                    if (self.props.postHookAnalysis) {
+                    if (self.props.currentPage > 1) {
+                        self.props.handleNewSearch('?', 1)
+                    }
+                    else if (self.props.postHookAnalysis) {
                         self.props.postHookAnalysis(json);
                     }
                     else {
