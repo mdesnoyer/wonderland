@@ -55,7 +55,7 @@ var VideoContent = React.createClass({
                     })
                     .then(function(json) {
                         self.setState({
-                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/index.html'
                         });
                     })
                     .catch(function(err) {
