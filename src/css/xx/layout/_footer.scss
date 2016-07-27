@@ -1,8 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .Footer {
-    background: $tertiary-color;
-    color: $secondary-color;
+    background: $quaternary-color;
+    color: $dark-grey;
     font-family: $sans-serif-family;
     font-size: 14px;
     padding: 16px $gutter-width;
@@ -11,8 +11,12 @@
     right: 0;
     bottom: 0;
     left: 0;
-    a {
+    a,
+    a:visited {
         color: $white;
+    }
+    a:hover {
+        color: $dark-grey;
     }
 }
 

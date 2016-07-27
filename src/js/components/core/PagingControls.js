@@ -76,9 +76,7 @@ var PagingControls = React.createClass({
                         }
                     </div>
                     <div className="xxPagingControls-navigation-item">
-                        {T.get('copy.pageN', {
-                            '@n': self.props.currentPage
-                        })}
+                        {self.props.currentPage}
                     </div>
                     <div className="xxPagingControls-navigation-item">
                     { nextDisabledAttribute  ? null : (
