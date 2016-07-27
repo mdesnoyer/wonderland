@@ -211,17 +211,17 @@ var Videos = React.createClass({
         var self = this;
         self.GET('limits')
             .then(function(res) {
-                self.doFormatTime(res)
-                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
+                self.doFormatTime(res);
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts);
             })
             .catch(function(err) {
-                self.context.router.push('*')
-            })        
+                self.context.router.push(UTILS.DRY_NAV.HOME.URL);
+            });
     },
     doFormatTime: function(res) {
         var self = this; 
         var offset = moment().utcOffset();
-        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('MMMM Do YYYY, [at] h:mm:ss a');
+        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').format('h:mm a');
         self.setState({
             refreshTime: timeOfRefresh
         });
