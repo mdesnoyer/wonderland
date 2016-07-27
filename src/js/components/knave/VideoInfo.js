@@ -35,7 +35,7 @@ var VideoInfo = React.createClass({
             // Since we default to not showing the None, we need to 
             // see if the length is exactly 2 -- after a thumbnail change 
             // if it is set the selectedDemographic to 1 instead of 0
-            if (this.props.demographicThumbnails.length === 2) { 
+            if (nextProps.demographicThumbnails.length === 2) { 
                 this.setState({ 
                     selectedDemographic: 1 
                 }); 
