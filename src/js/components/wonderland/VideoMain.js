@@ -33,11 +33,9 @@ var VideoMain = React.createClass({
         }
     },
     componentWillMount: function() {
-        
         var self = this, 
             selectedDemographic = self.state.selectedDemographic || 0,
-            thumbs = self.props.demographicThumbnails[selectedDemographic], 
-            defaultThumbnail = UTILS.findDefaultThumbnail(thumbs); 
+            thumbs = self.props.demographicThumbnails[selectedDemographic] 
         ;
         self.setState({ 
             defaultThumbnail: UTILS.findDefaultThumbnail(thumbs) 

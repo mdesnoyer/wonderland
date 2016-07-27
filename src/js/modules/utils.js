@@ -339,6 +339,8 @@ var UTILS = {
         return bScore - aScore;
     },
     findDefaultThumbnail: function(thumbSet) {
+        defaultThumbnail = null; 
+        if (thumbSet && thumbSet.thumbnails) { 
         var defaultThumbnail = thumbSet.thumbnails.find(
             x => x.type === 'default');
         var interestingThumbnails = thumbSet.thumbnails.filter(
@@ -352,6 +354,7 @@ var UTILS = {
                 return;
             }
         }
+        } 
         return defaultThumbnail; 
     }, 
     fixThumbnails: function(rawThumbnails, ignoreBad) {
