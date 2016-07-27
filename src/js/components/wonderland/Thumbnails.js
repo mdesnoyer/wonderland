@@ -66,10 +66,11 @@ var Thumbnails = React.createClass({
                 var bads = self.organizeBadThumbs(
                     nextSelection.bad_thumbnails,
                     nextSelection.thumbnails);
-               
-                self.setState({ thumbnails: self.buildOverlayThumbs(goods, bads), 
+                var overlayThumbs = self.buildOverlayThumbs(goods, bads); 
+                self.setState({ thumbnails: overlayThumbs, 
                                 badThumbs: bads,
                                 goodThumbs: goods,  
+                                thumbsLength: overlayThumbs.length, 
                                 defaultThumbnail: nextProps.defaultThumbnail }); 
             }
         }
