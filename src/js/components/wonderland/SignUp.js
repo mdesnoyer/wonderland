@@ -29,7 +29,9 @@ var SignUp = React.createClass({
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionAppearTimeout={400} transitionAppear={true} transitionLeaveTimeout={400} transitionEnterTimeout={400}>
                     <div className="xxPageOverlay-content">
                         <h1 className="xxTitle">{T.get('copy.signUp.success.title')}</h1>
-                        <p>{T.get('copy.signUp.success.body')}</p>
+                        <div className="xxText">
+                            <p>{T.get('copy.signUp.success.body')}</p>
+                        </div>
                     </div>
                 </ReactCSSTransitionGroup>
             );

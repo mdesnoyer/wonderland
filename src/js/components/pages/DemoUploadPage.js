@@ -159,17 +159,29 @@ export default React.createClass({
                             <OnboardingEmail videoId={this.state.videoId} />
                         </div>
                     ) : (
-                        <div className="xxUpload">
-                            <VideoUploadForm
-                                isOnboarding
-                                postHookSearch={null}
-                                postHookAnalysis={this.onAnalysisStart}
-                                onDemoError={this.showError}
-                            />
-                            <div className="xxUploadButton-help">
-                                <span className="xxUploadButton-helpCircle"></span>
-                                <span className="xxUploadButton-helpLine"></span>
-                                {uploadText}
+                        <div>
+                            <header className="xxHeader">
+                                <a href="/" title={T.get('title.home')}>
+                                    <img 
+                                        className="xxLogo"
+                                        src="/img/xx/logo.svg"
+                                        alt={T.get('app.companyShortName')}
+                                        title={T.get('app.companyShortName')}
+                                    />
+                                </a>
+                            </header>
+                            <div className="xxUpload">
+                                <VideoUploadForm
+                                    isOnboarding
+                                    postHookSearch={null}
+                                    postHookAnalysis={this.onAnalysisStart}
+                                    onDemoError={this.showError}
+                                />
+                                <div className="xxUploadButton-help">
+                                    <span className="xxUploadButton-helpCircle"></span>
+                                    <span className="xxUploadButton-helpLine"></span>
+                                    {uploadText}
+                                </div>
                             </div>
                         </div>
                     )

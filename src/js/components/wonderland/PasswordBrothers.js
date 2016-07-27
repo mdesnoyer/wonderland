@@ -31,7 +31,12 @@ var PasswordBrothers = React.createClass({
         });
     },
     render: function() {
-        var self = this;
+        var self = this,
+            verifyClassName = ['xxFormField']
+        ;
+        if (self.state.passwordInitial && self.state.passwordInitial !== self.state.passwordConfirm) {
+            verifyClassName.push('has-error');
+        }
         return (
             <div>
                 <div className="xxFormField">
@@ -47,7 +52,7 @@ var PasswordBrothers = React.createClass({
                         required
                      />
                 </div>
-                <div className="xxFormField">
+                <div className={verifyClassName.join(' ')}>
                     {
                         self.state.passwordInitial && self.state.passwordInitial !== self.state.passwordConfirm ? (
                             <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>
