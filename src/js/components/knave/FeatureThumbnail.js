@@ -25,7 +25,7 @@ var FeatureThumbnail = React.createClass({
         switch(self.props.type) {
             case 'default':
                 uid = 0;
-                title= T.get('copy.defaultImage');
+                title= T.get('copy.currentImage');
                 thumbnailId = self.props.thumbnails[uid].thumbnail_id;
                 handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
                 showHref = true;

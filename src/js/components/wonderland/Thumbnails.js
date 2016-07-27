@@ -116,6 +116,7 @@ var Thumbnails = React.createClass({
                     handleClickNext={self.handleClickNext}
                     handleKeyEvent={self.handleKeyEvent}
                     displayThumbLift={self.props.displayThumbLift || 0}
+                    openLearnMore={self.props.openLearnMore}
                 />
             ) : null
         ;

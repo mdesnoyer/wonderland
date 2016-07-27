@@ -18,9 +18,9 @@ var ZoomThumbnail = React.createClass({
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string
     },
-    componentWillReceiveProps: function() {
+    componentWillReceiveProps: function(nextProps) {
         var valenceDisplay = this.getValenceDisplay();
-        this.setState({valenceDisplay: valenceDisplay}); 
+        this.setState({valenceDisplay: valenceDisplay});
     },
     componentDidMount: function() { 
         var valenceDisplay = this.getValenceDisplay();
@@ -32,13 +32,14 @@ var ZoomThumbnail = React.createClass({
         } 
     },
     getValenceDisplay: function() { 
+        var self = this;
         var valenceDisplay = null;  
         var whyThisImage = T.get('copy.whyThisImage') 
         var whyNotThisImage = T.get('copy.whyNotThisImage') 
         if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') { 
             valenceDisplay = (<div>
                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
-                <p>{whyNotThisImage}</p>
+                <p>{whyNotThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
             </div>)
         } 
         else if (this.props.valence.length > 0) { 
@@ -56,7 +57,7 @@ var ZoomThumbnail = React.createClass({
                             })
                         }
                     </ul>
-                    <p>{whyThisImage}</p>
+                    <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
                  </div> 
             );
             valenceDisplay = valenceDisplay; 
@@ -69,6 +70,12 @@ var ZoomThumbnail = React.createClass({
         }
         return valenceDisplay;  
     },  
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.props.handleClose(e);
+        self.props.openLearnMore(e);
+    },
     render: function() {
         var self = this,
             activeClass = (self.props.index === self.props.selectedItem ? ' is-active' : ''),
@@ -84,6 +91,7 @@ var ZoomThumbnail = React.createClass({
             extraClass.push(self.props.extraClass);
         }
         return (
+
             <div className={'xxImageZoom-inner' + activeClass}>
                 <div
                     className={'xxImageZoom-image xxImageZoom-image--' + orientation}

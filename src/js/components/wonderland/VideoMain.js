@@ -288,6 +288,7 @@ var VideoMain = React.createClass({
                         handleChildOnMouseEnter={self.handleChildOnMouseEnter}
                         displayThumbLift={self.state.displayThumbLift}
                         isMobile={self.props.isMobile}
+                        openLearnMore={self.props.openLearnMore}
                     />
                 </article>
             );
