@@ -95,7 +95,6 @@ var VideoUploadForm = React.createClass({
             case 402:
                 self.setState({
                     isOpenMessage: true,
-                    // isOpen: false
                 });
                 break;
             default:
