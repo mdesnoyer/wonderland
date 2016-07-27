@@ -6,9 +6,9 @@ import React from 'react';
 
 import E from '../../modules/errors';
 import Message from './Message';
+import VideoMain from './VideoMain';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import VideoMain from './VideoMain';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,15 +30,11 @@ var VideoGuest = React.createClass({
         try {
             switch(self.props.mode) {
                 case 'loading':
-                    return (
-                        <div></div>
-                    );
-                    break;
+                    return null;
                 case 'error':
                     return (
                         <Message header={'ERROR Heading TODO'} body={E.getErrors()} flavour="danger" />
                     );
-                    break;
                 case 'success':
                     return (
                             <VideoMain
@@ -56,7 +52,6 @@ var VideoGuest = React.createClass({
                                 videoState={self.props.videoState}
                             />
                     );
-                    break;
             }
         } catch (e) {
             console.error(e);
