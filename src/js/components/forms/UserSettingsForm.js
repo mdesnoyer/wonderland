@@ -8,6 +8,7 @@ import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import TRACKING from '../../modules/tracking';
 import UserSettingsInfo from '../wonderland/UserSettingsInfo';
+import Message from '../wonderland/Message';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -115,13 +116,13 @@ var UserSettingsForm = React.createClass({
         ;
         switch (self.state.mode) {
             case 'error':
-                userMessage = <div className="has-error"><p className="xxLabel">{E.getErrors()}</p></div>;
+                userMessage = <Message message={E.getErrors()} type="formError" />;
                 break;
             case 'loading':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.loading')}</p></div>;
+                userMessage = <Message message={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <div className="xxLabel"><p>{T.get('copy.contactUs.success')}</p></div>;
+                userMessage = <div className="xxText"><p>{T.get('copy.contactUs.success')}</p></div>;
                 break;
             default:
                 break;

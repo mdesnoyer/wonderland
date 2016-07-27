@@ -71,7 +71,7 @@ var ChangePasswordForm = React.createClass({
                 userMessage = <Message messsage={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <Message message={T.get('copy.userForgot.success')} />;
+                userMessage = <div className="xxText"><p>{T.get('copy.userForgot.success')}</p></div>;
                 break;
             default:
                 break;

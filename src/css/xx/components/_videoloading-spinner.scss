@@ -6,33 +6,40 @@ $onboarding-text-padding: 18px;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxVideoloadingSpinner {
-	@media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
-	    right: $upload-button-offset + floor($upload-button-size / 2);
-	    margin-right: 0;
+	@include all-caps-title;
+
+	@keyframes flickerAnimation {
+	  0%   { opacity:1; }
+	  50%  { opacity:0.7; }
+	  100% { opacity:1; }
+	}
+	@-o-keyframes flickerAnimation{
+	  0%   { opacity:1; }
+	  50%  { opacity:0.7; }
+	  100% { opacity:1; }
+	}
+	@-moz-keyframes flickerAnimation{
+	  0%   { opacity:1; }
+	  50%  { opacity:0.7; }
+	  100% { opacity:1; }
+	}
+	@-webkit-keyframes flickerAnimation{
+	  0%   { opacity:1; }
+	  50%  { opacity:0.7; }
+	  100% { opacity:1; }
 	}
 
-	&::before {
-	    @include font-awesome('f021');
+	position: absolute;
+    top: 50vh;
+    right: 0;
+    left: 0;
+    z-index: $zindex-feature-content;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    color: $secondary-color;
 
-	    // box-sizing: border-box;
-	    position: absolute;
-	    top:0;
-	    bottom: 0;
-	    left: 0;
-	    right: 0;
-	    margin: auto;
-	    width: $upload-button-size * 3;
-	    height: $upload-button-size  * 3;
-	    border-radius: 50%;
-	    border: 2px solid $white;
-	    background: $accent-color;
-	    color: $white;
-	    font-size: $upload-button-size * 2;
-	    line-height: $upload-button-size * 3 - 3px;
-	    text-align: center;
-	    transform: rotate(-60deg);
-	    animation: rotate 2s infinite linear;
-	}
+    animation: flickerAnimation 2s infinite;
 }
 
 .xxValenceloadingSpinner {

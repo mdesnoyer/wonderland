@@ -75,7 +75,9 @@ var ShareLink = React.createClass({
                         ><span>LinkedIn</span></a>
                     </li>
                 </ul>
-                <p>{T.get('copy.share.description')}</p>
+                <div className="xxText">
+                    <p>{T.get('copy.share.description')}</p>
+                </div>
                 <div className="xxFormField">
                     <label
                         className="xxLabel"
