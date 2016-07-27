@@ -114,6 +114,13 @@ var Videos = React.createClass({
                                 type="dark"
                                 getContent={self.getTooltipText}
                             />
+                            <ReactTooltip
+                                id="staticTooltip"
+                                class="xxHoverTooltip"
+                                effect="solid"
+                                place="left"
+                                type="light"
+                            />
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
