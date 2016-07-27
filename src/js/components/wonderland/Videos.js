@@ -184,6 +184,7 @@ var Videos = React.createClass({
                             prevPageAPICall: '',
                             nextPageAPICall: ''
                         });
+                        self.context.router.push(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
                     }
                     else {
                         self.setState({
