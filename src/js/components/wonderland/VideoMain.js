@@ -212,6 +212,7 @@ var VideoMain = React.createClass({
                 });
             })
             .catch(function(err) {
+                console.log('Unexpected error: ' + err.stack);
                 self.setState({
                     isHidden: true
                 });
