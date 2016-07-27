@@ -18,6 +18,12 @@ var ZoomThumbnail = React.createClass({
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string
     },
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.props.handleClose(e);
+        self.props.openLearnMore(e);
+    },
     render: function() {
         var self = this,
             activeClass = (self.props.index === self.props.selectedItem ? ' is-active' : ''),
@@ -67,7 +73,7 @@ var ZoomThumbnail = React.createClass({
                             })
                         }
                     </ul>
-                    <p>{whyThisImage}</p>
+                    <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
                     <Lift displayThumbLift={self.props.thumbnail.lift}/>
                     <nav className="xxImageZoom-nav">
                         <a

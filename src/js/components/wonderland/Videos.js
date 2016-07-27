@@ -103,6 +103,7 @@ var Videos = React.createClass({
                                 videoCountServed={self.state.videoCountServed}
                                 videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
                                 openSignUp={self.props.openSignUp}
+                                openLearnMore={self.props.openLearnMore}
                                 isMaxLimit={self.state.isMaxLimit}
                                 setTooltipText={self.setTooltipText}
                             />
