@@ -47,7 +47,6 @@ $thumbnail-hover-size-px: 2px;
     }
 
     &--lowLight {
-        cursor: default;
         &::after {
             background-color: $base-color;
         }
@@ -74,7 +73,7 @@ $thumbnail-hover-size-px: 2px;
     }
 
     &--default,{
-        cursor: default;
+        cursor: pointer;
     }
 
     &--neon {
@@ -109,9 +108,13 @@ $thumbnail-hover-size-px: 2px;
     // helps with old(er) warped videos - #1408
     object-fit: cover;
 
-    .xxThumbnail[href]:hover > & {
+    .xxThumbnail--highLight[href]:hover > & {
         border-color: $accent-color;
     }
+
+    .xxThumbnail--lowLight[href]:hover > & { 
+        border-color: $base-color;  
+    } 
 
     .xxThumbnail--zoom & {
         box-sizing: border-box;

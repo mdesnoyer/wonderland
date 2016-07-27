@@ -18,6 +18,57 @@ var ZoomThumbnail = React.createClass({
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string
     },
+    componentWillReceiveProps: function() {
+        var valenceDisplay = this.getValenceDisplay();
+        this.setState({valenceDisplay: valenceDisplay}); 
+    },
+    componentDidMount: function() { 
+        var valenceDisplay = this.getValenceDisplay();
+        this.setState({valenceDisplay: valenceDisplay}); 
+    },  
+    getInitialState: function() {
+        return {
+            valenceDisplay: this.getValenceDisplay() 
+        } 
+    },
+    getValenceDisplay: function() { 
+        var valenceDisplay = null;  
+        var whyThisImage = T.get('copy.whyThisImage') 
+        var whyNotThisImage = T.get('copy.whyNotThisImage') 
+        if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') { 
+            valenceDisplay = (<div>
+                <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
+                <p>{whyNotThisImage}</p>
+            </div>)
+        } 
+        else if (this.props.valence.length > 0) { 
+            valenceDisplay = (
+                 <div> 
+                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2> 
+                    <ul className="xxTagList">
+                        {
+                            this.props.valence.map(function(v, i) {
+                                while (i < 3) {
+                                    return (
+                                        <li className="xxTagList-item" key={i}>{v}</li>
+                                    );
+                                }
+                            })
+                        }
+                    </ul>
+                    <p>{whyThisImage}</p>
+                 </div> 
+            );
+            valenceDisplay = valenceDisplay; 
+        }
+        else { 
+            valenceDisplay = (<div>
+                <h2 className="xxSubtitle xxImageZoom-subtitle">Getting Features</h2>
+                <div className="xxValenceloadingSpinner"></div>
+            </div>)
+        }
+        return valenceDisplay;  
+    },  
     render: function() {
         var self = this,
             activeClass = (self.props.index === self.props.selectedItem ? ' is-active' : ''),
@@ -27,8 +78,7 @@ var ZoomThumbnail = React.createClass({
             orientation = (w === h) ? 'square' : ((w > h) ? 'landscape' : 'portrait'),
             styleOpts = {
                 maxWidth: 'calc((100vh - 242px) / (' + h + ' / ' + w + '))'
-            },
-            whyThisImage = T.get('copy.whyThisImage')
+            }
         ;
         if (self.props.extraClass) {
             extraClass.push(self.props.extraClass);
@@ -55,19 +105,7 @@ var ZoomThumbnail = React.createClass({
                     />
                 </div>
                 <div className="xxImageZoom-content">
-                    <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
-                    <ul className="xxTagList">
-                        {
-                            self.props.valence.map(function(v, i) {
-                                while (i < 3) {
-                                    return (
-                                        <li className="xxTagList-item" key={i}>{v}</li>
-                                    );
-                                }
-                            })
-                        }
-                    </ul>
-                    <p>{whyThisImage}</p>
+                    {self.state.valenceDisplay} 
                     <Lift displayThumbLift={self.props.thumbnail.lift}/>
                     <nav className="xxImageZoom-nav">
                         <a

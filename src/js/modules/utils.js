@@ -338,6 +338,22 @@ var UTILS = {
         ;
         return bScore - aScore;
     },
+    findDefaultThumbnail: function(thumbSet) {
+        var defaultThumbnail = thumbSet.thumbnails.find(
+            x => x.type === 'default');
+        var interestingThumbnails = thumbSet.thumbnails.filter(
+            x => x.type === 'neon' || x.type === 'customupload');
+        if (!defaultThumbnail) {
+            // Pick the interesting thumb with the lowest score
+            defaultThumbnail = interestingThumbnails.filter(
+                x => x.neon_score > 0).sort(
+                    (a,b) => a.neon_score - b.neon_score)[0];
+            if (!defaultThumbnail) {
+                return;
+            }
+        }
+        return defaultThumbnail; 
+    }, 
     fixThumbnails: function(rawThumbnails, ignoreBad) {
 
         if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {

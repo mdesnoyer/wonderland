@@ -24,14 +24,21 @@ var Thumbnails = React.createClass({
     getInitialState: function() {
         var self = this;
         var curSelection = self.props.demographicThumbnails[self.props.selectedDemographic];
+        var goodThumbs = UTILS.fixThumbnails(curSelection.thumbnails, true);
+        var badThumbs = self.organizeBadThumbs(
+            curSelection.bad_thumbnails,
+            curSelection.thumbnails);
+        var overlayThumbs = self.buildOverlayThumbs(goodThumbs, badThumbs); 
         return {
-            thumbnails: UTILS.fixThumbnails(curSelection.thumbnails, true),
+            thumbnails: overlayThumbs,
+            goodThumbs: goodThumbs, 
             selectedItem: 0,
             isThumbnailOverlayActive: false,
             isPageOverlayActive: false,
-            badThumbs: self.organizeBadThumbs(curSelection.bad_thumbnails,
-                                              curSelection.thumbnails),
-            showLowScores: false
+            badThumbs: badThumbs,
+            thumbsLength: overlayThumbs.length, 
+            showLowScores: false, 
+            defaultThumbnail: self.props.defaultThumbnail 
         };
     },
     handleKeyEvent: function(e) {
@@ -59,8 +66,11 @@ var Thumbnails = React.createClass({
                 var bads = self.organizeBadThumbs(
                     nextSelection.bad_thumbnails,
                     nextSelection.thumbnails);
-                self.setState({ thumbnails: goods, 
-                                badThumbs: bads }); 
+               
+                self.setState({ thumbnails: self.buildOverlayThumbs(goods, bads), 
+                                badThumbs: bads,
+                                goodThumbs: goods,  
+                                defaultThumbnail: nextProps.defaultThumbnail }); 
             }
         }
     },
@@ -69,7 +79,7 @@ var Thumbnails = React.createClass({
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.thumbnails[self.state.selectedItem]);
         self.setState({
-            selectedItem: (self.state.selectedItem === 0) ? (self.state.thumbnails.length - 1) : (self.state.selectedItem - 1)
+            selectedItem: (self.state.selectedItem === 0) ? (self.state.thumbsLength - 1) : (self.state.selectedItem - 1)
         });
     },
     handleClickNext: function(e) {
@@ -77,7 +87,7 @@ var Thumbnails = React.createClass({
         var self = this;
         TRACKING.sendEvent(self, arguments, self.state.thumbnails[self.state.selectedItem]);
         self.setState({
-            selectedItem: (self.state.selectedItem === self.state.thumbnails.length - 1) ? (0) : (self.state.selectedItem + 1)
+            selectedItem: (self.state.selectedItem === self.state.thumbsLength - 1) ? (0) : (self.state.selectedItem + 1)
         });
     },
     closeThumbnailOverlay: function(e) {
@@ -101,11 +111,11 @@ var Thumbnails = React.createClass({
                     closeThumbnailOverlay={self.closeThumbnailOverlay}
                     thumbnails={self.state.thumbnails}
                     selectedItem={self.state.selectedItem}
-                    total={self.state.thumbnails.length}
+                    total={self.state.thumbsLength}
                     handleClickPrevious={self.handleClickPrevious}
                     handleClickNext={self.handleClickNext}
                     handleKeyEvent={self.handleKeyEvent}
-                    displayThumbLift={self.props.displayThumbLift}
+                    displayThumbLift={self.props.displayThumbLift || 0}
                 />
             ) : null
         ;
@@ -118,6 +128,8 @@ var Thumbnails = React.createClass({
                     thumbnails={self.state.thumbnails}
                     videoId={self.props.videoId}
                     type="default"
+                    handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
+                    handleClick={self.toggleThumbnailOverlay}
                     isMobile={self.props.isMobile}
                 />
                 <FeatureThumbnail
@@ -141,9 +153,10 @@ var Thumbnails = React.createClass({
                     }
                     <ThumbnailCollection
                         videoId={self.props.videoId}
-                        thumbnails={self.state.thumbnails}
+                        thumbnails={self.state.goodThumbs}
                         handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
                         handleClick={self.toggleThumbnailOverlay}
+                        keyStart={1} // start these after the default 
                         type="highScores"
                         isMobile={self.props.isMobile}
                     />
@@ -170,6 +183,10 @@ var Thumbnails = React.createClass({
                         self.state.showLowScores || self.props.isMobile ? (
                             <ThumbnailCollection
                                 thumbnails={self.state.badThumbs}
+                                handleChildOnMouseEnter={self.props.handleChildOnMouseEnter}
+                                handleClick={self.toggleThumbnailOverlay}
+                                // length of goodthumbs + 1 for default
+                                keyStart={self.state.goodThumbs.length}
                                 type="lowScores"
                                 isMobile={self.props.isMobile}
                             />
@@ -186,6 +203,13 @@ var Thumbnails = React.createClass({
         });
         TRACKING.sendEvent(self, arguments, self.state.showLowScores);
     },
+    buildOverlayThumbs: function(goodThumbs, badThumbs) { 
+        var self = this,
+            dt = self.props.defaultThumbnail,
+            gtExcDt = goodThumbs.filter(x => x.type !== 'default'),
+            rv = [].concat(dt).concat(gtExcDt).concat(badThumbs); 
+        return rv; 
+    }, 
     organizeBadThumbs: function(allBadThumbs, goodThumbs) {
         // Filters a list of bad thumbnails so that we only have a the
         // set which is worse than the worst good thumb. Also, sorts

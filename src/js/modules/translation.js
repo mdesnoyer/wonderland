@@ -65,6 +65,8 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
+            'copy.whyNotThisImage': 'Neon automatically excludes low-scoring images that are dark, blurry, or otherwise unengaging before we identify the valence features present in your images. We surface low-scoring images here so you can get a feel for the range of images present in your video.',
+            'copy.whyNotThisImage.header': 'Low Scoring Image', 
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
             'copy.videoContent.email': 'Get an email summary of your image results for this video.',
