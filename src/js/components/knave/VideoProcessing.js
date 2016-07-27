@@ -60,9 +60,8 @@ var VideoProcessing = React.createClass({
                     >
                         <img 
                             src="/img/xx/close.png"
-                            alt={T.get('app.companyShortName')}
-                            title={T.get('app.companyShortName')}
-                            onClick={self.handleDeleteClick}
+                            alt={T.get('action.close')}
+                            title={T.get('action.close')}
                         />
                     </button>
                 );
