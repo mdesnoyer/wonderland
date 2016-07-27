@@ -64,7 +64,7 @@ var Videos = React.createClass({
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
         else if (self.state.isMaxLimit) {
-            alertMessage = <Message message={T.get('copy.analyzeVideo.limitdate', {'@date': self.state.refreshTime})} type="video" />;
+            alertMessage = <Message message={T.get('copy.analyzeVideo.limitMessage')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
