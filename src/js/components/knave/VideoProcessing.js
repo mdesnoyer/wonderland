@@ -44,7 +44,8 @@ var VideoProcessing = React.createClass({
             isError,
             seconds,
             timeRemaining, 
-            countdown = null
+            countdown = null,
+            collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
         errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
@@ -56,10 +57,18 @@ var VideoProcessing = React.createClass({
                         className="xxButton xxButton--delete-failed"
                         type="button"
                         onClick={self.handleDeleteClick}
-                    >x</button>
+                    >
+                        <img 
+                            src="/img/xx/close.png"
+                            alt={T.get('app.companyShortName')}
+                            title={T.get('app.companyShortName')}
+                            onClick={self.handleDeleteClick}
+                        />
+                    </button>
                 );
                 isError = true;
                 seconds = 1;
+                collectionClassName.push('xxCollection--failed');
                 break;
             case 'processing':
                 title = self.props.title;
@@ -68,6 +77,7 @@ var VideoProcessing = React.createClass({
                 isError = false;
                 seconds = self.props.seconds;
                 timeRemaining = self.props.timeRemaining;
+                collectionClassName.push('xxCollection--processing');
                 if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {  
                     countdown = (<Countdown 
                         seconds={self.props.timeRemaining}
@@ -87,7 +97,7 @@ var VideoProcessing = React.createClass({
 
         return ( 
             <div> 
-                <article className="xxCollection xxCollection--video xxCollection--processing">
+                <article className={collectionClassName.join(' ')}>
                     <h1 className="xxSubtitle">{self.props.videoState}</h1>
                     <h1 className="xxCollection-title">
                         {title}
