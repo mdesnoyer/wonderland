@@ -39,12 +39,9 @@ var VideoPageGuest = React.createClass({
         var _url = CONFIG.API_HOST +
             this.props.params.accountId +
             '/social/image/'
-
         // Config is missing the protocol. @TODO
-        if(_url.indexOf('http:') == -1 &&
-           _url.indexOf('https:') == -1) {
-            _url = 'https:' + _url;
-        }
+        UTILS.stripProtocol(_url)
+        _url = 'https:' + _url;
 
         const twitter_image_url = _url + 'twitter/' +
             '?share_token=' +
@@ -53,7 +50,6 @@ var VideoPageGuest = React.createClass({
             '?share_token=' +
             this.props.params.shareToken;
 
-        
         return this._baseMetaTags.concat([
             {property: 'og:image', content: image_url},
             {property: 'og:image:width', content: 800},
