@@ -40,6 +40,13 @@ var VideosPage = React.createClass({
             sidebarContent: 'signUp',
         });
     },
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'learnMore',
+        });
+    },
     componentDidMount: function() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
@@ -93,8 +100,10 @@ var VideosPage = React.createClass({
                     ]}
                 />
                 <SiteHeader sidebarContent={sidebarContent}/>
-                <Videos isMobile={isMobile} openSignUp={this.openSignUp} />
-
+                <Videos
+                    isMobile={isMobile} 
+                    openSignUp={this.openSignUp}
+                />
                 {
                     showTutorial ? (
                         <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />

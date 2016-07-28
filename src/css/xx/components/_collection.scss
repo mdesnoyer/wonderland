@@ -40,6 +40,12 @@ $collection-content-padding-top: 17px;
             animation: ribbon 5s infinite alternate ease-in-out;
         }
     }
+
+    &--failed {
+        border-top: $processing-ribbon-height solid $accent-color;
+        padding-top: $collection-padding-top - $processing-ribbon-height;
+        padding-bottom: $collection-padding-top - $processing-ribbon-height;
+    }
 }
 
 .xxCollection-title {

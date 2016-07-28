@@ -10,6 +10,8 @@ import T from '../../modules/translation';
 import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
+import Account from '../../mixins/Account';
+import moment from 'moment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,7 +19,7 @@ var Videos = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [AjaxMixin], // ReactDebugMixin
+    mixins: [AjaxMixin, Account], // ReactDebugMixin
     getInitialState: function() {
         return {
             errorMessageArray: [],
@@ -32,20 +34,11 @@ var Videos = React.createClass({
             previousPseudoPageUrl: '' // used to hold the Page before
         }
     },
-    componentWillMount: function() {
-        var self = this;
-        self.GET('limits')
-            .then(function(res) {
-                self.doFindMaxVideos(res.video_posts, res.max_video_posts)
-            })
-            .catch(function(err) {
-                self.context.router.push('*')
-            })
-    },
     componentDidMount: function() {
         var self = this;
         self._isMounted = true;
         self.doVideoSearch(1);
+        self.doLimitsSearch();
     },
     componentWillUnmount: function() {
         var self = this;
@@ -71,7 +64,7 @@ var Videos = React.createClass({
             alertMessage = <Message message={T.get('warning.noMoreVideosBody')} type="video" />;
         }
         else if (self.state.isMaxLimit) {
-            alertMessage = <Message message={T.get('copy.analyzeVideo.maxLimitHit')} type="video" />;
+            alertMessage = <Message message={T.get('copy.analyzeVideo.limitMessage')} type="video" />;
         }
         else {
             prevPageAPICall = self.state.prevPageAPICall;
@@ -79,37 +72,58 @@ var Videos = React.createClass({
         }
         return (
             <div>
-                <VideoUploadForm
-                    postHookSearch={self.doVideoSearch}
-                    postHookAnalysis={null}
-                    isVideoResults={true}
-                    videoCountServed={self.state.videoCountServed}
-                    isMaxLimit={self.state.isMaxLimit}
-                />
-                 {alertMessage}
-                <VideosResults
-                    videos={self.state.videos}
-                    handleNewSearch={self.handleNewSearch}
-                    prevPageAPICall={prevPageAPICall}
-                    nextPageAPICall={self.state.nextPageAPICall}
-                    currentPage={self.state.currentPage}
-                    isLoading={self.state.isLoading}
-                    isMobile={self.props.isMobile}
-                    videoCountServed={self.state.videoCountServed}
-                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                    openSignUp={self.props.openSignUp}
-                    isMaxLimit={self.state.isMaxLimit}
-                    setTooltipText={self.setTooltipText}
-                />
-                <ReactTooltip
-                    ref="tooltip"
-                    event="click"
-                    eventOff="mouseout"
-                    effect="solid"
-                    place="bottom"
-                    delayHide={1000}
-                    getContent={self.getTooltipText}
-                />
+                {alertMessage}
+                {
+                    self.state.isLoading ? (
+                        <div className="xxOverlay" >
+                            <div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div>
+                        </div>
+                    ) : null
+                }
+                            <VideoUploadForm
+                                postHookSearch={self.doVideoSearch}
+                                postHookAnalysis={null}
+                                isVideoResults={true}
+                                videoCountServed={self.state.videoCountServed}
+                                isMaxLimit={self.state.isMaxLimit}
+                                openSignUp={self.props.openSignUp}
+                                currentPage={self.state.currentPage}
+                                handleNewSearch={self.handleNewSearch}
+
+                            />
+                            <VideosResults
+                                videos={self.state.videos}
+                                handleNewSearch={self.handleNewSearch}
+                                prevPageAPICall={prevPageAPICall}
+                                nextPageAPICall={self.state.nextPageAPICall}
+                                currentPage={self.state.currentPage}
+                                isLoading={self.state.isLoading}
+                                isMobile={self.props.isMobile}
+                                videoCountServed={self.state.videoCountServed}
+                                videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                                openSignUp={self.props.openSignUp}
+                                openLearnMore={self.props.openLearnMore}
+                                isMaxLimit={self.state.isMaxLimit}
+                                setTooltipText={self.setTooltipText}
+                            />
+                            <ReactTooltip
+                                id="settableTooltip"
+                                ref="settableTooltip"
+                                event="click"
+                                eventOff="mouseout"
+                                effect="solid"
+                                place="bottom"
+                                delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
+                                type="dark"
+                                getContent={self.getTooltipText}
+                            />
+                            <ReactTooltip
+                                id="staticTooltip"
+                                class="xxHoverTooltip"
+                                effect="solid"
+                                place="left"
+                                type="light"
+                            />
                 {
                     self.props.isMobile ? (
                         <div className="xxCollection">
@@ -121,20 +135,12 @@ var Videos = React.createClass({
         );
     },
     getTooltipText: function() {
-        return this.refs.tooltip.state.placeholder;
+        return this.refs.settableTooltip.state.placeholder;
     },
     setTooltipText: function(textKey) {
-        this.refs.tooltip.setState({
+        this.refs.settableTooltip.setState({
             placeholder: T.get(textKey)
         });
-    },
-    doFindMaxVideos: function(count, max) {
-        var self = this;
-        if (count === max) {
-            self.setState({
-                isMaxLimit: true
-            })
-        }
     },
     handleNewSearch: function(pseudoPageUrl, pageAdjustment) {
         var self = this;
@@ -211,6 +217,32 @@ var Videos = React.createClass({
                 });
             })
         ;
+    },
+    doLimitsSearch: function() {
+        var self = this;
+        self.GET('limits')
+            .then(function(res) {
+                self.doFormatTime(res);
+                self.doFindMaxVideos(res.video_posts, res.max_video_posts);
+            })
+            .catch(function(err) {
+            });
+    },
+    doFormatTime: function(res) {
+        var self = this; 
+        var offset = moment().utcOffset();
+        var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').calendar().toLowerCase();
+        self.setState({
+            refreshTime: timeOfRefresh
+        });
+    },
+    doFindMaxVideos: function(count, max) {
+        var self = this;
+        if (count === max) {
+            self.setState({
+                isMaxLimit: true
+            });
+        }
     },
 });
 

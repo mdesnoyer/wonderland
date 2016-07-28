@@ -29,6 +29,7 @@ var VideosResults = React.createClass({
                                 created={video.created}
                                 isMobile={self.props.isMobile}
                                 openSignUp={self.props.openSignUp}
+                                openLearnMore={self.props.openLearnMore}
                                 seconds={video.estimated_time_remaining}
                                 setTooltipText={self.props.setTooltipText}
                             />

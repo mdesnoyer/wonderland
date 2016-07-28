@@ -6,10 +6,19 @@ import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Countdown from '../wonderland/Countdown';
 import Lift from './Lift';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoInfo = React.createClass({
+    getDefaultProps: function () {
+        return {
+            demographicThumbnails: [],
+            selectedDemographic: 0,
+            timeRemaining: 0,
+            videoState: UTILS.VIDEO_STATE_ENUM.process
+        }
+    },
     getInitialState: function() {
         var self = this,
             demographicOptions = []
@@ -20,7 +29,26 @@ var VideoInfo = React.createClass({
             demographicOptions: self.getDemographicOptions() 
         }
     },
+    componentDidMount: function() {
+        ReactTooltip.rebuild();
+    },
     componentWillReceiveProps: function(nextProps) {
+        if (this.props.demographicThumbnails.length !== 
+              nextProps.demographicThumbnails.length) { 
+            var dos = this.getDemographicOptions(); 
+            this.setState({ 
+                demographicOptions: dos, 
+                demographicThumbnails: nextProps.demographicThumbnails        
+            });
+            // Since we default to not showing the None, we need to 
+            // see if the length is exactly 2 -- after a thumbnail change 
+            // if it is set the selectedDemographic to 1 instead of 0
+            if (nextProps.demographicThumbnails.length === 2) { 
+                this.setState({ 
+                    selectedDemographic: 1 
+                }); 
+            }  
+        } 
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic
@@ -100,6 +128,8 @@ var VideoInfo = React.createClass({
                         return (
                             <a className="xxCollectionFilterToggle"
                                 data-action-label="refilter"
+                                data-for="staticTooltip"
+                                data-tip={T.get('tooltip.refilter.button')}
                                 onClick={self.props.handleMenuChange} >
                             </a>
                         );
@@ -108,7 +138,8 @@ var VideoInfo = React.createClass({
                 <div className="xxCollectionFilters">
                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     {(() => {
-                        if (self.state.demographicThumbnails) {
+                        // Show the demographic selector if they've run more than just the default.
+                        if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
                             return (
                                 <ReactSelect
                                     id="selectedDemographic"
@@ -120,9 +151,7 @@ var VideoInfo = React.createClass({
                                 />
                             );
                         } else {
-                            return (
-                                <span className="xxCollectionFilters-value">None</span>
-                            );
+                            return null;
                         }
                     })()}
                 </div>

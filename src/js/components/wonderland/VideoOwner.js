@@ -22,6 +22,7 @@ var VideoOwner = React.createClass({
     getDefaultProps: function() {
         var self = this;
         return {
+            selectedDemographic: 0,
             videoState: 'unknown',
             title: 'Unknown',
             error: '',
@@ -101,23 +102,24 @@ var VideoOwner = React.createClass({
         else {
             return (
                 <VideoMain
-                    isGuest={false}
-                    videoId={self.state.videoId}
-                    demographicThumbnails={self.state.demographicThumbnails}
-                    selectedDemographic={self.state.selectedDemographic}
-                    onDemoChange={self.onDemoChange} 
-                    timeRemaining={self.state.timeRemaining}
-                    refreshVideo={self.pingVideo}
-                    videoState={self.state.videoState}
-                    duration={self.state.duration}
-                    created={self.state.created}
-                    url={self.state.url}
-                    shareToken={self.state.shareToken}
-                    title={self.state.title}
-                    isMobile={self.props.isMobile}
                     badThumbs={self.state.badThumbs}
+                    created={self.state.created}
+                    demographicThumbnails={self.state.demographicThumbnails}
+                    duration={self.state.duration}
+                    isGuest={false}
+                    isMobile={self.props.isMobile}
+                    onDemoChange={self.onDemoChange} 
+                    openLearnMore={self.props.openLearnMore}
                     openSignUp={self.props.openSignUp}
+                    refreshVideo={self.pingVideo}
+                    selectedDemographic={self.state.selectedDemographic}
                     setTooltipText={self.props.setTooltipText}
+                    shareToken={self.state.shareToken}
+                    timeRemaining={self.state.timeRemaining}
+                    title={self.state.title}
+                    url={self.state.url}
+                    videoId={self.state.videoId}
+                    videoState={self.state.videoState}
                 />
             );
         }

@@ -15,7 +15,6 @@
     "babel": "^6.5.2",
     "babel-cli": "^6.11.4",
     "babel-jest": "^13.2.2",
-    "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
@@ -43,7 +42,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
-    "babel-polyfill": "^6.9.0",
+    "babel-polyfill": "^6.9.1",
     "bulma": "0.0.26",
     "clipboard": "^1.5.12",
     "fnv-plus": "^1.2.12",

@@ -35,12 +35,12 @@ var ShareLink = React.createClass({
             clipboard = new Clipboard(self.refs.copyUrl);
             clipboard.on('success', e => {
                 // Set the tooltip to reflect successful copy.
-                self.props.setTooltipText('copy.share.url.copied');
+                self.props.setTooltipText('action.textCopied');
                 e.clearSelection();
             });
             clipboard.on('error', e => {
                 // Ask the user to Ctrl-C.
-                self.props.setTooltipText('copy.share.url.selected');
+                self.props.setTooltipText('action.textSelected');
             });
         ;
         ReactTooltip.rebuild();
@@ -75,7 +75,9 @@ var ShareLink = React.createClass({
                         ><span>LinkedIn</span></a>
                     </li>
                 </ul>
-                <p>{T.get('copy.share.description')}</p>
+                <div className="xxText">
+                    <p>{T.get('copy.share.description')}</p>
+                </div>
                 <div className="xxFormField">
                     <label
                         className="xxLabel"
@@ -102,6 +104,7 @@ var ShareLink = React.createClass({
                         value={self.state.shareUrl}
                         ref="copyUrl"
                         type="button"
+                        data-for="settableTooltip"
                         data-tip
                     >{T.get('copy')}</button>
                 </div>

@@ -39,6 +39,7 @@ const _DEFAULT_LOCALE = 'en-US',
             apply: 'Apply',
             upload: 'Upload',
             tryItOut: 'Try it Out',
+            gotIt: 'Got it!',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -53,6 +54,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.shortenURL': 'Shorten URL',
             'action.close': 'Close',
             'action.analyze': 'Analyze',
+            'action.textCopied': 'Copied!',
+            // todo, if this is osx then ⌘ else ctrl.
+            'action.textSelected': 'Press ⌘-C to copy',
+            'action.saveMyImages': 'Save Images',
 
             rememberMe: 'Remember',
 
@@ -61,6 +66,8 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
+            'copy.whyNotThisImage': 'Neon automatically excludes low-scoring images that are dark, blurry, or otherwise unengaging before we identify the valence features present in your images. We surface low-scoring images here so you can get a feel for the range of images present in your video.',
+            'copy.whyNotThisImage.header': 'Low Scoring Image', 
             'copy.videoContent.delete': 'Are you sure you want to delete all of the images from this video collection?',
             'copy.videoContent.delete.title': 'Delete Collection',
             'copy.videoContent.email': 'Get an email summary of your image results for this video.',
@@ -76,7 +83,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
 
             'copy.signUp.success.title': 'Thank you for signing up for a Neon account',
-            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, let us know.',
+            'copy.signUp.success.body': 'You are one step closer to seeing your most clickable thumbnails. Please look for an email from us to verify your account. If you don\'t see it within 30 minutes, check your spam folders in case the email got misplaced.',
 
             'copy.signOut.title': 'Sign Out',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
@@ -90,7 +97,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
             'copy.analyzeVideo.body': '',
-            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit for the day. Come back tomorrow to analyze more videos and photos.',
+            'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit!',
+            'copy.analyzeVideo.limitMessage': 'You\u2019ve hit your limit. Come back tomorrow to process more videos, or sign up to increase your limit.',
+            'copy.analyzeVideo.limitdate': 'Come back tomorrow or sign up to increase your limit.', 
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',
@@ -228,6 +237,9 @@ const _DEFAULT_LOCALE = 'en-US',
             // Timers 
             'timer.loading' : 'loading...', 
             'timer.close' : 'almost...',
+
+            // Tooltips
+            'tooltip.refilter.button': 'Refilter',
  
             // Labels
             'label.username' : 'Username',
@@ -266,7 +278,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
-            'copy.defaultImage': 'Default Image',
+            'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
             'copy.valenceFeatures': 'Valence Features',
 
@@ -291,15 +303,13 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.share.facebook': '@neonthumbnails found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
-            'copy.share.twitter': '@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
+            'copy.share.twitter': '.@neonlab found the best image in my video and gave it a NeonScore. What’s your #NeonScore?',
             'copy.share.linkedin': 'Neon found the best image in my video and gave it a NeonScore. What’s your NeonScore?',
+            'copy.share.contentTitle': 'What\'s your Neon Score?',
             'copy.share.description': 'Copy the link below to share this collection. Anyone with this link can view your images for this video.',
             'copy.share.title': 'Neon Labs',
             'copy.share.main': 'Share Your Images',
             'copy.share.label': 'COLLECTION LINK',
-            'copy.share.url.copied': 'Copied!',
-            // todo, if this is osx then ⌘ else ctrl.
-            'copy.share.url.selected': 'Press ⌘-C to copy',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -341,7 +351,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'error.invalidEmail': 'Please enter a valid email address.',
             'error.unableToSendEmail': 'Oops! We\u2019re having trouble with your email at the moment. Please try again.',
             'error.contactUs': 'Oops! We can’t receive your message right now. Please try again or email us at ask@neon-lab.com.',
-            'error.unableToSignIn': 'Sorry, we are unable to sign you in. We can help you <a href="@link">recover your password</a>. ',
+            'error.unableToSignIn': 'Sorry, we are unable to sign you in.',
 
 
             'error.longVideo': 'Video too long! Please upload a video under 15 minutes long.',

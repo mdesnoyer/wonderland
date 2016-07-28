@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom'; 
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
@@ -36,6 +37,9 @@ var PagingControls = React.createClass({
         var self = this;
         document.body.onkeydown = '';
     },
+    componentDidUpdate: function() {
+      window.scrollTo(0, 0);
+    },
     render() {
         var self = this,
             // Its quite simple here:
@@ -56,33 +60,38 @@ var PagingControls = React.createClass({
                 {self.props.alertMessage}
                 <nav className="xxPagingControls-navigation">
                     <div className="xxPagingControls-navigation-item">
-                        <button
-                            ref="prevButton"
-                            data-loc={self.props.prevPageAPICall}
-                            disabled={prevDisabledAttribute}
-                            onClick={self.handlePrevButton}
-                            className={'xxButton xxButton--highlight'}
-                            title={T.get('action.previous')}
-                        >
-                            {T.get('action.previous')}
-                        </button>
+                        { prevDisabledAttribute ? null : (                    
+                            <button
+                                ref="prevButton"
+                                data-loc={self.props.prevPageAPICall}
+                                disabled={prevDisabledAttribute}
+                                onClick={self.handlePrevButton}
+                                aria-label={T.get('action.next')}
+                                title={T.get('action.previous')}
+                                className={"xxPagingControls-prev"}
+                            >
+                                {T.get('action.previous')}
+                            </button>
+                            )
+                        }
                     </div>
                     <div className="xxPagingControls-navigation-item">
-                        {T.get('copy.pageN', {
-                            '@n': self.props.currentPage
-                        })}
+                        {self.props.currentPage}
                     </div>
                     <div className="xxPagingControls-navigation-item">
-                        <button
-                            ref="nextButton"
-                            data-loc={self.props.nextPageAPICall}
-                            disabled={nextDisabledAttribute}
-                            onClick={self.handleNextButton}
-                            className={'xxButton xxButton--highlight'}
-                            title={T.get('action.next')}
-                        >
-                            {T.get('action.next')}
-                        </button>
+                    { nextDisabledAttribute  ? null : (
+                            <button
+                                ref="nextButton"
+                                data-loc={self.props.nextPageAPICall}
+                                disabled={nextDisabledAttribute}
+                                onClick={self.handleNextButton}
+                                className={"xxPagingControls-next"}
+                                aria-label={T.get('action.next')}
+                            >
+                                {T.get('action.next')}
+                            </button>
+                        )
+                    }
                     </div>
                 </nav>
             </div>

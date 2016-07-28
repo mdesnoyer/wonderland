@@ -11,6 +11,7 @@ import VideoDelete from './VideoDelete';
 import VideoFilters from './VideoFilters';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
+import ReactTooltip from 'react-tooltip';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,11 +31,14 @@ var VideoContent = React.createClass({
         }
     },
     componentWillReceiveProps: function(nextProps) {
-        this.setState({
-            selectedDemographic: nextProps.selectedDemographic
-        });
+        var self = this;
+        if (nextProps.selectedDemographic !== undefined) {
+            self.setState({
+                selectedDemographic: nextProps.selectedDemographic
+            });
+        }
         if (nextProps.timeRemaining) {
-            this.setState({
+            self.setState({
                 timeRemaining: nextProps.timeRemaining,
             });
         }
@@ -51,7 +55,7 @@ var VideoContent = React.createClass({
                     })
                     .then(function(json) {
                         self.setState({
-                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/index.html'
                         });
                     })
                     .catch(function(err) {
@@ -109,7 +113,7 @@ var VideoContent = React.createClass({
             case 'email':
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
-                                thumbnails={self.props.demographicThumbnails[self.props.selectedDemographic].thumbnails}
+                                thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
                                 collectionUrl={self.state.shareUrl}
                                 videoId={self.props.videoId}
                             />;
@@ -156,6 +160,7 @@ var VideoContent = React.createClass({
         });
     },  
     handleMenuChange: function(e) {
+        ReactTooltip.hide();
         var self = this,
             value = e && e.target ? e.target.dataset.actionLabel : e || defaultContent
         ;

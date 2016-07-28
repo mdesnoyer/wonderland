@@ -28,13 +28,9 @@ var SignUpForm = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        if (SESSION.active()) {
-            // If there's an active session with a user, there's no reason to be here
-            SESSION.user()
-                .then(function() {
-                    self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
-                })
-            ;
+        // If there's an active session with a user, there's no reason to be here
+        if (SESSION.isUser()) {
+            self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
         }
     },
     componentWillUnmount: function(e) {
@@ -76,20 +72,26 @@ var SignUpForm = React.createClass({
                 break;
         }
     },
+    handleSignIn: function() {
+        var self = this;
+        SESSION.end();
+        self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+    },
     render: function() {
         var self = this,
             terms = T.get('copy.agreeTerms', {
                 '@link': UTILS.DRY_NAV.TERMS.URL
             }),
-            signIn = T.get('copy.signUp.signIn', {
-                '@link' : UTILS.DRY_NAV.SIGNIN.URL
-            }),
             isValid = self.state.firstName && self.state.email && self.state.password && self.state.verifyPassword && (self.state.password === self.state.verifyPassword) && (self.state.mode !== 'loading'),
             submitClassName = ['xxButton', 'xxButton--highlight'],
+            verifyClassName = ['xxFormField'],
             userMessage = null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
+        }
+        if (self.state.verifyPassword && self.state.password !== self.state.verifyPassword) {
+            verifyClassName.push('has-error');
         }
         switch (self.state.mode) {
             case 'error':
@@ -121,7 +123,7 @@ var SignUpForm = React.createClass({
                         <fieldset>
                             <div className="xxText">
                                 <p>{T.get('copy.signUp.body')}</p>
-                                <p dangerouslySetInnerHTML={{__html: signIn}} />
+                                <p>Already have an account? <a href="#" onClick={self.handleSignIn}>Sign In</a>.</p>
                             </div>
                             {userMessage}
                             <div className="xxFormField">
@@ -171,7 +173,7 @@ var SignUpForm = React.createClass({
                                     required
                                 />
                             </div>
-                            <div className="xxFormField">
+                            <div className={verifyClassName.join(' ')}>
                                 {
                                     self.state.verifyPassword && self.state.password !== self.state.verifyPassword ? (
                                         <strong className="xxFormError">{T.get('error.passwordMatchInvalid')}</strong>

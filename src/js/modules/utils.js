@@ -328,6 +328,13 @@ var UTILS = {
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
+    TOOLTIP_DELAY_MILLIS: 500,
+
+    // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
+    // TODO migrate to an official Neon Facebook app.
+    FACEBOOK_APP_ID: '315978068791558',
+
+    NEON_TWITTER_HANDLE: 'neonlab',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
@@ -337,6 +344,25 @@ var UTILS = {
         ;
         return bScore - aScore;
     },
+    findDefaultThumbnail: function(thumbSet) {
+        defaultThumbnail = null; 
+        if (thumbSet && thumbSet.thumbnails) { 
+            var defaultThumbnail = thumbSet.thumbnails.find(
+                x => x.type === 'default');
+            var interestingThumbnails = thumbSet.thumbnails.filter(
+                x => x.type === 'neon' || x.type === 'customupload');
+            if (!defaultThumbnail) {
+                // Pick the interesting thumb with the lowest score
+                defaultThumbnail = interestingThumbnails.filter(
+                    x => x.neon_score > 0).sort(
+                        (a,b) => a.neon_score - b.neon_score)[0];
+                if (!defaultThumbnail) {
+                    return;
+                }
+            }
+        } 
+        return defaultThumbnail; 
+    }, 
     fixThumbnails: function(rawThumbnails, ignoreBad) {
 
         if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
@@ -412,7 +438,13 @@ var UTILS = {
     },
 
     makePercentage: function(rawNumber, decimalPlaces, showSymbol) {
-        return (rawNumber * 100).toFixed(decimalPlaces) + (showSymbol ? '%' : '');
+        var hundreds = rawNumber * 100;
+        // Make sure we don't get -0%
+        const minDiff = 5/Math.pow(10, decimalPlaces+1);
+        if (hundreds < 0 && hundreds > -minDiff) {
+            hundreds += minDiff;
+        }
+        return hundreds.toFixed(decimalPlaces) + (showSymbol ? '%' : '');
     },
     generateId: function() {
         var id = shortid.generate(),
@@ -423,10 +455,6 @@ var UTILS = {
     isValidDate: function(d) {
         var niceDate = d.split(' ').join('T'); // hackety hack hack ugh spit
         return !isNaN(Date.parse(niceDate));
-    },
-    buildTooltipClass: function(existingClass, position) {
-        // https://github.com/chinchang/hint.css
-        return existingClass + '  hint--' + position + '  hint--no-animate  wonderland-tooltip -' + position;
     },
     dropboxUrlFilter: function(s) {
         var returnValue = s;

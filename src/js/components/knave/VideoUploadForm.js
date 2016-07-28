@@ -8,7 +8,7 @@ import TRACKING from '../../modules/tracking';
 import Account from '../../mixins/Account';
 import cookie from 'react-cookie';
 import VideoUploadOverlay from './VideoUploadOverlay';
-import DropDown from './DropDown';
+import OverLayMessage from './OverLayMessage'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -27,7 +27,8 @@ var VideoUploadForm = React.createClass({
         var self = this;
         return {
             isOpen: false,
-            error: null
+            error: null,
+            isOpenMessage: false
         };
     },
     toggleOpen: function(e) {
@@ -42,7 +43,8 @@ var VideoUploadForm = React.createClass({
         var self = this;
         self.setState({
             isOpen: false,
-            error: false
+            error: false,
+            isOpenMessage: false
         }, function() {
             self.sendVideoUrl(url)
         });
@@ -66,7 +68,13 @@ var VideoUploadForm = React.createClass({
         else {
             self.POST('videos', options)
                 .then(function(json) {
-                    if (self.props.postHookAnalysis) {
+                    // if the a video is uploaded past the first page(greate than 1)
+                    if (self.props.currentPage > 1) {
+                        //we use the newsearch function in videos to adjust the page 
+                        // 1 minus by the current page 
+                        self.props.handleNewSearch('?', 1 - self.props.currentPage)
+                    }
+                    else if (self.props.postHookAnalysis) {
                         self.props.postHookAnalysis(json);
                     }
                     else {
@@ -92,8 +100,7 @@ var VideoUploadForm = React.createClass({
                 break;
             case 402:
                 self.setState({
-                    isOpen: true,
-                    error: T.get('error.unpaidAccountLimit')
+                    isOpenMessage: true,
                 });
                 break;
             default:
@@ -113,6 +120,12 @@ var VideoUploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
+                    <OverLayMessage 
+                        message={T.get('error.unpaidAccountLimit')}
+                        messageFunction={self.props.openSignUp}
+                        isOpenMessage={self.state.isOpenMessage}
+                        type="limit"
+                    />
                 <a
                     className="xxUploadButton"
                     title={T.get('action.analyze')}

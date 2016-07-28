@@ -1,0 +1,75 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$onboarding-countdown-height: $form-element-height;
+$onboarding-text-padding: 18px;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxVideoloadingSpinner {
+    @include all-caps-title;
+
+	@keyframes flickerAnimation {
+	  0%   { opacity: 1; }
+	  50%  { opacity: 0.7; }
+	  100% { opacity: 1; }
+	}
+
+    position: absolute;
+    top: 50vh;
+    right: 0;
+    left: 0;
+    z-index: $z-index-feature-content;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    color: $secondary-color;
+
+    animation: flickerAnimation 2s infinite;
+}
+
+.xxValenceloadingSpinner {
+    float: right;
+    position: relative;
+    z-index: 1;
+    bottom: 40px;
+    color: $accent-color;
+    cursor: pointer;
+    transform: rotate(0deg);
+    animation: rotate 2s infinite linear;
+    display: inline-block;
+    margin-left: .5em;
+
+    @include breakpoint-mobile {
+        display: none;
+    }
+
+    &::after {
+        @include font-awesome('f021');
+
+        display: block;
+        box-sizing: border-box;
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        border: 1px solid $accent-color;
+        background: $white;
+        font-size: 15px;
+        line-height: 26px;
+        text-align: center;
+        transform: rotate(-60deg);
+        transform-origin: 50% 50%;
+        transition: transform $default-transition, color $default-transition;
+    }
+
+    &:hover {
+        .xxCollectionFilterToggle-label {
+            color: $base-color;
+        }
+
+        &::after {
+            background: $accent-color;
+            color: $white;
+            transform: rotate(0deg);
+        }
+    }
+}
