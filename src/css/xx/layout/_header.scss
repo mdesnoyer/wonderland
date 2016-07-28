@@ -26,7 +26,7 @@
     position: absolute;
     right: $gutter-width;
     bottom: -2px; /* Align with baseline of logo due to line-height limitations */
-    z-index: $zindex-header;
+    z-index: $z-index-header;
     font-size: 16px;
     line-height: 1;
 
@@ -70,7 +70,7 @@
     width: 120px;
     height: 50px;
     bottom: 0;
-    z-index: $zindex-overlay;
+    z-index: $z-index-overlay;
     left: $gutter-width;
 
     @include breakpoint-mobile {
