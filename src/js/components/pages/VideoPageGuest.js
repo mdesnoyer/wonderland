@@ -24,6 +24,20 @@ var VideoPageGuest = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    openSignUp: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'signUp',
+        });
+    },
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'learnMore',
+        });
+    },
     _baseMetaTags: [
         {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
         {property: 'og:type', content: 'article'},
@@ -59,6 +73,7 @@ var VideoPageGuest = React.createClass({
     },
     getInitialState: function () {
         return {
+            sidebarContent: null,
             mode: 'loading',
             showTutorial: false,
             noAccount: false,
@@ -138,6 +153,7 @@ var VideoPageGuest = React.createClass({
     },
     render: function() {
         var self = this;
+        const { sidebarContent } = this.state;
         try {
             return (
                 <main className='xxPage'>
@@ -145,7 +161,7 @@ var VideoPageGuest = React.createClass({
                         meta={self.state.metaTags}
                         title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                     />
-                    <SiteHeader />
+                    <SiteHeader sidebarContent={sidebarContent}/>
                     {
                         self.state.url? (
                             <VideoGuest
@@ -155,6 +171,8 @@ var VideoPageGuest = React.createClass({
                                 demographicThumbnails={self.state.demographicThumbnails}
                                 duration={self.state.duration}
                                 mode={self.state.mode}
+                                openSignUp={self.openSignUp}
+                                openLearnMore={self.openLearnMore}
                                 selectedDemographic={self.state.selectedDemographic}
                                 shareToken={self.props.params.shareToken}
                                 thumbnails={self.state.thumbnails}
