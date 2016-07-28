@@ -1,0 +1,4 @@
+# Proxy share request to prerender service
+/share/* https://prerender.neon-lab.com/https://development-app.neon-lab.com/direct_share/:splat 200
+# Catch all to the app's only real html
+/*    /index.html   200
