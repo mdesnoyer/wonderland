@@ -23,18 +23,20 @@ var Session = {
         var self = this,
             cookiePath = {
                 path: UTILS.COOKIE_DEFAULT_PATH
-            }
+            },
+            ret
         ;
         if (self.state.accountId) {
-            var ret = AjaxModule.doGet('', {
-                headers: {
-                    Authorization: 'Bearer ' + self.state.accessToken
-                }
-            }).promise;
-            console.log(ret);
+            ret = AjaxModule.doGet('');
+            ret.promise.then(function(res) {
+                console.log(res);
+            }).catch(function(err) {
+                console.log(err);
+                self.end();
+            });
         }
         else {
-             self.state = {
+            self.state = {
                 accessToken: accessToken,
                 refreshToken: refreshToken,
                 accountId: accountId,
