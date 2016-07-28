@@ -79,6 +79,9 @@ render((
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
+        // These routes handle share scraping by Social Media scrapers. The second
+        // is proxied through Neon's prerender service to the first. (The second url
+        // doesn't need to be mapped but in case the redirect doesn't fire it is kept.)
         <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
 
