@@ -28,7 +28,18 @@ var argv = require('yargs').argv;
 var env = argv.env ? argv.env : 'dev';
 var configSrc   = './env/config.json.' + env;
 
-var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico', './src/_headers'];
+var redirects_src;
+if (env == 'prod') {
+    redirects_src = './env/prod/_redirects';
+} else if (env == 'stage') {
+    redirects_src = './env/stage/_redirects';
+} else if (env == 'test') { // testymctestface
+    redirects_src = './env/test/_redirects';
+} else {
+    redirects_src = './env/dev/_redirects';
+}
+
+var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,7 +136,7 @@ gulp.task('clean:config', function() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('redirects', function() {
-    return gulp.src('./_redirects')
+    return gulp.src(redirects_src)
         .pipe(gulp.dest('./build/'));
 });
 

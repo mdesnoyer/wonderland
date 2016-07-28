@@ -21,15 +21,20 @@
 
 - [Netlify](https://netlify.com/)
 
+Netlify runs `npm install` before the build command runs if it detects a  `package.json` file (which we have). They cache the dependencies between builds.
+
 Sites are:
 
 | Domain | Actual | Build | Branch |
 | --- | --- | --- | --- |
+| `testymctestface.netlify.com` | `testymctestface.netlify.com` | `gulp live --env=dev` | CONFIGURABLE* |
 | `development-app.neon-lab.com` | `wonderland-development.netlify.com` | `gulp live --env=dev` | development |
 | `staging-app.neon-lab.com` | `wonderland-staging.netlify.com` | `gulp live --env=prod` | staging |
 | `app.neon-lab.com` | `wonderland-production.netlify.com` | `gulp live --env=prod` | production |
 
-Please ask if you require access (temporary password to access sites is `kneewrong`)
+* If you change the branch, please note that https://github.com/neon-lab/wonderland/settings/hooks ends up having 2 x webhooks. When we only need one. So if you reconnect you need to go in here. You need to delete the `https://api.netlify.com/hooks/github  (pull_request and push)` one.
+
+- Please ask if you require access (temporary password to access sites is `kneewrong`)
 
 ### SSL
 

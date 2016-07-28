@@ -1,3 +1,0 @@
-### Cache configuring headers
-/share/*
-  Cache-Control: max-age=300
