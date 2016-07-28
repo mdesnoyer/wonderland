@@ -139,7 +139,7 @@
     }
 
     &.is-open {
-        z-index: $zindex-above-everything;
+        z-index: $z-index-above-everything;
 
         &::before,
         &::after {

@@ -4,7 +4,7 @@
     position: absolute;
     bottom: 48px;
     left: 50%;
-    z-index: $zindex-feature-content;
+    z-index: $z-index-feature-content;
     white-space: nowrap;
     transform: translateX(-50%);
 }
@@ -23,11 +23,12 @@
     top: 0;
     right: 0;
     left: 0;
-    z-index: $zindex-feature-content - 1;
+    z-index: $z-index-feature-content - 1;
     height: 100vh;
     pointer-events: none;
 
-    &::before, &::after {
+    &::before,
+    &::after {
         content: '';
         position: fixed;
         top: 0;
@@ -168,7 +169,7 @@
 
 .is-onboarding {
     .xxOverlay {
-        z-index: $zindex-header - 1;
+        z-index: $z-index-header - 1;
     }
 
     .xxNav {
@@ -192,7 +193,7 @@
 
 .is-processing {
     .xxOverlay {
-        z-index: $zindex-header - 1;
+        z-index: $z-index-header - 1;
     }
 
     &.xxPage {
