@@ -25,6 +25,7 @@ var VideoGuest = React.createClass({
         videoId: React.PropTypes.string.isRequired,
         videoState: React.PropTypes.string.isRequired
     },
+    noop: function() {},
     render: function() {
         var self = this;
         try {
@@ -39,13 +40,21 @@ var VideoGuest = React.createClass({
                     return (
                             <VideoMain
                                 accountId={self.props.accountId}
+                                badThumbs={self.props.badThumbs}
                                 created={self.props.created}
                                 demographicThumbnails={self.props.demographicThumbnails} 
                                 duration={self.props.duration}
                                 isGuest={true}
+                                isMobile={false}
                                 messageNeededComponent={false}
+                                onDemoChange={self.noop}
+                                openLearnMore={self.props.openLearnMore}
+                                openSignUp={self.props.openSignUp}
+                                refreshVideo={self.noop}
                                 selectedDemographic={self.props.selectedDemographic}
+                                setTooltipText={self.noop}
                                 shareToken={self.props.shareToken}
+                                timeRemaining={0}
                                 title={self.props.title}
                                 url={self.props.url}
                                 videoId={self.props.videoId}

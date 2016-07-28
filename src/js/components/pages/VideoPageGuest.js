@@ -24,6 +24,20 @@ var VideoPageGuest = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    openSignUp: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'signUp',
+        });
+    },
+    openLearnMore: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            sidebarContent: 'learnMore',
+        });
+    },
     _baseMetaTags: [
         {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
         {property: 'og:type', content: 'article'},
@@ -59,6 +73,7 @@ var VideoPageGuest = React.createClass({
     },
     getInitialState: function () {
         return {
+            sidebarContent: null,
             mode: 'loading',
             showTutorial: false,
             noAccount: false,
@@ -99,14 +114,16 @@ var VideoPageGuest = React.createClass({
         }).then(function(json) {
             const video = json.videos[0];
             self.setState({
-                mode: 'success',
-                title: video.title,
-                duration: video.duration,
-                url: video.url,
+                badThumbs: video.demographic_thumbnails[0].bad_thumbnails,
+                created: video.created,
                 demographicThumbnails: video.demographic_thumbnails, 
+                duration: video.duration,
+                mode: 'success',
                 selectedDemographic: 0, 
-                videoState: video.state,
-                created: video.created
+                thumbnails: video.thumbnails,
+                title: video.title,
+                url: video.url,
+                videoState: video.state
             });
         }).catch(function(err) {
             switch (err.code) {
@@ -136,6 +153,7 @@ var VideoPageGuest = React.createClass({
     },
     render: function() {
         var self = this;
+        const { sidebarContent } = this.state;
         try {
             return (
                 <main className='xxPage'>
@@ -143,23 +161,25 @@ var VideoPageGuest = React.createClass({
                         meta={self.state.metaTags}
                         title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
                     />
-                    <SiteHeader />
+                    <SiteHeader sidebarContent={sidebarContent}/>
                     {
                         self.state.url? (
                             <VideoGuest
-                                videoId={self.props.params.videoId}
                                 accountId={self.props.params.accountId}
-                                shareToken={self.props.params.shareToken}
-                                videoState={self.state.videoState}
-                                thumbnails={self.state.thumbnails}
-                                sortedThumbnails={self.state.sortedThumbnails}
-                                title={self.state.title}
-                                duration={self.state.duration}
+                                badThumbs={self.state.badThumbs}
                                 created={self.state.created}
-                                url={self.state.url}
-                                mode={self.state.mode}
                                 demographicThumbnails={self.state.demographicThumbnails}
+                                duration={self.state.duration}
+                                mode={self.state.mode}
+                                openSignUp={self.openSignUp}
+                                openLearnMore={self.openLearnMore}
                                 selectedDemographic={self.state.selectedDemographic}
+                                shareToken={self.props.params.shareToken}
+                                thumbnails={self.state.thumbnails}
+                                title={self.state.title}
+                                url={self.state.url}
+                                videoId={self.props.params.videoId}
+                                videoState={self.state.videoState}
                             />
                         ) : null
                     }
