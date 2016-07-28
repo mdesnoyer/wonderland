@@ -25,17 +25,30 @@ var Session = {
                 path: UTILS.COOKIE_DEFAULT_PATH
             }
         ;
-        self.state = {
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            accountId: accountId,
-            user: user || self.state.user
-        };
-        cookie.save(UTILS.COOKIES_KEY.accessTokenKey, accessToken, cookiePath);
-        cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
-        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, cookiePath);
-        if (user) {
-            cookie.save(UTILS.COOKIES_KEY.userKey, user, cookiePath);
+        if (self.state.accountId) {
+            AjaxModule.doGet(self.state.accountId)
+                .then(function(res) {
+                    // do nothing, we don't want to reset account info
+                })
+                .catch(function(err) {
+                    console.log(err);
+                    self.end();
+                })
+            ;
+        }
+        else {
+             self.state = {
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+                accountId: accountId,
+                user: user || self.state.user
+            };
+            cookie.save(UTILS.COOKIES_KEY.accessTokenKey, accessToken, cookiePath);
+            cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
+            UTILS.saveAccountIdCookie(self.state.accountId);
+            if (user) {
+                cookie.save(UTILS.COOKIES_KEY.userKey, user, cookiePath);
+            }
         }
     },
     setAccountId: function(accountId) {
@@ -45,9 +58,7 @@ var Session = {
             }
         ;
         self.state.accountId = accountId;
-        cookie.save(UTILS.COOKIES_KEY.accountIdKey, accountId, {
-            path: UTILS.COOKIE_DEFAULT_PATH
-        });
+        UTILS.saveAccountIdCookie(accountId);
     },
     setMasqueradeAccountId: function(masqueradeAccountId) {
         var self = this,
