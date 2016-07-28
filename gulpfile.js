@@ -30,13 +30,13 @@ var configSrc   = './env/config.json.' + env;
 
 var redirects_src;
 if (env == 'prod') {
-    redirects_src = 'env/_redirects.prod';
+    redirects_src = './env/prod/_redirects';
 } else if (env == 'stage') {
-    redirects_src = 'env/_redirects.stage';
+    redirects_src = './env/stage/_redirects';
 } else if (env == 'test') { // testymctestface
-    redirects_src = 'env/_redirects.test';
+    redirects_src = './env/test/_redirects';
 } else {
-    redirects_src = 'env/_redirects.dev';
+    redirects_src = './env/dev/_redirects';
 }
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
