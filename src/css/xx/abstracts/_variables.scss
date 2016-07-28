@@ -18,22 +18,24 @@ $breakpoint-mobile: 767px; // below iPad size but could be anything
 $alto: #d0d0d0;
 $white: #fff;
 $dove-gray: #636363;
+$mine-shaft: #3d3d3d;
+$burning-orange: #ff6b31;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $base-color: #989898;
-$secondary-color: #3d3d3d;
+$secondary-color: $mine-shaft;
 $tertiary-color: #aaa;
 $quaternary-color: #ccc;
 
 $neon-color: #94a0ab;
-$accent-color: #ff6b31;
+$accent-color: $burning-orange;
 
 $bg-color: #f5f5f5;
 $bg-secondary-color: #f0f0f0;
 $bg-tertiary-color: #d8d8d8;
 
-$error-color: #f00;
+$error-color: $burning-orange;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -90,17 +92,17 @@ $max-possible-px: 100000px; // where Infinite is necessary
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$zindex-header: 1000;
-$zindex-upload-button: 500;
+$z-index-header: 1000;
+$z-index-upload-button: 500;
 
-$zindex-above-everything: 100000;
-$zindex-overlay: 10000;
+$z-index-above-everything: 100000;
+$z-index-overlay: 10000;
 
-$zindex-feature-content: 100;
+$z-index-feature-content: 100;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$default-transition-speed: .2s;
+$default-transition-speed: 0.2s;
 $default-transition-easing: ease-in-out;
 $default-transition: $default-transition-speed $default-transition-easing;
 
