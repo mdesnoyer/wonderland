@@ -26,15 +26,12 @@ var Session = {
             }
         ;
         if (self.state.accountId) {
-            AjaxModule.doGet(self.state.accountId)
-                .then(function(res) {
-                    // do nothing, we don't want to reset account info
-                })
-                .catch(function(err) {
-                    console.log(err);
-                    self.end();
-                })
-            ;
+            var ret = AjaxModule.doGet('', {
+                headers: {
+                    Authorization: 'Bearer ' + self.state.accessToken
+                }
+            }).promise;
+            console.log(ret);
         }
         else {
              self.state = {
@@ -93,6 +90,9 @@ var Session = {
         cookie.remove(UTILS.COOKIES_KEY.accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.devAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.stageAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        cookie.remove(UTILS.COOKIES_KEY.prodAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         cookie.remove(UTILS.COOKIES_KEY.userKey, {path: UTILS.COOKIE_DEFAULT_PATH});
         this.state = {

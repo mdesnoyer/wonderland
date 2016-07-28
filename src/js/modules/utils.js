@@ -247,6 +247,9 @@ var UTILS = {
     COOKIES_KEY: {
         accessTokenKey: 'at',
         accountIdKey: 'actId',
+        devAccountIdKey: 'devActId',
+        stageAccountIdKey: 'stageActId',
+        prodAccountIdKey: 'prodActId',
         masqueradeAccountIdKey: 'msqactId',
         refreshTokenKey: 'rt',
         rememberMeKey: 'rme',
@@ -525,10 +528,21 @@ var UTILS = {
           return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     },
     saveAccountIdCookie: function(accountId) {
-        var self = this,
-            labeledAccountId = CONFIG.LABEL + accountId
-        ;
-        cookie.save(self.COOKIES_KEY.accountIdKey, labeledAccountId, self.COOKIE_DEFAULT_PATH);
+        var self = this;
+        switch (CONFIG.LABEL) {
+            case 'dev':
+                cookie.save(self.COOKIES_KEY.devAccountIdKey, accountId, self.COOKIE_DEFAULT_PATH);
+                break;
+            case 'stage':
+                cookie.save(self.COOKIES_KEY.stageAccountIdKey, accountId, self.COOKIE_DEFAULT_PATH);
+                break;
+            case 'prod':
+                cookie.save(self.COOKIES_KEY.prodAccountIdKey, accountId, self.COOKIE_DEFAULT_PATH);
+                break;
+            default:
+                break;
+
+        }
     }
 };
 
