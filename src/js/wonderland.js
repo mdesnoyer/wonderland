@@ -79,7 +79,7 @@ render((
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
-        <Route path="/share_direct/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
+        <Route path="/direct/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
