@@ -1,0 +1,6 @@
+{
+    LABEL: 'stage',
+    AUTH_HOST: 'https://auth.neon-lab.com/api/v2/',
+    API_HOST: '//services.neon-lab.com/api/v2/',
+    STRIPE_KEY: 'pk_live_QwoZYSy5G3pxTTSl5gnL1SUh'
+}
