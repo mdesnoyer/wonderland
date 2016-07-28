@@ -38,7 +38,7 @@ git push origin --delete branchname
 - Make a short note of these changes, e.g. `#1234 - Brief description of ticket / change / fix`.
 - Create PR.
 - Ask someone else to sanity check the PR.
-- Once good, click `Merge`.
+- Once good, click `Merge`. DO NOT SQUASH.
 - Site should build on `staging` - please check Staging site for new changes.
 - Post note in `#wonderland` Slack channel along with note that `development` has been pushed to `staging`.
 

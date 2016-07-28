@@ -11,6 +11,14 @@ import ReactTooltip from 'react-tooltip';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoInfo = React.createClass({
+    getDefaultProps: function () {
+        return {
+            demographicThumbnails: [],
+            selectedDemographic: 0,
+            timeRemaining: 0,
+            videoState: UTILS.VIDEO_STATE_ENUM.process
+        }
+    },
     getInitialState: function() {
         var self = this,
             demographicOptions = []

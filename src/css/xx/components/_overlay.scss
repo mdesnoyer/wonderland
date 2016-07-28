@@ -29,7 +29,7 @@
     bottom: 0;
     left: 0;
     background: rgba($bg-color, 0.95);
-    z-index: $zindex-overlay;
+    z-index: $z-index-overlay;
 
     &--dark {
         background: rgba($secondary-color, 0.96);
@@ -41,7 +41,7 @@
     }
 
     &--visibleNav {
-        z-index: $zindex-header - 1;
+        z-index: $z-index-header - 1;
         min-width: $page-min-width + $gutter-width * 2;
 
         @media (max-width: $page-min-width + $gutter-width * 2) {
@@ -56,7 +56,7 @@
     right: 0;
     width: 53px;
     height: 53px;
-    z-index: $zindex-above-everything;
+    z-index: $z-index-above-everything;
     text-indent: $indent-off-screen;
 
     &::before,
