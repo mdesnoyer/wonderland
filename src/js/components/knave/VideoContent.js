@@ -26,7 +26,7 @@ var VideoContent = React.createClass({
         var self = this;
         return {
             contents: defaultContent,
-            shareUrl: '', 
+            shareUrl: null, 
             selectedDemographic: self.props.selectedDemographic || 0
         }
     },
@@ -48,6 +48,7 @@ var VideoContent = React.createClass({
         if (!self.props.isGuest) {
             self.getAccount()
                 .then(function(account) {
+                    debugger
                     self.GET('videos/share', {
                         data: {
                             video_id: self.props.videoId
@@ -56,6 +57,8 @@ var VideoContent = React.createClass({
                     .then(function(json) {
                         self.setState({
                             shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        }, function() {
+                            UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
                         });
                     })
                     .catch(function(err) {
@@ -66,6 +69,15 @@ var VideoContent = React.createClass({
                     console.log(err);
                 })
             ;
+        }
+    },
+    handleUrlCallback: function(response) {
+        var self = this;
+        debugger 
+        if (response.status_code === 200) {
+            self.setState({
+                shareUrl: response.data.url
+            });
         }
     },
     render: function() {

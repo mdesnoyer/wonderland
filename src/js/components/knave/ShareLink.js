@@ -15,18 +15,17 @@ var ShareLink = React.createClass({
     getInitialState: function() {
         var self = this;
         return {
-            shareUrl: self.props.shareUrl
+            shareUrl: self.props.shareUrl,
+            isLoading: true
         }
     },
-    componentWillMount: function() {
+    componentWillReceiveProps: function(nextProps) {
         var self = this;
-        UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback);
-    },
-    handleUrlCallback: function(response) {
-        var self = this;
-        if (response.status_code === 200) {
+        // debugger
+        if (nextProps.shareUrl) {
             self.setState({
-                shareUrl: response.data.url
+                shareUrl: nextProps.shareUrl,
+                isLoading: false
             });
         }
     },
@@ -83,13 +82,25 @@ var ShareLink = React.createClass({
                         className="xxLabel"
                         htmlFor="xx-share-link"
                     >{T.get('copy.share.label')}</label>
-                    <input
-                        className="xxInputText"
-                        id={"xx-share-link" + self.props.videoId}
-                        type="text"
-                        value={self.state.shareUrl}
-                        readOnly
-                    />
+                    {
+                        self.state.isLoading ? (
+                            <p>LOADING
+                                <span className="saving">
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                                </span>
+                            </p>
+                            ) : (
+                            <input
+                                className="xxInputText"
+                                id={"xx-share-link" + self.props.videoId}
+                                type="text"
+                                value={self.state.shareUrl}
+                                readOnly
+                            />
+                        )
+                    }
                 </div>
                 <div className="xxCollectionAction-buttons">
                     <button
