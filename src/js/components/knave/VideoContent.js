@@ -55,7 +55,7 @@ var VideoContent = React.createClass({
                     })
                     .then(function(json) {
                         self.setState({
-                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                            shareUrl: 'https://app.neon-lab.com/' + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
                         }, function() {
                             UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
                         });
