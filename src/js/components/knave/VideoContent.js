@@ -48,7 +48,6 @@ var VideoContent = React.createClass({
         if (!self.props.isGuest) {
             self.getAccount()
                 .then(function(account) {
-                    debugger
                     self.GET('videos/share', {
                         data: {
                             video_id: self.props.videoId
@@ -73,7 +72,6 @@ var VideoContent = React.createClass({
     },
     handleUrlCallback: function(response) {
         var self = this;
-        debugger 
         if (response.status_code === 200) {
             self.setState({
                 shareUrl: response.data.url

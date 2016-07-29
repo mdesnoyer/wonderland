@@ -7,6 +7,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import ReactTooltip from 'react-tooltip';
+import CollectionLoadingText from '../core/CollectionLoadingText';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -21,7 +22,6 @@ var ShareLink = React.createClass({
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        // debugger
         if (nextProps.shareUrl) {
             self.setState({
                 shareUrl: nextProps.shareUrl,
@@ -83,15 +83,7 @@ var ShareLink = React.createClass({
                         htmlFor="xx-share-link"
                     >{T.get('copy.share.label')}</label>
                     {
-                        self.state.isLoading ? (
-                            <p>LOADING
-                                <span className="saving">
-                                <span>.</span>
-                                <span>.</span>
-                                <span>.</span>
-                                </span>
-                            </p>
-                            ) : (
+                        self.state.isLoading ? <CollectionLoadingText /> : (
                             <input
                                 className="xxInputText"
                                 id={"xx-share-link" + self.props.videoId}
