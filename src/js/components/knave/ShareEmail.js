@@ -19,18 +19,6 @@ var ShareEmail = React.createClass({
             errorMessage: T.get('error.unableToSendEmail')
         }
     },
-    componentWillMount: function() {
-        var self = this;
-        UTILS.shortenUrl(self.props.collectionUrl, self.handleUrlCallback);
-    },
-    handleUrlCallback: function(response) {
-        var self = this;
-        if (response.status_code === 200) {
-            self.setState({
-                collectionUrl: response.data.url
-            });
-        }
-    },
     render: function() {
         var self = this,
             userMessage = false

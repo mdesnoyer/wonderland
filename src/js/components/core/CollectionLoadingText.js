@@ -10,7 +10,7 @@ var CollectionLoadingText = React.createClass({
         return (
             <p>
                 LOADING
-                <span className="xxCollection-loading">
+                <span className="xxCollectionLoadingText">
                 <span>.</span>
                 <span>.</span>
                 <span>.</span>
