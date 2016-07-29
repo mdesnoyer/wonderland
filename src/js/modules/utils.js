@@ -162,85 +162,85 @@ var UTILS = {
             URL: '/'
         },
         DASHBOARD: {
-            URL: '/dashboard/'
+            URL: '/dashboard'
         },
         PLUGINS: {
-            URL: '/plugins/'
+            URL: '/plugins'
         },
         PLUGINS_NEW: {
-            URL: '/plugins/new/'
+            URL: '/plugins/new'
         },
         PLUGINS_BRIGHTCOVE: {
-            URL: '/plugins/new/brightcove/'
+            URL: '/plugins/new/brightcove'
         },
         PLUGINS_BRIGHTCOVE_WIZARD: {
-            URL: '/plugins/new/brightcove/wizard/'
+            URL: '/plugins/new/brightcove/wizard'
         },
         SIGNIN: {
-            URL: '/signin/'
+            URL: '/signin'
         },
         SIGNOUT: {
-            URL: '/signout/'
+            URL: '/signout'
         },
         SETTINGS_ACCOUNT: {
-            URL: '/settings/account/'
+            URL: '/settings/account'
         },
         SETTINGS_USER: {
-            URL: '/settings/user/'
+            URL: '/settings/user'
         },
         SUPPORT: {
-            URL: '/support/'
+            URL: '/support'
         },
         TERMS: {
-            URL: '/terms/'
+            URL: '/terms'
         },
         ACCOUNT_PENDING: {
-            URL: '/account/pending/'
+            URL: '/account/pending'
         },
         ACCOUNT_CONFIRMED: {
-            URL: '/account/confirmed/'
+            URL: '/account/confirmed'
         },
         ACCOUNT_CONFIRM: {
-            URL: '/account/confirm' // needs to have no trailing slash
+            URL: '/account/confirm'
         },
         BILLING: {
-            URL: '/billing/'
+            URL: '/billing'
         },
         TELEMETRY: {
-            URL: '/telemetry/'
+            URL: '/telemetry'
         },
         USER_FORGOT: {
-            URL: '/user/forgot/'
+            URL: '/user/forgot'
         },
         USER_RESET: {
-            URL: '/user/reset/'
+            URL: '/user/reset'
         },
         API: {
-            URL: '/support/#api'
+            URL: '/support#api'
         },
         SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
-            URL: '/support/#brightcove-plugin-guide'
+            URL: '/support#brightcove-plugin-guide'
         },
         SUPPORT_CUSTOM_PLUGIN_GUIDE: {
-            URL: '/support/#custom-plugin-guide'
+            URL: '/support#custom-plugin-guide'
         },
         VIDEO_LIBRARY: {
-            URL: '/videos/'
+            URL: '/videos'
         },
         VIDEO_ANALYZE: {
-            URL: '/video/analyze/'
+            URL: '/video/analyze'
         },
         URL_SHORTENER: {
-            URL: '/shorturl/'
+            URL: '/shorturl'
         },
         DEMO: {
-            URL: '/demo/'
+            URL: '/demo'
         },
         COOKIES: {
-            URL: '/cookies/'
+            URL: '/cookies'
         },
         ONBOARDING_VIDEO_UPLOAD: {
-            URL: '/demo/upload/'
+            URL: '/demo/upload'
         },
     },
     COOKIES_KEY: {
