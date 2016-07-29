@@ -20,8 +20,8 @@ var CookiesPage = React.createClass({
             rememberMe: cookie.load(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
             rememberedEmail: cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
             viewShare: cookie.load(UTILS.COOKIES_KEY.viewShareKey) || 'None',
-            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None',
-            userKey: cookie.load(UTILS.COOKIES_KEY.userKey).username || 'None'
+            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None'
+            // userKey: cookie.load(UTILS.COOKIES_KEY.userKey).username || 'None'
         };
     },
     render: function() {

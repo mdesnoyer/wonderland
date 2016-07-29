@@ -2,6 +2,7 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
+import WebStorage from 'react-webstorage';
 import AjaxModule from './ajax';
 import UTILS from './utils';
 
@@ -13,17 +14,14 @@ const COOKIE_MAX_AGE = 5 * 365 * 24 * 60 * 60; // 5 years approx.
 
 var Session = {
     state: {
-        accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey),
-        refreshToken: cookie.load(UTILS.COOKIES_KEY.refreshTokenKey),
-        accountId: cookie.load(UTILS.COOKIES_KEY.accountIdKey),
+        accessToken: window.sessionStorage.getItem(UTILS.COOKIES_KEY.accessTokenKey),
+        refreshToken: window.sessionStorage.getItem(UTILS.COOKIES_KEY.refreshTokenKey),
+        accountId: window.sessionStorage.getItem(UTILS.COOKIES_KEY.accountIdKey),
         masqueradeAccountIdKey: undefined,
         user: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
         var self = this,
-            cookiePath = {
-                path: UTILS.COOKIE_DEFAULT_PATH
-            },
             ret
         ;
         if (self.state.accountId) {
@@ -42,40 +40,50 @@ var Session = {
                 accountId: accountId,
                 user: user || self.state.user
             };
-            cookie.save(UTILS.COOKIES_KEY.accessTokenKey, accessToken, cookiePath);
-            cookie.save(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken, cookiePath);
-            UTILS.saveAccountIdCookie(self.state.accountId);
-            if (user) {
-                cookie.save(UTILS.COOKIES_KEY.userKey, user, cookiePath);
+            // WE can not get react webstorage working 
+            var ss = window.sessionStorage;
+            try {
+                ss.setItem(UTILS.COOKIES_KEY.accessTokenKey, accessToken);
+                ss.setItem(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken);
+                ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
+                if (user) {
+                    ss.setItem(UTILS.COOKIES_KEY.userKey, user); 
+                }
+            } catch(e) {
+                console.log('Safari private browsing does not support session storage.');
             }
         }
     },
     setAccountId: function(accountId) {
         var self = this,
-            cookiePath = {
-                path: UTILS.COOKIE_DEFAULT_PATH
-            }
+            ss = window.sessionStorage
         ;
         self.state.accountId = accountId;
-        UTILS.saveAccountIdCookie(accountId);
+        try {
+            ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
+        } catch(e) {
+            console.log('Safari private browsing does not support session storage.');
+        }
     },
     setMasqueradeAccountId: function(masqueradeAccountId) {
         var self = this,
-            cookiePath = {
-                path: UTILS.COOKIE_DEFAULT_PATH
-            }
+            ss = window.sessionStorage
         ;
         self.state.masqueradeAccountId = masqueradeAccountId;
-        cookie.save(UTILS.COOKIES_KEY.masqueradeAccountIdKey, masqueradeAccountId, {
-            path: UTILS.COOKIE_DEFAULT_PATH
-        });
+        try {
+            ss.setItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey, masqueradeAccountId);
+        } catch(e) {
+            console.log('Safari private browsing does not support session storage.');
+        }
     },
     getMasqueradeAccountId: function() {
         var self = this;
         return self.state.masqueradeAccountId;
     },
     end: function() {
-        var ret;
+        var ret,
+            ss = window.sessionStorage
+        ;
         if (this.state.accessToken) {
             ret = AjaxModule.doPost('logout', {
                 host: CONFIG.AUTH_HOST,
@@ -89,14 +97,11 @@ var Session = {
                 resolve();
             });
         }
-        cookie.remove(UTILS.COOKIES_KEY.accessTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.refreshTokenKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.accountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.devAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.stageAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.prodAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.masqueradeAccountIdKey, {path: UTILS.COOKIE_DEFAULT_PATH});
-        cookie.remove(UTILS.COOKIES_KEY.userKey, {path: UTILS.COOKIE_DEFAULT_PATH});
+        ss.removeItem(UTILS.COOKIES_KEY.accountIdKey);
+        ss.removeItem(UTILS.COOKIES_KEY.refreshTokenKey);
+        ss.removeItem(UTILS.COOKIES_KEY.accessTokenKey);
+        ss.removeItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey);
+        ss.removeItem(UTILS.COOKIES_KEY.userKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
@@ -115,22 +120,28 @@ var Session = {
     },
     // Returns if there is an active session with a user (has an email account)
     isUser: function() {
-        return (cookie.load(UTILS.COOKIES_KEY.userKey) ? true : false);
+        return (this.state.userKey ? true : false);
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function(userData) {
-        var self = this;
+        var self = this,
+            ss = window.sessionStorage
+        ;
         return new Promise(function (resolve, reject) {
             if (userData) {
                 self.state.user = userData;
-                cookie.save(UTILS.COOKIES_KEY.userKey, userData, UTILS.COOKIE_DEFAULT_PATH);
+                try {
+                    ss.setItem(UTILS.COOKIES_KEY.userKey, userData); 
+                } catch(e) {
+                    console.log('Safari private browsing does not support session storage.');
+                }
             }
             else if (self.state.user) {
                 userData = self.state.user;
             }
             else {
                 try {
-                    userData = cookie.load(UTILS.COOKIES_KEY.userKey);
+                    userData = ss.getItem(UTILS.COOKIES_KEY.userKey);
                 }
                 catch (e) {
                     // TODO: Get user from API based on session
