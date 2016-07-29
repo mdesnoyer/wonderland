@@ -2,7 +2,6 @@
 
 import React from 'react';
 import cookie from 'react-cookie';
-import WebStorage from 'react-webstorage';
 import AjaxModule from './ajax';
 import UTILS from './utils';
 
