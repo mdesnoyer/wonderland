@@ -65,11 +65,6 @@ var VideoMain = React.createClass({
                 }
             } 
         }
-        if (nextProps.timeRemaining || nextState.timeRemaining) {
-            this.setState({
-                timeRemaining: nextProps.timeRemaining,
-            }); 
-        }
     },
     sendForValenceFeatureKeys: function(in_thumbnails) {
         var tidArray = [],
