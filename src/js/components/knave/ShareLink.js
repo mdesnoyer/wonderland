@@ -4,6 +4,7 @@ import React from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import AjaxMixin from '../../mixins/Ajax';
+import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import ReactTooltip from 'react-tooltip';
@@ -12,20 +13,47 @@ import CollectionLoadingText from '../core/CollectionLoadingText';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ShareLink = React.createClass({
-    mixins: [AjaxMixin],
+    mixins: [AjaxMixin, Account],
     getInitialState: function() {
         var self = this;
         return {
-            shareUrl: self.props.shareUrl,
+            shareUrl: '',
             isLoading: true
         }
     },
-    componentWillReceiveProps: function(nextProps) {
+    componentWillMount: function() {
         var self = this;
-        if (nextProps.shareUrl) {
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: 'https://app.neon-lab.com/' + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/',
+                            isLoading: false
+                        }, function() {
+                            UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
+    },
+    handleUrlCallback: function(response) {
+        var self = this;
+        if (response.status_code === 200) {
             self.setState({
-                shareUrl: nextProps.shareUrl,
-                isLoading: false
+                shareUrl: response.data.url
             });
         }
     },
