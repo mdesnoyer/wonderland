@@ -43,6 +43,7 @@ import XXOnboarding from './xx/XXOnboarding';
 import XXBlankCanvas from './xx/XXBlankCanvas';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import DemoUploadPage from './components/pages/DemoUploadPage';
+import TRACKING from './modules/tracking';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -52,7 +53,7 @@ window.CONFIG = CONFIG;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 render((
-    <Router history={browserHistory}>
+        <Router history={browserHistory} onUpdate={TRACKING.logPageView}>
 
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
