@@ -47,10 +47,9 @@ var Account = React.createClass({
             })
         ;
     },
-    handleLogOut: function(e) {
+    handleSignOut: function(e) {
         var self = this;
         e.preventDefault();
-        SESSION.end();
         self.context.router.push(UTILS.DRY_NAV.SIGNOUT.URL);
     },
     render: function() {
@@ -69,7 +68,7 @@ var Account = React.createClass({
                     ) : ''
                 }
                 <div className="xxFormButtons">
-                    <button className="xxButton" type="button" onClick={self.handleLogOut}>{T.get('action.signOut')}</button>
+                    <button className="xxButton" type="button" onClick={self.handleSignOut}>{T.get('action.signOut')}</button>
                 </div>
                 {
                     // (!self.state.isPaidUser) ? '' : (

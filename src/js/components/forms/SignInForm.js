@@ -113,6 +113,7 @@ var SignInForm = React.createClass({
                     }
                 })
                 .then(function (res) {
+                    SESSION.end();
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
                     self._isSubmitted = false;
                     if (typeof(res.account_ids[0]) === 'undefined') {

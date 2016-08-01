@@ -16,18 +16,7 @@ var SignOutPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     componentWillMount: function() {
-        var self = this;
-        if (SESSION.active()) {
-            SESSION.user()
-                .then(function(userData) {
-                    SESSION.end();
-                })
-                .catch(function(err) {
-                    SESSION.end();
-                    self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
-                })
-            ;
-        }
+        SESSION.end();
     },
     render: function() {
         var self = this;

@@ -3,6 +3,7 @@
 import T from './translation';
 import moment from 'moment';
 import reqwest from 'reqwest';
+import cookie from 'react-cookie';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -243,16 +244,16 @@ var UTILS = {
             URL: '/demo/upload/'
         },
     },
-    COOKIES_KEY: {
-        accessTokenKey: 'at',
-        accountIdKey: 'actId',
-        masqueradeAccountIdKey: 'msqactId',
-        refreshTokenKey: 'rt',
-        rememberMeKey: 'rme',
-        rememberedEmailKey: 'ru',
-        userKey: 'user_info',
-        viewShareKey: 'footprintCookieViewShare',
-        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
+    COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
+        accessTokenKey: 'neonses_at',
+        accountIdKey: 'neonses_actId',
+        masqueradeAccountIdKey: 'neonses_msqactId',
+        refreshTokenKey: 'neonses_rt',
+        rememberMeKey: 'neon_rme',
+        rememberedEmailKey: 'neon_ru',
+        userKey: 'neonses_user_info',
+        viewShareKey: 'neon_footprintCookieViewShare',
+        analyzeVideoKey: 'neon_footprintCookieAnalyzeVideo'
     },
     FILTERS_GENDER_AGE: [
         {
