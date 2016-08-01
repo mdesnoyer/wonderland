@@ -33,8 +33,7 @@ var ShareLink = React.createClass({
                     })
                     .then(function(json) {
                         self.setState({
-                            shareUrl: 'https://app.neon-lab.com/' + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/',
-                            isLoading: false
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
                         }, function() {
                             UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
                         });
@@ -53,8 +52,12 @@ var ShareLink = React.createClass({
         var self = this;
         if (response.status_code === 200) {
             self.setState({
-                shareUrl: response.data.url
+                shareUrl: response.data.url,
+                isLoading: false
             });
+        }
+        else {
+            self.setState({ isLoading: false });
         }
     },
     componentDidMount: function() {

@@ -50,9 +50,7 @@ var ShareEmail = React.createClass({
     handleUrlCallback: function(response) {
         var self = this;
         if (response.status_code === 200) {
-            self.setState({
-                shareUrl: response.data.url
-            });
+            self.setState({ shareUrl: response.data.url });
         }
     },
     render: function() {
