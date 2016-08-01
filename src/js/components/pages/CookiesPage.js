@@ -12,16 +12,17 @@ import cookie from 'react-cookie';
 
 var CookiesPage = React.createClass({
     getInitialState: function() {
+        var ss = window.sessionStorage;
         return {
-            accessToken: cookie.load(UTILS.COOKIES_KEY.accessTokenKey) || 'None',
-            accountId: cookie.load(UTILS.COOKIES_KEY.accountIdKey) || 'None',
-            masqueradeAccountId: cookie.load(UTILS.COOKIES_KEY.masqueradeAccountIdKey) || 'None',
-            refreshToken: cookie.load(UTILS.COOKIES_KEY.refreshTokenKey) || 'None',
-            rememberMe: cookie.load(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
-            rememberedEmail: cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
-            viewShare: cookie.load(UTILS.COOKIES_KEY.viewShareKey) || 'None',
-            analyzeVideo: cookie.load(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None',
-            userKey: cookie.load(UTILS.COOKIES_KEY.userKey).username || 'None'
+            accessToken: ss.getItem(UTILS.COOKIES_KEY.accessTokenKey) || 'None',
+            accountId: ss.getItem(UTILS.COOKIES_KEY.accountIdKey) || 'None',
+            masqueradeAccountId: ss.getItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey) || 'None',
+            refreshToken: ss.getItem(UTILS.COOKIES_KEY.refreshTokenKey) || 'None',
+            rememberMe: ss.getItem(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
+            rememberedEmail: ss.getItem(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
+            viewShare: ss.getItem(UTILS.COOKIES_KEY.viewShareKey) || 'None',
+            analyzeVideo: ss.getItem(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None',
+            userKey: ss.getItem(UTILS.COOKIES_KEY.userKey) || 'None'
         };
     },
     render: function() {
