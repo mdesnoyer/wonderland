@@ -9,7 +9,7 @@ export default class Countdown extends React.Component {
         this.state = {
             seconds: parseInt(props.seconds || 1),
             classPrefix: props.classPrefix || 'xxOnboardingCountdown', 
-            displayLoading: props.displayLoading || false  
+            displayLoading: props.displayLoading || false
         };
     }
 
@@ -18,13 +18,11 @@ export default class Countdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.state.seconds) {
-            this.setState({
-                seconds: nextProps.seconds
-            }, function() {
-                this.setProcessingTimer()
-            });
-        } 
+        this.setState({
+            seconds: nextProps.seconds
+        }, function() {
+            this.setProcessingTimer()
+        });
     }
 
     componentWillUnmount() {
@@ -34,6 +32,7 @@ export default class Countdown extends React.Component {
     }
 
     setProcessingTimer() {
+        clearTimeout(this.__processingTimer);
         this.__processingTimer = setTimeout(() => {
             const { seconds } = this.state;
 

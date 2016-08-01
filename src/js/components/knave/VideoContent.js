@@ -37,11 +37,6 @@ var VideoContent = React.createClass({
                 selectedDemographic: nextProps.selectedDemographic
             });
         }
-        if (nextProps.timeRemaining) {
-            self.setState({
-                timeRemaining: nextProps.timeRemaining,
-            });
-        }
     }, 
     componentWillMount: function() {
         var self = this;
@@ -90,7 +85,7 @@ var VideoContent = React.createClass({
                             handleDemographicChange={self.props.handleDemographicChange}
                             selectedDemographic={self.props.selectedDemographic}
                             demographicThumbnails={self.props.demographicThumbnails}
-                            timeRemaining={self.state.timeRemaining}
+                            timeRemaining={self.props.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
                         />
                         <VideoCollectionActions
