@@ -50,7 +50,7 @@ var Session = {
                     ss.setItem(UTILS.COOKIES_KEY.userKey, user);
                 }
             } catch(e) {
-                console.log('Safari private browsing does not support session storage.');
+                console.log('Browser does not support session storage, application will not be able to save session information.');
             }
         }
     },
@@ -62,7 +62,7 @@ var Session = {
         try {
             ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
         } catch(e) {
-            console.log('Safari private browsing does not support session storage.');
+            console.log('Browser does not support session storage, application will not be able to save session information.');
         }
     },
     setMasqueradeAccountId: function(masqueradeAccountId) {
@@ -73,7 +73,7 @@ var Session = {
         try {
             ss.setItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey, masqueradeAccountId);
         } catch(e) {
-            console.log('Safari private browsing does not support session storage.');
+            console.log('Browser does not support session storage, application will not be able to save session information.');
         }
     },
     getMasqueradeAccountId: function() {
@@ -133,7 +133,7 @@ var Session = {
                 try {
                     ss.setItem(UTILS.COOKIES_KEY.userKey, userData);
                 } catch(e) {
-                    console.log('Safari private browsing does not support session storage.');
+                    console.log('Browser does not support session storage, application will not be able to save session information.');
                 }
             }
             else if (self.state.user) {

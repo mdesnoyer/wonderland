@@ -18,8 +18,8 @@ var CookiesPage = React.createClass({
             accountId: ss.getItem(UTILS.COOKIES_KEY.accountIdKey) || 'None',
             masqueradeAccountId: ss.getItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey) || 'None',
             refreshToken: ss.getItem(UTILS.COOKIES_KEY.refreshTokenKey) || 'None',
-            rememberMe: ss.getItem(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
-            rememberedEmail: ss.getItem(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
+            rememberMe: cookie.load(UTILS.COOKIES_KEY.rememberMeKey) || 'None',
+            rememberedEmail: cookie.load(UTILS.COOKIES_KEY.rememberedEmailKey) || 'None',
             viewShare: ss.getItem(UTILS.COOKIES_KEY.viewShareKey) || 'None',
             analyzeVideo: ss.getItem(UTILS.COOKIES_KEY.analyzeVideoKey) || 'None',
             userKey: ss.getItem(UTILS.COOKIES_KEY.userKey) || 'None'
