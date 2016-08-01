@@ -44,6 +44,8 @@ import XXBlankCanvas from './xx/XXBlankCanvas';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import DemoUploadPage from './components/pages/DemoUploadPage';
 import TRACKING from './modules/tracking';
+import CollectionsMainPage from './components/pages/CollectionsMainPage';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -107,6 +109,7 @@ render((
         <Route path="/xx/mobile/" component={XXPageMobile} />
         <Route path="/xx/onboarding/" component={XXOnboarding} />
         <Route path="/xx/blank/" component={XXBlankCanvas} />
+        <Route path="/collections/" component={CollectionsMainPage} />
 
         <Route path="*" component={NotFoundPage} />
 
