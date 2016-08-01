@@ -47,7 +47,7 @@ var Session = {
                 ss.setItem(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken);
                 ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
                 if (user) {
-                    ss.setItem(UTILS.COOKIES_KEY.userKey, user);
+                    ss.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(user));
                 }
             } catch(e) {
                 console.log('Browser does not support session storage, application will not be able to save session information.');
@@ -131,7 +131,7 @@ var Session = {
             if (userData) {
                 self.state.user = userData;
                 try {
-                    ss.setItem(UTILS.COOKIES_KEY.userKey, userData);
+                    ss.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(userData));
                 } catch(e) {
                     console.log('Browser does not support session storage, application will not be able to save session information.');
                 }
@@ -141,7 +141,7 @@ var Session = {
             }
             else {
                 try {
-                    userData = ss.getItem(UTILS.COOKIES_KEY.userKey)
+                    userData = JSON.parse(ss.getItem(UTILS.COOKIES_KEY.userKey));
                 }
                 catch (e) {
                     // TODO: Get user from API based on session
