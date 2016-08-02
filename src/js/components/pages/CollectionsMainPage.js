@@ -27,7 +27,8 @@ var CollectionsMainPage = React.createClass({
             self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
         }
         else {
-            self.getAccountLimits(self.getCollections());
+            // self.getAccountLimits(self.getCollections());
+            self.getCollections()
         }
     },
     render: function() {
@@ -74,7 +75,6 @@ var CollectionsMainPage = React.createClass({
         e.target.dataset.type === 'image' && self.postImages(self.state.imageUrl);
     },
     postVideo: function(url) {
-        debugger
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -102,36 +102,40 @@ var CollectionsMainPage = React.createClass({
             .then(function(res) {
                 //keep next page link + limit
                 // {max_video_size: 900, max_video_posts: 25, refresh_time_video_posts: "2016-08-02 22:34:01.854838", video_posts: 0}
-                callback(res)
+                callback()
             })
             .catch(function(err) {
                 // if there is an erro we should we 
                 //more than likely need to sign in
             });
     },
-    getCollections: function(paging, refresh) {
+    getCollections: function(paging) {
+        debugger
+
         var self = this,
             options = {
                 data: {
-                    fields: UTILS.VIDEO_FIELDS,
                     limit: UTILS.RESULTS_PAGE_SIZE
                 }
             }
+
+        var accountId = SESSION.state.accountId
+        console.log(accountId)
+        SESSION.user()
+            .then(function(userData) {
+                debugger
+            })
+
+
+
         paging = paging ? paging.split('?')[1] : ''
-        self.GET('videos/search?' + paging, options)
+        self.GET('tags/search?', options)
             .then(function(res) {
-                if (!self.state.collections && !self.state.nextPage) {
-                    self.setState({
-                        nextPage: res.next_page,
-                        collections: res.videos
-                    })                    
-                }
-                else {
-                    self.setState({
-                        nextPage: res.next_page,
-                        collections: self.state.collections.concat(res.videos)
-                    })  
-                }
+                var requests = self.createRequests(res)
+                self.POST('batch', requests)
+                    .then(function(){
+
+                    })
             })
             .catch(function(err) {
                 debugger
@@ -156,6 +160,14 @@ var CollectionsMainPage = React.createClass({
             .catch(function(err){
                 debugger
             })
+    },
+    createRequests: function(res, type) {
+        var self = this;
+        var accountId = SESSION.state.accountId
+        // tags tag
+        // thumbs
+        //map 
+        // new object method realative_url: /api/v2/ACCOUNTID/ 
     }
 });
 
@@ -165,7 +177,19 @@ export default CollectionsMainPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
+// debugger
+// if (!self.state.collections && !self.state.nextPage) {
+//     self.setState({
+//         nextPage: res.next_page,
+//         collections: res.videos
+//     })                    
+// }
+// else {
+//     self.setState({
+//         nextPage: res.next_page,
+//         collections: self.state.collections.concat(res.videos)
+//     })  
+// }
 
         // In Ice Box       
         // self.GET('tags/search')
