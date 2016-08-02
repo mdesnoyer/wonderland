@@ -243,14 +243,14 @@ var UTILS = {
             URL: '/demo/upload/'
         },
     },
-    COOKIES_KEY: {
-        accessTokenKey: 'at',
-        accountIdKey: 'actId',
-        masqueradeAccountIdKey: 'msqactId',
-        refreshTokenKey: 'rt',
+    COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
+        accessTokenKey: 'neonses_at',
+        accountIdKey: 'neonses_actId',
+        masqueradeAccountIdKey: 'neonses_msqactId',
+        refreshTokenKey: 'neonses_rt',
         rememberMeKey: 'rme',
         rememberedEmailKey: 'ru',
-        userKey: 'user_info',
+        userKey: 'neonses_user_info',
         viewShareKey: 'footprintCookieViewShare',
         analyzeVideoKey: 'footprintCookieAnalyzeVideo'
     },

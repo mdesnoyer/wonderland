@@ -32,7 +32,7 @@ var SiteNavigation = React.createClass({
                     if (self._isMounted) {
                         self.setState({
                             hasUser: true,
-                            name: user.displayName
+                            name: user.displayName || T.get('nav.account')
                         });
                     }
                 })

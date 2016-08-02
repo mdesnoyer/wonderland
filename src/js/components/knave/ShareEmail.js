@@ -7,28 +7,50 @@ import TRACKING from '../../modules/tracking';
 import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
 import Message from '../wonderland/Message';
+import Account from '../../mixins/Account';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 var ShareEmail = React.createClass({
-    mixins: [AjaxMixin],
+    mixins: [AjaxMixin, Account],
     getInitialState: function() {
         var self = this;
         return {
             mode: 'quiet', // quiet, error, loading, success
-            collectionUrl: self.props.collectionUrl,
+            shareUrl: '',
             errorMessage: T.get('error.unableToSendEmail')
         }
     },
     componentWillMount: function() {
         var self = this;
-        UTILS.shortenUrl(self.props.collectionUrl, self.handleUrlCallback);
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        }, function() {
+                            UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
     },
     handleUrlCallback: function(response) {
         var self = this;
         if (response.status_code === 200) {
-            self.setState({
-                collectionUrl: response.data.url
-            });
+            self.setState({ shareUrl: response.data.url });
         }
     },
     render: function() {
@@ -128,7 +150,7 @@ var ShareEmail = React.createClass({
                             'thumbnail_one': RENDITIONS.findRendition(sortedThumbnails[1], 140, 79),
                             'thumbnail_two': RENDITIONS.findRendition(sortedThumbnails[2], 140, 79),
                             'thumbnail_three': RENDITIONS.findRendition(sortedThumbnails[3], 140, 79),
-                            'collection_url': self.state.collectionUrl
+                            'collection_url': self.state.shareUrl
                         }
                     }
                 };

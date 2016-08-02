@@ -63,6 +63,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.xOfY': '@x of @y',
             'copy.pageN': 'Page @n',
+            'copy.number': '@n',
 
             'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
@@ -99,7 +100,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.body': '',
             'copy.analyzeVideo.maxLimitHit': 'You\u2019ve hit your limit!',
             'copy.analyzeVideo.limitMessage': 'You\u2019ve hit your limit. Come back tomorrow to process more videos, or sign up to increase your limit.',
-            'copy.analyzeVideo.limitdate': 'Come back tomorrow or sign up to increase your limit.', 
+            'copy.analyzeVideo.limitDate': 'Come back tomorrow or sign up to increase your limit.', 
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
 
             'copy.terms.title': 'Terms of Service',

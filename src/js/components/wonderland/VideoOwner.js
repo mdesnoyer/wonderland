@@ -26,18 +26,15 @@ var VideoOwner = React.createClass({
             videoState: 'unknown',
             title: 'Unknown',
             error: '',
-            created: ''
+            created: '',
+            timeRemaining: null,
         }
     },
     componentWillReceiveProps: function(nextProps) {
         this.setState({
-            selectedDemographic: nextProps.selectedDemographic
+            selectedDemographic: nextProps.selectedDemographic,
+            timeRemaining: nextProps.timeRemaining
         });
-        if (!this.props.timeRemaining) { 
-            this.setState({
-                timeRemaining: nextProps.timeRemaining
-            });
-        }   
     }, 
     getInitialState: function() {
         var self = this;
@@ -61,8 +58,7 @@ var VideoOwner = React.createClass({
             isAnalyzing: false,
             age: null, 
             gender: null, 
-            pingVideoCallback: null, 
-            seconds: self.props.seconds
+            pingVideoCallback: null
         }
     },
     componentDidMount: function() {
@@ -79,9 +75,8 @@ var VideoOwner = React.createClass({
         return (
             (nextState.title !== this.state.title) ||
             (nextState.videoState !== this.state.videoState) ||
-            (nextProps.isMobile !== this.props.isMobile) ||
-            (nextProps.seconds !== this.props.seconds) || 
-            (!this.state.timeRemaining && nextState.timeRemaining) || 
+            (nextProps.isMobile !== this.props.isMobile) || 
+            (this.state.timeRemaining !== nextState.timeRemaining) || 
             (nextState.selectedDemographic !== this.state.selectedDemographic) 
         );
     },
@@ -207,15 +202,15 @@ var VideoOwner = React.createClass({
                         } 
                         else {
                             video_remaining_millis = Math.min(
-                                (video.estimated_time_remaining - 35) * 1000, 
+                                (video.estimated_time_remaining / 5) * 1000, 
                                 UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
                         }  
                     } 
                 } 
-                var timeout = video_remaining_millis || base;
+                var timeout = Math.max(UTILS.VIDEO_CHECK_INTERVAL_BASE,
+                                       (video_remaining_millis || base));
 
-                setTimeout(checkVideo,
-                    timeout);
+                setTimeout(checkVideo, timeout);
                 
                 handleProcessingVideoState(video); 
             }  
@@ -272,7 +267,6 @@ var VideoOwner = React.createClass({
                 duration: video.duration,
                 url: video.url,
                 created: video.created,
-                seconds: video.estimated_time_remaining,
                 timeRemaining: video.estimated_time_remaining,
                 videoStateMapping: UTILS.VIDEO_STATE[video.state].mapping,
                 selectedDemographic: thumbs.demographic_index, 
@@ -288,12 +282,7 @@ var VideoOwner = React.createClass({
             });
         }; 
         var handleProcessingVideoState = function(video) {
-            if (!self.state.seconds) { 
-                self.setState({ 
-                    seconds: video.estimated_time_remaining 
-                });
-            } 
-            if (!self.state.timeRemaining) { 
+            if (video.estimated_time_remaining) { 
                 self.setState({ 
                     timeRemaining: video.estimated_time_remaining 
                 });
