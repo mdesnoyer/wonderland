@@ -111,11 +111,7 @@ var CollectionsMainPage = React.createClass({
     },
     getCollections: function(paging) {
         var self = this,
-            options = {
-                data: {
-                    limit: UTILS.RESULTS_PAGE_SIZE
-                }
-            }
+            options = {data: { limit: UTILS.RESULTS_PAGE_SIZE }}
         // paging = paging ? paging.split('?')[1] : ''
         // grab the keys of the first 5 collections
         self.GET('tags/search?', options)
@@ -149,10 +145,45 @@ var CollectionsMainPage = React.createClass({
 
     createRequests: function(res, type, method) {
         var self = this,
+        //what if account ID not set ? 
             accountId = SESSION.state.accountId,
-            batch = {}
+            batch = {},
+            requests = [],
+            responseArrayName,
+            responseIdName
         ;
+        switch(type) {
+            case 'tag': 
+                responseArrayName = 'items';
+                responseIdName = 'tag_id';
+                break;
+            case 'thumbnails':
+                responseArrayName = 'requests';
+                responseIdName = 'tag_id';
+                break;
+            default: 
+                responseArrayName = 'requests'; 
+        }
         debugger
+        res[responseArrayName].map(function(item) {
+            debugger
+            requests.push({
+                body: { [responseIdName]: item[responseIdName]},
+                method: method,
+                relative_url: '/api/v2/' + accountId + '/' + type + '/'
+            })
+        })
+        debugger
+
+
+
+
+
+
+
+
+        //case handler for the differnt types 
+        // thumbs tags videos etc 
         // tags tag
         // thumbs
         //map 
