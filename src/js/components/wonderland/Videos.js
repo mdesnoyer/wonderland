@@ -170,7 +170,7 @@ var Videos = React.createClass({
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
             self.GET('videos/search?' + _pseudoPageUrl, options)
-                .then(function(json) {
+                .then(function(json) { 
                     if (!self._isMounted) {
                         return false;
                     }
