@@ -26,7 +26,6 @@ var VideoContent = React.createClass({
         var self = this;
         return {
             contents: defaultContent,
-            shareUrl: '', 
             selectedDemographic: self.props.selectedDemographic || 0
         }
     },
@@ -38,31 +37,6 @@ var VideoContent = React.createClass({
             });
         }
     }, 
-    componentWillMount: function() {
-        var self = this;
-        if (!self.props.isGuest) {
-            self.getAccount()
-                .then(function(account) {
-                    self.GET('videos/share', {
-                        data: {
-                            video_id: self.props.videoId
-                        }
-                    })
-                    .then(function(json) {
-                        self.setState({
-                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
-                        });
-                    })
-                    .catch(function(err) {
-                        console.log(err);
-                    });
-                })
-                .catch(function(err) {
-                    console.log(err);
-                })
-            ;
-        }
-    },
     render: function() {
         var self = this,
             contents
@@ -99,7 +73,6 @@ var VideoContent = React.createClass({
                 contents = (
                     <ShareLink 
                         handleMenuChange={self.handleMenuChange} 
-                        shareUrl={self.state.shareUrl}
                         videoId={self.props.videoId}
                         setTooltipText={self.props.setTooltipText}
                     />
@@ -109,7 +82,6 @@ var VideoContent = React.createClass({
                 contents = <ShareEmail 
                                 handleMenuChange={self.handleMenuChange}
                                 thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
-                                collectionUrl={self.state.shareUrl}
                                 videoId={self.props.videoId}
                             />;
                 break;
