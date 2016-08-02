@@ -8,8 +8,8 @@ import SESSION from './session';
 
 var AJAXModule = {
     Session: null,
-    getQueryParam: function(json) {
-        return Object.keys(json).map(function (key) {
+    getQueryParam: json => {
+        return Object.keys(json).map(key => {
             if (json[key] !== null && json[key] !== undefined) {
                 if (Object.prototype.toString.call(json[key]) === '[object Array]') {
                     return encodeURIComponent(key) + '=' + encodeURIComponent(json[key].join());
@@ -21,7 +21,7 @@ var AJAXModule = {
             }
         }).join('&');
     },
-    handleApiError: function(err) {
+    handleApiError: err => {
         var ret;
         try {
             ret = JSON.parse(err.responseText).error;
@@ -36,12 +36,12 @@ var AJAXModule = {
         }
         return ret;
     },
-    doApiCall: function(url, options) {
+    doApiCall: (url, options) => {
         var self = this,
             promise,
             ret
         ;
-        function fin(resolve, reject) {
+        const fin = (resolve, reject) => {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
@@ -119,7 +119,7 @@ var AJAXModule = {
         };
         return ret;
     },
-    doGet: function(url, options) {
+    doGet: (url, options) => {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
@@ -127,7 +127,7 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
-    doPost: function(url, options) {
+    doPost: (url, options) => {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
@@ -135,16 +135,21 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
-    doPut: function(url, options) {
+    doPut: (url, options) => {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
         // Default error handler
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
+    },
+    addRequestToBatch: (url, options) => {
+        console.log(url, options);
+    },
+    sendBatch: () => {
+        console.log("sendBatch");
     }
 };
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default AJAXModule;
