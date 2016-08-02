@@ -110,64 +110,67 @@ var CollectionsMainPage = React.createClass({
             });
     },
     getCollections: function(paging) {
-        debugger
-
         var self = this,
             options = {
                 data: {
                     limit: UTILS.RESULTS_PAGE_SIZE
                 }
             }
-
-        var accountId = SESSION.state.accountId
-        console.log(accountId)
-        SESSION.user()
-            .then(function(userData) {
-                debugger
-            })
-
-
-
-        paging = paging ? paging.split('?')[1] : ''
+        // paging = paging ? paging.split('?')[1] : ''
+        // grab the keys of the first 5 collections
         self.GET('tags/search?', options)
             .then(function(res) {
-                var requests = self.createRequests(res)
-                self.POST('batch', requests)
-                    .then(function(){
+                //set next page to the state
+                self.setState({ nextPage: res.next_page});
+                //create a request array for the batch for tags
+                var requestTag = self.createRequests(res, 'tag', 'POST')
+                self.POST('batch', requestTag)
+                    .then(function(res) {
+                        //create a request array fro the batch of thumbnails
+                        // var requestThumbs = self.createRequests(res, 'tag', 'POST')
+                        // self.POST('batch', requestThumbs)
+                        //     .then(function(res) {
+                        //         // grab response and then set it to state
 
+                        //         self.setState({
+                        //             collections: res.results
+                        //         })
+                        //     })
+                        //     .catch(function(err) {
+                        //     })
+                    })
+                    .catch(function(err){
+                        debugger
                     })
             })
             .catch(function(err) {
-                debugger
             })
     },
-    updateCollectionVideo: function(videoId) {
+
+    createRequests: function(res, type, method) {
         var self = this,
-            options = {
-                data: {
-                    fields: ['state', 'estimated_time_remaining', 'duration'],
-                    video_id: videoId
-                }
-            }
-        ; 
-        self.GET('videos/', options)
-            .then(function(res){
-                self.setState({
-                    nextPage: res.next_page,
-                    collections: res.videos.concat(self.state.collections)
-                })  
-            }) 
-            .catch(function(err){
-                debugger
-            })
-    },
-    createRequests: function(res, type) {
-        var self = this;
-        var accountId = SESSION.state.accountId
+            accountId = SESSION.state.accountId,
+            batch = {}
+        ;
+        debugger
         // tags tag
         // thumbs
         //map 
-        // new object method realative_url: /api/v2/ACCOUNTID/ 
+        // new object
+        // var requests = [] 
+        // method: method realative_url: '/api/v2/' + accountId + '/' + type 
+        // body: {
+            //
+        // res.items.map(function(item){
+        //     requests.push({
+        //         body: { 
+        //             key: item.tag_id
+        //         },
+        //         method: method,
+        //         relative_url: '/api/v2/' + accountId + '/' + type + '/'
+        //     })
+        // })
+        // }
     }
 });
 
@@ -177,6 +180,26 @@ export default CollectionsMainPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// updateCollectionVideo: function(videoId) {
+//     var self = this,
+//         options = {
+//             data: {
+//                 fields: ['state', 'estimated_time_remaining', 'duration'],
+//                 video_id: videoId
+//             }
+//         }
+//     ; 
+//     self.GET('videos/', options)
+//         .then(function(res){
+//             self.setState({
+//                 nextPage: res.next_page,
+//                 collections: res.videos.concat(self.state.collections)
+//             })  
+//         }) 
+//         .catch(function(err){
+//             debugger
+//         })
+// },
 // debugger
 // if (!self.state.collections && !self.state.nextPage) {
 //     self.setState({
