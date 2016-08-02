@@ -35,13 +35,12 @@ var CollectionsMainPage = React.createClass({
         if (self.state.collections) {
             return (
                 <div>
-                    <SiteHeader />
                     <form>
-                      Video: <input type="text" ref='videoUrl'/>
+                      Video: <input type="text" onChange={e => self.updateField('videoUrl', e.target.value)}/>
                       <input type="submit" data-type='video' onClick={self.handleSubmit} />
                     </form>
                     <form>
-                      Images: <input type="text" ref='images'/>
+                      Images: <input type="text" onChange={e => self.updateField('imageUrl', e.target.value)}/>
                       <input type="submit" data-type='image' onClick={self.handleSubmit} />
                     </form>
                     <CollectionsContainer collections={self.state.collections}/>
@@ -58,6 +57,12 @@ var CollectionsMainPage = React.createClass({
         }
         
     },
+    updateField: function(field, value) {
+        var self = this;
+        this.setState({
+            [field]: value
+        });
+    },
     handleSeeMoreClick: function() {
         var self = this; 
         self.getCollections(self.state.nextPage)    
@@ -65,11 +70,28 @@ var CollectionsMainPage = React.createClass({
     handleSubmit: function(e) {
         var self = this;
         e.preventDefault();
-        e.target.dataset.type === 'video' && self.postVideo();
-        e.target.dataset.type === 'image' && self.postImages();
+        e.target.dataset.type === 'video' && self.postVideo(self.state.videoUrl);
+        e.target.dataset.type === 'image' && self.postImages(self.state.imageUrl);
     },
-    postVideo: function() {
-        alert('videos!')
+    postVideo: function(url) {
+        debugger
+        var self = this,
+            videoId = UTILS.generateId(),
+            options = {
+                data: {
+                    external_video_ref: videoId,
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url))
+                }
+            }
+        ;
+            self.POST('videos', options)
+                .then(function(json) {
+                    debugger 
+                    self.updateCollectionVideo(json.video.video_id)
+                })
+                .catch(function(err) {
+                    debugger
+                });
     },
     postImages: function() {
         alert('images!')
@@ -87,7 +109,7 @@ var CollectionsMainPage = React.createClass({
                 //more than likely need to sign in
             });
     },
-    getCollections: function(paging) {
+    getCollections: function(paging, refresh) {
         var self = this,
             options = {
                 data: {
@@ -95,7 +117,6 @@ var CollectionsMainPage = React.createClass({
                     limit: UTILS.RESULTS_PAGE_SIZE
                 }
             }
-        debugger
         paging = paging ? paging.split('?')[1] : ''
         self.GET('videos/search?' + paging, options)
             .then(function(res) {
@@ -113,6 +134,26 @@ var CollectionsMainPage = React.createClass({
                 }
             })
             .catch(function(err) {
+                debugger
+            })
+    },
+    updateCollectionVideo: function(videoId) {
+        var self = this,
+            options = {
+                data: {
+                    fields: ['state', 'estimated_time_remaining', 'duration'],
+                    video_id: videoId
+                }
+            }
+        ; 
+        self.GET('videos/', options)
+            .then(function(res){
+                self.setState({
+                    nextPage: res.next_page,
+                    collections: res.videos.concat(self.state.collections)
+                })  
+            }) 
+            .catch(function(err){
                 debugger
             })
     }
