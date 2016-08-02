@@ -21,8 +21,7 @@ var Session = {
     },
     set: function(accessToken, refreshToken, accountId, user) {
         var self = this,
-            ret,
-            ss
+            ret
         ;
         if (self.state.accountId) {
             ret = AjaxModule.doGet('');
@@ -34,24 +33,29 @@ var Session = {
             });
         }
         else {
-            self.state = {
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-                accountId: accountId,
-                user: user || self.state.user
-            };
-            // WE can not get react webstorage working
-            ss = window.sessionStorage;
-            try {
-                ss.setItem(UTILS.COOKIES_KEY.accessTokenKey, accessToken);
-                ss.setItem(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken);
-                ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
-                if (user) {
-                    ss.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(user));
-                }
-            } catch(e) {
-                console.log('Browser does not support session storage, application will not be able to save session information.');
+            self.forceSet(accessToken, refreshToken, accountId, user);   
+        }
+    },
+    forceSet: function(accessToken, refreshToken, accountId, user) {
+        var self = this,
+            ss = window.sessionStorage
+        ;
+        self.state = {
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            accountId: accountId,
+            user: user || self.state.user
+        };
+        // WE can not get react webstorage working
+        try {
+            ss.setItem(UTILS.COOKIES_KEY.accessTokenKey, accessToken);
+            ss.setItem(UTILS.COOKIES_KEY.refreshTokenKey, refreshToken);
+            ss.setItem(UTILS.COOKIES_KEY.accountIdKey, accountId);
+            if (user) {
+                ss.setItem(UTILS.COOKIES_KEY.userKey, JSON.stringify(user));
             }
+        } catch(e) {
+            console.log('Browser does not support session storage, application will not be able to save session information.');
         }
     },
     setAccountId: function(accountId) {
