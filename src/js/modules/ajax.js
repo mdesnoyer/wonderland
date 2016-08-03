@@ -84,7 +84,7 @@ var AJAXModule = {
                             type: 'json'
                         })
                             .then(function (res) {
-                                self.Session.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                                self.Session.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
                                 if (ret.isCanceled !== true) {
                                     fin(resolve, reject);
                                 }

@@ -32,10 +32,14 @@ var ZoomThumbnail = React.createClass({
         } 
     },
     getValenceDisplay: function() { 
-        var self = this;
-        var valenceDisplay = null;  
-        var whyThisImage = T.get('copy.whyThisImage') 
-        var whyNotThisImage = T.get('copy.whyNotThisImage') 
+        var self = this,
+            valenceDisplay = null,
+            whyThisImage = T.get('copy.whyThisImage') ,
+            whyNotThisImage = T.get('copy.whyNotThisImage'),
+            uniqueValence = self.props.valence.filter(function(value, pos) {
+                return self.props.valence.indexOf(value) === pos;
+            })
+        ;
         if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') { 
             valenceDisplay = (<div>
                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
@@ -48,7 +52,7 @@ var ZoomThumbnail = React.createClass({
                  <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2> 
                     <ul className="xxTagList">
                         {
-                            this.props.valence.map(function(v, i) {
+                            uniqueValence.map(function(v, i) {
                                 while (i < 3) {
                                     return (
                                         <li className="xxTagList-item" key={i}>{v}</li>

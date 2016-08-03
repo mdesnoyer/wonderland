@@ -4,30 +4,60 @@ import React from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import AjaxMixin from '../../mixins/Ajax';
+import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import ReactTooltip from 'react-tooltip';
+import CollectionLoadingText from '../core/CollectionLoadingText';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ShareLink = React.createClass({
-    mixins: [AjaxMixin],
+    mixins: [AjaxMixin, Account],
     getInitialState: function() {
         var self = this;
         return {
-            shareUrl: self.props.shareUrl
+            shareUrl: '',
+            isLoading: true
         }
     },
     componentWillMount: function() {
         var self = this;
-        UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback);
+        if (!self.props.isGuest) {
+            self.getAccount()
+                .then(function(account) {
+                    self.GET('videos/share', {
+                        data: {
+                            video_id: self.props.videoId
+                        }
+                    })
+                    .then(function(json) {
+                        self.setState({
+                            shareUrl: window.location.origin + '/share/video/' + self.props.videoId + '/account/' + account.accountId + '/token/' + json.share_token + '/'
+                        }, function() {
+                            UTILS.shortenUrl(self.state.shareUrl, self.handleUrlCallback)
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            ;
+        }
     },
     handleUrlCallback: function(response) {
         var self = this;
         if (response.status_code === 200) {
             self.setState({
-                shareUrl: response.data.url
+                shareUrl: response.data.url,
+                isLoading: false
             });
+        }
+        else {
+            self.setState({ isLoading: false });
         }
     },
     componentDidMount: function() {
@@ -83,13 +113,17 @@ var ShareLink = React.createClass({
                         className="xxLabel"
                         htmlFor="xx-share-link"
                     >{T.get('copy.share.label')}</label>
-                    <input
-                        className="xxInputText"
-                        id={"xx-share-link" + self.props.videoId}
-                        type="text"
-                        value={self.state.shareUrl}
-                        readOnly
-                    />
+                    {
+                        self.state.isLoading ? <CollectionLoadingText /> : (
+                            <input
+                                className="xxInputText"
+                                id={"xx-share-link" + self.props.videoId}
+                                type="text"
+                                value={self.state.shareUrl}
+                                readOnly
+                            />
+                        )
+                    }
                 </div>
                 <div className="xxCollectionAction-buttons">
                     <button
@@ -138,7 +172,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
-        TRACKING.sendEvent(self, arguments, self.props.videoId);
+        TRACKING.sendEvent(self, arguments, 'facebook');
     },
     sendTwitterShare: function() {
         var self = this,  
@@ -149,7 +183,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
-        TRACKING.sendEvent(self, arguments, self.props.videoId);
+        TRACKING.sendEvent(self, arguments, 'twitter');
     },
     sendLinkedinShare: function() {
         var self = this,  
@@ -160,7 +194,7 @@ var ShareLink = React.createClass({
             })
         ;
         windowOpen(url);
-        TRACKING.sendEvent(self, arguments, self.props.videoId);
+        TRACKING.sendEvent(self, arguments, 'linkedin');
     }
 })
 

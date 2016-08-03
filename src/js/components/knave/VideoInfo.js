@@ -15,7 +15,7 @@ var VideoInfo = React.createClass({
         return {
             demographicThumbnails: [],
             selectedDemographic: 0,
-            timeRemaining: 0,
+            timeRemaining: null,
             videoState: UTILS.VIDEO_STATE_ENUM.process
         }
     },
@@ -52,11 +52,6 @@ var VideoInfo = React.createClass({
         if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic
-            });
-        }
-        if (!this.props.timeRemaining) { 
-            this.setState({
-                timeRemaining: nextProps.timeRemaining
             });
         }
     },

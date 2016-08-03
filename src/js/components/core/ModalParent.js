@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import TRACKING from '../../modules/tracking';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ModalParent = React.createClass({
@@ -24,10 +26,23 @@ var ModalParent = React.createClass({
     componentWillMount:function() {
         var self = this;
         document.addEventListener('keydown', self.handleEscKey, false);
+        logModalOpen(self.props);
     },
     componentWillUnmount: function() {
         var self = this;
         document.removeEventListener('keydown', self.handleEscKey, false);
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this;
+        logModalOpen(nextProps);
+    },
+    logModalOpen: function(props) {
+        var self = this;
+        if (props.isModalActive) {
+            React.Children.forEach(props.children, function(child) {
+                TRACKING.logModalOpen(child.displayName);
+            });
+        }
     },
     render: function() {
         var self = this,
