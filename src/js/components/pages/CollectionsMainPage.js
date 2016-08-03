@@ -114,30 +114,42 @@ var CollectionsMainPage = React.createClass({
             options = {data: { limit: UTILS.RESULTS_PAGE_SIZE }}
         // paging = paging ? paging.split('?')[1] : ''
         // grab the keys of the first 5 collections
+        //refresh the token first ? 
         self.GET('tags/search?', options)
             .then(function(res) {
+                debugger
                 //set next page to the state
                 self.setState({ nextPage: res.next_page});
                 //create a request array for the batch for tags
-                var requestTag = self.createRequests(res, 'tag', 'POST')
-                self.POST('batch', requestTag)
-                    .then(function(res) {
-                        //create a request array fro the batch of thumbnails
-                        // var requestThumbs = self.createRequests(res, 'tag', 'POST')
-                        // self.POST('batch', requestThumbs)
-                        //     .then(function(res) {
-                        //         // grab response and then set it to state
+                var requestTag = {data: { requests: self.createRequests(res, 'tag', 'POST') }}
+                debugger
+                // self.GET('tag', {data: requestTag.data.requests[0].body})
+                // .then(function(res){
+                //     debugger
+                // })
+                // .catch(function(err){
+                //     debugger
+                // })
+                // zmwpqq7dfkubotxgb03j3s80
+                // self.POST('batch/', requestTag)
+                //     .then(function(res) {
+                //         debugger
+                //         //create a request array fro the batch of thumbnails
+                //         // var requestThumbs = self.createRequests(res, 'tag', 'POST')
+                //         // self.POST('batch', requestThumbs)
+                //         //     .then(function(res) {
+                //         //         // grab response and then set it to state
 
-                        //         self.setState({
-                        //             collections: res.results
-                        //         })
-                        //     })
-                        //     .catch(function(err) {
-                        //     })
-                    })
-                    .catch(function(err){
-                        debugger
-                    })
+                //         //         self.setState({
+                //         //             collections: res.results
+                //         //         })
+                //         //     })
+                //         //     .catch(function(err) {
+                //         //     })
+                //     })
+                //     .catch(function(err){
+                //         debugger
+                //     })
             })
             .catch(function(err) {
             })
@@ -147,15 +159,19 @@ var CollectionsMainPage = React.createClass({
         var self = this,
         //what if account ID not set ? 
             accountId = SESSION.state.accountId,
-            batch = {},
+            // batch = {
+
+            // },
             requests = [],
             responseArrayName,
+            responsePropName,
             responseIdName
         ;
         switch(type) {
             case 'tag': 
                 responseArrayName = 'items';
                 responseIdName = 'tag_id';
+                responsePropName = 'key'
                 break;
             case 'thumbnails':
                 responseArrayName = 'requests';
@@ -164,44 +180,17 @@ var CollectionsMainPage = React.createClass({
             default: 
                 responseArrayName = 'requests'; 
         }
-        debugger
         res[responseArrayName].map(function(item) {
-            debugger
             requests.push({
-                body: { [responseIdName]: item[responseIdName]},
+                body: { 'key': item[responsePropName]},
                 method: method,
                 relative_url: '/api/v2/' + accountId + '/' + type + '/'
             })
         })
-        debugger
-
-
-
-
-
-
-
-
-        //case handler for the differnt types 
-        // thumbs tags videos etc 
-        // tags tag
-        // thumbs
-        //map 
-        // new object
-        // var requests = [] 
-        // method: method realative_url: '/api/v2/' + accountId + '/' + type 
-        // body: {
-            //
-        // res.items.map(function(item){
-        //     requests.push({
-        //         body: { 
-        //             key: item.tag_id
-        //         },
-        //         method: method,
-        //         relative_url: '/api/v2/' + accountId + '/' + type + '/'
-        //     })
-        // })
-        // }
+        // debugger
+        // batch.requests = requests;
+        // debugger
+        return requests
     }
 });
 
