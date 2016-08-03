@@ -127,11 +127,11 @@ var CollectionsMainPage = React.createClass({
                         debugger
                         var thumbnailsArray = [];
                         thumbnailsResponse.forEach(function(thumbnail){
-                            thumbnailsArray.push(thumbnail.thumbnails)
+                            thumbnailsArray.concat(thumbnail.thumbnails)
                         })
                         debugger
-                        self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
-
+                        self.setState({thumbnails: self.state.thumbnails.concat.apply(self.state.thumbnails,(thumbnailsArray))})
+                        debugger
                         var requestThumbs = self.createRequests(thumbnailsResponse, 'tag', 'GET')
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
