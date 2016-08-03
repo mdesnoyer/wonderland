@@ -107,10 +107,8 @@ var CollectionsMainPage = React.createClass({
                     },
                     noAccountId: true
                 }
-                debugger
                 self.POST('batch', requestTag)
                     .then(function(res) {
-                        debugger
                         var thumbnailsResponse = []
                         //create a request array fro the batch of thumbnails
                         for (var i = 0; i < res.results.length; i++) {
@@ -119,7 +117,6 @@ var CollectionsMainPage = React.createClass({
                                 thumbnailsResponse.push(response[key])
                             }
                         }
-                        debugger
                             self.state.collections.forEach(function(collection){
                             var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
                                 collection.thumbnails = thisThing.thumbnails
@@ -127,11 +124,13 @@ var CollectionsMainPage = React.createClass({
                         debugger
                         var thumbnailsArray = [];
                         thumbnailsResponse.forEach(function(thumbnail){
-                            thumbnailsArray.concat(thumbnail.thumbnails)
+                            debugger
+                            thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
                         })
+
                         debugger
-                        self.setState({thumbnails: self.state.thumbnails.concat.apply(self.state.thumbnails,(thumbnailsArray))})
-                        debugger
+                        self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
+
                         var requestThumbs = self.createRequests(thumbnailsResponse, 'tag', 'GET')
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
