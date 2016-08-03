@@ -45,7 +45,7 @@ var CollectionsMainPage = React.createClass({
                       Images: <input type="text" onChange={e => self.updateField('imageUrl', e.target.value)}/>
                       <input type="submit" data-type='image' onClick={self.handleSubmit} />
                     </form>
-                    <CollectionsContainer collections={self.state.collections}/>
+                    
                     <button 
                         type="button" 
                         onClick={self.handleSeeMoreClick}>
@@ -89,8 +89,13 @@ var CollectionsMainPage = React.createClass({
         //refresh the token first ? 
         self.GET('tags/search?', options)
             .then(function(res) {
+                debugger
                 //set next page to the state
-                self.setState({ nextPage: res.next_page});
+                self.setState({ 
+                    nextPage: res.next_page,
+                    collections: res.items,
+                    thumbnails: []
+                });
                 //create a request array for the batch for tags
                 var requestTag = {
                     data: {
@@ -106,10 +111,32 @@ var CollectionsMainPage = React.createClass({
                 self.POST('batch', requestTag)
                     .then(function(res) {
                         debugger
+                        var thumbnailsResponse = []
                         //create a request array fro the batch of thumbnails
-                        var requestThumbs = self.createRequests(res, 'tag', 'POST')
+                        for (var i = 0; i < res.results.length; i++) {
+                            var response = res.results[i].response
+                            for (var key in response) {
+                                thumbnailsResponse.push(response[key])
+                            }
+                        }
+                        debugger
+                            self.state.collections.forEach(function(collection){
+                            var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
+                                collection.thumbnails = thisThing.thumbnails
+                        })
+                        debugger
+                        var thumbnailsArray = [];
+                        thumbnailsResponse.forEach(function(thumbnail){
+                            thumbnailsArray.push(thumbnail.thumbnails)
+                        })
+                        debugger
+                        self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
+
+                        var requestThumbs = self.createRequests(thumbnailsResponse, 'tag', 'GET')
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
+                                
+
                                 // grab response and then set it to state
 
                                 self.setState({
@@ -145,8 +172,8 @@ var CollectionsMainPage = React.createClass({
                 responsePropName = 'key';
                 break;
             case 'thumbnails':
-                responseArrayName = 'requests';
-                responseIdName = 'tag_id';
+                responseArrayName = 'results';
+                responseIdName = 'thumnail_id';
                 break;
             default: 
                 responseArrayName = 'requests'; 
