@@ -108,29 +108,36 @@ var CollectionsMainPage = React.createClass({
                 }
                 self.POST('batch', requestTag)
                     .then(function(res) {
+
+                        //findThumbnailIds(res)
                         var thumbnailsResponse = []
-                        //create a request array fro the batch of thumbnails
                         for (var i = 0; i < res.results.length; i++) {
-                            var response = res.results[i].response
-                            for (var key in response) {
-                                thumbnailsResponse.push(response[key])
-                            }
+                                var response = res.results[i].response
+                                for (var key in response) {
+                                    thumbnailsResponse.push(response[key])
+                                }
                         }
-                            self.state.collections.forEach(function(collection){
-                            var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
+                        debugger
+                        // end 
+                        // matchCollcetionWithThumbnailIds
+                        self.state.collections.forEach(function(collection){
+                                var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
                                 collection.thumbnails = thisThing.thumbnails
                         })
+                        //end
+                        //createThumbnailIdArrayforBatch
                         var thumbnailsArray = [];
                         thumbnailsResponse.forEach(function(thumbnail){
                             thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
                         })
-
-                        // self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
+                        //end
+                        //splitThumbnailIdArrayByMaxSize
                         const batches = [];
                         const batchSize = 100;
                         for(let index = 0; index < thumbnailsArray.length; index += batchSize) {
                             batches.push(thumbnailsArray.slice(index, index + batchSize).join(','));
                         }
+                        //end 
                         var requestThumbs = {
                             data: {
                                 call_info: {
@@ -143,7 +150,7 @@ var CollectionsMainPage = React.createClass({
                         }
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
-                                // for each element in res.results
+                                //createThumbnailInfoResponseArray 
                                 var megaChunk = []
                                 res.results.forEach(function(thumbChunk){
                                     thumbChunk.response.thumbnails.forEach(function(thumbnails){
@@ -151,9 +158,8 @@ var CollectionsMainPage = React.createClass({
                                     })
 
                                 })
-
-
-                                console.log(res)
+                                //end
+                                //matchThumbNailsIdWithThumbnailInfo
                                 var newThumbs = []
                                 thumbnailsArray.map(function(thumbnail){
                                     var thumbInfo = megaChunk.find( x =>( x.thumbnail_id === thumbnail))
@@ -162,30 +168,14 @@ var CollectionsMainPage = React.createClass({
                                     newThumbs.push(thumbObject)
                                     // debugger 
                                 })
-                                self.setState({thumbnails: newThumbs});
+                                //
+                                self.setState({ thumbnails: self.state.thumbnails.concat(newThumbs) });
                                 debugger
                             })
                             .catch(function(err) {
                                 console.log(res)
                                 //debugger
                             })
-                        /*
-                        const options = {
-                            data: {
-                                thumbnail_id: thumbnailsArray.slice(0, 100).join(',')
-                            }
-                        }
-
-                        self.GET('thumbnails', options)
-                            .then(res => {
-                                console.log(res);
-                                debugger;
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                debugger;
-                            });
-                        /**/
 
                     })
                     .catch(function(err){
@@ -196,7 +186,6 @@ var CollectionsMainPage = React.createClass({
                 debugger
             })
     },
-
     createRequests: function(res, type, method) {
         var self = this,
         //what if account ID not set ? 
@@ -242,7 +231,18 @@ var CollectionsMainPage = React.createClass({
         }
 
         return requests
-    }
+    },
+    //findThumbnailIds(res)
+    // end 
+    // matchCollcetionWithThumbnailIds
+    //end
+    //createThumbnailIdArrayforBatch
+    //end
+    //splitThumbnailIdArrayByMaxSize
+    //end 
+    //createThumbnailInfoResponseArray 
+    //end
+    //matchThumbNailsIdWithThumbnailInfo
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
