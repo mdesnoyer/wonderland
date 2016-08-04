@@ -26,7 +26,8 @@ var VideoInfo = React.createClass({
         return {
             selectedDemographic: self.props.selectedDemographic,
             demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: self.getDemographicOptions() 
+            demographicOptions: self.getDemographicOptions(),
+            dropdownOpen: false
         }
     },
     componentDidMount: function() {
@@ -90,15 +91,27 @@ var VideoInfo = React.createClass({
     onTimerFinished: function() {
         return
     },
+    toggleOpen: function() {
+        var self = this;
+        self.setState({
+            dropdownOpen: !self.state.dropdownOpen
+        });
+    },
     render: function() {
         var self = this,
-            countdown;
+            filtersClassName = ['xxCollectionFilters'],
+            countdown
+        ;
+        if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
+            filtersClassName.push('has-dropdown');
+        }
+        console.log(self.getDemographicOptions());
         return (
             <div>
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
-                <div className="xxCollectionFilters">
+                <div className={filtersClassName.join(' ')}>
                     {(() => {
                         if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
                             if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
@@ -112,15 +125,13 @@ var VideoInfo = React.createClass({
                             }
                             else {
                                 countdown = (
-                                    <span>{T.get('timer.loading')}</span>
+                                    <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
                                 );
                             }
                             return (
                                 <div>
-                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
-                                    
-                                </div>
-                                {countdown}
+                                    <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
+                                    {countdown}
                                 </div>
                             );
                         } else if (!self.props.isGuest) {
@@ -129,7 +140,6 @@ var VideoInfo = React.createClass({
                                     <a className="xxCollectionFilterToggle"
                                         data-action-label="refilter"
                                         data-for="staticTooltip"
-                                        data-tip={T.get('tooltip.refilter.button')}
                                         onClick={self.props.handleMenuChange} >
                                     </a>
                                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
@@ -137,14 +147,12 @@ var VideoInfo = React.createClass({
                                         // Show the demographic selector if they've run more than just the default.
                                         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
                                             return (
-                                                <ReactSelect
-                                                    id="selectedDemographic"
+                                                <span 
                                                     className="xxCollectionFilters-value"
-                                                    onChange={self.onDemographicChange}
-                                                    options={self.getDemographicOptions()}
-                                                    value={self.state.selectedDemographic || 0}
-                                                    clearable={false}
-                                                />
+                                                    onClick={self.toggleOpen}
+                                                >
+                                                    {self.getDemographicOptions()[self.state.selectedDemographic].label}
+                                                </span>
                                             );
                                         } else {
                                             return null;
@@ -166,3 +174,4 @@ var VideoInfo = React.createClass({
 export default VideoInfo
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
