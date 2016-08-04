@@ -98,55 +98,60 @@ var VideoInfo = React.createClass({
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
-                {(() => {
-                    if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
-                        if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
-                            countdown = (
-                                <span><Countdown 
-                                    seconds={self.props.timeRemaining} 
-                                    onFinish={self.onTimerFinished} 
-                                    classPrefix="xxCollectionFilterCountdown" />
-                                </span>
-                            );
-                        }
-                        else {
-                            countdown = (
-                                <span>{T.get('timer.loading')}</span>
-                            );
-                        }
-                        return (
-                            <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
-                                {countdown}
-                            </div>
-                        );
-                    } else if (!self.props.isGuest) {
-                        return (
-                            <a className="xxCollectionFilterToggle"
-                                data-action-label="refilter"
-                                data-for="staticTooltip"
-                                data-tip={T.get('tooltip.refilter.button')}
-                                onClick={self.props.handleMenuChange} >
-                            </a>
-                        );
-                    }
-                })()}
                 <div className="xxCollectionFilters">
-                    <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     {(() => {
-                        // Show the demographic selector if they've run more than just the default.
-                        if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
+                        if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
+                            if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
+                                countdown = (
+                                    <span><Countdown 
+                                        seconds={self.props.timeRemaining} 
+                                        onFinish={self.onTimerFinished} 
+                                        classPrefix="xxCollectionFilterCountdown" />
+                                    </span>
+                                );
+                            }
+                            else {
+                                countdown = (
+                                    <span>{T.get('timer.loading')}</span>
+                                );
+                            }
                             return (
-                                <ReactSelect
-                                    id="selectedDemographic"
-                                    className="xxCollectionFilters-value"
-                                    onChange={self.onDemographicChange}
-                                    options={self.getDemographicOptions()}
-                                    value={self.state.selectedDemographic || 0}
-                                    clearable={false}
-                                />
+                                <div>
+                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown">
+                                    
+                                </div>
+                                {countdown}
+                                </div>
                             );
-                        } else {
-                            return null;
+                        } else if (!self.props.isGuest) {
+                            return (
+                                <div>
+                                    <a className="xxCollectionFilterToggle"
+                                        data-action-label="refilter"
+                                        data-for="staticTooltip"
+                                        data-tip={T.get('tooltip.refilter.button')}
+                                        onClick={self.props.handleMenuChange} >
+                                    </a>
+                                    <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
+                                    {(() => {
+                                        // Show the demographic selector if they've run more than just the default.
+                                        if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
+                                            return (
+                                                <ReactSelect
+                                                    id="selectedDemographic"
+                                                    className="xxCollectionFilters-value"
+                                                    onChange={self.onDemographicChange}
+                                                    options={self.getDemographicOptions()}
+                                                    value={self.state.selectedDemographic || 0}
+                                                    clearable={false}
+                                                />
+                                            );
+                                        } else {
+                                            return null;
+                                        }
+                                    })()}
+                                </div>
+                            );
                         }
                     })()}
                 </div>

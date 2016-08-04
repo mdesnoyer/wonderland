@@ -1,12 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionFilterToggle {
-    float: right;
+    // float: right;
     position: relative;
     z-index: 1;
-    top: 14px;
+    // top: 14px;
     color: $accent-color;
     cursor: pointer;
+    width: 27px;
+    display: inline-block;
+    margin-right: 10px;
 
     @include breakpoint-mobile {
         display: none;
@@ -44,6 +47,8 @@
 
     &--countdown {
         cursor: default;
+        width: 100px;
+        margin-right: 0;
 
         &::after {
             z-index: 2;
@@ -51,14 +56,28 @@
             color: $white;
             transform: rotate(0deg);
             animation: rotate 2s infinite linear;
-            display: inline-block;
-            margin-left: .5em;
-        }
-
-        .xxCollectionFilterCountdown {
-            display: inline-block;
+            // display: inline-block;
+            // margin-left: .5em;
         }
     }
+
+    &--processing {
+        float: right;
+        top: 14px;
+    }
+}
+
+.xxCollectionFilterCountdown {
+    display: inline-block;
+    background: $bg-secondary-color;
+    color: $tertiary-color;
+    min-width: 100px;
+    height: 27px;
+    border-radius: 27px;
+    padding: 8px 10px 8px 40px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: -100px;
 }
 
 .xxCollectionFilterToggle-label {
@@ -98,6 +117,7 @@
     padding: 4px 0;
     color: $tertiary-color;
     cursor: default;
+    display: inline-block;
 
     @include breakpoint-mobile {
         margin-top: 7px;
@@ -105,17 +125,21 @@
 }
 
 .xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
-    float: left;
+    // float: left;
     padding: 4px 10px 4px 0;
     color: $secondary-color;
 
     .has-dropdown > & {
         cursor: pointer;
     }
+
+    &--processing {
+        float: left;
+    }
 }
 
 .xxCollectionFilters-value {
-    float: left;
+    float: right;
     position: relative;
     padding: 4px 0;
     width: 145px;
