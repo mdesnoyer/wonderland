@@ -110,20 +110,28 @@ var CollectionsMainPage = React.createClass({
                     .then(function(res) {
 
                         //findThumbnailIds(res)
-                        var thumbnailsResponse = []
-                        for (var i = 0; i < res.results.length; i++) {
-                                var response = res.results[i].response
-                                for (var key in response) {
-                                    thumbnailsResponse.push(response[key])
-                                }
-                        }
+                        
+                        // for (var i = 0; i < res.results.length; i++) {
+                        //         var response = res.results[i].response
+                        //         for (var key in response) {
+                        //             thumbnailsResponse.push(response[key])
+                        //         }
+                        // }
+                        var thumbnailsResponse = self.findThumbnailIds(res)
                         debugger
                         // end 
-                        // matchCollcetionWithThumbnailIds
-                        self.state.collections.forEach(function(collection){
-                                var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
-                                collection.thumbnails = thisThing.thumbnails
-                        })
+                        // matchCollcetionStateWithThumbnailIds
+                        // self.state.collections.forEach(function(collection){
+                        //         var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
+                        //         collection.thumbnails = thisThing.thumbnails
+                        // })
+                        matchCollcetionStateWithThumbnailIds: function(thumbnailsResponse) {
+                            var self = this; 
+                            self.state.collections.forEach(function(collection){
+                                    var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
+                                    collection.thumbnails = thisThing.thumbnails
+                            })
+                        }
                         //end
                         //createThumbnailIdArrayforBatch
                         var thumbnailsArray = [];
@@ -232,6 +240,23 @@ var CollectionsMainPage = React.createClass({
 
         return requests
     },
+    findThumbnailIds: function(res) {
+        var thumbArray = []
+        for (var i = 0; i < res.results.length; i++) {
+                var response = res.results[i].response
+                for (var key in response) {
+                    thumbArray.push(response[key])
+                }
+        }
+        return thumbArray
+    },
+    matchCollcetionStateWithThumbnailIds: function(thumbnailsResponse) {
+        var self = this; 
+        self.state.collections.forEach(function(collection){
+                var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
+                collection.thumbnails = thisThing.thumbnails
+        })
+    }
     //findThumbnailIds(res)
     // end 
     // matchCollcetionWithThumbnailIds
