@@ -89,7 +89,6 @@ var CollectionsMainPage = React.createClass({
         //refresh the token first ? 
         self.GET('tags/search?', options)
             .then(function(res) {
-                debugger
                 //set next page to the state
                 self.setState({ 
                     nextPage: res.next_page,
@@ -121,29 +120,73 @@ var CollectionsMainPage = React.createClass({
                             var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
                                 collection.thumbnails = thisThing.thumbnails
                         })
-                        debugger
                         var thumbnailsArray = [];
                         thumbnailsResponse.forEach(function(thumbnail){
-                            debugger
                             thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
                         })
 
-                        debugger
-                        self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
-
-                        var requestThumbs = self.createRequests(thumbnailsResponse, 'tag', 'GET')
+                        // self.setState({thumbnails: self.state.thumbnails.concat(thumbnailsArray)})
+                        const batches = [];
+                        const batchSize = 100;
+                        for(let index = 0; index < thumbnailsArray.length; index += batchSize) {
+                            batches.push(thumbnailsArray.slice(index, index + batchSize).join(','));
+                        }
+                        var requestThumbs = {
+                            data: {
+                                call_info: {
+                                    refresh_token: SESSION.state.refreshToken,
+                                    access_token: SESSION.state.accessToken,
+                                    requests: self.createRequests({thumbnails: batches}, 'thumbnails', 'GET')
+                                }
+                            },
+                            noAccountId: true
+                        }
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
-                                
+                                // for each element in res.results
+                                var megaChunk = []
+                                res.results.forEach(function(thumbChunk){
+                                    thumbChunk.response.thumbnails.forEach(function(thumbnails){
+                                      megaChunk = megaChunk.concat(thumbnails)
+                                    })
 
-                                // grab response and then set it to state
-
-                                self.setState({
-                                    collections: res.results
                                 })
+
+
+                                console.log(res)
+                                var newThumbs = []
+                                thumbnailsArray.map(function(thumbnail){
+                                    var thumbInfo = megaChunk.find( x =>( x.thumbnail_id === thumbnail))
+                                    var thumbObject = {}
+                                    thumbObject[thumbnail] = thumbInfo
+                                    newThumbs.push(thumbObject)
+                                    // debugger 
+                                })
+                                self.setState({thumbnails: newThumbs});
+                                debugger
                             })
                             .catch(function(err) {
+                                console.log(res)
+                                //debugger
                             })
+                        /*
+                        const options = {
+                            data: {
+                                thumbnail_id: thumbnailsArray.slice(0, 100).join(',')
+                            }
+                        }
+
+                        self.GET('thumbnails', options)
+                            .then(res => {
+                                console.log(res);
+                                debugger;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                debugger;
+                            });
+                        /**/
+
                     })
                     .catch(function(err){
                         debugger
@@ -171,17 +214,20 @@ var CollectionsMainPage = React.createClass({
                 responsePropName = 'key';
                 break;
             case 'thumbnails':
-                responseArrayName = 'results';
-                responseIdName = 'thumnail_id';
+                responseArrayName = 'thumbnails';
+                responseIdName = 'thumbnail_id';
+                responsePropName = null;
                 break;
             default: 
                 responseArrayName = 'requests'; 
         }
         if (method === 'GET') {
-            res[responseArrayName].map(function(item) {
+
+            res[responseArrayName].map(function(item, i) {
+                var responseParam = responsePropName === null ? item : item[responsePropName]
                 requests.push({
                     method: method,
-                    relative_url: '/api/v2/' + accountId + '/' + type + '/?' + responseIdName + '=' + item[responsePropName]
+                    relative_url: '/api/v2/' + accountId + '/' + type + '/?' + responseIdName + '=' + responseParam
                 })
             })            
         }
