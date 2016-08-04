@@ -6,6 +6,8 @@ import AJAXModule from '../modules/ajax';
 
 var AjaxMixin = {
     apiCalls: [],
+    __batch: [],
+
     GET: function (url, options) {
         var ret = AJAXModule.doGet(url, options);
         this.apiCalls.push(ret);
@@ -37,6 +39,19 @@ var AjaxMixin = {
         this.apiCalls.map(function (apiCall) {
             apiCall.cancel();
         });
+    },
+    sendBatch: function(options) {
+        const ret = AJAXModule.sendBatch(this.__batch);
+        // Clear the queue.
+        this.__batch = [];
+        // Make cancel possible on unmount.
+        this.apiCalls.push(ret);
+        return ret.promise;
+    },
+    batch: function(method, path, data) {
+        data = data || {};
+        this.__batch.push({method, path, data});
+        return this.__batch.length;
     }
 };
 

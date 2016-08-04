@@ -169,8 +169,11 @@ var Videos = React.createClass({
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
-            self.GET('videos/search?' + _pseudoPageUrl, options)
+            self.batch('GET', 'videos/search?' + _pseudoPageUrl);
+            self.sendBatch(options)
                 .then(function(json) {
+                    json = json['results'][0]['response'];
+                    console.log(json);
                     if (!self._isMounted) {
                         return false;
                     }
@@ -229,7 +232,7 @@ var Videos = React.createClass({
             });
     },
     doFormatTime: function(res) {
-        var self = this; 
+        var self = this;
         var offset = moment().utcOffset();
         var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').calendar().toLowerCase();
         self.setState({
