@@ -108,44 +108,15 @@ var CollectionsMainPage = React.createClass({
                 }
                 self.POST('batch', requestTag)
                     .then(function(res) {
-
-                        //findThumbnailIds(res)
-                        
-                        // for (var i = 0; i < res.results.length; i++) {
-                        //         var response = res.results[i].response
-                        //         for (var key in response) {
-                        //             thumbnailsResponse.push(response[key])
-                        //         }
-                        // }
+                        //find ids in tag response
                         var thumbnailsResponse = self.findThumbnailIds(res)
-                        debugger
-                        // end 
-                        // matchCollcetionStateWithThumbnailIds
-                        // self.state.collections.forEach(function(collection){
-                        //         var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
-                        //         collection.thumbnails = thisThing.thumbnails
-                        // })
-                        matchCollcetionStateWithThumbnailIds: function(thumbnailsResponse) {
-                            var self = this; 
-                            self.state.collections.forEach(function(collection){
-                                    var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
-                                    collection.thumbnails = thisThing.thumbnails
-                            })
-                        }
-                        //end
-                        //createThumbnailIdArrayforBatch
-                        var thumbnailsArray = [];
-                        thumbnailsResponse.forEach(function(thumbnail){
-                            thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
-                        })
-                        //end
-                        //splitThumbnailIdArrayByMaxSize
-                        const batches = [];
-                        const batchSize = 100;
-                        for(let index = 0; index < thumbnailsArray.length; index += batchSize) {
-                            batches.push(thumbnailsArray.slice(index, index + batchSize).join(','));
-                        }
-                        //end 
+                        //match those tags with the collections in state
+                        self.matchCollcetionStateWithThumbnailIds(thumbnailsResponse)
+                        //concatinate those thumbnails to create a bigger thumbnail array
+                        var thumbnailsArray = self.createThumbnailIdArrayforBatch(thumbnailsResponse)
+                        //split that batch into groups of 100 
+                        const batches = self.splitThumbnailIdArrayByMaxSize(thumbnailsArray)
+                        
                         var requestThumbs = {
                             data: {
                                 call_info: {
@@ -158,26 +129,12 @@ var CollectionsMainPage = React.createClass({
                         }
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
-                                //createThumbnailInfoResponseArray 
-                                var megaChunk = []
-                                res.results.forEach(function(thumbChunk){
-                                    thumbChunk.response.thumbnails.forEach(function(thumbnails){
-                                      megaChunk = megaChunk.concat(thumbnails)
-                                    })
 
-                                })
-                                //end
-                                //matchThumbNailsIdWithThumbnailInfo
-                                var newThumbs = []
-                                thumbnailsArray.map(function(thumbnail){
-                                    var thumbInfo = megaChunk.find( x =>( x.thumbnail_id === thumbnail))
-                                    var thumbObject = {}
-                                    thumbObject[thumbnail] = thumbInfo
-                                    newThumbs.push(thumbObject)
-                                    // debugger 
-                                })
-                                //
-                                self.setState({ thumbnails: self.state.thumbnails.concat(newThumbs) });
+                                var thumbnailsObjectsArray = self.joinThumbnailsObjectsArray(res)
+
+                                var newThumbnailsStateArray = self.matchThumbNailsIdWithThumbnailInfo(thumbnailsObjectsArray, thumbnailsArray)
+
+                                self.setState({ thumbnails: self.state.thumbnails.concat(newThumbnailsStateArray) });
                                 debugger
                             })
                             .catch(function(err) {
@@ -256,6 +213,42 @@ var CollectionsMainPage = React.createClass({
                 var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
                 collection.thumbnails = thisThing.thumbnails
         })
+    },
+    createThumbnailIdArrayforBatch: function(thumbnailsResponse) {
+        var thumbnailsArray = [];
+        thumbnailsResponse.forEach(function(thumbnail){
+            thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
+        })
+        return thumbnailsArray  
+    },
+    splitThumbnailIdArrayByMaxSize: function(thumbnailsArray, ) {
+        const batchesArray = [];
+        const batchSize = 100;
+        for(let index = 0; index < thumbnailsArray.length; index += batchSize) {
+            batchesArray.push(thumbnailsArray.slice(index, index + batchSize).join(','));
+        }
+        return batchesArray;
+    },
+    joinThumbnailsObjectsArray: function(res) {
+        var megaChunk = []
+        res.results.forEach(function(thumbChunk){
+            thumbChunk.response.thumbnails.forEach(function(thumbnails){
+              megaChunk = megaChunk.concat(thumbnails)
+            })
+
+        })
+        return megaChunk;
+    },
+    matchThumbNailsIdWithThumbnailInfo: function(thumbnailsObjectsArray, thumbnailsArray) {
+        var newThumbs = []
+        thumbnailsArray.map(function(thumbnail){
+            var thumbInfo = thumbnailsObjectsArray.find( x =>( x.thumbnail_id === thumbnail))
+            var thumbObject = {}
+            thumbObject[thumbnail] = thumbInfo
+            newThumbs.push(thumbObject)
+            // debugger 
+        })
+        return newThumbs;
     }
     //findThumbnailIds(res)
     // end 
