@@ -19,7 +19,9 @@ var CollectionsMainPage = React.createClass({
     },
     getInitialState: function() {
         return {
-            collections: null
+            collections: null,
+            thumbnails: [],
+            isLoading: true
         }
     },
     componentWillMount: function() {
@@ -34,7 +36,7 @@ var CollectionsMainPage = React.createClass({
     },
     render: function() {
         var self = this; 
-        if (self.state.collections) {
+        if (!self.state.isLoading && self.state.thumbnails.length > 1) {
             return (
                 <div>
                     <form>
@@ -45,7 +47,10 @@ var CollectionsMainPage = React.createClass({
                       Images: <input type="text" onChange={e => self.updateField('imageUrl', e.target.value)}/>
                       <input type="submit" data-type='image' onClick={self.handleSubmit} />
                     </form>
-                    
+                    <CollectionsContainer 
+                        collections={self.state.collections}
+                        thumbnails={self.state.thumbnails}
+                    />
                     <button 
                         type="button" 
                         onClick={self.handleSeeMoreClick}>
@@ -61,9 +66,7 @@ var CollectionsMainPage = React.createClass({
     },
     updateField: function(field, value) {
         var self = this;
-        this.setState({
-            [field]: value
-        });
+        this.setState({ [field]: value });
     },
     handleSeeMoreClick: function() {
         var self = this; 
@@ -76,24 +79,24 @@ var CollectionsMainPage = React.createClass({
         e.target.dataset.type === 'image' && self.postImages(self.state.imageUrl);
     },
     postVideo: function(url) {
-        alert('vidoes!')
+        alert('vidoes!');
     },
     postImages: function() {
-        alert('images!')
+        alert('images!');
     },
     getCollections: function(paging) {
         var self = this,
             options = {data: { limit: UTILS.RESULTS_PAGE_SIZE , tag_type: 'col' }}
-        // paging = paging ? paging.split('?')[1] : ''
+        ;
+        paging = paging ? paging.split('?')[1] : ''
         // grab the keys of the first 5 collections
         //refresh the token first ? 
-        self.GET('tags/search?', options)
+        self.GET('tags/search?' + paging, options)
             .then(function(res) {
                 //set next page to the state
                 self.setState({ 
                     nextPage: res.next_page,
-                    collections: res.items,
-                    thumbnails: []
+                    collections: res.items
                 });
                 //create a request array for the batch for tags
                 var requestTag = {
@@ -109,13 +112,12 @@ var CollectionsMainPage = React.createClass({
                 self.POST('batch', requestTag)
                     .then(function(res) {
                         //find ids in tag response
-                        var thumbnailsResponse = self.findThumbnailIds(res)
+                        var thumbnailsResponse = self.findThumbnailIds(res);
                         //match those tags with the collections in state
-                        self.matchCollcetionStateWithThumbnailIds(thumbnailsResponse)
                         //concatinate those thumbnails to create a bigger thumbnail array
-                        var thumbnailsArray = self.createThumbnailIdArrayforBatch(thumbnailsResponse)
+                        var thumbnailsArray = self.createThumbnailIdArrayforBatch(thumbnailsResponse);
                         //split that batch into groups of 100 
-                        const batches = self.splitThumbnailIdArrayByMaxSize(thumbnailsArray)
+                        const batches = self.splitThumbnailIdArrayByMaxSize(thumbnailsArray);
                         
                         var requestThumbs = {
                             data: {
@@ -126,29 +128,27 @@ var CollectionsMainPage = React.createClass({
                                 }
                             },
                             noAccountId: true
-                        }
+                        };
                         self.POST('batch', requestThumbs)
                             .then(function(res) {
 
-                                var thumbnailsObjectsArray = self.joinThumbnailsObjectsArray(res)
+                                var thumbnailsObjectsArray = self.joinThumbnailsObjectsArray(res);
 
-                                var newThumbnailsStateArray = self.matchThumbNailsIdWithThumbnailInfo(thumbnailsObjectsArray, thumbnailsArray)
-
-                                self.setState({ thumbnails: self.state.thumbnails.concat(newThumbnailsStateArray) });
-                                debugger
+                                var newThumbnailsStateArray = self.matchThumbNailsIdWithThumbnailInfo(thumbnailsObjectsArray, thumbnailsArray);
+                                self.matchCollcetionStateWithThumbnailIds(thumbnailsResponse);
+                                self.setState({ 
+                                    thumbnails: self.state.thumbnails.concat(newThumbnailsStateArray), 
+                                    isLoading: false
+                                });
                             })
                             .catch(function(err) {
-                                console.log(res)
-                                //debugger
+                                console.log(err)
                             })
-
                     })
-                    .catch(function(err){
-                        debugger
+                    .catch(function(err) {
                     })
             })
             .catch(function(err) {
-                debugger
             })
     },
     createRequests: function(res, type, method) {
@@ -209,14 +209,14 @@ var CollectionsMainPage = React.createClass({
     },
     matchCollcetionStateWithThumbnailIds: function(thumbnailsResponse) {
         var self = this; 
-        self.state.collections.forEach(function(collection){
+        self.state.collections.forEach(function(collection) {
                 var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
                 collection.thumbnails = thisThing.thumbnails
         })
     },
     createThumbnailIdArrayforBatch: function(thumbnailsResponse) {
         var thumbnailsArray = [];
-        thumbnailsResponse.forEach(function(thumbnail){
+        thumbnailsResponse.forEach(function(thumbnail) {
             thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
         })
         return thumbnailsArray  
@@ -231,8 +231,8 @@ var CollectionsMainPage = React.createClass({
     },
     joinThumbnailsObjectsArray: function(res) {
         var megaChunk = []
-        res.results.forEach(function(thumbChunk){
-            thumbChunk.response.thumbnails.forEach(function(thumbnails){
+        res.results.forEach(function(thumbChunk) {
+            thumbChunk.response.thumbnails.forEach(function(thumbnails) {
               megaChunk = megaChunk.concat(thumbnails)
             })
 
@@ -250,17 +250,6 @@ var CollectionsMainPage = React.createClass({
         })
         return newThumbs;
     }
-    //findThumbnailIds(res)
-    // end 
-    // matchCollcetionWithThumbnailIds
-    //end
-    //createThumbnailIdArrayforBatch
-    //end
-    //splitThumbnailIdArrayByMaxSize
-    //end 
-    //createThumbnailInfoResponseArray 
-    //end
-    //matchThumbNailsIdWithThumbnailInfo
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

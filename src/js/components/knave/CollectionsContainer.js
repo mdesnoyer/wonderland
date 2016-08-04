@@ -13,17 +13,46 @@ var CollectionsContainer = React.createClass({
             <div>
                 {
                     self.props.collections.map(function(collection) {
+                        var thumbnails = []
+                        collection.thumbnails.forEach(function(thumbId) {
+                            self.props.thumbnails.forEach(function(thumbnail){
+                                if (thumbnail.hasOwnProperty(thumbId)){
+                                    thumbnails.push(thumbnail)
+                                }
+                            })
+                        })
                     	return (
-                    		<li type={'TODO'} key={collection.video_id}>
-                    			<p>Title: {collection.title}</p>
-                    			<p>State: {collection.state}</p>
-                    		</li>
+                            <article className="xxCollection xxCollection--video" key={collection.key}>
+                    			<p>name: {collection.name}</p>
+                    			<p>type: {collection.tag_type}</p>
+                                <p>created: {collection.created}</p>
+                                <p>updated: {collection.updated}</p>
+                                <p>thumbnails:
+                                {
+                                    thumbnails.map(function(index, elem) {
+                                        debugger
+                                        return (
+                                            <img src={index[Object.keys(index)[0]].url} />
+                                            )
+                                    })
+                                }
+                                </p>
+                            </article>
                 		) 
                     })
                 }
             </div>
         );
+    },
+    propTypes : {
+        collections: React.PropTypes.array.isRequired,
+        thumbnails:  React.PropTypes.array.isRequired
     }
+    // getDefaultProps: function() {
+    //     return {
+
+    //     }
+    // }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
