@@ -358,7 +358,7 @@ var UTILS = {
                         (a,b) => a.neon_score - b.neon_score)[0];
             }
             if (!defaultThumbnail) {
-                // Pick the interesting thumb with the lowest score
+                // Pick the customupload thumb it may not have a score
                 defaultThumbnail = interestingThumbnails.filter(
                     x => x.type === 'customupload')[0];
                 if (!defaultThumbnail) {
