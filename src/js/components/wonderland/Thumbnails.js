@@ -22,6 +22,7 @@ var Thumbnails = React.createClass({
         demographicThumbnails: React.PropTypes.array.isRequired
     },
     getInitialState: function() {
+        // move these up V some of them 
         var self = this;
         var curSelection = self.props.demographicThumbnails[self.props.selectedDemographic];
         var goodThumbs = UTILS.fixThumbnails(curSelection.thumbnails, true);
@@ -106,6 +107,7 @@ var Thumbnails = React.createClass({
                            self.state.isThumbnailOverlayActive);
     },
     render: function() {
+        debugger
         var self = this,
             ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
                 <ThumbnailOverlay

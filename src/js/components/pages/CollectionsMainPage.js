@@ -37,6 +37,7 @@ var CollectionsMainPage = React.createClass({
     render: function() {
         var self = this; 
         if (!self.state.isLoading && self.state.thumbnails.length > 1) {
+            debugger
             return (
                 <div>
                     <form>
@@ -142,8 +143,9 @@ var CollectionsMainPage = React.createClass({
                                 });
                             })
                             .catch(function(err) {
-                                console.log(err)
+                                console.log(res)
                             })
+
                     })
                     .catch(function(err) {
                     })

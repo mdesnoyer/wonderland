@@ -29,10 +29,10 @@ var CollectionsContainer = React.createClass({
                                 <p>updated: {collection.updated}</p>
                                 <p>thumbnails:
                                 {
-                                    thumbnails.map(function(index, elem) {
+                                    thumbnails.map(function(index) {
                                         debugger
                                         return (
-                                            <img src={index[Object.keys(index)[0]].url} />
+                                            <img src={index[Object.keys(index)[0]].renditions[0].url} />
                                             )
                                     })
                                 }
