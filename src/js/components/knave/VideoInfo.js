@@ -37,7 +37,7 @@ var VideoInfo = React.createClass({
             var dos = this.getDemographicOptions(); 
             this.setState({ 
                 demographicOptions: dos, 
-                demographicThumbnails: nextProps.demographicThumbnails,     
+                demographicThumbnails: nextProps.demographicThumbnails    
             });
             // Since we default to not showing the None, we need to 
             // see if the length is exactly 2 -- after a thumbnail change 
