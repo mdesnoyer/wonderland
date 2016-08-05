@@ -346,7 +346,7 @@ var UTILS = {
     },
     findDefaultThumbnail: function(thumbSet) {
         defaultThumbnail = null; 
-        if (thumbSet && thumbSet.thumbnails) { 
+        if (thumbSet && thumbSet.thumbnails) {
             var defaultThumbnail = thumbSet.thumbnails.find(
                 x => x.type === 'default');
             var interestingThumbnails = thumbSet.thumbnails.filter(
@@ -356,6 +356,11 @@ var UTILS = {
                 defaultThumbnail = interestingThumbnails.filter(
                     x => x.neon_score > 0).sort(
                         (a,b) => a.neon_score - b.neon_score)[0];
+            }
+            if (!defaultThumbnail) {
+                // Pick the interesting thumb with the lowest score
+                defaultThumbnail = interestingThumbnails.filter(
+                    x => x.type === 'customupload')[0];
                 if (!defaultThumbnail) {
                     return;
                 }
@@ -387,6 +392,9 @@ var UTILS = {
                     }
                     break;
                 case 'custom':
+                    customs.push(rawThumbnail);
+                    break;
+                case 'customupload':
                     customs.push(rawThumbnail);
                     break;
                 case 'default':
