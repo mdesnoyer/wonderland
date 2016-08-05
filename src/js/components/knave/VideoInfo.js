@@ -102,6 +102,7 @@ var VideoInfo = React.createClass({
     render: function() {
         var self = this,
             filtersClassName = ['xxCollectionFilters'],
+            dropdownClassName = ['xxCollectionFilters-title'],
             dropdownFilters = null,
             filters = self.getDemographicOptions().slice(0),
             currentFilter = filters[self.state.selectedDemographic].label,
@@ -109,9 +110,11 @@ var VideoInfo = React.createClass({
         ;
         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
             filtersClassName.push('has-dropdown');
+            dropdownClassName.push('has-dropdown');
         }
         if (self.state.dropdownOpen) {
             filtersClassName.push('is-open');
+            dropdownClassName.push('is-open');
             var temp = filters[0];
             filters[0] = filters[self.state.selectedDemographic];
             filters[self.state.selectedDemographic] = temp;
@@ -156,7 +159,7 @@ var VideoInfo = React.createClass({
                                     classPrefix="xxCollectionFilterCountdown" />
                                 </span>
                             ) : (
-                                <span className="xxCollectionFilterCountdown">T.get('timer.loading')}</span>
+                                <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
                             );
                             return (
                                 <div>
@@ -173,7 +176,7 @@ var VideoInfo = React.createClass({
                                         data-for="staticTooltip"
                                         onClick={self.props.handleMenuChange} >
                                     </a>
-                                    <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
+                                    <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
                                     {(() => {
                                         // Show the demographic selector if they've run more than just the default.
                                         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {

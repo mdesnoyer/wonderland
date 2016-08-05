@@ -56,11 +56,6 @@
             animation: rotate 2s infinite linear;
         }
     }
-
-    &--processing {
-        float: right;
-        top: 14px;
-    }
 }
 
 .xxCollectionFilterCountdown {
@@ -131,6 +126,30 @@
 
     &--processing {
         float: left;
+    }
+}
+
+.xxCollectionFilters-title {
+    z-index: $z-index-above-everything;
+    &.has-dropdown {
+        @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+        &::before,
+        &::after {
+            top: -4px;
+            right: 18px;
+            left: auto;
+        }
+
+        &.is-open {
+            z-index: $z-index-above-everything;
+
+            &::before,
+            &::after {
+                top: 4px;
+                transform-origin: 50% 0;
+            }
+        }
     }
 }
 

@@ -99,9 +99,9 @@ var VideoProcessing = React.createClass({
                     </h1>
                     { 
                         isError ? null : (
-                            <div>
-                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--processing xxCollectionFilterToggle--countdown"></div>
-                                {countdown}
+                            <div className="xxCollectionFilters">
+                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
+                                <span>{countdown}</span>
                             </div>
                         )  
                     } 
