@@ -49,6 +49,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange}
                         displayThumbLift={self.props.displayThumbLift}
                         isGuest={self.props.isGuest}
+                        demographicThumbnails={self.props.demographicThumbnails}
                     />
                 ) : (
                     <div>
