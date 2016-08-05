@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactSelect from 'react-select';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Countdown from '../wonderland/Countdown';
@@ -34,19 +33,18 @@ var VideoInfo = React.createClass({
         ReactTooltip.rebuild();
     },
     componentWillReceiveProps: function(nextProps) {
-        if (this.props.demographicThumbnails.length !== 
-              nextProps.demographicThumbnails.length) { 
+        if (this.props.demographicThumbnails.length !== nextProps.demographicThumbnails.length) { 
             var dos = this.getDemographicOptions(); 
             this.setState({ 
                 demographicOptions: dos, 
-                demographicThumbnails: nextProps.demographicThumbnails        
+                demographicThumbnails: nextProps.demographicThumbnails,     
             });
             // Since we default to not showing the None, we need to 
             // see if the length is exactly 2 -- after a thumbnail change 
             // if it is set the selectedDemographic to 1 instead of 0
             if (nextProps.demographicThumbnails.length === 2) { 
                 this.setState({ 
-                    selectedDemographic: 1 
+                    selectedDemographic: 1
                 }); 
             }  
         } 
@@ -80,12 +78,16 @@ var VideoInfo = React.createClass({
         }
         return demographicOptions; 
     },
-    onDemographicChange: function(value) {
-        var self = this;
+    onDemographicChange: function(e) {
+        var self = this,
+            value = parseInt(e.target.id)
+        ;
+        e.preventDefault();
         self.setState({
+            dropdownOpen: false,
             selectedDemographic: value
-        }, function () {
-            self.props.handleDemographicChange(value.value);
+        }, function() {
+            self.props.handleDemographicChange(value);
         });
     },
     onTimerFinished: function() {
@@ -100,12 +102,45 @@ var VideoInfo = React.createClass({
     render: function() {
         var self = this,
             filtersClassName = ['xxCollectionFilters'],
+            dropdownFilters = null,
+            filters = self.getDemographicOptions().slice(0),
+            currentFilter = filters[self.state.selectedDemographic].label,
             countdown
         ;
         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
             filtersClassName.push('has-dropdown');
         }
-        console.log(self.getDemographicOptions());
+        if (self.state.dropdownOpen) {
+            filtersClassName.push('is-open');
+            var temp = filters[0];
+            filters[0] = filters[self.state.selectedDemographic];
+            filters[self.state.selectedDemographic] = temp;
+            dropdownFilters = (
+                <ul className="xxCollectionFilters-dropdown">
+                    {
+                        filters.map(function(item) {
+                            var i = item.value;
+                            if (i === self.state.selectedDemographic) {
+                                return (
+                                    <li key={i} id={i} className="xxCollectionFilters-version is-selected" onClick={self.onDemographicChange}>
+                                        <span id={i} className="xxCollectionFilters-versionTitle">Filters</span>
+                                        <span id={i}>{item.label}</span>
+                                    </li>
+                                );
+                            }
+                            else {
+                                return (
+                                    <li key={i} id={i} className="xxCollectionFilters-version" onClick={self.onDemographicChange}>
+                                        <span id={i} className="xxCollectionFilters-versionTitle">Filters</span>
+                                        <span id={i}>{item.label}</span>
+                                    </li>
+                                );
+                            }
+                        })
+                    }
+                </ul>
+            );
+        }
         return (
             <div>
                 <h1 className="xxCollection-title">
@@ -114,27 +149,23 @@ var VideoInfo = React.createClass({
                 <div className={filtersClassName.join(' ')}>
                     {(() => {
                         if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
-                            if (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) {
-                                countdown = (
-                                    <span><Countdown 
-                                        seconds={self.props.timeRemaining} 
-                                        onFinish={self.onTimerFinished} 
-                                        classPrefix="xxCollectionFilterCountdown" />
-                                    </span>
-                                );
-                            }
-                            else {
-                                countdown = (
-                                    <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
-                                );
-                            }
+                            countdown = (self.props.timeRemaining !== null && self.props.timeRemaining >= 1) ? (
+                                <span><Countdown 
+                                    seconds={self.props.timeRemaining} 
+                                    onFinish={self.onTimerFinished} 
+                                    classPrefix="xxCollectionFilterCountdown" />
+                                </span>
+                            ) : (
+                                <span className="xxCollectionFilterCountdown">T.get('timer.loading')}</span>
+                            );
                             return (
                                 <div>
                                     <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                     {countdown}
                                 </div>
                             );
-                        } else if (!self.props.isGuest) {
+                        }
+                        else if (!self.props.isGuest) {
                             return (
                                 <div>
                                     <a className="xxCollectionFilterToggle"
@@ -147,15 +178,13 @@ var VideoInfo = React.createClass({
                                         // Show the demographic selector if they've run more than just the default.
                                         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
                                             return (
-                                                <span 
-                                                    className="xxCollectionFilters-value"
-                                                    onClick={self.toggleOpen}
-                                                >
-                                                    {self.getDemographicOptions()[self.state.selectedDemographic].label}
+                                                <span>
+                                                    <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
+                                                        {currentFilter}
+                                                    </span>
+                                                    {dropdownFilters}
                                                 </span>
                                             );
-                                        } else {
-                                            return null;
                                         }
                                     })()}
                                 </div>
