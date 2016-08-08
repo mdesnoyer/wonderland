@@ -1,13 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import ReactSelect from 'react-select';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import E from '../../modules/errors';
+import DropDown from './DropDown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -44,21 +44,17 @@ var VideoFilters = React.createClass({
                 { errMsg }
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>
-                    <ReactSelect
-                        name="gender"
-                        placeholder={T.get('label.gender')}
-                        onChange={self.onGenderChange}
-                        value={self.state.gender}
+                    <DropDown
                         options={UTILS.FILTERS_GENDER}
+                        label={T.get('label.gender')}
+                        handleChange={self.onGenderChange}
                     />
                 </div>
                 <div className="xxFormField">
-                    <ReactSelect
-                        name="age"
-                        placeholder={T.get('label.age')}
-                        onChange={self.onAgeChange}
-                        value={self.state.age}
+                    <DropDown
                         options={UTILS.FILTERS_AGE}
+                        label={T.get('label.age')}
+                        handleChange={self.onAgeChange}
                     />
                 </div>
                 <div className="xxCollectionAction-buttons">
@@ -78,15 +74,15 @@ var VideoFilters = React.createClass({
             </div>
         );
     },
-    onGenderChange: function (value) {
+    onGenderChange: function(value) {
         this.setState({
-            gender: value ? value.value : null,
+            gender: value || null,
             isError: false
         });
     },
-    onAgeChange: function (value) {
+    onAgeChange: function(value) {
         this.setState({
-            age: value ? value.value : null,
+            age: value || null,
             isError: false
         });
     },

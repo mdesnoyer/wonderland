@@ -413,6 +413,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
             'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
 
+            // Refilter
+            'copy.refilter.title': 'Your refilter is ready!',
+            'copy.viewResults': 'View Results',
+            'copy.refilter.label': 'Click to view previous versions',
+
             // Videos
             'copy.videos.upload.filter.title': 'Filters',
             'copy.videos.upload.filter.description': 'Get images for a specific audience.',
