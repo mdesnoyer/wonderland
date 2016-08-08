@@ -172,7 +172,7 @@ var AJAXModule = {
         // url=https://dl.dropboxusercontent.com/1/view/2y1xbcf42urgy3r/neon.jpg
         // on account_id=c3d4:
         //   returns: /api/v2/c3d4/thumbnails/
-        const _getRelativeUrl = (request) => {
+        const _getRelativeUrl = function(request) {
 
             // The fixed base of every account-based request url.
             const base = '/api/v2/' + SESSION.state.accountId + '/' + request.path;
@@ -184,7 +184,7 @@ var AJAXModule = {
         };
 
         // Get the body object for a given request.
-        const _getBody = (request) => {
+        const _getBody = function(request) {
             if(request.method === 'GET') {
                 return {};
             }
