@@ -218,7 +218,7 @@
     line-height: $form-element-height;
 
     @include breakpoint-mobile {
-        margin-top: 35px;
+        margin-bottom: 32px;
     }
 
     .xxButton {
@@ -266,6 +266,7 @@
     @include breakpoint-mobile {
         height: $mobile-form-element-height;
         line-height: $mobile-form-element-height - $form-element-border * 2;
+        width: 120px;
     }
 
     &[disabled] {

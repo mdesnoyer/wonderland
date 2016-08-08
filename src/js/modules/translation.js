@@ -82,7 +82,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signIn.heading': 'Welcome to Neon',
             'copy.signIn.body': 'Sign in below.',
 
+            'copy.signUp.head.title': 'Sign Up',
             'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.title.mobile': 'Let\u2019s get started!',
             'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
             'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
 
