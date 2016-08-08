@@ -46,9 +46,10 @@ var VideoInfo = React.createClass({
                 this.setState({ 
                     selectedDemographic: 1
                 }); 
-            }  
-        } 
-        if (this.props.selectedDemographic !== nextProps.selectedDemographic) { 
+            }
+            this.props.showRefilterTutorial();
+        }
+        if (this.props.selectedDemographic !== nextProps.selectedDemographic) {
             this.setState({
                 selectedDemographic: nextProps.selectedDemographic
             });

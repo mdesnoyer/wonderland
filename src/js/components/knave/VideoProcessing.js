@@ -80,7 +80,7 @@ var VideoProcessing = React.createClass({
                 } 
                 else {
                     countdown = (
-                        <span>{T.get('timer.loading')}</span> 
+                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span> 
                     );
                 }
                 break;

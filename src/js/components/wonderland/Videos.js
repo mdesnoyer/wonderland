@@ -105,6 +105,7 @@ var Videos = React.createClass({
                                 openLearnMore={self.props.openLearnMore}
                                 isMaxLimit={self.state.isMaxLimit}
                                 setTooltipText={self.setTooltipText}
+                                showRefilterTutorial={self.props.showRefilterTutorial}
                             />
                             <ReactTooltip
                                 id="settableTooltip"

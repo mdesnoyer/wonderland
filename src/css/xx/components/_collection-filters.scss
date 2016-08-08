@@ -225,14 +225,13 @@
     @include clearfix;
 
     position: absolute;
-    top: 50%;
+    top: 24%;
     right: 0;
-    left: 0;
-    width: $page-max-width;
-    max-width: 100%;
-    min-width: $page-min-width;
+    left: 100%;
+    width: 320px;
     margin: 0 auto;
     transform: translateY(-55%);
+    z-index: 1;
 }
 
 .xxCollectionFiltersHint-arrow {
@@ -255,7 +254,7 @@
     float: right;
     position: relative;
     width: 319px;
-    padding: 230px 0 0;
+    padding: 330px 0 0;
     color: $secondary-color;
     text-align: center;
 
@@ -266,7 +265,7 @@
         right: 0;
         left: 0;
         width: 1px;
-        height: 202px;
+        height: 302px;
         margin: 0 auto;
         background: $base-color;
     }
