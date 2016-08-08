@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
 
 import AjaxMixin from '../../mixins/Ajax';
 
@@ -8,7 +8,7 @@ import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import { objectToGetParams } from '../../modules/sharing';
 
-import CollectionsContainer from '../knave/CollectionsContainer';
+import Collections from '../knave/Collections';
 import SiteHeader from '../wonderland/SiteHeader';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19,9 +19,8 @@ var CollectionsMainPage = React.createClass({
     },
     getInitialState: function() {
         return {
-            collections: null,
-            thumbnails: [],
-            isLoading: true
+            collections: {},
+            thumbnails: {}
         }
     },
     componentWillMount: function() {
@@ -35,8 +34,14 @@ var CollectionsMainPage = React.createClass({
         }
     },
     render: function() {
-        var self = this; 
-        if (!self.state.isLoading && self.state.thumbnails.length > 1) {
+        return (
+            <Collections
+                collections={this.state.collections}
+                thumbnails={this.state.thumbnails}
+            />
+        );
+        /*
+        var self = this;
             debugger
             return (
                 <div>
@@ -48,12 +53,12 @@ var CollectionsMainPage = React.createClass({
                       Images: <input type="text" onChange={e => self.updateField('imageUrl', e.target.value)}/>
                       <input type="submit" data-type='image' onClick={self.handleSubmit} />
                     </form>
-                    <CollectionsContainer 
+                    <CollectionsContainer
                         collections={self.state.collections}
                         thumbnails={self.state.thumbnails}
                     />
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onClick={self.handleSeeMoreClick}>
                         See More
                     </button>
@@ -63,15 +68,16 @@ var CollectionsMainPage = React.createClass({
         else {
             return <p>'loading'</p>
         }
-        
+        /**/
+
     },
     updateField: function(field, value) {
         var self = this;
         this.setState({ [field]: value });
     },
     handleSeeMoreClick: function() {
-        var self = this; 
-        self.getCollections(self.state.nextPage)    
+        var self = this;
+        self.getCollections(self.state.nextPage)
     },
     handleSubmit: function(e) {
         var self = this;
@@ -90,167 +96,69 @@ var CollectionsMainPage = React.createClass({
             options = {data: { limit: UTILS.RESULTS_PAGE_SIZE , tag_type: 'col' }}
         ;
         paging = paging ? paging.split('?')[1] : ''
+
+        const workingState = {};
+
         // grab the keys of the first 5 collections
-        //refresh the token first ? 
+        //refresh the token first ?
         self.GET('tags/search?' + paging, options)
             .then(function(res) {
                 //set next page to the state
-                self.setState({ 
+                self.setState({
                     nextPage: res.next_page,
                     collections: res.items
                 });
-                //create a request array for the batch for tags
-                var requestTag = {
-                    data: {
-                        call_info: {
-                            refresh_token: SESSION.state.refreshToken,
-                            access_token: SESSION.state.accessToken,
-                            requests: self.createRequests(res, 'tags', 'GET')
-                        }
-                    },
-                    noAccountId: true
-                }
-                self.POST('batch', requestTag)
+                const _tagData = {
+                    tag_id: res.items.reduce((tag_ids, item) => {
+                        tag_ids.push(item.key);
+                        return tag_ids;
+                    }, []).join(',')
+                };
+                self.GET('tags', {data: _tagData})
                     .then(function(res) {
-                        //find ids in tag response
-                        var thumbnailsResponse = self.findThumbnailIds(res);
-                        //match those tags with the collections in state
-                        //concatinate those thumbnails to create a bigger thumbnail array
-                        var thumbnailsArray = self.createThumbnailIdArrayforBatch(thumbnailsResponse);
-                        //split that batch into groups of 100 
-                        const batches = self.splitThumbnailIdArrayByMaxSize(thumbnailsArray);
-                        
-                        var requestThumbs = {
-                            data: {
-                                call_info: {
-                                    refresh_token: SESSION.state.refreshToken,
-                                    access_token: SESSION.state.accessToken,
-                                    requests: self.createRequests({thumbnails: batches}, 'thumbnails', 'GET')
-                                }
-                            },
-                            noAccountId: true
-                        };
-                        self.POST('batch', requestThumbs)
+                        try{
+
+                        // Store the map of collection id to object.
+                        workingState.collections = res;
+
+                        // Get and concatenate all thumbnail ids.
+                        const collections = UTILS.valuesFromMap(res);
+                        const thumbIds = collections.reduce((array, col) => {
+                            array = array.concat(col.thumbnail_ids);
+                            return array;
+                        }, []);
+                        const thumbArgs = UTILS.csvFromArray(thumbIds, UTILS.MAX_CSV_VALUE_COUNT);
+
+                        // Batch requests.
+                        thumbArgs.forEach((arg) => {
+                            self.batch('GET', 'thumbnails', {thumbnail_id: arg});
+                        });
+                        self.sendBatch()
                             .then(function(res) {
 
-                                var thumbnailsObjectsArray = self.joinThumbnailsObjectsArray(res);
-
-                                var newThumbnailsStateArray = self.matchThumbNailsIdWithThumbnailInfo(thumbnailsObjectsArray, thumbnailsArray);
-                                self.matchCollcetionStateWithThumbnailIds(thumbnailsResponse);
-                                self.setState({ 
-                                    thumbnails: self.state.thumbnails.concat(newThumbnailsStateArray), 
-                                    isLoading: false
+                                workingState.thumbnails = {};
+                                res.results.forEach(r => {
+                                    r.response.thumbnails.forEach(t => {
+                                        workingState.thumbnails[t.thumbnail_id] = t;
+                                    });
                                 });
+                                self.setState(workingState);
                             })
                             .catch(function(err) {
-                                console.log(res)
+                                console.log(err)
                             })
+                       } catch(e) {
+                           console.log(e)
+                       }
 
                     })
                     .catch(function(err) {
+                        console.log(err);
                     })
             })
             .catch(function(err) {
+                console.log(err);
             })
-    },
-    createRequests: function(res, type, method) {
-        var self = this,
-        //what if account ID not set ? 
-            accountId = SESSION.state.accountId,
-            requests = [],
-            responseArrayName,
-            responsePropName,
-            responseIdName
-        ;
-        // need to hanlde posts and their data
-        switch(type) {
-            case 'tags': 
-                responseArrayName = 'items';
-                responseIdName = 'tag_id';
-                responsePropName = 'key';
-                break;
-            case 'thumbnails':
-                responseArrayName = 'thumbnails';
-                responseIdName = 'thumbnail_id';
-                responsePropName = null;
-                break;
-            default: 
-                responseArrayName = 'requests'; 
-        }
-        if (method === 'GET') {
-
-            res[responseArrayName].map(function(item, i) {
-                var responseParam = responsePropName === null ? item : item[responsePropName]
-                requests.push({
-                    method: method,
-                    relative_url: '/api/v2/' + accountId + '/' + type + '/?' + responseIdName + '=' + responseParam
-                })
-            })            
-        }
-        else {
-            res[responseArrayName].map(function(item) {
-                requests.push({
-                    body: { [responseIdName]: item[responsePropName]},
-                    method: method,
-                    relative_url: '/api/v2/' + accountId + '/' + type + '/'
-                })
-            })  
-        }
-
-        return requests
-    },
-    findThumbnailIds: function(res) {
-        var thumbArray = []
-        for (var i = 0; i < res.results.length; i++) {
-                var response = res.results[i].response
-                for (var key in response) {
-                    thumbArray.push(response[key])
-                }
-        }
-        return thumbArray
-    },
-    matchCollcetionStateWithThumbnailIds: function(thumbnailsResponse) {
-        var self = this; 
-        self.state.collections.forEach(function(collection) {
-                var thisThing = thumbnailsResponse.find( x =>( x.tag_id === collection.key))
-                collection.thumbnails = thisThing.thumbnails
-        })
-    },
-    createThumbnailIdArrayforBatch: function(thumbnailsResponse) {
-        var thumbnailsArray = [];
-        thumbnailsResponse.forEach(function(thumbnail) {
-            thumbnailsArray = thumbnailsArray.concat(thumbnail.thumbnails)
-        })
-        return thumbnailsArray  
-    },
-    splitThumbnailIdArrayByMaxSize: function(thumbnailsArray, ) {
-        const batchesArray = [];
-        const batchSize = 100;
-        for(let index = 0; index < thumbnailsArray.length; index += batchSize) {
-            batchesArray.push(thumbnailsArray.slice(index, index + batchSize).join(','));
-        }
-        return batchesArray;
-    },
-    joinThumbnailsObjectsArray: function(res) {
-        var megaChunk = []
-        res.results.forEach(function(thumbChunk) {
-            thumbChunk.response.thumbnails.forEach(function(thumbnails) {
-              megaChunk = megaChunk.concat(thumbnails)
-            })
-
-        })
-        return megaChunk;
-    },
-    matchThumbNailsIdWithThumbnailInfo: function(thumbnailsObjectsArray, thumbnailsArray) {
-        var newThumbs = []
-        thumbnailsArray.map(function(thumbnail){
-            var thumbInfo = thumbnailsObjectsArray.find( x =>( x.thumbnail_id === thumbnail))
-            var thumbObject = {}
-            thumbObject[thumbnail] = thumbInfo
-            newThumbs.push(thumbObject)
-            // debugger 
-        })
-        return newThumbs;
     }
 });
 
@@ -259,87 +167,3 @@ var CollectionsMainPage = React.createClass({
 export default CollectionsMainPage;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// updateCollectionVideo: function(videoId) {
-//     var self = this,
-//         options = {
-//             data: {
-//                 fields: ['state', 'estimated_time_remaining', 'duration'],
-//                 video_id: videoId
-//             }
-//         }
-//     ; 
-//     self.GET('videos/', options)
-//         .then(function(res){
-//             self.setState({
-//                 nextPage: res.next_page,
-//                 collections: res.videos.concat(self.state.collections)
-//             })  
-//         }) 
-//         .catch(function(err){
-//             debugger
-//         })
-// },
-// debugger
-// if (!self.state.collections && !self.state.nextPage) {
-//     self.setState({
-//         nextPage: res.next_page,
-//         collections: res.videos
-//     })                    
-// }
-// else {
-//     self.setState({
-//         nextPage: res.next_page,
-//         collections: self.state.collections.concat(res.videos)
-//     })  
-// }
-
-        // In Ice Box       
-        // self.GET('tags/search')
-        //  .then(function(res) {
-        //      debugger
-        //  })
-        //  .catch(function(err){
-        //      debugger
-        //  })
-        // var self = this,
-        //     options = {
-        //         data: {
-        //             fields: UTILS.VIDEO_FIELDS,
-        //             limit: UTILS.RESULTS_PAGE_SIZE
-        //         }
-        //     }
-        // ;
-        // postVideo: function(url) {
-        //     var self = this,
-        //         videoId = UTILS.generateId(),
-        //         options = {
-        //             data: {
-        //                 external_video_ref: videoId,
-        //                 url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url))
-        //             }
-        //         }
-        //     ;
-        //         self.POST('videos', options)
-        //             .then(function(json) {
-        //                 debugger 
-        //                 self.updateCollectionVideo(json.video.video_id)
-        //             })
-        //             .catch(function(err) {
-        //                 debugger
-        //             });
-        // },
-        // getAccountLimits: function(callback) {
-        //     var self = this;
-        //     self.GET('limits')
-        //         .then(function(res) {
-        //             //keep next page link + limit
-        //             // {max_video_size: 900, max_video_posts: 25, refresh_time_video_posts: "2016-08-02 22:34:01.854838", video_posts: 0}
-        //             callback()
-        //         })
-        //         .catch(function(err) {
-        //             // if there is an erro we should we 
-        //             //more than likely need to sign in
-        //         });
-        // },
-

@@ -65,6 +65,8 @@ var AJAXModule = {
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
+                        // Note don't commit.
+                        console.log(url, res);
                         options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
                     }
                 })
@@ -179,7 +181,7 @@ var AJAXModule = {
             const base = '/api/v2/' + SESSION.state.accountId + '/' + request.path;
 
             if(request.method === 'GET') {
-                return base + self.getQueryParam(request.data);
+                return base + '?' + self.getQueryParam(request.data);
             }
             return base;
         };

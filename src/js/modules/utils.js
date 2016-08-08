@@ -329,6 +329,8 @@ var UTILS = {
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
     TOOLTIP_DELAY_MILLIS: 500,
+    // For calls using comma separated values, the maximum items supported.
+    MAX_CSV_VALUE_COUNT: 100,
 
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
@@ -522,6 +524,49 @@ var UTILS = {
     },
     validateUrl: function(value) {
           return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    },
+
+    // Given a map, return the list of values of all enumerable keys.
+    valuesFromMap: map => {
+        const values = [];
+        for (let key in map) {
+            values.push(map[key]);
+        }
+        return values;
+    },
+
+    // Given a map of key to value, return the flattened list of all values.
+    flatListFromMap: map => {
+        const list = [];
+        for (let key in map) {
+            list.concat(map[key]);
+        }
+        return list;
+    },
+
+    // Given an array of values, format values into comma-separated values
+    // and return as list of string.
+    csvFromArray: (array, batchMax) => {
+
+        const count = array.length;
+        const res = [];
+        let working = [];
+
+        for (let i = 0; i < count; ++i) {
+            working.push(array[i]);
+            // Store a batch once we've reached the batch maximum.
+            if(i % batchMax == batchMax - 1) {
+                res.push(working);
+                working = [];
+            }
+        }
+        // Store the remainder.
+        if (working)
+            res.push(working);
+        // Convert lists to CSV strings and return.
+        return res.map(list => {
+            return list.join(',');
+        });
     }
 };
 
