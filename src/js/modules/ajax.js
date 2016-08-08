@@ -150,6 +150,8 @@ var AJAXModule = {
     },
     // Translates a nested batch of requests to the format expected by doApiCall.
     _buildBatchOptions: function(batch, options) {
+        const self = this;
+
         const _merge = (obj1, obj2) => {
             const ret = {};
             for(let key in obj1) {
@@ -178,7 +180,7 @@ var AJAXModule = {
             const base = '/api/v2/' + SESSION.state.accountId + '/' + request.path;
 
             if(request.method === 'GET') {
-                return base + this.getQueryParam(request.data);
+                return base + self.getQueryParam(request.data);
             }
             return base;
         };

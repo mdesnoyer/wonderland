@@ -173,7 +173,6 @@ var Videos = React.createClass({
             self.sendBatch(options)
                 .then(function(json) {
                     json = json['results'][0]['response'];
-                    console.log(json);
                     if (!self._isMounted) {
                         return false;
                     }
