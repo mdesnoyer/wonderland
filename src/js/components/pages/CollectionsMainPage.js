@@ -33,6 +33,7 @@ var CollectionsMainPage = React.createClass({
     render: function() {
         return (
             <Collections
+                className="xxPage"
                 collections={this.state.collections}
                 thumbnails={this.state.thumbnails}
             />
@@ -90,7 +91,7 @@ var CollectionsMainPage = React.createClass({
     },
     getCollections: function(paging) {
         var self = this,
-            options = {data: { limit: UTILS.RESULTS_PAGE_SIZE , tag_type: 'col' }}
+            options = {data: { limit: UTILS.RESULTS_PAGE_SIZE }}
         ;
         paging = paging ? paging.split('?')[1] : ''
 
@@ -117,7 +118,6 @@ var CollectionsMainPage = React.createClass({
                 self.GET('tags', {data: _tagData})
 
                     .then(function(res) {
-                        try{
 
                         // Store the map of collection id to object.
                         workingState.collections = res;
@@ -143,23 +143,9 @@ var CollectionsMainPage = React.createClass({
                                         workingState.thumbnails[t.thumbnail_id] = t;
                                     });
                                 });
-                                console.log('settingState');
                                 self.setState(workingState);
                             })
-                            .catch(function(err) {
-                                console.error(err)
-                            })
-                       } catch(e) {
-                           console.error(e)
-                       }
-
                     })
-                    .catch(function(err) {
-                        console.error(err);
-                    })
-            })
-            .catch(function(err) {
-                console.error(err);
             })
     }
 });

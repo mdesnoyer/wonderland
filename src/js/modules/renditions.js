@@ -56,7 +56,6 @@ var RENDITIONS = {
             // is bigger and closest in size.
             if (this.aspectRatioEquals(r.width, r.height, width, height)) {
                 var diff = r.width - width;
-                
                 if (best_diff > 0) {
                     if (diff > 0 && diff < best_diff) {
                         best_diff = diff;
@@ -70,7 +69,6 @@ var RENDITIONS = {
         }
 
         return near_match || aspect_ratio_match || thumbnail.url;
-        
     }
 }
 
