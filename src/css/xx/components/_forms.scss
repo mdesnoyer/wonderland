@@ -340,7 +340,13 @@
     margin-top: 5em;
     width: 50%;
     background: $white;
-    padding: 2.5%; 
+    padding: 2.5%;
+
+    @include breakpoint-mobile {
+        width: 100%;
+        margin-top: 0;
+        padding: 8%;
+    }
 }
 
 
