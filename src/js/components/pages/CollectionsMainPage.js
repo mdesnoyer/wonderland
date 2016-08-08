@@ -24,13 +24,10 @@ var CollectionsMainPage = React.createClass({
         }
     },
     componentWillMount: function() {
-        var self = this;
         if (!SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
-        }
-        else {
-            // self.getAccountLimits(self.getCollections());
-            self.getCollections()
+            this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
+        } else {
+            this.getCollections()
         }
     },
     render: function() {
@@ -97,17 +94,20 @@ var CollectionsMainPage = React.createClass({
         ;
         paging = paging ? paging.split('?')[1] : ''
 
-        const workingState = {};
+        const workingState = self.getInitialState();
 
         // grab the keys of the first 5 collections
         //refresh the token first ?
+
+        // Search for tag ids, get tags, then get thumbnails for those.
         self.GET('tags/search?' + paging, options)
             .then(function(res) {
+
                 //set next page to the state
-                self.setState({
-                    nextPage: res.next_page,
-                    collections: res.items
-                });
+                workingState.nextPage = res.next_page;
+                workingState.prevPage = res.prev_page;
+
+                // Search for all the tags.
                 const _tagData = {
                     tag_id: res.items.reduce((tag_ids, item) => {
                         tag_ids.push(item.key);
@@ -115,6 +115,7 @@ var CollectionsMainPage = React.createClass({
                     }, []).join(',')
                 };
                 self.GET('tags', {data: _tagData})
+
                     .then(function(res) {
                         try{
 
@@ -142,22 +143,23 @@ var CollectionsMainPage = React.createClass({
                                         workingState.thumbnails[t.thumbnail_id] = t;
                                     });
                                 });
+                                console.log('settingState');
                                 self.setState(workingState);
                             })
                             .catch(function(err) {
-                                console.log(err)
+                                console.error(err)
                             })
                        } catch(e) {
-                           console.log(e)
+                           console.error(e)
                        }
 
                     })
                     .catch(function(err) {
-                        console.log(err);
+                        console.error(err);
                     })
             })
             .catch(function(err) {
-                console.log(err);
+                console.error(err);
             })
     }
 });
