@@ -12,8 +12,6 @@ import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const BREAKPOINT_MOBILE = 768;
-
 var SignInPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired

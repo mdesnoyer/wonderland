@@ -11,8 +11,6 @@ import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const BREAKPOINT_MOBILE = 768;
-
 var SignOutPage = React.createClass({
     componentWillMount: function() {
         SESSION.end();
