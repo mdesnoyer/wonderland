@@ -8,7 +8,7 @@ import SESSION from './session';
 
 var AJAXModule = {
     Session: null,
-    getQueryParam: json => {
+    getQueryParam: function(json) {
         return Object.keys(json).map(key => {
             if (json[key] !== null && json[key] !== undefined) {
                 if (Object.prototype.toString.call(json[key]) === '[object Array]') {
@@ -21,7 +21,7 @@ var AJAXModule = {
             }
         }).join('&');
     },
-    handleApiError: err => {
+    handleApiError: function(err) {
         var ret;
         try {
             ret = JSON.parse(err.responseText).error;
@@ -36,12 +36,12 @@ var AJAXModule = {
         }
         return ret;
     },
-    doApiCall: (url, options) => {
+    doApiCall: function(url, options) {
         var self = this,
             promise,
             ret
         ;
-        const fin = (resolve, reject) => {
+        const fin = function(resolve, reject) {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
@@ -119,7 +119,7 @@ var AJAXModule = {
         };
         return ret;
     },
-    doGet: (url, options) => {
+    doGet: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'GET';
@@ -127,7 +127,7 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
-    doPost: (url, options) => {
+    doPost: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'POST';
@@ -135,7 +135,7 @@ var AJAXModule = {
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
     },
-    doPut: (url, options) => {
+    doPut: function(url, options) {
         options = options || {};
         options.host = options.host || CONFIG.API_HOST;
         options.method = options.method || 'PUT';
