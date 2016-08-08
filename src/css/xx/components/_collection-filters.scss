@@ -184,6 +184,17 @@
     z-index: $z-index-above-everything - 1;
     box-shadow: 0 0 5px rgba(0, 0, 0, .22);
     background: $white;
+
+    @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+    &::before,
+    &::after {
+        top: 16px;
+        right: 30px;
+        left: auto;
+        transform-origin: 50% 0;
+        bottom: initial; // needed to adjust alignment
+    }
 }
 
 .xxCollectionFilters-version {
