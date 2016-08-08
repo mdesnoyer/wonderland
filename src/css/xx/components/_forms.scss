@@ -235,6 +235,15 @@
     position: relative;
     top: 2px;
     font-size: 14px;
+
+    &--nobutton {
+        line-height: 14px;
+
+        @include breakpoint-mobile {
+            font-size: 12px;
+            line-height: 12px;
+        }
+    }
 }
 
 .xxButton {
@@ -345,7 +354,7 @@
     @include breakpoint-mobile {
         width: 100%;
         margin-top: 0;
-        padding: 8%;
+        padding: 24px;
     }
 }
 

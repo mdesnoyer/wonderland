@@ -11,9 +11,33 @@ import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const BREAKPOINT_MOBILE = 768;
+
 var SignOutPage = React.createClass({
+    getInitialState: function () {
+        return {
+            windowWidth: window.outerWidth
+        };
+    },
     componentWillMount: function() {
         SESSION.end();
+    },
+    componentDidMount: function() {
+        window.addEventListener('resize', this.handleWindowResize);
+        this.handleWindowResize();
+    },
+    handleWindowResize: function() {
+        const windowWidth = window.outerWidth;
+        if (this.state.windowWidth !== windowWidth) {
+            this.setState({
+                windowWidth,
+            });
+        }
+        if (windowWidth < BREAKPOINT_MOBILE) {
+            document.documentElement.classList.add('is-mobile');
+        } else {
+            document.documentElement.classList.remove('is-mobile');
+        }
     },
     render: function() {
         var self = this;
@@ -21,6 +45,7 @@ var SignOutPage = React.createClass({
             <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signOut.title'))}
+                    meta={[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"},]}
                 />
                 <SiteHeader />
                 <section className="xxMainForm">

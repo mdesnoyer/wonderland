@@ -48,7 +48,6 @@ var SignInPage = React.createClass({
     },
     render: function() {
         var self = this;
-        const isMobile = self.state.windowWidth < BREAKPOINT_MOBILE;
         return (
             <main className="xxPage">
                 <Helmet
@@ -58,7 +57,7 @@ var SignInPage = React.createClass({
                 <SiteHeader />
                 <section className="xxMainForm">
                     <h1 className="xxTitle">{T.get('action.signIn')}</h1>
-                    <SignInForm isMobile={isMobile} />
+                    <SignInForm />
                 </section>
                 <SiteFooter />
             </main>
