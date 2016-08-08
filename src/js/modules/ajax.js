@@ -9,7 +9,7 @@ import SESSION from './session';
 var AJAXModule = {
     Session: null,
     getQueryParam: function(json) {
-        return Object.keys(json).map(key => {
+        return Object.keys(json).map(function (key) {
             if (json[key] !== null && json[key] !== undefined) {
                 if (Object.prototype.toString.call(json[key]) === '[object Array]') {
                     return encodeURIComponent(key) + '=' + encodeURIComponent(json[key].join());
@@ -41,7 +41,7 @@ var AJAXModule = {
             promise,
             ret
         ;
-        const fin = function(resolve, reject) {
+        function fin(resolve, reject) {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
@@ -61,7 +61,6 @@ var AJAXModule = {
 
             var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
             _options.url = _options.host + (!_options.noAccountId && _options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
-
             _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)
                 .then(function (res) {
@@ -152,7 +151,7 @@ var AJAXModule = {
     _buildBatchOptions: function(batch, options) {
         const self = this;
 
-        const _merge = (obj1, obj2) => {
+        const _merge = function (obj1, obj2) {
             const ret = {};
             for(let key in obj1) {
                 if(obj1.hasOwnProperty(key)) {
@@ -204,7 +203,7 @@ var AJAXModule = {
                     call_info: {
                         access_token: SESSION.state.accessToken,
                         refresh_token: SESSION.state.refreshToken,
-                        requests: batch.map(item => {
+                        requests: batch.map(function (item) {
                             return {
                                 method: item.method,
                                 relative_url: _getRelativeUrl(item),
@@ -217,6 +216,7 @@ var AJAXModule = {
         );
     }
 };
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default AJAXModule;

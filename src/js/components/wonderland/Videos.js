@@ -169,8 +169,9 @@ var Videos = React.createClass({
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
-            self.batch('GET', 'videos/search?' + _pseudoPageUrl);
-            self.sendBatch(options)
+            self.batch('GET', 'videos/search?' + _pseudoPageUrl, options.data);
+            self.sendBatch()
+            //self.GET('videos/search?' + _pseudoPageUrl, options)
                 .then(function(json) {
                     json = json['results'][0]['response'];
                     if (!self._isMounted) {
