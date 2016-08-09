@@ -5,6 +5,12 @@
 $upload-button-help-circle-size: $upload-button-size + 38px;
 $upload-button-help-line-length: 190px;
 
+$upload-type-button-size: 37px;
+
+$default-button-transitions: box-shadow $default-transition, transform $default-transition, background $default-transition;
+
+$z-index-upload-drag-and-drop: 1;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxUploadButton {
@@ -21,7 +27,8 @@ $upload-button-help-line-length: 190px;
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
     background: $accent-color;
     text-indent: $indent-off-screen;
-    transition: box-shadow $default-transition, transform $default-transition, background $default-transition;
+    transition: $default-button-transitions,
+                z-index 0s $default-transition; // this is needed to avoid button disappearing behind overlay
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset;
@@ -55,20 +62,91 @@ $upload-button-help-line-length: 190px;
 
     .is-open > & {
         z-index: $z-index-overlay + 1;
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         background: $quaternary-color;
         transform: rotate(-45deg);
+        transition: $default-button-transitions;
 
         &:hover {
             transform: rotate(45deg);
         }
     }
+
     .is-hidden > & {
         display: none;
+    }
+
+    .has-dialog > & {
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxUploadTypes {
+    position: fixed;
+    right: 50%;
+    bottom: $upload-button-offset + $upload-button-size + 28px;
+    margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2) + ($upload-button-size - $upload-type-button-size) / 2;
+
+    @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
+        right: $upload-button-offset + ($upload-button-size - $upload-type-button-size) / 2;
+        margin-right: 0;
+    }
+}
+
+.xxUploadTypes-button {
+    display: block;
+    position: relative;
+    width: $upload-type-button-size;
+    height: $upload-type-button-size;
+    border-radius: 50%;
+    margin-top: $upload-type-button-size / 2;
+    background: $base-color;
+    line-height: $upload-type-button-size;
+    text-align: center;
+    transition: background $default-transition;
+
+    &:hover {
+        background: $accent-color;
+        color: #fff;
+
+        .xxUploadTypes-buttonLabel {
+            opacity: 1;
+        }
+    }
+
+    &::before {
+        position: relative;
+        right: -0.5px;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    &--photo::before {
+        @include font-awesome('f030'); // fa-camera
+    }
+
+    &--video::before {
+        @include font-awesome('f03d'); // fa-video-camera
+    }
+}
+
+.xxUploadTypes-buttonLabel {
+    @include all-caps-title;
+
+    position: absolute;
+    top: 0;
+    right: 100%;
+    margin-right: 16px;
+    color: $secondary-color;
+    line-height: $upload-type-button-size;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $default-transition;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 .xxUploadDialog {
     @include clearfix;
@@ -86,15 +164,6 @@ $upload-button-help-line-length: 190px;
         margin: 0 0 0 auto;
     }
 
-    .xxTitle {
-        margin-bottom: 28px;
-    }
-
-    .xxButton {
-        width: 100%;
-        margin-top: 26px;
-    }
-
     .xxSelect {
         float: left;
         width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
@@ -107,11 +176,35 @@ $upload-button-help-line-length: 190px;
 
 .xxUploadDialog-inner {
     float: right;
+    position: relative;
     width: calc((99.9% - #{$gutter-width}) * 1/3 + #{$gutter-width});
     min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
+    z-index: $z-index-upload-drag-and-drop + 1;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
+
+    & > .xxButton {
+        width: 100%;
+        margin-top: 26px;
+    }
+}
+
+.xxUploadDialog-intro {
+    padding-bottom: 16px;
+
+    .xxTitle {
+        margin-bottom: 12px;
+    }
+}
+
+.xxButton--uploadDialog {
+    float: left;
+    width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
+
+    & + & {
+        float: right;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -155,6 +248,63 @@ $upload-button-help-line-length: 190px;
     width: $upload-button-help-line-length; // 1px to account for floor above
     height: 1px;
     background: rgba($base-color, .5);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxDragAndDrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-index-upload-drag-and-drop;
+    border: 3px solid $accent-color;
+    transition: background $default-transition;
+
+    .has-dragAndDropHover > & {
+        background: rgba($accent-color, .05);
+    }
+}
+
+.xxDragAndDrop-content {
+    @include all-caps-title;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    width: ($page-max-width - $gutter-width * 4) / 3;
+    margin: 0 auto;
+    color: rgba($secondary-color, .7);
+    line-height: 16px;
+    text-align: center;
+    transform: translateY(-50%);
+}
+
+.xxDragAndDrop-hint,
+.xxDragAndDrop-complete {
+    &::before {
+        content: '';
+        display: block;
+        width: 68px;
+        height: 43px;
+        margin: 0 auto 18px;
+        background: url(../img/xx/upload.svg) 0 0 / 100% 100% no-repeat;
+    }
+}
+
+.xxDragAndDrop-complete {
+    &::before {
+        background-image: url(../img/xx/upload-complete.svg);
+    }
+}
+
+.xxDragAndDrop-progressCounter {
+    display: block;
+    margin-bottom: 7px;
+    color: $accent-color;
+    font: normal 45px/1 $serif-family;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
