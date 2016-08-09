@@ -178,7 +178,7 @@ var UploadForm = React.createClass({
                             
                             <div className="xxOverlay" 
                                 ref={overlay => self._overlay = overlay}
-
+                                onClick={self.handleBgCloseClick}
                                 key="upload-overlay"
                             >
                                 <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>

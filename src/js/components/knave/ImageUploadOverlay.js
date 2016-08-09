@@ -5,6 +5,7 @@ import DropDown from './DropDown';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,7 +48,15 @@ var ImageUploadOverlay = React.createClass({
             <section
                 className={className.join(' ')}
             >
-				<div className="xxUploadDialog-inner">
+                <div className="xxDragAndDrop">
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                        <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
+                            Drag and Drop your image(s) here.<br />
+                            Sorry, no folders.
+                        </div>
+                    </ReactCSSTransitionGroup>
+                </div>
+                <div className="xxUploadDialog-inner">
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">Upload Your Images</h2>
                         <p>You can drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.</p>
@@ -68,7 +77,7 @@ var ImageUploadOverlay = React.createClass({
                             onClick={e => this.setState({photos: true})}
                         >Dropbox</button>
                     </div>
-            	</div>
+                </div>
             </section>
         );
     },
