@@ -6,6 +6,7 @@ import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 import LearnMore from './LearnMore';
 import Contact from './Contact';
 import Account from './Account';
+import PrimaryNavigation from './PrimaryNavigation';
 import SignUp from './SignUp';
 import T from '../../modules/translation';
 
@@ -45,6 +46,13 @@ var Sidebar = React.createClass({
         e.preventDefault();
         self.props.setContent(null);
     },
+    handleClick: function(e) {
+        var self = this,
+            content = e.target.name
+        ;
+        e.preventDefault();
+        self.props.setContent(content);
+    },
     handleSidebarClick: function(e) {
         e.stopPropagation();
     },
@@ -66,6 +74,8 @@ var Sidebar = React.createClass({
             case 'account':
                 content = <Account />;
                 break;
+            case 'primaryNavigation':
+                content = <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.state.content} />;
             default:
                 break;
         }

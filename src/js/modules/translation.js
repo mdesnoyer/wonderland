@@ -5,8 +5,6 @@ const _DEFAULT_LOCALE = 'en-US',
         'en-US': {
             'app.companyLongName': 'Neon Labs, Inc.',
             'app.companyShortName': 'Neon',
-            'app.appName': 'Wonderland',
-            // 'app.credit': '@appName by @name',
             'app.credit': '@companyShortName',
             'app.separator': ' | ',
             'app.companySig': '- The Neon Team',
@@ -97,10 +95,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign In</a> again!',
 
-            'copy.videosPage.title': 'Video Library',
-            'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
-            'copy.videosPage.heading': 'Video Library',
-            'copy.videosPage.body': '@displayName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.myCollections.title': 'My Collections',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
@@ -321,8 +316,8 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
             'nav.home': 'Home',
+            'nav.myCollections': 'My Collections',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',

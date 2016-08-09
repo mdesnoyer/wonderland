@@ -486,10 +486,10 @@ var UTILS = {
         }
     },
     buildPageTitle: function(title) {
-        return title + T.get('app.separator') + T.get('app.credit', {
-            '@appName': T.get('app.appName'),
+        var credit =  T.get('app.credit', {
             '@companyShortName': T.get('app.companyShortName')
         });
+        return title + T.get('app.separator') + credit;
     },
     makeTitle: function() {
         return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
