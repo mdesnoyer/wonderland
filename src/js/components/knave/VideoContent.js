@@ -49,6 +49,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange}
                         displayThumbLift={self.props.displayThumbLift}
                         isGuest={self.props.isGuest}
+                        demographicThumbnails={self.props.demographicThumbnails}
                     />
                 ) : (
                     <div>
@@ -61,6 +62,7 @@ var VideoContent = React.createClass({
                             demographicThumbnails={self.props.demographicThumbnails}
                             timeRemaining={self.props.timeRemaining}
                             displayThumbLift={self.props.displayThumbLift}
+                            showRefilterTutorial={self.props.showRefilterTutorial}
                         />
                         <VideoCollectionActions
                             openSignUp={self.props.openSignUp}

@@ -21,6 +21,7 @@ var SignOutPage = React.createClass({
             <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.signOut.title'))}
+                    meta={[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"},]}
                 />
                 <SiteHeader />
                 <section className="xxMainForm">

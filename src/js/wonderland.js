@@ -14,6 +14,7 @@ import UTILS from './modules/utils';
 // Pages
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
+import SignUpPage from './components/pages/SignUpPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import VideosPage from './components/pages/VideosPage';
 import VideoPageOwner from './components/pages/VideoPageOwner';
@@ -63,13 +64,14 @@ render((
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
 
         {/* matches /signup and /signup/ */}
-        <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} />
+        {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
 
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
+        <Route path={UTILS.DRY_NAV.SIGNUP.URL} component={SignUpPage} />
 
         <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />

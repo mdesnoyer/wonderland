@@ -218,7 +218,7 @@
     line-height: $form-element-height;
 
     @include breakpoint-mobile {
-        margin-top: 35px;
+        margin-bottom: 32px;
     }
 
     .xxButton {
@@ -235,6 +235,15 @@
     position: relative;
     top: 2px;
     font-size: 14px;
+
+    &--nobutton {
+        line-height: 14px;
+
+        @include breakpoint-mobile {
+            font-size: 12px;
+            line-height: 12px;
+        }
+    }
 }
 
 .xxButton {
@@ -257,6 +266,7 @@
     @include breakpoint-mobile {
         height: $mobile-form-element-height;
         line-height: $mobile-form-element-height - $form-element-border * 2;
+        width: 120px;
     }
 
     &[disabled] {
@@ -340,7 +350,13 @@
     margin-top: 5em;
     width: 50%;
     background: $white;
-    padding: 2.5%; 
+    padding: 2.5%;
+
+    @include breakpoint-mobile {
+        width: 100%;
+        margin-top: 0;
+        padding: 24px;
+    }
 }
 
 

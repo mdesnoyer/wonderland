@@ -182,6 +182,9 @@ var UTILS = {
         SIGNOUT: {
             URL: '/signout/'
         },
+        SIGNUP: {
+            URL: '/signup/'
+        },
         SETTINGS_ACCOUNT: {
             URL: '/settings/account/'
         },

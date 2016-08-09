@@ -22,9 +22,7 @@
 // extra wrapper class.
 @mixin breakpoint-mobile {
     @media (max-width: $breakpoint-mobile) {
-        @at-root .is-mobile & {
-            @content;
-        }
+        @content;
     }
 }
 
