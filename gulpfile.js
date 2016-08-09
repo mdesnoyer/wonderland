@@ -197,7 +197,7 @@ function buildScript(file, watch) {
         debug : true,
         cache: {},
         packageCache: {},
-        transform:  [
+        transform: [
             babelify.configure({
                 compact: true,
                 presets : ['es2015', 'react', 'stage-0']
