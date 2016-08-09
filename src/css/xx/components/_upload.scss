@@ -61,7 +61,7 @@ $zindex-upload-drag-and-drop: 1;
     }
 
     .is-open > & {
-        z-index: $zindex-overlay + 1;
+        z-index: $z-index-overlay + 1;
         background: $quaternary-color;
         transform: rotate(-45deg);
         transition: $default-button-transitions;
@@ -73,7 +73,7 @@ $zindex-upload-drag-and-drop: 1;
 
     .is-hidden > & {
         display: none;
-
+    } 
     .has-dialog > & {
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
@@ -303,7 +303,6 @@ $zindex-upload-drag-and-drop: 1;
     display: block;
     margin-bottom: 7px;
     color: $accent-color;
-    font: normal 45px/1 $serif-family;
+    font: normal 45px $serif-family;
 }
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
