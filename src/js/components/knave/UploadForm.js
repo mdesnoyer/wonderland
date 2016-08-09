@@ -10,6 +10,7 @@ import Account from '../../mixins/Account';
 
 
 import VideoUploadOverlay from './VideoUploadOverlay';
+import ImageUploadOverlay from './ImageUploadOverlay';
 import OverLayMessage from './OverLayMessage'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -40,7 +41,6 @@ var UploadForm = React.createClass({
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
-        debugger
         if (!self.props.isOnboarding || !self.state.isOpen) {
             self.setState({
                 isOpen: !self.state.isOpen,
@@ -50,14 +50,15 @@ var UploadForm = React.createClass({
                 error: null
             });            
         }
-        debugger
     },
     handleUpload: function(url) {
         var self = this;
         self.setState({
             isOpen: false,
             error: false,
-            isOpenMessage: false
+            isOpenMessage: false,
+            isOpenPhoto: false,
+            isOpenVideo: false
         }, function() {
             self.sendVideoUrl(url)
         });
@@ -177,7 +178,7 @@ var UploadForm = React.createClass({
                             
                             <div className="xxOverlay" 
                                 ref={overlay => self._overlay = overlay}
-                                onClick={self.handleBgCloseClick}
+
                                 key="upload-overlay"
                             >
                                 <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
@@ -200,7 +201,7 @@ var UploadForm = React.createClass({
                                 }
                                 {
                                     self.state.isOpenPhoto ? (
-                                         <VideoUploadOverlay
+                                         <ImageUploadOverlay
                                             handleUpload={self.handleUpload}
                                             isOnboarding={isOnboarding}
                                             error={self.state.error || null}
