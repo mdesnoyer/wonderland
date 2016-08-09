@@ -106,8 +106,7 @@ var VideoInfo = React.createClass({
             dropdownClassName = ['xxCollectionFilters-title'],
             dropdownFilters = null,
             filters = self.getDemographicOptions().slice(0),
-            currentFilter = filters[self.state.selectedDemographic].label,
-            countdown
+            currentFilter = filters[self.state.selectedDemographic].label
         ;
         if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
             filtersClassName.push('has-dropdown');
@@ -115,7 +114,6 @@ var VideoInfo = React.createClass({
         }
         if (self.state.dropdownOpen) {
             filtersClassName.push('is-open');
-            dropdownClassName.push('is-open');
             var temp = filters[0];
             filters[0] = filters[self.state.selectedDemographic];
             filters[self.state.selectedDemographic] = temp;
@@ -150,50 +148,48 @@ var VideoInfo = React.createClass({
                 <h1 className="xxCollection-title">
                     {self.props.title}
                 </h1>
-                {(() => {
-                    if (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) {
-                        countdown = (self.props.timeRemaining !== null && self.props.timeRemaining > 0) ? (
-                            <span><Countdown 
-                                seconds={self.props.timeRemaining} 
-                                onFinish={self.onTimerFinished} 
-                                classPrefix="xxCollectionFilterCountdown" />
-                            </span>
-                        ) : (
-                            <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
-                        );
-                        return (
-                            <div className={filtersClassName.join(' ')}>
-                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
-                                {countdown}
-                            </div>
-                        );
-                    }
-                    else if (!self.props.isGuest) {
-                        return (
-                            <div className={filtersClassName.join(' ')}>
-                                <a className="xxCollectionFilterToggle"
-                                    data-action-label="refilter"
-                                    data-for="staticTooltip"
-                                    onClick={self.props.handleMenuChange} >
-                                </a>
-                                <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
-                                {(() => {
-                                    // Show the demographic selector if they've run more than just the default.
-                                    if (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) {
-                                        return (
-                                            <span>
-                                                <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
-                                                    {currentFilter}
+                {
+                    !self.props.isGuest ? (
+                        <div className={filtersClassName.join(' ')}>
+                            {
+                                (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) ? (
+                                    <div className="xxCollectionFiltersProcessing">
+                                        <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
+                                        {
+                                            (self.props.timeRemaining !== null && self.props.timeRemaining > 0) ? (
+                                                <span><Countdown 
+                                                    seconds={self.props.timeRemaining} 
+                                                    onFinish={self.onTimerFinished} 
+                                                    classPrefix="xxCollectionFilterCountdown" />
                                                 </span>
-                                                {dropdownFilters}
-                                            </span>
-                                        );
-                                    }
-                                })()}
-                            </div>
-                        );
-                    }
-                })()}
+                                            ) : (
+                                                <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
+                                            )
+                                        }
+                                    </div>
+                                ) : (
+                                    <a className="xxCollectionFilterToggle"
+                                        data-action-label="refilter"
+                                        data-for="staticTooltip"
+                                        onClick={self.props.handleMenuChange} >
+                                    </a>
+                                )
+                            }
+                            <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
+                            {
+                                (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) ? (
+                                    <span>
+                                        <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
+                                            {currentFilter}
+                                            {dropdownFilters}
+                                        </span>
+                                        
+                                    </span>
+                                ) : null
+                            }
+                        </div>
+                    ) : null
+                }
                 <Lift displayThumbLift={self.props.displayThumbLift}/>
             </div>
         );
