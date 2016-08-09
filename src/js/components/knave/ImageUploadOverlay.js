@@ -5,6 +5,8 @@ import DropDown from './DropDown';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
+
+import Dropzone from 'react-dropzone'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,8 +47,13 @@ var ImageUploadOverlay = React.createClass({
         //     submitClassName.push('xxButton--important');
         // }
         return (
-            <section
-                className={className.join(' ')}
+            <Dropzone 
+                className={'xxUploadDialog'}
+                multiple={false}
+                accept="image/*"
+                activeClassName='has-dragAndDropHover'
+                encType="multipart/form-data" 
+                onDrop={this.onDrop}
             >
                 <div className="xxDragAndDrop">
                     <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
@@ -74,18 +81,19 @@ var ImageUploadOverlay = React.createClass({
                         </div>
                         <button
                             className="xxButton xxButton--uploadDialog xxButton--highlight"
-                            onClick={e => this.setState({photos: true})}
+                            onClick={e => self.setState({photos: true})}
                         >Dropbox</button>
                     </div>
+                    <button
+                        className={submitClassName.join(' ')}
+                        type="button"
+                    >Submit</button>
                 </div>
-            </section>
+            </Dropzone>
         );
     },
     handleClick: function() {
-        var self = this;
-            if (self.props.handleUpload) {
-                self.props.handleUpload(self.state.url);
-            }
+
     }
 });
 
