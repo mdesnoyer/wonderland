@@ -48,6 +48,10 @@
             position: absolute;
         }
     }
+
+    @include breakpoint-mobile {
+        background: $white;
+    }
 }
 
 .xxOverlay-close {

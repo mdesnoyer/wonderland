@@ -77,6 +77,18 @@ $upload-button-help-line-length: 190px;
             top: 30px;
             left: 22px;
         }
+
+        .is-open > & {
+            background: transparent;
+            top: 24px;
+
+            &::before,
+            &::after {
+                background: $quaternary-color;
+                width: 24px;
+                height: 2px;
+            }
+        }
     }
 }
 
@@ -100,11 +112,20 @@ $upload-button-help-line-length: 190px;
 
     .xxTitle {
         margin-bottom: 28px;
+        
+        @include breakpoint-mobile {
+            margin-bottom: 20px;
+        }
     }
 
     .xxButton {
         width: 100%;
         margin-top: 26px;
+
+        @include breakpoint-mobile {
+            width: 100px;
+            margin-top: 0px;
+        }
     }
 
     .xxSelect {
@@ -115,6 +136,11 @@ $upload-button-help-line-length: 190px;
             float: right;
         }
     }
+
+    @include breakpoint-mobile {
+        position: initial;
+        margin: 24px auto;
+    }
 }
 
 .xxUploadDialog-inner {
@@ -124,6 +150,12 @@ $upload-button-help-line-length: 190px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
+
+    @include breakpoint-mobile {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+        float: none;
+        min-width: 100%;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

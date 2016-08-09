@@ -183,7 +183,7 @@ export default React.createClass({
                                     <span className="xxUploadButton-helpCircle"></span>
                                     <span className="xxUploadButton-helpLine"></span>
                                     {
-                                        isMobile ? (<p>Upload a video at any time by tapping on this</p>) : ({uploadText})
+                                        isMobile ? (<p>Upload a video at any time by tapping on this</p>) : (<span>{uploadText}</span>)
                                     }
                                 </div>
                             </div>
