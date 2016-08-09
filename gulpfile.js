@@ -197,8 +197,12 @@ function buildScript(file, watch) {
         debug : true,
         cache: {},
         packageCache: {},
-        transform:  [babelify.configure({ presets : ["es2015", "react",
-                                                     "stage-0"] })]
+        transform:  [
+            babelify.configure({
+                compact: true,
+                presets : ['es2015', 'react', 'stage-0']
+            })
+        ]
     };
 
     // watchify() if watch requested, otherwise run browserify() once
