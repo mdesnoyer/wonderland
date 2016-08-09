@@ -61,7 +61,6 @@ var AJAXModule = {
 
             var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);
             _options.url = _options.host + (!_options.noAccountId && _options.host === CONFIG.API_HOST ? accountIdToUse + '/' : '') + _url;
-            
             _options.shouldRetry = (_options.shouldRetry !== false);  // default to true
             reqwest(_options)
                 .then(function (res) {
@@ -142,6 +141,79 @@ var AJAXModule = {
         // Default error handler
         options.errorHandler = options.errorHandler || this.handleApiError;
         return this.doApiCall(url, options);
+    },
+    // Given a list of {method, path, data} build the batch request and return
+    // a promise for sending it.
+    sendBatch: function(batch, options) {
+        return this.doPost('batch', AJAXModule._buildBatchOptions(batch, options));
+    },
+    // Translates a nested batch of requests to the format expected by doApiCall.
+    _buildBatchOptions: function(batch, options) {
+        const self = this;
+
+        const _merge = function (obj1, obj2) {
+            const ret = {};
+            for(let key in obj1) {
+                if(obj1.hasOwnProperty(key)) {
+                    ret[key] = obj1[key];
+                }
+            }
+            for(let key in obj2) {
+                if(obj2.hasOwnProperty(key)) {
+                    ret[key] = obj2[key];
+                }
+            }
+            return ret;
+        };
+
+        // Get the relative url string with query params for a given request.
+        // Example, given a GET on /tags/ with param tag_id=a1b2 on account_id=c3d4:
+        //   returns: /api/v2/c3d4/tags/?tag_id=a1b2
+        // Example, given a POST on /thumbnails/ with params tag_id=a1b2,
+        // url=https://dl.dropboxusercontent.com/1/view/2y1xbcf42urgy3r/neon.jpg
+        // on account_id=c3d4:
+        //   returns: /api/v2/c3d4/thumbnails/
+        const _getRelativeUrl = function(request) {
+
+            // The fixed base of every account-based request url.
+            const base = '/api/v2/' + SESSION.state.accountId + '/' + request.path;
+
+            if(request.method === 'GET') {
+                return base + self.getQueryParam(request.data);
+            }
+            return base;
+        };
+
+        // Get the body object for a given request.
+        const _getBody = function(request) {
+            if(request.method === 'GET') {
+                return {};
+            }
+            return item.data;
+        };
+
+        return _merge(
+            options,
+            {
+                // Batch itself is not routed to an account id url.
+                noAccountId: true,
+                data: {
+                    // Each element of call_info's list has
+                    // method, relative_url and body.
+                    call_info: {
+                        access_token: SESSION.state.accessToken,
+                        refresh_token: SESSION.state.refreshToken,
+                        requests: batch.map(function (item) {
+                            return {
+                                method: item.method,
+                                relative_url: _getRelativeUrl(item),
+                                body: _getBody(item)
+                            };
+                        })
+                    }
+                }
+            }
+        );
     }
 };
 
