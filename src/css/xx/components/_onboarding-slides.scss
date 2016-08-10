@@ -1,4 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+.xxOnboardingSlides {
+    
+    @include breakpoint-mobile {
+        height: 400px;
+
+        @media (orientation: landscape) {
+            height: 500px;
+        }
+    }
+}
+
 
 .xxOnboardingSlides-prev,
 .xxOnboardingSlides-next {
@@ -19,7 +30,7 @@
 
     @include breakpoint-mobile {
         left: 10px;
-        top: 26%;
+        top: 20%;
     }
 
     @include arrow(W, 12px, 1px, $secondary-color);
@@ -83,7 +94,7 @@
         max-width: 100%;
         left: 0;
         right: 0;
-        top: 26%;
+        top: 40%;
     }
 }
 
@@ -96,7 +107,6 @@
         width: 80%;
         margin: 0 10%;
         text-align: center;
-        margin-top: 360px;
         font-size: 14px;
     }
 }
@@ -121,6 +131,12 @@
     @include breakpoint-mobile {
         width: 60%;
         margin: 0 20%;
+        position: initial;
+
+        @media (orientation: landscape) {
+            width: 50%;
+            margin: 0 25%;
+        }
     }
 }
 

@@ -23,6 +23,9 @@ export default class OnboardingSlide extends React.Component {
 
         return (
             <div className={slideClassName.join(' ')} key={slide.id}>
+                <div className="xxOnboardingSlide-imageContainer">
+                    <img src={slide.image} className="xxOnboardingSlide-image" />
+                </div>
                 <div className="xxOnboardingSlide-content">
                     <h2 className="xxSubtitle">{slide.title}</h2>
                     <h3 className="xxTitle">{slide.subtitle}</h3>
@@ -37,10 +40,6 @@ export default class OnboardingSlide extends React.Component {
                             >{T.get('copy.onboarding.link.learnMore')}</a>
                         ) : null
                     }
-                </div>
-
-                <div className="xxOnboardingSlide-imageContainer">
-                    <img src={slide.image} className="xxOnboardingSlide-image" />
                 </div>
             </div>
         );
