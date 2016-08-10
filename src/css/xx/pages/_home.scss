@@ -7,12 +7,44 @@
     z-index: $z-index-feature-content;
     white-space: nowrap;
     transform: translateX(-50%);
+
+    @include breakpoint-mobile {
+        font-size: 16px;
+    }
 }
 
 .xxHomeLogIn-anchor {
     border-bottom: 1px solid $alto;
     margin-left: 20px;
     padding-bottom: 7px;
+
+    @include breakpoint-mobile {
+        margin-left: 10px;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxHomePageStyle {
+    height: 100vh;
+
+    &::after {
+        content: '';
+        background: url('../img/xx/temporary/thumbnail-3.jpg');
+        background-size: auto 100%;
+        opacity: 0.2;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+
+        @media (orientation: landscape) {
+            background-size: 100%;
+            background-position: center;
+            
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,6 +58,10 @@
     z-index: $z-index-feature-content - 1;
     height: 100vh;
     pointer-events: none;
+
+    @include breakpoint-mobile {
+        display: none;
+    }
 
     &::before,
     &::after {

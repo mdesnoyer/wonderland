@@ -40,10 +40,11 @@ var HomePage = React.createClass({
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
+                    meta={[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"},]}
                 />
                 <SiteHeader sidebarContent={self.state.sidebarContent} />
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
-                    <div>
+                    <div className="xxHomePageStyle">
                         <article className="xxFeatureContent" key="home-featureContent">
                             <h1 className="xxTitle xxFeatureContent-title">{T.get('copy.homePage.title')}</h1>
                             <p dangerouslySetInnerHTML={{__html: T.get('copy.homePage.description')}}></p>
