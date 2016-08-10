@@ -156,7 +156,7 @@ export default React.createClass({
                     isAnalyzing ? (
                         <div>
                             <SiteHeader sidebarContent={sidebarContent} />
-                            {countdown} 
+                            {countdown}
                             <OnboardingSlides toggleLearnMore={this.toggleLearnMore} />
                             <OnboardingEmail videoId={this.state.videoId} />
                         </div>

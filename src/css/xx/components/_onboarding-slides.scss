@@ -17,6 +17,11 @@
         margin-left: 0;
     }
 
+    @include breakpoint-mobile {
+        left: 10px;
+        top: 27%;
+    }
+
     @include arrow(W, 12px, 1px, $secondary-color);
 
     &:hover {
@@ -41,6 +46,10 @@
     &::before,
     &::after {
         transform-origin: 100% 50%;
+    }
+
+    @include breakpoint-mobile {
+        right: 10px;
     }
 }
 
@@ -68,12 +77,29 @@
     & .xxSubtitle {
         display: none;
     }
+
+    @include breakpoint-mobile {
+        min-width: 100%;
+        max-width: 100%;
+        left: 0;
+        right: 0;
+        top: 27%;
+    }
 }
 
 .xxOnboardingSlide-content {
     float: right;
     width: 44%;
     margin-right: 10%;
+
+    @include breakpoint-mobile {
+        width: 70%;
+        margin: 0 15%;
+        text-align: center;
+        // position: absolute;
+        // top: 100%;
+        margin-top: 380px;
+    }
 }
 
 .xxOnboardingSlide-description {
@@ -92,6 +118,11 @@
     width: 35%;
     margin-left: 7.5%;
     transform: translateY(-50%);
+
+    @include breakpoint-mobile {
+        width: 70%;
+        margin: 0 15%;
+    }
 }
 
 .xxOnboardingSlide-image {

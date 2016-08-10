@@ -45,6 +45,24 @@ $onboarding-text-padding: 18px;
         transform: rotate(-60deg);
         animation: rotate 2s infinite linear;
     }
+
+    @include breakpoint-mobile {
+        // top: 71%;
+        bottom: 27%;
+        height: 30px;
+        min-width: 60px;
+        max-width: 60px;
+        font-size: 20px;
+        line-height: 30px;
+        padding-right: 20px;
+        left: calc(50% - 60px);
+
+        &::before {
+            height: 40px;
+            width: 40px;
+            line-height: 38px;
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
