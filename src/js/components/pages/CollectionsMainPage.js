@@ -22,6 +22,7 @@ const CollectionsMainPage = React.createClass({
         return {
             collections: {},
             thumbnails: {},
+            videos: {},
             search: {
                 next: null,
                 prev: null
@@ -114,13 +115,14 @@ const CollectionsMainPage = React.createClass({
             tagsRes = combined[0];
             videosRes = combined[1];
 
-            // Store the map of collection id to object.
+            // Store the map of collections, videos.
             _stateUpdate.collections = tagsRes;
+            _stateUpdate.videos = videosRes;
 
             // Get and concatenate all thumbnail ids.
-            const collections = UTILS.valuesFromMap(tagsRes);
-            const thumbIds = collections.reduce((array, col) => {
-                array = array.concat(col.thumbnail_ids);
+            const tags = UTILS.valuesFromMap(tagsRes);
+            const thumbIds = tags.reduce((array, tag) => {
+                array = array.concat(tag.thumbnail_ids);
                 return array;
             }, []);
             // Create array of CSVs of max length.

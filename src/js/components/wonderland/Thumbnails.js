@@ -107,7 +107,6 @@ var Thumbnails = React.createClass({
                            self.state.isThumbnailOverlayActive);
     },
     render: function() {
-        debugger
         var self = this,
             ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
                 <ThumbnailOverlay
