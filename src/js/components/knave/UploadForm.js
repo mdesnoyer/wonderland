@@ -208,6 +208,7 @@ var UploadForm = React.createClass({
                                             isOnboarding={isOnboarding}
                                             error={self.state.error || null}
                                             key="upload-photo"
+                                            formatData={self.formatData}
                                             grabDropBox={self.grabDropBox}
                                             sendLocalPhotos={self.sendLocalPhotos}
                                             sendFormattedData={self.sendFormattedData}
