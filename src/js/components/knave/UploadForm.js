@@ -202,10 +202,12 @@ var UploadForm = React.createClass({
                                 {
                                     self.state.isOpenPhoto ? (
                                          <ImageUploadOverlay
-                                            handleUpload={self.handleUpload}
                                             isOnboarding={isOnboarding}
                                             error={self.state.error || null}
                                             key="upload-photo"
+                                            grabDropBox={self.grabDropBox}
+                                            sendLocalPhotos={self.sendLocalPhotos}
+                                            sendFormattedData={self.props.sendFormattedData}
                                         />
 
                                     ) :  null 
@@ -228,7 +230,76 @@ var UploadForm = React.createClass({
                 </ReactCSSTransitionGroup>
             </div>
         );
-    }
+    },
+     sendLocalPhotos: function(e) {
+         var self = this, 
+             files = e.target.files,
+             fileArray = []
+         ;
+         for (var i = 0, file; file = files[i]; i++) {
+             fileArray.push(file);
+         }
+         self.formatData(fileArray)
+     },
+     formatData: function(files) {
+                var self = this,
+                    formData = new FormData()
+                ;
+                files.forEach((file)=> {
+                    formData.append('upload', file)
+                }); 
+                self.sendFormattedData(formData);
+    },
+    sendFormattedData: function(formData) {
+               var self = this;
+               self.POST('thumbnails', {
+                   contentType: 'multipart/form-data',
+                   data: formData
+               })
+                   .then(function (res) {
+                       console.log(res);
+                       self.setState({
+                           mode:'success'
+                       }, setTimeout( 
+                           self.setState({
+                               mode:'silent'
+                           }), 30)
+                       )
+                   })
+                   .catch(function (err) {
+                       // TODO: Handle error
+                       console.log(err);
+                   });
+     },
+     sendDropBoxUrl: function(urls) {
+        var self = this,
+            dropBoxUrlsArray = urls.map(function(a) {return a.link;}),
+            options = {
+                data: {
+                    url: dropBoxUrlsArray
+                }
+            }
+        ;
+        self.POST('thumbnails', options)
+            .then(function(res) {
+                console.log(res)
+            })
+            .catch(function(err) {
+                console.log(err)
+            });
+    },
+    grabDropBox: function() {
+        var self = this,
+            options
+        ; 
+        options = {
+            success: function(urls) {self.sendDropBoxUrl(urls)},
+            linkType: "direct",
+            multiselect: true,
+            extensions: ['.jpeg', '.jpg', '.png', '.gif', '.bmp']
+        };
+        Dropbox.choose(options);
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

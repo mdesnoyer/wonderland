@@ -71,13 +71,15 @@ var ImageUploadOverlay = React.createClass({
                                 type="file"
                                 multiple
                                 className="xxButton-fileInput"
-                                onChange={self.sendLocalPhotos}
+                                onChange={self.props.sendLocalPhotos}
                             />
                         </div>
-                        <button
+                        <button id="dropBoxSDK"
                             className="xxButton xxButton--uploadDialog xxButton--highlight"
-                            onClick={e => self.setState({photos: true})}
-                        >Dropbox</button>
+                            onClick={self.props.grabDropBox}
+                        >
+                        Dropbox
+                        </button>
                     </div>
                     <button
                         className={submitClassName.join(' ')}
@@ -87,57 +89,11 @@ var ImageUploadOverlay = React.createClass({
             </Dropzone>
         );
     },
-    sendLocalPhotos: function(e) {
-        var self = this, 
-            files = e.target.files,
-            fileArray = []
-        ;
-        for (var i = 0, file; file = files[i]; i++) {
-            fileArray.push(file);
-        }
-        self.formatData(fileArray)
-    },
     onDrop: function (files) {
         var self = this;
-        debugger 
-        self.setState({
-            mode: 'loading'
-        },
-            self.formatData(files)
-        );
-    },
-    formatData: function(files) {
-               var self = this,
-                   formData = new FormData()
-               ;
-               debugger
-               files.forEach((file)=> {
-                   formData.append('upload', file)
-               });
-               debugger 
-               self.sendFormattedData(formData);
-   },
-   sendFormattedData: function(formData) {
-              var self = this;
-              self.POST('thumbnails', {
-                  contentType: 'multipart/form-data',
-                  data: formData
-              })
-                  .then(function (res) {
-                      console.log(res);
-                      self.setState({
-                          mode:'success'
-                      }, setTimeout( 
-                          self.setState({
-                              mode:'silent'
-                          }), 30)
-                      )
-                  })
-                  .catch(function (err) {
-                      // TODO: Handle error
-                      console.log(err);
-                  });
+            self.props.formatData(files)
     }
+    
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
