@@ -12,7 +12,8 @@
     transform: translateY(-50%);
 
     @include breakpoint-mobile {
-        width: 315px;
+        width: 90%;
+        max-width: 315px;
     }
 }
 
@@ -21,6 +22,11 @@
     width: 176px;
     height: 176px;
     margin: 0 auto 22px;
+
+    @include breakpoint-mobile {
+        height: 100px;
+        width: 100px;
+    }
 }
 
 .xxFeatureContent-title {
@@ -32,6 +38,10 @@
 .xxFeatureContent-buttons {
     display: table;
     margin: 28px auto 0;
+
+    @include breakpoint-mobile {
+        margin: 0 auto;
+    }
 
     .xxButton {
         float: left;

@@ -17,6 +17,10 @@
 
     .xxFeatureContent-small {
         margin-top: $default-vertical-rhythm;
+
+        @include breakpoint-mobile {
+            margin-top: 0px;
+        }
     }
 
 
