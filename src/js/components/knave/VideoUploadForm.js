@@ -8,7 +8,8 @@ import TRACKING from '../../modules/tracking';
 import Account from '../../mixins/Account';
 import cookie from 'react-cookie';
 import VideoUploadOverlay from './VideoUploadOverlay';
-import OverLayMessage from './OverLayMessage'
+import OverLayMessage from './OverLayMessage';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -75,6 +76,7 @@ var VideoUploadForm = React.createClass({
                         self.props.handleNewSearch('?', 1 - self.props.currentPage)
                     }
                     else if (self.props.postHookAnalysis) {
+                        SESSION.setProcessing(json);
                         self.props.postHookAnalysis(json);
                     }
                     else {
