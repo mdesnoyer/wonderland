@@ -140,7 +140,7 @@ var VideoUploadForm = React.createClass({
                 >{T.get('action.analyze')}</a>
                 {
                     self.state.isOpen ? (
-                        <div className="xxOverlay" >
+                        <div className="xxOverlay xxOverlay--light">
                             <VideoUploadOverlay
                                 handleUpload={self.handleUpload}
                                 handleClose={self.handleClose}
