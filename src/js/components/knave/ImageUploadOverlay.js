@@ -18,8 +18,41 @@ var ImageUploadOverlay = React.createClass({
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             className = ['xxUploadDialog'],
-            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null
+            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
+            dropzoneContent
         ;
+        // initial, loading, success
+        switch(self.props.photoUploadMode) {
+            case 'initial': 
+                dropzoneContent = (
+                    <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
+                        Drag and Drop your image(s) here.<br />
+                        Sorry, no folders.
+                    </div>
+                );
+                break;
+            case 'loading': 
+                dropzoneContent = (
+                    <div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
+                        {"Uploading (" + self.props.photoUploadCount + ") files"}
+                    </div>
+                );
+                break;
+            case 'success': 
+                dropzoneContent = (
+                    <div className="xxDragAndDrop-content xxDragAndDrop-complete" key="drag-and-drop-complete">
+                        {"Uploaded (" + self.props.photoUploadCount + ") files"}
+                    </div>
+                );
+                break; 
+            default: 
+                dropzoneContent = (
+                    <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
+                        Drag and Drop your image(s) here.<br />
+                        Sorry, no folders.
+                    </div>
+                );
+        }
         return (
             <Dropzone 
                 className={'xxUploadDialog'}
@@ -32,10 +65,7 @@ var ImageUploadOverlay = React.createClass({
             >
                 <div className="xxDragAndDrop">
                     <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
-                        <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
-                            Drag and Drop your image(s) here.<br />
-                            Sorry, no folders.
-                        </div>
+                        {dropzoneContent}
                     </ReactCSSTransitionGroup>
                 </div>
                 <div className="xxUploadDialog-inner">
@@ -77,10 +107,15 @@ var ImageUploadOverlay = React.createClass({
             self.props.formatData(files)
     },
     propTypes: {
-        sendLocalPhotos: React.PropTypes.func,
+        error: React.PropTypes.string, 
+        key: React.PropTypes.func,
+        formatData: React.PropTypes.func,
         grabDropBox: React.PropTypes.func,
+        sendLocalPhotos: React.PropTypes.func,
         sendFormattedData: React.PropTypes.func,
-        toggleOpen: React.PropTypes.func
+        toggleOpen: React.PropTypes.func,
+        photoUploadMode: React.PropTypes.string,
+        photoUploadCount: React.PropTypes.number
     }
 });
 

@@ -39,7 +39,8 @@ var UploadForm = React.createClass({
             isOpenMessage: false,
             isPhotoOpen: false, 
             isVideoOpen: false,
-            photoUploadCount: 0
+            photoUploadCount: 0,
+            photoUploadMode: 'initial' // initial, loading, success
         };
     },
     toggleOpen: function(e) {
@@ -205,7 +206,6 @@ var UploadForm = React.createClass({
                                 {
                                     self.state.isOpenPhoto ? (
                                          <ImageUploadOverlay
-                                            isOnboarding={isOnboarding}
                                             error={self.state.error || null}
                                             key="upload-photo"
                                             formatData={self.formatData}
@@ -213,6 +213,8 @@ var UploadForm = React.createClass({
                                             sendLocalPhotos={self.sendLocalPhotos}
                                             sendFormattedData={self.sendFormattedData}
                                             toggleOpen={self.toggleOpen}
+                                            photoUploadMode={self.state.photoUploadMode}
+                                            photoUploadCount={self.state.photoUploadCount}
                                         />
 
                                     ) :  null 
@@ -252,8 +254,16 @@ var UploadForm = React.createClass({
         ;
         files.forEach((file)=> {
             formData.append('upload', file)
+        });
+        debugger
+        self.setState({ 
+            photoUploadMode: 'loading',
+            photoUploadCount: files.length
+        },
+            function() {
+                self.sendFormattedData(formData)
         }); 
-        self.sendFormattedData(formData);
+        
     },
     sendFormattedData: function(formData) {
         var self = this,
@@ -268,14 +278,16 @@ var UploadForm = React.createClass({
               processData : false,
               data : formData
             })
-            .then(res => {
-                console.log(res);
+            .then(function(res) {
+                self.setState({ photoUploadMode:'success' });
+            }).catch(function(err) {
                 // if account refresh token expired refresh token and they reset session
-                debugger
-            }).catch(err => {
-                self.throwUploadError(err);
+                self.setState({ photoUploadMode:'initial' },
+                    function() {
+                        self.throwUploadError(err)
+                });
+                
                 console.log(err);
-                debugger
             });
      },
      sendDropBoxUrl: function(urls) {
@@ -287,15 +299,23 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        debugger
-        self.POST('thumbnails', options)
-            .then(function(res) {
-                console.log(res);
-            })
-            .catch(function(err) {
-                debugger
-                self.throwUploadError(err);
+        console.log(urls.length)
+        self.setState({ 
+            photoUploadMode: 'loading',
+            photoUploadCount: urls.length
+
+            },
+                function() {
+                    self.POST('thumbnails', options)
+                    .then(function(res) {
+                        self.setState({ photoUploadMode:'success' });
+                        console.log(res);
+                    })
+                    .catch(function(err) {
+                        self.throwUploadError(err);
+                    });
             });
+        
     },
     grabDropBox: function() {
         var self = this,
@@ -352,7 +372,7 @@ export default UploadForm;
 
 //                    // console.log(res);
 //                    // self.setState({
-//                    //     mode:'success'
+//                    //     photoUploadMode:'success'
 //                    // }, setTimeout( 
 //                    //     self.setState({
 //                    //         mode:'silent'
