@@ -65,6 +65,7 @@ var AJAXModule = {
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
+
                         // Note don't commit.
                         console.log(url, res);
                         options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
@@ -199,6 +200,28 @@ var AJAXModule = {
             {
                 // Batch itself is not routed to an account id url.
                 noAccountId: true,
+
+                // Reduce the batch response to one response.
+                successHandler: batches => {
+                    return batches.results.reduce((ret, item) => {
+                        for (let key in item.response) {
+                            let resp = item.response;
+                            if (resp[key].constructor === Array) {
+                                ret[key] = ret[key]?
+                                           ret[key].concat(resp[key]):
+                                           resp[key];
+                            } else if (typeof(resp[key]) == 'number') {
+                                ret[key] = ret[key]?
+                                           ret[key] + resp[key]:
+                                           resp[key];
+                            } else {
+                                console.warn('Batch: value for key dropped: ', key);
+                            }
+                        }
+                        return ret;
+                    }, {});
+                },
+
                 data: {
                     // Each element of call_info's list has
                     // method, relative_url and body.

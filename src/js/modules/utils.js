@@ -538,7 +538,7 @@ var UTILS = {
         return values;
     },
 
-    // Given a map of key to value, return the flattened list of all values.
+    // Given a map of key to list, return the concatenated list of all lists.
     flatListFromMap: map => {
         const list = [];
         for (let key in map) {
@@ -548,7 +548,7 @@ var UTILS = {
     },
 
     // Given an array of values, format values into comma-separated values
-    // and return as list of string.
+    // and return as list of CSV string.
     csvFromArray: (array, batchMax) => {
 
         const count = array.length;
