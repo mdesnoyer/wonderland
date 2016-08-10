@@ -19,7 +19,7 @@
 
     @include breakpoint-mobile {
         left: 10px;
-        top: 27%;
+        top: 26%;
     }
 
     @include arrow(W, 12px, 1px, $secondary-color);
@@ -83,7 +83,7 @@
         max-width: 100%;
         left: 0;
         right: 0;
-        top: 27%;
+        top: 26%;
     }
 }
 
@@ -93,12 +93,11 @@
     margin-right: 10%;
 
     @include breakpoint-mobile {
-        width: 70%;
-        margin: 0 15%;
+        width: 80%;
+        margin: 0 10%;
         text-align: center;
-        // position: absolute;
-        // top: 100%;
-        margin-top: 380px;
+        margin-top: 360px;
+        font-size: 14px;
     }
 }
 
@@ -120,8 +119,8 @@
     transform: translateY(-50%);
 
     @include breakpoint-mobile {
-        width: 70%;
-        margin: 0 15%;
+        width: 60%;
+        margin: 0 20%;
     }
 }
 
