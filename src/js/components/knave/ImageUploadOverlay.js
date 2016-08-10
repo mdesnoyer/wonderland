@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import DropDown from './DropDown';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
+
+import AjaxMixin from '../../mixins/Ajax';
 
 import Dropzone from 'react-dropzone'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -12,12 +13,11 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUploadOverlay = React.createClass({
+    mixins: [AjaxMixin],
     getInitialState: function() {
         return {
             dragHover: false,
-            photos: false,
-            gender: '',
-            age: '',
+            photos: false
         }
     },
     componentWillMount: function() { 
@@ -30,13 +30,7 @@ var ImageUploadOverlay = React.createClass({
         var self = this;
         self.setState({ isMessageNeeded: false });
     },
-    updateField: function(field, value) {
-        var self = this;
-        this.setState({
-            [field]: value
-        });
-    },
-    render() {
+    render: function() {
         const { isOnboarding } = this.props;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
@@ -49,7 +43,8 @@ var ImageUploadOverlay = React.createClass({
         return (
             <Dropzone 
                 className={'xxUploadDialog'}
-                multiple={false}
+                multiple={true}
+                disableClick={true}
                 accept="image/*"
                 activeClassName='has-dragAndDropHover'
                 encType="multipart/form-data" 
@@ -76,7 +71,7 @@ var ImageUploadOverlay = React.createClass({
                                 type="file"
                                 multiple
                                 className="xxButton-fileInput"
-                                
+                                onChange={self.sendLocalPhotos}
                             />
                         </div>
                         <button
@@ -92,8 +87,56 @@ var ImageUploadOverlay = React.createClass({
             </Dropzone>
         );
     },
-    handleClick: function() {
-
+    sendLocalPhotos: function(e) {
+        var self = this, 
+            files = e.target.files,
+            fileArray = []
+        ;
+        for (var i = 0, file; file = files[i]; i++) {
+            fileArray.push(file);
+        }
+        self.formatData(fileArray)
+    },
+    onDrop: function (files) {
+        var self = this;
+        debugger 
+        self.setState({
+            mode: 'loading'
+        },
+            self.formatData(files)
+        );
+    },
+    formatData: function(files) {
+               var self = this,
+                   formData = new FormData()
+               ;
+               debugger
+               files.forEach((file)=> {
+                   formData.append('upload', file)
+               });
+               debugger 
+               self.sendFormattedData(formData);
+   },
+   sendFormattedData: function(formData) {
+              var self = this;
+              self.POST('thumbnails', {
+                  contentType: 'multipart/form-data',
+                  data: formData
+              })
+                  .then(function (res) {
+                      console.log(res);
+                      self.setState({
+                          mode:'success'
+                      }, setTimeout( 
+                          self.setState({
+                              mode:'silent'
+                          }), 30)
+                      )
+                  })
+                  .catch(function (err) {
+                      // TODO: Handle error
+                      console.log(err);
+                  });
     }
 });
 
