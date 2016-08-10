@@ -308,6 +308,25 @@ var UploadForm = React.createClass({
         };
         Dropbox.choose(options);
     },
+    grabRefreshToken: function(refreshToken) {
+        var self = this; 
+        reqwest({
+            url: CONFIG.AUTH_HOST + 'refresh_token',
+            data: JSON.stringify({
+                token : SESSION.state.refreshToken
+            }),
+            contentType: 'application/json',
+            method: 'POST',
+            crossDomain: true,
+            type: 'json'
+        })
+            .then(function (res) {
+                SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+            })
+            .catch(function (err) {
+                SESSION.end();
+            });
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
