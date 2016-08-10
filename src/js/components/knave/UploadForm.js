@@ -2,12 +2,15 @@
 
 import React from 'react';
 
-import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-import Account from '../../mixins/Account';
 
+import reqwest from 'reqwest';
+import SESSION from '../../modules/session';
+
+import Account from '../../mixins/Account';
+import AjaxMixin from '../../mixins/Ajax';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
@@ -69,15 +72,11 @@ var UploadForm = React.createClass({
     },
     handleOpenPhoto: function(e) {
         e.preventDefault();
-        this.setState({
-            isOpenPhoto: true,
-        });
+        this.setState({ isOpenPhoto: true });
     },
     handleOpenVideo: function(e) {
         e.preventDefault();
-        this.setState({
-            isOpenVideo: true,
-        });
+        this.setState({ isOpenVideo: true });
     },
     handleBgCloseClick: function(e) {
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
@@ -247,38 +246,40 @@ var UploadForm = React.createClass({
          self.formatData(fileArray);
      },
      formatData: function(files) {
-                var self = this,
-                    formData = new FormData()
-                ;
-                files.forEach((file)=> {
-                    formData.append('upload', file)
-                }); 
-                self.sendFormattedData(formData);
+        var self = this,
+            formData = new FormData()
+        ;
+        files.forEach((file)=> {
+            formData.append('upload', file)
+        }); 
+        self.sendFormattedData(formData);
     },
     sendFormattedData: function(formData) {
-               var self = this;
-               self.POST('thumbnails', {
-                   contentType: 'multipart/form-data',
-                   data: formData
-               })
-                   .then(function (res) {
-                       console.log(res);
-                       self.setState({
-                           mode:'success'
-                       }, setTimeout( 
-                           self.setState({
-                               mode:'silent'
-                           }), 30)
-                       )
-                   })
-                   .catch(function (err) {
-                       // TODO: Handle error
-                       console.log(err);
-                   });
+        var self = this,
+             url = CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'
+         ;
+         reqwest({
+              url: url,
+              headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
+              method: 'POST',
+              contentType: 'multipart/form-data',
+              crossOrigin: true,
+              processData : false,
+              data : formData
+            })
+            .then(res => {
+                console.log(res);
+                // if account refresh token expired refresh token and they reset session
+                debugger
+            }).catch(err => {
+                self.throwUploadError(err);
+                console.log(err);
+                debugger
+            });
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
-            dropBoxUrlsArray = urls.map(function(a) {return a.link;}),
+            dropBoxUrlsArray = urls.map(function(a) {return a.link;}).join(","),
             options = {
                 data: {
                     url: dropBoxUrlsArray
@@ -288,10 +289,11 @@ var UploadForm = React.createClass({
         debugger
         self.POST('thumbnails', options)
             .then(function(res) {
-                console.log(res)
+                console.log(res);
             })
             .catch(function(err) {
-                console.log(err)
+                debugger
+                self.throwUploadError(err);
             });
     },
     grabDropBox: function() {
@@ -313,3 +315,31 @@ var UploadForm = React.createClass({
 export default UploadForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+
+// sendFormattedData: function(formData) {
+//            var self = this;
+//            debugger
+//            self.POST('thumbnails', {
+//                contentType: 'multipart/form-data',
+//                data: formData
+//            })
+//                .then(function (res) {
+//                     debugger
+
+//                    // console.log(res);
+//                    // self.setState({
+//                    //     mode:'success'
+//                    // }, setTimeout( 
+//                    //     self.setState({
+//                    //         mode:'silent'
+//                    //     }), 30)
+//                    // )
+//                })
+//                .catch(function (err) {
+//                    self.throwUploadError(err);
+//                });
+//  },

@@ -13,33 +13,13 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUploadOverlay = React.createClass({
-    mixins: [AjaxMixin],
-    getInitialState: function() {
-        return {
-            dragHover: false,
-            photos: false
-        }
-    },
-    componentWillMount: function() { 
-        var self = this;
-        if (self.props.error) {
-            self.setState({ isMessageNeeded: true });
-        }
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self.setState({ isMessageNeeded: false });
-    },
     render: function() {
         const { isOnboarding } = this.props;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            className = ['xxUploadDialog']
-            // messageNeeded = self.state.isMessageNeeded ? <Message message={self.props.error} type={'formError'}/> : null
+            className = ['xxUploadDialog'],
+            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null
         ;
-        // if (isValid) {
-        //     submitClassName.push('xxButton--important');
-        // }
         return (
             <Dropzone 
                 className={'xxUploadDialog'}
@@ -62,6 +42,7 @@ var ImageUploadOverlay = React.createClass({
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">Upload Your Images</h2>
                         <p>You can drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.</p>
+                        {messageNeeded}
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">Choose Image Source</label>
