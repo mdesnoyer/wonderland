@@ -35,12 +35,16 @@ var UploadForm = React.createClass({
             error: null,
             isOpenMessage: false,
             isPhotoOpen: false, 
-            isVideoOpen: false
+            isVideoOpen: false,
+            photoUploadCount: 0
         };
     },
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
+        // debugger
+        // if 
+        // e.target.dataset.generateTab === "true" && self.
         if (!self.props.isOnboarding || !self.state.isOpen) {
             self.setState({
                 isOpen: !self.state.isOpen,
@@ -207,7 +211,8 @@ var UploadForm = React.createClass({
                                             key="upload-photo"
                                             grabDropBox={self.grabDropBox}
                                             sendLocalPhotos={self.sendLocalPhotos}
-                                            sendFormattedData={self.props.sendFormattedData}
+                                            sendFormattedData={self.sendFormattedData}
+                                            toggleOpen={self.toggleOpen}
                                         />
 
                                     ) :  null 
@@ -239,7 +244,7 @@ var UploadForm = React.createClass({
          for (var i = 0, file; file = files[i]; i++) {
              fileArray.push(file);
          }
-         self.formatData(fileArray)
+         self.formatData(fileArray);
      },
      formatData: function(files) {
                 var self = this,
@@ -280,6 +285,7 @@ var UploadForm = React.createClass({
                 }
             }
         ;
+        debugger
         self.POST('thumbnails', options)
             .then(function(res) {
                 console.log(res)

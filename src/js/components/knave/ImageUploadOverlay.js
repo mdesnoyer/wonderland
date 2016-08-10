@@ -48,7 +48,7 @@ var ImageUploadOverlay = React.createClass({
                 accept="image/*"
                 activeClassName='has-dragAndDropHover'
                 encType="multipart/form-data" 
-                onDrop={this.onDrop}
+                onDrop={self.onDrop}
             >
                 <div className="xxDragAndDrop">
                     <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
@@ -84,6 +84,8 @@ var ImageUploadOverlay = React.createClass({
                     <button
                         className={submitClassName.join(' ')}
                         type="button"
+                        onClick={self.props.toggleOpen}
+                        data-generate-tab={true}
                     >Submit</button>
                 </div>
             </Dropzone>
@@ -92,8 +94,13 @@ var ImageUploadOverlay = React.createClass({
     onDrop: function (files) {
         var self = this;
             self.props.formatData(files)
+    },
+    propTypes: {
+        sendLocalPhotos: React.PropTypes.func,
+        grabDropBox: React.PropTypes.func,
+        sendFormattedData: React.PropTypes.func,
+        toggleOpen: React.PropTypes.func
     }
-    
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
