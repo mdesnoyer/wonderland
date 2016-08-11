@@ -18,6 +18,7 @@ import OverLayMessage from './OverLayMessage'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
+import accept from 'attr-accept';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UploadForm = React.createClass({
@@ -215,6 +216,7 @@ var UploadForm = React.createClass({
                                             toggleOpen={self.toggleOpen}
                                             photoUploadMode={self.state.photoUploadMode}
                                             photoUploadCount={self.state.photoUploadCount}
+                                            photoErrorCount={self.state.photoErrorCount}
                                         />
 
                                     ) :  null 
@@ -250,15 +252,23 @@ var UploadForm = React.createClass({
      },
      formatData: function(files) {
         var self = this,
-            formData = new FormData()
+            formData = new FormData(),
+            errorFiles = 0
         ;
+        debugger
         files.forEach((file)=> {
-            formData.append('upload', file)
+            if (accept({name: file.name, type: file.type }, 'image/*' )) {
+                formData.append('upload', file)
+            } 
+            else {
+                errorFiles += 1
+            };
         });
         debugger
         self.setState({ 
             photoUploadMode: 'loading',
-            photoUploadCount: files.length
+            photoUploadCount: formData.getAll('upload').length,
+            photoErrorCount: errorFiles
         },
             function() {
                 self.sendFormattedData(formData)
@@ -279,10 +289,28 @@ var UploadForm = React.createClass({
               data : formData
             })
             .then(function(res) {
-                self.setState({ photoUploadMode:'success' });
+                self.setState({
+                    photoUploadMode:'success',
+                    error: null 
+                }, function() {
+                    setTimeout(function(){
+                        self.setState({ photoUploadMode:'initial' });
+                    }, 3000)    
+                }
+                
+                // setTimeout( self.setState({
+                //         photoUploadMode:'initial'
+                //     }), 30)
+                )
+                // self.setState({ 
+                //     photoUploadMode:'success',
+                //     error: null 
+                // });
             }).catch(function(err) {
                 // if account refresh token expired refresh token and they reset session
-                self.setState({ photoUploadMode:'initial' },
+                self.setState({ 
+                    photoUploadMode:'initial' 
+                },
                     function() {
                         self.throwUploadError(err)
                 });
@@ -303,12 +331,14 @@ var UploadForm = React.createClass({
         self.setState({ 
             photoUploadMode: 'loading',
             photoUploadCount: urls.length
-
             },
                 function() {
                     self.POST('thumbnails', options)
                     .then(function(res) {
-                        self.setState({ photoUploadMode:'success' });
+                        self.setState({ 
+                            photoUploadMode:'success', 
+                            error: null
+                        });
                         console.log(res);
                     })
                     .catch(function(err) {
@@ -371,13 +401,13 @@ export default UploadForm;
 //                     debugger
 
 //                    // console.log(res);
-//                    // self.setState({
-//                    //     photoUploadMode:'success'
-//                    // }, setTimeout( 
-//                    //     self.setState({
-//                    //         mode:'silent'
-//                    //     }), 30)
-//                    // )
+//                    self.setState({
+//                        photoUploadMode:'success'
+//                    }, setTimeout( 
+//                        self.setState({
+//                            mode:'silent'
+//                        }), 30)
+//                    )
 //                })
 //                .catch(function (err) {
 //                    self.throwUploadError(err);

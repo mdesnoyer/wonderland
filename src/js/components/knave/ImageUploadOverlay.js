@@ -35,6 +35,10 @@ var ImageUploadOverlay = React.createClass({
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
                         {"Uploading (" + self.props.photoUploadCount + ") files"}
+                        <br/>
+                        {
+                            self.props.photoErrorCount > 0 ? ({"Unable to upload " + self.props.photoErrorCount + " files due to file type" }) : null    
+                        }
                     </div>
                 );
                 break;
@@ -58,7 +62,7 @@ var ImageUploadOverlay = React.createClass({
                 className={'xxUploadDialog'}
                 multiple={true}
                 disableClick={true}
-                accept="image/*"
+                // accept="image/*"
                 activeClassName='has-dragAndDropHover'
                 encType="multipart/form-data" 
                 onDrop={self.onDrop}
@@ -81,6 +85,7 @@ var ImageUploadOverlay = React.createClass({
                             <input
                                 type="file"
                                 multiple
+                                accept= "image/*"
                                 className="xxButton-fileInput"
                                 onChange={self.props.sendLocalPhotos}
                             />
@@ -104,7 +109,7 @@ var ImageUploadOverlay = React.createClass({
     },
     onDrop: function (files) {
         var self = this;
-            self.props.formatData(files)
+        self.props.formatData(files);
     },
     propTypes: {
         error: React.PropTypes.string, 
