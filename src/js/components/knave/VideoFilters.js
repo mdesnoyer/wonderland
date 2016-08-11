@@ -26,13 +26,11 @@ var VideoFilters = React.createClass({
     },
     render: function() {
         var self = this,
-            isMobile = window.outerWidth < 768,
-            collectionClassName = isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''
         ;
-
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
@@ -40,7 +38,7 @@ var VideoFilters = React.createClass({
             <div className={collectionClassName}>
                 <h2 className="xxTitle">Filter Results</h2>
                 {
-                    isMobile ? (
+                    self.props.isMobile ? (
                         <div 
                             className="xxOverlay-close"
                             data-action-label="info"
