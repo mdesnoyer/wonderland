@@ -165,6 +165,10 @@
             top: -4px;
             right: 18px;
             left: auto;
+
+            @include breakpoint-mobile {
+                right: 28px;
+            }
         }
     }
 }
@@ -174,6 +178,11 @@
     position: relative;
     padding: 9px 0;
     width: 145px;
+
+    @include breakpoint-mobile {
+        padding: 6px 0;
+        width: 116px;
+    }
 
     .Select-control {
         border: none;
@@ -201,6 +210,11 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, .22);
     background: $white;
 
+    @include breakpoint-mobile {
+        top: -9px;
+        left: -71px;
+    }
+
     @include arrow(S, 1px, 11px, $bg-tertiary-color);
 
     &::before,
@@ -210,6 +224,10 @@
         left: auto;
         transform-origin: 50% 0;
         bottom: initial; // needed to adjust alignment
+
+        @include breakpoint-mobile {
+            right: 50px;
+        }
     }
 }
 
