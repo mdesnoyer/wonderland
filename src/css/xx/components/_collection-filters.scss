@@ -10,7 +10,8 @@
     margin-right: 10px;
 
     @include breakpoint-mobile {
-        display: none;
+        width: 21px;
+        margin-right: 6px;
     }
 
     &::after {
@@ -29,6 +30,13 @@
         transform: rotate(-60deg);
         transform-origin: 50% 50%;
         transition: transform $default-transition, color $default-transition;
+
+        @include breakpoint-mobile {
+            width: 21px;
+            height: 21px;
+            font-size: 10px;
+            line-height: 19px;
+        }
     }
 
     &:hover {
@@ -47,6 +55,10 @@
         cursor: default;
         width: 100px;
         margin-right: 0;
+
+        @include breakpoint-mobile {
+            width: 90px;
+        }
 
         &::after {
             z-index: 2;
@@ -70,6 +82,15 @@
     font-size: 14px;
     margin-left: -100px;
     text-transform: lowercase;
+
+    @include breakpoint-mobile {
+        height: 21px;
+        padding: 4px 16px 4px 30px;
+        font-size: 12px;
+        border-radius: 21px;
+        min-width: 80px;
+        margin-left: -90px;
+    }
 }
 
 .xxCollectionFilterToggle-label {
