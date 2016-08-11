@@ -112,7 +112,7 @@ var ImageUploadOverlay = React.createClass({
                         type="button"
                         // onClick={isValid ? self.props.toggleOpen : null}
                         onClick={self.props.toggleOpen }
-                        data-generate-tab={true}
+                        data-send-tag={true}
                         // disabled={!isValid}
                     >Submit</button>
                 </div>

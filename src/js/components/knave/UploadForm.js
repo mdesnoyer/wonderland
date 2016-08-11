@@ -49,15 +49,14 @@ var UploadForm = React.createClass({
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
-        // e.target.dataset.generateTab === "true" && 
-        if (e.target.dataset.generateTab === "true") {
-            self.generateTab();
+        if (e.target.dataset.sendTag === "true") {
+            self.sendCollectionTag();
         }
         else if (!self.props.isOnboarding || !self.state.isOpen) {
             self.setState({
                 isOpen: !self.state.isOpen,
                 isOpenMessage: false,
-                isOpenPhoto: false, 
+                isOpenPhoto: false,
                 isOpenVideo: false,
                 error: null
             });            
@@ -142,24 +141,6 @@ var UploadForm = React.createClass({
         }
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
-    throwUploadError: function(err) {
-        var self = this;
-        switch(err.code) {
-            case 401:
-                self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
-                break;
-            case 402:
-                self.setState({
-                    isOpenMessage: true,
-                });
-                break;
-            default:
-                self.setState({
-                    isOpen: true,
-                    error: T.get('copy.onboarding.uploadErrorText')
-                });
-        }
-    },
     render: function() {
         const { isOnboarding } = this.props;
         var self = this,
@@ -187,7 +168,6 @@ var UploadForm = React.createClass({
                 <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
                     {
                         self.state.isOpen ? (
-                            
                             <div className="xxOverlay" 
                                 ref={overlay => self._overlay = overlay}
                                 onClick={self.handleBgCloseClick}
@@ -249,6 +229,22 @@ var UploadForm = React.createClass({
                 </ReactCSSTransitionGroup>
             </div>
         );
+    },
+    throwUploadError: function(err) {
+        var self = this;
+        switch(err.code) {
+            case 401:
+                self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
+                break;
+            case 402:
+                self.setState({ isOpenMessage: true });
+                break;
+            default:
+                self.setState({
+                    isOpen: true,
+                    error: T.get('copy.onboarding.uploadErrorText.generic')
+                });
+        }
     },
      sendLocalPhotos: function(e) {
          var self = this, 
@@ -382,7 +378,7 @@ var UploadForm = React.createClass({
                 SESSION.end();
             });
     },
-    generateTab: function() {
+    sendCollectionTag: function() {
         var self = this,
             options = {
                 data: {
@@ -394,8 +390,8 @@ var UploadForm = React.createClass({
         debugger
         self.POST('tags', options)
             .then(function(res) {
-                debugger
-                res.tag_id
+                self.toggleOpen();
+                // res.tag_id
             })
             .catch(function(err) { 
                 self.throwUploadError(err);
