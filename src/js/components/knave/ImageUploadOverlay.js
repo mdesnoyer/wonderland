@@ -110,10 +110,9 @@ var ImageUploadOverlay = React.createClass({
                     <button
                         className={submitClassName.join(' ')}
                         type="button"
-                        // onClick={isValid ? self.props.toggleOpen : null}
-                        onClick={self.props.toggleOpen }
+                        onClick={isValid ? self.props.toggleOpen : null}
                         data-send-tag={true}
-                        // disabled={!isValid}
+                        disabled={!isValid}
                     >Submit</button>
                 </div>
             </Dropzone>

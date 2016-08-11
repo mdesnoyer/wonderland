@@ -43,7 +43,8 @@ var UploadForm = React.createClass({
             photoUploadCount: 0,
             photoUploadMode: 'initial', // initial, loading, success,
             photoUploadThumbnailIds: [],
-            photoCollectionName: ''
+            photoCollectionName: '',
+            videoUploadUrl:''
         };
     },
     toggleOpen: function(e) {
@@ -52,31 +53,38 @@ var UploadForm = React.createClass({
         if (e.target.dataset.sendTag === "true") {
             self.sendCollectionTag();
         }
-        else if (!self.props.isOnboarding || !self.state.isOpen) {
+        else if (e.target.dataset.sendUrl === "true") {
             self.setState({
+                error: null,
+                isOpen: false,
+                isOpenMessage: false,
+                isOpenPhoto: false,
+                isOpenVideo: false
+            }, function() {
+                self.sendVideoUrl();
+            });
+        }
+        // if there is lingering data and user closes our modal then clean up state
+        // cant use a mount because the component is always present
+        else if (self.state.isOpen && 
+                (self.state.photoUploadThumbnailIds.length > 0 || 
+                 self.state.videoUploadUrl !== '' || 
+                 self.state.photoCollectionName !== '' )) {
+            self.resetStateOnSuccessOrClose();
+        }
+        else {
+            self.setState({
+                error: null,
                 isOpen: !self.state.isOpen,
                 isOpenMessage: false,
                 isOpenPhoto: false,
                 isOpenVideo: false,
-                error: null
-            });            
+            });          
         }
     },
     updateField: function(field, value) {
         var self = this;
         self.setState({ [field]: value });
-    },
-    handleUpload: function(url) {
-        var self = this;
-        self.setState({
-            isOpen: false,
-            error: false,
-            isOpenMessage: false,
-            isOpenPhoto: false,
-            isOpenVideo: false
-        }, function() {
-            self.sendVideoUrl(url)
-        });
     },
     handleOpenPhoto: function(e) {
         e.preventDefault();
@@ -90,56 +98,11 @@ var UploadForm = React.createClass({
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
             return;
         }
-        if (!this.props.isOnboarding) {
             this.setState({
                 isOpen: false,
                 isOpenPhoto: false,
                 isOpenVideo: false,
             });
-        }
-    },
-    sendVideoUrl: function(url) {
-        var self = this,
-            videoId = UTILS.generateId(),
-            options = {
-                data: {
-                    external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url)),
-                }
-            }
-        ;
-        if (!UTILS.validateUrl(url)) {
-            self.setState({
-                isOpen: true,
-                error: T.get('copy.urlShortener.messageBody')
-            });
-        }
-        else {
-            self.POST('videos', options)
-                .then(function(json) {
-                    // if the a video is uploaded past the first page(greate than 1)
-                    if (self.props.currentPage > 1) {
-                        //we use the newsearch function in videos to adjust the page 
-                        // 1 minus by the current page 
-                        self.props.handleNewSearch('?', 1 - self.props.currentPage)
-                    }
-                    else if (self.props.postHookAnalysis) {
-                        self.props.postHookAnalysis(json);
-                    }
-                    else {
-                        if (self.props.postHookSearch) {
-                            self.props.postHookSearch();
-                        }
-                        else {
-                            self.context.router.push('/video/' + videoId + '/');
-                        }
-                    }
-                })
-                .catch(function(err) {
-                    self.throwUploadError(err);
-                });    
-        }
-        TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
     render: function() {
         const { isOnboarding } = this.props;
@@ -214,10 +177,11 @@ var UploadForm = React.createClass({
                                 {
                                     self.state.isOpenVideo ? (
                                          <VideoUploadOverlay
-                                            handleUpload={self.handleUpload}
-                                            isOnboarding={isOnboarding}
                                             error={self.state.error || null}
                                             key="upload-video"
+                                            toggleOpen={self.toggleOpen}
+                                            updateField={self.updateField}
+                                            videoUploadUrl={self.state.videoUploadUrl}
                                         />
 
                                     ) :  null 
@@ -246,11 +210,62 @@ var UploadForm = React.createClass({
                 });
         }
     },
+    sendVideoUrl: function() {
+        var self = this,
+            videoId = UTILS.generateId(),
+            options = {
+                data: {
+                    external_video_ref: videoId,
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.videoUploadUrl))
+                }
+            }
+        ;
+        if (!UTILS.validateUrl(self.state.videoUploadUrl)) {
+            self.setState({
+                isOpen: true,
+                isOpenVideo: true,
+                error: T.get('copy.urlShortener.messageBody')
+            });
+        }
+        else {
+            // **********************************************************************
+            // this will have to change according to the new collections set up 
+            // **********************************************************************
+            self.POST('videos', options)
+                .then(function(json) {
+                    self.resetStateOnSuccessOrClose();
+                    // if the a video is uploaded past the first page(greate than 1)
+                    if (self.props.currentPage > 1) {
+                        //we use the newsearch function in videos to adjust the page 
+                        // 1 minus by the current page 
+                        self.props.handleNewSearch('?', 1 - self.props.currentPage)
+                    }
+                    else if (self.props.postHookAnalysis) {
+                        self.props.postHookAnalysis(json);
+                    }
+                    else {
+                        if (self.props.postHookSearch) {
+                            self.props.postHookSearch();
+                        }
+                        else {
+                            self.context.router.push('/video/' + videoId + '/');
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    self.throwUploadError(err);
+                });    
+        }
+        TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
+    },
      sendLocalPhotos: function(e) {
          var self = this, 
              files = e.target.files,
              fileArray = []
          ;
+         // local files come back as and object
+         // server needs array in order to process
+         // we use this function to create and array of files
          for (var i = 0, file; file = files[i]; i++) {
              fileArray.push(file);
          }
@@ -261,6 +276,11 @@ var UploadForm = React.createClass({
             formData = new FormData(),
             errorFiles = 0
         ;
+        // too accomidate for Drag Drop files 
+        // check type if it is not a valid file 
+        // then do not send to server and keep tally
+        // this tally is then displayed on the form
+        self.setState({ photoUploadMode: 'loading'});
         files.forEach((file)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' )) {
                 formData.append('upload', file)
@@ -269,14 +289,22 @@ var UploadForm = React.createClass({
                 errorFiles += 1
             };
         });
-        self.setState({ 
-            photoUploadMode: 'loading',
-            photoUploadCount: formData.getAll('upload').length,
-            photoErrorCount: errorFiles
-        }, function() {
-            self.sendFormattedData(formData)
-        }); 
-        
+        if (self.state.photoUploadThumbnailIds.length + formData.getAll('upload').length > 100) {
+            self.setState({
+                isOpen: true,
+                photoUploadMode: 'initial',
+                error: 'It appears that these additional files will take you over the max of 100 photos per image collection.'
+            });
+        }
+        else {
+            self.setState({ 
+                photoUploadMode: 'loading',
+                photoUploadCount: formData.getAll('upload').length,
+                photoErrorCount: errorFiles
+            }, function() {
+                self.sendFormattedData(formData);
+            });
+        }        
     },
     sendFormattedData: function(formData) {
         var self = this,
@@ -303,15 +331,20 @@ var UploadForm = React.createClass({
                     }, 3000)
                 })                
             }).catch(function(err) {
-                // if account refresh token expired refresh token and they reset session
-                self.setState({ 
-                    photoUploadMode:'initial' 
-                },
-                    function() {
-                        self.throwUploadError(err)
-                });
-                
-                console.log(err);
+                // parsing this response to follow the error 
+                //convention in Ajax module see line 24
+                var parsedError = JSON.parse(err.response).error;
+                // if 401 we use grab a new token and sendFormattedData another time
+                if (parsedError.code === 401) {
+                    self.grabRefreshToken(formData);
+                }
+                else {
+                    self.setState({ 
+                        photoUploadMode:'initial'
+                    },  function() {
+                            self.throwUploadError(parsedError);
+                    });
+                }
             });
      },
      sendDropBoxUrl: function(urls) {
@@ -335,11 +368,11 @@ var UploadForm = React.createClass({
                             photoUploadMode:'success',
                             photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                             error: null 
-                        }, function() {
-                            setTimeout(function() {
+                        },  function() {
+                            setTimeout( function() {
                                 self.setState({ photoUploadMode:'initial' });
-                            }, 3000)
-                        })
+                            }, 3000);
+                        });
                     })
                     .catch(function(err) {
                         self.throwUploadError(err);
@@ -359,8 +392,8 @@ var UploadForm = React.createClass({
         };
         Dropbox.choose(options);
     },
-    grabRefreshToken: function(refreshToken) {
-        var self = this; 
+    grabRefreshToken: function(formData) {
+        var self = this;
         reqwest({
             url: CONFIG.AUTH_HOST + 'refresh_token',
             data: JSON.stringify({
@@ -373,6 +406,7 @@ var UploadForm = React.createClass({
         })
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                self.sendFormattedData(formData);
             })
             .catch(function (err) {
                 SESSION.end();
@@ -386,16 +420,32 @@ var UploadForm = React.createClass({
                     thumbnail_ids: self.state.photoUploadThumbnailIds.join(",")
                 }
             }
-        ; 
-        debugger
+        ;
         self.POST('tags', options)
             .then(function(res) {
-                self.toggleOpen();
-                // res.tag_id
+                // **********************************************************************
+                // need to redirect to collections and or update depending on Onboarding State
+                // **********************************************************************
+            self.resetStateOnSuccessOrClose();
             })
             .catch(function(err) { 
                 self.throwUploadError(err);
             });
+    },
+    resetStateOnSuccessOrClose: function() {
+        var self = this; 
+        self.setState({
+            isOpen: false,
+            error: null,
+            isOpenMessage: false,
+            isPhotoOpen: false, 
+            isVideoOpen: false,
+            photoUploadCount: 0,
+            photoUploadMode: 'initial', // initial, loading, success,
+            photoUploadThumbnailIds: [],
+            photoCollectionName: '',
+            videoUploadUrl:''
+        });
     }
 });
 
