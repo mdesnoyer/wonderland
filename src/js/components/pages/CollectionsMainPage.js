@@ -8,7 +8,8 @@ import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import { objectToGetParams } from '../../modules/sharing';
 
-import Collections from '../knave/Collections';
+import ImageCollection from '../knave/ImageCollection';
+import VideoCollection from '../knave/VideoCollection';
 import SiteHeader from '../wonderland/SiteHeader';
 import _ from 'lodash';
 
@@ -20,9 +21,16 @@ const CollectionsMainPage = React.createClass({
     },
     getInitialState: function() {
         return {
+            // Map of id to tag resource.
             collections: {},
+
+            // Map of id of thumbnail.
             thumbnails: {},
+
+            // Map of id to video resource.
             videos: {},
+
+            // State of search paging--current page, page count, next page url, etc.
             search: {
                 next: null,
                 prev: null
@@ -37,13 +45,29 @@ const CollectionsMainPage = React.createClass({
         }
     },
     render: function() {
-        return (
-            <Collections
-                className="xxPage"
-                collections={this.state.collections}
-                thumbnails={this.state.thumbnails}
-            />
-        );
+        const collections = _.values(this.state.collections).map(collection => {
+
+            switch(collection.tag_type) {
+            case 'col':
+                return (
+                    <ImageCollection
+                        key={collection.tag_id}
+                        thumbnails={this.state.thumbnails}
+                        {...collection}
+                    />
+                );
+            case 'video':
+                return (
+                    <VideoCollection
+                        key={collection.tag_id}
+                        thumbnails={this.state.thumbnails}
+                        {...collection}
+                        {...this.state.videos[collection.video_id]}
+                    />
+               );
+            }
+        });
+        return (<div>{collections}</div>);
     },
     updateField: function(field, value) {
         var self = this;
@@ -75,7 +99,7 @@ const CollectionsMainPage = React.createClass({
 
         const _stateUpdate = self.getInitialState();
 
-        // Search for tag ids, get tags, then get thumbnails for those.
+        // Search for tag ids, get tags and videos, then get thumbnails for those.
         self.GET('tags/search?' + paging, options)
         .then(searchRes => {
 
@@ -99,7 +123,9 @@ const CollectionsMainPage = React.createClass({
                         video_ids.push(tag.video_id);
                     }
                     return video_ids;
-                }, []).join(',')
+                }, []).join(','),
+
+                fields: UTILS.VIDEO_FIELDS.join(',')
             };
             const videosPromise = _videoData.video_id?
                 self.GET('videos', {data: _videoData}):
@@ -128,7 +154,7 @@ const CollectionsMainPage = React.createClass({
             // Create array of CSVs of max length.
             const thumbArgs = UTILS.csvFromArray(thumbIds, UTILS.MAX_CSV_VALUE_COUNT);
 
-            // Batch only large requests.
+            // Batch only large requests since batch is slow.
             if (thumbArgs.length > 1) {
                 thumbArgs.map(arg => {
                     self.batch('GET', 'thumbnails', {thumbnail_id: arg});
@@ -148,6 +174,7 @@ const CollectionsMainPage = React.createClass({
             self.setState(_stateUpdate);
         })
         .catch(err => {
+            // Log the stack trace.
             console.error(err);
             throw err;
         });

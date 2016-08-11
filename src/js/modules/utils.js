@@ -335,6 +335,9 @@ var UTILS = {
     // For calls using comma separated values, the maximum items supported.
     MAX_CSV_VALUE_COUNT: 100,
 
+    TAG_TYPE_IMAGE_COL: 'col',
+    TAG_TYPE_VIDEO_COL: 'video',
+
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
     FACEBOOK_APP_ID: '315978068791558',
