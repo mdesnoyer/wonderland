@@ -255,7 +255,8 @@ var UTILS = {
         rememberedEmailKey: 'ru',
         userKey: 'neonses_user_info',
         viewShareKey: 'footprintCookieViewShare',
-        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
+        analyzeVideoKey: 'footprintCookieAnalyzeVideo',
+        processingKey: 'pv'
     },
     FILTERS_GENDER_AGE: [
         {

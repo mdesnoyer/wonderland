@@ -39,9 +39,13 @@ export default React.createClass({
             self.GET('limits')
                 .then(function(res) {
                     self.setState({ maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE })
+                    if (typeof SESSION.getProcessing() !== undefined) {
+                        self.onAnalysisStart(SESSION.getProcessing());
+                    }
                 })
                 .catch(function(err) {
                 })
+            ;
         }
     },
     componentWillUnmount: function() {
