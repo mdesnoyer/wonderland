@@ -123,9 +123,10 @@ var Thumbnails = React.createClass({
         ;
         return (
             <div className="xxCollectionImages">
-                {
+                {/*
                     self.props.isMobile ? null : ThumbnailOverlayComponent
-                }
+                */}
+                {ThumbnailOverlayComponent}
                 <FeatureThumbnail
                     thumbnails={self.state.thumbnails}
                     videoId={self.props.videoId}
