@@ -35,7 +35,7 @@
             width: 21px;
             height: 21px;
             font-size: 10px;
-            line-height: 19px;
+            line-height: 1.9;
         }
     }
 
@@ -180,7 +180,8 @@
     width: 145px;
 
     @include breakpoint-mobile {
-        padding: 6px 0;
+        padding-left: 6px;
+        padding-right: 6px;
         width: 116px;
     }
 
