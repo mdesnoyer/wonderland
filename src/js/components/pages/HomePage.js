@@ -40,7 +40,7 @@ var HomePage = React.createClass({
             <div>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('nav.home'))}
-                    meta={[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"},]}
+                    meta={UTILS.HELMET_META_TAGS}
                 />
                 <SiteHeader sidebarContent={self.state.sidebarContent} />
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
