@@ -49,8 +49,11 @@ var UploadForm = React.createClass({
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
-        e.target.dataset.generateTab === "true" && self.generateTab();
-        if (!self.props.isOnboarding || !self.state.isOpen) {
+        // e.target.dataset.generateTab === "true" && 
+        if (e.target.dataset.generateTab === "true") {
+            self.generateTab();
+        }
+        else if (!self.props.isOnboarding || !self.state.isOpen) {
             self.setState({
                 isOpen: !self.state.isOpen,
                 isOpenMessage: false,
@@ -134,7 +137,7 @@ var UploadForm = React.createClass({
                     }
                 })
                 .catch(function(err) {
-                    self.throwUploadError(err)
+                    self.throwUploadError(err);
                 });    
         }
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
@@ -274,9 +277,8 @@ var UploadForm = React.createClass({
             photoUploadMode: 'loading',
             photoUploadCount: formData.getAll('upload').length,
             photoErrorCount: errorFiles
-        },
-            function() {
-                self.sendFormattedData(formData)
+        }, function() {
+            self.sendFormattedData(formData)
         }); 
         
     },
@@ -396,7 +398,7 @@ var UploadForm = React.createClass({
                 res.tag_id
             })
             .catch(function(err) { 
-                debugger
+                self.throwUploadError(err);
             });
     }
 });
