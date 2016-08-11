@@ -31,6 +31,16 @@
     background: rgba($bg-color, 0.95);
     z-index: $z-index-overlay;
 
+    @include breakpoint-mobile {
+        &--light {
+            background: $white;
+        }
+
+        &--spaced {
+            padding: 40px 30px;
+        }
+    }
+
     &--dark {
         background: rgba($secondary-color, 0.96);
     }
@@ -64,6 +74,11 @@
     height: 53px;
     z-index: $z-index-above-everything;
     text-indent: $indent-off-screen;
+
+    @include breakpoint-mobile {
+        top: 20px;
+        right: 10px;
+    }
 
     &::before,
     &::after {
