@@ -21,10 +21,8 @@ var ImageUploadOverlay = React.createClass({
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
             dropzoneContent,
             isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '';
-            
             if (isValid) { submitClassName.push('xxButton--important');}
         ;
-        // initial, loading, success
         switch(self.props.photoUploadMode) {
             case 'initial': 
                 dropzoneContent = (
