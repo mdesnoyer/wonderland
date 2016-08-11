@@ -124,7 +124,7 @@ $upload-button-help-line-length: 190px;
 
         @include breakpoint-mobile {
             width: 100px;
-            margin-top: 0px;
+            margin-top: 0;
         }
     }
 
@@ -138,7 +138,7 @@ $upload-button-help-line-length: 190px;
     }
 
     @include breakpoint-mobile {
-        position: initial;
+        position: static;
         margin: 24px auto;
     }
 }
@@ -190,7 +190,7 @@ $upload-button-help-line-length: 190px;
         width: 100%;
 
         p {
-            width: 190px;
+            width: 180px;
         }
     }
 }

@@ -141,7 +141,6 @@ export default React.createClass({
 
     render: function() {
         const { isAnalyzing, seconds, uploadText, sidebarContent } = this.state;
-        const isMobile = window.outerWidth < 768;
         var countdown = null;
         var pageStyle = isAnalyzing ? "xxPage is-processing" : "xxPage";
 
@@ -182,9 +181,7 @@ export default React.createClass({
                                 <div className="xxUploadButton-help">
                                     <span className="xxUploadButton-helpCircle"></span>
                                     <span className="xxUploadButton-helpLine"></span>
-                                    {
-                                        isMobile ? (<p>Upload a video at any time by tapping on this</p>) : (<span>{uploadText}</span>)
-                                    }
+                                    <p>{uploadText}</p>
                                 </div>
                             </div>
                         </div>
