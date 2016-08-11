@@ -41,15 +41,15 @@ var UploadForm = React.createClass({
             isPhotoOpen: false, 
             isVideoOpen: false,
             photoUploadCount: 0,
-            photoUploadMode: 'initial' // initial, loading, success
+            photoUploadMode: 'initial', // initial, loading, success,
+            photoUploadThumbnailIds: [],
+            photoCollectionName: ''
         };
     },
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
-        // debugger
-        // if 
-        // e.target.dataset.generateTab === "true" && self.
+        e.target.dataset.generateTab === "true" && self.generateTab();
         if (!self.props.isOnboarding || !self.state.isOpen) {
             self.setState({
                 isOpen: !self.state.isOpen,
@@ -59,6 +59,10 @@ var UploadForm = React.createClass({
                 error: null
             });            
         }
+    },
+    updateField: function(field, value) {
+        var self = this;
+        self.setState({ [field]: value });
     },
     handleUpload: function(url) {
         var self = this;
@@ -217,6 +221,9 @@ var UploadForm = React.createClass({
                                             photoUploadMode={self.state.photoUploadMode}
                                             photoUploadCount={self.state.photoUploadCount}
                                             photoErrorCount={self.state.photoErrorCount}
+                                            updateField={self.updateField}
+                                            photoCollectionName={self.state.photoCollectionName}
+                                            photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                                         />
 
                                     ) :  null 
@@ -255,7 +262,6 @@ var UploadForm = React.createClass({
             formData = new FormData(),
             errorFiles = 0
         ;
-        debugger
         files.forEach((file)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' )) {
                 formData.append('upload', file)
@@ -264,7 +270,6 @@ var UploadForm = React.createClass({
                 errorFiles += 1
             };
         });
-        debugger
         self.setState({ 
             photoUploadMode: 'loading',
             photoUploadCount: formData.getAll('upload').length,
@@ -289,23 +294,16 @@ var UploadForm = React.createClass({
               data : formData
             })
             .then(function(res) {
+                var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadMode:'success',
+                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     error: null 
                 }, function() {
-                    setTimeout(function(){
+                    setTimeout(function() {
                         self.setState({ photoUploadMode:'initial' });
-                    }, 3000)    
-                }
-                
-                // setTimeout( self.setState({
-                //         photoUploadMode:'initial'
-                //     }), 30)
-                )
-                // self.setState({ 
-                //     photoUploadMode:'success',
-                //     error: null 
-                // });
+                    }, 3000)
+                })                
             }).catch(function(err) {
                 // if account refresh token expired refresh token and they reset session
                 self.setState({ 
@@ -327,7 +325,6 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        console.log(urls.length)
         self.setState({ 
             photoUploadMode: 'loading',
             photoUploadCount: urls.length
@@ -335,11 +332,16 @@ var UploadForm = React.createClass({
                 function() {
                     self.POST('thumbnails', options)
                     .then(function(res) {
-                        self.setState({ 
-                            photoUploadMode:'success', 
-                            error: null
-                        });
-                        console.log(res);
+                        var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                        self.setState({
+                            photoUploadMode:'success',
+                            photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                            error: null 
+                        }, function() {
+                            setTimeout(function() {
+                                self.setState({ photoUploadMode:'initial' });
+                            }, 3000)
+                        })
                     })
                     .catch(function(err) {
                         self.throwUploadError(err);
@@ -377,6 +379,25 @@ var UploadForm = React.createClass({
             .catch(function (err) {
                 SESSION.end();
             });
+    },
+    generateTab: function() {
+        var self = this,
+            options = {
+                data: {
+                    name: self.state.photoCollectionName, 
+                    thumbnail_ids: self.state.photoUploadThumbnailIds.join(",")
+                }
+            }
+        ; 
+        debugger
+        self.POST('tags', options)
+            .then(function(res) {
+                debugger
+                res.tag_id
+            })
+            .catch(function(err) { 
+                debugger
+            });
     }
 });
 
@@ -385,31 +406,3 @@ var UploadForm = React.createClass({
 export default UploadForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-
-// sendFormattedData: function(formData) {
-//            var self = this;
-//            debugger
-//            self.POST('thumbnails', {
-//                contentType: 'multipart/form-data',
-//                data: formData
-//            })
-//                .then(function (res) {
-//                     debugger
-
-//                    // console.log(res);
-//                    self.setState({
-//                        photoUploadMode:'success'
-//                    }, setTimeout( 
-//                        self.setState({
-//                            mode:'silent'
-//                        }), 30)
-//                    )
-//                })
-//                .catch(function (err) {
-//                    self.throwUploadError(err);
-//                });
-//  },

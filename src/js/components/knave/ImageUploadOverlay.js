@@ -19,7 +19,10 @@ var ImageUploadOverlay = React.createClass({
             submitClassName = ['xxButton', 'xxButton--highlight'],
             className = ['xxUploadDialog'],
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
-            dropzoneContent
+            dropzoneContent,
+            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '';
+            
+            if (isValid) { submitClassName.push('xxButton--important');}
         ;
         // initial, loading, success
         switch(self.props.photoUploadMode) {
@@ -34,10 +37,10 @@ var ImageUploadOverlay = React.createClass({
             case 'loading': 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
-                        {"Uploading (" + self.props.photoUploadCount + ") files"}
+                        {"Uploading (" + self.props.photoUploadCount + ") files."}
                         <br/>
                         {
-                            self.props.photoErrorCount > 0 ? ({"Unable to upload " + self.props.photoErrorCount + " files due to file type" }) : null    
+                            self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type." ) : null    
                         }
                     </div>
                 );
@@ -62,7 +65,6 @@ var ImageUploadOverlay = React.createClass({
                 className={'xxUploadDialog'}
                 multiple={true}
                 disableClick={true}
-                // accept="image/*"
                 activeClassName='has-dragAndDropHover'
                 encType="multipart/form-data" 
                 onDrop={self.onDrop}
@@ -79,6 +81,16 @@ var ImageUploadOverlay = React.createClass({
                         {messageNeeded}
                     </div>
                     <div className="xxFormField">
+                        <label className="xxLabel">Collection Name</label>
+                        <input
+                            className="xxInputText"
+                            type="text"
+                            required
+                            onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
+                        />
+                    </div>
+                    <div className="xxFormField">
+
                         <label className="xxLabel">Choose Image Source</label>
                         <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
                             Local
@@ -100,8 +112,9 @@ var ImageUploadOverlay = React.createClass({
                     <button
                         className={submitClassName.join(' ')}
                         type="button"
-                        onClick={self.props.toggleOpen}
+                        onClick={isValid ? self.props.toggleOpen : null}
                         data-generate-tab={true}
+                        disabled={!isValid}
                     >Submit</button>
                 </div>
             </Dropzone>
@@ -120,7 +133,11 @@ var ImageUploadOverlay = React.createClass({
         sendFormattedData: React.PropTypes.func,
         toggleOpen: React.PropTypes.func,
         photoUploadMode: React.PropTypes.string,
-        photoUploadCount: React.PropTypes.number
+        photoUploadCount: React.PropTypes.number,
+        photoErrorCount: React.PropTypes.number,
+        updateField: React.PropTypes.func,
+        photoCollectionName: React.PropTypes.string,
+        photoUploadThumbnailIds: React.PropTypes.array
     }
 });
 
