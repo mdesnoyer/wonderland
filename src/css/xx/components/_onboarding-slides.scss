@@ -4,7 +4,7 @@
     @include breakpoint-mobile {
         height: 400px;
 
-        @include landscape-mobile {
+        @include landscape {
             height: 500px;
         }
     }
@@ -134,7 +134,7 @@
         margin: 0 20%;
         position: initial;
 
-        @include landscape-mobile {
+        @include landscape {
             width: 50%;
             margin: 0 25%;
         }

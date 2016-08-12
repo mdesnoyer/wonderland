@@ -26,7 +26,7 @@
     }
 }
 
-@mixin landscape-mobile {
+@mixin landscape {
     @media (orientation: landscape) {
         @content;
     }
