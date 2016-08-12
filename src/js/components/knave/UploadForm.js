@@ -273,6 +273,7 @@ var UploadForm = React.createClass({
      },
      formatData: function(files) {
         var self = this,
+            formDataArray = []
             formData = new FormData(),
             errorFiles = 0
         ;
@@ -282,8 +283,16 @@ var UploadForm = React.createClass({
         // this tally is then displayed on the form
         self.setState({ photoUploadMode: 'loading'});
         files.forEach((file)=> {
+            var formData = new FormData()
+            var count = 0 
+            var size = 0 
             if (accept({name: file.name, type: file.type }, 'image/*' )) {
+                // if  size is over 2 
+                    // error file 
+                //else add to form
+                
                 formData.append('upload', file)
+
             } 
             else {
                 errorFiles += 1
@@ -297,6 +306,10 @@ var UploadForm = React.createClass({
             });
         }
         else {
+            debugger 
+            // **********************************************************************
+            //DEBUGGER
+            // **********************************************************************
             self.setState({ 
                 photoUploadMode: 'loading',
                 photoUploadCount: formData.getAll('upload').length,
@@ -405,7 +418,7 @@ var UploadForm = React.createClass({
             type: 'json'
         })
             .then(function (res) {
-                SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
+                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
                 self.sendFormattedData(formData);
             })
             .catch(function (err) {
