@@ -33,6 +33,7 @@ var VideoUploadOverlay = React.createClass({
     },
     render() {
         const { isOnboarding } = this.props;
+        const isMobile = window.outerWidth < 768;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = !!self.state.url,
@@ -44,7 +45,9 @@ var VideoUploadOverlay = React.createClass({
         return (
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">Let’s analyze a video</h2>
+                    <h2 className="xxTitle">
+                        { isMobile ? ('Upload Video') : ('Let’s analyze a video') }
+                    </h2>
                     {messageNeeded}
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-url">
@@ -60,7 +63,6 @@ var VideoUploadOverlay = React.createClass({
                             onChange={e => self.updateField('url', e.target.value)}
                         />
                     </div>
-
                     {/*
                         !isOnboarding ? (
                             <div>
@@ -73,13 +75,23 @@ var VideoUploadOverlay = React.createClass({
                             </div>
                         ) : null
                     */}
-
-                    <button
-                        disabled={!isValid}
-                        className={submitClassName.join(' ')}
-                        type="submit"
-                        onClick={self.handleClick}
-                    >{T.get('upload.submit')}</button>
+                    <div className="xxFormButtons">
+                        {
+                            isMobile ? (
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    onClick={self.props.handleClose}
+                                >{T.get('back')}</button>
+                            ) : null
+                        }
+                        <button
+                            disabled={!isValid}
+                            className={submitClassName.join(' ')}
+                            type="submit"
+                            onClick={self.handleClick}
+                        >{T.get('upload.submit')}</button>
+                    </div>
                 </div>
             </section>
         );

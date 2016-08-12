@@ -26,6 +26,12 @@
     }
 }
 
+@mixin landscape {
+    @media (orientation: landscape) {
+        @content;
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // generates arrow

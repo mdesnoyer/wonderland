@@ -40,6 +40,13 @@ var VideoUploadForm = React.createClass({
             error: null
         });
     },
+    handleClose: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            isOpen: false
+        });
+    },
     handleUpload: function(url) {
         var self = this;
         self.setState({
@@ -135,9 +142,10 @@ var VideoUploadForm = React.createClass({
                 >{T.get('action.analyze')}</a>
                 {
                     self.state.isOpen ? (
-                        <div className="xxOverlay" >
+                        <div className="xxOverlay xxOverlay--light">
                             <VideoUploadOverlay
                                 handleUpload={self.handleUpload}
+                                handleClose={self.handleClose}
                                 isOnboarding={isOnboarding}
                                 error={self.state.error || null}
                             />
