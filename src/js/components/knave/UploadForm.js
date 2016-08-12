@@ -273,42 +273,53 @@ var UploadForm = React.createClass({
      },
      formatData: function(files) {
         var self = this,
-            formDataArray = []
-            formData = new FormData(),
+            formDataArray = [],
+            // formData = new FormData(),
             errorFiles = 0
         ;
         // too accomidate for Drag Drop files 
         // check type if it is not a valid file 
         // then do not send to server and keep tally
         // this tally is then displayed on the form
-        self.setState({ photoUploadMode: 'loading'});
-        files.forEach((file)=> {
-            var formData = new FormData()
-            var count = 0 
-            var size = 0 
-            if (accept({name: file.name, type: file.type }, 'image/*' )) {
-                // if  size is over 2 
-                    // error file 
-                //else add to form
-                    // function sum( obj ) {
-                    //   var sum = 0;
-                    //   for( var el in obj ) {
-                    //     if( obj.hasOwnProperty( el ) ) {
-                    //       sum += parseFloat( obj[el] );
-                    //     }
-                    //   }
-                    //   return sum;
-                    // }
-
-                    // var sample = { a: 1 , b: 2 , c:3 };
-                    // var summed = sum( sample );
-                formData.append('upload', file)
-
+        // self.setState({ photoUploadMode: 'loading'});
+        var formData = new FormData()
+        var count = 0 
+        var size = 0
+        var lastIndex = files.length -1
+        debugger 
+        console.log(files.length) 
+        files.forEach((file, index)=> {
+            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < 2000000) {
+                // debugger
+                count += 1
+                size += file.size
+                if (count === 5 || size > 10000000) {
+                    formDataArray.push(formData)
+                    formData = new FormData()
+                    count = 0 
+                    size = 0
+                    formData.append('upload', file)
+                }
+                else {
+                    if (index === lastIndex){
+                        formData.append('upload', file)
+                        formDataArray.push(formData)
+                    }
+                    else {
+                        formData.append('upload', file)
+                    }                   
+                }
             } 
             else {
                 errorFiles += 1
             };
         });
+        var totalFileNumber = 0 
+        formDataArray.forEach(function(form){
+            totalFileNumber += form.getAll('upload').length;
+
+        })
+        debugger
         if (self.state.photoUploadThumbnailIds.length + formData.getAll('upload').length > 100) {
             self.setState({
                 isOpen: true,
