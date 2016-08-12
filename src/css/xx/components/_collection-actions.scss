@@ -8,7 +8,9 @@
     padding: 20px 0 0;
 
     @include breakpoint-mobile {
-        display: none;
+        border-top: 0px solid transparent;
+        margin-top: 10px;
+        padding-top: 6px;
     }
 }
 

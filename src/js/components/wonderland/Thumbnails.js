@@ -38,7 +38,8 @@ var Thumbnails = React.createClass({
             badThumbs: badThumbs,
             thumbsLength: overlayThumbs.length, 
             showLowScores: false, 
-            defaultThumbnail: self.props.defaultThumbnail 
+            defaultThumbnail: self.props.defaultThumbnail,
+            showThumbnails: false
         };
     },
     handleKeyEvent: function(e) {
@@ -107,6 +108,7 @@ var Thumbnails = React.createClass({
     },
     render: function() {
         var self = this,
+            thumbnailClassName = ['xxCollectionImages-all'],
             ThumbnailOverlayComponent = self.state.isThumbnailOverlayActive ? (
                 <ThumbnailOverlay
                     closeThumbnailOverlay={self.closeThumbnailOverlay}
@@ -121,18 +123,13 @@ var Thumbnails = React.createClass({
                 />
             ) : null
         ;
+        if (!self.state.showThumbnails && self.props.isMobile) {
+            thumbnailClassName.push('is-hidden');
+        }
         return (
             <div className="xxCollectionImages">
                 {
                     self.props.isMobile ? null : ThumbnailOverlayComponent
-                }
-                {
-                    self.props.isMobile ? (
-                        <div 
-                            className="xxExpandCollection"
-                        >
-                        </div>
-                    ) : null
                 }
                 <FeatureThumbnail
                     thumbnails={self.state.thumbnails}
@@ -152,10 +149,19 @@ var Thumbnails = React.createClass({
                 />
                 {
                     self.props.isMobile ? (
-                        <Lift displayThumbLift={self.props.displayThumbLift} />
+                        <div>
+                            <Lift displayThumbLift={self.props.displayThumbLift} />
+                            {
+                                self.state.showThumbnails ? null : (
+                                    <div className="xxShowMore" onClick={self.toggleThumbnails}>
+                                        <a href="#">{T.get('action.showMore')}</a>
+                                    </div>
+                                )
+                            }
+                        </div>
                     ) : null
                 }
-                <div className="xxCollectionImages-all">
+                <div className={thumbnailClassName.join(' ')}>
                     {
                         self.props.isMobile ? (
                             <h2 className="xxCollection-subtitle">{T.get('copy.videos.topSelects')}</h2>
@@ -183,7 +189,7 @@ var Thumbnails = React.createClass({
                         )
                     }
                     </div>
-                <div className="xxCollectionImages-all">
+                <div className={thumbnailClassName.join(' ')}>
                     {
                         self.props.isMobile ? (
                             <h2 className="xxCollection-subtitle">{T.get('copy.videos.lowest')}</h2>
@@ -203,6 +209,13 @@ var Thumbnails = React.createClass({
                         ): null
                     }
                 </div>
+                {
+                    (!self.state.showThumbnails && self.props.isMobile) ? null : (
+                        <div className="xxShowMore" onClick={self.toggleThumbnails}>
+                            <a href="#">{T.get('action.showLess')}</a>
+                        </div>
+                    )
+                }
             </div>
         );
     },
@@ -236,6 +249,13 @@ var Thumbnails = React.createClass({
         }
         var v = UTILS.fixThumbnails(filteredThumbs, false);
         return v;
+    },
+    toggleThumbnails: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            showThumbnails: !self.state.showThumbnails
+        });
     }
 });
 
