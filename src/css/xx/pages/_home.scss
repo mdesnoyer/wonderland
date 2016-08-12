@@ -40,7 +40,7 @@
             right: 0;
             position: absolute;
 
-            @media (orientation: landscape) {
+            @include landscape {
                 background-size: 100%;
                 background-position: center;
                 
