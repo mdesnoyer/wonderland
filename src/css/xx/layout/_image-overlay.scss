@@ -40,7 +40,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
         padding: 30px;
         vertical-align: initial;
 
-        @media (orientation: landscape) {
+        @include landscape {
             padding: 30px 50px;
         }
     }
@@ -135,7 +135,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
         left: -1px;
         width: 100%;
 
-        @media (orientation: landscape) {
+        @include landscape {
             top: 50%;
             padding: 0 20px;
         }
