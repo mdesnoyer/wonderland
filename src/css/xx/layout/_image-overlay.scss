@@ -67,7 +67,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
     @include breakpoint-mobile {
         display: block;
         width: 100%;
-        max-width: 100% !important;
+        max-width: 100% !important; // needed to overide inline styling in ZoomThumbnail
         margin-top: 24px;
     }
 }
