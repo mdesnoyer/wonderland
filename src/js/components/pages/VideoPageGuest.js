@@ -19,7 +19,7 @@ import OnboardingTutorial from '../wonderland/OnboardingTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const BREAKPOINT_MOBILE = 768;
+const MAX_MOBILE_OUTER_WIDTH_PX = 768;
 
 var VideoPageGuest = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
@@ -157,7 +157,7 @@ var VideoPageGuest = React.createClass({
     render: function() {
         var self = this;
         const { sidebarContent } = this.state;
-        const isMobile = window.outerWidth < BREAKPOINT_MOBILE;
+        const isMobile = window.outerWidth < MAX_MOBILE_OUTER_WIDTH_PX;
         try {
             return (
                 <main className='xxPage'>
