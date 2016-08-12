@@ -61,6 +61,8 @@ const _DEFAULT_LOCALE = 'en-US',
             // todo, if this is osx then ⌘ else ctrl.
             'action.textSelected': 'Press ⌘-C to copy',
             'action.saveMyImages': 'Save Images',
+            'action.showMore': 'Show More',
+            'action.showLess': 'Show Less',
 
             rememberMe: 'Remember',
 
