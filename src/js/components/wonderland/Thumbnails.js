@@ -126,6 +126,14 @@ var Thumbnails = React.createClass({
                 {
                     self.props.isMobile ? null : ThumbnailOverlayComponent
                 }
+                {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxExpandCollection"
+                        >
+                        </div>
+                    ) : null
+                }
                 <FeatureThumbnail
                     thumbnails={self.state.thumbnails}
                     videoId={self.props.videoId}

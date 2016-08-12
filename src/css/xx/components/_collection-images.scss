@@ -120,3 +120,19 @@ $mobile-all-images-gutter-width: 3px;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxExpandCollection {
+    position: absolute;
+    right: 12px;
+
+    @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+    &::before,
+    &::after {
+        top: -4px;
+        right: 18px;
+        left: auto;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
