@@ -22,7 +22,7 @@ $mobile-all-images-gutter-width: 3px;
         font-size: 10px;
         line-height: 14px;
 
-        > .xxLift {
+        > .xxLift { // styling only for lift component directly inside xxCollectionImages
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 15px;
             font-size: $default-mobile-font-size;
