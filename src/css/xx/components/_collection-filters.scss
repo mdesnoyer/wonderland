@@ -180,8 +180,7 @@
     width: 145px;
 
     @include breakpoint-mobile {
-        padding-left: 6px;
-        padding-right: 6px;
+        padding: 7px 6px;
         width: 116px;
     }
 
