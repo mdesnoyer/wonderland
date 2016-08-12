@@ -12,14 +12,21 @@ const _Thumbnail = React.createClass({
         key: React.PropTypes.string
     },
 
+    noop: e => {
+        e.preventDefault();
+    },
+
     render: function() {
         return (
-            <a href="#" className="xxThumbnail">
+            <a
+                className="xxThumbnail"
+                onClick={this.noop}
+                data-score={this.props.scores}
+            >
                 <img
                     className="xxThumbnail-image"
                     src={this.props.src}
                 />
-                {this.props.score}
             </a>
         );
     }

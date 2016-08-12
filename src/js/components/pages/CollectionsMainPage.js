@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 
 import AjaxMixin from '../../mixins/Ajax';
 
@@ -11,7 +12,6 @@ import { objectToGetParams } from '../../modules/sharing';
 import ImageCollection from '../knave/ImageCollection';
 import VideoCollection from '../knave/VideoCollection';
 import SiteHeader from '../wonderland/SiteHeader';
-import _ from 'lodash';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
@@ -45,29 +45,45 @@ const CollectionsMainPage = React.createClass({
         }
     },
     render: function() {
+        const self = this;
         const collections = _.values(this.state.collections).map(collection => {
-
-            switch(collection.tag_type) {
-            case 'col':
-                return (
-                    <ImageCollection
-                        key={collection.tag_id}
-                        thumbnails={this.state.thumbnails}
-                        {...collection}
-                    />
-                );
-            case 'video':
-                return (
-                    <VideoCollection
-                        key={collection.tag_id}
-                        thumbnails={this.state.thumbnails}
-                        {...collection}
-                        {...this.state.videos[collection.video_id]}
-                    />
-               );
-            }
+            return this.constructComponent(collection, self._additional(collection));
         });
         return (<div>{collections}</div>);
+    },
+    // Given a collection, get additional info needed for render,
+    // or return an empty object.
+    _additional: function(collection) {
+        return (collection.tag_type === UTILS.TAG_TYPE_VIDEO_COL)?
+            this.state.videos[collection.video_id]:
+            {};
+    },
+    // Given a collection and an optional object, construct
+    // valid Collection component instance and return it
+    //
+    // else return an error component.
+    constructComponent: function(collection, additional) {
+        switch(collection.tag_type) {
+        case 'col':
+            return (
+                <ImageCollection
+                    key={collection.tag_id}
+                    thumbnails={this.state.thumbnails}
+                    {...collection}
+                    {...additional}
+                />
+            );
+        case 'video':
+            return (
+                <VideoCollection
+                    key={collection.tag_id}
+                    thumbnails={this.state.thumbnails}
+                    {...collection}
+                    {...additional}
+                />
+           );
+        }
+        return <ErrorCollection/>
     },
     updateField: function(field, value) {
         var self = this;
