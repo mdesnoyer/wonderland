@@ -63,7 +63,6 @@ var VideoUploadOverlay = React.createClass({
                             onChange={e => self.updateField('url', e.target.value)}
                         />
                     </div>
-
                     {/*
                         !isOnboarding ? (
                             <div>

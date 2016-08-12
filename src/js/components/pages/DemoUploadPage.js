@@ -149,7 +149,7 @@ export default React.createClass({
             <main className={pageStyle}>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
-                    meta={[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"},]}
+                    meta={UTILS.HELMET_META_TAGS}
                 />
                 {
                     isAnalyzing ? (
