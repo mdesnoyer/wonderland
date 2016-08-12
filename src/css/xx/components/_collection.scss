@@ -75,6 +75,10 @@ $collection-content-padding-top: 17px;
 
     .xxCollection--processing & {
         width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width} * 2);
+
+        @include breakpoint-mobile {
+            width: 100%;
+        }
     }
 }
 

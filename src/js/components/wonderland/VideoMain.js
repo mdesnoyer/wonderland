@@ -270,6 +270,7 @@ var VideoMain = React.createClass({
                             isGuest={self.props.isGuest}
                             setTooltipText={self.props.setTooltipText}
                             showRefilterTutorial={self.props.showRefilterTutorial}
+                            isMobile={self.props.isMobile}
                         />
                     </div>
                     <Thumbnails
