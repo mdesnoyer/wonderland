@@ -9,6 +9,7 @@ import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import { objectToGetParams } from '../../modules/sharing';
 
+import CollectionStore from '../../stores/CollectionStore';
 import ImageCollection from '../knave/ImageCollection';
 import VideoCollection from '../knave/VideoCollection';
 import SiteHeader from '../wonderland/SiteHeader';
@@ -20,6 +21,7 @@ const CollectionsMainPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
+        /*
         return {
             // Map of id to tag resource.
             collections: {},
@@ -36,6 +38,8 @@ const CollectionsMainPage = React.createClass({
                 prev: null
             }
         }
+        /**/
+        return CollectionStore.getState();
     },
     componentWillMount: function() {
         if (!SESSION.active()) {
@@ -44,12 +48,24 @@ const CollectionsMainPage = React.createClass({
             this.getCollections()
         }
     },
+    componentDidMount: function() {
+        CollectionStore.listen(this.onChange);
+    },
+    componentWillUnmount: function() {
+        CollectionStore.unlisten(this.onChange);
+    },
+    onChange: function(state) {
+        this.setState(state);
+    },
     render: function() {
+        return <div>Butts</div>
+        /*
         const self = this;
         const collections = _.values(this.state.collections).map(collection => {
             return this.constructComponent(collection, self._additional(collection));
         });
         return (<div>{collections}</div>);
+        /**/
     },
     // Given a collection, get additional info needed for render,
     // or return an empty object.

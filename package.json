@@ -42,6 +42,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "alt": "^0.18.5",
     "babel-polyfill": "^6.9.1",
     "bulma": "0.0.26",
     "clipboard": "^1.5.12",
