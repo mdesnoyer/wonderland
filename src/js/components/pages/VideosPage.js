@@ -110,9 +110,12 @@ var VideosPage = React.createClass({
         return (
             <main className="xxPage">
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.myCollections.title'))}
                     meta={[
-                        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
+                        {
+                            'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'
+                        }
                     ]}
                 />
                 <SiteHeader sidebarContent={sidebarContent}/>

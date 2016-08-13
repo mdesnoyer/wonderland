@@ -163,7 +163,7 @@ var VideoPageGuest = React.createClass({
                 <main className='xxPage'>
                     <Helmet
                         meta={self.state.metaTags}
-                        title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
+                        title={UTILS.buildPageTitle(self.state.title)}
                     />
                     <SiteHeader sidebarContent={sidebarContent}/>
                     {

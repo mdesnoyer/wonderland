@@ -4,6 +4,7 @@ import React from 'react';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
 import UTILS from '../../modules/utils';
+import PrimaryNavigation from './PrimaryNavigation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,8 +13,6 @@ var SiteNavigation = React.createClass({
         var self = this;
         return {
             sidebarContent: self.props.sidebarContent,
-            hasUser: false,
-            name: T.get('nav.account') // default to account just in case
         }
     },
     componentDidMount: function() {
@@ -23,27 +22,6 @@ var SiteNavigation = React.createClass({
     componentWillUnmount: function() {
         var self = this;
         self._isMounted = false;
-    },
-    componentWillMount: function() {
-        var self = this;
-        if (SESSION.active()) {
-            SESSION.user()
-                .then(function(user) {
-                    if (self._isMounted) {
-                        self.setState({
-                            hasUser: true,
-                            name: user.displayName || T.get('nav.account')
-                        });
-                    }
-                })
-                .catch(function(err) {
-                    self.setState({
-                            hasUser: false,
-                            name: T.get('nav.account')
-                        });
-                })
-            ;
-        }
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
@@ -61,40 +39,15 @@ var SiteNavigation = React.createClass({
         self.props.setSidebarContent(content);
     },
     render: function() {
-        var self = this,
-            items = {
-                learnMore: <a className="xxNav-anchor" href="#" name="learnMore" onClick={self.handleClick}>{T.get('nav.learnMore')}</a>,
-                contactPage: <a className="xxNav-anchor" href="#" name="contact" onClick={self.handleClick}>{T.get('nav.contact')}</a>,
-                signUp: <a className="xxNav-anchor" href="#" name="signUp" onClick={self.handleClick}>{T.get('nav.signUp')}</a>,
-                account: <a className="xxNav-anchor" href="#" name="account" onClick={self.handleClick}>{self.state.name}</a>
-            },
-            constructedNav = []
-        ;
-        constructedNav.push(items.learnMore);
-        constructedNav.push(items.contactPage);
-        if (self.state.hasUser) {
-            constructedNav.push(items.account);
-        }
-        else {
-            constructedNav.push(items.signUp);
-        }
+        var self = this;
         return (
-            <div>
-                <ul>
-                    {
-                        constructedNav.map(function(levelItem, i) {
-                            if (levelItem.props['name'] === self.state.sidebarContent) {
-                                return (
-                                    <li key={i} className="xxNav-item is-active">{levelItem}</li>
-                                );
-                            }
-                            return (
-                                <li key={i} className="xxNav-item">{levelItem}</li>
-                            );
-                        })
-                    }
-                </ul>
-            </div>
+            <nav className="xxNav">
+                <a href="#" name="primaryNavigation" onClick={self.handleClick} className="xxNav-hamburger xxNav-anchor">&#9776;</a>
+                <PrimaryNavigation
+                    handleClick={self.handleClick}
+                    sidebarContent={self.state.sidebarContent}
+                />
+            </nav>
         );
     }
 });

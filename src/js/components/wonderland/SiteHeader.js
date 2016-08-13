@@ -12,13 +12,11 @@ var SiteHeader = React.createClass({
             sidebarContent: sidebarContent || null // null, learnMore, contact, signUp, account
         }
     },
-
     setSidebarContent: function(content) {
         this.setState({
             sidebarContent: content
         });
     },
-
     componentWillReceiveProps(nextProps) {
         const { sidebarContent } = nextProps;
 
@@ -26,7 +24,6 @@ var SiteHeader = React.createClass({
             this.setState({ sidebarContent });
         }
     },
-
     render: function() {
         const { sidebarContent } = this.state;
 

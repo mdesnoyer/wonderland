@@ -52,10 +52,11 @@
 
     &--visibleNav {
         z-index: $z-index-header - 1;
-        min-width: $page-min-width + $gutter-width * 2;
-
         @media (max-width: $page-min-width + $gutter-width * 2) {
             position: absolute;
+        }
+        @include breakpoint-desktop {
+            min-width: $page-min-width + $gutter-width * 2;
         }
     }
 
