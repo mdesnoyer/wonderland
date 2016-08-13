@@ -56,7 +56,11 @@ var AJAXModule = {
             else {
                 _options.data = JSON.stringify(_options.data);
                 _options.type = 'json';
-                _options.contentType =  _options.contentType? _options.contentType: 'application/json';
+                _options.contentType =  _options.contentType ? _options.contentType: 'application/json';
+            }
+            if _options.processData {
+                _options.processData = _options.processData
+
             }
 
             var accountIdToUse = (_options.overrideAccountId ? _options.overrideAccountId : self.Session.state.accountId);

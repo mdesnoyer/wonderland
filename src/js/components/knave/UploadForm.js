@@ -170,6 +170,7 @@ var UploadForm = React.createClass({
                                             updateField={self.updateField}
                                             photoCollectionName={self.state.photoCollectionName}
                                             photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
+                                            numberUploadedCount={self.state.numberUploadedCount}
                                         />
 
                                     ) :  null 
@@ -320,7 +321,7 @@ var UploadForm = React.createClass({
 
         })
         debugger
-        if (self.state.photoUploadThumbnailIds.length + formData.getAll('upload').length > 100) {
+        if (self.state.photoUploadThumbnailIds.length + totalFileNumber > 100) {
             self.setState({
                 isOpen: true,
                 photoUploadMode: 'initial',
@@ -334,10 +335,13 @@ var UploadForm = React.createClass({
             // **********************************************************************
             self.setState({ 
                 photoUploadMode: 'loading',
-                photoUploadCount: formData.getAll('upload').length,
+                photoUploadCount: totalFileNumber,
+                numberUploadedCount: 0, 
                 photoErrorCount: errorFiles
             }, function() {
-                self.sendFormattedData(formData);
+                formDataArray.forEach(function(formData){
+                    self.sendFormattedData(formData);    
+                });
             });
         }        
     },
@@ -355,17 +359,30 @@ var UploadForm = React.createClass({
               data : formData
             })
             .then(function(res) {
+                debugger
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                // add the res length to the total processed amount
+                // when the total hits the total amount show the sucesss flag.
+                // else update the total processed and keep in uploading state.
                 self.setState({
-                    photoUploadMode:'success',
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                    error: null 
+                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                 }, function() {
-                    setTimeout(function() {
-                        self.setState({ photoUploadMode:'initial' });
-                    }, 3000)
-                })                
-            }).catch(function(err) {
+                    debugger
+                    if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+                        self.setState({
+                            photoUploadMode:'success',
+                            photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                            error: null 
+                        }, function() {
+                            setTimeout(function() {
+                                self.setState({ photoUploadMode:'initial' });
+                            }, 3000)
+                        })                                        
+                    }
+                });                          
+            })
+            .catch(function(err) {
                 // parsing this response to follow the error 
                 //convention in Ajax module see line 24
                 var parsedError = JSON.parse(err.response).error;
@@ -440,8 +457,10 @@ var UploadForm = React.createClass({
             type: 'json'
         })
             .then(function (res) {
-                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
-                self.sendFormattedData(formData);
+                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0])
+                    self.sendFormattedData(formData)
+                ;
+                
             })
             .catch(function (err) {
                 SESSION.end();
@@ -456,6 +475,7 @@ var UploadForm = React.createClass({
                 }
             }
         ;
+        debugger
         self.POST('tags', options)
             .then(function(res) {
                 // **********************************************************************
@@ -479,7 +499,8 @@ var UploadForm = React.createClass({
             photoUploadMode: 'initial', // initial, loading, success,
             photoUploadThumbnailIds: [],
             photoCollectionName: '',
-            videoUploadUrl:''
+            videoUploadUrl:'',
+            numberUploadedCount: 0
         });
     }
 });

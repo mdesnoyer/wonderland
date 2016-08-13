@@ -35,6 +35,9 @@ var ImageUploadOverlay = React.createClass({
             case 'loading': 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
+                        <span className="xxDragAndDrop-progressCounter">
+                            {`${Math.round((self.props.numberUploadedCount) / self.props.photoUploadCount * 100)}%`}
+                        </span>
                         {"Uploading (" + self.props.photoUploadCount + ") files."}
                         <br/>
                         {
