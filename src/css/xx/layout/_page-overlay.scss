@@ -28,6 +28,13 @@ $page-overlay-padding-bottom: 60px;
     max-width: $page-max-width / 2;
     padding: $page-overlay-padding-top $gutter-width $page-overlay-padding-bottom $gutter-width * 2;
 
+    @include breakpoint-mobile {
+        width: 100%;
+        max-width: 100%;
+        padding: 30px;
+        margin-top: 50px;
+    }
+
     &::before {
         content: '';
         position: fixed;

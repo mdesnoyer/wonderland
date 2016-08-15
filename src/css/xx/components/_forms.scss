@@ -227,6 +227,10 @@
 
         + .xxButton {
             margin-left: $gutter-width;
+
+            @include breakpoint-mobile {
+                margin-left: 18px;
+            }
         }
     }
 }
