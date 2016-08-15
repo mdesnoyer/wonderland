@@ -14,7 +14,6 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 var ImageUploadOverlay = React.createClass({
     render: function() {
-        const { isOnboarding } = this.props;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             className = ['xxUploadDialog'],
@@ -27,8 +26,8 @@ var ImageUploadOverlay = React.createClass({
             case 'initial': 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
-                        Drag and Drop your image(s) here.<br />
-                        Sorry, no folders.
+                        {T.get('imageUpload.draglocation')}<br />
+                        {T.get('imageUpload.folders')}
                     </div>
                 );
                 break;
@@ -41,7 +40,7 @@ var ImageUploadOverlay = React.createClass({
                         {"Uploading (" + self.props.photoUploadCount + ") files."}
                         <br/>
                         {
-                            self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type." ) : null    
+                            self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null    
                         }
                     </div>
                 );
@@ -56,8 +55,8 @@ var ImageUploadOverlay = React.createClass({
             default: 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
-                        Drag and Drop your image(s) here.<br />
-                        Sorry, no folders.
+                        {T.get('imageUpload.draglocation')}<br />
+                        {T.get('imageUpload.folders')}
                     </div>
                 );
         }
@@ -77,13 +76,15 @@ var ImageUploadOverlay = React.createClass({
                 </div>
                 <div className="xxUploadDialog-inner">
                     <div className="xxUploadDialog-intro">
-                        <h2 className="xxTitle">Upload Your Images</h2>
-                        <p>You can drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.</p>
+                        <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
+                        <p>{T.get('imageUpload.dragInstructions')}</p>
                         {messageNeeded}
-                        <p>{self.props.photoUploadThumbnailIds.length + "/100 downloaded" }</p>
+                        <div  className="has-downloaded-note" >
+                        <p className="xxFormNote" >{self.props.photoUploadThumbnailIds.length + "/100 downloaded" }</p>
+                        </div>
                     </div>
                     <div className="xxFormField">
-                        <label className="xxLabel">Collection Name</label>
+                        <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
                         <input
                             className="xxInputText"
                             type="text"
@@ -92,10 +93,9 @@ var ImageUploadOverlay = React.createClass({
                         />
                     </div>
                     <div className="xxFormField">
-
-                        <label className="xxLabel">Choose Image Source</label>
+                        <label className="xxLabel">{T.get('imageUpload.chooseSource')}</label>
                         <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-                            Local
+                            {T.get('imageUpload.local')}
                             <input
                                 type="file"
                                 multiple
@@ -108,7 +108,7 @@ var ImageUploadOverlay = React.createClass({
                             className="xxButton xxButton--uploadDialog xxButton--highlight"
                             onClick={self.props.grabDropBox}
                         >
-                        Dropbox
+                        {T.get('imageUpload.dropBox')}
                         </button>
                     </div>
                     <button
@@ -117,7 +117,7 @@ var ImageUploadOverlay = React.createClass({
                         onClick={isValid ? self.props.toggleOpen : null}
                         data-send-tag={true}
                         disabled={!isValid}
-                    >Submit</button>
+                    >{T.get('upload.submit')}</button>
                 </div>
             </Dropzone>
         );

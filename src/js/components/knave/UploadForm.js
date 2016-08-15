@@ -275,7 +275,6 @@ var UploadForm = React.createClass({
      formatData: function(files) {
         var self = this,
             formDataArray = [],
-            // formData = new FormData(),
             errorFiles = 0,
             formData = new FormData(),
             count = 0 ,
@@ -319,7 +318,7 @@ var UploadForm = React.createClass({
                 self.setState({
                     isOpen: true,
                     photoUploadMode: 'initial',
-                    error: 'It appears that these additional files will take you over the max of 100 photos per image collection.'
+                    error: T.get('imageUpload.uploadMax')
                 });
         }
         else {
@@ -330,13 +329,12 @@ var UploadForm = React.createClass({
                 photoErrorCount: errorFiles
             }, function() {
                 formDataArray.forEach(function(formData){
-                    self.sendFormattedData(formData);    
+                    self.sendFormattedData(formData);
                 });
             });
         }        
     },
     sendFormattedData: function(formData) {
-        debugger
         var self = this,
             options = {
                 data: formData,

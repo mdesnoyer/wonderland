@@ -111,6 +111,11 @@
     .xxFormField + .xxFormField & {
         margin-top: -2px;
     }
+
+    .has-downloaded-note > & {
+        text-align: center;
+        color: $accent-color;
+    }
 }
 
 .xxFormError {
