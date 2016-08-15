@@ -7,7 +7,6 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
-import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
 import Account from '../../mixins/Account';
@@ -80,58 +79,50 @@ var Videos = React.createClass({
                         </div>
                     ) : null
                 }
-                            <VideoUploadForm
-                                postHookSearch={self.doVideoSearch}
-                                postHookAnalysis={null}
-                                isVideoResults={true}
-                                videoCountServed={self.state.videoCountServed}
-                                isMaxLimit={self.state.isMaxLimit}
-                                openSignUp={self.props.openSignUp}
-                                currentPage={self.state.currentPage}
-                                handleNewSearch={self.handleNewSearch}
-
-                            />
-                            <VideosResults
-                                videos={self.state.videos}
-                                handleNewSearch={self.handleNewSearch}
-                                prevPageAPICall={prevPageAPICall}
-                                nextPageAPICall={self.state.nextPageAPICall}
-                                currentPage={self.state.currentPage}
-                                isLoading={self.state.isLoading}
-                                isMobile={self.props.isMobile}
-                                videoCountServed={self.state.videoCountServed}
-                                videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
-                                openSignUp={self.props.openSignUp}
-                                openLearnMore={self.props.openLearnMore}
-                                isMaxLimit={self.state.isMaxLimit}
-                                setTooltipText={self.setTooltipText}
-                                showRefilterTutorial={self.props.showRefilterTutorial}
-                            />
-                            <ReactTooltip
-                                id="settableTooltip"
-                                ref="settableTooltip"
-                                event="click"
-                                eventOff="mouseout"
-                                effect="solid"
-                                place="bottom"
-                                delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
-                                type="dark"
-                                getContent={self.getTooltipText}
-                            />
-                            <ReactTooltip
-                                id="staticTooltip"
-                                class="xxHoverTooltip"
-                                effect="solid"
-                                place="left"
-                                type="light"
-                            />
-                {
-                    self.props.isMobile ? (
-                        <div className="xxCollection">
-                            <VideosMobileWarning />
-                        </div>
-                    ) : null
-                }
+                <VideoUploadForm
+                    postHookSearch={self.doVideoSearch}
+                    postHookAnalysis={null}
+                    isVideoResults={true}
+                    videoCountServed={self.state.videoCountServed}
+                    isMaxLimit={self.state.isMaxLimit}
+                    openSignUp={self.props.openSignUp}
+                    currentPage={self.state.currentPage}
+                    handleNewSearch={self.handleNewSearch}
+                />
+                <VideosResults
+                    videos={self.state.videos}
+                    handleNewSearch={self.handleNewSearch}
+                    prevPageAPICall={prevPageAPICall}
+                    nextPageAPICall={self.state.nextPageAPICall}
+                    currentPage={self.state.currentPage}
+                    isLoading={self.state.isLoading}
+                    isMobile={self.props.isMobile}
+                    videoCountServed={self.state.videoCountServed}
+                    videoCountRequested={UTILS.RESULTS_PAGE_SIZE}
+                    openSignUp={self.props.openSignUp}
+                    openLearnMore={self.props.openLearnMore}
+                    isMaxLimit={self.state.isMaxLimit}
+                    setTooltipText={self.setTooltipText}
+                    showRefilterTutorial={self.props.showRefilterTutorial}
+                />
+                <ReactTooltip
+                    id="settableTooltip"
+                    ref="settableTooltip"
+                    event="click"
+                    eventOff="mouseout"
+                    effect="solid"
+                    place="bottom"
+                    delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
+                    type="dark"
+                    getContent={self.getTooltipText}
+                />
+                <ReactTooltip
+                    id="staticTooltip"
+                    class="xxHoverTooltip"
+                    effect="solid"
+                    place="left"
+                    type="light"
+                />
             </div>
         );
     },
@@ -170,11 +161,8 @@ var Videos = React.createClass({
             currentPage: pageAdjustment ? (self.state.currentPage + pageAdjustment) : 1
         }, function() {
             var _pseudoPageUrl = self.state.pseudoPageUrl ? self.state.pseudoPageUrl.split('?')[1] : '';
-            self.batch('GET', 'videos/search?' + _pseudoPageUrl, options.data);
-            self.sendBatch()
-            //self.GET('videos/search?' + _pseudoPageUrl, options)
+            self.GET('videos/search?' + _pseudoPageUrl, options)
                 .then(function(json) {
-                    json = json['results'][0]['response'];
                     if (!self._isMounted) {
                         return false;
                     }
@@ -233,7 +221,7 @@ var Videos = React.createClass({
             });
     },
     doFormatTime: function(res) {
-        var self = this;
+        var self = this; 
         var offset = moment().utcOffset();
         var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').calendar().toLowerCase();
         self.setState({
