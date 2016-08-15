@@ -65,11 +65,6 @@ var SignInForm = React.createClass({
                             placeholder={T.get('copy.passwordPlaceholder')}
                         />
                     </div>
-                    <Link 
-                        className="xxFormButtons-anchor u-inheritColor" 
-                        to={UTILS.DRY_NAV.USER_FORGOT.URL}
-                    >{T.get('nav.forgotUser')}
-                    </Link>
                     <div className="xxFormButtons">
                         <button
                             className="xxButton"
@@ -77,6 +72,11 @@ var SignInForm = React.createClass({
                         >
                             {T.get('action.signIn')}
                         </button>
+                        <Link 
+                            className="xxFormButtons-anchor u-inheritColor xxFormButtons-anchor--nobutton" 
+                            to={UTILS.DRY_NAV.USER_FORGOT.URL}
+                        >{T.get('nav.forgotUser')}
+                        </Link>
                     </div>
                 </form>
             </fieldset>

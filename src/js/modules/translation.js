@@ -18,6 +18,9 @@ const _DEFAULT_LOCALE = 'en-US',
             lastName: 'Last Name',
             accountId: 'Account ID',
             email: 'Email',
+            contactEmail: 'ask@neon-lab.com',
+            phone: 'Phone',
+            companyPhone: '415-355-4249',
             title: 'Title',
             company: 'Company',
             error: 'Error',
@@ -79,7 +82,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signIn.heading': 'Welcome to Neon',
             'copy.signIn.body': 'Sign in below.',
 
+            'copy.signUp.head.title': 'Sign Up',
             'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.title.mobile': 'Let\u2019s get started!',
             'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
             'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
 
@@ -380,7 +385,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
-            'copy.homePage.description': 'Upload a video and Neon will show you the<br/>thumbnails that will give you the most clicks.',
+            'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
@@ -409,6 +414,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.onboarding.resultsEmail.error': "I'm sorry, we weren't able to complete your request at this time",
             'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
             'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
+
+            // Refilter
+            'copy.refilter.title': 'Your refilter is ready!',
+            'copy.viewResults': 'View Results',
+            'copy.refilter.label': 'Click to view previous versions',
 
             // Videos
             'copy.videos.upload.filter.title': 'Filters',

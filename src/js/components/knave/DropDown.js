@@ -19,12 +19,12 @@ var DropDown = React.createClass({
             options = self.props.options,
             className = ['xxSelect']
         ;
-            if (self.state.isOpen) {
-                className.push('is-open');
-            }
-            if (self.state.currentValue !== self.state.label) {
-                className.push('has-value');
-            }
+        if (self.state.isOpen) {
+            className.push('is-open');
+        }
+        if (self.state.currentValue !== self.state.label) {
+            className.push('has-value');
+        }
         return (
             <div className={className.join(' ')} onClick={self.toggleOpen}>
                 <div className="xxSelect-label">
@@ -36,17 +36,17 @@ var DropDown = React.createClass({
                             <li
                                 className="xxSelect-option xxSelect-option--label"
                                 data-value={self.props.label}
-                                onClick={self.handleClick}
-                            >{optionLabel}</li>
+                            >{self.props.label}</li>
                             {
                                 options.map(function(option, i) {
                                     return (
                                         <li
                                             className={'xxSelect-option'}
                                             key={i}
+                                            id={option.label}
                                             data-value={option.value}
                                             onClick={self.handleClick}
-                                        >{option.value}</li>
+                                        >{option.label}</li>
                                     )
                                 })
                             }
@@ -61,7 +61,9 @@ var DropDown = React.createClass({
             value = e.target.dataset.value
         ;
         self.setState({
-            currentValue: value
+            currentValue: e.target.id,
+        }, function() {
+            self.props.handleChange(value);
         });
     },
     toggleOpen: function(e) {

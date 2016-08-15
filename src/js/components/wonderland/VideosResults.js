@@ -32,6 +32,7 @@ var VideosResults = React.createClass({
                                 openLearnMore={self.props.openLearnMore}
                                 seconds={video.estimated_time_remaining}
                                 setTooltipText={self.props.setTooltipText}
+                                showRefilterTutorial={self.props.showRefilterTutorial}
                             />
                         );
                     })
