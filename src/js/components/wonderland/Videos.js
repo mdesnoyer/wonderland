@@ -7,7 +7,6 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import VideoUploadForm from '../knave/VideoUploadForm';
 import T from '../../modules/translation';
-import VideosMobileWarning from './VideosMobileWarning';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
 import Account from '../../mixins/Account';
