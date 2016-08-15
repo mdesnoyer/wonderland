@@ -26,10 +26,15 @@ var FeatureThumbnail = React.createClass({
             case 'default':
                 uid = 0;
                 title= T.get('copy.currentImage');
-                thumbnailId = self.props.thumbnails[uid].thumbnail_id;
-                handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
-                showHref = true;
-                extraClass = 'xxThumbnail--lowLight';
+                if (self.props.thumbnails[uid] !== undefined) { 
+                    thumbnailId = self.props.thumbnails[uid].thumbnail_id;
+                    handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
+                    showHref = true;
+                    extraClass = 'xxThumbnail--lowLight';
+                } 
+                else { 
+                    return(<div></div>); 
+                }
                 break;
             case 'neon':
                 uid = 1;

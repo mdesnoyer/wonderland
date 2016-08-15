@@ -352,15 +352,15 @@ var UTILS = {
             var interestingThumbnails = thumbSet.thumbnails.filter(
                 x => x.type === 'neon' || x.type === 'customupload');
             if (!defaultThumbnail) {
-                // Pick the interesting thumb with the lowest score
-                defaultThumbnail = interestingThumbnails.filter(
-                    x => x.neon_score > 0).sort(
-                        (a,b) => a.neon_score - b.neon_score)[0];
-            }
-            if (!defaultThumbnail) {
                 // Pick the customupload thumb it may not have a score
                 defaultThumbnail = interestingThumbnails.filter(
                     x => x.type === 'customupload')[0];
+            }
+            if (!defaultThumbnail) {
+                // Otherwise pick the interesting thumb with the lowest score
+                defaultThumbnail = interestingThumbnails.filter(
+                    x => x.neon_score > 0).sort(
+                        (a,b) => a.neon_score - b.neon_score)[0];
                 if (!defaultThumbnail) {
                     return;
                 }

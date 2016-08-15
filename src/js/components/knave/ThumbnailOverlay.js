@@ -38,8 +38,11 @@ var ThumbnailOverlay = React.createClass({
         document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = 0;
     },
-    getValenceFeatures: function(thumbnail) { 
-        return (thumbnail.final_valence_features ? thumbnail.final_valence_features : []) 
+    getValenceFeatures: function(thumbnail) {
+        if (thumbnail) {  
+            return (thumbnail.final_valence_features ? thumbnail.final_valence_features : []) 
+        } 
+        return [] 
     }, 
     render: function() {
         var self = this;
