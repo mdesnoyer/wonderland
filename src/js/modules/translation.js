@@ -423,10 +423,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videos.topSelects': 'Top Neon Selects',
             'copy.videos.lowest': 'Lowest Neon Scores',
 
-            // Mobile
-            'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
-            'copy.mobile.warning.description': 'Check out the full site at app.neon-lab.com.',
-
             // Tutorial
             'copy.tutorial.checkItOut': 'Check it Out',
             'copy.tutorial.skip': 'Skip Tutorial',
