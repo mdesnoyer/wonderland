@@ -7,28 +7,6 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoCollectionActions = React.createClass({
-    getInitialState: function() {
-        return {
-            isSaveHidden: false
-        }
-    },
-    componentWillMount: function() {
-        var self = this;
-        SESSION.user()
-            .then(function(userData) {
-                if (userData.hasOwnProperty('username')) {
-                    self.setState({
-                        isSaveHidden: true
-                    })
-                }
-            })
-            .catch(function(err) {
-                self.setState({
-                    isSaveHidden: false
-                })
-            })
-        ;
-    },
     render: function() {
         var self = this;
         return (
@@ -55,21 +33,6 @@ var VideoCollectionActions = React.createClass({
                         <span>Share</span>
                     </a>
                 </li>
-                {
-                    self.state.isSaveHidden ? null : (
-                        <li className="xxCollectionActions-item">
-                            <a
-                                data-tip={T.get('action.saveMyImages')}
-                                data-for="staticTooltip"
-                                data-place="bottom"
-                                data-action-label="save"
-                                onClick={self.props.openSignUp}
-                                className="xxCollectionActions-anchor xxCollectionActions-save">
-                                <span>Save</span>
-                            </a>
-                        </li>
-                    )
-                }
                 <li className="xxCollectionActions-item">
                     <a
                         data-tip={T.get('delete')}

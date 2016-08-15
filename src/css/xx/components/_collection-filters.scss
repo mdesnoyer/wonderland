@@ -1,15 +1,17 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxCollectionFilterToggle {
-    float: right;
     position: relative;
     z-index: 1;
-    top: 14px;
     color: $accent-color;
     cursor: pointer;
+    width: 27px;
+    display: inline-block;
+    margin-right: 10px;
 
     @include breakpoint-mobile {
-        display: none;
+        width: 21px;
+        margin-right: 6px;
     }
 
     &::after {
@@ -28,6 +30,13 @@
         transform: rotate(-60deg);
         transform-origin: 50% 50%;
         transition: transform $default-transition, color $default-transition;
+
+        @include breakpoint-mobile {
+            width: 21px;
+            height: 21px;
+            font-size: 10px;
+            line-height: 1.9;
+        }
     }
 
     &:hover {
@@ -44,6 +53,12 @@
 
     &--countdown {
         cursor: default;
+        width: 100px;
+        margin-right: 0;
+
+        @include breakpoint-mobile {
+            width: 90px;
+        }
 
         &::after {
             z-index: 2;
@@ -51,13 +66,30 @@
             color: $white;
             transform: rotate(0deg);
             animation: rotate 2s infinite linear;
-            display: inline-block;
-            margin-left: .5em;
         }
+    }
+}
 
-        .xxCollectionFilterCountdown {
-            display: inline-block;
-        }
+.xxCollectionFilterCountdown {
+    display: inline-block;
+    background: $bg-secondary-color;
+    color: $tertiary-color;
+    min-width: 96px;
+    height: 27px;
+    border-radius: 27px;
+    padding: 8px 16px 8px 40px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: -100px;
+    text-transform: lowercase;
+
+    @include breakpoint-mobile {
+        height: 21px;
+        padding: 4px 16px 4px 30px;
+        font-size: 12px;
+        border-radius: 21px;
+        min-width: 80px;
+        margin-left: -90px;
     }
 }
 
@@ -98,27 +130,70 @@
     padding: 4px 0;
     color: $tertiary-color;
     cursor: default;
+    display: inline-block;
 
     @include breakpoint-mobile {
         margin-top: 7px;
     }
 }
 
+.xxCollectionFiltersProcessing {
+    display: inline-block;
+    margin-right: 4px;
+
+    @include breakpoint-mobile {
+        display: block;
+        padding-bottom: 12px;
+    }
+}
+
+.xxCollectionFiltersMenu {
+    display: inline-block;
+}
+
 .xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
-    float: left;
     padding: 4px 10px 4px 0;
     color: $secondary-color;
 
     .has-dropdown > & {
         cursor: pointer;
     }
+
+    &--processing {
+        float: left;
+    }
+}
+
+.xxCollectionFilters-title {
+    z-index: $z-index-above-everything;
+    &.has-dropdown {
+        @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+        &::before,
+        &::after {
+            top: -4px;
+            right: 18px;
+            left: auto;
+
+            @include breakpoint-mobile {
+                right: 14px;
+                margin: 0;
+                bottom: auto;
+                top: auto;
+            }
+        }
+    }
 }
 
 .xxCollectionFilters-value {
-    float: left;
+    float: right;
     position: relative;
-    padding: 4px 0;
+    padding: 0;
     width: 145px;
+
+    @include breakpoint-mobile {
+        width: 116px;
+    }
 
     .Select-control {
         border: none;
@@ -140,18 +215,38 @@
 .xxCollectionFilters-dropdown {
     position: absolute;
     width: auto;
-    top: -8px;
-    left: -16px;
+    top: -4px;
+    left: -78px;
     z-index: $z-index-above-everything - 1;
     box-shadow: 0 0 5px rgba(0, 0, 0, .22);
     background: $white;
+
+    @include breakpoint-mobile {
+        top: -9px;
+        left: -71px;
+    }
+
+    @include arrow(S, 1px, 11px, $bg-tertiary-color);
+
+    &::before,
+    &::after {
+        top: 16px;
+        right: 30px;
+        left: auto;
+        transform-origin: 50% 0;
+        bottom: initial; // needed to adjust alignment
+
+        @include breakpoint-mobile {
+            right: 36px;
+        }
+    }
 }
 
 .xxCollectionFilters-version {
-    height: 44px;
+    height: 38px;
     padding: 0 52px 0 16px;
     cursor: pointer;
-    line-height: 44px;
+    line-height: 38px;
     white-space: nowrap;
 
     &:hover {
@@ -175,14 +270,13 @@
     @include clearfix;
 
     position: absolute;
-    top: 50%;
+    top: 24%;
     right: 0;
-    left: 0;
-    width: $page-max-width;
-    max-width: 100%;
-    min-width: $page-min-width;
+    left: 100%;
+    width: 320px;
     margin: 0 auto;
     transform: translateY(-55%);
+    z-index: 1;
 }
 
 .xxCollectionFiltersHint-arrow {
@@ -205,7 +299,7 @@
     float: right;
     position: relative;
     width: 319px;
-    padding: 230px 0 0;
+    padding: 330px 0 0;
     color: $secondary-color;
     text-align: center;
 
@@ -216,7 +310,7 @@
         right: 0;
         left: 0;
         width: 1px;
-        height: 202px;
+        height: 302px;
         margin: 0 auto;
         background: $base-color;
     }

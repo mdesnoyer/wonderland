@@ -22,9 +22,19 @@
 // extra wrapper class.
 @mixin breakpoint-mobile {
     @media (max-width: $breakpoint-mobile) {
-        @at-root .is-mobile & {
-            @content;
-        }
+        @content;
+    }
+}
+
+@mixin landscape {
+    @media (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin breakpoint-desktop {
+    @media (min-width: $breakpoint-mobile + 1) {
+        @content;
     }
 }
 

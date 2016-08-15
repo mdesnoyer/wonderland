@@ -23,7 +23,8 @@ var VideoGuest = React.createClass({
         title: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         videoId: React.PropTypes.string.isRequired,
-        videoState: React.PropTypes.string.isRequired
+        videoState: React.PropTypes.string.isRequired,
+        isMobile: React.PropTypes.bool.isRequired,
     },
     noop: function() {},
     render: function() {
@@ -59,6 +60,7 @@ var VideoGuest = React.createClass({
                                 url={self.props.url}
                                 videoId={self.props.videoId}
                                 videoState={self.props.videoState}
+                                isMobile={self.props.isMobile}
                             />
                     );
             }

@@ -80,7 +80,7 @@ var VideoProcessing = React.createClass({
                 } 
                 else {
                     countdown = (
-                        <span>{T.get('timer.loading')}</span> 
+                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span> 
                     );
                 }
                 break;
@@ -98,15 +98,10 @@ var VideoProcessing = React.createClass({
                         {deleteButton}
                     </h1>
                     { 
-                        isError ? null : ( 
-                            <div>
-                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"> 
-                                    {countdown} 
-                                </div> 
-                                <div className="xxCollectionFilters">
-                                    <strong className="xxCollectionFilters-title">Filters</strong>
-                                    <span className="xxCollectionFilters-value">None</span>
-                                </div>
+                        isError ? null : (
+                            <div className="xxCollectionFilters">
+                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
+                                <span>{countdown}</span>
                             </div>
                         )  
                     } 

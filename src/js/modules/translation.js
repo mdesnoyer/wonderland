@@ -5,8 +5,6 @@ const _DEFAULT_LOCALE = 'en-US',
         'en-US': {
             'app.companyLongName': 'Neon Labs, Inc.',
             'app.companyShortName': 'Neon',
-            'app.appName': 'Wonderland',
-            // 'app.credit': '@appName by @name',
             'app.credit': '@companyShortName',
             'app.separator': ' | ',
             'app.companySig': '- The Neon Team',
@@ -18,6 +16,9 @@ const _DEFAULT_LOCALE = 'en-US',
             lastName: 'Last Name',
             accountId: 'Account ID',
             email: 'Email',
+            contactEmail: 'ask@neon-lab.com',
+            phone: 'Phone',
+            companyPhone: '415-355-4249',
             title: 'Title',
             company: 'Company',
             error: 'Error',
@@ -58,6 +59,8 @@ const _DEFAULT_LOCALE = 'en-US',
             // todo, if this is osx then ⌘ else ctrl.
             'action.textSelected': 'Press ⌘-C to copy',
             'action.saveMyImages': 'Save Images',
+            'action.showMore': 'Show More',
+            'action.showLess': 'Show Less',
 
             rememberMe: 'Remember',
 
@@ -79,7 +82,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signIn.heading': 'Welcome to Neon',
             'copy.signIn.body': 'Sign in below.',
 
+            'copy.signUp.head.title': 'Sign Up',
             'copy.signUp.title': 'Analyze More Videos',
+            'copy.signUp.title.mobile': 'Let\u2019s get started!',
             'copy.signUp.body': 'Create a free account to analyze more videos, see more NeonScores, and understand how images work.',
             'copy.signUp.signIn': 'Already have an account? <a href="@link">Sign In</a>.',
 
@@ -90,10 +95,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign In</a> again!',
 
-            'copy.videosPage.title': 'Video Library',
-            'copy.videosPage.VideoProcessMsg': 'Video Processing \u2026',
-            'copy.videosPage.heading': 'Video Library',
-            'copy.videosPage.body': '@displayName, welcome to your video library. You can add, analyze and view your Neon high-performance video thumbnails, below.',
+            'copy.myCollections.title': 'My Collections',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',
@@ -314,8 +316,8 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
             'nav.home': 'Home',
+            'nav.myCollections': 'My Collections',
             'nav.terms': 'Terms',
             'nav.signUp': 'Sign Up',
             'nav.signIn': 'Sign In',
@@ -380,7 +382,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
-            'copy.homePage.description': 'Upload a video and Neon will show you the<br/>thumbnails that will give you the most clicks.',
+            'copy.homePage.description': 'Upload a video and Neon will show you the thumbnails that will give you the most clicks.',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
@@ -410,15 +412,16 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.onboarding.resultsEmail.success': "Thanks! We’ll be in touch…",
             'copy.onboarding.resultsEmail.title': 'Don’t want to wait? We’ll email you when your results are ready.',
 
+            // Refilter
+            'copy.refilter.title': 'Your refilter is ready!',
+            'copy.viewResults': 'View Results',
+            'copy.refilter.label': 'Click to view previous versions',
+
             // Videos
             'copy.videos.upload.filter.title': 'Filters',
             'copy.videos.upload.filter.description': 'Get images for a specific audience.',
             'copy.videos.topSelects': 'Top Neon Selects',
             'copy.videos.lowest': 'Lowest Neon Scores',
-
-            // Mobile
-            'copy.mobile.warning.title': 'This experience is currently designed for desktop.',
-            'copy.mobile.warning.description': 'Check out the full site at app.neon-lab.com.',
 
             // Tutorial
             'copy.tutorial.checkItOut': 'Check it Out',
