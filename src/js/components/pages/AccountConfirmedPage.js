@@ -17,6 +17,7 @@ var AccountConfirmedPage = React.createClass({
             <main className="xxPage">
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.accountConfirmed.title'))}
+                    meta={UTILS.HELMET_META_TAGS}
                 />
                 <SiteHeader />
                 <section className="xxMainForm">
