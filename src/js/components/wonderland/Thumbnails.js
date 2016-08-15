@@ -208,11 +208,11 @@ var Thumbnails = React.createClass({
                     }
                 </div>
                 {
-                    (!self.state.showThumbnails && self.props.isMobile) ? null : (
+                    (self.state.showThumbnails && self.props.isMobile) ? (
                         <div className="xxShowMore" onClick={self.toggleThumbnails}>
                             <a href="#">{T.get('action.showLess')}</a>
                         </div>
-                    )
+                    ) : null
                 }
             </div>
         );
