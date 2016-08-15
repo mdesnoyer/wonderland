@@ -140,6 +140,15 @@
 .xxCollectionFiltersProcessing {
     display: inline-block;
     margin-right: 4px;
+
+    @include breakpoint-mobile {
+        display: block;
+        padding-bottom: 12px;
+    }
+}
+
+.xxCollectionFiltersMenu {
+    display: inline-block;
 }
 
 .xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
@@ -167,7 +176,10 @@
             left: auto;
 
             @include breakpoint-mobile {
-                right: 28px;
+                right: 14px;
+                margin: 0;
+                bottom: auto;
+                top: auto;
             }
         }
     }
@@ -176,12 +188,10 @@
 .xxCollectionFilters-value {
     float: right;
     position: relative;
-    padding: 9px 0;
+    padding: 0;
     width: 145px;
 
     @include breakpoint-mobile {
-        padding-left: 6px;
-        padding-right: 6px;
         width: 116px;
     }
 
@@ -227,7 +237,7 @@
         bottom: initial; // needed to adjust alignment
 
         @include breakpoint-mobile {
-            right: 50px;
+            right: 36px;
         }
     }
 }

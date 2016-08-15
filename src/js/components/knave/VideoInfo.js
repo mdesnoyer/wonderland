@@ -175,18 +175,19 @@ var VideoInfo = React.createClass({
                                     </a>
                                 )
                             }
-                            <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
-                            {
-                                (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) ? (
-                                    <span>
-                                        <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
-                                            {currentFilter}
-                                            {dropdownFilters}
-                                        </span>
+                            <div className="xxCollectionFiltersMenu">
+                                <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
+                                {
+                                    (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) ? (
+                                       
+                                            <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
+                                                {currentFilter}
+                                                {dropdownFilters}
+                                            </span>
                                         
-                                    </span>
-                                ) : null
-                            }
+                                    ) : null
+                                }
+                            </div>
                         </div>
                     ) : null
                 }

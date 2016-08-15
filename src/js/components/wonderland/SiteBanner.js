@@ -20,12 +20,10 @@ var SiteBanner = React.createClass({
                         title={T.get('app.companyShortName')}
                     />
                 </a>
-                <nav className="xxNav">
-                    <SiteNavigation 
-                        sidebarContent={self.props.sidebarContent}
-                        setSidebarContent={self.props.setSidebarContent}
-                    />
-                </nav>
+                <SiteNavigation 
+                    sidebarContent={self.props.sidebarContent}
+                    setSidebarContent={self.props.setSidebarContent}
+                />
             </header>
         );
     }

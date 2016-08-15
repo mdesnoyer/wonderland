@@ -22,49 +22,6 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxNav {
-    position: absolute;
-    right: $gutter-width;
-    bottom: -2px; /* Align with baseline of logo due to line-height limitations */
-    z-index: $z-index-header;
-    font-size: 16px;
-    line-height: 1;
-
-    @include breakpoint-mobile {
-        display: none;
-    }
-}
-
-.xxNav-item {
-    float: left;
-    position: relative;
-    padding-left: 30px;
-}
-
-.xxNav-anchor {
-    color: $base-color;
-
-    &:hover {
-        color: $secondary-color;
-    }
-
-    .is-active > & {
-        color: $secondary-color;
-
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: -9px;
-            left: 31px;
-            width: 14px;
-            height: 1px;
-            background: $accent-color;
-        }
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 .xxLogo {
     position: absolute;
     width: 120px;
