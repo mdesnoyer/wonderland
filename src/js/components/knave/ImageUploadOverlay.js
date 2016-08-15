@@ -80,6 +80,7 @@ var ImageUploadOverlay = React.createClass({
                         <h2 className="xxTitle">Upload Your Images</h2>
                         <p>You can drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.</p>
                         {messageNeeded}
+                        <p>{self.props.photoUploadThumbnailIds.length + "/100 downloaded" }</p>
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">Collection Name</label>

@@ -286,7 +286,6 @@ var UploadForm = React.createClass({
         // check type if it is not a valid file 
         // then do not send to server and keep tally
         // this tally is then displayed on the form
-        // self.setState({ photoUploadMode: 'loading'});
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < 2000000) {
                 count += 1
@@ -317,11 +316,11 @@ var UploadForm = React.createClass({
             totalFileNumber += form.getAll('upload').length;
         })
         if (self.state.photoUploadThumbnailIds.length + totalFileNumber > 100) {
-            self.setState({
-                isOpen: true,
-                photoUploadMode: 'initial',
-                error: 'It appears that these additional files will take you over the max of 100 photos per image collection.'
-            });
+                self.setState({
+                    isOpen: true,
+                    photoUploadMode: 'initial',
+                    error: 'It appears that these additional files will take you over the max of 100 photos per image collection.'
+                });
         }
         else {
             self.setState({ 
@@ -337,6 +336,7 @@ var UploadForm = React.createClass({
         }        
     },
     sendFormattedData: function(formData) {
+        debugger
         var self = this,
             options = {
                 data: formData,
@@ -352,16 +352,15 @@ var UploadForm = React.createClass({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                     }, function() {
-                    if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
-                        self.setState({
-                            photoUploadMode:'success',
-                            photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                            error: null 
-                            }, function() {
-                                setTimeout(function() {
-                                self.setState({ photoUploadMode:'initial' });
-                                }, 3000)
-                        })                                        
+                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+                            self.setState({
+                                photoUploadMode:'success',
+                                error: null 
+                                }, function() {
+                                    setTimeout(function() {
+                                    self.setState({ photoUploadMode:'initial' });
+                                    }, 3000)
+                            })                         
                     }
                 });
             })
@@ -410,14 +409,13 @@ var UploadForm = React.createClass({
     },
     grabDropBox: function() {
         var self = this,
-            options
-        ; 
-        options = {
-            success: function(urls) {self.sendDropBoxUrl(urls)},
-            linkType: "direct",
-            multiselect: true,
-            extensions: ['.jpeg', '.jpg', '.png', '.bmp']
-        };
+            options = {
+                success: function(urls) {self.sendDropBoxUrl(urls)},
+                linkType: "direct",
+                multiselect: true,
+                extensions: ['.jpeg', '.jpg', '.png', '.bmp']
+            }
+    ;
         Dropbox.choose(options);
     },
     sendCollectionTag: function() {
@@ -429,7 +427,6 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        debugger
         self.POST('tags', options)
             .then(function(res) {
                 debugger
