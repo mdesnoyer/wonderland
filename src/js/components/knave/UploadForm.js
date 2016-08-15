@@ -344,7 +344,6 @@ var UploadForm = React.createClass({
         ;
         self.POST('thumbnails', options)
             .then(function(res) {
-                debugger
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
@@ -427,7 +426,6 @@ var UploadForm = React.createClass({
         ;
         self.POST('tags', options)
             .then(function(res) {
-                debugger
                 // **********************************************************************
                 // need to redirect to collections and or update depending on Onboarding State
                 // **********************************************************************
