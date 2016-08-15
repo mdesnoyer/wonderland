@@ -4,14 +4,6 @@ import T from '../../modules/translation';
 export default class OnboardingSlide extends React.Component {
     constructor(props) {
         super(props);
-
-        // this.onClickLearnMore = this.onClickLearnMore.bind(this);
-    }
-
-    onClickLearnMore(e) {
-        e.preventDefault();
-        console.log('clicked');
-        this.props.toggleLearnMore();
     }
 
     render() {
