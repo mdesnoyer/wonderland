@@ -115,6 +115,7 @@ var VideoOwner = React.createClass({
                     url={self.state.url}
                     videoId={self.state.videoId}
                     videoState={self.state.videoState}
+                    showRefilterTutorial={self.props.showRefilterTutorial}
                 />
             );
         }

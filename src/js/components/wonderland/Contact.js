@@ -23,6 +23,10 @@ var Contact = React.createClass({
                             San Francisco, CA 94107<br />
                             United States
                         </p>
+                        <p>
+                            <span className="xxSubtitle">{T.get('email')}</span> {T.get('contactEmail')}<br />
+                            <span className="xxSubtitle">{T.get('phone')}</span> {T.get('companyPhone')}
+                        </p>
                     </div>
                 </section>
             </article>

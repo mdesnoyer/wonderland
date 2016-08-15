@@ -8,7 +8,8 @@ import TRACKING from '../../modules/tracking';
 import Account from '../../mixins/Account';
 import cookie from 'react-cookie';
 import VideoUploadOverlay from './VideoUploadOverlay';
-import OverLayMessage from './OverLayMessage'
+import OverLayMessage from './OverLayMessage';
+import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -37,6 +38,13 @@ var VideoUploadForm = React.createClass({
         self.setState({
             isOpen: !self.state.isOpen,
             error: null
+        });
+    },
+    handleClose: function(e) {
+        var self = this;
+        e.preventDefault();
+        self.setState({
+            isOpen: false
         });
     },
     handleUpload: function(url) {
@@ -75,6 +83,7 @@ var VideoUploadForm = React.createClass({
                         self.props.handleNewSearch('?', 1 - self.props.currentPage)
                     }
                     else if (self.props.postHookAnalysis) {
+                        SESSION.setProcessing(json);
                         self.props.postHookAnalysis(json);
                     }
                     else {
@@ -133,9 +142,10 @@ var VideoUploadForm = React.createClass({
                 >{T.get('action.analyze')}</a>
                 {
                     self.state.isOpen ? (
-                        <div className="xxOverlay" >
+                        <div className="xxOverlay xxOverlay--light">
                             <VideoUploadOverlay
                                 handleUpload={self.handleUpload}
+                                handleClose={self.handleClose}
                                 isOnboarding={isOnboarding}
                                 error={self.state.error || null}
                             />

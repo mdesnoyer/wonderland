@@ -61,7 +61,7 @@ render((
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
 
         {/* matches /signup and /signup/ */}
-        <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} />
+        {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
         <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />

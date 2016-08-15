@@ -13,6 +13,7 @@ import Secured from '../../mixins/Secured';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
 import OnboardingTutorial from '../wonderland/OnboardingTutorial';
+import RefilterTutorial from '../wonderland/RefilterTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,6 +30,7 @@ var VideosPage = React.createClass({
         return {
             displayName: '',
             showTutorial: false,
+            showRefilter: false,
             windowWidth: window.outerWidth,
             sidebarContent: null
         };
@@ -81,32 +83,55 @@ var VideosPage = React.createClass({
 
     onTutorialClose: function(e) {
         e.preventDefault();
-
         this.setState({
-            showTutorial: false,
+            showTutorial: false
+        });
+    },
+
+    showRefilterTutorial: function(val) {
+        this.setState({
+            showRefilter: true
+        });
+    },
+
+    onRefilterClose: function(e) {
+        e.preventDefault();
+        this.setState({
+            showRefilter: false
         });
     },
 
     render: function() {
         const { showTutorial } = this.state;
+        const { showRefilter } = this.state;
+        const { selectedDemographic } = this.state;
         const isMobile = this.state.windowWidth < BREAKPOINT_MOBILE;
         const { sidebarContent } = this.state;
         return (
             <main className="xxPage">
                 <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
+                    title={UTILS.buildPageTitle(T.get('copy.myCollections.title'))}
                     meta={[
-                        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
+                        {
+                            'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'
+                        }
                     ]}
                 />
                 <SiteHeader sidebarContent={sidebarContent}/>
                 <Videos
                     isMobile={isMobile} 
                     openSignUp={this.openSignUp}
+                    showRefilterTutorial={this.showRefilterTutorial}
                 />
                 {
                     showTutorial ? (
                         <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />
+                    ) : null
+                }
+                {
+                    showRefilter ? (
+                        <RefilterTutorial onClose={this.onRefilterClose} />
                     ) : null
                 }
                 <SiteFooter />
