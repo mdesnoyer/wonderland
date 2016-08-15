@@ -65,6 +65,7 @@
     "react-select": "^1.0.0-beta14",
     "react-timeago": "^2.2.1",
     "react-tooltip": "^3.0.13",
+    "redux": "^3.5.2",
     "reqwest": "^2.0.5",
     "shortid": "^2.2.6"
   },
