@@ -9,10 +9,14 @@ import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import { objectToGetParams } from '../../modules/sharing';
 
-import CollectionStore from '../../stores/CollectionStore';
-import ImageCollection from '../knave/ImageCollection';
-import VideoCollection from '../knave/VideoCollection';
 import SiteHeader from '../wonderland/SiteHeader';
+import TagStore from '../../stores/TagStore';
+import TagActions from '../../actions/TagActions';
+import AltContainer from 'alt-container';
+
+//import CollectionsContainer  from '../CollectionsContainer';
+import ImageCollection from '../ImageCollection';
+import VideoCollection from '../VideoCollection';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
@@ -21,44 +25,51 @@ const CollectionsMainPage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
+        return TagStore.getState();
         /*
         return {
-            // Map of id to tag resource.
-            collections: {},
-
-            // Map of id of thumbnail.
-            thumbnails: {},
-
-            // Map of id to video resource.
-            videos: {},
-
             // State of search paging--current page, page count, next page url, etc.
             search: {
                 next: null,
                 prev: null
-            }
+            },
+            tags: TagStore.getState()
         }
         /**/
-        return CollectionStore.getState();
     },
     componentWillMount: function() {
         if (!SESSION.active()) {
             this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
         } else {
-            this.getCollections()
+            //this.getCollections()
         }
     },
     componentDidMount: function() {
-        CollectionStore.listen(this.onChange);
+        TagStore.listen(this.onChange);
+        TagActions.fetchTags();
     },
     componentWillUnmount: function() {
-        CollectionStore.unlisten(this.onChange);
+        TagStore.unlisten(this.onChange);
     },
     onChange: function(state) {
         this.setState(state);
     },
+
     render: function() {
-        return <div>Butts</div>
+        if (this.state.errorMessage) {
+            return (<div>{this.props.errorMessage}</div>);
+        }
+        if (!this.state.tags.tags) {
+            return (<div>Loading</div>);
+        }
+        return (
+            <AltContainer stores={{tags: TagStore}}>
+                <CollectionsSearchResult />
+            </AltContainer>
+        );
+    },
+
+  //      return (<CollectionsContainer />);
         /*
         const self = this;
         const collections = _.values(this.state.collections).map(collection => {
@@ -66,48 +77,24 @@ const CollectionsMainPage = React.createClass({
         });
         return (<div>{collections}</div>);
         /**/
-    },
     // Given a collection, get additional info needed for render,
     // or return an empty object.
+    /*
     _additional: function(collection) {
         return (collection.tag_type === UTILS.TAG_TYPE_VIDEO_COL)?
             this.state.videos[collection.video_id]:
             {};
     },
+    /**/
     // Given a collection and an optional object, construct
     // valid Collection component instance and return it
     //
     // else return an error component.
-    constructComponent: function(collection, additional) {
-        switch(collection.tag_type) {
-        case 'col':
-            return (
-                <ImageCollection
-                    key={collection.tag_id}
-                    thumbnails={this.state.thumbnails}
-                    {...collection}
-                    {...additional}
-                />
-            );
-        case 'video':
-            return (
-                <VideoCollection
-                    key={collection.tag_id}
-                    thumbnails={this.state.thumbnails}
-                    {...collection}
-                    {...additional}
-                />
-           );
-        }
-        return <ErrorCollection/>
-    },
     updateField: function(field, value) {
-        var self = this;
         this.setState({ [field]: value });
     },
     handleSeeMoreClick: function() {
-        var self = this;
-        self.getCollections(self.state.nextPage)
+        //self.getCollections(self.state.nextPage)
     },
     handleSubmit: function(e) {
         var self = this;
@@ -122,6 +109,7 @@ const CollectionsMainPage = React.createClass({
         alert('images!');
     },
     getCollections: function(paging) {
+        /*
         const self = this,
             options = {
                 data: {
@@ -210,10 +198,76 @@ const CollectionsMainPage = React.createClass({
             console.error(err);
             throw err;
         });
+        /**/
 
     }
 });
 
+const CollectionsSearchResult = React.createClass({
+
+    makeCollection(tag) {
+        switch(tag.tag_type) {
+        case UTILS.TAG_TYPE_VIDEO_COL:
+            return <VideoCollection />;
+        case UTILS.TAG_TYPE_IMAGE_COL:
+            return <ImageCollection />;
+        }
+        return <ImageCollection />;
+    },
+
+    /*
+    constructComponent: function(collection, additional) {
+        switch(collection.tag_type) {
+        case 'col':
+            return (
+                <ImageCollection
+                    key={collection.tag_id}
+                    thumbnails={this.state.thumbnails}
+                    {...collection}
+                    {...additional}
+                />
+            );
+        case 'video':
+            return (
+                <VideoCollection
+                    key={collection.tag_id}
+                    thumbnails={this.state.thumbnails}
+                    {...collection}
+                    {...additional}
+                />
+           );
+        }
+        return <ErrorCollection/>
+    },
+                {
+                    _.map(this.props.tags, function(tag) {
+                        return this.makeCollection(tag).render();
+                    });
+                }
+    /**/
+
+    /*
+    render: function() {
+        var self = this;
+        return (
+            <ul>
+                {_.map(self.props.tags, function(tag) {
+                    return self.makeCollection(tag).render();
+                })}
+            </ul>
+        );
+    }
+    /**/
+    render: function() {
+        return (
+            <ul>
+                {_.map(this.props.tags.tags, function(tag) {
+                    return (<li>{tag.name}</li>);
+                })}
+            </ul>
+        );
+    }
+});
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export default CollectionsMainPage;

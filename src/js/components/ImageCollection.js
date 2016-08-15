@@ -9,23 +9,25 @@ import Thumbnails from './Thumbnails';
 const ImageCollection = React.createClass({
 
     propTypes: {
+        thumbnails: React.PropTypes.object.isRequired
+        /*
         name: React.PropTypes.string.isRequired,
         thumbnail_ids: React.PropTypes.array.isRequired,
-        thumbnails: React.PropTypes.object.isRequired
+        /**/
     },
 
     render: function() {
+        console.log(this.props);
         return (
             <div className="xxCollection">
                 <div
                     className="xxCollection-content"
-                >{this.props.name}</div>
+                >{this.props.collection.name}</div>
                 <div
                     className="xxCollectionImages"
                 >
                     <Thumbnails
                         className="xxCollectionImages-all"
-                        thumbnail_ids={this.props.thumbnail_ids}
                         thumbnails={this.props.thumbnails}
                     />
                 </div>

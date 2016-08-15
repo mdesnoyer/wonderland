@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import RENDITIONS from '../../modules/renditions';
+import RENDITIONS from '../modules/renditions';
 
-import _Thumbnail from './_Thumbnail';
+import Thumbnail from './Thumbnail';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,13 +16,12 @@ const Thumbnails = React.createClass({
     },
 
     render: function() {
-        const thumbs = this.props.thumbnail_ids.slice(0, 24).map(thumbnail_id => {
-            const thumb = this.props.thumbnails[thumbnail_id];
+        const thumbs = this.props.thumbnails.slice(0, 24).map(thumb => {
             if (!thumb) {
                 return;  // Problem.
             }
             return (
-                <_Thumbnail
+                <Thumbnail
                     key={thumbnail_id}
                     type={thumb.type}
                     src={RENDITIONS.findRendition(thumb, 160, 120)}
