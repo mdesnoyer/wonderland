@@ -276,51 +276,46 @@ var UploadForm = React.createClass({
         var self = this,
             formDataArray = [],
             // formData = new FormData(),
-            errorFiles = 0
+            errorFiles = 0,
+            formData = new FormData(),
+            count = 0 ,
+            size = 0,
+            lastIndex = files.length -1
         ;
         // too accomidate for Drag Drop files 
         // check type if it is not a valid file 
         // then do not send to server and keep tally
         // this tally is then displayed on the form
         // self.setState({ photoUploadMode: 'loading'});
-        var formData = new FormData()
-        var count = 0 
-        var size = 0
-        var lastIndex = files.length -1
-        debugger 
-        console.log(files.length) 
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < 2000000) {
-                // debugger
                 count += 1
                 size += file.size
                 if (count === 5 || size > 10000000) {
-                    formDataArray.push(formData)
-                    formData = new FormData()
-                    count = 0 
-                    size = 0
-                    formData.append('upload', file)
+                    formDataArray.push(formData);
+                    formData = new FormData();
+                    count = 0; 
+                    size = 0;
+                    formData.append('upload', file);
                 }
                 else {
                     if (index === lastIndex){
-                        formData.append('upload', file)
-                        formDataArray.push(formData)
+                        formData.append('upload', file);
+                        formDataArray.push(formData);
                     }
                     else {
-                        formData.append('upload', file)
+                        formData.append('upload', file);
                     }                   
                 }
             } 
             else {
-                errorFiles += 1
+                errorFiles += 1;
             };
         });
-        var totalFileNumber = 0 
+        var totalFileNumber = 0; 
         formDataArray.forEach(function(form){
             totalFileNumber += form.getAll('upload').length;
-
         })
-        debugger
         if (self.state.photoUploadThumbnailIds.length + totalFileNumber > 100) {
             self.setState({
                 isOpen: true,
@@ -329,10 +324,6 @@ var UploadForm = React.createClass({
             });
         }
         else {
-            debugger 
-            // **********************************************************************
-            //DEBUGGER
-            // **********************************************************************
             self.setState({ 
                 photoUploadMode: 'loading',
                 photoUploadCount: totalFileNumber,
@@ -347,57 +338,40 @@ var UploadForm = React.createClass({
     },
     sendFormattedData: function(formData) {
         var self = this,
-             url = CONFIG.API_HOST + SESSION.state.accountId + '/thumbnails/'
-         ;
-         reqwest({
-              url: url,
-              headers:{'Authorization': 'Bearer ' + SESSION.state.accessToken},
-              method: 'POST',
-              contentType: 'multipart/form-data',
-              crossOrigin: true,
-              processData : false,
-              data : formData
-            })
+            options = {
+                data: formData,
+                processData : false,
+                contentType: 'multipart/form-data'
+            }
+        ;
+        self.POST('thumbnails', options)
             .then(function(res) {
                 debugger
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-                // add the res length to the total processed amount
-                // when the total hits the total amount show the sucesss flag.
-                // else update the total processed and keep in uploading state.
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
-                }, function() {
-                    debugger
+                    }, function() {
                     if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                         self.setState({
                             photoUploadMode:'success',
                             photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                             error: null 
-                        }, function() {
-                            setTimeout(function() {
+                            }, function() {
+                                setTimeout(function() {
                                 self.setState({ photoUploadMode:'initial' });
-                            }, 3000)
+                                }, 3000)
                         })                                        
                     }
-                });                          
+                });
             })
             .catch(function(err) {
-                // parsing this response to follow the error 
-                //convention in Ajax module see line 24
-                var parsedError = JSON.parse(err.response).error;
-                // if 401 we use grab a new token and sendFormattedData another time
-                if (parsedError.code === 401) {
-                    self.grabRefreshToken(formData);
-                }
-                else {
-                    self.setState({ 
-                        photoUploadMode:'initial'
-                    },  function() {
-                            self.throwUploadError(parsedError);
-                    });
-                }
-            });
+                self.setState({
+                photoUploadMode:'initial'
+                },  function() {
+                    self.throwUploadError(err);
+                });
+            }); 
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
@@ -410,25 +384,27 @@ var UploadForm = React.createClass({
         ;
         self.setState({ 
             photoUploadMode: 'loading',
-            photoUploadCount: urls.length
-            },
-                function() {
-                    self.POST('thumbnails', options)
-                    .then(function(res) {
-                        var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-                        self.setState({
-                            photoUploadMode:'success',
-                            photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                            error: null 
-                        },  function() {
-                            setTimeout( function() {
-                                self.setState({ photoUploadMode:'initial' });
-                            }, 3000);
-                        });
-                    })
-                    .catch(function(err) {
-                        self.throwUploadError(err);
+            photoUploadCount: urls.length,
+            numberUploadedCount: Math.round(urls.length) / 2
+            }, function() {
+                self.POST('thumbnails', options)
+                .then(function(res) {
+                    var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                    self.setState({
+                        photoUploadMode:'success',
+                        photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                        error: null 
+                    },  function() {
+                        setTimeout( function() {
+                            self.setState({ photoUploadMode:'initial' });
+                        }, 3000);
                     });
+                })
+                .catch(function(err) {
+                    photoUploadMode:'initial'
+                },  function() {
+                    self.throwUploadError(err);
+                });
             });
         
     },
@@ -440,31 +416,9 @@ var UploadForm = React.createClass({
             success: function(urls) {self.sendDropBoxUrl(urls)},
             linkType: "direct",
             multiselect: true,
-            extensions: ['.jpeg', '.jpg', '.png', '.gif', '.bmp']
+            extensions: ['.jpeg', '.jpg', '.png', '.bmp']
         };
         Dropbox.choose(options);
-    },
-    grabRefreshToken: function(formData) {
-        var self = this;
-        reqwest({
-            url: CONFIG.AUTH_HOST + 'refresh_token',
-            data: JSON.stringify({
-                token : SESSION.state.refreshToken
-            }),
-            contentType: 'application/json',
-            method: 'POST',
-            crossDomain: true,
-            type: 'json'
-        })
-            .then(function (res) {
-                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0])
-                    self.sendFormattedData(formData)
-                ;
-                
-            })
-            .catch(function (err) {
-                SESSION.end();
-            });
     },
     sendCollectionTag: function() {
         var self = this,
@@ -478,6 +432,7 @@ var UploadForm = React.createClass({
         debugger
         self.POST('tags', options)
             .then(function(res) {
+                debugger
                 // **********************************************************************
                 // need to redirect to collections and or update depending on Onboarding State
                 // **********************************************************************
