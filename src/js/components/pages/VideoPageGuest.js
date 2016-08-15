@@ -19,6 +19,8 @@ import OnboardingTutorial from '../wonderland/OnboardingTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const MAX_MOBILE_OUTER_WIDTH_PX = 768;
+
 var VideoPageGuest = React.createClass({
     mixins: [AjaxMixin], // ReactDebugMixin
     contextTypes: {
@@ -45,7 +47,8 @@ var VideoPageGuest = React.createClass({
         {property: 'og:description', content: T.get('copy.share.facebook')},
         {property: 'twitter:card', content: 'summary_large_image'},
         {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
-        {property: 'twitter:description', content: T.get('copy.share.twitter')}
+        {property: 'twitter:description', content: T.get('copy.share.twitter')},
+        {content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
     ],
     // Build urls for the share image service endpoints.
     _buildMetaTagsFromProps: function() {
@@ -154,12 +157,13 @@ var VideoPageGuest = React.createClass({
     render: function() {
         var self = this;
         const { sidebarContent } = this.state;
+        const isMobile = window.outerWidth < MAX_MOBILE_OUTER_WIDTH_PX;
         try {
             return (
                 <main className='xxPage'>
                     <Helmet
                         meta={self.state.metaTags}
-                        title={UTILS.buildPageTitle(T.get('copy.videosPage.title'))}
+                        title={UTILS.buildPageTitle(self.state.title)}
                     />
                     <SiteHeader sidebarContent={sidebarContent}/>
                     {
@@ -180,6 +184,7 @@ var VideoPageGuest = React.createClass({
                                 url={self.state.url}
                                 videoId={self.props.params.videoId}
                                 videoState={self.state.videoState}
+                                isMobile={isMobile}
                             />
                         ) : null
                     }

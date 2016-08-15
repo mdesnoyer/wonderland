@@ -26,6 +26,18 @@
     }
 }
 
+@mixin landscape {
+    @media (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin breakpoint-desktop {
+    @media (min-width: $breakpoint-mobile + 1) {
+        @content;
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // generates arrow

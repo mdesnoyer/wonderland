@@ -39,9 +39,13 @@ export default React.createClass({
             self.GET('limits')
                 .then(function(res) {
                     self.setState({ maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE })
+                    if (typeof SESSION.getProcessing() !== undefined) {
+                        self.onAnalysisStart(SESSION.getProcessing());
+                    }
                 })
                 .catch(function(err) {
                 })
+            ;
         }
     },
     componentWillUnmount: function() {
@@ -132,11 +136,18 @@ export default React.createClass({
         });
     },
 
-    toggleLearnMore: function() {
+    toggleLearnMore: function(e) {
+        e.preventDefault();
         this.setState({
             sidebarContent: 'learnMore',
         });
         TRACKING.sendEvent(self, arguments, 'None');
+    },
+
+    resetSidebar: function() {
+        this.setState({
+            sidebarContent: null,
+        });
     },
 
     render: function() {
@@ -149,13 +160,14 @@ export default React.createClass({
             <main className={pageStyle}>
                 <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.onboarding.uploadPageTitle'))}
+                    meta={UTILS.HELMET_META_TAGS}
                 />
                 {
                     isAnalyzing ? (
                         <div>
-                            <SiteHeader sidebarContent={sidebarContent} />
-                            {countdown} 
+                            <SiteHeader sidebarContent={sidebarContent} resetSidebar={this.resetSidebar} />
                             <OnboardingSlides toggleLearnMore={this.toggleLearnMore} />
+                            {countdown}
                             <OnboardingEmail videoId={this.state.videoId} />
                         </div>
                     ) : (
@@ -180,7 +192,7 @@ export default React.createClass({
                                 <div className="xxUploadButton-help">
                                     <span className="xxUploadButton-helpCircle"></span>
                                     <span className="xxUploadButton-helpLine"></span>
-                                    {uploadText}
+                                    <p>{uploadText}</p>
                                 </div>
                             </div>
                         </div>

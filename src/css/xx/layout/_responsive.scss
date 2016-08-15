@@ -1,0 +1,15 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.is-mobile {
+    @include breakpoint-desktop {
+        display: none !important; // yuck
+    }
+}
+
+.is-desktop {
+    @include breakpoint-mobile {
+        display: none !important; // shame
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

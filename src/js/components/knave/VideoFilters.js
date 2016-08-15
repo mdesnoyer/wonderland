@@ -26,16 +26,26 @@ var VideoFilters = React.createClass({
     },
     render: function() {
         var self = this,
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : '';
-
+            errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''
+        ;
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
         return (
-            <div className="xxCollectionAction">
+            <div className={collectionClassName}>
                 <h2 className="xxTitle">Filter Results</h2>
+                {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={self.props.handleBackClick}>
+                        </div>
+                    ) : null
+                }
                 <p>
                     Filter your video to see images targeted for a specific
                     demographic audience. We’ll need to reprocess the video,

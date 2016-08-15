@@ -1,4 +1,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+.xxOnboardingSlides {
+    
+    @include breakpoint-mobile {
+        height: 400px;
+
+        @include landscape {
+            height: 500px;
+        }
+    }
+}
+
 
 .xxOnboardingSlides-prev,
 .xxOnboardingSlides-next {
@@ -15,6 +26,11 @@
     @media (max-width: $page-max-width + $gutter-width * 2) {
         left: $gutter-width + 10px;
         margin-left: 0;
+    }
+
+    @include breakpoint-mobile {
+        left: 10px;
+        top: 20%;
     }
 
     @include arrow(W, 12px, 1px, $secondary-color);
@@ -42,6 +58,10 @@
     &::after {
         transform-origin: 100% 50%;
     }
+
+    @include breakpoint-mobile {
+        right: 10px;
+    }
 }
 
 .xxOnboardingSlide {
@@ -68,12 +88,28 @@
     & .xxSubtitle {
         display: none;
     }
+
+    @include breakpoint-mobile {
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: 40%;
+    }
 }
 
 .xxOnboardingSlide-content {
     float: right;
     width: 44%;
     margin-right: 10%;
+
+    @include breakpoint-mobile {
+        width: 80%;
+        margin: 0 10%;
+        text-align: center;
+        font-size: 14px;
+    }
 }
 
 .xxOnboardingSlide-description {
@@ -92,6 +128,17 @@
     width: 35%;
     margin-left: 7.5%;
     transform: translateY(-50%);
+
+    @include breakpoint-mobile {
+        width: 60%;
+        margin: 0 20%;
+        position: initial;
+
+        @include landscape {
+            width: 50%;
+            margin: 0 25%;
+        }
+    }
 }
 
 .xxOnboardingSlide-image {

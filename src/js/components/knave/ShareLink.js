@@ -76,10 +76,21 @@ var ShareLink = React.createClass({
         ReactTooltip.rebuild();
     },
     render: function(){
-        var self = this;
+        var self = this,
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
+        ;
         return (
-            <div className="xxCollectionAction">
+            <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.share.main')}</h2>
+                {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={self.handleBackClick}>
+                        </div>
+                    ) : null
+                }
                 <ul className="xxCollectionShare">
                     <li className="xxCollectionShare-item is-active">
                         <span

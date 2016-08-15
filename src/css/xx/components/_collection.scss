@@ -53,8 +53,9 @@ $collection-content-padding-top: 17px;
     font: normal 25px/32px $serif-family;
 
     @include breakpoint-mobile {
-        font-size: 16px;
-        line-height: 21px;
+        font-size: 18px;
+        line-height: 23px;
+        text-align: left;
     }
 
     &::after {
@@ -80,6 +81,10 @@ $collection-content-padding-top: 17px;
 
     .xxCollection--processing & {
         width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width} * 2);
+
+        @include breakpoint-mobile {
+            width: 100%;
+        }
     }
 }
 

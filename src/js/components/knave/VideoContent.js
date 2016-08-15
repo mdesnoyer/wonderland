@@ -77,6 +77,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange} 
                         videoId={self.props.videoId}
                         setTooltipText={self.props.setTooltipText}
+                        isMobile={self.props.isMobile}
                     />
                 );
                 break;
@@ -85,6 +86,7 @@ var VideoContent = React.createClass({
                                 handleMenuChange={self.handleMenuChange}
                                 thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
                                 videoId={self.props.videoId}
+                                isMobile={self.props.isMobile}
                             />;
                 break;
             case 'delete':
@@ -93,6 +95,7 @@ var VideoContent = React.createClass({
                         handleMenuChange={self.handleMenuChange}
                         videoId={self.props.videoId}
                         handleDelete={self.props.handleDelete}
+                        isMobile={self.props.isMobile}
                     />
                 );
                 break;
@@ -104,6 +107,7 @@ var VideoContent = React.createClass({
                         handleDemographicChange={self.props.handleDemographicChange}
                         selectedDemographic={self.props.selectedDemographic}
                         videoId={self.props.videoId}
+                        isMobile={self.props.isMobile}
                     />
                 );
                 break;

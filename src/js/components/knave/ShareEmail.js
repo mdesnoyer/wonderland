@@ -55,6 +55,7 @@ var ShareEmail = React.createClass({
     },
     render: function() {
         var self = this,
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             userMessage = false
         ;
         switch (self.state.mode) {
@@ -68,8 +69,17 @@ var ShareEmail = React.createClass({
                 break;
         }
         return (
-            <div className="xxCollectionAction">
+            <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('email')}</h2>
+               {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={self.props.handleBackClick}>
+                        </div>
+                    ) : null
+                }
                 {
                     (self.state.mode === 'success') ? (
                         <div>

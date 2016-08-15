@@ -97,6 +97,7 @@ var ImageUploadOverlay = React.createClass({
                         <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
                             {T.get('imageUpload.local')}
                             <input
+                                disabled={self.props.photoUploadMode === 'loading'}
                                 type="file"
                                 multiple
                                 accept= "image/*"
@@ -104,7 +105,9 @@ var ImageUploadOverlay = React.createClass({
                                 onChange={self.props.sendLocalPhotos}
                             />
                         </div>
-                        <button id="dropBoxSDK"
+                        <button 
+                            id="dropBoxSDK"
+                            disabled={self.props.photoUploadMode === 'loading'}
                             className="xxButton xxButton--uploadDialog xxButton--highlight"
                             onClick={self.props.grabDropBox}
                         >

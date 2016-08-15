@@ -35,10 +35,6 @@ $zindex-upload-drag-and-drop: 1;
         margin-right: 0;
     }
 
-    @include breakpoint-mobile {
-        display: none;
-    }
-
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, .3);
         transform: rotate(90deg);
@@ -128,6 +124,34 @@ $zindex-upload-drag-and-drop: 1;
     &--video::before {
         @include font-awesome('f03d'); // fa-video-camera
     }
+
+    @include breakpoint-mobile {
+        width: 70px;
+        height: 70px;
+        right: 27px;
+        bottom: 26px;
+        border: 4px solid $white;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 22px;
+        }
+
+        .is-open > & {
+            background: transparent;
+            top: 24px;
+
+            &::before,
+            &::after {
+                background: $quaternary-color;
+                width: 24px;
+                height: 2px;
+            }
+        }
+    }
 }
 
 .xxUploadTypes-buttonLabel {
@@ -163,6 +187,24 @@ $zindex-upload-drag-and-drop: 1;
         margin: 0 0 0 auto;
     }
 
+    .xxTitle {
+        margin-bottom: 28px;
+        
+        @include breakpoint-mobile {
+            margin-bottom: 20px;
+        }
+    }
+
+    .xxButton {
+        width: 100%;
+        margin-top: 26px;
+
+        @include breakpoint-mobile {
+            width: 100px;
+            margin-top: 0;
+        }
+    }
+
     .xxSelect {
         float: left;
         width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
@@ -170,6 +212,11 @@ $zindex-upload-drag-and-drop: 1;
         + .xxSelect {
             float: right;
         }
+    }
+
+    @include breakpoint-mobile {
+        position: static;
+        margin: 24px auto;
     }
 }
 
@@ -203,6 +250,11 @@ $zindex-upload-drag-and-drop: 1;
 
     & + & {
         float: right;
+        @include breakpoint-mobile {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+            float: none;
+            min-width: 100%;
+        }
     }
 }
 
@@ -228,6 +280,19 @@ $zindex-upload-drag-and-drop: 1;
     .xxFadeInOut-leave & {
         opacity: 0;
     }
+
+    @include breakpoint-mobile {
+        line-height: 12px;
+        font-size: 11px;
+        padding-left: 25px;
+        right: auto;
+        bottom: 40px;
+        width: 100%;
+
+        p {
+            width: 180px;
+        }
+    }
 }
 
 .xxUploadButton-helpCircle {
@@ -238,6 +303,12 @@ $zindex-upload-drag-and-drop: 1;
     height: $upload-button-help-circle-size;
     border: 1px solid rgba($base-color, .5);
     border-radius: 50%;
+
+    @include breakpoint-mobile {
+        left: auto;
+        right: 17px;
+        top: -43px;
+    }
 }
 
 .xxUploadButton-helpLine {
@@ -247,6 +318,10 @@ $zindex-upload-drag-and-drop: 1;
     width: $upload-button-help-line-length; // 1px to account for floor above
     height: 1px;
     background: rgba($base-color, .5);
+
+    @include breakpoint-mobile {
+        display: none;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
