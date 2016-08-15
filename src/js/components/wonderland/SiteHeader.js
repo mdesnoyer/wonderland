@@ -37,6 +37,7 @@ var SiteHeader = React.createClass({
                 <Sidebar
                     content={sidebarContent}
                     setContent={this.setSidebarContent}
+                    resetSidebar={this.props.resetSidebar}
                 />
             </div>
         );

@@ -136,11 +136,18 @@ export default React.createClass({
         });
     },
 
-    toggleLearnMore: function() {
+    toggleLearnMore: function(e) {
+        e.preventDefault();
         this.setState({
             sidebarContent: 'learnMore',
         });
         TRACKING.sendEvent(self, arguments, 'None');
+    },
+
+    resetSidebar: function() {
+        this.setState({
+            sidebarContent: null,
+        });
     },
 
     render: function() {
@@ -158,7 +165,7 @@ export default React.createClass({
                 {
                     isAnalyzing ? (
                         <div>
-                            <SiteHeader sidebarContent={sidebarContent} />
+                            <SiteHeader sidebarContent={sidebarContent} resetSidebar={this.resetSidebar} />
                             <OnboardingSlides toggleLearnMore={this.toggleLearnMore} />
                             {countdown}
                             <OnboardingEmail videoId={this.state.videoId} />
