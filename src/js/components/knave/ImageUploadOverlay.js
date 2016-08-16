@@ -22,12 +22,14 @@ var ImageUploadOverlay = React.createClass({
             isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '';
             if (isValid) { submitClassName.push('xxButton--important');}
         ;
+        debugger
         switch(self.props.photoUploadMode) {
             case 'initial': 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
                         {T.get('imageUpload.draglocation')}<br />
-                        {T.get('imageUpload.folders')}
+                        {T.get('imageUpload.folders')}<br />
+                        {self.props.photoUploadThumbnailIds.length + "/100 downloaded" }
                     </div>
                 );
                 break;
@@ -79,9 +81,6 @@ var ImageUploadOverlay = React.createClass({
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
                         <p>{T.get('imageUpload.dragInstructions')}</p>
                         {messageNeeded}
-                        <div  className="has-downloaded-note" >
-                        <p className="xxFormNote" >{self.props.photoUploadThumbnailIds.length + "/100 downloaded" }</p>
-                        </div>
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
@@ -118,9 +117,9 @@ var ImageUploadOverlay = React.createClass({
                     <button
                         className={submitClassName.join(' ')}
                         type="button"
-                        onClick={isValid ? self.props.toggleOpen : null}
+                        onClick={self.props.toggleOpen}
                         data-send-tag={true}
-                        disabled={!isValid}
+                        // disabled={!isValid}
                     >{T.get('upload.submit')}</button>
                 </div>
             </Dropzone>
@@ -144,6 +143,7 @@ var ImageUploadOverlay = React.createClass({
         updateField: React.PropTypes.func,
         photoCollectionName: React.PropTypes.string,
         photoUploadThumbnailIds: React.PropTypes.array
+        // previewArray: React.PropTypes.arrayOf(React.PropTypes.object)
     }
 });
 

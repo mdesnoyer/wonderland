@@ -278,7 +278,7 @@ var UploadForm = React.createClass({
             size = 0,
             lastIndex = files.length -1,
             totalFileNumber = 0
-        ;
+        ;        
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1
@@ -343,13 +343,11 @@ var UploadForm = React.createClass({
         ;
         self.POST('thumbnails', options)
             .then(function(res) {
-                debugger
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                     }, function() {
-                        debugger
                         if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
                                 photoUploadMode:'success',
@@ -425,16 +423,24 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        self.POST('tags', options)
-            .then(function(res) {
-                // **********************************************************************
-                // need to redirect to collections and or update depending on Onboarding State
-                // **********************************************************************
-            self.resetStateOnSuccessOrClose();
-            })
-            .catch(function(err) { 
-                self.throwUploadError(err);
+        if (self.state.photoCollectionName === '') {
+            self.setState({
+                isOpen: true,
+                error: 'Make sure to give a name to your collection'
             });
+        }
+        else {
+            self.POST('tags', options)
+                .then(function(res) {
+                    // **********************************************************************
+                    // need to redirect to collections and or update depending on Onboarding State
+                    // **********************************************************************
+                self.resetStateOnSuccessOrClose();
+                })
+                .catch(function(err) { 
+                    self.throwUploadError(err);
+                });    
+        }
     },
     grabRefreshToken: function() {
         var self = this;
