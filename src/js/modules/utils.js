@@ -338,6 +338,7 @@ var UTILS = {
     MAX_IMAGE_FILE_SIZE: 2000000,
     MAX_IMAGE_CHUNK_SIZE: 10000000,
     MAX_IMAGE_FILES_ALLOWED: 100,
+    UPLOAD_TRANSITION: 200,
     IMAGE_FILE_TYPES_ALLOWED: ['.jpeg', '.jpg', '.png', '.tiff', '.gif', '.bmp'],
     MAX_IMAGE_UPLOAD_COUNT: 5, 
     NEON_TWITTER_HANDLE: 'neonlab',

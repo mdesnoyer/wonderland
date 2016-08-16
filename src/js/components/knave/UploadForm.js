@@ -423,13 +423,6 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        if (self.state.photoCollectionName === '') {
-            self.setState({
-                isOpen: true,
-                error: 'Make sure to give a name to your collection'
-            });
-        }
-        else {
             self.POST('tags', options)
                 .then(function(res) {
                     // **********************************************************************
@@ -440,7 +433,6 @@ var UploadForm = React.createClass({
                 .catch(function(err) { 
                     self.throwUploadError(err);
                 });    
-        }
     },
     grabRefreshToken: function() {
         var self = this;

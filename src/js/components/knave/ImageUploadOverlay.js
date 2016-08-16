@@ -17,54 +17,41 @@ var ImageUploadOverlay = React.createClass({
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             className = ['xxUploadDialog'],
-            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
+            dragDropClassKey,
             dropzoneContent,
+            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
             isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '',
-            instructions = self.props.photoCollectionName !== '' ? T.get('imageUpload.dragInstructions') : "First Let's name your photo collection"
+            instructions = self.props.photoCollectionName !== '' ? T.get('imageUpload.dragInstructions.two') : T.get('imageUpload.dragInstructions.one')
         ;
             if (isValid) { 
                 submitClassName.push('xxButton--important');
-                instructions = "You can continue uploading files to this collection. When you are done press submit below."
+                instructions = T.get('imageUpload.dragInstructions.three')
             }
 
         switch(self.props.photoUploadMode) {
-            case 'initial': 
-                dropzoneContent = (
-                    <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
-                        {T.get('imageUpload.draglocation')}<br />
-                        {T.get('imageUpload.folders')}<br />
-                        {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
-                    </div>
-                );
+            case 'initial':
+                dragDropClassKey = 'hint';
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {T.get('imageUpload.folders')}<br/></div>;
                 break;
-            case 'loading': 
+            case 'loading':
+                dragDropClassKey = 'progress';
                 dropzoneContent = (
-                    <div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
+                    <div>
                         <span className="xxDragAndDrop-progressCounter">
                             {`${Math.round((self.props.numberUploadedCount) / self.props.photoUploadCount * 100)}%`}
                         </span>
-                        {"Uploading (" + self.props.photoUploadCount + ") files."}
-                        <br/>
-                        {
-                            self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null    
-                        }
+                        {"Uploading (" + self.props.photoUploadCount + ") files."}<br/>
+                        {self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null}
                     </div>
                 );
                 break;
             case 'success': 
-                dropzoneContent = (
-                    <div className="xxDragAndDrop-content xxDragAndDrop-complete" key="drag-and-drop-complete">
-                        {"Uploaded (" + self.props.photoUploadCount + ") files"}
-                    </div>
-                );
+                dragDropClassKey = 'complete';
+                dropzoneContent = <div>{"Uploaded (" + self.props.photoUploadCount + ") files" }<br/></div>;
                 break; 
             default: 
-                dropzoneContent = (
-                    <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
-                        {T.get('imageUpload.draglocation')}<br />
-                        {T.get('imageUpload.folders')}
-                    </div>
-                );
+                dragDropClassKey = 'hint';
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {T.get('imageUpload.folders')}<br/></div>;
         }
         return (
             <Dropzone 
@@ -76,8 +63,11 @@ var ImageUploadOverlay = React.createClass({
                 onDrop={self.onDrop}
             >
                 <div className="xxDragAndDrop">
-                    <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
-                        {dropzoneContent}
+                    <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+                        <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
+                            {dropzoneContent}
+                            {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
+                        </div>
                     </ReactCSSTransitionGroup>
                 </div>
                 <div className="xxUploadDialog-inner">
@@ -124,9 +114,9 @@ var ImageUploadOverlay = React.createClass({
                             <button
                                 className={submitClassName.join(' ')}
                                 type="button"
-                                onClick={self.props.toggleOpen}
+                                onClick={isValid ? self.props.toggleOpen : null}
                                 data-send-tag={true}
-                                // disabled={!isValid}
+                                disabled={!isValid}
                             >{T.get('upload.submit')}</button>
                             </div>
                             ) : null 
@@ -154,7 +144,6 @@ var ImageUploadOverlay = React.createClass({
         updateField: React.PropTypes.func,
         photoCollectionName: React.PropTypes.string,
         photoUploadThumbnailIds: React.PropTypes.array
-        // previewArray: React.PropTypes.arrayOf(React.PropTypes.object)
     }
 });
 
