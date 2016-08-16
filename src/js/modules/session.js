@@ -17,7 +17,8 @@ var Session = {
         refreshToken: window.sessionStorage.getItem(UTILS.COOKIES_KEY.refreshTokenKey),
         accountId: window.sessionStorage.getItem(UTILS.COOKIES_KEY.accountIdKey),
         masqueradeAccountIdKey: undefined,
-        user: undefined
+        user: undefined,
+        processing: window.sessionStorage.getItem(UTILS.COOKIES_KEY.processingKey)
     },
     set: function(accessToken, refreshToken, accountId, user) {
         var self = this,
@@ -57,6 +58,21 @@ var Session = {
         } catch(e) {
             console.log('Browser does not support session storage, application will not be able to save session information.');
         }
+    },
+    setProcessing: function(video) {
+        var self = this,
+            ss = window.sessionStorage
+        ;
+        self.state.processing = JSON.stringify(video);
+        try {
+            ss.setItem(UTILS.COOKIES_KEY.processingKey, JSON.stringify(video));
+        } catch(e) {
+            console.log('Browser does not support session storage, application will not be able to save session information.');
+        }
+    },
+    getProcessing: function() {
+        var self = this;
+        return JSON.parse(self.state.processing);
     },
     setAccountId: function(accountId) {
         var self = this,
@@ -106,12 +122,14 @@ var Session = {
         ss.removeItem(UTILS.COOKIES_KEY.accountIdKey);
         ss.removeItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey);
         ss.removeItem(UTILS.COOKIES_KEY.userKey);
+        ss.removeItem(UTILS.COOKIES_KEY.processingKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
             accountId: undefined,
             masqueradeAccountId: undefined,
-            user: undefined
+            user: undefined,
+            processing: undefined
         };
         return ret;
     },

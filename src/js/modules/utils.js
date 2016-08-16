@@ -183,9 +183,6 @@ var UTILS = {
         SIGNOUT: {
             URL: '/signout/'
         },
-        SIGNUP: {
-            URL: '/signup/'
-        },
         SETTINGS_ACCOUNT: {
             URL: '/settings/account/'
         },
@@ -256,7 +253,8 @@ var UTILS = {
         rememberedEmailKey: 'ru',
         userKey: 'neonses_user_info',
         viewShareKey: 'footprintCookieViewShare',
-        analyzeVideoKey: 'footprintCookieAnalyzeVideo'
+        analyzeVideoKey: 'footprintCookieAnalyzeVideo',
+        processingKey: 'pv'
     },
     FILTERS_GENDER_AGE: [
         {
@@ -338,6 +336,7 @@ var UTILS = {
 
     TAG_TYPE_IMAGE_COL: 'col',
     TAG_TYPE_VIDEO_COL: 'video',
+    HELMET_META_TAGS: [{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'},],
 
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
@@ -490,10 +489,10 @@ var UTILS = {
         }
     },
     buildPageTitle: function(title) {
-        return title + T.get('app.separator') + T.get('app.credit', {
-            '@appName': T.get('app.appName'),
+        var credit =  T.get('app.credit', {
             '@companyShortName': T.get('app.companyShortName')
         });
+        return title + T.get('app.separator') + credit;
     },
     makeTitle: function() {
         return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');

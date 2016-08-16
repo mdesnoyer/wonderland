@@ -9,11 +9,24 @@ import T from '../../modules/translation';
 var VideoDelete = React.createClass({
     mixins: [AjaxMixin],
     render: function() {
-        var self = this;
+        var self = this,
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
+        ;
         return (
-            <div className="xxCollectionAction">
+            <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
-                <p>{T.get('copy.videoContent.delete')}</p>
+                {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={self.handleBackClick}>
+                        </div>
+                    ) : null
+                }
+                <div className="xxText">
+                    <p>{T.get('copy.videoContent.delete')}</p>
+                </div>
                 <div className="xxCollectionAction-buttons">
                     <button
                         className="xxButton"

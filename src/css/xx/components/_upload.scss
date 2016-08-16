@@ -28,10 +28,6 @@ $upload-button-help-line-length: 190px;
         margin-right: 0;
     }
 
-    @include breakpoint-mobile {
-        display: none;
-    }
-
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, .3);
         transform: rotate(90deg);
@@ -66,6 +62,34 @@ $upload-button-help-line-length: 190px;
     .is-hidden > & {
         display: none;
     }
+
+    @include breakpoint-mobile {
+        width: 70px;
+        height: 70px;
+        right: 27px;
+        bottom: 26px;
+        border: 4px solid $white;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 22px;
+        }
+
+        .is-open > & {
+            background: transparent;
+            top: 24px;
+
+            &::before,
+            &::after {
+                background: $quaternary-color;
+                width: 24px;
+                height: 2px;
+            }
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,11 +112,20 @@ $upload-button-help-line-length: 190px;
 
     .xxTitle {
         margin-bottom: 28px;
+        
+        @include breakpoint-mobile {
+            margin-bottom: 20px;
+        }
     }
 
     .xxButton {
         width: 100%;
         margin-top: 26px;
+
+        @include breakpoint-mobile {
+            width: 100px;
+            margin-top: 0;
+        }
     }
 
     .xxSelect {
@@ -103,6 +136,11 @@ $upload-button-help-line-length: 190px;
             float: right;
         }
     }
+
+    @include breakpoint-mobile {
+        position: static;
+        margin: 24px auto;
+    }
 }
 
 .xxUploadDialog-inner {
@@ -112,6 +150,12 @@ $upload-button-help-line-length: 190px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
+
+    @include breakpoint-mobile {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+        float: none;
+        min-width: 100%;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,6 +180,19 @@ $upload-button-help-line-length: 190px;
     .xxFadeInOut-leave & {
         opacity: 0;
     }
+
+    @include breakpoint-mobile {
+        line-height: 12px;
+        font-size: 11px;
+        padding-left: 25px;
+        right: auto;
+        bottom: 40px;
+        width: 100%;
+
+        p {
+            width: 180px;
+        }
+    }
 }
 
 .xxUploadButton-helpCircle {
@@ -146,6 +203,12 @@ $upload-button-help-line-length: 190px;
     height: $upload-button-help-circle-size;
     border: 1px solid rgba($base-color, .5);
     border-radius: 50%;
+
+    @include breakpoint-mobile {
+        left: auto;
+        right: 17px;
+        top: -43px;
+    }
 }
 
 .xxUploadButton-helpLine {
@@ -155,6 +218,10 @@ $upload-button-help-line-length: 190px;
     width: $upload-button-help-line-length; // 1px to account for floor above
     height: 1px;
     background: rgba($base-color, .5);
+
+    @include breakpoint-mobile {
+        display: none;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

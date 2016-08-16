@@ -1,0 +1,94 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$nav-font-size: 16px;
+
+.xxNav {
+    // always rendered as its used for positioning
+    position: absolute;
+    right: 0;
+    bottom: -0.125em; /* Align with baseline of logo due to line-height limitations */
+    z-index: $z-index-header;
+    font-size: $nav-font-size;
+    line-height: 1;
+    @include breakpoint-desktop {
+        right: 0;
+    }
+    @include breakpoint-mobile {
+        right: $gutter-width;
+    }
+}
+
+.xxNav-hamburger {
+    color: $tertiary-color;
+    @include breakpoint-desktop {
+        display: none;
+    }
+    @include breakpoint-mobile {
+        font-size: 2em;
+        display: block;
+        .has-overlayWithNav & {
+            display: none;
+        }
+    }
+}
+
+.xxNav-items {
+    @include breakpoint-desktop {
+        display: block;
+    }
+    @include breakpoint-mobile {
+        padding: 0 24px;
+        display: none;
+        .xxPageOverlay & {
+            display: block;
+        }
+    }
+}
+
+.xxNav-item {
+    position: relative;
+    @include breakpoint-desktop {
+        float: left;
+        padding-left: 1.875em;
+    }
+    @include breakpoint-mobile {
+        line-height: 3;
+    }
+}
+
+@mixin xxNavAnchorStyling {
+    color: $secondary-color;
+    &:after {
+        content: '';
+        position: absolute;
+        height: 1px; // needs to be minimum 1px, any less and the browser doesn't render sometimes
+        background: $accent-color;
+    }
+}
+
+.xxNav-anchor {
+    color: $base-color;
+    &:hover {
+        color: $secondary-color;
+    }
+    &.is-current {
+        @include xxNavAnchorStyling;
+        &:after {
+            bottom: 0.5em;
+            left: 0;
+            width: 1em;
+        }
+    }
+    @include breakpoint-desktop {
+        .is-active > & {
+            @include xxNavAnchorStyling;
+            &:after {
+                bottom: -0.5625em;
+                left: 1.9375em;
+                width: 0.875em;
+            }
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
