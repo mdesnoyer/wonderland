@@ -238,7 +238,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             // image upload page
-            'imageUpload.dragInstructions': 'You can drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.',
+            'imageUpload.dragInstructions': 'Now drag and drop your images into the window. Or you can use the buttons below to browse your device or Dropbox account.',
             'imageUpload.draglocation': 'Drag and Drop your image(s) here.',
             'imageUpload.folders': 'Sorry, no folders.',
             'imageUpload.uploadImage': 'Upload Your Images',

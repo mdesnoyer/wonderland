@@ -19,17 +19,21 @@ var ImageUploadOverlay = React.createClass({
             className = ['xxUploadDialog'],
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
             dropzoneContent,
-            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '';
-            if (isValid) { submitClassName.push('xxButton--important');}
+            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '',
+            instructions = self.props.photoCollectionName !== '' ? T.get('imageUpload.dragInstructions') : "First Let's name your photo collection"
         ;
-        debugger
+            if (isValid) { 
+                submitClassName.push('xxButton--important');
+                instructions = "You can continue uploading files to this collection. When you are done press submit below."
+            }
+
         switch(self.props.photoUploadMode) {
             case 'initial': 
                 dropzoneContent = (
                     <div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
                         {T.get('imageUpload.draglocation')}<br />
                         {T.get('imageUpload.folders')}<br />
-                        {self.props.photoUploadThumbnailIds.length + "/100 downloaded" }
+                        {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
                     </div>
                 );
                 break;
@@ -79,8 +83,8 @@ var ImageUploadOverlay = React.createClass({
                 <div className="xxUploadDialog-inner">
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
-                        <p>{T.get('imageUpload.dragInstructions')}</p>
-                        {messageNeeded}
+                        <p>{instructions}</p>
+                        <p>{messageNeeded}</p>
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
@@ -91,37 +95,44 @@ var ImageUploadOverlay = React.createClass({
                             onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
                         />
                     </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('imageUpload.chooseSource')}</label>
-                        <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-                            {T.get('imageUpload.local')}
-                            <input
-                                disabled={self.props.photoUploadMode === 'loading'}
-                                type="file"
-                                name="upload"
-                                multiple
-                                accept= "image/*"
-                                className="xxButton-fileInput"
-                                onChange={self.props.sendLocalPhotos}
-                            />
-                        </div>
-                        <button 
-                            id="dropBoxSDK"
-                            disabled={self.props.photoUploadMode === 'loading'}
-                            className="xxButton xxButton--uploadDialog xxButton--highlight"
-                            onClick={self.props.grabDropBox}
-                        >
-                        {T.get('imageUpload.dropBox')}
-                        </button>
+                    { 
+                        self.props.photoCollectionName !== '' ? (
+                            <div>
+                            <div className="xxFormField">
+                                <label className="xxLabel">{T.get('imageUpload.chooseSource')}</label>
+                                <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
+                                    {T.get('imageUpload.local')}
+                                    <input
+                                        disabled={self.props.photoUploadMode === 'loading'}
+                                        type="file"
+                                        name="upload"
+                                        multiple
+                                        accept= "image/*"
+                                        className="xxButton-fileInput"
+                                        onChange={self.props.sendLocalPhotos}
+                                    />
+                                </div>
+                                <button 
+                                    id="dropBoxSDK"
+                                    disabled={self.props.photoUploadMode === 'loading'}
+                                    className="xxButton xxButton--uploadDialog xxButton--highlight"
+                                    onClick={self.props.grabDropBox}
+                                >
+                                {T.get('imageUpload.dropBox')}
+                                </button>
+                            </div>
+                            <button
+                                className={submitClassName.join(' ')}
+                                type="button"
+                                onClick={self.props.toggleOpen}
+                                data-send-tag={true}
+                                // disabled={!isValid}
+                            >{T.get('upload.submit')}</button>
+                            </div>
+                            ) : null 
+                        
+                    }
                     </div>
-                    <button
-                        className={submitClassName.join(' ')}
-                        type="button"
-                        onClick={self.props.toggleOpen}
-                        data-send-tag={true}
-                        // disabled={!isValid}
-                    >{T.get('upload.submit')}</button>
-                </div>
             </Dropzone>
         );
     },
