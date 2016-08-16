@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
-    "bulma": "0.0.26",
     "clipboard": "^1.5.12",
     "fnv-plus": "^1.2.12",
     "font-awesome": "^4.6.1",
