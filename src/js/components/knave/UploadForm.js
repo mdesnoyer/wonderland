@@ -280,11 +280,11 @@ var UploadForm = React.createClass({
             totalFileNumber = 0
         ;
         files.forEach((file, index)=> {
-            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < 2000000) {
+            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1
                 size += file.size
                 totalFileNumber += 1;
-                if (count > 5 || size > 10000000) {
+                if (count > UTILS.MAX_IMAGE_UPLOAD_COUNT || size > UTILS.MAX_IMAGE_CHUNK_SIZE) {
                     formDataArray.push(formData);
                     formData = new FormData();
                     count = 0; 
@@ -311,7 +311,7 @@ var UploadForm = React.createClass({
                 errorFiles += 1;
             };
         });
-        if (self.state.photoUploadThumbnailIds.length + totalFileNumber > 100) {
+        if (self.state.photoUploadThumbnailIds.length + totalFileNumber > UTILS.MAX_IMAGE_FILES_ALLOWED) {
                 self.setState({
                     isOpen: true,
                     photoUploadMode: 'initial',
@@ -324,10 +324,12 @@ var UploadForm = React.createClass({
                 photoUploadCount: totalFileNumber,
                 numberUploadedCount: 0, 
                 photoErrorCount: errorFiles
-            }, function() {
-                formDataArray.forEach(function(formData){
-                    self.sendFormattedData(formData);
-                });
+            },  function() {
+                self.grabRefreshToken(
+                    formDataArray.forEach(function(formData) {
+                        self.sendFormattedData(formData);
+                    })
+                )
             });
         }        
     },
@@ -409,10 +411,10 @@ var UploadForm = React.createClass({
                 success: function(urls) {self.sendDropBoxUrl(urls)},
                 linkType: "direct",
                 multiselect: true,
-                extensions: ['.jpeg', '.jpg', '.png', '.bmp']
+                extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
     ;
-        Dropbox.choose(options);
+            Dropbox.choose(options);
     },
     sendCollectionTag: function() {
         var self = this,
@@ -432,6 +434,25 @@ var UploadForm = React.createClass({
             })
             .catch(function(err) { 
                 self.throwUploadError(err);
+            });
+    },
+    grabRefreshToken: function() {
+        var self = this;
+        reqwest({
+            url: CONFIG.AUTH_HOST + 'refresh_token',
+            data: JSON.stringify({
+                token : SESSION.state.refreshToken
+            }),
+            contentType: 'application/json',
+            method: 'POST',
+            crossDomain: true,
+            type: 'json'
+        })
+            .then(function (res) {
+                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
+            })
+            .catch(function (err) {
+                SESSION.end();
             });
     },
     resetStateOnSuccessOrClose: function() {
