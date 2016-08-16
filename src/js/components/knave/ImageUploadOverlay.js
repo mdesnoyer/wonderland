@@ -99,6 +99,7 @@ var ImageUploadOverlay = React.createClass({
                             <input
                                 disabled={self.props.photoUploadMode === 'loading'}
                                 type="file"
+                                name="upload"
                                 multiple
                                 accept= "image/*"
                                 className="xxButton-fileInput"

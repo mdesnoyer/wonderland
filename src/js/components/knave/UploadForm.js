@@ -264,9 +264,6 @@ var UploadForm = React.createClass({
              files = e.target.files,
              fileArray = []
          ;
-         // local files come back as and object
-         // server needs array in order to process
-         // we use this function to create and array of files
          for (var i = 0, file; file = files[i]; i++) {
              fileArray.push(file);
          }
@@ -279,41 +276,41 @@ var UploadForm = React.createClass({
             formData = new FormData(),
             count = 0 ,
             size = 0,
-            lastIndex = files.length -1
+            lastIndex = files.length -1,
+            totalFileNumber = 0
         ;
-        // too accomidate for Drag Drop files 
-        // check type if it is not a valid file 
-        // then do not send to server and keep tally
-        // this tally is then displayed on the form
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < 2000000) {
                 count += 1
                 size += file.size
-                if (count === 5 || size > 10000000) {
+                totalFileNumber += 1;
+                if (count > 5 || size > 10000000) {
                     formDataArray.push(formData);
                     formData = new FormData();
                     count = 0; 
                     size = 0;
-                    formData.append('upload', file);
-                }
-                else {
-                    if (index === lastIndex){
+                    if (index === lastIndex) {
                         formData.append('upload', file);
                         formDataArray.push(formData);
                     }
                     else {
                         formData.append('upload', file);
-                    }                   
+                    }
+                }
+                else {
+                    if (index === lastIndex) {
+                        formData.append('upload', file);
+                        formDataArray.push(formData);
+                    }
+                    else {
+                        formData.append('upload', file);
+                    }
                 }
             } 
             else {
                 errorFiles += 1;
             };
         });
-        var totalFileNumber = 0; 
-        formDataArray.forEach(function(form){
-            totalFileNumber += form.getAll('upload').length;
-        })
         if (self.state.photoUploadThumbnailIds.length + totalFileNumber > 100) {
                 self.setState({
                     isOpen: true,
@@ -344,11 +341,13 @@ var UploadForm = React.createClass({
         ;
         self.POST('thumbnails', options)
             .then(function(res) {
+                debugger
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                     }, function() {
+                        debugger
                         if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
                                 photoUploadMode:'success',
