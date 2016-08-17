@@ -36,7 +36,7 @@ var ImageUploadOverlay = React.createClass({
         switch(self.props.photoUploadMode) {
             case 'initial':
                 dragDropClassKey = 'hint';
-                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {T.get('imageUpload.folders')}<br/></div>;
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{"Each Collection can have up to 100 Images!"}<br/></div>;
                 break;
             case 'loading':
                 dragDropClassKey = 'progress';
@@ -56,7 +56,7 @@ var ImageUploadOverlay = React.createClass({
                 break; 
             default: 
                 dragDropClassKey = 'hint';
-                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {"Each Collection can have up to 100 Images!"}<br/></div>;
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{"Each Collection can have up to 100 Images!"}<br/></div>;
         }
         return (
             <div className="xxUploadDialog">
@@ -91,7 +91,7 @@ var ImageUploadOverlay = React.createClass({
                              </ReactCSSTransitionGroup>
                         </Dropzone>
                         <div className="xxUploadDialog-block">
-                        {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
+                        <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>
                         <div className="xxUploadDialog-block">
                             <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
@@ -115,16 +115,16 @@ var ImageUploadOverlay = React.createClass({
                             >{T.get('imageUpload.dropBox')}
                             </button>
                         </div>
-                        <div className="xxUploadDialog-block">
-                            <p></p>
+                            <label className="xxLabel xxLabel--hasUpload">
+                                {"When you are done adding images click below to check out your Neon Score!"}
+                            </label>
                             <button
                                 className={submitClassName.join(' ')}
                                 type="button"
                                 onClick={isValid ? self.props.toggleOpen : null}
                                 data-send-tag={true}
                                 disabled={!isValid}
-                                >{T.get('upload.submit')}</button>
-                        </div>
+                                >{'Submit Collection'}</button>
                         </div>
                         ) : (
                         <button

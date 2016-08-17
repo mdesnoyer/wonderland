@@ -27,6 +27,12 @@
     width: 100%;
     color: $tertiary-color;
     line-height: 26px;
+    
+    &--hasUpload {
+        margin-top: 1em;
+        text-align: left;
+        // background: blue;
+    }
 }
 
 .xxInputText {
