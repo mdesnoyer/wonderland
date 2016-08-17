@@ -236,6 +236,44 @@ $zindex-upload-drag-and-drop: 1;
     }
 }
 
+.xxUploadDialog-drag-drop {
+    float: right;
+    position: relative;
+    width: calc((99.9% - #{$gutter-width}) + #{$gutter-width});
+    min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
+    z-index: $zindex-upload-drag-and-drop + 1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    padding: $gutter-width $gutter-width 42px;
+    background: $white;
+
+    // & > .xxButton {
+    //     width: 25%;
+    //     margin-top: 26px;
+    // }
+}
+
+.xxUploadDialog-block {
+    margin: 0 auto;
+    width: 50%;
+    & > .xxButton {
+        display: inline-block;
+        position: relative;
+        width: 40%;
+
+    }
+    & > .xxButton-center {
+        width: 20%;
+        background: transparent;
+        pointer: none;
+        border: none; 
+     }
+     & > .xxInputText-upload {
+        width: 55%;
+        margin-right: 5%
+     }   
+}
+
+
 .xxUploadDialog-intro {
     padding-bottom: 16px;
 
@@ -325,19 +363,27 @@ $zindex-upload-drag-and-drop: 1;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+.xxUploadDialog-drag-drop
 .xxDragAndDrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $zindex-upload-drag-and-drop;
+    // position: relative;
+    // top: 50%;
+    width: 40%;
+    margin: 0px auto; 
+    // right: 0;
+    // bottom: 0;
+    // left: 0;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center
+    // z-index: $zindex-upload-drag-and-drop;
     border: 3px solid $accent-color;
+    padding: 10%;
     transition: background $default-transition;
+    border-style: dotted;
 
     .has-dragAndDropHover > & {
         background: rgba($accent-color, .05);
+        border-style: dotted;
     }
 }
 

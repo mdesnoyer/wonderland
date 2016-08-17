@@ -54,76 +54,27 @@ var ImageUploadOverlay = React.createClass({
                 dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {T.get('imageUpload.folders')}<br/></div>;
         }
         return (
-            <Dropzone 
-                className={'xxUploadDialog'}
-                multiple={true}
-                disableClick={true}
-                activeClassName='has-dragAndDropHover'
-                encType="multipart/form-data" 
-                onDrop={self.onDrop}
-            >
-                <div className="xxDragAndDrop">
-                    <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
-                        <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-                            {dropzoneContent}
-                            {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
-                        </div>
-                    </ReactCSSTransitionGroup>
-                </div>
-                <div className="xxUploadDialog-inner">
+            <div className="xxUploadDialog">
+                <div className="xxUploadDialog-drag-drop">
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
-                        <p>{instructions}</p>
-                        <p>{messageNeeded}</p>
                     </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            required
-                            onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
+                    <div className="xxDragAndDrop"></div>
+                    <div className="xxUploadDialog-block">
+                        <button className="xxButton xxButton--highlight">local</button>
+                        <button className="xxButton xxButton-center" disabled>OR</button>
+                        <button className="xxButton xxButton--highlight">dropbox</button>
+                    </div>
+                    <div className="xxUploadDialog-block">
+                        <input 
+                            className="xxInputText xxInputText-upload" 
+                            placeholder={"What's this gallery called?"}
                         />
+                        <button className="xxButton xxButton--highlight">submit</button>
                     </div>
-                    { 
-                        self.props.photoCollectionName !== '' ? (
-                            <div>
-                            <div className="xxFormField">
-                                <label className="xxLabel">{T.get('imageUpload.chooseSource')}</label>
-                                <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-                                    {T.get('imageUpload.local')}
-                                    <input
-                                        disabled={self.props.photoUploadMode === 'loading'}
-                                        type="file"
-                                        name="upload"
-                                        multiple
-                                        accept= "image/*"
-                                        className="xxButton-fileInput"
-                                        onChange={self.props.sendLocalPhotos}
-                                    />
-                                </div>
-                                <button 
-                                    id="dropBoxSDK"
-                                    disabled={self.props.photoUploadMode === 'loading'}
-                                    className="xxButton xxButton--uploadDialog xxButton--highlight"
-                                    onClick={self.props.grabDropBox}
-                                >
-                                {T.get('imageUpload.dropBox')}
-                                </button>
-                            </div>
-                            <button
-                                className={submitClassName.join(' ')}
-                                type="button"
-                                onClick={isValid ? self.props.toggleOpen : null}
-                                data-send-tag={true}
-                                disabled={!isValid}
-                            >{T.get('upload.submit')}</button>
-                            </div>
-                            ) : null 
-                        
-                    }
-                    </div>
-            </Dropzone>
+
+                </div>
+            </div>
         );
     },
     onDrop: function (files) {
@@ -152,3 +103,81 @@ var ImageUploadOverlay = React.createClass({
 export default ImageUploadOverlay;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+
+// <div className="xxDragAndDrop">
+//     <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+//         <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
+//             {dropzoneContent}
+//             {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
+//         </div>
+//     </ReactCSSTransitionGroup>
+// </div>
+// <div className="xxUploadDialog-drag-drop">
+//     <div className="xxUploadDialog-intro">
+//         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
+//         <p>{instructions}</p>
+//         <p>{messageNeeded}</p>
+//     </div>
+//     <div className="xxDragAndDrop">
+//     </div>
+//     <div className="xxFormField">
+//         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
+//         <input
+//             className="xxInputText"
+//             type="text"
+//             required
+//             onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
+//         />
+//     </div>
+
+//             <div>
+//             <div className="xxFormField">
+//                 <label className="xxLabel">{T.get('imageUpload.chooseSource')}</label>
+//                 <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
+//                     {T.get('imageUpload.local')}
+//                     <input
+//                         disabled={self.props.photoUploadMode === 'loading'}
+//                         type="file"
+//                         name="upload"
+//                         multiple
+//                         accept= "image/*"
+//                         className="xxButton-fileInput"
+//                         onChange={self.props.sendLocalPhotos}
+//                     />
+
+//                 </div>
+//                 <button 
+//                     id="dropBoxSDK"
+//                     disabled={self.props.photoUploadMode === 'loading'}
+//                     className="xxButton xxButton--uploadDialog xxButton--highlight"
+//                     onClick={self.props.grabDropBox}
+//                 >
+//                 {T.get('imageUpload.dropBox')}
+//                 </button>
+//             </div>
+//             <button
+//                 className={submitClassName.join(' ')}
+//                 type="button"
+//                 onClick={isValid ? self.props.toggleOpen : null}
+//                 data-send-tag={true}
+//                 disabled={!isValid}
+//             >{T.get('upload.submit')}</button>
+//             </div>
+//     </div>
+
+//<Dropzone 
+//     className={'xxUploadDialog'}
+//     multiple={true}
+//     disableClick={true}
+//     activeClassName='has-dragAndDropHover'
+//     encType="multipart/form-data" 
+//     onDrop={self.onDrop}
+// >
+// </Dropzone>
+
+
+
