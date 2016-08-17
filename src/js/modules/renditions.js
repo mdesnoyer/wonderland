@@ -22,7 +22,7 @@ var RENDITIONS = {
             return false;
         }
     },
-    findRendition: function(thumbnail, width, height) {
+    findRendition: function(thumbnail, width = 350, height = 350) {
         // Returns the url for the image to put in a requested size
         //
         // Inputs:

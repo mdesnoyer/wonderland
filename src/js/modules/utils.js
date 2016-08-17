@@ -334,6 +334,7 @@ var UTILS = {
     // For calls using comma separated values, the maximum items supported.
     MAX_CSV_VALUE_COUNT: 100,
 
+    THUMB_TYPE_DEFAULT: 'default',
     TAG_TYPE_IMAGE_COL: 'col',
     TAG_TYPE_VIDEO_COL: 'video',
     HELMET_META_TAGS: [{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'},],
@@ -573,6 +574,12 @@ var UTILS = {
         return res.map(list => {
             return list.join(',');
         });
+    },
+    bestThumbnail: (thumbnails) => {
+        return _.maxBy(thumbnails, 'neon_score');
+    },
+    worstThumbnail: (thumbnails) => {
+        return _.minBy(thumbnails, 'neon_score');
     }
 };
 
