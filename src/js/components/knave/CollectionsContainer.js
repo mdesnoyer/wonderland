@@ -7,9 +7,22 @@ import _ from 'lodash';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 
-import ImageCollection from '../knave/ImageCollection';
-import VideoCollection from '../knave/VideoCollection';
-import TitleFilterLiftPanel from '../knave/TitleFilterLiftPanel';
+import ImageCollection from './ImageCollection';
+import VideoCollection from './VideoCollection';
+import TitleFilterLiftPanel from './TitleFilterLiftPanel';
+import InfoActionContainer from './InfoActionContainer';
+import {
+    InfoDemoLiftPanel,
+    InfoLiftPanel,
+    FilterPanel,
+    EmailPanel,
+    EmailControl,
+    SharePanel,
+    ShareControl,
+    DeletePanel,
+    DeleteControl,
+    SavePanel,
+    SaveControl} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -61,44 +74,63 @@ const CollectionsContainer = React.createClass({
         const worst = UTILS.worstThumbnail(thumbnails);
         // TODO? Remove best and worst from thumbs
 
-        const demographicSelector = (
+        const demoSelector = (
             // TODO Look at demographic thumbs, build
             // list and have callback to rerender with new thumbs.
-            <div/>
+            <div />
         );
 
         // List of right-hand side control components for
         // the content given type and session.
         const panels = [
-        //    <TitleFilterLiftPanel title={collection.name}/>
+            <InfoDemoLiftPanel
+                title={collection.name}
+                demoSelector={demoSelector}
+            />,
+            <FilterPanel />,
+            <EmailPanel />,
+            <SharePanel />,
+            <DeletePanel />,
+            <SavePanel />
+        ];
+        // TODO factor to ensure panels and controls are consistent.
+        const controls = [
+            <EmailControl handleClick={()=>{}} />,
+            <ShareControl handleClick={()=>{}} />,
+            <DeleteControl handleClick={()=>{}} />,
+            <SaveControl handleClick={()=>{}} />
         ];
 
         switch(collection.tag_type) {
         case UTILS.TAG_TYPE_IMAGE_COL:
+
+            // TODO thumbnail list behaves.
+
             return (
                 <ImageCollection
                     key={collection.tag_id}
-                    title={collection.name}
                     leftFeatureThumbnail={worst}
                     rightFeatureThumbnail={best}
                     smallThumbnails={thumbnails}
                     infoActionPanels={panels}
-                    demographicSelector={demographicSelector}
+                    infoActionControls={controls}
+                    demoSelector={demoSelector}
                 />
             );
         case UTILS.TAG_TYPE_VIDEO_COL:
+
             const _default = _.find(thumbnails, t => {
                 return UTILS.THUMB_TYPE_DEFAULT === t.type;
             });
             return (
                 <VideoCollection
                     key={collection.tag_id}
-                    title={collection.name}
                     leftFeatureThumbnail={_default? _default: worst}
                     rightFeatureThumbnail={best}
                     smallThumbnails={thumbnails}
                     infoActionPanels={panels}
-                    demographicSelector={demographicSelector}
+                    infoActionControls={controls}
+                    demoSelector={demoSelector}
                 />
            );
         }
@@ -209,4 +241,3 @@ const CollectionsContainer = React.createClass({
 export default CollectionsContainer;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 

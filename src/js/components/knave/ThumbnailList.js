@@ -6,13 +6,14 @@ import Thumbnail from './_Thumbnail';
 import RENDITIONS from '../../modules/renditions';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const ThumbnailList = React.createClass({
+export const ThumbnailList = React.createClass({
     propTypes: {
         // An array of thumbnail resource
         thumbnails: PropTypes.array.isRequired,
         // The number of thumbnails to display
         numberToDisplay: PropTypes.number.isRequired
     },
+
     render: function() {
         const thumbs = this.props.thumbnails.slice(0, this.props.numberToDisplay).map(t => {
             return (<Thumbnail
@@ -27,4 +28,9 @@ const ThumbnailList = React.createClass({
     }
 });
 
-export default ThumbnailList;
+// TODO wrap this with the show more behavior
+export const ShowMoreThumbnailList = React.createClass({
+    render: function() {
+        return <ThumbnailList {...this.props} />;
+    }
+});

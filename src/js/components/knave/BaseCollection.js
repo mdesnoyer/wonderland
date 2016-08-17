@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import FeatureThumbnail from './_FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
-import ThumbnailList from './ThumbnailList';
+import {ThumbnailList, ShowMoreThumbnailList} from './ThumbnailList';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -16,8 +16,6 @@ import T from '../../modules/translation';
 const BaseCollection = React.createClass({
 
     propTypes: {
-        // User's name of this collection
-        title: PropTypes.string.isRequired,
 
         // Left and right large thumbnail
         leftFeatureThumbnail: PropTypes.object.isRequired,
@@ -28,8 +26,17 @@ const BaseCollection = React.createClass({
         // List of thumbnails to be displayed as small items
         smallThumbnails: PropTypes.array.isRequired,
 
+        // TODO shape the array
+        // Defines the display components of the right-hand box as array
+        infoActionPanels: PropTypes.array.isRequired,
         // Defines the control components of the right-side box as array
-        infoActionPanels: PropTypes.array.isRequired
+        infoActionControls: PropTypes.array.isRequired
+    },
+
+    getInitialState: function() {
+        return {
+            smallThumbnailRows: 1
+        };
     },
 
     handleClick: function() { },
@@ -52,26 +59,46 @@ const BaseCollection = React.createClass({
             />
         );
 
+        /*
         const info = (
-            <InfoActionContainer panels={this.props.infoActionPanels} />
+            <InfoActionContainer panels={this.props.infoActions} />
         );
+        /**/
 
         // The bottom small thumbnail list
-        const list = (
-            <ThumbnailList
+        // Show 6*rows of thumbnails unless there are more,
+        // then show 6*rows-1 and the show more button.
+        let thumbnailList;
+        if(6 * this.state.smallThumbnailRows >= this.props.smallThumbnails.length) {
+            thumbnailList = <ThumbnailList
                 className="xxCollectionImages-all"
                 thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5}
-            />
-        );
+                numberToDisplay={this.props.smallThumbnails.length}
+            />;
+        } else {
+            thumbnailList = <ShowMoreThumbnailList
+                className="xxCollectionImages-all"
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={6 * this.state.smallThumbnailRows - 1}
+                handleShowMore={() => {
+                    this.setState({
+                        smallThumbnailRows: this.state.smallThumbnailRows + 3
+                    });
+                }}
+            />;
+        }
+
 
         return (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
                     {left}
                     {right}
-                    {info}
-                    {list}
+                    <InfoActionContainer
+                        children={this.props.infoActionPanels}
+                        controls={this.props.infoActionControls}
+                    />
+                    {thumbnailList}
                 </div>
             </div>
         );

@@ -7,7 +7,7 @@ import React, {PropTypes} from 'react';
 const InfoActionContainer = React.createClass({
 
     propTypes: {
-        panels: PropTypes.arrayOf(PropTypes.element).isRequired
+        controls: PropTypes.array.isRequired
     },
 
     getInitialState: function() {
@@ -18,8 +18,29 @@ const InfoActionContainer = React.createClass({
     },
 
     render: function() {
-        return (<div/>);
-        //(this.props.panels[this.state.current])
+        // Convert single child children to array.
+        const children = React.Children.toArray(this.props.children);
+        const selected = children[this.state.current];
+        let panelId = 0;
+        // TODO need to wrap with click handlers with panelId
+        const controls = this.props.controls.map(control => {
+            return (
+                <li
+                    key={control.type.displayName}
+                    className="xxCollectionActions-item"
+                >
+                    {control}
+                </li>
+            );
+        });
+        return (
+            <div>
+                {selected}
+                <ul className="xxCollectionActions">
+                    {controls}
+                </ul>
+            </div>
+        );
     }
 });
 
