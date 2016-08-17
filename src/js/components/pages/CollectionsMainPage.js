@@ -1,5 +1,5 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-import React from 'react';
+import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
@@ -11,27 +11,33 @@ import { objectToGetParams } from '../../modules/sharing';
 
 import ImageCollection from '../knave/ImageCollection';
 import VideoCollection from '../knave/VideoCollection';
+//import ErrorCollection from '../knave/ErrorCollection';
 import SiteHeader from '../wonderland/SiteHeader';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
     mixins: [AjaxMixin],
     contextTypes: {
-        router: React.PropTypes.object.isRequired
+        router: PropTypes.object.isRequired
     },
+    // TODO push this into a reusable (searchresult?)
     getInitialState: function() {
         return {
-            // Map of id to tag resource.
-            collections: {},
+            // These are stores of tag, thumb and video resources.
 
-            // Map of id of thumbnail.
+            // Map of id to tag.
+            tags: {},
+
+            // Map of id to thumbnail.
             thumbnails: {},
 
-            // Map of id to video resource.
+            // Map of id to video.
             videos: {},
 
-            // State of search paging--current page, page count, next page url, etc.
+            // State of search paging: current page, page count, next, prev page url.
             search: {
+                currPage: null,
+                pageCount: null,
                 next: null,
                 prev: null
             }
@@ -41,49 +47,72 @@ const CollectionsMainPage = React.createClass({
         if (!SESSION.active()) {
             this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
         } else {
-            this.getCollections()
+            this.search()
         }
     },
-    render: function() {
-        const self = this;
-        const collections = _.values(this.state.collections).map(collection => {
-            return this.constructComponent(collection, self._additional(collection));
-        });
-        return (<div>{collections}</div>);
-    },
-    // Given a collection, get additional info needed for render,
-    // or return an empty object.
-    _additional: function(collection) {
-        return (collection.tag_type === UTILS.TAG_TYPE_VIDEO_COL)?
-            this.state.videos[collection.video_id]:
-            {};
-    },
-    // Given a collection and an optional object, construct
+    // Given a collection and an optional object, construct a
     // valid Collection component instance and return it
     //
     // else return an error component.
-    constructComponent: function(collection, additional) {
+    buildCollectionComponent: function(tag_id) {
+
+        const collection = this.state.tags[tag_id];
+        const thumbnails = _
+            .chain(this.state.thumbnails)
+            .pick(collection.thumbnail_ids)
+            .values()
+            .orderBy('neon_score', 'desc')
+            .value();
+        const best = UTILS.bestThumbnail(thumbnails);
+        const worst = UTILS.worstThumbnail(thumbnails);
+        // TODO? Remove best and worst from thumbs
+
+        const demographicSelector = (
+            // TODO Look at demographic thumbs, build
+            // list and have callback to rerender with new thumbs.
+            <div/>
+        );
+
+        // List of right-hand side control components for
+        // the content given type and session.
+        const controls = [];
+
         switch(collection.tag_type) {
-        case 'col':
+        case UTILS.TAG_TYPE_IMAGE_COL:
             return (
                 <ImageCollection
                     key={collection.tag_id}
-                    thumbnails={this.state.thumbnails}
-                    {...collection}
-                    {...additional}
+                    title={collection.name}
+                    leftFeatureThumbnail={worst}
+                    rightFeatureThumbnail={best}
+                    smallThumbnails={thumbnails}
+                    controls={controls}
+                    demographicSelector={demographicSelector}
                 />
             );
-        case 'video':
+        case UTILS.TAG_TYPE_VIDEO_COL:
+            const _default = _.find(thumbnails, t => {
+                return UTILS.THUMB_TYPE_DEFAULT === t.type;
+            });
             return (
                 <VideoCollection
                     key={collection.tag_id}
-                    thumbnails={this.state.thumbnails}
-                    {...collection}
-                    {...additional}
+                    title={collection.name}
+                    leftFeatureThumbnail={_default? _default: worst}
+                    rightFeatureThumbnail={best}
+                    smallThumbnails={thumbnails}
+                    controls={controls}
+                    demographicSelector={demographicSelector}
                 />
            );
         }
-        return <ErrorCollection/>
+        /*
+        return (
+            <ErrorCollection
+                message={T.get('error.generic')}
+            />
+        );
+        /**/
     },
     updateField: function(field, value) {
         var self = this;
@@ -105,23 +134,21 @@ const CollectionsMainPage = React.createClass({
     postImages: function() {
         alert('images!');
     },
-    getCollections: function(paging) {
+    search: function() {
         const self = this,
             options = {
                 data: {
-                    limit: UTILS.RESULTS_PAGE_SIZE}}
-        ;
-        paging = paging ? paging.split('?')[1] : ''
+                    limit: UTILS.RESULTS_PAGE_SIZE}};
 
-        const _stateUpdate = self.getInitialState();
+        const state = self.getInitialState();
 
         // Search for tag ids, get tags and videos, then get thumbnails for those.
-        self.GET('tags/search?' + paging, options)
+        self.GET('tags/search', options)
         .then(searchRes => {
 
             //set next page to the state
-            _stateUpdate.search.next = searchRes.next_page;
-            _stateUpdate.search.prev = searchRes.prev_page;
+            state.search.next = searchRes.next_page;
+            state.search.prev = searchRes.prev_page;
 
             // Search for all the tags.
             const _tagData = {
@@ -158,8 +185,8 @@ const CollectionsMainPage = React.createClass({
             videosRes = combined[1];
 
             // Store the map of collections, videos.
-            _stateUpdate.collections = tagsRes;
-            _stateUpdate.videos = videosRes;
+            state.tags = tagsRes;
+            state.videos = videosRes;
 
             // Get and concatenate all thumbnail ids.
             const tags = UTILS.valuesFromMap(tagsRes);
@@ -183,18 +210,18 @@ const CollectionsMainPage = React.createClass({
         .then(thumbsRes => {
 
             thumbsRes.thumbnails.map(t => {
-                _stateUpdate.thumbnails[t.thumbnail_id] = t;
+                state.thumbnails[t.thumbnail_id] = t;
             });
 
             // Finally, update state.
-            self.setState(_stateUpdate);
+            self.setState(state);
         })
-        .catch(err => {
-            // Log the stack trace.
-            console.error(err);
-            throw err;
+    },
+    render: function() {
+        const collections = _.keys(this.state.tags).map(tag => {
+            return this.buildCollectionComponent(tag);
         });
-
+        return (<ul>{collections}</ul>);
     }
 });
 

@@ -7,9 +7,10 @@ import React from 'react';
 const _Thumbnail = React.createClass({
 
     propTypes: {
+        // The neon score [0-99]
         score: React.PropTypes.number,
-        src: React.PropTypes.string.isRequired,
-        key: React.PropTypes.string
+        // Image url with appropriate dimensions
+        src: React.PropTypes.string.isRequired
     },
 
     noop: e => {
@@ -21,7 +22,7 @@ const _Thumbnail = React.createClass({
             <a
                 className="xxThumbnail"
                 onClick={this.noop}
-                data-score={this.props.scores}
+                data-score={this.props.score}
             >
                 <img
                     className="xxThumbnail-image"
