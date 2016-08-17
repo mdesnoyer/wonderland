@@ -59,27 +59,62 @@ var ImageUploadOverlay = React.createClass({
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
                     </div>
-                    <div className="xxDragAndDrop">
-                         <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+                    <Dropzone  
+                        className="xxDragAndDrop"
+                        multiple={true}
+                        disableClick={true}
+                        activeClassName='xxDragAndDrop--has-dragAndDropHover'
+                        encType="multipart/form-data" 
+                        onDrop={self.onDrop}
+                    >
+                         <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
                              <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
                                  {dropzoneContent}
                              </div>
                          </ReactCSSTransitionGroup>
-                    </div>
+                    </Dropzone>
                     <div className="xxUploadDialog-block">
                     {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
                     </div>
                     <div className="xxUploadDialog-block">
-                        <button className="xxButton xxButton--highlight">local</button>
-                        <button className="xxButton xxButton-center" disabled>OR</button>
-                        <button className="xxButton xxButton--highlight">dropbox</button>
+                        <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
+                        {T.get('imageUpload.local')}
+                            <input
+                                disabled={self.props.photoUploadMode === 'loading'}
+                                type="file"
+                                name="upload"
+                                multiple
+                                accept= "image/*"
+                                className="xxButton-fileInput"
+                                onChange={self.props.sendLocalPhotos}
+                            />
+                        </div>
+                        <button
+                            className="xxButton xxButton-center" disabled
+                            >OR</button>
+                        <button
+                            id="dropBoxSDK"
+                            disabled={self.props.photoUploadMode === 'loading'}
+                            className="xxButton xxButton--highlight"
+                            onClick={self.props.grabDropBox}
+                        >{T.get('imageUpload.dropBox')}
+                        </button>
                     </div>
                     <div className="xxUploadDialog-block">
                         <input 
                             className="xxInputText xxInputText-upload" 
                             placeholder={"What's this gallery called?"}
+                            type="text"
+                            required
+                            onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
                         />
-                        <button className="xxButton xxButton--highlight">submit</button>
+                        <button
+                            className={submitClassName.join(' ')}
+                            type="button"
+                            onClick={isValid ? self.props.toggleOpen : null}
+                            data-send-tag={true}
+                            disabled={!isValid}
+                            >{T.get('upload.submit')}</button>
                     </div>
 
                 </div>

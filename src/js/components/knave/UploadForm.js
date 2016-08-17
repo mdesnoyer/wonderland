@@ -319,12 +319,14 @@ var UploadForm = React.createClass({
                 });
         }
         else {
+            debugger
             self.setState({ 
                 photoUploadMode: 'loading',
                 photoUploadCount: totalFileNumber,
                 numberUploadedCount: 0, 
                 photoErrorCount: errorFiles
             },  function() {
+                debugger
                 self.grabRefreshToken(
                     formDataArray.forEach(function(formData) {
                         self.sendFormattedData(formData);

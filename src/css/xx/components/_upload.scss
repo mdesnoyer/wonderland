@@ -239,27 +239,26 @@ $zindex-upload-drag-and-drop: 1;
 .xxUploadDialog-drag-drop {
     float: right;
     position: relative;
-    width: calc((99.9% - #{$gutter-width}) + #{$gutter-width});
+    width: calc((99.9% - #{$gutter-width}) * 2/5 + #{$gutter-width});
     min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
     z-index: $zindex-upload-drag-and-drop + 1;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
 
-    // & > .xxButton {
-    //     width: 25%;
-    //     margin-top: 26px;
-    // }
 }
 
 .xxUploadDialog-block {
     margin: 0 auto;
-    width: 50%;
+    width: calc((99.9% - #{$gutter-width}) *  + #{$gutter-width});;
     text-align: center;
     & > .xxButton {
         display: inline-block;
         position: relative;
         width: 40%;
+    }
+    & > .xxButton--inputfile {
+    -webkit-appearance: none;
 
     }
     & > .xxButton-center {
@@ -270,8 +269,8 @@ $zindex-upload-drag-and-drop: 1;
      }
      & > .xxInputText-upload {
         width: 55%;
-        margin-right: 5%
-     }   
+        margin-right: 5%;
+     }
 }
 
 
@@ -364,38 +363,28 @@ $zindex-upload-drag-and-drop: 1;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-.xxUploadDialog-drag-drop
 .xxDragAndDrop {
-    // position: relative;
-    // top: 50%;
-    width: 40%;
+    position: relative;
+    width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});;;
     margin: 0px auto; 
-    // right: 0;
-    // bottom: 0;
-    // left: 0;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center
-    // z-index: $zindex-upload-drag-and-drop;
     border: 3px solid $accent-color;
-    padding: 10%;
+    padding: calc((99.9% - #{$gutter-width}) * 1/4 + #{$gutter-width});;;
     transition: background $default-transition;
     border-style: dotted;
-
-    .has-dragAndDropHover > & {
+    &--has-dragAndDropHover {
         background: rgba($accent-color, .05);
-        border-style: dotted;
+        border-style: solid;
     }
 }
 
+
+
 .xxDragAndDrop-content {
     @include all-caps-title;
-
     position: absolute;
-    top: 50%;
     right: 0;
     left: 0;
-    width: ($page-max-width - $gutter-width * 4) / 3;
+    width: 100%;
     margin: 0 auto;
     color: rgba($secondary-color, .7);
     line-height: 16px;
@@ -410,14 +399,14 @@ $zindex-upload-drag-and-drop: 1;
         display: block;
         width: 68px;
         height: 43px;
-        margin: 0 auto 18px;
+        margin: 0 auto;
         background: url(../img/xx/upload.svg) 0 0 / 100% 100% no-repeat;
     }
 }
 
 .xxDragAndDrop-complete {
     &::before {
-        background-image: url(../img/xx/upload-complete.svg);
+        background-image: url(../img/xx/upload-complete.svg) no-repeat;
     }
 }
 
