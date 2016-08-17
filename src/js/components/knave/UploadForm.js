@@ -44,7 +44,8 @@ var UploadForm = React.createClass({
             photoUploadMode: 'initial', // initial, loading, success,
             photoUploadThumbnailIds: [],
             photoCollectionName: '',
-            videoUploadUrl:''
+            videoUploadUrl:'',
+            numberUploadedCount:0
         };
     },
     toggleOpen: function(e) {
@@ -274,11 +275,12 @@ var UploadForm = React.createClass({
             formDataArray = [],
             errorFiles = 0,
             formData = new FormData(),
-            count = 0 ,
+            count = 0,
             size = 0,
             lastIndex = files.length -1,
             totalFileNumber = 0
-        ;        
+        ;
+        debugger        
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1

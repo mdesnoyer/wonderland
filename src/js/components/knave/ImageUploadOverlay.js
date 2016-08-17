@@ -13,6 +13,11 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUploadOverlay = React.createClass({
+    getInitialState: function(){
+        return {
+            isNextClicked: false
+        }
+    },
     render: function() {
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
@@ -51,7 +56,7 @@ var ImageUploadOverlay = React.createClass({
                 break; 
             default: 
                 dragDropClassKey = 'hint';
-                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {T.get('imageUpload.folders')}<br/></div>;
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/> {"Each Collection can have up to 100 Images!"}<br/></div>;
         }
         return (
             <div className="xxUploadDialog">
@@ -63,12 +68,14 @@ var ImageUploadOverlay = React.createClass({
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
                         <input
                             className="xxInputText"
+                            placeholder="Lets Start by naming your collection!"
                             type="text"
                             required
                             onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
                         />
                     </div>
-                    { self.props.photoCollectionName !== '' ? (
+                    { self.state.isNextClicked ? (
+                        <div>
                         <Dropzone  
                             className="xxDragAndDrop"
                             multiple={true}
@@ -109,13 +116,7 @@ var ImageUploadOverlay = React.createClass({
                             </button>
                         </div>
                         <div className="xxUploadDialog-block">
-                            <input 
-                                className="xxInputText xxInputText-upload" 
-                                placeholder={"What's this gallery called?"}
-                                type="text"
-                                required
-                                onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
-                            />
+                            <p></p>
                             <button
                                 className={submitClassName.join(' ')}
                                 type="button"
@@ -124,11 +125,25 @@ var ImageUploadOverlay = React.createClass({
                                 disabled={!isValid}
                                 >{T.get('upload.submit')}</button>
                         </div>
-                        ) : null
+                        </div>
+                        ) : (
+                        <button
+                            disabled={self.props.photoCollectionName === ''}
+                            onClick={self.handleClick} 
+                            className={submitClassName.join(' ')} 
+                            type="button"
+                        >Next</button>
+                        )
                     }
                     </div>
             </div>
         );
+    },
+    handleClick: function() {
+        var self = this;
+        if (self.props.photoCollectionName !== '' ) {
+            self.setState({ isNextClicked: true});    
+        }
     },
     onDrop: function (files) {
         var self = this;
