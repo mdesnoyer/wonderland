@@ -5,8 +5,8 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import FeatureThumbnail from './_FeatureThumbnail';
+import InfoActionContainer from './InfoActionContainer';
 import ThumbnailList from './ThumbnailList';
-import InfoPanels from './InfoPanels';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -28,14 +28,15 @@ const BaseCollection = React.createClass({
         // List of thumbnails to be displayed as small items
         smallThumbnails: PropTypes.array.isRequired,
 
-        // Defines the control components of the right-side box
-        controls: PropTypes.array.isRequired
+        // Defines the control components of the right-side box as array
+        infoActionPanels: PropTypes.array.isRequired
     },
 
     handleClick: function() { },
 
     render: function() {
 
+        // The main left, right comparison thumbnails
         const left = (
             <FeatureThumbnail
                 title={this.props.leftFeatureTitle}
@@ -43,7 +44,6 @@ const BaseCollection = React.createClass({
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
             />
         );
-
         const right = (
             <FeatureThumbnail
                 title={this.props.rightFeatureTitle}
@@ -53,9 +53,10 @@ const BaseCollection = React.createClass({
         );
 
         const info = (
-            <InfoPanels {...this.props.infoPanels} />
+            <InfoActionContainer panels={this.props.infoActionPanels} />
         );
 
+        // The bottom small thumbnail list
         const list = (
             <ThumbnailList
                 className="xxCollectionImages-all"
