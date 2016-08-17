@@ -59,7 +59,16 @@ var ImageUploadOverlay = React.createClass({
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
                     </div>
-                    <div className="xxDragAndDrop"></div>
+                    <div className="xxDragAndDrop">
+                         <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+                             <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
+                                 {dropzoneContent}
+                             </div>
+                         </ReactCSSTransitionGroup>
+                    </div>
+                    <div className="xxUploadDialog-block">
+                    {self.props.photoUploadThumbnailIds.length + "/100 uploaded" }
+                    </div>
                     <div className="xxUploadDialog-block">
                         <button className="xxButton xxButton--highlight">local</button>
                         <button className="xxButton xxButton-center" disabled>OR</button>
