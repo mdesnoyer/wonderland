@@ -49,43 +49,84 @@ const CollectionsContainer = React.createClass({
             // Map of id to tag.
             tags: {},
 
-            // Map of id to thumbnail.
-            thumbnails: {},
+            // Map of tag id to integer index of gender, then age.
+            // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
+            // By default, the demographic is gender=none, age=none.
+            selectedDemographic: {},
+
+            // Map of gender, age, thumbnail id to thumbnail.
+            // @TODO consider how to initialize this structure.
+            thumbnails: {
+                null: {
+                    null: {},
+                    0: {},
+                    1: {},
+                    2: {},
+                    3: {},
+                    4: {}
+                },
+                0: {
+                    null: {},
+                    0: {},
+                    1: {},
+                    2: {},
+                    3: {},
+                    4: {}
+                },
+                1: {
+                    null: {},
+                    0: {},
+                    1: {},
+                    2: {},
+                    3: {},
+                    4: {}
+                }
+            },
 
             // Map of id to video.
             videos: {},
         };
     },
 
-    // Given a collection and an optional object, construct a
-    // valid Collection component instance and return it
+    // Given a tag id, construct a  valid Collection
+    // component instance and return it.
     //
-    // else return an error component.
-    buildCollectionComponent: function(tag_id) {
+    // Else return an error component.
+    buildCollectionComponent: function(tagId) {
 
-        const collection = this.state.tags[tag_id];
+        const collection = this.state.tags[tagId];
+
+        // If a demographic was selected, use it. Else nulls.
+        let gender,
+            age;
+        if (this.state.selectedDemographic[tagId]) {
+            [gender, age] = this.state.selectedDemographic[tagId];
+        } else {
+            [gender, age] = [null, null];
+        }
+
         const thumbnails = _
-            .chain(this.state.thumbnails)
+            .chain(this.state.thumbnails[gender][age])
             .pick(collection.thumbnail_ids)
             .values()
             .orderBy('neon_score', 'desc')
             .value();
+        debugger
         const best = UTILS.bestThumbnail(thumbnails);
         const worst = UTILS.worstThumbnail(thumbnails);
+
         // TODO? Remove best and worst from thumbs
 
-        const demoSelector = (
-            // TODO Look at demographic thumbs, build
-            // list and have callback to rerender with new thumbs.
-            <div />
-        );
+        const onDemographicChange = e => {
+            console.log(e);
+        };
 
         // List of right-hand side control components for
         // the content given type and session.
         const panels = [
             <InfoDemoLiftPanel
                 title={collection.name}
-                demoSelector={demoSelector}
+                onDemographicChange={onDemographicChange}
             />,
             <FilterPanel />,
             <EmailPanel />,
@@ -104,8 +145,6 @@ const CollectionsContainer = React.createClass({
         switch(collection.tag_type) {
         case UTILS.TAG_TYPE_IMAGE_COL:
 
-            // TODO thumbnail list behaves.
-
             return (
                 <ImageCollection
                     key={collection.tag_id}
@@ -114,7 +153,6 @@ const CollectionsContainer = React.createClass({
                     smallThumbnails={thumbnails}
                     infoActionPanels={panels}
                     infoActionControls={controls}
-                    demoSelector={demoSelector}
                 />
             );
         case UTILS.TAG_TYPE_VIDEO_COL:
@@ -122,6 +160,7 @@ const CollectionsContainer = React.createClass({
             const _default = _.find(thumbnails, t => {
                 return UTILS.THUMB_TYPE_DEFAULT === t.type;
             });
+
             return (
                 <VideoCollection
                     key={collection.tag_id}
@@ -130,17 +169,11 @@ const CollectionsContainer = React.createClass({
                     smallThumbnails={thumbnails}
                     infoActionPanels={panels}
                     infoActionControls={controls}
-                    demoSelector={demoSelector}
                 />
            );
         }
-        /*
-        return (
-            <ErrorCollection
-                message={T.get('error.generic')}
-            />
-        );
-        /**/
+        // TODO
+        return <div />;
     },
 
     search: function() {
@@ -196,12 +229,36 @@ const CollectionsContainer = React.createClass({
 
             // Store the map of collections, videos.
             state.tags = tagsRes;
-            state.videos = videosRes;
+            state.videos = videosRes.videos;
+
+            // Store the demographic thumbnails.
+            // TODO? there may be collision here.
+            _.values(state.videos).map(video => {
+                video.demographic_thumbnails.map(dem => {
+                    let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                    let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                    if (age === undefined || gender === undefined) {
+                        console.warn('Unknown demo ', dem.age, dem.gender);
+                        return;
+                    }
+                    // Set each of the thumbnails and bad thumbnails to store.
+                    dem.thumbnails.map(t => {
+                        state.thumbnails[gender][age][t.thumbnail_id] = t;
+                    });
+                    dem.bad_thumbnails.map(t => {
+                        state.thumbnails[gender][age][t.thumbnail_id] = t;
+                    });
+                });
+            });
+
 
             // Get and concatenate all thumbnail ids.
             const tags = UTILS.valuesFromMap(tagsRes);
             const thumbIds = tags.reduce((array, tag) => {
-                array = array.concat(tag.thumbnail_ids);
+                // Video thumbnails are already stored.
+                if(tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL) {
+                    array = array.concat(tag.thumbnail_ids);
+                }
                 return array;
             }, []);
             // Create array of CSVs of max length.
@@ -220,7 +277,7 @@ const CollectionsContainer = React.createClass({
         .then(thumbsRes => {
 
             thumbsRes.thumbnails.map(t => {
-                state.thumbnails[t.thumbnail_id] = t;
+                state.thumbnails[null][null][t.thumbnail_id] = t;
             });
 
             // Finally, update state.

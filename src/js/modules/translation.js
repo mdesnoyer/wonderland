@@ -41,6 +41,7 @@ const _DEFAULT_LOCALE = 'en-US',
             upload: 'Upload',
             tryItOut: 'Try it Out',
             gotIt: 'Got it!',
+            none: 'None',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
