@@ -546,24 +546,6 @@ var UTILS = {
           return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     },
 
-    // Given a map, return the list of values of all enumerable keys.
-    valuesFromMap: map => {
-        const values = [];
-        for (let key in map) {
-            values.push(map[key]);
-        }
-        return values;
-    },
-
-    // Given a map of key to list, return the concatenated list of all lists.
-    flatListFromMap: map => {
-        const list = [];
-        for (let key in map) {
-            list.concat(map[key]);
-        }
-        return list;
-    },
-
     // Given an array of values, format values into comma-separated values
     // and return as list of CSV string.
     csvFromArray: (array, batchMax) => {
@@ -588,11 +570,26 @@ var UTILS = {
             return list.join(',');
         });
     },
+
+    // Given array of thumbnails, return the thumbnail with best score.
     bestThumbnail: (thumbnails) => {
         return _.maxBy(thumbnails, 'neon_score');
     },
+
+    // Given array of thumbnails, return the thumbnail with worst score.
     worstThumbnail: (thumbnails) => {
         return _.minBy(thumbnails, 'neon_score');
+    },
+
+    // Get the Cartesian product of arrays.
+    productOfArrays: function() {
+        return _.reduce(arguments, function(a, b) {
+            return _.flatten(_.map(a, function(x) {
+                return _.map(b, function(y) {
+                    return x.concat([y]);
+                });
+            }), true);
+        }, [ [] ]);
     }
 };
 

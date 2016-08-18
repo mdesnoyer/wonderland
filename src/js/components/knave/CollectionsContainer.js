@@ -88,6 +88,21 @@ const CollectionsContainer = React.createClass({
         };
     },
 
+    // Get thumbnails by gender enum, age enum, thumb id.
+    // If missing, loads missing from data source.
+    // Return map of thumbnail id to thumbail.
+    getThumbnails(gender, age, thumbnailIds) {
+        const thumbnails = {};
+        const missingIds = [];
+        thumbnailIds.map(thumbnailId => {
+            thumbnails[thumbnailId] = this.state[gender][age][thumbnailId];
+            if(undefined === thumbnails[thumbnailId]) {
+                missingIds.push(thumbnailId);
+            }
+        });
+        return thumbnails;
+    },
+
     // Return array of gender,age enum array based
     // on state of collection.
     getDemoOptionArray: function(tagId) {
@@ -95,8 +110,12 @@ const CollectionsContainer = React.createClass({
         const tag = this.state.tags[tagId];
         switch(tag.tag_type) {
         case UTILS.TAG_TYPE_IMAGE_COL:
-            // TODO? all possible options enumerated
-            return [[0,0]];
+            // All factor posibilities are available.
+            // TODO? do statically as class behavior.
+            return UTILS.productOfArrays(
+                _.values(UTILS.FILTER_GENDER_COL_ENUM),
+                _.values(UTILS.FILTER_AGE_COL_ENUM)
+            );
         case UTILS.TAG_TYPE_VIDEO_COL:
             const video = this.state.videos[tag.video_id];
             return video.demographic_thumbnails.map(demo => {
@@ -259,7 +278,6 @@ const CollectionsContainer = React.createClass({
             });;
 
             // Store the demographic thumbnails.
-            // TODO? there may be collision here.
             _.values(state.videos).map(video => {
                 video.demographic_thumbnails.map(dem => {
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
@@ -278,9 +296,8 @@ const CollectionsContainer = React.createClass({
                 });
             });
 
-
             // Get and concatenate all thumbnail ids.
-            const tags = UTILS.valuesFromMap(tagsRes);
+            const tags = _.values(tagsRes);
             const thumbIds = tags.reduce((array, tag) => {
                 // Video thumbnails are already stored.
                 if(tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL) {
@@ -288,29 +305,41 @@ const CollectionsContainer = React.createClass({
                 }
                 return array;
             }, []);
-            // Create array of CSVs of max length.
-            const thumbArgs = UTILS.csvFromArray(thumbIds, UTILS.MAX_CSV_VALUE_COUNT);
 
-            // Batch only large requests since batch is slow.
-            if (thumbArgs.length > 1) {
-                thumbArgs.map(arg => {
-                    self.batch('GET', 'thumbnails', {thumbnail_id: arg});
-                });
-                return self.sendBatch();
-            } else {
-                return self.GET('thumbnails', {data: {thumbnail_id: thumbArgs[0]}});
-            }
+            return this.loadThumbnails(thumbIds, 0, 0, state);
         })
-        .then(thumbsRes => {
+    },
 
+    loadThumbnails: function(thumbnailIds, gender=0, age=0, state={}) {
+        const self = this;
+
+        // Create array of CSVs of max length.
+        const thumbArgs = UTILS.csvFromArray(thumbnailIds, UTILS.MAX_CSV_VALUE_COUNT);
+
+        let promise;
+        // Batch only large requests since batch is slower.
+        if (thumbArgs.length > 1) {
+            thumbArgs.map(arg => {
+                self.batch('GET', 'thumbnails', {thumbnail_id: arg});
+            });
+            promise = self.sendBatch();
+        } else {
+            promise = self.GET('thumbnails', {data: {thumbnail_id: thumbArgs[0]}});
+        }
+
+        promise.then(thumbsRes => {
+            // Merge loaded thumbnails to state.thumbnails.
+            const thumbnails = state.thumbnails? state.thumbnails: self.getInitialState().thumbnails;
             thumbsRes.thumbnails.map(t => {
-                state.thumbnails[0][0][t.thumbnail_id] = t;
+                thumbnails[gender][age][t.thumbnail_id] = t;
             });
 
-            // Finally, update state.
+            Object.assign(state, {thumbnails: thumbnails});
+            console.log(state);
             self.setState(state);
         })
     },
+
 
     render: function() {
         const collections = _.keys(this.state.tags).map(tagId => {
