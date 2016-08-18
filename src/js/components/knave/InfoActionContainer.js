@@ -12,7 +12,7 @@ const InfoActionContainer = React.createClass({
 
     getInitialState: function() {
         return {
-            // Id into props of current panel
+            // Id into props.children of current panel
             current: 0
         };
     },

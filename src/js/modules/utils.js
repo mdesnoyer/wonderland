@@ -304,17 +304,17 @@ var UTILS = {
             F: 'Female'
     },
     FILTER_GENDER_COL_ENUM: {
-        null: null,
-        'M'   : 0,
-        'F' : 1,
+        null  : 0,
+        'M'   : 1,
+        'F'   : 2,
     },
     FILTER_AGE_COL_ENUM: {
-        null: null,
-        '18-19': 0,
-        '20-29': 1,
-        '30-39': 2,
-        '40-49': 3,
-        '50+'  : 4
+        null:    0,
+        '18-19': 1,
+        '20-29': 2,
+        '30-39': 3,
+        '40-49': 4,
+        '50+'  : 5
     },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',

@@ -57,29 +57,29 @@ const CollectionsContainer = React.createClass({
             // Map of gender, age, thumbnail id to thumbnail.
             // @TODO consider how to initialize this structure.
             thumbnails: {
-                null: {
-                    null: {},
-                    0: {},
-                    1: {},
-                    2: {},
-                    3: {},
-                    4: {}
-                },
                 0: {
-                    null: {},
                     0: {},
                     1: {},
                     2: {},
                     3: {},
-                    4: {}
+                    4: {},
+                    5: {}
                 },
                 1: {
-                    null: {},
                     0: {},
                     1: {},
                     2: {},
                     3: {},
-                    4: {}
+                    4: {},
+                    5: {}
+                },
+                2: {
+                    0: {},
+                    1: {},
+                    2: {},
+                    3: {},
+                    4: {},
+                    5: {}
                 }
             },
 
@@ -102,7 +102,7 @@ const CollectionsContainer = React.createClass({
         if (this.state.selectedDemographic[tagId]) {
             [gender, age] = this.state.selectedDemographic[tagId];
         } else {
-            [gender, age] = [null, null];
+            [gender, age] = [0, 0];
         }
 
         const thumbnails = _
@@ -111,14 +111,13 @@ const CollectionsContainer = React.createClass({
             .values()
             .orderBy('neon_score', 'desc')
             .value();
-        debugger
         const best = UTILS.bestThumbnail(thumbnails);
         const worst = UTILS.worstThumbnail(thumbnails);
 
         // TODO? Remove best and worst from thumbs
 
         const onDemographicChange = e => {
-            console.log(e);
+            // TODO
         };
 
         // List of right-hand side control components for
@@ -277,7 +276,7 @@ const CollectionsContainer = React.createClass({
         .then(thumbsRes => {
 
             thumbsRes.thumbnails.map(t => {
-                state.thumbnails[null][null][t.thumbnail_id] = t;
+                state.thumbnails[0][0][t.thumbnail_id] = t;
             });
 
             // Finally, update state.
@@ -286,8 +285,8 @@ const CollectionsContainer = React.createClass({
     },
 
     render: function() {
-        const collections = _.keys(this.state.tags).map(tag => {
-            return this.buildCollectionComponent(tag);
+        const collections = _.keys(this.state.tags).map(tagId => {
+            return this.buildCollectionComponent(tagId);
         });
         return (<ul>{collections}</ul>);
     },

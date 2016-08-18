@@ -68,6 +68,7 @@ const BaseCollection = React.createClass({
         // The bottom small thumbnail list
         // Show 6*rows of thumbnails unless there are more,
         // then show 6*rows-1 and the show more button.
+        // TODO Extract 6 to constant.
         let thumbnailList;
         if(6 * this.state.smallThumbnailRows >= this.props.smallThumbnails.length) {
             thumbnailList = <ThumbnailList
