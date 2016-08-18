@@ -19,6 +19,7 @@ var ImageUploadOverlay = React.createClass({
         }
     },
     render: function() {
+        const isMobile = window.outerWidth < 768;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             className = ['xxUploadDialog'],
@@ -76,24 +77,29 @@ var ImageUploadOverlay = React.createClass({
                     </div>
                     { self.state.isNextClicked ? (
                         <div>
-                        <Dropzone  
-                            className="xxDragAndDrop"
-                            multiple={true}
-                            disableClick={true}
-                            activeClassName='xxDragAndDrop--has-dragAndDropHover'
-                            encType="multipart/form-data" 
-                            onDrop={self.onDrop}
-                        >
-                             <ReactCSSTransitionGroup 
-                                transitionName="xxFadeInOutFast"
-                                transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
-                                transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
-                            >
-                                <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-                                    {dropzoneContent}
-                                </div>
-                            </ReactCSSTransitionGroup>
-                        </Dropzone>
+                        { 
+                            !isMobile ? (
+                                <Dropzone  
+                                    className="xxDragAndDrop"
+                                    multiple={true}
+                                    disableClick={true}
+                                    activeClassName='xxDragAndDrop--has-dragAndDropHover'
+                                    encType="multipart/form-data" 
+                                    onDrop={self.onDrop}
+                                >
+                                     <ReactCSSTransitionGroup 
+                                        transitionName="xxFadeInOutFast"
+                                        transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+                                        transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+                                    >
+                                        <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
+                                            {dropzoneContent}
+                                        </div>
+                                    </ReactCSSTransitionGroup>
+                                </Dropzone>
+                            ) : null
+                        }
+                        
                         <div className="xxUploadDialog-block">
                             <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>

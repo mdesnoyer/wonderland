@@ -99,7 +99,7 @@ var UploadForm = React.createClass({
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
             return;
         }
-        self.setState(self.getInitialState())
+        this.setState(this.getInitialState())
     },
     render: function() {
         const { isOnboarding } = this.props;
