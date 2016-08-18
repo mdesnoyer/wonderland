@@ -115,17 +115,25 @@ var ImageUploadOverlay = React.createClass({
                             >{T.get('imageUpload.dropBox')}
                             </button>
                         </div>
-                            <label className="xxLabel xxLabel--hasUpload">
-                                {"When you are done adding images click below to check out your Neon Score!"}
-                            </label>
-                            <button
-                                className={submitClassName.join(' ')}
-                                type="button"
-                                onClick={isValid ? self.props.toggleOpen : null}
-                                data-send-tag={true}
-                                disabled={!isValid}
-                                >{'Submit Collection'}</button>
-                        </div>
+                        { isValid ? (
+                            <div>
+                                <div className="xxUploadDialog-block">
+                                    <label>{"Done uploading? Click below!"}</label>
+                                </div>
+                                <button
+                                    className={submitClassName.join(' ')}
+                                    type="button"
+                                    onClick={isValid ? self.props.toggleOpen : null}
+                                    data-send-tag={true}
+                                    disabled={!isValid}
+                                    >{'Submit Collection'}</button>
+                            </div>
+                        ): null
+
+                            
+                               
+                        }
+                        </div> 
                         ) : (
                         <button
                             disabled={self.props.photoCollectionName === ''}

@@ -197,7 +197,7 @@ $zindex-upload-drag-and-drop: 1;
 
     .xxButton {
         width: 100%;
-        margin-top: 26px;
+        margin-top: 0.4em;
 
         @include breakpoint-mobile {
             width: 100px;
@@ -252,6 +252,7 @@ $zindex-upload-drag-and-drop: 1;
     margin: 0 auto;
     width: calc((99.9% - #{$gutter-width}) *  + #{$gutter-width});;
     text-align: center;
+    margin-top: 1em;
     & > .xxButton {
         display: inline-block;
         position: relative;
@@ -275,8 +276,6 @@ $zindex-upload-drag-and-drop: 1;
 
 
 .xxUploadDialog-intro {
-    padding-bottom: 16px;
-
     .xxTitle {
         margin-bottom: 12px;
     }
@@ -416,29 +415,9 @@ $zindex-upload-drag-and-drop: 1;
     color: $accent-color;
     font: normal 45px $serif-family;
 }
-.xxDragContainer {
-    position: relative;
-}
 
-.xxDragContainerLayer
-{
-    background-color: blue;
-    filter:alpha(opacity=50); /* IE */
-    opacity: 0.5; /* Safari, Opera */
-    -moz-opacity:0.50; /* FireFox */
-    z-index: 20;
-    height: 100%;
-    width: 100%;
-    background-repeat:no-repeat;
-    background-position:center;
-    position:absolute;
-    top: 0px;
-    left: 0px;
-    display: '';
+.xxLabel {
 
-    & --is-hidden {
-        display: none;
-    }
 }
 
 

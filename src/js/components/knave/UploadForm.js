@@ -45,7 +45,7 @@ var UploadForm = React.createClass({
             photoUploadThumbnailIds: [],
             photoCollectionName: '',
             videoUploadUrl:'',
-            numberUploadedCount:0
+            numberUploadedCount: 0
         };
     },
     toggleOpen: function(e) {
@@ -129,7 +129,7 @@ var UploadForm = React.createClass({
                     title={T.get('action.analyze')}
                     onClick={self.toggleOpen}
                 >{T.get('action.analyze')}</a>
-                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
                     {
                         self.state.isOpen ? (
                             <div className="xxOverlay" 
@@ -137,7 +137,7 @@ var UploadForm = React.createClass({
                                 onClick={self.handleBgCloseClick}
                                 key="upload-overlay"
                             >
-                                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
                                 {
                                     !self.state.isOpenPhoto && !self.state.isOpenVideo ? (
                                     <div className="xxUploadTypes" key="upload-types">
@@ -280,7 +280,7 @@ var UploadForm = React.createClass({
             lastIndex = files.length -1,
             totalFileNumber = 0
         ;
-        debugger        
+    
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1
@@ -321,14 +321,12 @@ var UploadForm = React.createClass({
                 });
         }
         else {
-            debugger
             self.setState({ 
                 photoUploadMode: 'loading',
                 photoUploadCount: totalFileNumber,
                 numberUploadedCount: 0, 
                 photoErrorCount: errorFiles
             },  function() {
-                debugger
                 self.grabRefreshToken(
                     formDataArray.forEach(function(formData) {
                         self.sendFormattedData(formData);
