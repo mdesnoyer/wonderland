@@ -40,7 +40,6 @@ $page-overlay-padding-bottom: 60px;
         position: fixed;
         top: 0;
         right: 0;
-        width: 50%;
         z-index: $z-index-header + 1;
         height: $page-overlay-padding-top;
         background: linear-gradient(
@@ -50,9 +49,11 @@ $page-overlay-padding-bottom: 60px;
             rgba($white, 0) 100%
         );
         pointer-events: none;
-
-        @media (max-width: $page-min-width + $gutter-width * 2) {
-            display: none; // only until responsive code exists
+        @include breakpoint-desktop {
+            width: 50%;
+        }
+        @include breakpoint-mobile {
+            width: 100%;
         }
     }
 
