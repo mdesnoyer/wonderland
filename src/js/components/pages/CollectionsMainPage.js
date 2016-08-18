@@ -25,6 +25,7 @@ const CollectionsMainPage = React.createClass({
                 next: null,
                 prev: null
             }
+        };
     },
 
     componentWillMount: function() {

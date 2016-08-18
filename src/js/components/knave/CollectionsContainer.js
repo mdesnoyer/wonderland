@@ -228,10 +228,6 @@ const CollectionsContainer = React.createClass({
         self.GET('tags/search', options)
         .then(searchRes => {
 
-            //set next page to the state
-            state.search.next = searchRes.next_page;
-            state.search.prev = searchRes.prev_page;
-
             // Search for all the tags.
             const _tagData = {
                 tag_id: searchRes.items.reduce((tag_ids, tag) => {
