@@ -304,6 +304,11 @@ const CollectionsContainer = React.createClass({
     loadThumbnails: function(thumbnailIds, gender=0, age=0, state={}) {
         const self = this;
 
+        // Empty array of ids is no op; just set passed-in state.
+        if(thumbnailIds.length == 0) {
+            return self.setState(state);
+        }
+
         // Create array of CSVs of max length.
         const thumbArgs = UTILS.csvFromArray(thumbnailIds, UTILS.MAX_CSV_VALUE_COUNT);
         const baseParams = {};
