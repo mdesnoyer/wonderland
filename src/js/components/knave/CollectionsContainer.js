@@ -132,6 +132,8 @@ const CollectionsContainer = React.createClass({
         const best = UTILS.bestThumbnail(thumbnails);
         const worst = UTILS.worstThumbnail(thumbnails);
 
+        // TODO remove best, worst, and make sort stable.
+
         const onDemographicChange = (tagId, demoKey) => {
 
             // TODO validate demokey shape.
