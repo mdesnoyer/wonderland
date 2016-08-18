@@ -143,32 +143,3 @@ export const DeleteControl = React.createClass({
         );
     }
 });
-
-export const SavePanel = React.createClass({
-    render: function() {
-        return (<div>
-            <h1>{T.get('action.saveMyImages')}</h1>
-        </div>);
-    }
-});
-
-export const SaveControl = React.createClass({
-
-    propTypes: {
-        handleClick: PropTypes.func.isRequired
-    },
-
-    render: function() {
-        return (
-            <a
-                data-tip={T.get('action.saveMyImages')}
-                data-for="staticTooltip"
-                data-place="bottom"
-                data-action-label="share"
-                onClick={this.props.handleClick}
-                className="xxCollectionActions-anchor xxCollectionActions-save">
-                <span>{T.get('save')}</span>
-            </a>
-        );
-    }
-});

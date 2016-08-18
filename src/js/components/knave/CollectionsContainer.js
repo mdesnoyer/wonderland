@@ -8,7 +8,6 @@ import UTILS from '../../modules/utils';
 
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
-import TitleFilterLiftPanel from './TitleFilterLiftPanel';
 import InfoActionContainer from './InfoActionContainer';
 import {
     InfoDemoLiftPanel,
@@ -19,9 +18,7 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl,
-    SavePanel,
-    SaveControl} from './InfoActionPanels';
+    DeleteControl} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
