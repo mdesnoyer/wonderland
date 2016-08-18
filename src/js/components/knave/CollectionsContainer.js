@@ -346,7 +346,7 @@ const CollectionsContainer = React.createClass({
             let tagsRes,
                 videosRes;
             tagsRes = combined[0] || {};
-            videosRes = combined[1] || {};
+            videosRes = combined[1] || [];
 
             // Store the map of collections, videos.
             state.tags = tagsRes;
