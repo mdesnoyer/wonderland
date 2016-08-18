@@ -159,30 +159,32 @@ const CollectionsContainer = React.createClass({
 
         // List of right-hand side control components for
         // the content given type and session.
-        const panels = [
-            <InfoDemoLiftPanel
-                tagId={collection.tag_id}
-                title={collection.name}
-                onDemographicChange={onDemographicChange}
-                demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
-            />,
-            <FilterPanel />,
-            <EmailPanel />,
-            <SharePanel />,
-            <DeletePanel />,
-            <SavePanel />
-        ];
-        // TODO factor to ensure panels and controls are consistent.
-        const controls = [
-            <EmailControl handleClick={()=>{}} />,
-            <ShareControl handleClick={()=>{}} />,
-            <DeleteControl handleClick={()=>{}} />,
-            <SaveControl handleClick={()=>{}} />
-        ];
+        let panels,
+           controls;
 
         switch(collection.tag_type) {
         case UTILS.TAG_TYPE_IMAGE_COL:
+
+            panels = [
+                <InfoDemoLiftPanel
+                    tagId={collection.tag_id}
+                    title={collection.name}
+                    onDemographicChange={onDemographicChange}
+                    demographicOptions={this.getDemoOptionArray(tagId)}
+                    selectedDemographic={[gender, age]}
+                />,
+                <EmailPanel />,
+                <SharePanel />,
+                <DeletePanel />,
+                <SavePanel />
+            ];
+            // TODO factor to ensure panels and controls are consistent.
+            controls = [
+                <EmailControl handleClick={()=>{}} />,
+                <ShareControl handleClick={()=>{}} />,
+                <DeleteControl handleClick={()=>{}} />,
+                <SaveControl handleClick={()=>{}} />
+            ];
 
             return (
                 <ImageCollection
@@ -195,6 +197,30 @@ const CollectionsContainer = React.createClass({
                 />
             );
         case UTILS.TAG_TYPE_VIDEO_COL:
+
+            const video = this.state.videos[collection.video_id];
+
+            panels = [
+                <InfoDemoLiftPanel
+                    tagId={collection.tag_id}
+                    title={video.title}
+                    onDemographicChange={onDemographicChange}
+                    demographicOptions={this.getDemoOptionArray(tagId)}
+                    selectedDemographic={[gender, age]}
+                />,
+                <FilterPanel />,
+                <EmailPanel />,
+                <SharePanel />,
+                <DeletePanel />,
+                <SavePanel />
+            ];
+            // TODO factor to ensure panels and controls are consistent.
+            controls = [
+                <EmailControl handleClick={()=>{}} />,
+                <ShareControl handleClick={()=>{}} />,
+                <DeleteControl handleClick={()=>{}} />,
+                <SaveControl handleClick={()=>{}} />
+            ];
 
             const _default = _.find(thumbnails, t => {
                 return UTILS.THUMB_TYPE_DEFAULT === t.type;
