@@ -18,7 +18,8 @@ var Session = {
         accountId: window.sessionStorage.getItem(UTILS.COOKIES_KEY.accountIdKey),
         masqueradeAccountIdKey: undefined,
         user: undefined,
-        processing: window.sessionStorage.getItem(UTILS.COOKIES_KEY.processingKey)
+        processing: window.sessionStorage.getItem(UTILS.COOKIES_KEY.processingKey),
+        youtubeAccessToken: undefined
     },
     set: function(accessToken, refreshToken, accountId, user) {
         var self = this,
@@ -74,6 +75,21 @@ var Session = {
         var self = this;
         return JSON.parse(self.state.processing);
     },
+    setYoutubeToken: function(token) {
+        var self = this,
+            ss = window.sessionStorage
+        ;
+        self.state.youtubeAccessToken = token;
+        try {
+            ss.setItem(UTILS.COOKIES_KEY.youtubeTokenKey, token);
+        } catch(e) {
+            console.log('Browser does not support session storage, application will not be able to save session information.');
+        }
+    },
+    getYoutubeToken: function() {
+        var self = this;
+        return self.state.youtubeAccessToken;
+    },
     setAccountId: function(accountId) {
         var self = this,
             ss = window.sessionStorage
@@ -123,6 +139,7 @@ var Session = {
         ss.removeItem(UTILS.COOKIES_KEY.masqueradeAccountIdKey);
         ss.removeItem(UTILS.COOKIES_KEY.userKey);
         ss.removeItem(UTILS.COOKIES_KEY.processingKey);
+        ss.removeItem(UTILS.youtubeTokenKey);
         this.state = {
             accessToken: undefined,
             refreshToken: undefined,
@@ -146,7 +163,7 @@ var Session = {
     },
     // Returns if user has been authenticated with Youtube
     hasYoutubeAuth: function() {
-        return false;
+        return (this.state.youtubeAccessToken ? true : false);
     },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function(userData) {
