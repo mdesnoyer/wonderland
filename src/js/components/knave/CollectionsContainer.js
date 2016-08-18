@@ -123,18 +123,8 @@ const CollectionsContainer = React.createClass({
             [gender, age] = [0, 0];
         }
 
-        const thumbnails = _
-            .chain(this.state.thumbnails[gender][age])
-            .pick(collection.thumbnail_ids)
-            .values()
-            .orderBy('neon_score', 'desc')
-            .value();
-        const best = UTILS.bestThumbnail(thumbnails);
-        const worst = UTILS.worstThumbnail(thumbnails);
 
-        // TODO remove best, worst, and make sort stable.
-
-        const onDemographicChange = (tagId, demoKey) => {
+        const onDemoChange = (tagId, demoKey) => {
 
             // TODO validate demokey shape.
             this.state.selectedDemographic[tagId] = demoKey;
@@ -142,6 +132,7 @@ const CollectionsContainer = React.createClass({
             // Ask what tag's thumbnails for the demo are stored.
             const missingThumbIds = [];
             const [gender, age] = demoKey;
+
             this.state.tags[tagId].thumbnail_ids.map(tid => {
                 if (undefined === this.state.thumbnails[gender][age][tid]) {
                     missingThumbIds.push(tid);
@@ -159,88 +150,132 @@ const CollectionsContainer = React.createClass({
             this.setState(stateDiff);
         };
 
+        switch(collection.tag_type) {
+            case UTILS.TAG_TYPE_IMAGE_COL:
+                return this.buildImageCollectionComponent(tagId, collection, onDemoChange, gender, age);
+            case UTILS.TAG_TYPE_VIDEO_COL:
+                return this.buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age);
+        }
+        // TODO? try-catch: if components fail prop validation, catch
+        // and return an error component.
+        return <div />;
+    },
+
+    buildImageCollectionComponent: function(tagId, collection, onDemoChange, gender, age) {
+        const allThumbnailMap = _
+            .chain(this.state.thumbnails[gender][age])
+            .pick(collection.thumbnail_ids)
+            .orderBy('neon_score', 'desc')
+            .value();
+        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
+        const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
+
+        // Build the list of thumbnails to display below.
+        const smallThumbnails = _
+            .chain(allThumbnailMap)
+            // Remove the feature thumbnails from the small list.
+            .omit([right.thumbnail_id, left.thumbnail_id])
+            .values()
+            // Order by score, best to worst, then created time for stability.
+            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
+            .value();
+
         // List of right-hand side control components for
         // the content given type and session.
-        let panels,
-           controls;
+        const panels = [
+            <InfoDemoLiftPanel
+                tagId={collection.tag_id}
+                title={collection.name}
+                onDemographicChange={onDemoChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
+            />,
+            <EmailPanel />,
+            <SharePanel />,
+            <DeletePanel />,
+        ];
+        // TODO factor to ensure panels and controls are consistent.
+        const controls = [
+            <ShareControl handleClick={()=>{}} />,
+            <EmailControl handleClick={()=>{}} />,
+            <DeleteControl handleClick={()=>{}} />,
+        ];
 
-        switch(collection.tag_type) {
-        case UTILS.TAG_TYPE_IMAGE_COL:
+        return (
+            <ImageCollection
+                key={collection.tag_id}
+                leftFeatureThumbnail={left}
+                rightFeatureThumbnail={right}
+                smallThumbnails={smallThumbails}
+                infoActionPanels={panels}
+                infoActionControls={controls}
+            />
+        );
+    },
 
-            panels = [
-                <InfoDemoLiftPanel
-                    tagId={collection.tag_id}
-                    title={collection.name}
-                    onDemographicChange={onDemographicChange}
-                    demographicOptions={this.getDemoOptionArray(tagId)}
-                    selectedDemographic={[gender, age]}
-                />,
-                <EmailPanel />,
-                <SharePanel />,
-                <DeletePanel />,
-                <SavePanel />
-            ];
-            // TODO factor to ensure panels and controls are consistent.
-            controls = [
-                <EmailControl handleClick={()=>{}} />,
-                <ShareControl handleClick={()=>{}} />,
-                <DeleteControl handleClick={()=>{}} />,
-                <SaveControl handleClick={()=>{}} />
-            ];
+    // @TODO factor common code
+    buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
 
-            return (
-                <ImageCollection
-                    key={collection.tag_id}
-                    leftFeatureThumbnail={worst}
-                    rightFeatureThumbnail={best}
-                    smallThumbnails={thumbnails}
-                    infoActionPanels={panels}
-                    infoActionControls={controls}
-                />
-            );
-        case UTILS.TAG_TYPE_VIDEO_COL:
+        const video = this.state.videos[collection.video_id];
+        const genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        const ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        const videoDemo = _.find(
+            video.demographic_thumbnails,
+            t => {
+                return (t.gender == genderLabel && t.age == ageLabel);
+            }
+        );
 
-            const video = this.state.videos[collection.video_id];
+        const allThumbnailMap = _.pick(this.state.thumbnails[gender][age], collection.thumbnail_ids);
 
-            panels = [
-                <InfoDemoLiftPanel
-                    tagId={collection.tag_id}
-                    title={video.title}
-                    onDemographicChange={onDemographicChange}
-                    demographicOptions={this.getDemoOptionArray(tagId)}
-                    selectedDemographic={[gender, age]}
-                />,
-                <FilterPanel />,
-                <EmailPanel />,
-                <SharePanel />,
-                <DeletePanel />,
-                <SavePanel />
-            ];
-            // TODO factor to ensure panels and controls are consistent.
-            controls = [
-                <EmailControl handleClick={()=>{}} />,
-                <ShareControl handleClick={()=>{}} />,
-                <DeleteControl handleClick={()=>{}} />,
-                <SaveControl handleClick={()=>{}} />
-            ];
+        // For the right, use the best scoring.
+        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
+        // For the left, find a default thumbnail or use the worst.
+        const _default = _.find(_.values(allThumbnailMap), t => {
+            return UTILS.THUMB_TYPE_DEFAULT === t.type;
+        });
+        const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
 
-            const _default = _.find(thumbnails, t => {
-                return UTILS.THUMB_TYPE_DEFAULT === t.type;
-            });
+        const smallThumbnails = _
+            .chain(allThumbnailMap)
+            // Remove the feature thumbnails from the small list.
+            .omit([right.thumbnail_id, left.thumbnail_id])
+            .values()
+            // Order by score, best to worst, then frame number for stability.
+            .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
+            .value();
 
-            return (
-                <VideoCollection
-                    key={collection.tag_id}
-                    leftFeatureThumbnail={_default? _default: worst}
-                    rightFeatureThumbnail={best}
-                    smallThumbnails={thumbnails}
-                    infoActionPanels={panels}
-                    infoActionControls={controls}
-                />
-           );
-        }
-        // TODO
-        return <div />;
+        const panels = [
+            <InfoDemoLiftPanel
+                tagId={collection.tag_id}
+                title={video.title}
+                onDemographicChange={onDemoChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
+            />,
+            <FilterPanel />,
+            <SharePanel />,
+            <EmailPanel />,
+            <DeletePanel />,
+        ];
+        // TODO factor to ensure panels and controls are consistent.
+        const controls = [
+            <ShareControl handleClick={()=>{}} />,
+            <EmailControl handleClick={()=>{}} />,
+            <DeleteControl handleClick={()=>{}} />,
+        ];
+
+
+        return (
+            <VideoCollection
+                key={collection.tag_id}
+                leftFeatureThumbnail={left}
+                rightFeatureThumbnail={right}
+                smallThumbnails={smallThumbnails}
+                infoActionPanels={panels}
+                infoActionControls={controls}
+            />
+       );
     },
 
     search: function() {
