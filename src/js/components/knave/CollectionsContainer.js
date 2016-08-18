@@ -206,7 +206,7 @@ const CollectionsContainer = React.createClass({
                 key={collection.tag_id}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
-                smallThumbnails={smallThumbails}
+                smallThumbnails={smallThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
             />
@@ -217,8 +217,14 @@ const CollectionsContainer = React.createClass({
     buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
 
         const video = this.state.videos[collection.video_id];
-        const genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
-        const ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        if(genderLabel == 'null') {
+            genderLabel = null;
+        }
+        let ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        if(ageLabel == 'null') {
+            ageLabel = null;
+        }
         const videoDemo = _.find(
             video.demographic_thumbnails,
             t => {
@@ -226,7 +232,11 @@ const CollectionsContainer = React.createClass({
             }
         );
 
-        const allThumbnailMap = _.pick(this.state.thumbnails[gender][age], collection.thumbnail_ids);
+        const allThumbnailMap = _.pick(
+            this.state.thumbnails[gender][age],
+            videoDemo.thumbnails.map(t => {
+                return t.thumbnail_id;
+            }));
 
         // For the right, use the best scoring.
         const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
@@ -242,6 +252,19 @@ const CollectionsContainer = React.createClass({
             .omit([right.thumbnail_id, left.thumbnail_id])
             .values()
             // Order by score, best to worst, then frame number for stability.
+            .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
+            .value();
+
+        // Do the same for the bad thumbnail list.
+        const allBadThumbnailMap = _.pick(
+            this.state.thumbnails[gender][age],
+            videoDemo.bad_thumbnails.map(t => {
+                return t.thumbnail_id;
+            })
+        );
+        const smallBadThumbnails = _
+            .chain(allBadThumbnailMap)
+            .values()
             .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
             .value();
 
@@ -272,6 +295,7 @@ const CollectionsContainer = React.createClass({
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
+                smallBadThumbnails={smallBadThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
             />
