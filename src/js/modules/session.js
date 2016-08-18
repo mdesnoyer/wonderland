@@ -144,6 +144,10 @@ var Session = {
     isUser: function() {
         return (this.state.userKey ? true : false);
     },
+    // Returns if user has been authenticated with Youtube
+    hasYoutubeAuth: function() {
+        return false;
+    },
     // Getter/Setter for user data for the session (NOT for updating the user object in the DB)
     user: function(userData) {
         var self = this,

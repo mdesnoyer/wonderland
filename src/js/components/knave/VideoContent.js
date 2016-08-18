@@ -12,6 +12,7 @@ import VideoFilters from './VideoFilters';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 import ReactTooltip from 'react-tooltip';
+import YoutubeUpload from './YoutubeUpload';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -67,6 +68,9 @@ var VideoContent = React.createClass({
                         <VideoCollectionActions
                             openSignUp={self.props.openSignUp}
                             handleMenuChange={self.handleMenuChange}
+                        />
+                        <YoutubeUpload 
+                            thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
                         />
                     </div>
                 );
