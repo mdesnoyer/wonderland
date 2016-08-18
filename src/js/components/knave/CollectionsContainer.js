@@ -99,6 +99,7 @@ const CollectionsContainer = React.createClass({
             if(undefined === thumbnails[thumbnailId]) {
                 missingIds.push(thumbnailId);
             }
+            // TODO need to use callback.
         });
         return thumbnails;
     },
@@ -155,11 +156,28 @@ const CollectionsContainer = React.createClass({
         const worst = UTILS.worstThumbnail(thumbnails);
 
         const onDemographicChange = (tagId, demoKey) => {
+
             // TODO validate demokey shape.
             this.state.selectedDemographic[tagId] = demoKey;
-            this.setState({
-                selectedDemographic: this.state.selectedDemographic
+
+            // Ask what tag's thumbnails for the demo are stored.
+            const missingThumbIds = [];
+            const [gender, age] = demoKey;
+            this.state.tags[tagId].thumbnail_ids.map(tid => {
+                if (undefined === this.state.thumbnails[gender][age][tid]) {
+                    missingThumbIds.push(tid);
+                }
             });
+
+            const stateDiff = {
+                selectedDemographic: this.state.selectedDemographic
+            };
+            if (missingThumbIds.length > 0) {
+                // Load thumbnails for image-type collection.
+                return this.loadThumbnails(missingThumbIds, gender, age, stateDiff);
+            }
+            // Else, just change the selected demographic for the tag.
+            this.setState(stateDiff);
         };
 
         // List of right-hand side control components for
@@ -315,27 +333,41 @@ const CollectionsContainer = React.createClass({
 
         // Create array of CSVs of max length.
         const thumbArgs = UTILS.csvFromArray(thumbnailIds, UTILS.MAX_CSV_VALUE_COUNT);
+        const baseParams = {};
 
-        let promise;
+        // If demo parameters are valued and not "null", then include them.
+        if (gender !== 0) {
+            baseParams.gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        }
+        if (age !== 0) {
+            baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        }
+
+        let promise,
+            params;
         // Batch only large requests since batch is slower.
         if (thumbArgs.length > 1) {
             thumbArgs.map(arg => {
-                self.batch('GET', 'thumbnails', {thumbnail_id: arg});
+                // Build this batch's params by copying base params and adding the tid arg.
+                params = {};
+                Object.assign(params, baseParams, {thumbnail_id: arg});
+                self.batch('GET', 'thumbnails', params);
             });
             promise = self.sendBatch();
         } else {
-            promise = self.GET('thumbnails', {data: {thumbnail_id: thumbArgs[0]}});
+            params = {};
+            Object.assign(params, baseParams, {thumbnail_id: thumbArgs[0]});
+            promise = self.GET('thumbnails', {data: params});
         }
 
         promise.then(thumbsRes => {
             // Merge loaded thumbnails to state.thumbnails.
-            const thumbnails = state.thumbnails? state.thumbnails: self.getInitialState().thumbnails;
+            const thumbnails = state.thumbnails? state.thumbnails: self.state.thumbnails;
             thumbsRes.thumbnails.map(t => {
                 thumbnails[gender][age][t.thumbnail_id] = t;
             });
 
             Object.assign(state, {thumbnails: thumbnails});
-            console.log(state);
             self.setState(state);
         })
     },
