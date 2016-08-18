@@ -162,11 +162,10 @@ const CollectionsContainer = React.createClass({
     },
 
     buildImageCollectionComponent: function(tagId, collection, onDemoChange, gender, age) {
-        const allThumbnailMap = _
-            .chain(this.state.thumbnails[gender][age])
-            .pick(collection.thumbnail_ids)
-            .orderBy('neon_score', 'desc')
-            .value();
+
+        const allThumbnailMap = _.pick(
+            this.state.thumbnails[gender][age],
+            collection.thumbnail_ids)
         const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
         const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
 
@@ -346,8 +345,8 @@ const CollectionsContainer = React.createClass({
             // Unpack promises.
             let tagsRes,
                 videosRes;
-            tagsRes = combined[0];
-            videosRes = combined[1];
+            tagsRes = combined[0] || {};
+            videosRes = combined[1] || {};
 
             // Store the map of collections, videos.
             state.tags = tagsRes;
