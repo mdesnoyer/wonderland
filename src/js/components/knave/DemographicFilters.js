@@ -12,6 +12,7 @@ import UTILS from '../../modules/utils';
 const DemographicFilters = React.createClass({
 
     propTypes: {
+        tagId: PropTypes.string.isRequired,
         // Enum values as array of enumerated gender, age: e.g., [1, 0], [0, 0], etc.
         selectedDemographicId: PropTypes.array,
         // Array of array with enum keys age, gender
@@ -30,10 +31,7 @@ const DemographicFilters = React.createClass({
         return {
             selectedDemographicId: [0, 0],
             demographicOptions: [
-                [0, 0],
-                [1, 0],
-                [0, 1],
-                [1, 1]
+                [0, 0], // gender:null, age:null
             ]
         }
     },
@@ -72,9 +70,9 @@ const DemographicFilters = React.createClass({
         const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographicId);
         let optionList;
         if (self.state.isOpen) {
+            console.log(self.props.demographicOptions);
             const options = self.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
-                console.log(option);
                 const className = (option === self.state.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
@@ -83,7 +81,7 @@ const DemographicFilters = React.createClass({
                     <li
                         key={key}
                         className={className}
-                        onClick={self.props.onChange}
+                        onClick={() => {self.props.onChange(self.props.tagId, option)}}
                     >
                         <span className="xxCollectionFilters-versionTitle">{T.get('label.filters')}</span>
                         <span>{label}</span>

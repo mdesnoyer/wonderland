@@ -88,6 +88,27 @@ const CollectionsContainer = React.createClass({
         };
     },
 
+    // Return array of gender,age enum array based
+    // on state of collection.
+    getDemoOptionArray: function(tagId) {
+
+        const tag = this.state.tags[tagId];
+        switch(tag.tag_type) {
+        case UTILS.TAG_TYPE_IMAGE_COL:
+            // TODO? all possible options enumerated
+            return [[0,0]];
+        case UTILS.TAG_TYPE_VIDEO_COL:
+            const video = this.state.videos[tag.video_id];
+            return video.demographic_thumbnails.map(demo => {
+                return [
+                    UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
+                    UTILS.FILTER_AGE_COL_ENUM[demo.age]
+                ];
+            });
+        }
+        return [[0,0]];
+    },
+
     // Given a tag id, construct a  valid Collection
     // component instance and return it.
     //
@@ -114,18 +135,22 @@ const CollectionsContainer = React.createClass({
         const best = UTILS.bestThumbnail(thumbnails);
         const worst = UTILS.worstThumbnail(thumbnails);
 
-        // TODO? Remove best and worst from thumbs
-
-        const onDemographicChange = e => {
-            // TODO
+        const onDemographicChange = (tagId, demoKey) => {
+            // TODO validate demokey shape.
+            this.state.selectedDemographic[tagId] = demoKey;
+            this.setState({
+                selectedDemographic: this.state.selectedDemographic
+            });
         };
 
         // List of right-hand side control components for
         // the content given type and session.
         const panels = [
             <InfoDemoLiftPanel
+                tagId={collection.tag_id}
                 title={collection.name}
                 onDemographicChange={onDemographicChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
             />,
             <FilterPanel />,
             <EmailPanel />,
@@ -228,7 +253,9 @@ const CollectionsContainer = React.createClass({
 
             // Store the map of collections, videos.
             state.tags = tagsRes;
-            state.videos = videosRes.videos;
+            videosRes.videos.map(video => {
+                state.videos[video.video_id] = video;
+            });;
 
             // Store the demographic thumbnails.
             // TODO? there may be collision here.

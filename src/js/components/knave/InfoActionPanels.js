@@ -14,8 +14,10 @@ export const InfoDemoLiftPanel = React.createClass({
 
     propTypes: {
         // User's name of this collection
+        tagId: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        onDemographicChange: PropTypes.func.isRequired
+        onDemographicChange: PropTypes.func.isRequired,
+        demographicOptions: PropTypes.array.isRequired
     },
 
     render: function() {
@@ -24,7 +26,9 @@ export const InfoDemoLiftPanel = React.createClass({
         return (<div>
             <h1 className="xxCollection-title">{this.props.title} [Icon]</h1>
             <DemographicFilters
+                tagId={this.props.tagId}
                 onChange={this.props.onDemographicChange}
+                demographicOptions={this.props.demographicOptions}
             />
             {lift}
         </div>);
