@@ -67,13 +67,12 @@ const DemographicFilters = React.createClass({
 
     render: function() {
         const self = this;
-        const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographicId);
+        const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
         let optionList;
         if (self.state.isOpen) {
-            console.log(self.props.demographicOptions);
             const options = self.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
-                const className = (option === self.state.selectedDemographic)?
+                const className = (option === self.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
                 const label = self.getLabelFromId(option);

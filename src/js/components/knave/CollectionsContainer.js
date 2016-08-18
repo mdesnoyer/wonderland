@@ -151,6 +151,7 @@ const CollectionsContainer = React.createClass({
                 title={collection.name}
                 onDemographicChange={onDemographicChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
             />,
             <FilterPanel />,
             <EmailPanel />,

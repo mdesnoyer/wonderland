@@ -17,7 +17,8 @@ export const InfoDemoLiftPanel = React.createClass({
         tagId: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         onDemographicChange: PropTypes.func.isRequired,
-        demographicOptions: PropTypes.array.isRequired
+        demographicOptions: PropTypes.array.isRequired,
+        selectedDemographic: PropTypes.array.isRequired
     },
 
     render: function() {
@@ -29,6 +30,7 @@ export const InfoDemoLiftPanel = React.createClass({
                 tagId={this.props.tagId}
                 onChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
+                selectedDemographic={this.props.selectedDemographic}
             />
             {lift}
         </div>);
