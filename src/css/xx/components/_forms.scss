@@ -27,6 +27,12 @@
     width: 100%;
     color: $tertiary-color;
     line-height: 26px;
+    
+    &--hasUpload {
+        margin-top: 1em;
+        text-align: left;
+        // background: blue;
+    }
 }
 
 .xxInputText {
@@ -110,6 +116,11 @@
 
     .xxFormField + .xxFormField & {
         margin-top: -2px;
+    }
+
+    .has-downloaded-note > & {
+        text-align: center;
+        color: $accent-color;
     }
 }
 
@@ -351,6 +362,26 @@
         @include breakpoint-mobile {
             border-color: $tertiary-color;
         }
+    }
+
+    &--file {
+        position: relative;
+    }
+}
+
+.xxButton-fileInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+
+    &::-webkit-file-upload-button {
+        cursor: pointer;
     }
 }
 
