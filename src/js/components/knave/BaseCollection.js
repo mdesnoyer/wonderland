@@ -95,11 +95,13 @@ const BaseCollection = React.createClass({
                 <div className="xxCollectionImages">
                     {left}
                     {right}
+                    {thumbnailList}
+                </div>
+                <div className="xxCollection-content"> 
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                     />
-                    {thumbnailList}
                 </div>
             </div>
         );
