@@ -37,16 +37,9 @@ const CollectionsContainer = React.createClass({
     getInitialState: function() {
         return {
 
-            // State of search paging: current page, page count, next, prev page url.
-            search: {
-                currPage: null,
-                pageCount: null,
-                next: null,
-                prev: null
-            },
-
             // These are stores of tag, thumb and video resources.
             // Map of id to tag.
+            // @TODO factor to store.
             tags: {},
 
             // Map of tag id to integer index of gender, then age.
@@ -86,22 +79,6 @@ const CollectionsContainer = React.createClass({
             // Map of id to video.
             videos: {},
         };
-    },
-
-    // Get thumbnails by gender enum, age enum, thumb id.
-    // If missing, loads missing from data source.
-    // Return map of thumbnail id to thumbail.
-    getThumbnails(gender, age, thumbnailIds) {
-        const thumbnails = {};
-        const missingIds = [];
-        thumbnailIds.map(thumbnailId => {
-            thumbnails[thumbnailId] = this.state[gender][age][thumbnailId];
-            if(undefined === thumbnails[thumbnailId]) {
-                missingIds.push(thumbnailId);
-            }
-            // TODO need to use callback.
-        });
-        return thumbnails;
     },
 
     // Return array of gender,age enum array based

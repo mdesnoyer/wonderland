@@ -12,8 +12,9 @@ import UTILS from '../../modules/utils';
 const DemographicFilters = React.createClass({
 
     propTypes: {
+        // Tag id of parent
         tagId: PropTypes.string.isRequired,
-        // Enum values as array of enumerated gender, age: e.g., [1, 0], [0, 0], etc.
+        // Array [<gender>, <age>] where each is a number key of its enum
         selectedDemographicId: PropTypes.array,
         // Array of array with enum keys age, gender
         demographicOptions: PropTypes.array,

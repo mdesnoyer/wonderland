@@ -14,11 +14,25 @@ const CollectionsMainPage = React.createClass({
     contextTypes: {
         router: PropTypes.object.isRequired
     },
+
+    getInitialState: function() {
+        return {
+            // State of search paging: current page, page count,
+            // next, prev page url.
+            search: {
+                currPage: null,
+                pageCount: null,
+                next: null,
+                prev: null
+            }
+    },
+
     componentWillMount: function() {
         if (!SESSION.active()) {
             this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL)
         }
     },
+
     // TODO add post forms.
     render: function() {
         return (
