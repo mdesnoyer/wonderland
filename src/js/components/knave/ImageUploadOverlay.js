@@ -13,7 +13,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUploadOverlay = React.createClass({
-    getInitialState: function(){
+    getInitialState: function() {
         return {
             isNextClicked: false
         }
@@ -26,14 +26,11 @@ var ImageUploadOverlay = React.createClass({
             dragDropClassKey,
             dropzoneContent,
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
-            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '',
-            instructions = self.props.photoCollectionName !== '' ? T.get('imageUpload.dragInstructions.two') : T.get('imageUpload.dragInstructions.one')
+            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== ''
         ;
-            if (isValid) { 
+            if (isValid) {
                 submitClassName.push('xxButton--important');
-                instructions = T.get('imageUpload.dragInstructions.three')
-            }
-
+            };
         switch(self.props.photoUploadMode) {
             case 'initial':
                 dragDropClassKey = 'hint';
@@ -57,13 +54,14 @@ var ImageUploadOverlay = React.createClass({
                 break; 
             default: 
                 dragDropClassKey = 'hint';
-                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{"Each Collection can have up to 100 Images!"}<br/></div>;
+                dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{T.get('imageUpload.collectionCount')}<br/></div>;
         }
         return (
             <div className="xxUploadDialog">
                 <div className="xxUploadDialog-drag-drop">
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
+                        <p>{messageNeeded}</p>
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
@@ -97,34 +95,42 @@ var ImageUploadOverlay = React.createClass({
                                         </div>
                                     </ReactCSSTransitionGroup>
                                 </Dropzone>
-                            ) : null
+                            ) : (
+                                    self.props.photoUploadMode === 'loading' ? (
+                                        <div className="xxOverlay" >
+                                            <div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div>
+                                        </div>
+                                    ) : null
+                            )
                         }
-                        
-                        <div className="xxUploadDialog-block">
-                            <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
-                        </div>
-                        <div className="xxUploadDialog-block">
-                            <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-                                {T.get('imageUpload.local')}
-                                <input
-                                    disabled={self.props.photoUploadMode === 'loading'}
-                                    type="file"
-                                    name="upload"
-                                    multiple
-                                    accept= "image/*"
-                                    className="xxButton-fileInput"
-                                    onChange={self.props.sendLocalPhotos}
-                                />
+                            <div className="xxUploadDialog-block">
+                                <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                             </div>
-                            <button className="xxButton xxButton-center" disabled >{T.get('imageUpload.or')}</button>
-                            <button
-                                id="dropBoxSDK"
-                                disabled={self.props.photoUploadMode === 'loading'}
-                                className="xxButton xxButton--highlight"
-                                onClick={self.props.grabDropBox}
-                            >{T.get('imageUpload.dropBox')}
-                            </button>
-                        </div>
+                            <div className="xxUploadDialog-block">
+                                <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
+                                    {T.get('imageUpload.local')}
+                                    <input
+                                        disabled={self.props.photoUploadMode === 'loading'}
+                                        type="file"
+                                        name="upload"
+                                        multiple
+                                        accept= "image/*"
+                                        className="xxButton-fileInput"
+                                        onChange={self.props.sendLocalPhotos}
+                                    />
+                                </div>
+                                <button className="xxButton xxButton-center" disabled >
+                                    {T.get('imageUpload.or')}
+                                </button>
+                                <button
+                                    id="dropBoxSDK"
+                                    disabled={self.props.photoUploadMode === 'loading'}
+                                    className="xxButton xxButton--highlight"
+                                    onClick={self.props.grabDropBox}
+                                >
+                                    {T.get('imageUpload.dropBox')}
+                                </button>
+                            </div>
                             { 
                                 isValid ? (
                                     <div>
@@ -137,18 +143,22 @@ var ImageUploadOverlay = React.createClass({
                                             onClick={isValid ? self.props.toggleOpen : null}
                                             data-send-tag={true}
                                             disabled={!isValid}
-                                            >{'Submit Collection'}</button>
+                                        >
+                                            {'Submit Collection'}
+                                        </button>
                                     </div>
                                 ) : null
                             }
                         </div> 
                         ) : (
-                        <button
-                            disabled={self.props.photoCollectionName === ''}
-                            onClick={self.handleClick} 
-                            className={submitClassName.join(' ')} 
-                            type="button"
-                        >{T.get('action.next')}</button>
+                            <button
+                                disabled={self.props.photoCollectionName === ''}
+                                onClick={self.handleClick} 
+                                className={submitClassName.join(' ')} 
+                                type="button"
+                            >
+                                {T.get('action.next')}
+                            </button>
                         )
                     }
                     </div>
@@ -178,7 +188,8 @@ var ImageUploadOverlay = React.createClass({
         photoErrorCount: React.PropTypes.number,
         updateField: React.PropTypes.func,
         photoCollectionName: React.PropTypes.string,
-        photoUploadThumbnailIds: React.PropTypes.array
+        photoUploadThumbnailIds: React.PropTypes.array,
+        numberUploadedCount: React.PropTypes.number
     }
 });
 
