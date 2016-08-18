@@ -68,7 +68,7 @@ var ImageUploadOverlay = React.createClass({
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
                         <input
                             className="xxInputText"
-                            placeholder="Lets Start by naming your collection!"
+                            placeholder={T.get('imageUpload.placeholderName')}
                             type="text"
                             required
                             onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
@@ -84,18 +84,22 @@ var ImageUploadOverlay = React.createClass({
                             encType="multipart/form-data" 
                             onDrop={self.onDrop}
                         >
-                             <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
-                                 <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-                                     {dropzoneContent}
-                                 </div>
-                             </ReactCSSTransitionGroup>
+                             <ReactCSSTransitionGroup 
+                                transitionName="xxFadeInOutFast"
+                                transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+                                transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+                            >
+                                <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
+                                    {dropzoneContent}
+                                </div>
+                            </ReactCSSTransitionGroup>
                         </Dropzone>
                         <div className="xxUploadDialog-block">
-                        <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
+                            <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>
                         <div className="xxUploadDialog-block">
                             <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-                            {T.get('imageUpload.local')}
+                                {T.get('imageUpload.local')}
                                 <input
                                     disabled={self.props.photoUploadMode === 'loading'}
                                     type="file"
@@ -106,7 +110,7 @@ var ImageUploadOverlay = React.createClass({
                                     onChange={self.props.sendLocalPhotos}
                                 />
                             </div>
-                            <button className="xxButton xxButton-center" disabled >OR</button>
+                            <button className="xxButton xxButton-center" disabled >{T.get('imageUpload.or')}</button>
                             <button
                                 id="dropBoxSDK"
                                 disabled={self.props.photoUploadMode === 'loading'}
@@ -115,24 +119,22 @@ var ImageUploadOverlay = React.createClass({
                             >{T.get('imageUpload.dropBox')}
                             </button>
                         </div>
-                        { isValid ? (
-                            <div>
-                                <div className="xxUploadDialog-block">
-                                    <label>{"Done uploading? Click below!"}</label>
-                                </div>
-                                <button
-                                    className={submitClassName.join(' ')}
-                                    type="button"
-                                    onClick={isValid ? self.props.toggleOpen : null}
-                                    data-send-tag={true}
-                                    disabled={!isValid}
-                                    >{'Submit Collection'}</button>
-                            </div>
-                        ): null
-
-                            
-                               
-                        }
+                            { 
+                                isValid ? (
+                                    <div>
+                                        <div className="xxUploadDialog-block">
+                                            <label>{T.get('imageUpload.submitBelow')}</label>
+                                        </div>
+                                        <button
+                                            className={submitClassName.join(' ')}
+                                            type="button"
+                                            onClick={isValid ? self.props.toggleOpen : null}
+                                            data-send-tag={true}
+                                            disabled={!isValid}
+                                            >{'Submit Collection'}</button>
+                                    </div>
+                                ) : null
+                            }
                         </div> 
                         ) : (
                         <button
@@ -140,7 +142,7 @@ var ImageUploadOverlay = React.createClass({
                             onClick={self.handleClick} 
                             className={submitClassName.join(' ')} 
                             type="button"
-                        >Next</button>
+                        >{T.get('action.next')}</button>
                         )
                     }
                     </div>
@@ -179,7 +181,3 @@ var ImageUploadOverlay = React.createClass({
 export default ImageUploadOverlay;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-                    // <div className="xxDragContainer">
-                    // <div id="xxDragContainerLayer" className="xxDragContainerLayer"></div>
-

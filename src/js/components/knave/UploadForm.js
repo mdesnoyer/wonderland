@@ -71,7 +71,7 @@ var UploadForm = React.createClass({
                 (self.state.photoUploadThumbnailIds.length > 0 || 
                  self.state.videoUploadUrl !== '' || 
                  self.state.photoCollectionName !== '' )) {
-            self.resetStateOnSuccessOrClose();
+            self.setState(self.getInitialState());
         }
         else {
             self.setState({
@@ -99,11 +99,7 @@ var UploadForm = React.createClass({
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
             return;
         }
-            this.setState({
-                isOpen: false,
-                isOpenPhoto: false,
-                isOpenVideo: false,
-            });
+        self.setState(self.getInitialState())
     },
     render: function() {
         const { isOnboarding } = this.props;
@@ -146,7 +142,6 @@ var UploadForm = React.createClass({
                                             className="xxUploadTypes-button xxUploadTypes-button--photo"
                                             onClick={self.handleOpenPhoto}
                                         ><span className="xxUploadTypes-buttonLabel">Photo</span></a>
-
                                         <a
                                             href=""
                                             className="xxUploadTypes-button xxUploadTypes-button--video"
@@ -235,7 +230,7 @@ var UploadForm = React.createClass({
             // **********************************************************************
             self.POST('videos', options)
                 .then(function(json) {
-                    self.resetStateOnSuccessOrClose();
+                    self.setState(self.getInitialState());
                     // if the a video is uploaded past the first page(greate than 1)
                     if (self.props.currentPage > 1) {
                         //we use the newsearch function in videos to adjust the page 
@@ -279,8 +274,7 @@ var UploadForm = React.createClass({
             size = 0,
             lastIndex = files.length -1,
             totalFileNumber = 0
-        ;
-    
+        ; 
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1
@@ -430,7 +424,7 @@ var UploadForm = React.createClass({
                     // **********************************************************************
                     // need to redirect to collections and or update depending on Onboarding State
                     // **********************************************************************
-                self.resetStateOnSuccessOrClose();
+                self.setState(self.getInitialState());
                 })
                 .catch(function(err) { 
                     self.throwUploadError(err);

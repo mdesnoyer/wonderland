@@ -252,7 +252,7 @@ $zindex-upload-drag-and-drop: 1;
     margin: 0 auto;
     width: calc((99.9% - #{$gutter-width}) *  + #{$gutter-width});;
     text-align: center;
-    margin-top: 1em;
+    margin-top: .5em;
     & > .xxButton {
         display: inline-block;
         position: relative;
@@ -273,18 +273,14 @@ $zindex-upload-drag-and-drop: 1;
         margin-right: 5%;
      }
 }
-
-
 .xxUploadDialog-intro {
     .xxTitle {
         margin-bottom: 12px;
     }
 }
-
 .xxButton--uploadDialog {
     float: left;
     width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
-
     & + & {
         float: right;
         @include breakpoint-mobile {
@@ -376,8 +372,6 @@ $zindex-upload-drag-and-drop: 1;
     }
 }
 
-
-
 .xxDragAndDrop-content {
     @include all-caps-title;
     position: absolute;
@@ -390,7 +384,6 @@ $zindex-upload-drag-and-drop: 1;
     text-align: center;
     transform: translateY(-50%);
 }
-
 .xxDragAndDrop-hint,
 .xxDragAndDrop-complete {
     &::before {
@@ -402,23 +395,16 @@ $zindex-upload-drag-and-drop: 1;
         background: url(../img/xx/upload.svg) 0 0 / 100% 100% no-repeat;
     }
 }
-
 .xxDragAndDrop-complete {
     &::before {
         background-image: url(../img/xx/upload-complete.svg) no-repeat;
     }
 }
-
 .xxDragAndDrop-progressCounter {
     display: block;
     margin-bottom: 7px;
     color: $accent-color;
     font: normal 45px $serif-family;
 }
-
-.xxLabel {
-
-}
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
