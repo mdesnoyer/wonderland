@@ -470,12 +470,3 @@ var UploadForm = React.createClass({
 export default UploadForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// formDataArray = [],
-// errorFiles, count size, totalFileNumber,
-// formData = new FormData(),
-// count = 0,
-// size = 0,
-// lastIndex = files.length - 1,
-// totalFileNumber = 0
-
-
