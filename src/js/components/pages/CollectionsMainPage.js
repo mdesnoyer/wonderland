@@ -22,21 +22,11 @@ const CollectionsMainPage = React.createClass({
 
     getInitialState: function() {
 
-        return {
 
-            // These are stores of tag, thumb and video resources.
-            // Map of id to tag.
-            // @TODO factor to store.
-            tags: {},
-
-            // Map of tag id to integer index of gender, then age.
-            // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
-            // By default, the demographic is gender=none, age=none.
-            selectedDemographic: {},
-
-            // Map of gender, age, thumbnail id to thumbnail.
-            // @TODO consider how to initialize this structure.
-            thumbnails: {
+        // Gives a new, empty demographic map
+        // @TODO initialize this structure from constants/config.
+        const genderAgeBaseMap = () => {
+            return {
                 0: {
                     0: {},
                     1: {},
@@ -61,10 +51,29 @@ const CollectionsMainPage = React.createClass({
                     4: {},
                     5: {}
                 }
-            },
+            }
+        };
+        return {
 
-            // Map of id to video.
+            // These are stores of tag, video, thumbnail resources.
+            //
+            // Map of tag id to tag.
+            // @TODO factor to store.
+            tags: {},
+
+            // Map of video id to video.
             videos: {},
+
+            // Map of gender, age, thumbnail id to thumbnail.
+            thumbnails: genderAgeBaseMap(),
+
+            // Map of gender, age, tag id to map of thumb id to lift float
+            //
+            // Note: This assumes the tag has only one base thumbnail
+            // for comparisons: for a video with a default thumbnail,
+            // it is the default thumbnail. In all other cases, it's
+            // the worst thumbnail.
+            lifts: genderAgeBaseMap(),
 
             // State of search paging: current page, page count,
             // next, prev page url.
@@ -75,6 +84,7 @@ const CollectionsMainPage = React.createClass({
                 prev: null
             }
         };
+
     },
 
     componentWillMount: function() {
@@ -167,11 +177,37 @@ const CollectionsMainPage = React.createClass({
                 return array;
             }, []);
 
-            return this.loadThumbnails(thumbIds, 0, 0, state);
+            // TODO? look at faster async workflow
+            // (specifically, letting lift be deferred since
+            // it isn't used for main render.)
+            const thumbPromise = this.loadThumbnails(thumbIds);
+            const liftPromise = this.loadLifts();
+            return Promise.all([thumbPromise, liftPromise]);
+
         })
+        .then(combined => {
+
+            const thumbRes = combined[0] || [];
+            const liftRes = combined[1] || {};
+
+            // Merge loaded thumbnails to state.thumbnails.
+            thumbRes.thumbnails.map(t => {
+                // 0, 0 is null-gender and null-age for demo.
+                state.thumbnails[0][0][t.thumbnail_id] = t;
+            });
+            _.toPairs(liftRes).map(pair => {
+                const tagId = pair[0];
+                const liftMap = pair[1];
+                state.lifts[0][0][tagId] = liftMap;
+            });
+            self.setState(state);
+        });
     },
 
-    loadThumbnails: function(thumbnailIds, gender=0, age=0, state={}) {
+    // Load thumbnails by ids
+    // @TODO extract to source module
+    loadThumbnails: function(thumbnailIds, gender=0, age=0) {
+
         const self = this;
 
         // Empty array of ids is no op; just set passed-in state.
@@ -201,23 +237,47 @@ const CollectionsMainPage = React.createClass({
                 Object.assign(params, baseParams, {thumbnail_id: arg});
                 self.batch('GET', 'thumbnails', params);
             });
-            promise = self.sendBatch();
+            return self.sendBatch();
         } else {
             params = {};
             Object.assign(params, baseParams, {thumbnail_id: thumbArgs[0]});
-            promise = self.GET('thumbnails', {data: params});
+            return self.GET('thumbnails', {data: params});
         }
+    },
 
-        promise.then(thumbsRes => {
-            // Merge loaded thumbnails to state.thumbnails.
-            const thumbnails = state.thumbnails? state.thumbnails: self.state.thumbnails;
-            thumbsRes.thumbnails.map(t => {
-                thumbnails[gender][age][t.thumbnail_id] = t;
+    // Load or reload from data source the array of thumbnails
+    // with synchronous call to setState.
+    loadThumbnailsSync: function(thumbnailIds, gender=0, age=0) {
+        const self = this;
+
+        this.loadThumbnails(thumbnailIds, gender, age)
+        .then(thumbsRes => {
+            const thumbnails = this.state.thumbnails;
+            // Merge new thumbnails to stored thumbnails.
+            thumbsRes.map(t => {
+                thumbnails[t.thumbnail_id] =  t;
             });
+            self.setState({thumbnails});
+        });
+    },
 
-            Object.assign(state, {thumbnails: thumbnails});
-            self.setState(state);
-        })
+    // Load lifts for thumbnails from data source.
+    loadLifts: function(tagIds, gender=0, age=0) {
+
+    },
+
+    loadLiftsSync: function(tagIds, gender=0, age=0) {
+        const self = this;
+        this.loadLifts(tagIds, gender, age)
+        .then(liftRes => {
+            const lifts = this.state.lift;
+            // Merge new lifts to stored lifts.
+            _toPairs.liftRes.map(pairs => {
+                const tagId = pairs[0];
+                const liftMap = pairs[1];
+            });
+            self.setState({lifts});
+        });
     },
 
     // TODO add post forms.
@@ -230,8 +290,9 @@ const CollectionsMainPage = React.createClass({
                     numberToShow={UTILS.RESULTS_PAGE_SIZE}
                     stores={{
                         tags: this.state.tags,
+                        videos: this.state.videos,
                         thumbnails: this.state.thumbnails,
-                        videos: this.state.videos
+                        lifts: this.state.lifts
                     }}
                     loadThumbnails={this.loadThumbnails}
                 />

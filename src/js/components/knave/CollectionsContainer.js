@@ -25,8 +25,14 @@ import {
 const CollectionsContainer = React.createClass({
 
     propTypes: {
+
+        // Ask the store to load thumbnails for a list of ids,
+        // for a given demographic.
         loadThumbnails: PropTypes.func.isRequired,
+
+        // The number of collections to display.
         numberToShow: PropTypes.number.isRequired,
+
         // TODO shape this
         // Map of store identifying key to the store,
         // which is a map of object id to object.
@@ -156,12 +162,22 @@ const CollectionsContainer = React.createClass({
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
 
+        // Show the lift for the base (best) thumbnail
+        // vs the given thumbnail.
+        const showLiftInInfoPanel = vsThumbnailId => {
+            //TODO
+        };
+        // The lift map for the selected demographic.
+        const liftMap = this.props.stores.lifts[gender][age];
+
+
         // List of right-hand side control components for
         // the content given type and session.
         const panels = [
             <InfoDemoLiftPanel
                 tagId={collection.tag_id}
                 title={collection.name}
+                liftMap={liftMap}
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
