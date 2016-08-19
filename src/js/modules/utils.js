@@ -3,6 +3,7 @@
 import T from './translation';
 import moment from 'moment';
 import reqwest from 'reqwest';
+import _ from 'lodash';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -302,6 +303,19 @@ var UTILS = {
             M: 'Male',
             F: 'Female'
     },
+    FILTER_GENDER_COL_ENUM: {
+        null  : 0,
+        'M'   : 1,
+        'F'   : 2,
+    },
+    FILTER_AGE_COL_ENUM: {
+        null:    0,
+        '18-19': 1,
+        '20-29': 2,
+        '30-39': 3,
+        '40-49': 4,
+        '50+'  : 5
+    },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
@@ -330,6 +344,12 @@ var UTILS = {
     VALENCE_THRESHOLD: 0.0005,
     VALENCE_IGNORE_INDEXES: [0,1],  
     TOOLTIP_DELAY_MILLIS: 500,
+    // For calls using comma separated values, the maximum items supported.
+    MAX_CSV_VALUE_COUNT: 100,
+
+    THUMB_TYPE_DEFAULT: 'default',
+    TAG_TYPE_IMAGE_COL: 'col',
+    TAG_TYPE_VIDEO_COL: 'video',
     HELMET_META_TAGS: [{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'},],
 
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
@@ -500,6 +520,52 @@ var UTILS = {
     },
     validateUrl: function(value) {
           return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    },
+
+    // Given an array of values, format values into comma-separated values
+    // and return as list of CSV string.
+    csvFromArray: (array, batchMax) => {
+
+        const count = array.length;
+        const res = [];
+        let working = [];
+
+        for (let i = 0; i < count; ++i) {
+            working.push(array[i]);
+            // Store a batch once we've reached the batch maximum.
+            if(i % batchMax == batchMax - 1) {
+                res.push(working);
+                working = [];
+            }
+        }
+        // Store the remainder.
+        if (working)
+            res.push(working);
+        // Convert lists to CSV strings and return.
+        return res.map(list => {
+            return list.join(',');
+        });
+    },
+
+    // Given array of thumbnails, return the thumbnail with best score.
+    bestThumbnail: (thumbnails) => {
+        return _.maxBy(thumbnails, 'neon_score');
+    },
+
+    // Given array of thumbnails, return the thumbnail with worst score.
+    worstThumbnail: (thumbnails) => {
+        return _.minBy(thumbnails, 'neon_score');
+    },
+
+    // Get the Cartesian product of arrays.
+    productOfArrays: function() {
+        return _.reduce(arguments, function(a, b) {
+            return _.flatten(_.map(a, function(x) {
+                return _.map(b, function(y) {
+                    return x.concat([y]);
+                });
+            }), true);
+        }, [ [] ]);
     }
 };
 

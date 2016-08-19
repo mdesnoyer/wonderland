@@ -221,7 +221,7 @@ var Videos = React.createClass({
             });
     },
     doFormatTime: function(res) {
-        var self = this; 
+        var self = this;
         var offset = moment().utcOffset();
         var timeOfRefresh = moment(res.refresh_time_video_posts).add(offset, 'minutes').calendar().toLowerCase();
         self.setState({

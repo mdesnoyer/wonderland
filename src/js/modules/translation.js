@@ -41,6 +41,7 @@ const _DEFAULT_LOCALE = 'en-US',
             upload: 'Upload',
             tryItOut: 'Try it Out',
             gotIt: 'Got it!',
+            none: 'None',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
 
@@ -269,12 +270,12 @@ const _DEFAULT_LOCALE = 'en-US',
             'label.gender': 'Gender',
             'label.age': 'Age',
             'label.newPassword' : 'New Password',
-            // Created
-            // Updated
             'label.accountEmail' : 'Account Email',
             'label.lift' : 'Lift',
             'label.filters': 'Filters',
             'label.submit': 'Submit',
+            'label.filterResults': 'Filter Results',
+            'label.shareYourImages': 'Share Your Images',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             'copy.thumbnails.high': 'Hide Low Scores',
@@ -282,6 +283,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             'copy.bestThumbnail': 'Best Thumbnail',
+            'copy.worstThumbnail': 'Worst Thumbnail',
             'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
             'copy.valenceFeatures': 'Valence Features',
