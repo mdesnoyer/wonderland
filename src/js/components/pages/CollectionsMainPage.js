@@ -221,6 +221,7 @@ const CollectionsMainPage = React.createClass({
     },
 
     // TODO add post forms.
+    // TODO add helmet.
     render: function() {
         return (
             <main className='xxPage'>

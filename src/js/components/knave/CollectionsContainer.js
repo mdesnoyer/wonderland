@@ -87,6 +87,7 @@ const CollectionsContainer = React.createClass({
     // Else return an error component.
     buildCollectionComponent: function(tagId) {
 
+
         const collection = this.props.stores.tags[tagId];
 
         // If a demographic was selected, use it. Else nulls.
