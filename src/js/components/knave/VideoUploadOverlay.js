@@ -1,43 +1,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import DropDown from './DropDown';
-import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadOverlay = React.createClass({
-    getInitialState: function() {
-        return {
-            url: '',
-            isMessageNeeded: false
-        }
-    },
-    componentWillMount: function() { 
-        var self = this;
-        if (self.props.error) {
-            self.setState({ isMessageNeeded: true });
-        }
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self.setState({ isMessageNeeded: false });
-    },
-    updateField: function(field, value) {
-        var self = this;
-        this.setState({
-            [field]: value
-        });
-    },
-    render() {
+    render: function() {
         const { isOnboarding } = this.props;
         const isMobile = window.outerWidth < 768;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!self.state.url,
-            messageNeeded = self.state.isMessageNeeded ? <Message message={self.props.error} type={'formError'}/> : null
+            isValid = !!self.props.videoUploadUrl,
+            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
@@ -56,32 +32,19 @@ var VideoUploadOverlay = React.createClass({
                         <input
                             className="xxInputText"
                             id="xx-upload-url"
-                            value={self.state.url}
                             placeholder={T.get('upload.videoUrl')}
                             type="url"
                             required
-                            onChange={e => self.updateField('url', e.target.value)}
+                            onChange={e => self.props.updateField('videoUploadUrl', e.target.value)}
                         />
                     </div>
-                    {/*
-                        !isOnboarding ? (
-                            <div>
-                                <div className="xxFormField">
-                                    <label className="xxLabel">{T.get('copy.videos.upload.filter.title')}</label>
-                                    <DropDown label={T.get('label.gender')} options={UTILS.FILTERS_GENDER}/>
-                                    <DropDown label={T.get('label.age')} options={UTILS.FILTERS_AGE}/>
-                                </div>
-                                <p className="xxFormNote">{T.get('copy.videos.upload.filter.description')}</p>
-                            </div>
-                        ) : null
-                    */}
                     <div className="xxFormButtons">
                         {
                             isMobile ? (
                                 <button
                                     className="xxButton"
                                     type="button"
-                                    onClick={self.props.handleClose}
+                                    onClick={self.props.toggleOpen}
                                 >{T.get('back')}</button>
                             ) : null
                         }
@@ -89,18 +52,19 @@ var VideoUploadOverlay = React.createClass({
                             disabled={!isValid}
                             className={submitClassName.join(' ')}
                             type="submit"
-                            onClick={self.handleClick}
+                            data-send-url={true}
+                            onClick={self.props.toggleOpen}
                         >{T.get('upload.submit')}</button>
                     </div>
                 </div>
             </section>
         );
     },
-    handleClick: function() {
-        var self = this;
-            if (self.props.handleUpload) {
-                self.props.handleUpload(self.state.url);
-            }
+    propTypes: {
+        error: React.PropTypes.string,
+        toggleOpen: React.PropTypes.func,
+        updateField: React.PropTypes.func,
+        videoUploadUrl: React.PropTypes.string
     }
 });
 

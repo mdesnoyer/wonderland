@@ -27,14 +27,14 @@ export default class XXCollectionImages extends React.Component {
     }
 
     render() {
-        const { isMobile, updateStage } = this.props;
+        const { isMobile, type, updateStage } = this.props;
         const { showLowScores } = this.state;
 
         return (
             <div className="xxCollectionImages">
                 <div className="xxCollectionImages-featured">
                     <h2 className="xxCollection-subtitle">
-                        Default Thumbnail
+                        { type === 'photo' ? 'Lowest Scoring Image' : 'Default Thumbnail' }
                     </h2>
                     <XXThumbnail
                         score={49}
@@ -120,7 +120,13 @@ export default class XXCollectionImages extends React.Component {
                                 onClick={this.toggleLowScoresVisibility}
                             >
                                 <span>
-                                    {`${showLowScores ? 'Hide' : 'View'} Low Scores`}
+                                    {
+                                        type === 'photo' ? (
+                                            `${showLowScores ? 'Hide' : 'See All'} Images`
+                                        ) : (
+                                            `${showLowScores ? 'Hide' : 'View'} Low Scores`
+                                        )
+                                    }
                                 </span>
                             </strong>
                         )

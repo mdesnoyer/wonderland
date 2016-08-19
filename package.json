@@ -45,6 +45,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "attr-accept": "^1.0.3",
     "babel-polyfill": "^6.9.1",
     "clipboard": "^1.5.12",
     "fnv-plus": "^1.2.12",
@@ -58,6 +59,7 @@
     "react-catalyst": "^0.3.0",
     "react-cookie": "^0.4.6",
     "react-dom": "^0.14.8",
+    "react-dropzone": "^3.5.3",
     "react-ga": "^2.1.1",
     "react-helmet": "^3.1.0",
     "react-mixin": "^3.0.0",

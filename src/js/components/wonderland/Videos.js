@@ -5,7 +5,7 @@ import Message from './Message';
 import VideosResults from './VideosResults';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import VideoUploadForm from '../knave/VideoUploadForm';
+import UploadForm from '../knave/UploadForm';
 import T from '../../modules/translation';
 import Secured from '../../mixins/Secured';
 import ReactTooltip from 'react-tooltip';
@@ -79,7 +79,7 @@ var Videos = React.createClass({
                         </div>
                     ) : null
                 }
-                <VideoUploadForm
+                <UploadForm
                     postHookSearch={self.doVideoSearch}
                     postHookAnalysis={null}
                     isVideoResults={true}
