@@ -480,6 +480,8 @@ var UTILS = {
         return url.replace(/^(https?):/, '');
     },
     shortenUrl: function(url, callback) {
+        console.log('here');
+        // console.log(reqwest);
         var self = this;
         reqwest({
             url: self.BITLY_SHORTEN_URL,
@@ -491,7 +493,9 @@ var UTILS = {
             }
         })
         .then(function(response) {
-            callback(response);
+            // callback(response);
+            console.log('there');
+            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
