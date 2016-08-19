@@ -17,19 +17,14 @@ var VideoProcessing = React.createClass({
             maxVideoSize: UTILS.MAX_VIDEO_SIZE
         }
     },
-    componentWillMount: function() {
-        var self = this;
-        self.GET('limits')
-            .then(function(res) {
-                self.setState({
-                    maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE
-                })
-            })
-            .catch(function(err) {
-            })
+    componentDidMount: function() {
+        var self = this,
+            pingVideo = setInterval(self.props.updateThumbnails, 30000)
+        ;
+        if (self.props.videoState === 'failed') {
+            clearInterval(pingVideo);
+        };
     },
-    componentWillReceiveProps: function(nextProps) {
-    }, 
     render: function() {
         var self = this,
             title,
@@ -38,7 +33,7 @@ var VideoProcessing = React.createClass({
             errorMessageComponent,
             isError,
             seconds,
-            timeRemaining, 
+            estimatedTimeRemaining, 
             countdown = null,
             collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
@@ -70,11 +65,11 @@ var VideoProcessing = React.createClass({
                 deleteButton = '';
                 isError = false;
                 seconds = self.props.seconds;
-                timeRemaining = self.props.timeRemaining;
+                estimatedTimeRemaining = self.props.estimatedTimeRemaining;
                 collectionClassName.push('xxCollection--processing');
-                if (timeRemaining !== null && timeRemaining >= 1) {  
+                if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {  
                     countdown = (<Countdown 
-                        seconds={timeRemaining}
+                        seconds={estimatedTimeRemaining}
                         classPrefix="xxCollectionFilterCountdown"
                     />);
                 } 
@@ -110,6 +105,16 @@ var VideoProcessing = React.createClass({
             </div> 
         )
     },
+    getVideo: function() {
+        var self = this;
+        self.GET('videos/', options)
+            .then(function(res) {
+                self.props.updateThumbnails();
+            })
+            .catch(function(err) { 
+                console.log(err);
+            }); 
+    },
     handleDeleteClick: function() {
         var self = this, options = {}
         ;
@@ -126,6 +131,13 @@ var VideoProcessing = React.createClass({
             .catch(function(err) {
                 console.log(err);
             });
+    },
+    propTypes: {
+        title: React.PropTypes.string,
+        videoState: React.PropTypes.string,
+        estimatedTimeRemaining: React.PropTypes.number,
+        seconds: React.PropTypes.number,
+        updateThumbnails: React.PropTypes.func
     }
 });
 

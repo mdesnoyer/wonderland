@@ -221,9 +221,8 @@ const CollectionsMainPage = React.createClass({
         })
     },
 
-    updateThumbnails: function(tagObject) {
+    updateThumbnails: function() {
         var self = this;
-        debugger
         this.search();
     },
 
@@ -239,6 +238,8 @@ const CollectionsMainPage = React.createClass({
                         videos: this.state.videos
                     }}
                     loadThumbnails={this.loadThumbnails}
+                    updateThumbnails={this.updateThumbnails}
+
                 />
                 <UploadForm updateThumbnails={this.updateThumbnails}/>
                 <SiteFooter />
