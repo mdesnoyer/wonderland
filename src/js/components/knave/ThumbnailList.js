@@ -88,14 +88,18 @@ export const ShowLessThumbnailList = React.createClass({
         const firstPartThumbs = this.props.thumbnails.slice(0, 5);
         const secondPartThumbs = this.props.thumbnails.slice(5);
         return (
-            <TwoPartThumbnailList
-                firstPartThumbs={firstPartThumbs}
-                secondPartThumbs={secondPartThumbs}
-            >
-                <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
-                    <span>{T.get('action.showLess')}</span>
-                </strong>
-            </TwoPartThumbnailList>
+            <div>
+                <ThumbnailList
+                    thumbnails={firstPartThumbs}
+                >
+                    <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
+                        <span>{T.get('action.showLess')}</span>
+                    </strong>
+                </ThumbnailList>
+                <ThumbnailList
+                    thumbnails={secondPartThumbs}
+                />
+            </div>
         );
     }
 });

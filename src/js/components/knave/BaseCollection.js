@@ -130,14 +130,13 @@ const BaseCollection = React.createClass({
                 <div className="xxCollectionImages">
                     {left}
                     {right}
-                    {thumbnailList}
+                    {this.buildThumbnailList()}
                 </div>
-                <div className="xxCollection-content"> 
+                <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                     />
-                    {this.buildThumbnailList()}
                 </div>
             </div>
         );
