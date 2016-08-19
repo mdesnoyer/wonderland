@@ -5,14 +5,23 @@ import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var SearchBar = React.createClass({
-    render() {
-        return false;
+var LoadingText = React.createClass({
+    render: function() {
+        return (
+            <div>
+                {T.get('action.loading')}
+                <span className="loadingText">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </span>
+            </div>
+        );
     }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default SearchBar;
+export default LoadingText;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
