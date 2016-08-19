@@ -69,9 +69,11 @@ var VideoContent = React.createClass({
                             openSignUp={self.props.openSignUp}
                             handleMenuChange={self.handleMenuChange}
                         />
-                        <YoutubeUpload 
-                            thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
-                        />
+                        {/*
+                            <YoutubeUpload 
+                                thumbnails={self.props.demographicThumbnails[self.state.selectedDemographic].thumbnails}
+                            />
+                        */}
                     </div>
                 );
                 break;
