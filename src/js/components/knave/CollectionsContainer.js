@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
 
+import VideoProcessing from './VideoProcessing';
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import InfoActionContainer from './InfoActionContainer';
@@ -190,8 +191,19 @@ const CollectionsContainer = React.createClass({
 
     // @TODO factor common code
     buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
-
+        debugger
         const video = this.props.stores.videos[collection.video_id];
+        if (video.state === 'processing' || video.state === 'failed') {
+            return (
+                <VideoProcessing 
+                    title={video.title}
+                    
+                    videoState={video.state}
+                    estimatedTimeRemaining={video.estimated_time_remaining}
+                    seconds={0}
+                />
+            );
+        }
         let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
         if(genderLabel == 'null') {
             genderLabel = null;

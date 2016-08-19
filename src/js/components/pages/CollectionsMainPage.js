@@ -10,6 +10,7 @@ import SESSION from '../../modules/session';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import SiteFooter from '../wonderland/SiteFooter';
+import UploadForm from '../knave/UploadForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
@@ -220,7 +221,12 @@ const CollectionsMainPage = React.createClass({
         })
     },
 
-    // TODO add post forms.
+    updateThumbnails: function(tagObject) {
+        var self = this;
+        debugger
+        this.search();
+    },
+
     render: function() {
         return (
             <main className='xxPage'>
@@ -234,6 +240,7 @@ const CollectionsMainPage = React.createClass({
                     }}
                     loadThumbnails={this.loadThumbnails}
                 />
+                <UploadForm updateThumbnails={this.updateThumbnails}/>
                 <SiteFooter />
             </main>
         );

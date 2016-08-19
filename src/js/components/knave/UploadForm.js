@@ -234,29 +234,10 @@ var UploadForm = React.createClass({
             });
         }
         else {
-            // **********************************************************************
-            // this will have to change according to the new collections set up 
-            // **********************************************************************
             self.POST('videos', options)
                 .then(function(json) {
+                    self.props.updateThumbnails();
                     self.setState(self.getInitialState());
-                    // if the a video is uploaded past the first page(greate than 1)
-                    if (self.props.currentPage > 1) {
-                        //we use the newsearch function in videos to adjust the page 
-                        // 1 minus by the current page 
-                        self.props.handleNewSearch('?', 1 - self.props.currentPage);
-                    }
-                    else if (self.props.postHookAnalysis) {
-                        self.props.postHookAnalysis(json);
-                    }
-                    else {
-                        if (self.props.postHookSearch) {
-                            self.props.postHookSearch();
-                        }
-                        else {
-                            self.context.router.push('/video/' + videoId + '/');
-                        }
-                    }
                 })
                 .catch(function(err) {
                     self.throwUploadError(err);
@@ -435,10 +416,8 @@ var UploadForm = React.createClass({
         ;
             self.POST('tags', options)
                 .then(function(res) {
-                    // **********************************************************************
-                    // need to redirect to collections and or update depending on Onboarding State
-                    // **********************************************************************
-                self.setState(self.getInitialState());
+                    self.props.updateThumbnails();
+                    self.setState(self.getInitialState());
                 })
                 .catch(function(err) { 
                     self.throwUploadError(err);
@@ -462,6 +441,9 @@ var UploadForm = React.createClass({
             .catch(function (err) {
                 SESSION.end();
             });
+    },
+    propTypes: {
+        updateThumbnails: React.PropTypes.func
     }
 });
 

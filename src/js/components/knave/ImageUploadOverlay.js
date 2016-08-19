@@ -61,7 +61,7 @@ var ImageUploadOverlay = React.createClass({
                 <div className="xxUploadDialog-drag-drop">
                     <div className="xxUploadDialog-intro">
                         <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
-                        <p>{messageNeeded}</p>
+                        <h2>{messageNeeded}</h2>
                     </div>
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
