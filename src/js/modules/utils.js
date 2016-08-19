@@ -330,7 +330,7 @@ var UTILS = {
     YOUTUBE_OAUTH_URL: 'https://accounts.google.com/o/oauth2/auth',
     YOUTUBE_OAUTH_SCOPE: 'https://www.googleapis.com/auth/youtube.upload', // I chose this scope because we'll need to be able to manage the videos in the user's account - AK
     YOUTUBE_CLIENT_ID: '443043895879-a4bn3p8qfnei4ckrem111p1jn45oavuk.apps.googleusercontent.com',
-    YOUTUBE_REDIRECT_URI: 'https://development-app.neon-lab.com/videos',
+    YOUTUBE_REDIRECT_URI: WEB_ROOT + 'videos',
     YOUTUBE_VALIDATION_URL: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
