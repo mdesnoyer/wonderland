@@ -67,7 +67,7 @@ var AJAXModule = {
                     if (ret.isCanceled !== true) {
 
                         // Note don't commit.
-                        console.log(url, res);
+                        //console.log(url, res);
                         options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
                     }
                 })

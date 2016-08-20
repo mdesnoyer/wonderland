@@ -11,6 +11,7 @@ var FeatureThumbnail = React.createClass({
         title: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
         src: PropTypes.string.isRequired,
+        tagId: PropTypes.string,
         thumbnaiId: PropTypes.string,
         onMouseEnter: PropTypes.func,
         onClick: PropTypes.func

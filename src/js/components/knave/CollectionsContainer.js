@@ -5,9 +5,11 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
+import TRACKING from '../../modules/tracking';
 
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
+import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 import InfoActionContainer from './InfoActionContainer';
 import {
     InfoDemoLiftPanel,
@@ -48,7 +50,10 @@ const CollectionsContainer = React.createClass({
             // Map of tag id to integer index of gender, then age.
             // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
             // By default, the demographic is [0,0] meaning gender=none, age=none.
-            selectedDemographic: {}
+            selectedDemographic: {},
+
+            overlayTagId: null,
+            overlayThumbnailId: null
         };
     },
 
@@ -188,7 +193,7 @@ const CollectionsContainer = React.createClass({
                 smallThumbnails={smallThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
-                onThumbnailClick={this.onThumbnailClick}
+                onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
             />
         );
     },
@@ -231,8 +236,8 @@ const CollectionsContainer = React.createClass({
             // Remove the feature thumbnails from the small list.
             .omit([right.thumbnail_id, left.thumbnail_id])
             .values()
-            // Order by score, best to worst, then frame number for stability.
-            .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
+            // Order by score, best to worst, then created time for stability.
+            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
 
         // Do the same for the bad thumbnail list.
@@ -245,7 +250,7 @@ const CollectionsContainer = React.createClass({
         const smallBadThumbnails = _
             .chain(allBadThumbnailMap)
             .values()
-            .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
+            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
 
         const panels = [
@@ -279,22 +284,140 @@ const CollectionsContainer = React.createClass({
                 smallBadThumbnails={smallBadThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
-                onThumbnailClick={this.onThumbnailClick}
+                onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
             />
        );
     },
 
-    onThumbnailClick: function(thumbnailId) {
-        const self = this;
-        console.log(thumbnailId);
-        //self.zoom(thumbnailId);
+    // Gets the Thumbnail resource for the
+    // current demographic for a collection for a thumbnail id.
+    getThumbnail: function(tagId, thumbnailId) {
+        return this.getThumbnailMap(tagId)[thumbnailId];
     },
 
+    // Get all the Thumbnail resources for the
+    // current demographic for a collection as map of id to thumbnail.
+    //
+    // (If a video, this is the union of good and bad thumbs.)
+    getThumbnailMap: function(tagId) {
+        let gender = 0;
+        let age = 0;
+        if (this.state.selectedDemographic[tagId] !== undefined) {
+            [gender, age] = this.state.selectedDemographic[tagId];
+        }
+        const tag = this.props.stores.tags[tagId];
+        let associatedThumbnailIds;
+        if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            const video = this.props.stores.videos[tag.video_id];
+            const demo = UTILS.findDemographicThumbnailObject(
+                video.demographic_thumbnails,
+                gender,
+                age);
+            associatedThumbnailIds = _.union(
+                demo.thumbnails.map(t => { return t.thumbnail_id }),
+                demo.bad_thumbnails.map(t => { return t.thumbnail_id })
+            );
+        } else {
+            associatedThumbnailIds = tag.thumbnail_ids;
+        }
+        return _.pick(
+            this.props.stores.thumbnails[gender][age],
+            associatedThumbnailIds);
+    },
+
+    onThumbnailClick: function(overlayTagId, overlayThumbnailId) {
+        const self = this;
+        self.setState({overlayTagId, overlayThumbnailId});
+        TRACKING.sendEvent(self, arguments, !!self.state.overlayTagId);
+    },
+
+    onOverlayClickNextPrev: function(newThumbnailId, e) {
+        e.preventDefault();
+        const self = this;
+        const thumbnail = self.getThumbnail(self.state.overlayTagId, self.state.overlayThumbnailId);
+        TRACKING.sendEvent(self, arguments, thumbnail);
+        self.setState({
+            overlayThumbnailId: newThumbnailId
+        });
+    },
+
+    onOverlayClose: function(e) {
+        e.preventDefault();
+        const self = this;
+        self.setState({
+            overlayTagId: null,
+            overlayThumbnailId: null
+        });
+
+    },
+
+    // TODO? move zoom component up to page container
+    // TODO? factor to module
+    buildOverlayComponent: function() {
+        if (!this.state.overlayTagId) {
+            return null;
+        }
+
+        // Get score sorted thumbnails for collection.
+        const tag = this.props.stores.tags[this.state.overlayTagId];
+        let gender = 0;
+        let age = 0;
+        if (undefined !== this.state.selectedDemographic[this.state.overlayTagId]) {
+            [gender, age] = this.state.selectedDemographic[this.state.overlayTagId];
+        }
+        const thumbnailMap = this.getThumbnailMap(this.state.overlayTagId);
+        const sortedThumbnails = _
+            .chain(thumbnailMap)
+            .values()
+            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
+            .value();
+
+        // Find the current thumbnail index or default to first.
+        const thumbnailIndex = _.findIndex(sortedThumbnails, t => {
+                return t.thumbnail_id == this.state.overlayThumbnailId;
+            }) || 0;
+
+        // Find the next and previous thumbnail ids for navigation.
+        // Use modulo to ensure index is in [0, <length of thumbnails>).
+        const thumbnailCount = sortedThumbnails.length;
+
+        const nextThumbnailIndex = ( 1 + thumbnailIndex) % thumbnailCount;
+        const prevThumbnailIndex = (-1 + thumbnailIndex + thumbnailCount) % thumbnailCount;
+
+        const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
+        const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
+
+        // Find lift for the displayed thumb.
+        const lift = this.props.stores.lifts
+            [gender]
+            [age]
+            [this.state.overlayTagId]
+            [this.state.overlayThumbnailId] || 0;
+        console.log(lift, this.state);
+        return (
+            <ThumbnailOverlay
+                thumbnails={sortedThumbnails}
+                selectedItem={thumbnailIndex}
+                displayThumbLift={lift}
+                // Bind next/prev functions to bind the new thumb id
+                handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
+                handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
+                closeThumbnailOverlay={this.onOverlayClose}
+                openLearnMore={this.props.openLearnMore}
+            />
+        );
+
+    },
     render: function() {
         const collections = this.state.shownIds.map(tagId => {
             return this.buildCollectionComponent(tagId);
         });
-        return (<ul>{collections}</ul>);
+        return (
+            <div className="xxCollectionImages">
+                {this.buildOverlayComponent()}
+                <ul>{collections}</ul>
+            </div>
+        );
     },
 });
 

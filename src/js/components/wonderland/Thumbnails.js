@@ -43,20 +43,6 @@ var Thumbnails = React.createClass({
             showThumbnails: false
         };
     },
-    handleKeyEvent: function(e) {
-        var self = this;
-        switch (e.keyCode) {
-            case 27: // Escape
-                self.closeThumbnailOverlay(e);
-                break;
-            case 37: // Left Arrow
-                self.handleClickPrevious(e);
-                break;
-            case 39: // Right Arrow
-                self.handleClickNext(e);
-                break;
-        }
-    },
     componentWillReceiveProps: function(nextProps, nextState){
         var self = this;
         if (nextProps.selectedDemographic !== self.props.selectedDemographic) {
@@ -115,10 +101,8 @@ var Thumbnails = React.createClass({
                     closeThumbnailOverlay={self.closeThumbnailOverlay}
                     thumbnails={self.state.thumbnails}
                     selectedItem={self.state.selectedItem}
-                    total={self.state.thumbsLength}
                     handleClickPrevious={self.handleClickPrevious}
                     handleClickNext={self.handleClickNext}
-                    handleKeyEvent={self.handleKeyEvent}
                     displayThumbLift={self.props.displayThumbLift || 0}
                     openLearnMore={self.props.openLearnMore}
                 />

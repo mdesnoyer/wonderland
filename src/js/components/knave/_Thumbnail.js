@@ -11,8 +11,7 @@ const _Thumbnail = React.createClass({
         score: PropTypes.number,
         // Image url with appropriate dimensions
         src: PropTypes.string.isRequired,
-        // Thumbnail id if needed for event handlers
-        thumbnailId: PropTypes.string,
+        // User action handlers
         onMouseEnter: PropTypes.func,
         onClick: PropTypes.func
     },
@@ -34,12 +33,12 @@ const _Thumbnail = React.createClass({
             <a
                 className="xxThumbnail"
                 data-score={self.props.score}
-                onClick={() => {self.props.onClick(self.props.thumbnailId);}}
+                onClick={self.props.onClick}
             >
                 <img
                     className="xxThumbnail-image"
                     src={self.props.src}
-                    onMouseEnter={() => {self.props.onMouseEnter(self.props.thumbnailId);}}
+                    onMouseEnter={self.props.onMouseEnter}
                 />
             </a>
         );

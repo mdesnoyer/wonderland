@@ -14,10 +14,8 @@ var ThumbnailOverlay = React.createClass({
         closeThumbnailOverlay: React.PropTypes.func.isRequired,
         thumbnails: React.PropTypes.array.isRequired,
         selectedItem: React.PropTypes.number.isRequired,
-        total: React.PropTypes.number.isRequired,
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
-        handleKeyEvent: React.PropTypes.func.isRequired,
         displayThumbLift: React.PropTypes.number.isRequired
     },
     componentDidMount: function() {
@@ -25,7 +23,7 @@ var ThumbnailOverlay = React.createClass({
         if (document.body.onkeydown) {
             self._prevKeyDown = document.body.onkeydown;
         }
-        document.body.onkeydown = self.props.handleKeyEvent;
+        document.body.onkeydown = self.handleKeyEvent;
         ReactDOM.findDOMNode(this).scrollTop = 0;
         document.body.classList.add('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = `${scrollbarWidth}px`;
@@ -38,9 +36,20 @@ var ThumbnailOverlay = React.createClass({
         document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = 0;
     },
-    getValenceFeatures: function(thumbnail) { 
+    getValenceFeatures: function(thumbnail) {
         return (thumbnail.final_valence_features ? thumbnail.final_valence_features : []) 
-    }, 
+    },
+    handleKeyEvent: function(e) {
+        var self = this;
+        switch (e.keyCode) {
+            case 27: // Escape
+                return self.props.closeThumbnailOverlay(e);
+            case 37: // Left Arrow
+                return self.props.handleClickPrevious(e);
+            case 39: // Right Arrow
+                return self.props.handleClickNext(e);
+        }
+    },
     render: function() {
         var self = this;
         return (
@@ -55,7 +64,7 @@ var ThumbnailOverlay = React.createClass({
                                         thumbnail={thumbnail}
                                         index={i}
                                         selectedItem={self.props.selectedItem}
-                                        total={self.props.total}
+                                        total={self.props.thumbnails.length}
                                         handleClickPrevious={self.props.handleClickPrevious}
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}

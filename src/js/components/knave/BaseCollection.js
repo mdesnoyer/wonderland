@@ -21,6 +21,9 @@ const BaseCollection = React.createClass({
 
     propTypes: {
 
+        // Tag id of the collection
+        tagId: PropTypes.string.isRequired,
+
         // Left and right large thumbnail
         leftFeatureThumbnail: PropTypes.object.isRequired,
         rightFeatureThumbnail: PropTypes.object.isRequired,
@@ -127,25 +130,25 @@ const BaseCollection = React.createClass({
     },
 
     render: function() {
+        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
         // The main left and right feature thumbnails
         const left = (
             <FeatureThumbnail
                 title={this.props.leftFeatureTitle}
                 score={this.props.leftFeatureThumbnail.neon_score}
-                thumbnailId={this.props.leftFeatureThumbnail.thumbnail_id}
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
-                onMouseEnter={this.onThumbnailMouseEnter}
-                onClick={this.props.onThumbnailClick}
+                onMouseEnter={this.onThumbnailMouseEnter.bind(null, leftThumbnailId)}
+                onClick={this.props.onThumbnailClick.bind(null, leftThumbnailId)}
             />
         );
+        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
         const right = (
             <FeatureThumbnail
                 title={this.props.rightFeatureTitle}
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                thumbnailId={this.props.rightFeatureThumbnail.thumbnail_id}
-                onMouseEnter={this.onThumbnailMouseEnter}
-                onClick={this.props.onThumbnailClick}
+                onMouseEnter={this.onThumbnailMouseEnter.bind(null, rightThumbnailId)}
+                onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
             />
         );
         const liftThumbnailId = this.state.liftThumbnailId?

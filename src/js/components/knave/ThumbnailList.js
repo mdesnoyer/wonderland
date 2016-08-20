@@ -35,11 +35,10 @@ export const ThumbnailList = React.createClass({
                 return (
                     <Thumbnail
                         key={t.thumbnail_id}
-                        thumbnailId={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}
-                        onMouseEnter={this.props.onMouseEnter}
-                        onClick={this.props.onClick}
+                        onMouseEnter={this.props.onMouseEnter.bind(null, t.thumbnail_id)}
+                        onClick={this.props.onClick.bind(null, t.thumbnail_id)}
                     />
                 );
             });

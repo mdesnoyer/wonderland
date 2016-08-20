@@ -22,16 +22,16 @@ var ZoomThumbnail = React.createClass({
         var valenceDisplay = this.getValenceDisplay();
         this.setState({valenceDisplay: valenceDisplay});
     },
-    componentDidMount: function() { 
+    componentDidMount: function() {
         var valenceDisplay = this.getValenceDisplay();
-        this.setState({valenceDisplay: valenceDisplay}); 
-    },  
+        this.setState({valenceDisplay: valenceDisplay});
+    },
     getInitialState: function() {
         return {
-            valenceDisplay: this.getValenceDisplay() 
-        } 
+            valenceDisplay: this.getValenceDisplay()
+        }
     },
-    getValenceDisplay: function() { 
+    getValenceDisplay: function() {
         var self = this,
             valenceDisplay = null,
             whyThisImage = T.get('copy.whyThisImage') ,
@@ -40,16 +40,16 @@ var ZoomThumbnail = React.createClass({
                 return self.props.valence.indexOf(value) === pos;
             })
         ;
-        if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') { 
+        if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') {
             valenceDisplay = (<div>
                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
                 <p>{whyNotThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
             </div>)
-        } 
-        else if (this.props.valence.length > 0) { 
+        }
+        else if (this.props.valence.length > 0) {
             valenceDisplay = (
-                 <div> 
-                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2> 
+                 <div>
+                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
                     <ul className="xxTagList">
                         {
                             uniqueValence.map(function(v, i) {
@@ -62,18 +62,18 @@ var ZoomThumbnail = React.createClass({
                         }
                     </ul>
                     <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
-                 </div> 
+                 </div>
             );
-            valenceDisplay = valenceDisplay; 
+            valenceDisplay = valenceDisplay;
         }
-        else { 
+        else {
             valenceDisplay = (<div>
                 <h2 className="xxSubtitle xxImageZoom-subtitle">Getting Features</h2>
                 <div className="xxValenceloadingSpinner"></div>
             </div>)
         }
-        return valenceDisplay;  
-    },  
+        return valenceDisplay;
+    },
     openLearnMore: function(e) {
         var self = this;
         e.preventDefault();
@@ -117,7 +117,7 @@ var ZoomThumbnail = React.createClass({
                     />
                 </div>
                 <div className="xxImageZoom-content">
-                    {self.state.valenceDisplay} 
+                    {self.state.valenceDisplay}
                     <Lift displayThumbLift={self.props.thumbnail.lift}/>
                     <nav className="xxImageZoom-nav">
                         <a
