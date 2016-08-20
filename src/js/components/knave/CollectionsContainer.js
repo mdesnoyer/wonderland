@@ -188,6 +188,7 @@ const CollectionsContainer = React.createClass({
                 smallThumbnails={smallThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
+                onThumbnailClick={this.onThumbnailClick}
             />
         );
     },
@@ -278,9 +279,17 @@ const CollectionsContainer = React.createClass({
                 smallBadThumbnails={smallBadThumbnails}
                 infoActionPanels={panels}
                 infoActionControls={controls}
+                onThumbnailClick={this.onThumbnailClick}
             />
        );
     },
+
+    onThumbnailClick: function(thumbnailId) {
+        const self = this;
+        console.log(thumbnailId);
+        //self.zoom(thumbnailId);
+    },
+
     render: function() {
         const collections = this.state.shownIds.map(tagId => {
             return this.buildCollectionComponent(tagId);
