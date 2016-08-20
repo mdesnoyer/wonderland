@@ -18,12 +18,34 @@ var VideoProcessing = React.createClass({
         }
     },
     componentDidMount: function() {
-        var self = this,
-            pingVideo = setInterval(self.props.updateThumbnails, 30000)
-        ;
-        if (self.props.videoState === 'failed') {
-            clearInterval(pingVideo);
-        };
+        var self = this; 
+        if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
+            self.props.updateThumbnails();
+        }
+        else if(self.props.videoState === 'processing') {
+            self.getVideoStatus();
+        }
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var self = this; 
+        if (self.props.title !== nextProps.title && self.props.estimatedTimeRemaining !== nextProps.estimatedTimeRemaining) {
+            self.getVideoStatus();
+        }else if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
+           self.props.updateThumbnails();
+        }else if (self.props.videoState !== nextProps.videoState){
+            self.props.updateThumbnails();
+        }
+    },
+    getVideoStatus: function() {
+        var self = this;
+        self.GET('videos', {data: {video_id: self.props.videoId, fields: UTILS.VIDEO_FIELDS}})
+            .then(function(res) {
+                console.log(res.videos[0].state)
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? self.props.updateThumbnails() : setTimeout(self.getVideoStatus, 10000); 
+            })
+            .catch(function(err) {
+
+            });
     },
     render: function() {
         var self = this,
@@ -37,7 +59,7 @@ var VideoProcessing = React.createClass({
             countdown = null,
             collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
-        errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
+        errorMessage = self.props.duration >= UTILS.MAX_VIDEO_SIZE ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
             case 'failed':
                 title = 'Oops';
@@ -105,33 +127,6 @@ var VideoProcessing = React.createClass({
             </div> 
         )
     },
-    getVideo: function() {
-        var self = this;
-        self.GET('videos/', options)
-            .then(function(res) {
-                self.props.updateThumbnails();
-            })
-            .catch(function(err) { 
-                console.log(err);
-            }); 
-    },
-    handleDeleteClick: function() {
-        var self = this, options = {}
-        ;
-        options.data = {
-            video_id: self.props.videoId,
-            hidden: true
-        }
-        self.PUT('videos', options)
-            .then(function(res) {
-                self.setState({
-                    isHidden:true
-                });
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
-    },
     propTypes: {
         title: React.PropTypes.string,
         videoState: React.PropTypes.string,
@@ -146,3 +141,101 @@ var VideoProcessing = React.createClass({
 export default VideoProcessing;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+// handleDeleteClick: function() {
+//     var self = this, options = {}
+//     ;
+//     options.data = {
+//         video_id: self.props.videoId,
+//         hidden: true
+//     }
+//     self.PUT('videos', options)
+//         .then(function(res) {
+//             self.setState({
+//                 isHidden:true
+//             });
+//         })
+//         .catch(function(err) {
+//             console.log(err);
+//         });
+// },
+// componentDidMount: function() {
+//     var self = this; 
+//     if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
+//         this.props.updateThumbnails();
+//     }
+//     else if(self.props.videoState === 'processing'){
+//         self.getVideoStatus();
+//     }
+// },
+// componentWillUpdate: function() {
+//     if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
+//         this.props.updateThumbnails();
+//     }
+//     else if(self.props.videoState === 'processing'){
+//         self.getVideoStatus();
+//     }
+//     console.log('will update');
+// },
+
+    // componentDidMount: function() {
+    //     debugger
+    //     if (this.props.title === null && this.props.videoState === 'processing') {
+    //         this.__pingVideo = setInterval(this.startInterval, 5000);
+    //     }
+    //     else {
+    //         this.getVideoStatus();
+    //     } 
+    // },
+    // componentWillUnmount: function() {
+    //     clearInterval(this.__pingVideo);
+    // },
+    // componentWillReceiveProps: function(nextProps) {
+    //     // nextProps.
+        
+    //     // debugger 
+
+    // },
+    // startInterval: function() {
+    //     // var self = this;
+    //     if (this.props.videoState === 'failed' || this.props.estimatedTimeRemaining !== null) {
+    //         clearInterval(this.__pingVideo);
+    //     }
+    //     else {
+    //          this.props.updateThumbnails();
+    //     }
+    //     ;
+    // },
+    // getVideoStatus: function() {
+    //     var self = this;
+    //     self.GET('videos', {data: {video_id: self.props.videoId, fields: UTILS.VIDEO_FIELDS}})
+    //         .then(function(res) {
+    //         console.log(res.state) 
+    //             res.state === 'processed' ? self.props.updateThumbnails : setTimeout(self.getVideoStatus, 5000); 
+    //         })
+    //         .catch(function(err) {
+
+    //         });
+    // },
+
+    // componentDidMount: function() {
+    //     clearInterval(this.__pingVideo);
+    //     if (this.props.videoState === 'processing' && (!this.props.title || !this.props.estimatedTimeRemaining)) {
+    //         this.__pingVideo = setInterval(this.startInterval(), 5000);
+    //     }
+    //     else {
+    //         this.getVideoStatus();
+    //     } 
+    // },
+    // startInterval: function() {
+
+    //     if (this.props.videoState === 'failed' || (this.props.videoState === 'processing' && this.props.title && this.props.estimatedTimeRemaining >=0)) {
+    //         clearInterval(this.__pingVideo);
+    //         this.getVideoStatus();
+    //     }
+    //     else {
+    //          this.props.updateThumbnails();
+    //     }
+    //     ;
+    // },

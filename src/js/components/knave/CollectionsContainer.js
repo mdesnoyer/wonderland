@@ -196,7 +196,8 @@ const CollectionsContainer = React.createClass({
         const video = this.props.stores.videos[collection.video_id];
         if (video.state === 'processing' || video.state === 'failed') {
             return (
-                <VideoProcessing 
+                <VideoProcessing
+                    key={collection.tag_id} 
                     title={video.title}
                     videoState={video.state}
                     estimatedTimeRemaining={video.estimated_time_remaining}
