@@ -480,6 +480,7 @@ const CollectionsMainPage = React.createClass({
     // TODO add helmet.
     // TODO? add loading placeholder.
     // TODO? profile double render.
+    // TODO re-add footer (its movement is wrong)
     render: function() {
         return (
             <main className='xxPage'>
@@ -499,7 +500,6 @@ const CollectionsMainPage = React.createClass({
                     getShareUrl={this.getShareUrl}
                     sendResultsEmail={this.sendResultsEmail}
                 />
-                <SiteFooter />
             </main>
         );
     }

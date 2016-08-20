@@ -129,50 +129,136 @@ const CollectionsContainer = React.createClass({
 
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
-                return this.buildImageCollectionComponent(tagId, collection, onDemoChange, gender, age);
+                return this.buildImageCollectionComponent(tagId, onDemoChange, gender, age);
             case UTILS.TAG_TYPE_VIDEO_COL:
-                return this.buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age);
+                return this.buildVideoCollectionComponent(tagId, onDemoChange, gender, age);
         }
         // TODO? try-catch: if components fail prop validation, catch
         // and return an error component.
         return <div />;
     },
 
-    buildImageCollectionComponent: function(tagId, collection, onDemoChange, gender, age) {
+    // Given tag id and demo, gives array of
+    //   left feature thumbnail
+    //   right feature thumbnail
+    //   rest of thumbnails
+    //   [and more thumbnails]
+    getLeftRightRest: function(tagId, gender, age) {
 
-        const allThumbnailMap = _.pick(
-            this.props.stores.thumbnails[gender][age],
-            collection.thumbnail_ids)
-        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-        const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
+        const getLeftRightRestVideo = () => {
 
-        // Build the list of thumbnails to display below.
-        const smallThumbnails = _
-            .chain(allThumbnailMap)
-            // Remove the feature thumbnails from the small list.
-            .omit([right.thumbnail_id, left.thumbnail_id])
-            .values()
-            // Order by score, best to worst, then created time for stability.
-            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
-            .value();
+            const tag = this.props.stores.tags[tagId];
+            const video = this.props.stores.videos[tag.video_id];
+
+            let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+            if(genderLabel == 'null') {
+                genderLabel = null;
+            }
+            let ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+            if(ageLabel == 'null') {
+                ageLabel = null;
+            }
+            const videoDemo = _.find(
+                video.demographic_thumbnails,
+                t => {
+                    return (t.gender == genderLabel && t.age == ageLabel);
+                }
+            );
+            const allThumbnailMap = _.pick(
+                this.props.stores.thumbnails[gender][age],
+                videoDemo.thumbnails.map(t => {
+                    return t.thumbnail_id;
+                }));
+
+            // For the right, use the best scoring.
+            const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
+            // For the left, find a default thumbnail or use the worst.
+            const _default = UTILS.findDefaultThumbnail(
+                {thumbnails: _.values(allThumbnailMap)}
+            );
+            const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
+
+            const rest = _
+                .chain(allThumbnailMap)
+                // Remove the feature thumbnails from the small list.
+                .omit([right.thumbnail_id, left.thumbnail_id])
+                .values()
+                // Order by score, best to worst, then created time for stability.
+                .orderBy(['neon_score', 'created'], ['desc', 'asc'])
+                .value();
+
+            // Do the same for the bad thumbnail list.
+            const allBadThumbnailMap = _.pick(
+                this.props.stores.thumbnails[gender][age],
+                videoDemo.bad_thumbnails.map(t => {
+                    return t.thumbnail_id;
+                })
+            );
+            const more = _
+                .chain(allBadThumbnailMap)
+                .values()
+                .orderBy(['neon_score', 'created'], ['desc', 'asc'])
+                .value();
+            return [left, right, rest, more];
+        };
+
+        const getLeftRightRestImage = () => {
+            const tag = this.props.stores.tags[tagId];
+            const allThumbnailMap = _.pick(
+                this.props.stores.thumbnails[gender][age],
+                tag.thumbnail_ids)
+            const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
+            const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
+
+            // Build the list of thumbnails to display below.
+            const rest = _
+                .chain(allThumbnailMap)
+                // Remove the feature thumbnails from the small list.
+                .omit([right.thumbnail_id, left.thumbnail_id])
+                .values()
+                // Order by score, best to worst, then created time for stability.
+                .orderBy(['neon_score', 'created'], ['desc', 'asc'])
+                .value();
+            return [left, right, rest, []];
+        };
+
+        const tag = this.props.stores.tags[tagId];
+        switch(tag.tag_type) {
+            case UTILS.TAG_TYPE_VIDEO_COL:
+                return getLeftRightRestVideo();
+            case UTILS.TAG_TYPE_IMAGE_COL:
+            default:
+                return getLeftRightRestImage();
+        }
+
+    },
+
+    buildImageCollectionComponent: function(tagId, onDemoChange, gender, age) {
+
+        const collection = this.props.stores.tags[tagId];
+
+        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
+        const left = thumbArrays[0];
+        const right = thumbArrays[1];
+        const smallThumbnails = thumbArrays[2];
 
         // Show the lift for the base (best) thumbnail
         // vs the given thumbnail.
-        const showLiftInInfoPanel = vsThumbnailId => {
-            //TODO
-        };
+        // TODO
+        const showLiftInInfoPanel = vsThumbnailId => { };
+
         // The lift map for the selected demographic.
         const liftMap = this.props.stores.lifts[gender][age];
 
         return (
             <ImageCollection
-                key={collection.tag_id}
+                key={tagId}
                 title={collection.name}
-                tagId={collection.tag_id}
+                tagId={tagId}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
-                onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
+                onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
@@ -184,75 +270,28 @@ const CollectionsContainer = React.createClass({
         );
     },
 
-    // @TODO factor common code
-    buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
+    buildVideoCollectionComponent(tagId, onDemoChange, gender, age) {
 
+        const collection = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[collection.video_id];
-        if (!video) {
-            return (<div></div>);
-        }
-        let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
-        if(genderLabel == 'null') {
-            genderLabel = null;
-        }
-        let ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
-        if(ageLabel == 'null') {
-            ageLabel = null;
-        }
-        const videoDemo = _.find(
-            video.demographic_thumbnails,
-            t => {
-                return (t.gender == genderLabel && t.age == ageLabel);
-            }
-        );
 
-        const allThumbnailMap = _.pick(
-            this.props.stores.thumbnails[gender][age],
-            videoDemo.thumbnails.map(t => {
-                return t.thumbnail_id;
-            }));
-
-        // For the right, use the best scoring.
-        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-        // For the left, find a default thumbnail or use the worst.
-        const _default = UTILS.findDefaultThumbnail(
-            {thumbnails: _.values(allThumbnailMap)}
-        );
-        const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
-
-        const smallThumbnails = _
-            .chain(allThumbnailMap)
-            // Remove the feature thumbnails from the small list.
-            .omit([right.thumbnail_id, left.thumbnail_id])
-            .values()
-            // Order by score, best to worst, then created time for stability.
-            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
-            .value();
-
-        // Do the same for the bad thumbnail list.
-        const allBadThumbnailMap = _.pick(
-            this.props.stores.thumbnails[gender][age],
-            videoDemo.bad_thumbnails.map(t => {
-                return t.thumbnail_id;
-            })
-        );
-        const smallBadThumbnails = _
-            .chain(allBadThumbnailMap)
-            .values()
-            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
-            .value();
+        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
+        const left = thumbArrays[0];
+        const right = thumbArrays[1];
+        const smallThumbnails = thumbArrays[2];
+        const badThumbnails = thumbArrays[3];
 
         return (
             <VideoCollection
-                key={collection.tag_id}
+                key={tagId}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
-                smallBadThumbnails={smallBadThumbnails}
-                onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
+                smallBadThumbnails={badThumbnails}
+                onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 title={video.title}
                 videoId={video.video_id}
-                tagId={collection.tag_id}
+                tagId={tagId}
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
@@ -326,31 +365,26 @@ const CollectionsContainer = React.createClass({
 
     },
 
-    // TODO? move zoom component up to page container
-    // TODO? factor to module
     buildOverlayComponent: function() {
         if (!this.state.overlayTagId) {
             return null;
         }
 
         // Get score sorted thumbnails for collection.
-        const tag = this.props.stores.tags[this.state.overlayTagId];
         let gender = 0;
         let age = 0;
         if (undefined !== this.state.selectedDemographic[this.state.overlayTagId]) {
             [gender, age] = this.state.selectedDemographic[this.state.overlayTagId];
         }
         const thumbnailMap = this.getThumbnailMap(this.state.overlayTagId);
-        const sortedThumbnails = _
-            .chain(thumbnailMap)
-            .values()
-            .orderBy(['neon_score', 'created'], ['desc', 'asc'])
-            .value();
+
+        // Get the same order of list that the collections uses.
+        const sortedThumbnails = _.flatten(this.getLeftRightRest(this.state.overlayTagId, gender, age));
 
         // Find the current thumbnail index or default to first.
         const thumbnailIndex = _.findIndex(sortedThumbnails, t => {
                 return t.thumbnail_id == this.state.overlayThumbnailId;
-            }) || 0;
+        }) || 0;
 
         // Find the next and previous thumbnail ids for navigation.
         // Use modulo to ensure index is in [0, <length of thumbnails>).
@@ -374,7 +408,7 @@ const CollectionsContainer = React.createClass({
                 thumbnails={sortedThumbnails}
                 selectedItem={thumbnailIndex}
                 displayThumbLift={lift}
-                // Bind next/prev functions to bind the new thumb id
+                // Bind next/prev functions to store the next/prev thumb id
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
                 closeThumbnailOverlay={this.onOverlayClose}
