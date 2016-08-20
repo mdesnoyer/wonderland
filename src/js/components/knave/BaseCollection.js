@@ -24,8 +24,11 @@ const BaseCollection = React.createClass({
         // Left and right large thumbnail
         leftFeatureThumbnail: PropTypes.object.isRequired,
         rightFeatureThumbnail: PropTypes.object.isRequired,
-        leftFeatureTitle: PropTypes.string.isRequired,
-        rightFeatureTitle: PropTypes.string.isRequired,
+
+        // A map of T get key string to T get key
+        // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
+        // overrides "Show More" with "View Low Scores"
+        translationOverrideMap: PropTypes.object,
 
         infoActionPanels: PropTypes.array.isRequired,
         infoActionControls: PropTypes.array.isRequired,
@@ -35,6 +38,12 @@ const BaseCollection = React.createClass({
 
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
+    },
+
+    getDefaultProps: function() {
+        return {
+            translationOverrideMap: {}
+        }
     },
 
     getInitialState: function() {
@@ -69,11 +78,6 @@ const BaseCollection = React.createClass({
             self.setState({
                 smallThumbnailRows: 1
             });
-        };
-        // TODO? pass from container parent
-        const onThumbnailClick = (e) => {
-            e.preventDefault();
-            // TODO given key of thumbnail, load zoom view of it.
         };
 
         // Number of rows of item to display.
@@ -123,12 +127,31 @@ const BaseCollection = React.createClass({
         self.setState({liftThumbnailId: thumbnailId})
     },
 
+    // Wraps calls to T.get with any keys in
+    // this.props.translationOverrideMap.
+    //
+    // Returns function that removes the wrapper.
+    applyTranslationOverride: function() {
+
+        const mapped = this.props.translationOverrideMap;
+        const originalTGet = T.get;
+        T.get = _.wrap(T.get, (get, key) => {
+            return get(key in mapped? mapped[key]: key);
+        });
+
+        return () => { T.get = originalTGet; };
+    },
+
     render: function() {
+
+        // Let mapped labels be overriden.
+        const unapplyOverride = this.applyTranslationOverride();
+
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
         // The main left and right feature thumbnails
         const left = (
             <FeatureThumbnail
-                title={this.props.leftFeatureTitle}
+                title={T.get('copy.worstThumbnail')}
                 score={this.props.leftFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
                 onMouseEnter={this.onThumbnailMouseEnter.bind(null, leftThumbnailId)}
@@ -138,7 +161,7 @@ const BaseCollection = React.createClass({
         const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
         const right = (
             <FeatureThumbnail
-                title={this.props.rightFeatureTitle}
+                title={T.get('copy.bestThumbnail')}
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
                 onMouseEnter={this.onThumbnailMouseEnter.bind(null, rightThumbnailId)}
@@ -149,7 +172,7 @@ const BaseCollection = React.createClass({
             this.state.liftThumbnailId:
             this.props.rightFeatureThumbnail.thumbnail_id;
 
-        return (
+        const result = (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
                     {left}
@@ -166,6 +189,11 @@ const BaseCollection = React.createClass({
                 </div>
             </div>
         );
+
+        // Remove translation override.
+        unapplyOverride();
+
+        return result;
     }
 });
 

@@ -66,11 +66,20 @@ const VideoCollection = React.createClass({
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
         ]
+
+        // Apply Video component-specific labels.
+        const overrideMap = {
+            'copy.worstThumbnail': 'copy.currentThumbnail',
+            'copy.bestThumbnail': 'copy.topNeonImage',
+            'action.showMore': 'copy.thumbnails.low',
+            'action.showLess': 'copy.thumbnails.high'
+
+        };
+
         return (
             <BaseCollection
                 {...this.props}
-                leftFeatureTitle={T.get('copy.currentThumbnail')}
-                rightFeatureTitle={T.get('copy.topNeonImage')}
+                translationOverrideMap={overrideMap}
                 infoActionPanels={panels}
                 infoActionControls={controls}
                 selectedPanel={this.state.selectedPanel}

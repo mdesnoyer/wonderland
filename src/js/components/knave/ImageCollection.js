@@ -70,8 +70,6 @@ const ImageCollection = React.createClass({
         return (
             <BaseCollection
                 {...this.props}
-                leftFeatureTitle={T.get('copy.worstThumbnail')}
-                rightFeatureTitle={T.get('copy.bestThumbnail')}
                 infoActionPanels={panels}
                 infoActionControls={controls}
                 selectedPanel={this.state.selectedPanel}
