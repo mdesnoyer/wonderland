@@ -6,11 +6,14 @@ import _ from 'lodash';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
+import TRACKING from '../../modules/tracking';
 
+import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import SiteFooter from '../wonderland/SiteFooter';
 
+import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
 
@@ -275,6 +278,74 @@ const CollectionsMainPage = React.createClass({
         });  
     }, 
 
+    socialClickHandler: function(service, shareUrl) { 
+        switch(service) {
+            case 'facebook':
+                this._sendShare(
+                    UTILS.SHARE_LINK_FACEBOOK, 
+                    shareUrl, 
+                    T.get('copy.share.title'), 
+                    T.get('copy.share.facebook'), 
+                    'facebook');
+                break;
+            case 'twitter':
+                this._sendShare(
+                    UTILS.SHARE_LINK_TWITTER, 
+                    shareUrl, 
+                    null, 
+                    T.get('copy.share.twitter'), 
+                    'twitter');
+                break;
+            case 'linkedin':
+                this._sendShare(
+                    UTILS.SHARE_LINK_LINKEDIN, 
+                    shareUrl, 
+                    T.get('copy.share.title'), 
+                    T.get('copy.share.linkedin'), 
+                    'linkedin');
+                break;
+        }
+    }, 
+    _sendShare: function(baseUrl, shareUrl, title, quote, service) {
+        var url = baseUrl + objectToGetParams({ 
+                u: shareUrl,
+                title: title,
+                quote: quote
+            })
+        ;
+        windowOpen(url);
+        // TODO this is throwing a TypeError
+        TRACKING.sendEvent(this, arguments, service);
+    },
+    // TODO remove callback, and just return the 
+    // promise, let the child comp handle the promise
+    getShareUrl: function(id, type, callback) { 
+        const self = this; 
+        var apiUrl = null, 
+            uiUrl = null,
+            options = {} 
+        ; 
+        // TODO type = images  
+        if (type == 'video') { 
+            options = {
+                data: {
+                    video_id: id
+                }
+            };
+            apiUrl = 'videos/share' 
+            uiUrl = '/share/video/' 
+        }
+        let promise = self.GET(apiUrl, options)
+        promise.then(function(res) {
+            var longUrl = window.location.origin + 
+                 uiUrl + id + '/account/' + 
+                 SESSION.state.accountId + '/token/' + 
+                 res.share_token + '/';
+            UTILS.shortenUrl(longUrl, callback)
+        }).catch(function(err) { 
+            console.log(err); 
+        });  
+    }, 
     // Given the enum of gender, age, return new Object
     // with their two api request key and value.
     getBaseParamsForDemoRequest: function(gender, age) {
@@ -379,7 +450,9 @@ const CollectionsMainPage = React.createClass({
                     }}
                     loadTagForDemographic={this.loadTagForDemographic}
                     loadThumbnails={this.loadThumbnails}
-                    deleteCollection={this.deleteCollection} 
+                    deleteCollection={this.deleteCollection}
+                    socialClickHandler={this.socialClickHandler}
+                    getShareUrl={this.getShareUrl}  
                 />
                 <SiteFooter />
             </main>

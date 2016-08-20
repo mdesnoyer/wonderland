@@ -5,6 +5,7 @@ import DemographicFilters from './DemographicFilters';
 
 import T from '../../modules/translation';
 
+import CollectionLoadingText from '../core/CollectionLoadingText';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // TODO candidate for HoC refactor
@@ -87,10 +88,120 @@ export const EmailControl = React.createClass({
 });
 
 export const SharePanel = React.createClass({
+    propTypes: {
+        // handles the clicks on facebook/twitter/linkedin buttons
+        socialClickHandler: PropTypes.func.isRequired,
+        // generates a shareUrl to use 
+        getShareUrl: PropTypes.func.isRequired,
+        // key/id of the object 
+        id: PropTypes.string.isRequired,
+        // The type (video,image,gif) 
+        type: PropTypes.string.isRequired 
+    },
+    getInitialState: function() {
+        return {
+            shareUrl: '',
+            isLoading: true
+        }
+    },
+    componentWillMount: function() {
+        this.props.getShareUrl(
+            this.props.id, 
+            this.props.type, 
+            this._shareUrlCallback) 
+    }, 
+    
+    _shareUrlCallback: function(r) {
+        if (r.status_code === 200) {
+            this.setState({
+                shareUrl: r.data.url,
+                isLoading: false
+            });
+        }
+        else {
+            this.setState({ isLoading: false });
+        }
+    }, 
     render: function() {
-        return (<div>
-            <h1>{T.get('label.shareYourImages')}</h1>
-        </div>);
+        var self = this,
+            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
+        ;
+        return (
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('copy.share.main')}</h2>
+                {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={this.props.cancelClickHandler}>
+                        </div>
+                    ) : null
+                }
+                <ul className="xxCollectionShare">
+                    <li className="xxCollectionShare-item is-active">
+                        <span
+                            className="xxCollectionShare-anchor xxCollectionShare-link"
+                        ><span>Link</span></span>
+                    </li>
+                    <li className="xxCollectionShare-item">
+                        <a data-social-action-label="facebook"
+                            onClick={() => {this.props.socialClickHandler('facebook')}}
+                            className="xxCollectionShare-anchor xxCollectionShare-fb"
+                        ><span>Facebook</span></a>
+                    </li>
+                    <li className="xxCollectionShare-item">
+                        <a data-social-action-label="twitter"
+                            onClick={() => {this.props.socialClickHandler('twitter')}}
+                            className="xxCollectionShare-anchor xxCollectionShare-twitter"
+                        ><span>Twitter</span></a>
+                    </li>
+                    <li className="xxCollectionShare-item">
+                        <a data-social-action-label="linkedin"
+                            onClick={() => {this.props.socialClickHandler('linkedin')}}
+                            className="xxCollectionShare-anchor xxCollectionShare-linkedin"
+                        ><span>LinkedIn</span></a>
+                    </li>
+                </ul>
+                <div className="xxText">
+                    <p>{T.get('copy.share.description')}</p>
+                </div>
+                <div className="xxFormField">
+                    <label
+                        className="xxLabel"
+                        htmlFor="xx-share-link"
+                    >{T.get('copy.share.label')}</label>
+                    {
+                        self.state.isLoading ? <CollectionLoadingText /> : (
+                            <input
+                                className="xxInputText"
+                                id={"xx-share-link" + self.props.videoId}
+                                type="text"
+                                value={self.state.shareUrl}
+                                readOnly
+                            />
+                        )
+                    }
+                </div>
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                    >{T.get('back')}</button>
+                    <button
+                        className="xxButton xxButton--highlight"
+                        data-clipboard-target={"#xx-share-link" + self.props.videoId}
+                        value={self.state.shareUrl}
+                        ref="copyUrl"
+                        type="button"
+                        data-for="settableTooltip"
+                        data-tip
+                    >{T.get('copy')}</button>
+                </div>
+            </div>
+        );
     }
 });
 
@@ -126,7 +237,9 @@ export const DeletePanel = React.createClass({
         cancelClickHandler: PropTypes.func.isRequired
     },
     render: function() {
-        var collectionClassName = 'xxCollectionAction';
+        var collectionClassName = this.props.isMobile ? 
+            'xxOverlay xxOverlay--light xxOverlay--spaced' : 
+            'xxCollectionAction';
         return ( 
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>

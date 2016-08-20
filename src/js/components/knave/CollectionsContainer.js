@@ -37,7 +37,16 @@ const CollectionsContainer = React.createClass({
         // Map of store identifying key to the store,
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
-        deleteCollection: PropTypes.func.isRequired
+
+        // Defaults to Function to delete/hide a collection from 
+        // both the backend and frontend display 
+        deleteCollection: PropTypes.func.isRequired,
+
+        // ClickHandler for social sharing buttons 
+        socialClickHandler: PropTypes.func.isRequired, 
+
+        // Allows a component to get a sharing url 
+        getShareUrl: PropTypes.func.isRequired  
     },
 
     getInitialState: function() {
@@ -265,6 +274,8 @@ const CollectionsContainer = React.createClass({
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 deleteCollection={this.props.deleteCollection}
+                socialClickHandler={this.props.socialClickHandler}
+                getShareUrl={this.props.getShareUrl}  
             />
        );
     },
