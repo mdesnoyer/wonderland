@@ -36,7 +36,8 @@ const CollectionsContainer = React.createClass({
         // TODO shape this
         // Map of store identifying key to the store,
         // which is a map of object id to object.
-        stores: PropTypes.object.isRequired
+        stores: PropTypes.object.isRequired,
+        deleteCollection: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -196,6 +197,9 @@ const CollectionsContainer = React.createClass({
     buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
 
         const video = this.props.stores.videos[collection.video_id];
+        if (!video) { 
+            return (<div></div>); 
+        } 
         let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
         if(genderLabel == 'null') {
             genderLabel = null;
@@ -247,28 +251,6 @@ const CollectionsContainer = React.createClass({
             .orderBy(['neon_score', 'frameno'], ['desc', 'asc'])
             .value();
 
-        const panels = [
-            <InfoDemoLiftPanel
-                tagId={collection.tag_id}
-                title={video.title}
-                onDemographicChange={onDemoChange}
-                demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
-                liftMap={this.props.stores.lifts[gender][age]}
-            />,
-            <FilterPanel />,
-            <SharePanel />,
-            <EmailPanel />,
-            <DeletePanel />,
-        ];
-        // TODO factor to ensure panels and controls are consistent.
-        const controls = [
-            <ShareControl handleClick={()=>{}} />,
-            <EmailControl handleClick={()=>{}} />,
-            <DeleteControl handleClick={()=>{}} />,
-        ];
-
-
         return (
             <VideoCollection
                 key={collection.tag_id}
@@ -276,8 +258,13 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={smallBadThumbnails}
-                infoActionPanels={panels}
-                infoActionControls={controls}
+                videoTitle={video.title} 
+                videoId={video.video_id}
+                tagId={collection.tag_id}
+                onDemographicChange={onDemoChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
+                deleteCollection={this.props.deleteCollection}
             />
        );
     },

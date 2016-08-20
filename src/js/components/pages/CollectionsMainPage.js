@@ -68,7 +68,9 @@ const CollectionsMainPage = React.createClass({
         const self = this,
             options = {
                 data: {
-                    limit: UTILS.RESULTS_PAGE_SIZE}};
+                    limit: UTILS.RESULTS_PAGE_SIZE,
+                }
+            };
 
         const state = self.getInitialState();
         const pageQueryParam = '?limit=' + this.props.numberToDisplay;
@@ -248,6 +250,30 @@ const CollectionsMainPage = React.createClass({
             callback();
         })
     },
+    // TODO define type here, with a generic id for images
+    // or possibly just always pass tag_id 
+    deleteCollection: function(videoId) { 
+        const self = this;
+        let params = { 
+            video_id: videoId, 
+            hidden: true 
+        };  
+        let promise = self.PUT('videos', {data: params});
+        promise.then(function(res) { 
+            let videos = self.state.videos;
+            let tags = self.state.tags; 
+            let tagId = videos[videoId].tag_id;
+ 
+            delete videos[videoId];
+            delete tags[tagId];
+            self.setState({
+                videos: videos, 
+                tags: tags
+            }); 
+        }).catch(function(err) { 
+            console.log(err); 
+        });  
+    }, 
 
     // Given the enum of gender, age, return new Object
     // with their two api request key and value.
@@ -352,6 +378,8 @@ const CollectionsMainPage = React.createClass({
                         lifts: this.state.lifts
                     }}
                     loadTagForDemographic={this.loadTagForDemographic}
+                    loadThumbnails={this.loadThumbnails}
+                    deleteCollection={this.deleteCollection} 
                 />
                 <SiteFooter />
             </main>

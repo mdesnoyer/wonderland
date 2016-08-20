@@ -37,7 +37,10 @@ const BaseCollection = React.createClass({
         infoActionControls: PropTypes.array.isRequired,
 
         // Handlers for image events
-        onThumbnailClick: PropTypes.func
+        onThumbnailClick: PropTypes.func,
+
+        // what panel should we display
+        selectedPanel: PropTypes.number.isRequired
     },
 
     getInitialState: function() {
@@ -151,6 +154,31 @@ const BaseCollection = React.createClass({
         const liftThumbnailId = this.state.liftThumbnailId?
             this.state.liftThumbnailId:
             this.props.rightFeatureThumbnail.thumbnail_id;
+
+        // The bottom small thumbnail list
+        // Show 6*rows of thumbnails unless there are more,
+        // then show 6*rows-1 and the show more button.
+        // TODO Extract 6 to constant.
+        let thumbnailList;
+        if(6 * this.state.smallThumbnailRows >= this.props.smallThumbnails.length) {
+            thumbnailList = <ThumbnailList
+                className="xxCollectionImages-all"
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={this.props.smallThumbnails.length}
+            />;
+        } else {
+            thumbnailList = <ShowMoreThumbnailList
+                className="xxCollectionImages-all"
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={6 * this.state.smallThumbnailRows - 1}
+                handleShowMore={() => {
+                    this.setState({
+                        smallThumbnailRows: this.state.smallThumbnailRows + 3
+                    });
+                }}
+            />;
+        }
+
         return (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
@@ -163,6 +191,7 @@ const BaseCollection = React.createClass({
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         liftThumbnailId={liftThumbnailId}
+                        selectedPanel={this.props.selectedPanel}
                     />
                 </div>
             </div>
