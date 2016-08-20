@@ -26,9 +26,9 @@ const CollectionsContainer = React.createClass({
 
     propTypes: {
 
-        // Ask the store to load thumbnails for a list of ids,
+        // Ask the store to load resources for a tag's thumbnails
         // for a given demographic.
-        loadThumbnails: PropTypes.func.isRequired,
+        loadTagForDemographic: PropTypes.func.isRequired,
 
         // The number of collections to display.
         numberToShow: PropTypes.number.isRequired,
@@ -47,7 +47,7 @@ const CollectionsContainer = React.createClass({
 
             // Map of tag id to integer index of gender, then age.
             // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
-            // By default, the demographic is gender=none, age=none.
+            // By default, the demographic is [0,0] meaning gender=none, age=none.
             selectedDemographic: {}
         };
     },
@@ -105,32 +105,20 @@ const CollectionsContainer = React.createClass({
             [gender, age] = [0, 0];
         }
 
-
+        // On demographic selector change, fill in stores.
         const onDemoChange = (tagId, demoKey) => {
 
-            // TODO validate demokey shape.
-            this.state.selectedDemographic[tagId] = demoKey;
+            const selectedDemographic = this.state.selectedDemographic;
+            let gender = demoKey[0];
+            let age = demoKey[1];
+            selectedDemographic[tagId] = [gender, age];
 
-            // Ask what tag's thumbnails for the demo are stored.
-            const missingThumbIds = [];
-            const [gender, age] = demoKey;
-
-            this.props.stores.tags[tagId].thumbnail_ids.map(tid => {
-                if (undefined === this.props.stores.thumbnails[gender][age][tid]) {
-                    missingThumbIds.push(tid);
-                }
-            });
-
-            const stateDiff = {
-                selectedDemographic: this.state.selectedDemographic
+            // Ask stores to load missing values.
+            // And change our state when done.
+            const callback = () => {
+                this.setState({selectedDemographic});
             };
-            if (missingThumbIds.length > 0) {
-                // Load thumbnails for image-type collection.
-                // TODO? deal with async here
-                this.props.loadThumbnails(missingThumbIds, gender, age, stateDiff);
-            }
-            // Else, just change the selected demographic for the tag.
-            this.setState(stateDiff);
+            this.props.loadTagForDemographic(tagId, gender, age, callback);
         };
 
         switch(collection.tag_type) {
@@ -170,14 +158,13 @@ const CollectionsContainer = React.createClass({
         // The lift map for the selected demographic.
         const liftMap = this.props.stores.lifts[gender][age];
 
-
         // List of right-hand side control components for
         // the content given type and session.
         const panels = [
             <InfoDemoLiftPanel
                 tagId={collection.tag_id}
                 title={collection.name}
-                liftMap={liftMap}
+                liftMap={this.props.stores.lifts[gender][age]}
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
@@ -233,9 +220,9 @@ const CollectionsContainer = React.createClass({
         // For the right, use the best scoring.
         const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
         // For the left, find a default thumbnail or use the worst.
-        const _default = _.find(_.values(allThumbnailMap), t => {
-            return UTILS.THUMB_TYPE_DEFAULT === t.type;
-        });
+        const _default = UTILS.findDefaultThumbnail(
+            {thumbnails: _.values(allThumbnailMap)}
+        );
         const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
 
         const smallThumbnails = _

@@ -41,7 +41,7 @@ var AjaxMixin = {
     },
     sendBatch: function(options) {
         options = options || {};
-        const ret = AJAXModule.sendBatch(this.__batch);
+        const ret = AJAXModule.sendBatch(this.__batch, options);
         // Clear the queue.
         this.__batch = [];
         // Make cancel possible on unmount.

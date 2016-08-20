@@ -22,37 +22,6 @@ const CollectionsMainPage = React.createClass({
 
     getInitialState: function() {
 
-
-        // Gives a new, empty demographic map
-        // @TODO initialize this structure from constants/config.
-        const genderAgeBaseMap = () => {
-            return {
-                0: {
-                    0: {},
-                    1: {},
-                    2: {},
-                    3: {},
-                    4: {},
-                    5: {}
-                },
-                1: {
-                    0: {},
-                    1: {},
-                    2: {},
-                    3: {},
-                    4: {},
-                    5: {}
-                },
-                2: {
-                    0: {},
-                    1: {},
-                    2: {},
-                    3: {},
-                    4: {},
-                    5: {}
-                }
-            }
-        };
         return {
 
             // These are stores of tag, video, thumbnail resources.
@@ -104,27 +73,31 @@ const CollectionsMainPage = React.createClass({
         const state = self.getInitialState();
         const pageQueryParam = '?limit=' + this.props.numberToDisplay;
 
+        // On search loads, we assume default demographics:
+        const gender = 0;
+        const age = 0;
+
         // Search for tag ids, get tags and videos, then get thumbnails for those.
         self.GET('tags/search', options)
         .then(searchRes => {
 
             // Search for all the tags.
-            const _tagData = {
-                tag_id: searchRes.items.reduce((tag_ids, tag) => {
-                    tag_ids.push(tag.tag_id);
-                    return tag_ids;
-                }, []).join(',')
+            const tagData = {
+                tag_id: _.uniq(searchRes.items.reduce((tagIds, tag) => {
+                    tagIds.push(tag.tag_id);
+                    return tagIds;
+                }, [])).join(',')
             };
-            const tagsPromise = self.GET('tags', {data: _tagData});
+            const tagsPromise = self.GET('tags', {data: tagData});
 
             // Additionally search on videos in the result.
             const _videoData = {
-                video_id: searchRes.items.reduce((video_ids, tag) => {
+                video_id: _.uniq(searchRes.items.reduce((video_ids, tag) => {
                     if(tag.video_id) {
                         video_ids.push(tag.video_id);
                     }
                     return video_ids;
-                }, []).join(','),
+                }, [])).join(','),
 
                 fields: UTILS.VIDEO_FIELDS.join(',')
             };
@@ -169,36 +142,32 @@ const CollectionsMainPage = React.createClass({
 
             // Get and concatenate all thumbnail ids.
             const tags = _.values(tagsRes);
-            const thumbIds = tags.reduce((array, tag) => {
+            const thumbIds = _.uniq(tags.reduce((array, tag) => {
                 // Video thumbnails are already stored.
                 if(tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL) {
                     array = array.concat(tag.thumbnail_ids);
                 }
                 return array;
-            }, []);
+            }, []));
 
             // TODO? look at faster async workflow
             // (specifically, letting lift be deferred since
             // it isn't used for main render.)
-            const thumbPromise = this.loadThumbnails(thumbIds);
-            const liftPromise = this.loadLifts();
-            return Promise.all([thumbPromise, liftPromise]);
+            return self.loadThumbnails(thumbIds, gender, age);
 
         })
-        .then(combined => {
-
-            const thumbRes = combined[0] || [];
-            const liftRes = combined[1] || {};
-
-            // Merge loaded thumbnails to state.thumbnails.
+        .then(thumbRes => {
             thumbRes.thumbnails.map(t => {
-                // 0, 0 is null-gender and null-age for demo.
-                state.thumbnails[0][0][t.thumbnail_id] = t;
+                state.thumbnails[gender][age][t.thumbnail_id] = t;
             });
+
+             return self.loadLifts(_.keys(state.tags), gender, age, state);
+        })
+        .then(liftRes => {
             _.toPairs(liftRes).map(pair => {
                 const tagId = pair[0];
                 const liftMap = pair[1];
-                state.lifts[0][0][tagId] = liftMap;
+                state.lifts[gender][age][tagId] = liftMap;
             });
             self.setState(state);
         });
@@ -210,22 +179,14 @@ const CollectionsMainPage = React.createClass({
 
         const self = this;
 
-        // Empty array of ids is no op; just set passed-in state.
+        // Empty array of ids is no-op.
         if(thumbnailIds.length == 0) {
-            return self.setState(state);
+            return Promise.resolve({thumbnails: []});
         }
 
         // Create array of CSVs of max length.
-        const thumbArgs = UTILS.csvFromArray(thumbnailIds, UTILS.MAX_CSV_VALUE_COUNT);
-        const baseParams = {};
-
-        // If demo parameters are valued and not "null", then include them.
-        if (gender !== 0) {
-            baseParams.gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
-        }
-        if (age !== 0) {
-            baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
-        }
+        const thumbArgs = UTILS.csvFromArray(thumbnailIds);
+        const baseParams = self.getBaseParamsForDemoRequest(gender, age);
 
         let promise,
             params;
@@ -245,38 +206,138 @@ const CollectionsMainPage = React.createClass({
         }
     },
 
-    // Load or reload from data source the array of thumbnails
-    // with synchronous call to setState.
-    loadThumbnailsSync: function(thumbnailIds, gender=0, age=0) {
+    // Load data for given demographic if new.
+    // (Written for child callback.)
+    loadTagForDemographic: function(tagId, gender, age, callback) {
+
         const self = this;
 
-        this.loadThumbnails(thumbnailIds, gender, age)
-        .then(thumbsRes => {
-            const thumbnails = this.state.thumbnails;
-            // Merge new thumbnails to stored thumbnails.
-            thumbsRes.map(t => {
-                thumbnails[t.thumbnail_id] =  t;
+        // Ask what tag's thumbnails for the demo are stored.
+        const missingThumbIds = [];
+        const tag = self.state.tags[tagId];
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            // These are already loaded!
+        } else {
+            tag.thumbnail_ids.map(tid => {
+                if (undefined === self.state.thumbnails[gender][age][tid]) {
+                    missingThumbIds.push(tid);
+                }
             });
-            self.setState({thumbnails});
-        });
+        }
+
+        const baseThumbnails = self.state.thumbnails;
+        console.log(missingThumbIds);
+        self.loadThumbnails(missingThumbIds, gender, age)
+        .then(thumbRes => {
+            console.log('tagLoad');
+            thumbRes.thumbnails.map(t => {
+                baseThumbnails[gender][age][t.thumbnail_id] = t;
+            });
+
+            return self.loadLifts([tagId], gender, age);
+        })
+        .then(liftRes => {
+            const baseLifts = self.state.lifts;
+            _.toPairs(liftRes).map(pair => {
+                const tagId = pair[0];
+                const liftMap = pair[1];
+                baseLifts[gender][age][tagId] = liftMap;
+            })
+            self.setState({
+                thumbnails: baseThumbnails,
+                lifts: baseLifts
+            });
+            callback();
+        })
+    },
+
+    // Given the enum of gender, age, return new Object
+    // with their two api request key and value.
+    getBaseParamsForDemoRequest: function(gender, age) {
+
+        const baseParams = {};
+        // If demo parameters are valued and not "null", then include them.
+        if (gender !== 0) {
+            baseParams.gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        }
+        if (age !== 0) {
+            baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        }
+        return baseParams;
     },
 
     // Load lifts for thumbnails from data source.
-    loadLifts: function(tagIds, gender=0, age=0) {
+    loadLifts: function(tagIds, gender=0, age=0, state={}) {
 
-    },
-
-    loadLiftsSync: function(tagIds, gender=0, age=0) {
         const self = this;
-        this.loadLifts(tagIds, gender, age)
-        .then(liftRes => {
-            const lifts = this.state.lift;
-            // Merge new lifts to stored lifts.
-            _toPairs.liftRes.map(pairs => {
-                const tagId = pairs[0];
-                const liftMap = pairs[1];
+
+        // Use the parameter state if it's non-empty,
+        // (allowing component first load to defer its setState).
+        // otherwise use the component state.
+
+        state = _.isEmpty(state)? self.state: state;
+
+        const missingTagIds = tagIds.reduce((missingTagIds, tagId) => {
+            if (state.lifts[gender][age][tagId] === undefined) {
+                missingTagIds.push(tagId);
+            }
+            return missingTagIds;
+        }, []);
+        if (0 == missingTagIds.length) {
+            return Promise.resolve([]);
+        }
+        console.log(missingTagIds);
+
+        const baseParams = self.getBaseParamsForDemoRequest(gender, age);
+
+        // Keep a map of the base thumb to the tag for handling the response.
+        const baseTagMap = {};
+
+        missingTagIds.map(tagId => {
+
+            // Get the worst thumbnail.
+            const tag = state.tags[tagId];
+            const thumbnails = _.pick(state.thumbnails[gender][age], tag.thumbnail_ids);
+            const worst = UTILS.worstThumbnail(_.values(thumbnails));
+
+            // If the type is video, its default thumbnail
+            // is used instead of the worst.
+            let _default;
+            if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+                const video = state.videos[tag.video_id];
+                const demo = UTILS.findDemographicThumbnailObject(video.demographic_thumbnails, gender, age);
+                _default = UTILS.findDefaultThumbnail(demo);
+            }
+
+            const baseThumb = _default? _default: worst;
+            const base_id = baseThumb.thumbnail_id;
+            baseTagMap[base_id] = tagId;
+
+            // Copy params array and assign the thumbnail ids.
+            const vsThumbnailIds = _.keys(_.omit(thumbnails, [base_id]));
+
+            // Batch each MAX_CSV_VALUE_COUNT (100) thumbnail ids.
+            const csvArray = UTILS.csvFromArray(vsThumbnailIds);
+            csvArray.map(thumbnail_ids => {
+                const params = {};
+                Object.assign(params, baseParams, {base_id, thumbnail_ids});
+                self.batch('GET', 'stats/estimated_lift', params);
             });
-            self.setState({lifts});
+        });
+        return self.sendBatch({
+            // Unpack batch response.
+            successHandler: batches => {
+                return batches.results.reduce((tagLiftMap, batch) => {
+                    const baseId = batch.response.baseline_thumbnail_id;
+                    // Use reverse lookup to get the tag id from the base thumb id.
+                    const tagId = baseTagMap[baseId];
+                    tagLiftMap[tagId] = batch.response.lift.reduce((map, item) => {
+                        map[item.thumbnail_id] = item.lift;
+                        return map;
+                    }, {});
+                    return tagLiftMap;
+                }, {});
+            }
         });
     },
 
@@ -294,13 +355,44 @@ const CollectionsMainPage = React.createClass({
                         thumbnails: this.state.thumbnails,
                         lifts: this.state.lifts
                     }}
-                    loadThumbnails={this.loadThumbnails}
+                    loadTagForDemographic={this.loadTagForDemographic}
                 />
                 <SiteFooter />
             </main>
         );
     }
 });
+
+// Gives a new, empty demographic map
+// @TODO initialize this structure from constants/config.
+const genderAgeBaseMap = () => {
+    return {
+        0: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {}
+        },
+        1: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {}
+        },
+        2: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {}
+        }
+    }
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

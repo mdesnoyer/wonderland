@@ -371,6 +371,7 @@ var UTILS = {
         ;
         return bScore - aScore;
     },
+    // TODO? re-write this so it takes an array.
     findDefaultThumbnail: function(thumbSet) {
         defaultThumbnail = null; 
         if (thumbSet && thumbSet.thumbnails) { 
@@ -555,6 +556,10 @@ var UTILS = {
     // and return as list of CSV string.
     csvFromArray: (array, batchMax) => {
 
+        if(batchMax === undefined) {
+            batchMax = UTILS.MAX_CSV_VALUE_COUNT;
+        }
+
         const count = array.length;
         const res = [];
         let working = [];
@@ -595,6 +600,33 @@ var UTILS = {
                 });
             }), true);
         }, [ [] ]);
+    },
+
+    // Find demographic thumbnail object
+    //
+    // Given a demographic_thumbnails array of a video,
+    // search for the enum (numeric) gender and age
+    // and return the matching object, or null.
+    findDemographicThumbnailObject(demos, gender=0, age=0) {
+        let genderLabel,
+            ageLabel;
+        if (gender == 0) {
+            genderLabel = null;
+        } else {
+            genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        }
+        if (age == 0) {
+            ageLabel = null;
+        } else {
+            ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        }
+        if (genderLabel === undefined || ageLabel === undefined) {
+            return null;
+        }
+
+        return _.find(demos, demo => {
+            return demo.gender == genderLabel && demo.age == ageLabel;
+        });
     }
 };
 
