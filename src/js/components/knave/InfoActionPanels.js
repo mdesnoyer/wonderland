@@ -116,10 +116,46 @@ export const ShareControl = React.createClass({
 });
 
 export const DeletePanel = React.createClass({
+    propTypes: {
+        // function used to remove a video from the 
+        // UI display 
+        deleteCollection: PropTypes.func.isRequired,
+        // the id corresponding to the object to be deleted
+        id: PropTypes.string.isRequired,
+        // what to do when the cancel button is clicked  
+        cancelClickHandler: PropTypes.func.isRequired
+    },
     render: function() {
-        return (<div>
-            <h1>Delete It</h1>
-        </div>);
+        var collectionClassName = 'xxCollectionAction';
+        return ( 
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
+                {
+                    this.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info">
+                        </div>
+                    ) : null
+                }
+                <div className="xxText">
+                    <p>{T.get('copy.videoContent.delete')}</p>
+                </div>
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                        >{T.get('cancel')}</button>
+                    <button
+                        className="xxButton xxButton--highlight"
+                        type="button"
+                        onClick={() => this.props.deleteCollection(this.props.id)}
+                    >{T.get('delete')}</button>
+                </div>
+            </div>
+        );
     }
 });
 

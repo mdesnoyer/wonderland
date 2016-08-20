@@ -30,7 +30,9 @@ const BaseCollection = React.createClass({
         // Defines the display components of the right-hand box as array
         infoActionPanels: PropTypes.array.isRequired,
         // Defines the control components of the right-side box as array
-        infoActionControls: PropTypes.array.isRequired
+        infoActionControls: PropTypes.array.isRequired,
+        // what panel should we display
+        selectedPanel: PropTypes.number.isRequired
     },
 
     getInitialState: function() {
@@ -59,12 +61,6 @@ const BaseCollection = React.createClass({
             />
         );
 
-        /*
-        const info = (
-            <InfoActionContainer panels={this.props.infoActions} />
-        );
-        /**/
-
         // The bottom small thumbnail list
         // Show 6*rows of thumbnails unless there are more,
         // then show 6*rows-1 and the show more button.
@@ -89,7 +85,6 @@ const BaseCollection = React.createClass({
             />;
         }
 
-
         return (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
@@ -101,6 +96,7 @@ const BaseCollection = React.createClass({
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
+                        selectedPanel={this.props.selectedPanel}
                     />
                 </div>
             </div>

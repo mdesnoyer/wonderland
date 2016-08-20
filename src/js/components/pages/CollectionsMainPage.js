@@ -89,7 +89,9 @@ const CollectionsMainPage = React.createClass({
         const self = this,
             options = {
                 data: {
-                    limit: UTILS.RESULTS_PAGE_SIZE}};
+                    limit: UTILS.RESULTS_PAGE_SIZE,
+                }
+            };
 
         const state = self.getInitialState();
         const pageQueryParam = '?limit=' + this.props.numberToDisplay;
@@ -219,6 +221,30 @@ const CollectionsMainPage = React.createClass({
             self.setState(state);
         })
     },
+    // TODO define type here, with a generic id for images
+    // or possibly just always pass tag_id 
+    deleteCollection: function(videoId) { 
+        const self = this;
+        let params = { 
+            video_id: videoId, 
+            hidden: true 
+        };  
+        let promise = self.PUT('videos', {data: params});
+        promise.then(function(res) { 
+            let videos = self.state.videos;
+            let tags = self.state.tags; 
+            let tagId = videos[videoId].tag_id;
+ 
+            delete videos[videoId];
+            delete tags[tagId];
+            self.setState({
+                videos: videos, 
+                tags: tags
+            }); 
+        }).catch(function(err) { 
+            console.log(err); 
+        });  
+    }, 
 
     // TODO add post forms.
     render: function() {
@@ -233,6 +259,7 @@ const CollectionsMainPage = React.createClass({
                         videos: this.state.videos
                     }}
                     loadThumbnails={this.loadThumbnails}
+                    deleteCollection={this.deleteCollection} 
                 />
                 <SiteFooter />
             </main>
