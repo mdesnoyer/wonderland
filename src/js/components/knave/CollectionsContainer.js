@@ -10,17 +10,6 @@ import TRACKING from '../../modules/tracking';
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
-import InfoActionContainer from './InfoActionContainer';
-import {
-    InfoDemoLiftPanel,
-    InfoLiftPanel,
-    FilterPanel,
-    EmailPanel,
-    EmailControl,
-    SharePanel,
-    ShareControl,
-    DeletePanel,
-    DeleteControl} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -38,7 +27,17 @@ const CollectionsContainer = React.createClass({
         // TODO shape this
         // Map of store identifying key to the store,
         // which is a map of object id to object.
-        stores: PropTypes.object.isRequired
+        stores: PropTypes.object.isRequired,
+
+        // Defaults to Function to delete/hide a collection from
+        // both the backend and frontend display
+        deleteCollection: PropTypes.func.isRequired,
+
+        // ClickHandler for social sharing buttons
+        socialClickHandler: PropTypes.func.isRequired,
+
+        // Allows a component to get a sharing url
+        getShareUrl: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -97,7 +96,6 @@ const CollectionsContainer = React.createClass({
     //
     // Else return an error component.
     buildCollectionComponent: function(tagId) {
-
 
         const collection = this.props.stores.tags[tagId];
 
@@ -163,37 +161,21 @@ const CollectionsContainer = React.createClass({
         // The lift map for the selected demographic.
         const liftMap = this.props.stores.lifts[gender][age];
 
-        // List of right-hand side control components for
-        // the content given type and session.
-        const panels = [
-            <InfoDemoLiftPanel
-                tagId={collection.tag_id}
-                title={collection.name}
-                liftMap={this.props.stores.lifts[gender][age]}
-                onDemographicChange={onDemoChange}
-                demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
-            />,
-            <EmailPanel />,
-            <SharePanel />,
-            <DeletePanel />,
-        ];
-        // TODO factor to ensure panels and controls are consistent.
-        const controls = [
-            <ShareControl handleClick={()=>{}} />,
-            <EmailControl handleClick={()=>{}} />,
-            <DeleteControl handleClick={()=>{}} />,
-        ];
-
         return (
             <ImageCollection
                 key={collection.tag_id}
+                title={collection.name}
+                tagId={collection.tag_id}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
-                infoActionPanels={panels}
-                infoActionControls={controls}
                 onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
+                onDemographicChange={onDemoChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
+                deleteCollection={this.props.deleteCollection}
+                socialClickHandler={this.props.socialClickHandler}
+                getShareUrl={this.props.getShareUrl}
             />
         );
     },
@@ -202,6 +184,9 @@ const CollectionsContainer = React.createClass({
     buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
 
         const video = this.props.stores.videos[collection.video_id];
+        if (!video) {
+            return (<div></div>);
+        }
         let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
         if(genderLabel == 'null') {
             genderLabel = null;
@@ -253,28 +238,6 @@ const CollectionsContainer = React.createClass({
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
 
-        const panels = [
-            <InfoDemoLiftPanel
-                tagId={collection.tag_id}
-                title={video.title}
-                onDemographicChange={onDemoChange}
-                demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
-                liftMap={this.props.stores.lifts[gender][age]}
-            />,
-            <FilterPanel />,
-            <SharePanel />,
-            <EmailPanel />,
-            <DeletePanel />,
-        ];
-        // TODO factor to ensure panels and controls are consistent.
-        const controls = [
-            <ShareControl handleClick={()=>{}} />,
-            <EmailControl handleClick={()=>{}} />,
-            <DeleteControl handleClick={()=>{}} />,
-        ];
-
-
         return (
             <VideoCollection
                 key={collection.tag_id}
@@ -282,9 +245,16 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={smallBadThumbnails}
-                infoActionPanels={panels}
-                infoActionControls={controls}
                 onThumbnailClick={this.onThumbnailClick.bind(null, collection.tag_id)}
+                title={video.title}
+                videoId={video.video_id}
+                tagId={collection.tag_id}
+                onDemographicChange={onDemoChange}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                selectedDemographic={[gender, age]}
+                deleteCollection={this.props.deleteCollection}
+                socialClickHandler={this.props.socialClickHandler}
+                getShareUrl={this.props.getShareUrl}
             />
        );
     },
@@ -393,7 +363,7 @@ const CollectionsContainer = React.createClass({
             [age]
             [this.state.overlayTagId]
             [this.state.overlayThumbnailId] || 0;
-        console.log(lift, this.state);
+
         return (
             <ThumbnailOverlay
                 thumbnails={sortedThumbnails}
