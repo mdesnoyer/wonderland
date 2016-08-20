@@ -254,6 +254,7 @@ const CollectionsContainer = React.createClass({
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
+                liftMap={this.props.stores.lifts[gender][age]}
             />,
             <FilterPanel />,
             <SharePanel />,

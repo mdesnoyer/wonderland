@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -8,9 +8,20 @@ const _Thumbnail = React.createClass({
 
     propTypes: {
         // The neon score [0-99]
-        score: React.PropTypes.number,
+        score: PropTypes.number,
         // Image url with appropriate dimensions
-        src: React.PropTypes.string.isRequired
+        src: PropTypes.string.isRequired,
+        // Thumbnail id if needed for event handlers
+        thumbnailId: PropTypes.string,
+        onMouseEnter: PropTypes.func,
+        onClick: PropTypes.func
+    },
+
+    getDefaultProps: function() {
+        return {
+            onMouseEnter: this.noop,
+            onClick: this.noop
+        };
     },
 
     noop: e => {
@@ -18,15 +29,17 @@ const _Thumbnail = React.createClass({
     },
 
     render: function() {
+        const self = this;
         return (
             <a
                 className="xxThumbnail"
-                onClick={this.noop}
-                data-score={this.props.score}
+                data-score={self.props.score}
+                onClick={() => {self.props.onClick(self.props.thumbnailId);}}
             >
                 <img
                     className="xxThumbnail-image"
-                    src={this.props.src}
+                    src={self.props.src}
+                    onMouseEnter={() => {self.props.onMouseEnter(self.props.thumbnailId);}}
                 />
             </a>
         );

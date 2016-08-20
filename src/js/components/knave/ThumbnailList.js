@@ -16,7 +16,10 @@ export const ThumbnailList = React.createClass({
 
         // The number of thumbnails to display
         // (Undefined means show all.)
-        numberToDisplay: PropTypes.number
+        numberToDisplay: PropTypes.number,
+
+        onMouseEnter: PropTypes.func,
+        onClick: PropTypes.func
     },
 
     render: function() {
@@ -32,8 +35,11 @@ export const ThumbnailList = React.createClass({
                 return (
                     <Thumbnail
                         key={t.thumbnail_id}
+                        thumbnailId={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}
+                        onMouseEnter={this.props.onMouseEnter}
+                        onClick={this.props.onClick}
                     />
                 );
             });

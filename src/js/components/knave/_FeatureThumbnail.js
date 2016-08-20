@@ -10,7 +10,10 @@ var FeatureThumbnail = React.createClass({
     propTypes: {
         title: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
-        src: PropTypes.string.isRequired
+        src: PropTypes.string.isRequired,
+        thumbnaiId: PropTypes.string,
+        onMouseEnter: PropTypes.func,
+        onClick: PropTypes.func
     },
     render: function() {
         return (
@@ -19,8 +22,7 @@ var FeatureThumbnail = React.createClass({
                     {this.props.title}
                 </h2>
                 <Thumbnail
-                    score={this.props.score}
-                    src={this.props.src}
+                    {...this.props}
                 />
             </div>
         );

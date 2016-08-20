@@ -34,12 +34,16 @@ const BaseCollection = React.createClass({
         // Defines the display components of the right-hand box as array
         infoActionPanels: PropTypes.array.isRequired,
         // Defines the control components of the right-side box as array
-        infoActionControls: PropTypes.array.isRequired
+        infoActionControls: PropTypes.array.isRequired,
+
+        // Handlers for image events
+        onThumbnailClick: PropTypes.func
     },
 
     getInitialState: function() {
         return {
-            smallThumbnailRows: 1
+            smallThumbnailRows: 1,
+            liftThumbnailId: null
         };
     },
 
@@ -82,6 +86,8 @@ const BaseCollection = React.createClass({
         if(self.props.smallThumbnails.length <= 6) {
             return <ThumbnailList
                 thumbnails={self.props.smallThumbnails}
+                onMouseEnter={self.onThumbnailMouseEnter}
+                onClick={self.props.onThumbnailClick}
             />;
         // There's fewer than the number of display rows: put ShowLess in slot 6.
         // (Add one to length for the ShowLess button.)
@@ -89,6 +95,8 @@ const BaseCollection = React.createClass({
             return <ShowLessThumbnailList
                 thumbnails={self.props.smallThumbnails}
                 onLess={onLess}
+                onMouseEnter={self.onThumbnailMouseEnter}
+                onClick={self.props.onThumbnailClick}
             />;
         // There's more than 6 and they haven't shown more at all.
         } else if (rows == 1) {
@@ -96,6 +104,8 @@ const BaseCollection = React.createClass({
                 thumbnails={self.props.smallThumbnails}
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
                 onMore={onMore}
+                onMouseEnter={self.onThumbnailMouseEnter}
+                onClick={self.props.onThumbnailClick}
             />
         // There's more thumbs than space to display them and they've expanded
         // once or more: put ShowMore and ShowLess.
@@ -105,8 +115,15 @@ const BaseCollection = React.createClass({
                 numberToDisplay={rows * 6 - 2} // N rows of 6, minus one for each button.
                 onMore={onMore}
                 onLess={onLess}
+                onMouseEnter={self.onThumbnailMouseEnter}
+                onClick={self.props.onThumbnailClick}
             />
         }
+    },
+
+    onThumbnailMouseEnter: function(thumbnailId) {
+        const self = this;
+        self.setState({liftThumbnailId: thumbnailId})
     },
 
     render: function() {
@@ -115,7 +132,10 @@ const BaseCollection = React.createClass({
             <FeatureThumbnail
                 title={this.props.leftFeatureTitle}
                 score={this.props.leftFeatureThumbnail.neon_score}
+                thumbnailId={this.props.leftFeatureThumbnail.thumbnail_id}
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
+                onMouseEnter={this.onThumbnailMouseEnter}
+                onClick={this.props.onThumbnailClick}
             />
         );
         const right = (
@@ -123,8 +143,14 @@ const BaseCollection = React.createClass({
                 title={this.props.rightFeatureTitle}
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
+                thumbnailId={this.props.rightFeatureThumbnail.thumbnail_id}
+                onMouseEnter={this.onThumbnailMouseEnter}
+                onClick={this.props.onThumbnailClick}
             />
         );
+        const liftThumbnailId = this.state.liftThumbnailId?
+            this.state.liftThumbnailId:
+            this.props.rightFeatureThumbnail.thumbnail_id;
         return (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
@@ -136,6 +162,7 @@ const BaseCollection = React.createClass({
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
+                        liftThumbnailId={liftThumbnailId}
                     />
                 </div>
             </div>

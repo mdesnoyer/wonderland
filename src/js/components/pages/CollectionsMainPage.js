@@ -226,10 +226,8 @@ const CollectionsMainPage = React.createClass({
         }
 
         const baseThumbnails = self.state.thumbnails;
-        console.log(missingThumbIds);
         self.loadThumbnails(missingThumbIds, gender, age)
         .then(thumbRes => {
-            console.log('tagLoad');
             thumbRes.thumbnails.map(t => {
                 baseThumbnails[gender][age][t.thumbnail_id] = t;
             });
@@ -286,8 +284,6 @@ const CollectionsMainPage = React.createClass({
         if (0 == missingTagIds.length) {
             return Promise.resolve([]);
         }
-        console.log(missingTagIds);
-
         const baseParams = self.getBaseParamsForDemoRequest(gender, age);
 
         // Keep a map of the base thumb to the tag for handling the response.
