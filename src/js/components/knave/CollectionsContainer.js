@@ -37,7 +37,10 @@ const CollectionsContainer = React.createClass({
         socialClickHandler: PropTypes.func.isRequired,
 
         // Allows a component to get a sharing url
-        getShareUrl: PropTypes.func.isRequired
+        getShareUrl: PropTypes.func.isRequired,
+
+        // Allows a collection to send results email
+        sendResultsEmail: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -176,6 +179,7 @@ const CollectionsContainer = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
+                sendResultsEmail={this.props.sendResultsEmail}
             />
         );
     },
@@ -255,6 +259,7 @@ const CollectionsContainer = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
+                sendResultsEmail={this.props.sendResultsEmail}
             />
        );
     },

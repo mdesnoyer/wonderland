@@ -2,6 +2,7 @@
 
 import React, {PropTypes} from 'react';
 import DemographicFilters from './DemographicFilters';
+import Message from '../wonderland/Message';
 
 import T from '../../modules/translation';
 
@@ -59,10 +60,143 @@ export const FilterPanel = React.createClass({
 });
 
 export const EmailPanel = React.createClass({
+    propTypes: {
+        // generates a shareUrl to use 
+        getShareUrl: PropTypes.func.isRequired,
+        // generates a shareUrl to use 
+        sendResultsEmail: PropTypes.func.isRequired,
+        // key/id of the object 
+        id: PropTypes.string.isRequired,
+        // The type (video,image,gif) 
+        type: PropTypes.string.isRequired 
+    },
+    getInitialState: function() {
+        return {
+            isLoading: true, 
+            mode: undefined, 
+            errorMessage: undefined,
+            shareUrl: '' 
+        }
+    },
+    componentWillMount: function() {
+        this.props.getShareUrl(
+            this.props.id, 
+            this.props.type, 
+            this._shareUrlCallback) 
+    }, 
+    
+    _shareUrlCallback: function(r) {
+        if (r.status_code === 200) {
+            this.setState({
+                shareUrl: r.data.url
+            });
+        }
+    },
+    _startEmailSend: function(email) {
+        // TODO this is risky, and we are relying 
+        // on shareUrl to be set -- it likely will be 
+        // but if bitly is slow, we could be sending an 
+        // email without the shareUrl  
+        this.setState({ mode: 'loading'}, function() { 
+            this.props.sendResultsEmail(
+                this.props.id,
+                this.props.type,
+                email,
+                this.state.shareUrl, 
+                this._sendEmailCallback); 
+        }); 
+    }, 
+    _sendEmailCallback: function(r) { 
+        if (r.status_code !== 200) { 
+            this.setState({ 
+                mode: 'error', 
+                errorMessage: r.errorMessage 
+            }); 
+        }  
+    },   
     render: function() {
-        return (<div>
-            <h1>{T.get('label.emailMe')}</h1>
-        </div>);
+        var self = this,
+            collectionClassName = self.props.isMobile ? 
+                'xxOverlay xxOverlay--light xxOverlay--spaced' : 
+                'xxCollectionAction',
+            userMessage = false
+        ;
+        switch (self.state.mode) {
+            case 'error':
+                userMessage = <Message message={self.state.errorMessage} type="formError" />;
+                break;
+            case 'loading':
+                userMessage = <Message message={T.get('copy.loading')} />;
+                break;
+            default:
+                break;
+        } 
+        return (
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('email')}</h2>
+               {
+                    self.props.isMobile ? (
+                        <div 
+                            className="xxOverlay-close"
+                            data-action-label="info"
+                            onClick={self.props.handleBackClick}>
+                        </div>
+                    ) : null
+                }
+                {
+                    (self.state.mode === 'success') ? (
+                        <div>
+                            <div className="xxText">
+                                <p>{T.get('copy.videoContent.email.success')}</p>
+                            </div>
+                            <div className="xxCollectionAction-buttons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    data-action-label="info"
+                                    onClick={this.props.cancelClickHandler}
+                                >{T.get('back')}</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="xxText">
+                                <p>{T.get('copy.videoContent.email')}</p>
+                            </div>
+                            {userMessage}
+                            <div className="xxFormField">
+                                <label
+                                    className="xxLabel"
+                                    htmlFor="xx-email-from"
+                                >{T.get('label.yourEmail')}</label>
+                                <input
+                                    ref="email"
+                                    className="xxInputText"
+                                    id="xx-email-from"
+                                    type="email"
+                                    placeholder={'example@example.com'}
+                                    required
+                                />
+                            </div>
+                            <div className="xxCollectionAction-buttons">
+                                <button
+                                    className="xxButton"
+                                    type="button"
+                                    data-action-label="info"
+                                    onClick={this.props.cancelClickHandler}
+                                >{T.get('back')}</button>
+                                <button
+                                    className="xxButton xxButton--highlight"
+                                    type="button"
+                                    onClick={() => {this._startEmailSend(
+                                        self.refs.email.value.trim())}}
+                                >{T.get('send')}</button>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        );
     }
 });
 
