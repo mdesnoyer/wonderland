@@ -7,7 +7,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import SESSION from '../../modules/session';
 import TRACKING from '../../modules/tracking';
-
+import RENDITIONS from '../../modules/renditions';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
@@ -345,7 +345,49 @@ const CollectionsMainPage = React.createClass({
         }).catch(function(err) { 
             console.log(err); 
         });  
-    }, 
+    },
+    sendResultsEmail: function(id, type, email, shareUrl, callback) { 
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(email)) { 
+           callback({
+               'status_code' : 400, 
+               'errorMessage' : T.get('error.invalidEmail')
+           });
+           return; 
+        }
+        // TODO type = images 
+        if (type == 'video') { 
+            // TODO selected demographic could be taken into account here 
+            // for now just default to top level thumbnails 
+            let ts = this.state.videos[id].demographic_thumbnails[0].thumbnails;
+            ts = UTILS.fixThumbnails(ts, true);
+            var options = {
+                data: {
+                    subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                    to_email_address: email,
+                    template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+                    template_args: {
+                        'top_thumbnail': RENDITIONS.findRendition(ts[0], 425, 240),
+                        'lift': UTILS.makePercentage(ts[0].lift, 0, true),
+                        'thumbnail_one': RENDITIONS.findRendition(ts[1], 140, 79),
+                        'thumbnail_two': RENDITIONS.findRendition(ts[2], 140, 79),
+                        'thumbnail_three': RENDITIONS.findRendition(ts[3], 140, 79),
+                        'collection_url': shareUrl
+                    }
+                }
+            }; 
+            let promise = this.POST('email', options); 
+            promise.then(function(res) {
+                TRACKING.sendEvent(this, arguments, id);
+                callback({'status_code' : 200}); 
+            }).catch(function(err) { 
+                callback({
+                    'status_code' : 400, 
+                    'errorMessage' : 'unknown error sending email'
+                }); 
+            });  
+        }        
+    },  
     // Given the enum of gender, age, return new Object
     // with their two api request key and value.
     getBaseParamsForDemoRequest: function(gender, age) {
@@ -452,7 +494,8 @@ const CollectionsMainPage = React.createClass({
                     loadThumbnails={this.loadThumbnails}
                     deleteCollection={this.deleteCollection}
                     socialClickHandler={this.socialClickHandler}
-                    getShareUrl={this.getShareUrl}  
+                    getShareUrl={this.getShareUrl} 
+                    sendResultsEmail={this.sendResultsEmail}  
                 />
                 <SiteFooter />
             </main>

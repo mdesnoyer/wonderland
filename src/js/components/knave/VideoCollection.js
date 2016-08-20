@@ -48,7 +48,13 @@ const VideoCollection = React.createClass({
                 id={this.props.videoId}
                 type={'video'}  
             />,
-            <EmailPanel />,
+            <EmailPanel 
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                getShareUrl={this.props.getShareUrl}
+                sendResultsEmail={this.props.sendResultsEmail} 
+                id={this.props.videoId}
+                type={'video'}  
+            />,
             <DeletePanel  
                 deleteCollection={this.props.deleteCollection}
                 id={this.props.videoId}
