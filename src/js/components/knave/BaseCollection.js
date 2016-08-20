@@ -21,29 +21,20 @@ const BaseCollection = React.createClass({
 
     propTypes: {
 
-        // Tag id of the collection
-        tagId: PropTypes.string.isRequired,
-
         // Left and right large thumbnail
         leftFeatureThumbnail: PropTypes.object.isRequired,
         rightFeatureThumbnail: PropTypes.object.isRequired,
         leftFeatureTitle: PropTypes.string.isRequired,
         rightFeatureTitle: PropTypes.string.isRequired,
 
+        infoActionPanels: PropTypes.array.isRequired,
+        infoActionControls: PropTypes.array.isRequired,
+
         // List of thumbnails to be displayed as small items
         smallThumbnails: PropTypes.array.isRequired,
 
-        // TODO shape the array
-        // Defines the display components of the right-hand box as array
-        infoActionPanels: PropTypes.array.isRequired,
-        // Defines the control components of the right-side box as array
-        infoActionControls: PropTypes.array.isRequired,
-
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
-
-        // what panel should we display
-        selectedPanel: PropTypes.number.isRequired
     },
 
     getInitialState: function() {
@@ -158,30 +149,6 @@ const BaseCollection = React.createClass({
             this.state.liftThumbnailId:
             this.props.rightFeatureThumbnail.thumbnail_id;
 
-        // The bottom small thumbnail list
-        // Show 6*rows of thumbnails unless there are more,
-        // then show 6*rows-1 and the show more button.
-        // TODO Extract 6 to constant.
-        let thumbnailList;
-        if(6 * this.state.smallThumbnailRows >= this.props.smallThumbnails.length) {
-            thumbnailList = <ThumbnailList
-                className="xxCollectionImages-all"
-                thumbnails={this.props.smallThumbnails}
-                numberToDisplay={this.props.smallThumbnails.length}
-            />;
-        } else {
-            thumbnailList = <ShowMoreThumbnailList
-                className="xxCollectionImages-all"
-                thumbnails={this.props.smallThumbnails}
-                numberToDisplay={6 * this.state.smallThumbnailRows - 1}
-                handleShowMore={() => {
-                    this.setState({
-                        smallThumbnailRows: this.state.smallThumbnailRows + 3
-                    });
-                }}
-            />;
-        }
-
         return (
             <div className="xxCollection">
                 <div className="xxCollectionImages">
@@ -192,8 +159,8 @@ const BaseCollection = React.createClass({
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
-                        controls={this.props.infoActionControls}
                         liftThumbnailId={liftThumbnailId}
+                        controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
                     />
                 </div>

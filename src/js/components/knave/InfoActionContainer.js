@@ -20,7 +20,7 @@ const InfoActionContainer = React.createClass({
         // Convert single child children to array.
         const children = React.Children.toArray(this.props.children);
         const selected = children[this.props.selectedPanel];
-        var control_array = this.props.controls; 
+        var control_array = this.props.controls;
         const controls = control_array.map(control => {
             return (
                 <li

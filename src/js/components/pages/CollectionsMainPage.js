@@ -436,6 +436,8 @@ const CollectionsMainPage = React.createClass({
 
     // TODO add post forms.
     // TODO add helmet.
+    // TODO? add loading placeholder.
+    // TODO? profile double render.
     render: function() {
         return (
             <main className='xxPage'>
@@ -452,7 +454,7 @@ const CollectionsMainPage = React.createClass({
                     loadThumbnails={this.loadThumbnails}
                     deleteCollection={this.deleteCollection}
                     socialClickHandler={this.socialClickHandler}
-                    getShareUrl={this.getShareUrl}  
+                    getShareUrl={this.getShareUrl}
                 />
                 <SiteFooter />
             </main>

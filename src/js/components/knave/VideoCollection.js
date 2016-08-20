@@ -28,38 +28,38 @@ const VideoCollection = React.createClass({
             selectedPanel: 0
         };
     },
-    setSelectedPanel: function(panelId) { 
-        this.setState({ selectedPanel : panelId });  
-    }, 
+    setSelectedPanel: function(panelId) {
+        this.setState({ selectedPanel : panelId });
+    },
     render: function() {
         const panels = [
             <InfoDemoLiftPanel
                 tagId={this.props.tagId}
-                title={this.props.videoTitle}
+                title={this.props.title}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
             />,
             <FilterPanel />,
-            <SharePanel 
+            <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
                 id={this.props.videoId}
-                type={'video'}  
+                type={'video'} // TODO extract
             />,
             <EmailPanel />,
-            <DeletePanel  
+            <DeletePanel
                 deleteCollection={this.props.deleteCollection}
                 id={this.props.videoId}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}} 
-            />, 
-        ];  
+            />,
+        ];
         const controls = [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
-        ] 
+        ]
         return (
             <BaseCollection
                 {...this.props}
