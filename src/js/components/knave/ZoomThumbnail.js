@@ -18,21 +18,6 @@ var ZoomThumbnail = React.createClass({
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string
     },
-    /*
-    componentWillReceiveProps: function(nextProps) {
-        var valenceDisplay = this.getValenceDisplay();
-        this.setState({valenceDisplay: valenceDisplay});
-    },
-    componentDidMount: function() {
-        var valenceDisplay = this.getValenceDisplay();
-        this.setState({valenceDisplay: valenceDisplay});
-    },
-    getInitialState: function() {
-        return {
-            valenceDisplay: this.getValenceDisplay()
-        }
-    },
-    /**/
     getValenceDisplay: function() {
         var self = this,
             valenceDisplay = null,

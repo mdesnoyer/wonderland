@@ -25,10 +25,9 @@ const CollectionsContainer = React.createClass({
         // for a given tag and demographic.
         loadFeaturesForTag: PropTypes.func.isRequired,
 
-        // The number of collections to display.
-        numberToShow: PropTypes.number.isRequired,
+        // Sorted list of collection ids to display
+        displayIds: PropTypes.array.isRequired,
 
-        // TODO shape this
         // Map of store identifying key to the store,
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
@@ -60,6 +59,7 @@ const CollectionsContainer = React.createClass({
             // By default, the demographic is [0,0] meaning gender=none, age=none.
             selectedDemographic: {},
 
+            // Setting a tag will render the modal overlay thumbnail zoom.
             overlayTagId: null,
             overlayThumbnailId: null
         };

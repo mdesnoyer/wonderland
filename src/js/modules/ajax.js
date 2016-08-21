@@ -65,6 +65,7 @@ var AJAXModule = {
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
+                        console.log(url, res);
                         options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
                     }
                 })
