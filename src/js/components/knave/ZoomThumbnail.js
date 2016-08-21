@@ -18,6 +18,7 @@ var ZoomThumbnail = React.createClass({
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string
     },
+    /*
     componentWillReceiveProps: function(nextProps) {
         var valenceDisplay = this.getValenceDisplay();
         this.setState({valenceDisplay: valenceDisplay});
@@ -31,6 +32,7 @@ var ZoomThumbnail = React.createClass({
             valenceDisplay: this.getValenceDisplay()
         }
     },
+    /**/
     getValenceDisplay: function() {
         var self = this,
             valenceDisplay = null,
@@ -64,7 +66,6 @@ var ZoomThumbnail = React.createClass({
                     <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
                  </div>
             );
-            valenceDisplay = valenceDisplay;
         }
         else {
             valenceDisplay = (<div>
@@ -117,7 +118,7 @@ var ZoomThumbnail = React.createClass({
                     />
                 </div>
                 <div className="xxImageZoom-content">
-                    {self.state.valenceDisplay}
+                    {self.getValenceDisplay()}
                     <Lift displayThumbLift={self.props.displayThumbLift}/>
                     <nav className="xxImageZoom-nav">
                         <a

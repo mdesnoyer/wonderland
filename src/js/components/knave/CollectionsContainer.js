@@ -21,6 +21,10 @@ const CollectionsContainer = React.createClass({
         // for a given demographic.
         loadTagForDemographic: PropTypes.func.isRequired,
 
+        // Ask the store to load thumbnailFeatures and features
+        // for a given tag and demographic.
+        loadFeaturesForTag: PropTypes.func.isRequired,
+
         // The number of collections to display.
         numberToShow: PropTypes.number.isRequired,
 
@@ -41,6 +45,8 @@ const CollectionsContainer = React.createClass({
 
         // Allows a collection to send results email
         sendResultsEmail: PropTypes.func.isRequired
+
+        // TODO add learnmore func.
     },
 
     getInitialState: function() {
@@ -366,25 +372,33 @@ const CollectionsContainer = React.createClass({
     },
 
     buildOverlayComponent: function() {
-        if (!this.state.overlayTagId) {
+
+        const tagId = this.state.overlayTagId;
+
+        if (!tagId) {
             return null;
         }
 
         // Get score sorted thumbnails for collection.
         let gender = 0;
         let age = 0;
-        if (undefined !== this.state.selectedDemographic[this.state.overlayTagId]) {
-            [gender, age] = this.state.selectedDemographic[this.state.overlayTagId];
+        if (undefined !== this.state.selectedDemographic[tagId]) {
+            [gender, age] = this.state.selectedDemographic[tagId];
         }
-        const thumbnailMap = this.getThumbnailMap(this.state.overlayTagId);
+
+        // Begin loading features
+        this.props.loadFeaturesForTag(tagId, gender, age);
+
+        const thumbnailMap = this.getThumbnailMap(tagId);
 
         // Get the same order of list that the collections uses.
-        const sortedThumbnails = _.flatten(this.getLeftRightRest(this.state.overlayTagId, gender, age));
+        const sortedThumbnails = _.flatten(this.getLeftRightRest(tagId, gender, age));
 
         // Find the current thumbnail index or default to first.
         const thumbnailIndex = _.findIndex(sortedThumbnails, t => {
                 return t.thumbnail_id == this.state.overlayThumbnailId;
         }) || 0;
+        const thumbnailId = sortedThumbnails[thumbnailIndex].thumbnail_id;
 
         // Find the next and previous thumbnail ids for navigation.
         // Use modulo to ensure index is in [0, <length of thumbnails>).
@@ -400,8 +414,22 @@ const CollectionsContainer = React.createClass({
         const lift = this.props.stores.lifts
             [gender]
             [age]
-            [this.state.overlayTagId]
-            [this.state.overlayThumbnailId] || 0;
+            [tagId]
+            [thumbnailId] || 0;
+
+        // Build a map of thumbnail id to array of feature names.
+        const thumbnailFeatures = _(this.props.stores.thumbnailFeatures
+                [gender]
+                [age])
+            .pick(_.keys(thumbnailMap))
+            .value();
+
+        const thumbnailFeatureNameMap = {};
+        _.map(thumbnailFeatures, (featureIds, thumbnailId) => {
+            thumbnailFeatureNameMap[thumbnailId] = featureIds.map(id => {
+                return this.props.stores.features[id];
+            });
+        })
 
         return (
             <ThumbnailOverlay
@@ -413,6 +441,7 @@ const CollectionsContainer = React.createClass({
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
                 closeThumbnailOverlay={this.onOverlayClose}
                 openLearnMore={this.props.openLearnMore}
+                thumbnailFeatureNameMap={thumbnailFeatureNameMap}
             />
         );
 

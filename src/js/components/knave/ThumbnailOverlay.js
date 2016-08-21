@@ -1,6 +1,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+
+import _ from 'lodash';
+
 import T from '../../modules/translation';
 import ZoomThumbnail from './ZoomThumbnail';
 import ReactDOM from 'react-dom';
@@ -16,7 +19,8 @@ var ThumbnailOverlay = React.createClass({
         selectedItem: React.PropTypes.number.isRequired,
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
-        displayThumbLift: React.PropTypes.number.isRequired
+        displayThumbLift: React.PropTypes.number.isRequired,
+        thumbnailFeatureNameMap: React.PropTypes.object
     },
     componentDidMount: function() {
         var self = this;
@@ -52,12 +56,24 @@ var ThumbnailOverlay = React.createClass({
     },
     render: function() {
         var self = this;
+
         return (
             <article className="xxOverlay xxOverlay--dark xxOverlay--scroll">
                 <a href="#" className="xxOverlay-close" onClick={self.props.closeThumbnailOverlay}>{T.get('action.close')}</a>
                     <div className="xxImageZoom">
                         {
                             self.props.thumbnails.map(function(thumbnail, i) {
+
+                                const thumbnailId = thumbnail.thumbnail_id;
+
+                                let valence;
+                                const featureMap = self.props.thumbnailFeatureNameMap;
+                                if (!_.isEmpty(featureMap) && thumbnailId in featureMap) {
+                                    valence = featureMap[thumbnailId];
+                                } else {
+                                    valence = self.getValenceFeatures(thumbnail);
+                                }
+
                                 return (
                                     <ZoomThumbnail
                                         key={i}
@@ -68,7 +84,7 @@ var ThumbnailOverlay = React.createClass({
                                         handleClickPrevious={self.props.handleClickPrevious}
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}
-                                        valence={self.getValenceFeatures(thumbnail)}
+                                        valence={valence}
                                         extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}

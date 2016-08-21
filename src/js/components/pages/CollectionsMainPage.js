@@ -47,6 +47,12 @@ const CollectionsMainPage = React.createClass({
             // the worst thumbnail.
             lifts: genderAgeBaseMap(),
 
+            // Map of feature key to feature name
+            features: {},
+            // Map of gender, age, thumbnail id to array of feature key
+            // sorted by value descending.
+            thumbnailFeatures: genderAgeBaseMap(),
+
             // State of search paging: current page, page count,
             // next, prev page url.
             search: {
@@ -180,7 +186,7 @@ const CollectionsMainPage = React.createClass({
 
     // Load thumbnails by ids
     // @TODO extract to source module
-    loadThumbnails: function(thumbnailIds, gender=0, age=0) {
+    loadThumbnails: function(thumbnailIds, gender=0, age=0, fields=[]) {
 
         const self = this;
 
@@ -191,7 +197,7 @@ const CollectionsMainPage = React.createClass({
 
         // Create array of CSVs of max length.
         const thumbArgs = UTILS.csvFromArray(thumbnailIds);
-        const baseParams = self.getBaseParamsForDemoRequest(gender, age);
+        const baseParams = self.getBaseParamsForDemoRequest(gender, age, fields);
 
         let promise,
             params;
@@ -253,6 +259,101 @@ const CollectionsMainPage = React.createClass({
             callback();
         })
     },
+
+    // Load Feature objects for the thumbnails for the given tag
+    // for the given demographic.
+    loadFeaturesForTag(tagId, gender, age) {
+        const self = this;
+        const tag = self.state.tags[tagId];
+
+        // Get missing thumbnail ids.
+        const thumbnailIds = _(self.state.thumbnails[gender][age])
+            .pick(tag.thumbnail_ids)
+            .keys()
+            .filter(thumbnailId => {
+                // Remove ones we've already stored.
+                return undefined === self.state.thumbnailFeatures[gender][age][thumbnailId];
+            })
+            .value();
+
+        if(thumbnailIds.length == 0) {
+            return;
+        }
+
+        self.loadThumbnails(thumbnailIds, gender, age, ['thumbnail_id', 'feature_ids'])
+        .then(thumbRes => {
+
+            // Extend the thumbnailFeatures store with new values.
+            const baseThumbnailFeatures = self.state.thumbnailFeatures;
+            const baseFeatures = self.state.features;
+
+            // Configure the reduce/filter.
+            const valueMin = UTILS.VALENCE_THRESHOLD;
+            const ignoreIds = UTILS.VALENCE_IGNORE_INDEXES;
+            const numToKeep = UTILS.VALENCE_NUM_TO_KEEP;
+
+            // Keep a set of all the feature ids in the response.
+            let featureIdSet = [];
+
+            thumbRes.thumbnails.map(t => {
+                const featureIdValues = t.feature_ids.reduce((array, idValue) => {
+                    let featureId = idValue[0];
+                    let featureValue = idValue[1];
+                    if (ignoreIds.indexOf(parseInt(featureId.split('_')[1])) === -1) {
+                        if (featureValue > valueMin) {
+                            array.push(idValue);
+                        }
+                    }
+
+                    return array;
+                }, []);
+
+                const sortedIds = _(featureIdValues)
+                    .orderBy(idValue => {
+                        return idValue[1];
+                    }, ['desc'])
+                    .slice(0, numToKeep)
+                    .reduce((ids, idValue) => {
+                        ids.push(idValue[0]);
+                        return ids;
+                    }, []);
+
+                featureIdSet = _.union(featureIdSet, sortedIds);
+                baseThumbnailFeatures[gender][age][t.thumbnail_id] = sortedIds;
+            });
+
+            const missingFeatureIds = _.filter(featureIdSet, featureId => {
+                return undefined === baseFeatures[featureId];
+            });
+
+            if (missingFeatureIds.length == 0) {
+                return Promise.resolve({features: []});
+            }
+
+            // TODO handle more than 100.
+            const featureData = {
+                noAccountId: true,
+                data: {
+                    fields: ['name', 'key'].join(','),
+                    key: missingFeatureIds.join(',')
+                }
+            };
+
+            self.GET('feature', featureData)
+            .then(featureRes => {
+                featureRes.features.map(feature => {
+                    // Remove "feature_" prefix.
+                    const featureKey = feature.key.split('feature_').pop();
+                    baseFeatures[featureKey] = feature.name;
+                });
+                self.setState({
+                    features: baseFeatures,
+                    thumbnailFeatures: baseThumbnailFeatures
+                });
+            });
+        });
+    },
+
     // TODO define type here, with a generic id for images
     // or possibly just always pass tag_id 
     deleteCollection: function(videoId) { 
@@ -390,7 +491,8 @@ const CollectionsMainPage = React.createClass({
     },  
     // Given the enum of gender, age, return new Object
     // with their two api request key and value.
-    getBaseParamsForDemoRequest: function(gender, age) {
+    // (Optionally, specify fields in the response.)
+    getBaseParamsForDemoRequest: function(gender, age, fields=[]) {
 
         const baseParams = {};
         // If demo parameters are valued and not "null", then include them.
@@ -399,6 +501,9 @@ const CollectionsMainPage = React.createClass({
         }
         if (age !== 0) {
             baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        }
+        if (fields.length > 0) {
+            baseParams.fields = fields.join(',');
         }
         return baseParams;
     },
@@ -491,9 +596,12 @@ const CollectionsMainPage = React.createClass({
                         tags: this.state.tags,
                         videos: this.state.videos,
                         thumbnails: this.state.thumbnails,
-                        lifts: this.state.lifts
+                        lifts: this.state.lifts,
+                        thumbnailFeatures: this.state.thumbnailFeatures,
+                        features: this.state.features
                     }}
                     loadTagForDemographic={this.loadTagForDemographic}
+                    loadFeaturesForTag={this.loadFeaturesForTag}
                     loadThumbnails={this.loadThumbnails}
                     deleteCollection={this.deleteCollection}
                     socialClickHandler={this.socialClickHandler}
