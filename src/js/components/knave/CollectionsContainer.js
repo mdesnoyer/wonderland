@@ -32,7 +32,9 @@ const CollectionsContainer = React.createClass({
         // Map of store identifying key to the store,
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
-        updateThumbnails: PropTypes.func.isRequired
+        updateThumbnails: PropTypes.func.isRequired,
+        getVideoStatus: PropTypes.func.isRequired,
+        deleteVideo: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -192,18 +194,20 @@ const CollectionsContainer = React.createClass({
 
     // @TODO factor common code
     buildVideoCollectionComponent(tagId, collection, onDemoChange, gender, age) {
-        
+
         const video = this.props.stores.videos[collection.video_id];
         if (video.state === 'processing' || video.state === 'failed') {
             return (
                 <VideoProcessing
-                    key={collection.tag_id} 
+                    key={collection.tag_id}
                     title={video.title}
                     videoState={video.state}
                     estimatedTimeRemaining={video.estimated_time_remaining}
                     seconds={video.duration}
                     videoId={video.video_id}
                     updateThumbnails={this.props.updateThumbnails}
+                    getVideoStatus={this.props.getVideoStatus}
+                    deleteVideo={this.props.deleteVideo}
                 />
             );
         }

@@ -6,7 +6,7 @@ import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import Countdown from '../wonderland/Countdown'; 
+import Countdown from '../wonderland/Countdown';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -18,34 +18,26 @@ var VideoProcessing = React.createClass({
         }
     },
     componentDidMount: function() {
-        var self = this; 
+        var self = this;
         if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
             self.props.updateThumbnails();
         }
-        else if(self.props.videoState === 'processing') {
-            self.getVideoStatus();
+        else if (self.props.videoState === 'processing') {
+            self.props.getVideoStatus();
         }
     },
     componentWillReceiveProps: function(nextProps) {
-        var self = this; 
+        var self = this;
         if (self.props.title !== nextProps.title && self.props.estimatedTimeRemaining !== nextProps.estimatedTimeRemaining) {
-            self.getVideoStatus();
+            self.props.getVideoStatus(self.props.videoId);
         }else if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
            self.props.updateThumbnails();
         }else if (self.props.videoState !== nextProps.videoState){
             self.props.updateThumbnails();
         }
     },
-    getVideoStatus: function() {
-        var self = this;
-        self.GET('videos', {data: {video_id: self.props.videoId, fields: UTILS.VIDEO_FIELDS}})
-            .then(function(res) {
-                console.log(res.videos[0].state)
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? self.props.updateThumbnails() : setTimeout(self.getVideoStatus, 10000); 
-            })
-            .catch(function(err) {
-
-            });
+    handleDeleteClick: function() {
+        this.props.handleDeleteClick(self.props.videoId);
     },
     render: function() {
         var self = this,
@@ -55,7 +47,7 @@ var VideoProcessing = React.createClass({
             errorMessageComponent,
             isError,
             seconds,
-            estimatedTimeRemaining, 
+            estimatedTimeRemaining,
             countdown = null,
             collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
@@ -70,7 +62,7 @@ var VideoProcessing = React.createClass({
                         type="button"
                         onClick={self.handleDeleteClick}
                     >
-                        <img 
+                        <img
                             src="/img/xx/close.png"
                             alt={T.get('action.close')}
                             title={T.get('action.close')}
@@ -89,42 +81,42 @@ var VideoProcessing = React.createClass({
                 seconds = self.props.seconds;
                 estimatedTimeRemaining = self.props.estimatedTimeRemaining;
                 collectionClassName.push('xxCollection--processing');
-                if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {  
-                    countdown = (<Countdown 
+                if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {
+                    countdown = (<Countdown
                         seconds={estimatedTimeRemaining}
                         classPrefix="xxCollectionFilterCountdown"
                     />);
-                } 
+                }
                 else {
                     countdown = (
-                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span> 
+                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
                     );
                 }
                 break;
         }
-        if (self.state.isHidden) { 
+        if (self.state.isHidden) {
             return (<div></div>);
-        }  
+        }
 
-        return ( 
-            <div> 
+        return (
+            <div>
                 <article className={collectionClassName.join(' ')}>
                     <h1 className="xxSubtitle">{self.props.videoState}</h1>
                     <h1 className="xxCollection-title">
                         {title}
                         {deleteButton}
                     </h1>
-                    { 
+                    {
                         isError ? null : (
                             <div className="xxCollectionFilters">
                                 <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                 <span>{countdown}</span>
                             </div>
-                        )  
-                    } 
+                        )
+                    }
                     {errorMessageComponent}
                 </article>
-            </div> 
+            </div>
         )
     },
     propTypes: {
@@ -132,7 +124,9 @@ var VideoProcessing = React.createClass({
         videoState: React.PropTypes.string,
         estimatedTimeRemaining: React.PropTypes.number,
         seconds: React.PropTypes.number,
-        updateThumbnails: React.PropTypes.func
+        updateThumbnails: React.PropTypes.func,
+        getVideoStatus: React.PropTypes.func.isRequired,
+        deleteVideo: React.PropTypes.func.isRequired
     }
 });
 
@@ -161,7 +155,7 @@ export default VideoProcessing;
 //         });
 // },
 // componentDidMount: function() {
-//     var self = this; 
+//     var self = this;
 //     if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
 //         this.props.updateThumbnails();
 //     }
@@ -186,15 +180,15 @@ export default VideoProcessing;
     //     }
     //     else {
     //         this.getVideoStatus();
-    //     } 
+    //     }
     // },
     // componentWillUnmount: function() {
     //     clearInterval(this.__pingVideo);
     // },
     // componentWillReceiveProps: function(nextProps) {
     //     // nextProps.
-        
-    //     // debugger 
+
+    //     // debugger
 
     // },
     // startInterval: function() {
@@ -211,8 +205,8 @@ export default VideoProcessing;
     //     var self = this;
     //     self.GET('videos', {data: {video_id: self.props.videoId, fields: UTILS.VIDEO_FIELDS}})
     //         .then(function(res) {
-    //         console.log(res.state) 
-    //             res.state === 'processed' ? self.props.updateThumbnails : setTimeout(self.getVideoStatus, 5000); 
+    //         console.log(res.state)
+    //             res.state === 'processed' ? self.props.updateThumbnails : setTimeout(self.getVideoStatus, 5000);
     //         })
     //         .catch(function(err) {
 
@@ -226,7 +220,7 @@ export default VideoProcessing;
     //     }
     //     else {
     //         this.getVideoStatus();
-    //     } 
+    //     }
     // },
     // startInterval: function() {
 

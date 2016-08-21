@@ -226,6 +226,35 @@ const CollectionsMainPage = React.createClass({
         this.search();
     },
 
+    getVideoStatus: function(videoId) {
+        var self = this;
+
+        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
+            .then(function(res) {
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? self.updateThumbnails() : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+            })
+            .catch(function(err) {
+
+            });
+    },
+
+    deleteVideo: function(videoId) {
+        var self = this,
+            options
+        ;
+        options.data = {
+            video_id: videoId,
+            hidden: true
+        }
+    self.PUT('videos', options)
+        .then(function(res) {
+            self.updateThumbnails();
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+    },
+
     render: function() {
         return (
             <main className='xxPage'>
@@ -239,7 +268,8 @@ const CollectionsMainPage = React.createClass({
                     }}
                     loadThumbnails={this.loadThumbnails}
                     updateThumbnails={this.updateThumbnails}
-
+                    getVideoStatus={this.getVideoStatus}
+                    deleteVideo={this.deleteVideo}
                 />
                 <UploadForm updateThumbnails={this.updateThumbnails}/>
                 <SiteFooter />
