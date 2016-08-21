@@ -63,7 +63,7 @@ var VideoPageGuest = React.createClass({
         const twitter_image_url = _url + 'twitter/' +
             '?share_token=' +
             this.props.params.shareToken;
-        const image_url = _url + 
+        const image_url = _url +
             '?share_token=' +
             this.props.params.shareToken;
 

@@ -10,10 +10,11 @@ import SESSION from '../../modules/session';
 import TRACKING from '../../modules/tracking';
 import RENDITIONS from '../../modules/renditions';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
+
+import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import SiteFooter from '../wonderland/SiteFooter';
-
 import {
     TagStore,
     VideoStore,
@@ -274,6 +275,9 @@ const CollectionsMainPage = React.createClass({
     render: function() {
         return (
             <main className='xxPage'>
+                <Helmet>
+                    title={UTILS.buildPageTitle(T.get('copy.myCollections.title'))}
+                </Helmet>
                 <SiteHeader />
                 <CollectionsContainer
                     displayIds={this.getDisplayIds()}

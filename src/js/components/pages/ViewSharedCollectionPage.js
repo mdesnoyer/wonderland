@@ -2,10 +2,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
 
+import _ from 'lodash';
+
+import UTILS from '../../modules/Utils';
+import T from '../../modules/Translation';
+
+import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import SiteFooter from '../wonderland/SiteFooter';
-
 import {
     TagStore,
     VideoStore,
@@ -51,7 +56,13 @@ const getStateFromStores = () => {
 const ViewSharedCollectionPage = React.createClass({
 
     getInitialState: function() {
-        return getStateFromStores();
+        return Object.assign(
+            {
+                pageTitle: T.get('share'),
+                metaTags: []
+            },
+            getStateFromStores()
+        );
     },
 
     componentWillMount: function() {
@@ -60,13 +71,70 @@ const ViewSharedCollectionPage = React.createClass({
         LoadActions.loadByShareToken();
     },
 
+    baseMetaTags: [
+        {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
+        {property: 'og:type', content: 'article'},
+        {property: 'og:title', content: T.get('copy.share.contentTitle')},
+        {property: 'og:description', content: T.get('copy.share.facebook')},
+        {property: 'twitter:card', content: 'summary_large_image'},
+        {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
+        {property: 'twitter:description', content: T.get('copy.share.twitter')},
+        {content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
+    ],
+
+    // TODO factor this from here and VideoPageGuest.
+    // Build urls for the share image service endpoints.
+    getMetaTagsFromProps: function() {
+        var _url = CONFIG.API_HOST +
+            this.props.params.accountId +
+            '/social/image/'
+        // Config is missing the protocol. @TODO
+        UTILS.stripProtocol(_url)
+        _url = 'https:' + _url;
+
+        const twitter_image_url = _url + 'twitter/' +
+            '?share_token=' +
+            this.props.params.shareToken;
+        const image_url = _url +
+            '?share_token=' +
+            this.props.params.shareToken;
+
+        return this.baseMetaTags.concat([
+            {property: 'og:image', content: image_url},
+            {property: 'og:image:width', content: 800},
+            {property: 'og:image:height', content: 800},
+            {property: 'twitter:image', content: twitter_image_url}
+        ]);
+    },
+
     updateState: function() {
-        this.setState(getStateFromStores());
+        const self = this;
+        self.setState(getStateFromStores(),
+            () => {
+                const stateDiff = {};
+                // Set the page title to the first collection's name.
+                if(!_.isEmpty(self.state.tags)) {
+                    const name = _(self.state.tags)
+                        .values()
+                        .head()
+                        .name;
+                    if(name) {
+                        stateDiff.pageTitle = name;
+                    }
+                }
+                stateDiff.metaTags = self.getMetaTagsFromProps();
+                self.setState(stateDiff);
+            }
+        );
     },
 
     render: function() {
         return (
             <main className='xxPage'>
+                <Helmet
+                    meta={this.state.metaTags}
+                    title={UTILS.buildPageTitle(this.state.pageTitle)}
+                />
                 <SiteHeader />
                 <CollectionsContainer
                     displayIds={[]}
