@@ -93,6 +93,7 @@ const BaseCollection = React.createClass({
                     onLess={onLess}
                     onMouseEnter={self.onThumbnailMouseEnter}
                     onClick={self.props.onThumbnailClick}
+                    className="xxThumbnail--lowLight"
                 />;
             }
             return <ShowMoreThumbnailList
@@ -183,6 +184,7 @@ const BaseCollection = React.createClass({
             <FeatureThumbnail
                 title={T.get('copy.worstThumbnail')}
                 score={this.props.leftFeatureThumbnail.neon_score}
+                className="xxThumbnail--lowLight"
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
                 onMouseEnter={this.onThumbnailMouseEnter.bind(null, leftThumbnailId)}
                 onClick={this.props.onThumbnailClick.bind(null, leftThumbnailId)}

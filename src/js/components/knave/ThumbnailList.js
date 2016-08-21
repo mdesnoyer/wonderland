@@ -19,7 +19,9 @@ export const ThumbnailList = React.createClass({
         numberToDisplay: PropTypes.number,
 
         onMouseEnter: PropTypes.func,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+
+        className: PropTypes.string
     },
 
     render: function() {
@@ -39,6 +41,7 @@ export const ThumbnailList = React.createClass({
             .map(t => {
                 return (
                     <Thumbnail
+                        className={this.props.className||''}
                         key={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}
@@ -91,6 +94,7 @@ export const ShowLessThumbnailList = React.createClass({
                 </ThumbnailList>
                 <ThumbnailList
                     thumbnails={secondPartThumbs}
+                    {...this.props}
                 />
             </div>
         );

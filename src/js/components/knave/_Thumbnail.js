@@ -13,7 +13,10 @@ const _Thumbnail = React.createClass({
         src: PropTypes.string.isRequired,
         // User action handlers
         onMouseEnter: PropTypes.func,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+
+        // Style
+        className: PropTypes.string
     },
 
     getDefaultProps: function() {
@@ -29,9 +32,10 @@ const _Thumbnail = React.createClass({
 
     render: function() {
         const self = this;
+        const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small xxThumbnail--highLight xxThumbnail--neon ${this.props.className||''}`;
         return (
             <a
-                className="xxThumbnail"
+                className={className}
                 data-score={self.props.score}
                 onClick={self.props.onClick}
             >

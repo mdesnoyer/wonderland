@@ -422,7 +422,7 @@ const CollectionsContainer = React.createClass({
             return this.buildCollectionComponent(tagId);
         });
         return (
-            <div className="xxCollectionImages">
+            <div className="xxCollection">
                 {this.buildOverlayComponent()}
                 <ul>{collections}</ul>
             </div>

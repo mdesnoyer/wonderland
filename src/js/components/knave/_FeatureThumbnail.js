@@ -9,6 +9,7 @@ import T from '../../modules/translation';
 var FeatureThumbnail = React.createClass({
     propTypes: {
         title: PropTypes.string.isRequired,
+        className: PropTypes.string,
         score: PropTypes.number.isRequired,
         src: PropTypes.string.isRequired,
         tagId: PropTypes.string,
