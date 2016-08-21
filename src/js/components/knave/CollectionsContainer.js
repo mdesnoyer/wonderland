@@ -53,12 +53,17 @@ const CollectionsContainer = React.createClass({
     // Tie into the parent's updating of its stores.
     componentWillReceiveProps: function(nextProps) {
         // TODO work on paging, sorting behavior.
+        debugger
         const shownIds = _.values(nextProps.stores.tags)
             .slice(0, nextProps.numberToShow)
             .map(t => {
-                return t.tag_id;
+                return {tag_id: t.tag_id, created: new Date(t.created)};
             });
-        this.setState({shownIds: shownIds});
+            var shownIdsSort = _.sortBy(shownIds, 'created').reverse().map(function(id){ return id.tag_id;});
+            // var newArray = shownIdsSort.map(function(id){
+            //         return id.tag_id;
+            //     })
+        this.setState({shownIds: shownIdsSort});
     },
 
     // Return array of gender,age enum array based
