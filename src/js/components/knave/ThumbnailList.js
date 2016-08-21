@@ -93,8 +93,8 @@ export const ShowLessThumbnailList = React.createClass({
                     </strong>
                 </ThumbnailList>
                 <ThumbnailList
-                    thumbnails={secondPartThumbs}
                     {...this.props}
+                    thumbnails={secondPartThumbs}
                 />
             </div>
         );

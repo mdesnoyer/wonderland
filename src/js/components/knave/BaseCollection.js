@@ -80,11 +80,13 @@ const BaseCollection = React.createClass({
         // Initial: ShowMore with one row
         if(!_.isEmpty(self.props.smallBadThumbnails)) {
             if(rows > 1) {
+                // Constrain good thumbnails to 5.
+                const truncatedSmallThumbnails = self.props.smallThumbnails.slice(0, 5);
                 const thumbnails = _.flatten([
-                    self.props.smallThumbnails,
-                    self.props.smallBadThumbnails
+                    truncatedSmallThumbnails,
+                    self.props.smallBadThumbnails.slice(0, 6)
                 ]);
-                const numberToDisplay = self.props.smallThumbnails.length;
+                const numberToDisplay = truncatedSmallThumbnails.length;
                 return <ShowLessThumbnailList
                     thumbnails={thumbnails}
                     numberToDisplay={numberToDisplay}
