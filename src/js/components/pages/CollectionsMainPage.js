@@ -1,3 +1,4 @@
+'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
 
@@ -268,9 +269,8 @@ const CollectionsMainPage = React.createClass({
 
     // TODO add post forms.
     // TODO add helmet.
-    // TODO? add loading placeholder.
-    // TODO? profile double render.
-    // TODO re-add footer (its movement is wrong)
+    // TODO add loading placeholder.
+    // TODO profile double render.
     render: function() {
         return (
             <main className='xxPage'>
@@ -293,6 +293,7 @@ const CollectionsMainPage = React.createClass({
                     getShareUrl={this.getShareUrl}
                     sendResultsEmail={this.sendResultsEmail}
                 />
+                <SiteFooter />
             </main>
         );
     }

@@ -1,3 +1,4 @@
+'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
@@ -34,16 +35,16 @@ const CollectionsContainer = React.createClass({
 
         // Defaults to Function to delete/hide a collection from
         // both the backend and frontend display
-        deleteCollection: PropTypes.func.isRequired,
+        deleteCollection: PropTypes.func,
 
         // ClickHandler for social sharing buttons
-        socialClickHandler: PropTypes.func.isRequired,
+        socialClickHandler: PropTypes.func,
 
         // Allows a component to get a sharing url
-        getShareUrl: PropTypes.func.isRequired,
+        getShareUrl: PropTypes.func,
 
         // Allows a collection to send results email
-        sendResultsEmail: PropTypes.func.isRequired
+        sendResultsEmail: PropTypes.func
 
         // TODO add learnmore func.
     },
