@@ -57,11 +57,7 @@ const ViewSharedCollectionPage = React.createClass({
     componentWillMount: function() {
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
-        this.loadByShareToken();
-    },
-
-    loadByShareToken: function() {
-        return;
+        LoadActions.loadByShareToken();
     },
 
     updateState: function() {

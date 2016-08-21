@@ -225,6 +225,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return map;
                 }, {});
                 ThumbnailStore.set(gender, age, thumbMap);
+                Dispatcher.dispatch();
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
             .then(liftRes => {
@@ -479,6 +480,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
     },
 
+    loadByShareToken(accountId, resourceType, resourceId, shareToken) {
+        Dispatcher.dispatch();
+    }
 });
 
 // Given the enum of gender, age, return new Object
