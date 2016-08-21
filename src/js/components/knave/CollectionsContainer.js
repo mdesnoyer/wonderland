@@ -53,16 +53,13 @@ const CollectionsContainer = React.createClass({
     // Tie into the parent's updating of its stores.
     componentWillReceiveProps: function(nextProps) {
         // TODO work on paging, sorting behavior.
-        debugger
         const shownIds = _.values(nextProps.stores.tags)
             .slice(0, nextProps.numberToShow)
             .map(t => {
                 return {tag_id: t.tag_id, created: new Date(t.created)};
             });
-            var shownIdsSort = _.sortBy(shownIds, 'created').reverse().map(function(id){ return id.tag_id;});
-            // var newArray = shownIdsSort.map(function(id){
-            //         return id.tag_id;
-            //     })
+        //sort shownIds by creted date and then return new array with sorted ID's
+        var shownIdsSort = _.sortBy(shownIds, 'created').reverse().map(function(id){ return id.tag_id;});
         this.setState({shownIds: shownIdsSort});
     },
 
@@ -208,7 +205,7 @@ const CollectionsContainer = React.createClass({
                     title={video.title}
                     videoState={video.state}
                     estimatedTimeRemaining={video.estimated_time_remaining}
-                    seconds={video.duration}
+                    duration={video.duration}
                     videoId={video.video_id}
                     updateThumbnails={this.props.updateThumbnails}
                     getVideoStatus={this.props.getVideoStatus}

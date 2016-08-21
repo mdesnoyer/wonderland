@@ -12,11 +12,6 @@ import Countdown from '../wonderland/Countdown';
 
 var VideoProcessing = React.createClass({
     mixins: [AjaxMixin],
-    getInitialState: function() {
-        return {
-            maxVideoSize: UTILS.MAX_VIDEO_SIZE
-        }
-    },
     componentDidMount: function() {
         var self = this;
         if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
@@ -30,14 +25,13 @@ var VideoProcessing = React.createClass({
         var self = this;
         if (self.props.title !== nextProps.title && self.props.estimatedTimeRemaining !== nextProps.estimatedTimeRemaining) {
             self.props.getVideoStatus(self.props.videoId);
-        }else if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
-           self.props.updateThumbnails();
-        }else if (self.props.videoState !== nextProps.videoState){
-            self.props.updateThumbnails();
         }
+        else if ((self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) || (self.props.videoState !== nextProps.videoState)) {
+           self.props.updateThumbnails();
+       }
     },
     handleDeleteClick: function() {
-        this.props.handleDeleteClick(self.props.videoId);
+        this.props.deleteVideo(this.props.videoId);
     },
     render: function() {
         var self = this,
@@ -88,16 +82,10 @@ var VideoProcessing = React.createClass({
                     />);
                 }
                 else {
-                    countdown = (
-                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
-                    );
+                    countdown = <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>;
                 }
                 break;
         }
-        if (self.state.isHidden) {
-            return (<div></div>);
-        }
-
         return (
             <div>
                 <article className={collectionClassName.join(' ')}>
@@ -123,7 +111,7 @@ var VideoProcessing = React.createClass({
         title: React.PropTypes.string,
         videoState: React.PropTypes.string,
         estimatedTimeRemaining: React.PropTypes.number,
-        seconds: React.PropTypes.number,
+        duration: React.PropTypes.number,
         updateThumbnails: React.PropTypes.func,
         getVideoStatus: React.PropTypes.func.isRequired,
         deleteVideo: React.PropTypes.func.isRequired

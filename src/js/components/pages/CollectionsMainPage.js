@@ -234,25 +234,19 @@ const CollectionsMainPage = React.createClass({
                 res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? self.updateThumbnails() : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
-
+                console.log(err)
             });
     },
 
     deleteVideo: function(videoId) {
-        var self = this,
-            options
-        ;
-        options.data = {
-            video_id: videoId,
-            hidden: true
-        }
-    self.PUT('videos', options)
-        .then(function(res) {
-            self.updateThumbnails();
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
+        var self = this;
+        self.PUT('videos', {data:{video_id: videoId, hidden: true}})
+            .then(function(res) {
+                self.updateThumbnails();
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     },
 
     render: function() {
