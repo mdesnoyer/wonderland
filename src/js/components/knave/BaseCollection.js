@@ -55,14 +55,6 @@ const BaseCollection = React.createClass({
 
     buildThumbnailList: function() {
 
-        // 4 cases:
-        // There's fewer than one row of thumbs
-        // There's fewer than the rows displayed -> show less in spot 6.
-        // There's more than the rows displayed -> show more in last spot
-        // There's more than the rows displayed, and they've
-        //   clicked show more once -> show less in spot 6, and show more
-        //   in right-hand spot in last row
-
         // TODO Extract 6 (number per row) and 3 (number of rows added per ShowMore)
         // to constants. This is in some way implemented in CSS.
 
@@ -82,6 +74,44 @@ const BaseCollection = React.createClass({
 
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
+
+        // 2 cases for video:
+        // Expanded: ShowLess with more than one row
+        // Initial: ShowMore with one row
+        if(!_.isEmpty(self.props.smallBadThumbnails)) {
+            if(rows > 1) {
+                const thumbnails = _.flatten([
+                    self.props.smallThumbnails,
+                    self.props.smallBadThumbnails
+                ]);
+                const numberToDisplay = self.props.smallThumbnails.length;
+                return <ShowLessThumbnailList
+                    thumbnails={thumbnails}
+                    numberToDisplay={numberToDisplay}
+                    // TODO would like to remove the need for the T.get
+                    lessLabel={T.get('action.showLess')}
+                    onLess={onLess}
+                    onMouseEnter={self.onThumbnailMouseEnter}
+                    onClick={self.props.onThumbnailClick}
+                />;
+            }
+            return <ShowMoreThumbnailList
+                thumbnails={self.props.smallThumbnails}
+                numberToDisplay={5} // N rows of 6, minus one for each button.
+                moreLabel={T.get('action.showMore')}
+                onMore={onMore}
+                onMouseEnter={self.onThumbnailMouseEnter}
+                onClick={self.props.onThumbnailClick}
+            />;
+        }
+
+        // 4 cases:
+        // There's fewer than one row of thumbs
+        // There's fewer than the rows displayed -> show less in spot 6.
+        // There's more than the rows displayed -> show more in last spot
+        // There's more than the rows displayed, and they've
+        //   clicked show more once -> show less in spot 6, and show more
+        //   in right-hand spot in last row
 
         // There's fewer than or exactly one row of thumbs: no button.
         if(self.props.smallThumbnails.length <= 6) {

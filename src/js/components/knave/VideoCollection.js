@@ -28,9 +28,11 @@ const VideoCollection = React.createClass({
             selectedPanel: 0
         };
     },
+
     setSelectedPanel: function(panelId) {
         this.setState({ selectedPanel : panelId });
     },
+
     render: function() {
         const panels = [
             <InfoDemoLiftPanel

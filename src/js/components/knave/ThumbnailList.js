@@ -57,53 +57,36 @@ export const ThumbnailList = React.createClass({
     }
 });
 
-// A list where the first and second parts are split
-// into their own DOM nodes.
-export const TwoPartThumbnailList = React.createClass({
-    propTypes: {
-        // An array of thumbnail resource
-        firstPartThumbs: PropTypes.array.isRequired,
-        secondPartThumbs: PropTypes.array
-        // Note: children are implicitly rendered.
-    },
-
-    render: function() {
-
-        return (
-            <div>
-                <ThumbnailList
-                    thumbnails={this.props.firstPartThumbs}
-                >
-                    {this.props.children}
-                </ThumbnailList>
-                <ThumbnailList
-                    thumbnails={this.props.secondPartThumbs}
-                />
-            </div>
-        );
-    }
-});
-
 // A ThumbnailList with a ShowLess button in the first row's right-most slot.
 export const ShowLessThumbnailList = React.createClass({
 
     propTypes: {
         thumbnails: PropTypes.array.isRequired,
-        onLess: PropTypes.func.isRequired
+        onLess: PropTypes.func.isRequired,
+        numberToDisplay: PropTypes.number,
+        // Label for ShowMore button
+        lessLabel: PropTypes.string
+    },
+
+    getDefaultProps: function() {
+        return {
+            lessLabel: T.get('action.showLess')
+        }
     },
 
     render: function() {
+        const number = this.props.numberToDisplay || 5;
         // TODO extract constant.
         // Split the list into before the ShowLess and after.
-        const firstPartThumbs = this.props.thumbnails.slice(0, 5);
-        const secondPartThumbs = this.props.thumbnails.slice(5);
+        const firstPartThumbs = this.props.thumbnails.slice(0, number);
+        const secondPartThumbs = this.props.thumbnails.slice(number);
         return (
             <div>
                 <ThumbnailList
                     thumbnails={firstPartThumbs}
                 >
                     <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
-                        <span>{T.get('action.showLess')}</span>
+                        <span>{this.props.lessLabel}</span>
                     </strong>
                 </ThumbnailList>
                 <ThumbnailList
@@ -121,8 +104,17 @@ export const ShowMoreThumbnailList = React.createClass({
         thumbnails: PropTypes.array.isRequired,
         onMore: PropTypes.func.isRequired,
         // Control how many images are shown before the ShowMore.
-        numberToDisplay: PropTypes.number.isRequired
+        numberToDisplay: PropTypes.number.isRequired,
+        // Label for ShowMore button
+        moreLabel: PropTypes.string
     },
+
+    getDefaultProps: function() {
+        return {
+            moreLabel: T.get('action.showMore')
+        }
+    },
+
 
     render: function() {
 
@@ -131,7 +123,7 @@ export const ShowMoreThumbnailList = React.createClass({
             <ThumbnailList {...this.props}
             >
                 <strong className="xxCollectionImages-allAnchor" onClick={this.props.onMore}>
-                    <span>{T.get('action.showMore')}</span>
+                    <span>{this.props.moreLabel}</span>
                 </strong>
             </ThumbnailList>
         );
