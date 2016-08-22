@@ -8,6 +8,7 @@ import _ from 'lodash';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 
+import VideoProcessing from './VideoProcessing';
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
@@ -32,6 +33,8 @@ const CollectionsContainer = React.createClass({
         // Map of store identifying key to the store,
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
+        getVideoStatus: PropTypes.func.isRequired,
+        deleteVideo: PropTypes.func.isRequired,
 
         // Defaults to Function to delete/hide a collection from
         // both the backend and frontend display
@@ -271,13 +274,25 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[collection.video_id];
-
+        if (video.state === 'processing' || video.state === 'failed') {
+            return (
+                <VideoProcessing
+                    key={collection.tag_id}
+                    title={video.title}
+                    videoState={video.state}
+                    estimatedTimeRemaining={video.estimated_time_remaining}
+                    duration={video.duration}
+                    videoId={video.video_id}
+                    getVideoStatus={this.props.getVideoStatus}
+                    deleteVideo={this.props.deleteVideo}
+                />
+            );
+        }
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
         const left = thumbArrays[0];
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
         const badThumbnails = thumbArrays[3];
-
         return (
             <VideoCollection
                 key={tagId}
@@ -306,7 +321,6 @@ const CollectionsContainer = React.createClass({
     getThumbnail: function(tagId, thumbnailId) {
         return this.getThumbnailMap(tagId)[thumbnailId];
     },
-
     // Get all the Thumbnail resources for the
     // current demographic for a collection as map of id to thumbnail.
     //
@@ -401,7 +415,6 @@ const CollectionsContainer = React.createClass({
 
         const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
         const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
-
         // Find lift for the displayed thumb.
         const lift = this.props.stores.lifts
             [gender]
@@ -443,7 +456,7 @@ const CollectionsContainer = React.createClass({
             return this.buildCollectionComponent(tagId);
         });
         return (
-            <div className="xxCollection">
+            <div>
                 {this.buildOverlayComponent()}
                 <ul>{collections}</ul>
             </div>

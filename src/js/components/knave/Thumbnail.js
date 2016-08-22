@@ -40,6 +40,7 @@ import UTILS from '../../modules/utils';
         if (self.props.type) {
             className.push('xxThumbnail--'+ self.props.type);
         }
+        // debugger
         return (
             <a
                 {...opts}

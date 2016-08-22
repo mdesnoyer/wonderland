@@ -5,18 +5,18 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import AjaxMixin from '../../mixins/Ajax';
-import UTILS from '../../modules/utils';
+import RENDITIONS from '../../modules/renditions';
 import SESSION from '../../modules/session';
 import TRACKING from '../../modules/tracking';
-import RENDITIONS from '../../modules/renditions';
+import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
-import BasePage from '../wonderland/pages/BasePage';
-import Helmet from 'react-helmet';
-import SiteHeader from '../wonderland/SiteHeader';
+import BasePage from './BasePage';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControl from '../core/_PagingControl';
-import SiteFooter from '../wonderland/SiteFooter';
+import UploadForm from '../knave/UploadForm';
+
 import {
     TagStore,
     VideoStore,
@@ -28,7 +28,6 @@ import {
     Dispatcher,
     Search } from '../../stores/CollectionStores.js';
 
-import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -254,6 +253,32 @@ const CollectionsMainPage = React.createClass({
             .value();
     },
 
+    getVideoStatus: function(videoId) {
+        var self = this;
+        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
+            .then(function(res) {
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+            })
+            .catch(function(err) {
+                console.log(err)
+            });
+    },
+
+    deleteVideo: function(videoId) {
+        var self = this;
+        self.PUT('videos', {data:{video_id: videoId, hidden: true}})
+            .then(function(res) {
+                // TODO? remove video's tag?
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    },
+
+    getTitle: function() {
+        return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
+    },
+
     getPagingEnableNext: function() {
         const itemCount = (1 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE;
         return Search.hasMoreThan(itemCount);
@@ -275,6 +300,9 @@ const CollectionsMainPage = React.createClass({
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features
                     }}
+                    loadThumbnails={this.loadThumbnails}
+                    getVideoStatus={this.getVideoStatus}
+                    deleteVideo={this.deleteVideo}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
@@ -305,7 +333,8 @@ const CollectionsMainPage = React.createClass({
             <BasePage
                 title={T.get('copy.myCollections.title')}
             >
-            {this.getBody() || this.getLoading()};
+                {this.getBody() || this.getLoading()};
+                <UploadForm />
             </BasePage>
         );
     }

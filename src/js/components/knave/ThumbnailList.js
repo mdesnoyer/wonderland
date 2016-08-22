@@ -35,13 +35,15 @@ export const ThumbnailList = React.createClass({
         const noop = () => {};
         const onMouseEnter = (this.props.onMouseEnter || noop);
         const onClick = (this.props.onClick || noop);
-
+        // const showHref = this.props.showHref
         const thumbnails = this.props.thumbnails
             .slice(0, this.props.numberToDisplay)
             .map(t => {
                 return (
                     <Thumbnail
+                        showHref={true}
                         className={this.props.className||''}
+                        isMobile={false}
                         key={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}

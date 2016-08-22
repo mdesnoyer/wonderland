@@ -35,6 +35,7 @@ const _Thumbnail = React.createClass({
         const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small xxThumbnail--highLight xxThumbnail--neon ${this.props.className||''}`;
         return (
             <a
+                href='#'
                 className={className}
                 data-score={self.props.score}
                 onClick={self.props.onClick}
