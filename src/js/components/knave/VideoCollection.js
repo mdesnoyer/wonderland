@@ -32,16 +32,20 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-
     setSelectedPanel: function(panelId) {
-        this.setState({selectedPanel: panelId});
+        var self = this;
+        self.setState({
+            selectedPanel: panelId
+        });
     },
-
     setLiftThumbnailId: function(thumbnailId) {
-        this.setState({liftThumbnailId: thumbnailId||this.props.rightFeatureThumbnail.thumbnail_id})
+        var self = this;
+        self.setState({
+            liftThumbnailId: thumbnailId || self.props.rightFeatureThumbnail.thumbnail_id
+        })
     },
-
     getPanels() {
+        var self = this;
         const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
@@ -59,7 +63,9 @@ const VideoCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
