@@ -12,6 +12,9 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
+
+import {AddActions, LoadActions} from '../../stores/CollectionStores.js';
+
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
 import OverLayMessage from './OverLayMessage'
@@ -99,7 +102,7 @@ var UploadForm = React.createClass({
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
             return;
         }
-        this.setState(this.getInitialState())
+        this.setState(this.getInitialState());
     },
     render: function() {
         const { isOnboarding } = this.props;
@@ -114,18 +117,24 @@ var UploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
-                    <OverLayMessage 
-                        message={T.get('error.unpaidAccountLimit')}
-                        messageFunction={self.props.openSignUp}
-                        isOpenMessage={self.state.isOpenMessage}
-                        type="limit"
-                    />
+                <OverLayMessage 
+                    message={T.get('error.unpaidAccountLimit')}
+                    messageFunction={self.props.openSignUp}
+                    isOpenMessage={self.state.isOpenMessage}
+                    type="limit"
+                />
                 <a
                     className="xxUploadButton"
                     title={T.get('action.analyze')}
                     onClick={self.toggleOpen}
-                >{T.get('action.analyze')}</a>
-                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+                >
+                    {T.get('action.analyze')}
+                </a>
+                <ReactCSSTransitionGroup 
+                    transitionName="xxFadeInOutFast"
+                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
+                    transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+                >
                     {
                         self.state.isOpen ? (
                             <div className="xxOverlay" 
@@ -133,26 +142,30 @@ var UploadForm = React.createClass({
                                 onClick={self.handleBgCloseClick}
                                 key="upload-overlay"
                             >
-                                <ReactCSSTransitionGroup transitionName="xxFadeInOutFast" transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}>
+                                <ReactCSSTransitionGroup
+                                    transitionName="xxFadeInOutFast" 
+                                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+                                    transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+                                >
                                 {
                                     !self.state.isOpenPhoto && !self.state.isOpenVideo ? (
-                                    <div className="xxUploadTypes" key="upload-types">
-                                        <a
-                                            href=""
-                                            className="xxUploadTypes-button xxUploadTypes-button--photo"
-                                            onClick={self.handleOpenPhoto}
-                                        ><span className="xxUploadTypes-buttonLabel">Photo</span></a>
-                                        <a
-                                            href=""
-                                            className="xxUploadTypes-button xxUploadTypes-button--video"
-                                            onClick={self.handleOpenVideo}
-                                        ><span className="xxUploadTypes-buttonLabel">Video</span></a>
-                                    </div>
+                                        <div className="xxUploadTypes" key="upload-types">
+                                            <a
+                                                href=""
+                                                className="xxUploadTypes-button xxUploadTypes-button--photo"
+                                                onClick={self.handleOpenPhoto}
+                                            ><span className="xxUploadTypes-buttonLabel">Photo</span></a>
+                                            <a
+                                                href=""
+                                                className="xxUploadTypes-button xxUploadTypes-button--video"
+                                                onClick={self.handleOpenVideo}
+                                            ><span className="xxUploadTypes-buttonLabel">Video</span></a>
+                                        </div>
                                     ) : null 
                                 }
                                 {
                                     self.state.isOpenPhoto ? (
-                                         <ImageUploadOverlay
+                                        <ImageUploadOverlay
                                             error={self.state.error || null}
                                             key="upload-photo"
                                             formatData={self.formatData}
@@ -168,7 +181,6 @@ var UploadForm = React.createClass({
                                             photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                                             numberUploadedCount={self.state.numberUploadedCount}
                                         />
-
                                     ) :  null 
                                 }
                                 {
@@ -225,29 +237,18 @@ var UploadForm = React.createClass({
             });
         }
         else {
-            // **********************************************************************
-            // this will have to change according to the new collections set up 
-            // **********************************************************************
             self.POST('videos', options)
                 .then(function(json) {
-                    self.setState(self.getInitialState());
-                    // if the a video is uploaded past the first page(greate than 1)
-                    if (self.props.currentPage > 1) {
-                        //we use the newsearch function in videos to adjust the page 
-                        // 1 minus by the current page 
-                        self.props.handleNewSearch('?', 1 - self.props.currentPage)
-                    }
-                    else if (self.props.postHookAnalysis) {
-                        self.props.postHookAnalysis(json);
-                    }
-                    else {
-                        if (self.props.postHookSearch) {
-                            self.props.postHookSearch();
-                        }
-                        else {
-                            self.context.router.push('/video/' + videoId + '/');
-                        }
-                    }
+                    console.log('post', json);
+                    // TODO: replace with a loadTag.
+                    LoadActions.loadFromSearchResult({
+                        items: [
+                            {
+                                tag_id: json.video.tag_id,
+                                tag_type: UTILS.TAG_TYPE_VIDEO_COL,
+                                video_id: json.video.video_id
+                            }]
+                    });
                 })
                 .catch(function(err) {
                     self.throwUploadError(err);
@@ -268,17 +269,15 @@ var UploadForm = React.createClass({
      formatData: function(files) {
         var self = this,
             formDataArray = [],
-            errorFiles = 0,
+            errorFiles, count, size, totalFileNumber,
             formData = new FormData(),
-            count = 0,
-            size = 0,
-            lastIndex = files.length -1,
-            totalFileNumber = 0
-        ; 
+            lastIndex = files.length - 1
+        ;
+        errorFiles = count = size = totalFileNumber = 0;
         files.forEach((file, index)=> {
-            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
-                count += 1
-                size += file.size
+            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {    
+                count += 1;
+                size += file.size;
                 totalFileNumber += 1;
                 if (count > UTILS.MAX_IMAGE_UPLOAD_COUNT || size > UTILS.MAX_IMAGE_CHUNK_SIZE) {
                     formDataArray.push(formData);
@@ -313,6 +312,13 @@ var UploadForm = React.createClass({
                     photoUploadMode: 'initial',
                     error: T.get('imageUpload.uploadMax')
                 });
+        }
+        else if (totalFileNumber === 0 && errorFiles >= 1 ) {
+            self.setState({
+                isOpen: true,
+                photoUploadMode: 'initial',
+                error: T.get('imageUpload.imageError')
+            });
         }
         else {
             self.setState({ 
@@ -352,7 +358,7 @@ var UploadForm = React.createClass({
                                     setTimeout(function() {
                                     self.setState({ photoUploadMode:'initial' });
                                     }, 3000)
-                            })                         
+                            });                         
                     }
                 });
             })
@@ -388,7 +394,7 @@ var UploadForm = React.createClass({
                     },  function() {
                         setTimeout( function() {
                             self.setState({ photoUploadMode:'initial' });
-                        }, 3000);
+                        }, 2000);
                     });
                 })
                 .catch(function(err) {
@@ -407,7 +413,7 @@ var UploadForm = React.createClass({
                 multiselect: true,
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
-    ;
+        ;
             Dropbox.choose(options);
     },
     sendCollectionTag: function() {
@@ -421,14 +427,14 @@ var UploadForm = React.createClass({
         ;
             self.POST('tags', options)
                 .then(function(res) {
-                    // **********************************************************************
-                    // need to redirect to collections and or update depending on Onboarding State
-                    // **********************************************************************
-                self.setState(self.getInitialState());
+                    // debugger
+                    // self.props.updateThumbnails();
+                    AddActions.addTag(res);
+                    self.setState(self.getInitialState());
                 })
-                .catch(function(err) { 
-                    self.throwUploadError(err);
-                });    
+                // .catch(function(err) { 
+                //     self.throwUploadError(err);
+                // });    
     },
     grabRefreshToken: function() {
         var self = this;
@@ -449,21 +455,8 @@ var UploadForm = React.createClass({
                 SESSION.end();
             });
     },
-    resetStateOnSuccessOrClose: function() {
-        var self = this; 
-        self.setState({
-            isOpen: false,
-            error: null,
-            isOpenMessage: false,
-            isPhotoOpen: false, 
-            isVideoOpen: false,
-            photoUploadCount: 0,
-            photoUploadMode: 'initial', // initial, loading, success,
-            photoUploadThumbnailIds: [],
-            photoCollectionName: '',
-            videoUploadUrl:'',
-            numberUploadedCount: 0
-        });
+    propTypes: {
+        updateThumbnails: React.PropTypes.func
     }
 });
 

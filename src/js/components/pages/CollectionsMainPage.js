@@ -16,6 +16,8 @@ import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControl from '../core/_PagingControl';
 import SiteFooter from '../wonderland/SiteFooter';
+import UploadForm from '../knave/UploadForm';
+
 import {
     TagStore,
     VideoStore,
@@ -249,6 +251,35 @@ const CollectionsMainPage = React.createClass({
             .value();
     },
 
+    updateThumbnails: function() {
+        // var self = this;
+        // this.updateState();
+        // console.log('did it');
+        // this.setState(getInitialState());
+    },
+
+    getVideoStatus: function(videoId) {
+        var self = this;
+        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
+            .then(function(res) {
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+            })
+            .catch(function(err) {
+                console.log(err)
+            });
+    },
+
+    deleteVideo: function(videoId) {
+        var self = this;
+        self.PUT('videos', {data:{video_id: videoId, hidden: true}})
+            .then(function(res) {
+                self.updateThumbnails();
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    },
+
     getTitle: function() {
         return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
     },
@@ -274,6 +305,10 @@ const CollectionsMainPage = React.createClass({
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features
                     }}
+                    loadThumbnails={this.loadThumbnails}
+                    updateThumbnails={this.updateThumbnails}
+                    getVideoStatus={this.getVideoStatus}
+                    deleteVideo={this.deleteVideo}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
@@ -282,6 +317,7 @@ const CollectionsMainPage = React.createClass({
                     getShareUrl={this.getShareUrl}
                     sendResultsEmail={this.sendResultsEmail}
                 />
+                
                 <PagingControl
                     currentPage={this.state.currentPage}
                     changeCurrentPage={this.changeCurrentPage}
@@ -308,6 +344,7 @@ const CollectionsMainPage = React.createClass({
                 />
                 <SiteHeader />
                 {this.getBody() || this.getLoading()}
+                <UploadForm updateThumbnails={this.updateThumbnails}/>
                 <SiteFooter />
             </main>
         );

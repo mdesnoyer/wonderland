@@ -53,15 +53,25 @@ export const TagStore  = {
         Object.assign(_tags, map);
     },
     count: function() {
-        return this.getAll().length;
+        return _.values(this.getAll()).length;
     },
     countShowable: function() {
         return _.values(this.getAll()).filter(
             t => { return t.hidden !== true; }
-        ).length;
+        ).length ;
     },
-    getOldestTimestamp: () => {
-        return undefined;
+    getOldestTimestamp: function() {
+        const self = this;
+        if (self.count() == 0) {
+            return null;
+        }
+
+        const oldestTag = _(TagStore.getAll())
+        .values()
+        .minBy(tag => {
+            return tag.created;
+        });
+        return moment(oldestTag.created + 'Z').format('x') / 1000;
     },
     completelyLoaded: false
 };
@@ -130,6 +140,13 @@ export const ThumbnailFeatureStore = {
         Object.assign(_thumbnailFeatures[gender][age], map);
     }
 };
+
+export const AddActions = Object.assign({}, AjaxMixin, {
+    addTag: tag => {
+        TagStore.set({[tag.tag_id]: tag});
+        Dispatcher.dispatch();
+    }
+});
 
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
@@ -275,6 +292,72 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
     },
 
+    loadVideos(videoIds) {
+
+        if(0 == videoIds.length) {
+            return;
+        }
+        const videoIdSet = _.uniq(videoIds);
+        const videoData = {
+                video_id: videoIdSet.join(','),
+                fields: UTILS.VIDEO_FIELDS.join(',')
+            };
+        LoadActions.GET('videos', {data: videoData})
+        .then(videoRes => {
+
+            // Set each by map of id to resource.
+            VideoStore.set(videoRes.videos.reduce((map, video) => {
+                map[video.video_id] = video;
+                return map;
+            }, {}));
+
+            // Build update map.
+            const thumbnailMap = {};
+            const tagIds = [];
+            // Store the video thumbnails since they're inline in response.
+            videoRes.videos.map(video => {
+
+                if (video.state === UTILS.VIDEO_STATE_ENUM.processing) {
+                    return;
+                }
+
+                // For each demo, store its thumbnails by demo keys.
+                video.demographic_thumbnails.map(dem => {
+
+                    const gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                    const age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                    if (age === undefined || gender === undefined) {
+                        console.warn('Unknown demo ', dem.age, dem.gender);
+                        return;
+                    }
+                    dem.thumbnails.map(t => {
+                        thumbnailMap[t.thumbnail_id] = t;
+                    });
+                    dem.bad_thumbnails.map(t => {
+                        thumbnailMap[t.thumbnail_id] = t;
+                    });
+
+                    tagIds.push(video.tag_id);
+                    ThumbnailStore.set(gender, age, thumbnailMap);
+                });
+            });
+            Dispatcher.dispatch();
+
+            // For video, use default demographics for store.
+            const gender = 0;
+            const age = 0;
+            LoadActions.loadLifts(tagIds, gender, age)
+            .then(liftRes => {
+                // Map of tag id to lift map.
+                const tagLiftMap = liftRes;
+                LiftStore.set(gender, age, tagLiftMap);
+
+                Dispatcher.dispatch();
+            });
+        });
+
+    },
+
     // Load thumbnails by ids.
     loadThumbnails: function(thumbnailIds, gender=0, age=0, fields=[]) {
 
@@ -336,6 +419,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 ThumbnailStore.getAll()[gender][age],
                 tag.thumbnail_ids);
             const worst = UTILS.worstThumbnail(_.values(thumbnailMap));
+
+            // A video with just a default thumbnail will have no lift.
+            if(_.keys(thumbnailMap).length <= 1) {
+                return;
+            }
 
             // If the type is video, its default thumbnail
             // is used instead of the worst.
@@ -542,23 +630,18 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             data: {limit}
         };
         // Find the oldest timestamp.
-        const oldestTag = _
-            (TagStore.getAll())
-            .values()
-            .minBy(tag => {
-                return tag.created;
-            });
+        const oldestTimestamp = TagStore.getOldestTimestamp();
 
-        if (oldestTag) {
+        if (oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
-            options.data.until = moment(oldestTag.created + 'Z').format('x') / 1000;
+            options.data.until = oldestTimestamp; 
         }
 
         self.GET('tags/search', options)
         .then(searchRes => {
             // Mark this store as completely loaded.
-            if(searchRes.items.length <= limit) {
+            if(searchRes.items.length < limit) {
                 TagStore.completelyLoaded = true;
             }
             LoadActions.loadFromSearchResult(searchRes);
