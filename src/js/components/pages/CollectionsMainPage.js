@@ -272,7 +272,7 @@ const CollectionsMainPage = React.createClass({
 
     updateThumbnails: function() {
         var self = this;
-        this.search();
+        self.search();
     },
 
     getVideoStatus: function(videoId) {
