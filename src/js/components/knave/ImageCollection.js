@@ -72,7 +72,9 @@ const ImageCollection = React.createClass({
                 displayRefilterButton={false}
                 isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -93,7 +95,7 @@ const ImageCollection = React.createClass({
             />,
         ];
     },
-    getControls(){
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }

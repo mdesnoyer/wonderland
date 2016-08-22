@@ -34,13 +34,11 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-
     setSelectedPanel: function(panelId) {
         // Clear any open tooltip.
         ReactTooltip.hide();
         this.setState({selectedPanel: panelId});
     },
-
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
     },
@@ -51,7 +49,6 @@ const VideoCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
-
     getPanels() {
         if (this.props.infoPanelOnly) {
             return [
@@ -69,7 +66,9 @@ const VideoCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}

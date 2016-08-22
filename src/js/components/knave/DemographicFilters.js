@@ -71,7 +71,12 @@ const DemographicFilters = React.createClass({
         }
         return genderLabel + '/' + ageLabel;
     },
-
+    handleFiltersClick: function(e) {
+        var self = this;
+        e.preventDefault();
+        //self.props.
+        alert('TODO');
+    },
     render: function() {
         const self = this;
         const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
@@ -102,7 +107,7 @@ const DemographicFilters = React.createClass({
         }
         let buttonDisplay = (<div></div>); 
         if (self.props.displayRefilterButton) { 
-            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFiltersToggle" />); 
+            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFiltersToggle" onClick={self.handleFiltersClick} />); 
         } 
         return (
             <div className="xxCollectionFilters">
