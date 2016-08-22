@@ -48,9 +48,9 @@ export default class XXCollectionProcessing extends React.Component {
 
                 <a
                     href=""
-                    className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+                    className="xxCollectionFiltersToggle XXCollectionFiltersToggle--countdown"
                     onClick={e => e.preventDefault()}>
-                    <span className="xxCollectionFilterToggle-label">{renderedTime(Math.floor(time / 60), time % 60)}</span>
+                    <span className="xxCollectionFiltersToggle-label">{renderedTime(Math.floor(time / 60), time % 60)}</span>
                 </a>
 
                 <div className="xxCollectionFilters">

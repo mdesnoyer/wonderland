@@ -8,7 +8,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+
 const DemographicFilters = React.createClass({
 
     propTypes: {
@@ -110,12 +110,16 @@ const DemographicFilters = React.createClass({
                 <div className="xxCollectionFiltersMenu">
                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
-                    {selectedDemoLabel}
-                    {optionList}
+                        {selectedDemoLabel}
+                        {optionList}
                     </span>
                 </div>
-            </div>);
+            </div>
+        );
     }
 });
 
 export default DemographicFilters;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
