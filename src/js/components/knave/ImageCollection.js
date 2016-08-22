@@ -69,7 +69,8 @@ const ImageCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
-                displayRefilterButton={false}
+                displayRefilterButton={false} 
+                handleFiltersClick={self.setSelectedPanel(1)}
                 isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
             />,
             <FilterPanel

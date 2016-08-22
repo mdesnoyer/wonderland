@@ -28,7 +28,8 @@ export const InfoDemoLiftPanel = React.createClass({
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
-        isSoloImage: React.PropTypes.bool
+        isSoloImage: React.PropTypes.bool,
+        handleFiltersClick: PropTypes.func.isRequired
     },
     getDefaultProps: function() {
         return {
@@ -47,6 +48,7 @@ export const InfoDemoLiftPanel = React.createClass({
                     demographicOptions={this.props.demographicOptions}
                     selectedDemographic={this.props.selectedDemographic}
                     displayRefilterButton={this.props.displayRefilterButton} 
+                    handleFiltersClick={self.props.handleFiltersClick}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}

@@ -24,7 +24,8 @@ const DemographicFilters = React.createClass({
         onChange: PropTypes.func.isRequired,
         // Whether or not to display the refilter button 
         // defaults to true 
-        displayRefilterButton: PropTypes.bool
+        displayRefilterButton: PropTypes.bool,
+        handleFiltersClick: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -74,8 +75,7 @@ const DemographicFilters = React.createClass({
     handleFiltersClick: function(e) {
         var self = this;
         e.preventDefault();
-        //self.props.
-        alert('TODO');
+        self.props.handleFiltersClick();
     },
     render: function() {
         const self = this;
