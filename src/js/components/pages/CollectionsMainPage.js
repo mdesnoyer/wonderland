@@ -11,6 +11,7 @@ import TRACKING from '../../modules/tracking';
 import RENDITIONS from '../../modules/renditions';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
+import BasePage from '../wonderland/pages/BasePage';
 import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
@@ -28,6 +29,8 @@ import {
     Search } from '../../stores/CollectionStores.js';
 
 import T from '../../modules/translation';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const getStateFromStores = () => {
 
@@ -60,7 +63,6 @@ const getStateFromStores = () => {
     };
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 const CollectionsMainPage = React.createClass({
 
     mixins: [AjaxMixin],
@@ -151,6 +153,7 @@ const CollectionsMainPage = React.createClass({
                 break;
         }
     },
+
     _sendShare: function(baseUrl, shareUrl, title, quote, service) {
         var url = baseUrl + objectToGetParams({
                 u: shareUrl,
@@ -162,6 +165,7 @@ const CollectionsMainPage = React.createClass({
         // TODO this is throwing a TypeError
         TRACKING.sendEvent(this, arguments, service);
     },
+
     // TODO remove callback, and just return the
     // promise, let the child comp handle the promise
     getShareUrl: function(id, type, callback) {
@@ -191,6 +195,7 @@ const CollectionsMainPage = React.createClass({
             console.log(err);
         });
     },
+
     sendResultsEmail: function(id, type, email, shareUrl, callback) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(email)) {
@@ -249,10 +254,6 @@ const CollectionsMainPage = React.createClass({
             .value();
     },
 
-    getTitle: function() {
-        return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
-    },
-
     getPagingEnableNext: function() {
         const itemCount = (1 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE;
         return Search.hasMoreThan(itemCount);
@@ -299,17 +300,13 @@ const CollectionsMainPage = React.createClass({
         );
     },
 
-    // TODO add post forms.
     render: function() {
         return (
-            <main className='xxPage'>
-                <Helmet
-                    title={this.getTitle()}
-                />
-                <SiteHeader />
-                {this.getBody() || this.getLoading()}
-                <SiteFooter />
-            </main>
+            <BasePage
+                title={T.get('copy.myCollections.title')}
+            >
+            {this.getBody() || this.getLoading()};
+            </BasePage>
         );
     }
 });

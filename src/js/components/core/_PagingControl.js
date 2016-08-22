@@ -34,9 +34,9 @@ const PagingControl = React.createClass({
         const self = this;
         switch (e.keyCode) {
             case 37: // Left Arrow
-                return self.handleNav(-1);
+                return this.props.currentPage > 0 && self.handleNav(-1);
             case 39: // Right Arrow
-                return self.handleNav(+1);
+                return this.props.enableNext && self.handleNav(+1);
         }
     },
 

@@ -388,7 +388,7 @@ const CollectionsContainer = React.createClass({
 
         // Find the current thumbnail index or default to first.
         const thumbnailIndex = _.findIndex(sortedThumbnails, t => {
-                return t.thumbnail_id == this.state.overlayThumbnailId;
+            return t.thumbnail_id == this.state.overlayThumbnailId;
         }) || 0;
         const thumbnailId = sortedThumbnails[thumbnailIndex].thumbnail_id;
 
