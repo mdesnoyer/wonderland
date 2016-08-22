@@ -7,6 +7,7 @@ import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import Countdown from '../wonderland/Countdown';
+import {LoadActions} from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,10 +16,10 @@ var VideoProcessing = React.createClass({
     componentDidMount: function() {
         var self = this;
         if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
-            self.props.updateThumbnails();
+            LoadActions.loadVideos([self.props.videoId]);
         }
         else if (self.props.videoState === 'processing') {
-            self.props.getVideoStatus();
+            self.props.getVideoStatus(self.props.videoId);
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -27,7 +28,7 @@ var VideoProcessing = React.createClass({
             self.props.getVideoStatus(self.props.videoId);
         }
         else if ((self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) || (self.props.videoState !== nextProps.videoState)) {
-           self.props.updateThumbnails();
+           LoadActions.loadVideos([self.props.videoId]);
        }
     },
     handleDeleteClick: function() {

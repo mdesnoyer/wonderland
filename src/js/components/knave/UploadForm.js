@@ -13,7 +13,7 @@ import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
 
-import {AddActions} from '../../stores/CollectionStores.js';
+import {AddActions, LoadActions} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
@@ -239,8 +239,16 @@ var UploadForm = React.createClass({
         else {
             self.POST('videos', options)
                 .then(function(json) {
-                    self.props.updateThumbnails();
-                    self.setState(self.getInitialState());
+                    console.log('post', json);
+                    // TODO: replace with a loadTag.
+                    LoadActions.loadFromSearchResult({
+                        items: [
+                            {
+                                tag_id: json.video.tag_id,
+                                tag_type: UTILS.TAG_TYPE_VIDEO_COL,
+                                video_id: json.video.video_id
+                            }]
+                    });
                 })
                 .catch(function(err) {
                     self.throwUploadError(err);

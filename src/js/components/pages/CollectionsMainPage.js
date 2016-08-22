@@ -254,15 +254,15 @@ const CollectionsMainPage = React.createClass({
     updateThumbnails: function() {
         // var self = this;
         // this.updateState();
-        console.log('did it');
-        this.setState(getInitialState());
+        // console.log('did it');
+        // this.setState(getInitialState());
     },
 
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? self.updateThumbnails() : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
                 console.log(err)
