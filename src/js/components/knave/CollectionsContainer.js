@@ -27,8 +27,8 @@ const CollectionsContainer = React.createClass({
         // for a given tag and demographic.
         loadFeaturesForTag: PropTypes.func.isRequired,
 
-        // Sorted list of collection ids to display
-        displayIds: PropTypes.array.isRequired,
+        // Sorted list of collection ids to show
+        shownIds: PropTypes.array.isRequired,
 
         // Map of store identifying key to the store,
         // which is a map of object id to object.
@@ -48,16 +48,16 @@ const CollectionsContainer = React.createClass({
         getShareUrl: PropTypes.func,
 
         // Allows a collection to send results email
-        sendResultsEmail: PropTypes.func
+        sendResultsEmail: PropTypes.func,
+
+        // Minimal UI for share.
+        infoPanelOnly: PropTypes.bool
 
         // TODO add learnmore func.
     },
 
     getInitialState: function() {
         return {
-
-            // List of tag ids to render.
-            shownIds: [],
 
             // Map of tag id to integer index of gender, then age.
             // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
@@ -68,19 +68,6 @@ const CollectionsContainer = React.createClass({
             overlayTagId: null,
             overlayThumbnailId: null
         };
-    },
-
-    // Tie into the parent's updating of its stores.
-    componentWillReceiveProps: function(nextProps) {
-        // TODO work on paging, sorting behavior.
-        const shownIds = _.values(nextProps.stores.tags)
-            .slice(0, nextProps.numberToShow)
-            .map(t => {
-                return {tag_id: t.tag_id, created: new Date(t.created)};
-            });
-        //sort shownIds by creted date and then return new array with sorted ID's
-        var shownIdsSort = _.sortBy(shownIds, 'created').reverse().map(function(id){ return id.tag_id;});
-        this.setState({shownIds: shownIdsSort});
     },
 
     // Return array of gender,age enum array based
@@ -275,6 +262,7 @@ const CollectionsContainer = React.createClass({
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
+                infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
@@ -321,6 +309,7 @@ const CollectionsContainer = React.createClass({
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
+                infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
@@ -429,11 +418,11 @@ const CollectionsContainer = React.createClass({
         const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
         const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
         // Find lift for the displayed thumb.
-        // const lift = this.props.stores.lifts
-        //     [gender]
-        //     [age]
-        //     [tagId]
-        //     [thumbnailId] || 0;
+        const lift = this.props.stores.lifts
+            [gender]
+            [age]
+            [tagId]
+            [thumbnailId] || 0;
 
         // Build a map of thumbnail id to array of feature names.
         const thumbnailFeatures = _(this.props.stores.thumbnailFeatures
@@ -453,7 +442,7 @@ const CollectionsContainer = React.createClass({
             <ThumbnailOverlay
                 thumbnails={sortedThumbnails}
                 selectedItem={thumbnailIndex}
-                // displayThumbLift={lift}
+                displayThumbLift={lift}
                 // Bind next/prev functions to store the next/prev thumb id
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
@@ -465,7 +454,7 @@ const CollectionsContainer = React.createClass({
 
     },
     render: function() {
-        const collections = this.state.shownIds.map(tagId => {
+        const collections = this.props.shownIds.map(tagId => {
             return this.buildCollectionComponent(tagId);
         });
         return (

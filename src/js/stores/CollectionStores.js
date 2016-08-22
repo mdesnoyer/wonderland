@@ -2,8 +2,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import _ from 'lodash';
+import moment from 'moment';
 
 import AjaxMixin from '../mixins/Ajax';
+import AJAXModule from '../modules/ajax.js';
 import UTILS from '../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -49,7 +51,19 @@ export const TagStore  = {
     },
     set: map => {
         Object.assign(_tags, map);
-    }
+    },
+    count: function() {
+        return this.getAll().length;
+    },
+    countShowable: function() {
+        return _.values(this.getAll()).filter(
+            t => { return t.hidden !== true; }
+        ).length;
+    },
+    getOldestTimestamp: () => {
+        return undefined;
+    },
+    completelyLoaded: false
 };
 
 const _videos = {};
@@ -117,6 +131,13 @@ export const ThumbnailFeatureStore = {
     }
 };
 
+export const AddActions = Object.assign({}, AjaxMixin, {
+    addTag: tag => {
+        TagStore.set({[tag.tag_id]: tag});
+        Dispatcher.dispatch();
+    }
+});
+
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Given the result from a tag search API call,
@@ -137,27 +158,45 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // for only the missing ids.
 
         // Build tags promise.
-        const tagData = {
-            tag_id: _.uniq(searchRes.items.reduce((tagIds, tag) => {
+        const missingTagIds =  _
+            .chain(searchRes.items)
+            .reduce((tagIds, tag) => {
                 tagIds.push(tag.tag_id);
                 return tagIds;
-            }, [])).join(',')
-        };
-        const tagPromise = LoadActions.GET('tags', {data: tagData});
+            }, [])
+            // Omit all the stored ones.
+            .difference(_.keys(TagStore.getAll()))
+            .uniq()
+            .value();
+        let tagPromise = Promise.resolve({});
+        if (missingTagIds.length > 0) {
+            const tagData = {
+                tag_id: missingTagIds.join(',')
+            };
+            tagPromise = LoadActions.GET('tags', {data: tagData});
+        }
 
         // Build promise for videos referenced from tags.
-        const videoData = {
-            video_id: _.uniq(searchRes.items.reduce((video_ids, tag) => {
+        let videoPromise = Promise.resolve({videos: []})
+        const missingVideoIds = _
+            .chain(searchRes.items)
+            .reduce((videoIds, tag) => {
                 if(tag.video_id) {
-                    video_ids.push(tag.video_id);
+                    videoIds.push(tag.video_id);
                 }
-                return video_ids;
-            }, [])).join(','),
-            fields: UTILS.VIDEO_FIELDS.join(',')
-        };
-        const videoPromise = videoData.video_id?
-            LoadActions.GET('videos', {data: videoData}):
-            null;
+                return videoIds;
+            }, [])
+            // Omit all the stored ones.
+            .difference(_.keys(VideoStore.getAll()))
+            .uniq()
+            .value();
+        if (missingVideoIds.length > 0) {
+            const videoData = {
+                video_id: missingVideoIds.join(','),
+                fields: UTILS.VIDEO_FIELDS.join(',')
+            };
+            videoPromise = LoadActions.GET('videos', {data: videoData});
+        }
 
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
@@ -480,8 +519,57 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
     },
 
-    loadByShareToken(accountId, resourceType, resourceId, shareToken) {
-        Dispatcher.dispatch();
+    loadTagByShareToken(accountId, tagId, shareToken) {
+        AJAXModule.baseOptions = {
+            overrideAccountId: accountId,
+            data: {share_token: shareToken}
+        };
+
+        LoadActions.loadFromSearchResult({
+            items: [{tag_id: tagId}]
+        });
+    },
+
+    // Tries to fill out the TagStore to n tags
+    //
+    // Return n the number of new tags.
+    loadNNewestTags(n) {
+        const self = this;
+
+        const haveCount = TagStore.countShowable();
+        if (n <= haveCount) {
+            return;
+        }
+        if (TagStore.completelyLoaded) {
+            return;
+        }
+        const limit = n - haveCount;
+
+        const options = {
+            data: {limit}
+        };
+        // Find the oldest timestamp.
+        const oldestTag = _
+            (TagStore.getAll())
+            .values()
+            .minBy(tag => {
+                return tag.created;
+            });
+
+        if (oldestTag) {
+            // Get float of unix time in seconds
+            // (Already in UTC)
+            options.data.until = moment(oldestTag.created + 'Z').format('x') / 1000;
+        }
+
+        self.GET('tags/search', options)
+        .then(searchRes => {
+            // Mark this store as completely loaded.
+            if(searchRes.items.length <= limit) {
+                TagStore.completelyLoaded = true;
+            }
+            LoadActions.loadFromSearchResult(searchRes);
+        })
     }
 });
 
@@ -514,5 +602,23 @@ export const Dispatcher = {
     },
     register: callback => {
         _registerCallbacks.push(callback);
+    }
+};
+
+// Search intercepts requests to the tag store
+// so that we can known if there is another page
+// to display after current, and to preload
+// that page for responsiveness.
+export const Search = {
+
+    // Aggressively load tags.
+    load(count) {
+        const largeCount = count +
+            UTILS.RESULTS_PAGE_SIZE + 1;
+        LoadActions.loadNNewestTags(largeCount);
+    },
+
+    hasMoreThan(count) {
+        return TagStore.countShowable() > count;
     }
 };

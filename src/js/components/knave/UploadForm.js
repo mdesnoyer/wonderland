@@ -12,6 +12,9 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
+
+import {AddActions} from '../../stores/CollectionStores.js';
+
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
 import OverLayMessage from './OverLayMessage'
@@ -416,12 +419,14 @@ var UploadForm = React.createClass({
         ;
             self.POST('tags', options)
                 .then(function(res) {
-                    self.props.updateThumbnails();
+                    // debugger
+                    // self.props.updateThumbnails();
+                    AddActions.addTag(res);
                     self.setState(self.getInitialState());
                 })
-                .catch(function(err) { 
-                    self.throwUploadError(err);
-                });    
+                // .catch(function(err) { 
+                //     self.throwUploadError(err);
+                // });    
     },
     grabRefreshToken: function() {
         var self = this;

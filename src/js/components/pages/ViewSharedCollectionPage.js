@@ -68,7 +68,11 @@ const ViewSharedCollectionPage = React.createClass({
     componentWillMount: function() {
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
-        LoadActions.loadByShareToken();
+        LoadActions.loadTagByShareToken(
+            this.props.params.accountId,
+            this.props.params.tagId,
+            this.props.params.shareToken
+        );
     },
 
     baseMetaTags: [
@@ -149,6 +153,7 @@ const ViewSharedCollectionPage = React.createClass({
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
+                    infoPanelOnly={true}
                 />
                 <SiteFooter />
             </main>
