@@ -32,7 +32,6 @@ const DemographicFilters = React.createClass({
             isOpen: false
         };
     },
-
     getDefaultProps: function() {
         return {
             selectedDemographicId: [0, 0],
@@ -42,20 +41,20 @@ const DemographicFilters = React.createClass({
             displayRefilterButton: true
         }
     },
-
     toggleOpen: function() {
         const self = this;
         this.setState({
             isOpen: !self.state.isOpen
         });
     },
-
     getLabelFromId(id) {
         let genderLabel,
-            ageLabel;
+            ageLabel
+        ;
         if(id[0] === 0) {
             genderLabel = T.get('none');
-        } else {
+        }
+        else {
             let gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[id[0]];
             genderLabel = _.find(UTILS.FILTERS_GENDER, i => {
                 return i.value == gender;
@@ -63,7 +62,8 @@ const DemographicFilters = React.createClass({
         }
         if(id[1] === 0) {
             ageLabel = T.get('none');
-        } else {
+        }
+        else {
             let age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[id[1]];
             ageLabel = _.find(UTILS.FILTERS_AGE, i => {
                 return i.value == age;
@@ -102,7 +102,7 @@ const DemographicFilters = React.createClass({
         }
         let buttonDisplay = (<div></div>); 
         if (self.props.displayRefilterButton) { 
-            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFilterToggle" />); 
+            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFiltersToggle" />); 
         } 
         return (
             <div className="xxCollectionFilters">
