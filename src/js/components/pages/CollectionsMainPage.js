@@ -70,16 +70,7 @@ const CollectionsMainPage = React.createClass({
     getInitialState: function() {
         return Object.assign(
             getStateFromStores(),
-            {
-                // State of search paging: current page, page count,
-                // next, prev page url.
-                search: {
-                    currPage: null,
-                    pageCount: null,
-                    next: null,
-                    prev: null
-                }
-            }
+            {currentPage: 0}
         );
     },
 
@@ -106,12 +97,7 @@ const CollectionsMainPage = React.createClass({
                 }
             };
 
-        const state = self.getInitialState();
-        const pageQueryParam = '?limit=' + this.props.numberToDisplay;
-
-        // On search loads, we assume default demographics:
-        const gender = 0;
-        const age = 0;
+        const pageQueryParam = '?limit=' + self.props.numberToDisplay;
 
         // Search for tag ids, get tags and videos, then get thumbnails for those.
         self.GET('tags/search', options)
@@ -257,14 +243,14 @@ const CollectionsMainPage = React.createClass({
 
         // The size and offset into the list.
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
-        const offset = pageSize * (this.state.search.currPage || 0);
+        const offset = pageSize * (this.state.currentPage);
 
         // Get the ordered array of all tag ids
         // and slice it to size.
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
-            .keys()
             .slice(offset, pageSize + offset)
+            .map(t => {return t.tag_id;})
             .value();
     },
 

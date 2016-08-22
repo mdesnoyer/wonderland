@@ -50,6 +50,15 @@ export const TagStore  = {
     },
     set: map => {
         Object.assign(_tags, map);
+    },
+    count: function() {
+        return this.getAll().length;
+    },
+    countShowable: function() {
+        return this.getAll().filter(t => t.hidden !== true).length;
+    },
+    getOldestTimestamp: () => {
+        return undefined;
     }
 };
 
@@ -522,5 +531,20 @@ export const Dispatcher = {
     },
     register: callback => {
         _registerCallbacks.push(callback);
+    }
+};
+
+export class Search {
+    constructor(store, sourcePath) {
+        this.store = store;
+        this.sourcePath = sourcePath;
+        this.hasMore = null;
+    }
+
+    get(n) {
+        LoadActions.search(n);
+    }
+
+    hasMore() {
     }
 };

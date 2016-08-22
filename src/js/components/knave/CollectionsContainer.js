@@ -55,9 +55,6 @@ const CollectionsContainer = React.createClass({
     getInitialState: function() {
         return {
 
-            // List of tag ids to render.
-            shownIds: [],
-
             // Map of tag id to integer index of gender, then age.
             // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
             // By default, the demographic is [0,0] meaning gender=none, age=none.
@@ -67,17 +64,6 @@ const CollectionsContainer = React.createClass({
             overlayTagId: null,
             overlayThumbnailId: null
         };
-    },
-
-    // Tie into the parent's updating of its stores.
-    componentWillReceiveProps: function(nextProps) {
-        // TODO work on paging, sorting behavior.
-        const shownIds = _.values(nextProps.stores.tags)
-            .slice(0, nextProps.numberToShow)
-            .map(t => {
-                return t.tag_id;
-            });
-        this.setState({shownIds: shownIds});
     },
 
     // Return array of gender,age enum array based
@@ -453,7 +439,7 @@ const CollectionsContainer = React.createClass({
 
     },
     render: function() {
-        const collections = this.state.shownIds.map(tagId => {
+        const collections = this.props.displayIds.map(tagId => {
             return this.buildCollectionComponent(tagId);
         });
         return (
