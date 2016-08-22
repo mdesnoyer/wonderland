@@ -238,9 +238,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+            
             // Timers 
             'timer.loading' : 'loading...', 
-            'timer.close' : 'almost...',
+            'timer.almost' : 'almost...',
 
             // Tooltips
             'tooltip.refilter.button': 'Refilter',

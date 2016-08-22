@@ -51,14 +51,11 @@ var VideoOwner = React.createClass({
             shareToken: '',
             isLoading: false,
             status: 200,
-            size: 'big',
             duration: self.props.duration || 0,
             url: self.props.url || '',
             badThumbs: self.props.badThumbs,
-            isAnalyzing: false,
             age: null, 
             gender: null, 
-            pingVideoCallback: null
         }
     },
     componentDidMount: function() {
@@ -157,17 +154,15 @@ var VideoOwner = React.createClass({
             })
         }; 
         var handleGetVideo = function(json) { 
-            var video = json.videos[0];
+            const video = json.videos[0],
+                checkInterval = UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(UTILS.VIDEO_CHECK_INTERVAL_BASE)
+            ;
             if (video.state !== self.state.videoState) {
                 /*  
                    We have a video that changed state 
                      lets check to see what its up to 
                 */ 
-                setTimeout(
-                    checkVideo,
-                    UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
-                        UTILS.VIDEO_CHECK_INTERVAL_BASE))
-
+                setTimeout(checkVideo, checkInterval);
                 handleChangingVideoState(video); 
             }
             else if (forceRefresh) {
@@ -176,10 +171,7 @@ var VideoOwner = React.createClass({
                     for results to a POST that happened on a refilter 
                     and forces a video back into processing state  
                 */
-                setTimeout(
-                    checkVideo,
-                    UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
-                        UTILS.VIDEO_CHECK_INTERVAL_BASE))
+                setTimeout(checkVideo, checkInterval);
                 handleChangingVideoState(video); 
                 forceRefresh = false; 
             }
@@ -192,27 +184,19 @@ var VideoOwner = React.createClass({
  
                     possible update of title, and seconds_remaining 
                 */
-                var base = UTILS.VIDEO_CHECK_INTERVAL_BASE + UTILS.rando(
-                               UTILS.VIDEO_CHECK_INTERVAL_BASE), 
-                    video_remaining_millis = null;  
-                ; 
+                var video_remaining_millis = null; 
                 if (video.estimated_time_remaining) {
                     if (video.estimated_time_remaining > 0) { 
                         if (video.estimated_time_remaining < 30) {  
-                            video_remaining_millis = UTILS.VIDEO_CHECK_INTERVAL_BASE;
+                            video_remaining_millis = checkInterval;
                         } 
                         else {
-                            video_remaining_millis = Math.min(
-                                (video.estimated_time_remaining / 5) * 1000, 
-                                UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
+                            video_remaining_millis = Math.min((video.estimated_time_remaining / 5) * 1000, UTILS.MAX_VIDEO_POLL_INTERVAL_MS);
                         }  
                     } 
                 } 
-                var timeout = Math.max(UTILS.VIDEO_CHECK_INTERVAL_BASE,
-                                       (video_remaining_millis || base));
-
+                var timeout = Math.max(UTILS.VIDEO_CHECK_INTERVAL_BASE, (video_remaining_millis || checkInterval));
                 setTimeout(checkVideo, timeout);
-                
                 handleProcessingVideoState(video); 
             }  
             else if (video.state == UTILS.VIDEO_STATE_ENUM.failed) {
