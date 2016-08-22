@@ -65,8 +65,6 @@ var AJAXModule = {
             reqwest(_options)
                 .then(function (res) {
                     if (ret.isCanceled !== true) {
-
-                        // Note don't commit.
                         console.log(url, res);
                         options.successHandler ? resolve(options.successHandler(res)) : resolve(res);
                     }
@@ -152,22 +150,8 @@ var AJAXModule = {
     },
     // Translates a nested batch of requests to the format expected by doApiCall.
     _buildBatchOptions: function(batch, options) {
-        const self = this;
 
-        const _merge = function (obj1, obj2) {
-            const ret = {};
-            for(let key in obj1) {
-                if(obj1.hasOwnProperty(key)) {
-                    ret[key] = obj1[key];
-                }
-            }
-            for(let key in obj2) {
-                if(obj2.hasOwnProperty(key)) {
-                    ret[key] = obj2[key];
-                }
-            }
-            return ret;
-        };
+        const self = this;
 
         // Get the relative url string with query params for a given request.
         // Example, given a GET on /tags/ with param tag_id=a1b2 on account_id=c3d4:
@@ -195,8 +179,7 @@ var AJAXModule = {
             return item.data;
         };
 
-        return _merge(
-            options,
+        return Object.assign(
             {
                 // Batch itself is not routed to an account id url.
                 noAccountId: true,
@@ -237,7 +220,8 @@ var AJAXModule = {
                         })
                     }
                 }
-            }
+            },
+            options
         );
     }
 };

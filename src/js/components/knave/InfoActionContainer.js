@@ -7,23 +7,21 @@ import React, {PropTypes} from 'react';
 const InfoActionContainer = React.createClass({
 
     propTypes: {
-        controls: PropTypes.array.isRequired
-    },
+        // a mapping from string to index where 
+        // string is the shortname of the the control 
+        // and the int is the index into the panel array 
+        controls: PropTypes.array.isRequired,
 
-    getInitialState: function() {
-        return {
-            // Id into props.children of current panel
-            current: 0
-        };
+        // selectedPanel gets from user input on the parent object
+        selectedPanel: PropTypes.number.isRequired
     },
 
     render: function() {
         // Convert single child children to array.
         const children = React.Children.toArray(this.props.children);
-        const selected = children[this.state.current];
-        let panelId = 0;
-        // TODO need to wrap with click handlers with panelId
-        const controls = this.props.controls.map(control => {
+        const selected = children[this.props.selectedPanel];
+        var control_array = this.props.controls;
+        const controls = control_array.map(control => {
             return (
                 <li
                     key={control.type.displayName}

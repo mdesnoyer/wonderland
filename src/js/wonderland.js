@@ -45,6 +45,7 @@ import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import DemoUploadPage from './components/pages/DemoUploadPage';
 import TRACKING from './modules/tracking';
 import CollectionsMainPage from './components/pages/CollectionsMainPage';
+import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,8 +83,11 @@ render((
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
+        {/* The direct_* routes are used by the precompiler proxy to get the page from origin */}
         <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
+        <Route path="/direct_share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
+        <Route path="/share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         {/* <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} /> */}
