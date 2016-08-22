@@ -4,6 +4,7 @@
 import _ from 'lodash';
 
 import AjaxMixin from '../mixins/Ajax';
+import AJAXModule from '../modules/ajax.js';
 import UTILS from '../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -480,8 +481,15 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
     },
 
-    loadByShareToken(accountId, resourceType, resourceId, shareToken) {
-        Dispatcher.dispatch();
+    loadTagByShareToken(accountId, tagId, shareToken) {
+        AJAXModule.baseOptions = {
+            overrideAccountId: accountId,
+            data: {share_token: shareToken}
+        };
+
+        LoadActions.loadFromSearchResult({
+            items: [{tag_id: tagId}]
+        });
     }
 });
 

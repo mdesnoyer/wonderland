@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import _ from 'lodash';
 import reqwest from 'reqwest';
 import SESSION from './session';
 
@@ -36,6 +36,10 @@ var AJAXModule = {
         }
         return ret;
     },
+
+    // Let doApiCall options be merged onto these baseOptions.
+    baseOptions: {},
+
     doApiCall: function(url, options) {
         var self = this,
             promise,
@@ -45,6 +49,9 @@ var AJAXModule = {
             var _url = url,
                 _options = options ? JSON.parse(JSON.stringify(options)) : {};
             _options.data = _options.data ? JSON.parse(JSON.stringify(_options.data)) : {};
+            if(url !== 'batch') {
+                _options = _.merge({}, self.baseOptions, _options);
+            }
             if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
                 _options.headers = _options.headers || {};
                 _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
@@ -162,11 +169,15 @@ var AJAXModule = {
         //   returns: /api/v2/c3d4/thumbnails/
         const _getRelativeUrl = function(request) {
 
+            const accountId = self.baseOptions.overrideAccountId?
+                self.baseOptions.overrideAccountId:
+                SESSION.state.accountId;
+
             // The fixed base of every account-based request url.
-            const base = '/api/v2/' + SESSION.state.accountId + '/' + request.path;
+            const base = '/api/v2/' + accountId + '/' + request.path;
 
             if(request.method === 'GET') {
-                return base + '?' + self.getQueryParam(request.data);
+                return base + '?' + self.getQueryParam(_.merge(request.data, self.baseOptions.data));
             }
             return base;
         };
@@ -176,10 +187,10 @@ var AJAXModule = {
             if(request.method === 'GET') {
                 return {};
             }
-            return item.data;
+            return _.merge(request.data, self.baseOptions.data);
         };
 
-        return Object.assign(
+        return _.merge(
             {
                 // Batch itself is not routed to an account id url.
                 noAccountId: true,

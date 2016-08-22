@@ -31,8 +31,15 @@ const ImageCollection = React.createClass({
     setSelectedPanel: function(panelId) {
         this.setState({ selectedPanel : panelId });
     },
-    render: function() {
-        const panels = [
+    getPanels() {
+        if (this.props.infoPanelOnly) {
+            return [
+                <InfoLiftPanel
+                    title={this.props.title}
+                />
+            ];
+        }
+        return [
             <InfoDemoLiftPanel
                 tagId={this.props.tagId}
                 title={this.props.title}
@@ -53,7 +60,7 @@ const ImageCollection = React.createClass({
                 getShareUrl={this.props.getShareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
                 id={this.props.tagId}
-                type={'video'}
+                type={'image'}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
@@ -61,17 +68,23 @@ const ImageCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
         ];
-        const controls = [
+    },
+    getControls(){
+        if (this.props.infoPanelOnly) {
+            return [];
+        }
+        return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
         ];
-
+    },
+    render: function() {
         return (
             <BaseCollection
                 {...this.props}
-                infoActionPanels={panels}
-                infoActionControls={controls}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
             />
         );

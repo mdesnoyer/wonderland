@@ -275,9 +275,9 @@ const CollectionsMainPage = React.createClass({
     render: function() {
         return (
             <main className='xxPage'>
-                <Helmet>
+                <Helmet
                     title={UTILS.buildPageTitle(T.get('copy.myCollections.title'))}
-                </Helmet>
+                />
                 <SiteHeader />
                 <CollectionsContainer
                     displayIds={this.getDisplayIds()}

@@ -33,8 +33,15 @@ const VideoCollection = React.createClass({
         this.setState({ selectedPanel : panelId });
     },
 
-    render: function() {
-        const panels = [
+    getPanels() {
+        if (this.props.infoPanelOnly) {
+            return [
+                <InfoLiftPanel
+                    title={this.props.title}
+                />
+            ];
+        }
+        return [
             <InfoDemoLiftPanel
                 tagId={this.props.tagId}
                 title={this.props.title}
@@ -63,11 +70,20 @@ const VideoCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
         ];
-        const controls = [
+    },
+
+    getControls() {
+        if (this.props.infoPanelOnly) {
+            return [];
+        }
+        return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
-        ]
+        ];
+    },
+
+    render: function() {
 
         // Apply Video component-specific labels.
         const overrideMap = {
@@ -82,8 +98,8 @@ const VideoCollection = React.createClass({
             <BaseCollection
                 {...this.props}
                 translationOverrideMap={overrideMap}
-                infoActionPanels={panels}
-                infoActionControls={controls}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
             />
         );

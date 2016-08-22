@@ -44,7 +44,10 @@ const CollectionsContainer = React.createClass({
         getShareUrl: PropTypes.func,
 
         // Allows a collection to send results email
-        sendResultsEmail: PropTypes.func
+        sendResultsEmail: PropTypes.func,
+
+        // Minimal UI for share.
+        infoPanelOnly: PropTypes.bool
 
         // TODO add learnmore func.
     },
@@ -269,6 +272,7 @@ const CollectionsContainer = React.createClass({
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
+                infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
@@ -302,6 +306,7 @@ const CollectionsContainer = React.createClass({
                 onDemographicChange={onDemoChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
+                infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={this.props.deleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
