@@ -8,6 +8,7 @@ import Lift from './Lift';
 import T from '../../modules/translation';
 
 import CollectionLoadingText from '../core/CollectionLoadingText';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // TODO candidate for HoC refactor
@@ -77,7 +78,7 @@ export const EmailPanel = React.createClass({
     propTypes: {
         // generates a shareUrl to use
         getShareUrl: PropTypes.func.isRequired,
-        // generates a shareUrl to use
+        // TODO
         sendResultsEmail: PropTypes.func.isRequired,
         // key/id of the object
         id: PropTypes.string.isRequired,
@@ -98,7 +99,6 @@ export const EmailPanel = React.createClass({
             this.props.type,
             this._shareUrlCallback)
     },
-  
     _shareUrlCallback: function(r) {
         if (r.status_code === 200) {
             this.setState({

@@ -79,11 +79,11 @@ var VideoProcessing = React.createClass({
                 if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {
                     countdown = (<Countdown
                         seconds={estimatedTimeRemaining}
-                        classPrefix="xxCollectionFilterCountdown"
+                        classPrefix="xxCollectionFiltersCountdown"
                     />);
                 }
                 else {
-                    countdown = <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>;
+                    countdown = <span className="xxCollectionFiltersCountdown">{T.get('timer.loading')}</span>;
                 }
                 break;
         }
@@ -98,7 +98,7 @@ var VideoProcessing = React.createClass({
                     {
                         isError ? null : (
                             <div className="xxCollectionFilters">
-                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
+                                <div className="xxCollectionFiltersToggle XXCollectionFiltersToggle--countdown"></div>
                                 <span>{countdown}</span>
                             </div>
                         )
