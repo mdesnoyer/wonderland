@@ -96,7 +96,7 @@ const DemographicFilters = React.createClass({
             });
             optionList = (
                 <ul className="xxCollectionFilters-dropdown">
-                {options}
+                    {options}
                 </ul>
             );
         }
