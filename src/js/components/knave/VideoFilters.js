@@ -36,7 +36,7 @@ var VideoFilters = React.createClass({
         }
         return (
             <div className={collectionClassName}>
-                <h2 className="xxTitle">Filter Results</h2>
+                <h2 className="xxTitle">{T.get('label.filterResults')}</h2>
                 {
                     self.props.isMobile ? (
                         <div 
