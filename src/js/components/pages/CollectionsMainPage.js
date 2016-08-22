@@ -14,6 +14,7 @@ import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import CollectionsContainer from '../knave/CollectionsContainer';
+import PagingControl from '../core/_PagingControl';
 import SiteFooter from '../wonderland/SiteFooter';
 import {
     TagStore,
@@ -23,7 +24,8 @@ import {
     FeatureStore,
     ThumbnailFeatureStore,
     LoadActions,
-    Dispatcher } from '../../stores/CollectionStores.js';
+    Dispatcher,
+    Search } from '../../stores/CollectionStores.js';
 
 import T from '../../modules/translation';
 
@@ -81,27 +83,19 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
-        this.search();
+        Search.load(UTILS.RESULTS_PAGE_SIZE);
     },
 
     updateState: function() {
         this.setState(getStateFromStores());
     },
 
-    // TODO extract to search module
-    search: function() {
-        const self = this,
-            options = {
-                data: {
-                    limit: UTILS.RESULTS_PAGE_SIZE,
-                }
-            };
-
-        const pageQueryParam = '?limit=' + self.props.numberToDisplay;
-
-        // Search for tag ids, get tags and videos, then get thumbnails for those.
-        self.GET('tags/search', options)
-            .then(LoadActions.loadFromSearchResult);
+    changeCurrentPage(change) {
+        const self = this;
+        const currentPage = self.state.currentPage + change
+        self.setState({currentPage});
+        // Queue another page to load.
+        Search.load((1 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
     },
 
     // TODO define type here, with a generic id for images
@@ -239,7 +233,8 @@ const CollectionsMainPage = React.createClass({
             });
         }
     },
-    getDisplayIds: function() {
+
+    getShownIds: function() {
 
         // The size and offset into the list.
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
@@ -254,19 +249,23 @@ const CollectionsMainPage = React.createClass({
             .value();
     },
 
-    // TODO add post forms.
-    // TODO add helmet.
-    // TODO add loading placeholder.
-    // TODO profile double render.
-    render: function() {
+    getTitle: function() {
+        return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
+    },
+
+    getPagingEnableNext: function() {
+        const itemCount = (1 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE;
+        return Search.hasMoreThan(itemCount);
+    },
+
+    getBody: function() {
+        if (!TagStore.countShowable()) {
+            return;
+        }
         return (
-            <main className='xxPage'>
-                <Helmet
-                    title={UTILS.buildPageTitle(T.get('copy.myCollections.title'))}
-                />
-                <SiteHeader />
+            <div>
                 <CollectionsContainer
-                    displayIds={this.getDisplayIds()}
+                    shownIds={this.getShownIds()}
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,
@@ -283,6 +282,32 @@ const CollectionsMainPage = React.createClass({
                     getShareUrl={this.getShareUrl}
                     sendResultsEmail={this.sendResultsEmail}
                 />
+                <PagingControl
+                    currentPage={this.state.currentPage}
+                    changeCurrentPage={this.changeCurrentPage}
+                    enableNext={this.getPagingEnableNext()}
+                />
+           </div>
+        );
+    },
+
+    getLoading() {
+        return (
+            <div className="xxOverlay" >
+                <div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div>
+            </div>
+        );
+    },
+
+    // TODO add post forms.
+    render: function() {
+        return (
+            <main className='xxPage'>
+                <Helmet
+                    title={this.getTitle()}
+                />
+                <SiteHeader />
+                {this.getBody() || this.getLoading()}
                 <SiteFooter />
             </main>
         );

@@ -2,6 +2,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import _ from 'lodash';
+import moment from 'moment';
 
 import AjaxMixin from '../mixins/Ajax';
 import AJAXModule from '../modules/ajax.js';
@@ -55,7 +56,9 @@ export const TagStore  = {
         return this.getAll().length;
     },
     countShowable: function() {
-        return this.getAll().filter(t => t.hidden !== true).length;
+        return _.values(this.getAll()).filter(
+            t => { return t.hidden !== true; }
+        ).length;
     },
     getOldestTimestamp: () => {
         return undefined;
@@ -499,6 +502,39 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         LoadActions.loadFromSearchResult({
             items: [{tag_id: tagId}]
         });
+    },
+
+    // Tries to fill out the TagStore to n tags
+    //
+    // Return n the number of new tags.
+    loadNNewestTags(n) {
+        const self = this;
+
+        const haveCount = TagStore.countShowable();
+        if (n <= haveCount) {
+            return;
+        }
+        const limit = n - haveCount;
+
+        const options = {
+            data: {limit}
+        };
+        // Find the oldest timestamp.
+        const oldestCreated = _
+            (TagStore.getAll())
+            .values()
+            .minBy(tag => {
+                return tag.created;
+            });
+
+        if (oldestCreated) {
+            // Get float of unix time in seconds
+            // (Already in UTC)
+            options.data.until = moment(oldestCreated).format('x') / 1000;
+        }
+
+        self.GET('tags/search', options)
+            .then(LoadActions.loadFromSearchResult);
     }
 });
 
@@ -534,17 +570,20 @@ export const Dispatcher = {
     }
 };
 
-export class Search {
-    constructor(store, sourcePath) {
-        this.store = store;
-        this.sourcePath = sourcePath;
-        this.hasMore = null;
-    }
+// Search intercepts requests to the tag store
+// so that we can known if there is another page
+// to display after current, and to preload
+// that page for responsiveness.
+export const Search = {
 
-    get(n) {
-        LoadActions.search(n);
-    }
+    // Aggressively load tags.
+    load(count) {
+        const largeCount = count +
+            UTILS.RESULTS_PAGE_SIZE + 1;
+        LoadActions.loadNNewestTags(largeCount);
+    },
 
-    hasMore() {
+    hasMoreThan(count) {
+        return TagStore.countShowable() > count;
     }
 };

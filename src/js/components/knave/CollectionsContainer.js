@@ -26,8 +26,8 @@ const CollectionsContainer = React.createClass({
         // for a given tag and demographic.
         loadFeaturesForTag: PropTypes.func.isRequired,
 
-        // Sorted list of collection ids to display
-        displayIds: PropTypes.array.isRequired,
+        // Sorted list of collection ids to show
+        shownIds: PropTypes.array.isRequired,
 
         // Map of store identifying key to the store,
         // which is a map of object id to object.
@@ -439,7 +439,7 @@ const CollectionsContainer = React.createClass({
 
     },
     render: function() {
-        const collections = this.props.displayIds.map(tagId => {
+        const collections = this.props.shownIds.map(tagId => {
             return this.buildCollectionComponent(tagId);
         });
         return (
