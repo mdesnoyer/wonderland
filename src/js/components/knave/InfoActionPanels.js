@@ -33,7 +33,6 @@ export const InfoDemoLiftPanel = React.createClass({
     },
     render: function() {
         const lift = <h2>{T.get('label.lift')}</h2>;
-
         return (<div>
             <h1 className="xxCollection-title">
                 {this.props.title}
