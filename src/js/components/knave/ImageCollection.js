@@ -29,7 +29,10 @@ const ImageCollection = React.createClass({
         };
     },
     setSelectedPanel: function(panelId) {
-        this.setState({ selectedPanel : panelId });
+        var self = this;
+        self.setState({
+            selectedPanel: panelId
+        });
     },
     getPanels() {
         if (this.props.infoPanelOnly) {
@@ -47,7 +50,9 @@ const ImageCollection = React.createClass({
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false} 
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -68,7 +73,7 @@ const ImageCollection = React.createClass({
             />,
         ];
     },
-    getControls(){
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }

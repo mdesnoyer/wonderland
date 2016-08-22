@@ -31,12 +31,14 @@ const VideoCollection = React.createClass({
             selectedPanel: 0
         };
     },
-
     setSelectedPanel: function(panelId) {
-        this.setState({ selectedPanel : panelId });
+        var self = this;
+        self.setState({
+            selectedPanel: panelId
+        });
     },
-
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -51,7 +53,9 @@ const VideoCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
