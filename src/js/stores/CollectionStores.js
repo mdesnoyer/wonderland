@@ -62,7 +62,8 @@ export const TagStore  = {
     },
     getOldestTimestamp: () => {
         return undefined;
-    }
+    },
+    completelyLoaded: false
 };
 
 const _videos = {};
@@ -150,27 +151,45 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // for only the missing ids.
 
         // Build tags promise.
-        const tagData = {
-            tag_id: _.uniq(searchRes.items.reduce((tagIds, tag) => {
+        const missingTagIds =  _
+            .chain(searchRes.items)
+            .reduce((tagIds, tag) => {
                 tagIds.push(tag.tag_id);
                 return tagIds;
-            }, [])).join(',')
-        };
-        const tagPromise = LoadActions.GET('tags', {data: tagData});
+            }, [])
+            // Omit all the stored ones.
+            .difference(_.keys(TagStore.getAll()))
+            .uniq()
+            .value();
+        let tagPromise = Promise.resolve({});
+        if (missingTagIds.length > 0) {
+            const tagData = {
+                tag_id: missingTagIds.join(',')
+            };
+            tagPromise = LoadActions.GET('tags', {data: tagData});
+        }
 
         // Build promise for videos referenced from tags.
-        const videoData = {
-            video_id: _.uniq(searchRes.items.reduce((video_ids, tag) => {
+        let videoPromise = Promise.resolve({videos: []})
+        const missingVideoIds = _
+            .chain(searchRes.items)
+            .reduce((videoIds, tag) => {
                 if(tag.video_id) {
-                    video_ids.push(tag.video_id);
+                    videoIds.push(tag.video_id);
                 }
-                return video_ids;
-            }, [])).join(','),
-            fields: UTILS.VIDEO_FIELDS.join(',')
-        };
-        const videoPromise = videoData.video_id?
-            LoadActions.GET('videos', {data: videoData}):
-            null;
+                return videoIds;
+            }, [])
+            // Omit all the stored ones.
+            .difference(_.keys(VideoStore.getAll()))
+            .uniq()
+            .value();
+        if (missingVideoIds.length > 0) {
+            const videoData = {
+                video_id: missingVideoIds.join(','),
+                fields: UTILS.VIDEO_FIELDS.join(',')
+            };
+            videoPromise = LoadActions.GET('videos', {data: videoData});
+        }
 
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
@@ -514,27 +533,36 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (n <= haveCount) {
             return;
         }
+        if (TagStore.completelyLoaded) {
+            return;
+        }
         const limit = n - haveCount;
 
         const options = {
             data: {limit}
         };
         // Find the oldest timestamp.
-        const oldestCreated = _
+        const oldestTag = _
             (TagStore.getAll())
             .values()
             .minBy(tag => {
                 return tag.created;
             });
 
-        if (oldestCreated) {
+        if (oldestTag) {
             // Get float of unix time in seconds
             // (Already in UTC)
-            options.data.until = moment(oldestCreated).format('x') / 1000;
+            options.data.until = moment(oldestTag.created + 'Z').format('x') / 1000;
         }
 
         self.GET('tags/search', options)
-            .then(LoadActions.loadFromSearchResult);
+        .then(searchRes => {
+            // Mark this store as completely loaded.
+            if(searchRes.items.length <= limit) {
+                TagStore.completelyLoaded = true;
+            }
+            LoadActions.loadFromSearchResult(searchRes);
+        })
     }
 });
 
