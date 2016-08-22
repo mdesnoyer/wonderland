@@ -15,7 +15,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 import { DeleteActions } from '../../stores/CollectionStores';
 
@@ -91,7 +92,6 @@ const VideoCollection = React.createClass({
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
-
         };
 
         return (
