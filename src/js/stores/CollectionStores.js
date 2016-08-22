@@ -53,15 +53,25 @@ export const TagStore  = {
         Object.assign(_tags, map);
     },
     count: function() {
-        return this.getAll().length;
+        return _.values(this.getAll()).length;
     },
     countShowable: function() {
         return _.values(this.getAll()).filter(
             t => { return t.hidden !== true; }
-        ).length;
+        ).length ;
     },
-    getOldestTimestamp: () => {
-        return undefined;
+    getOldestTimestamp: function() {
+        const self = this;
+        if (self.count() == 0) {
+            return null;
+        }
+
+        const oldestTag = _(TagStore.getAll())
+        .values()
+        .minBy(tag => {
+            return tag.created;
+        });
+        return moment(oldestTag.created + 'Z').format('x') / 1000;
     },
     completelyLoaded: false
 };
@@ -209,7 +219,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             TagStore.set(tagRes);
             VideoStore.set(videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
-                console.log('adding video', video.video_id, video)
                 return map;
             }, {}));
 
@@ -301,7 +310,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 map[video.video_id] = video;
                 return map;
             }, {}));
-            console.log(VideoStore.getAll());
 
             // Build update map.
             const thumbnailMap = {};
@@ -622,23 +630,18 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             data: {limit}
         };
         // Find the oldest timestamp.
-        const oldestTag = _
-            (TagStore.getAll())
-            .values()
-            .minBy(tag => {
-                return tag.created;
-            });
+        const oldestTimestamp = TagStore.getOldestTimestamp();
 
-        if (oldestTag) {
+        if (oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
-            options.data.until = moment(oldestTag.created + 'Z').format('x') / 1000;
+            options.data.until = oldestTimestamp; 
         }
 
         self.GET('tags/search', options)
         .then(searchRes => {
             // Mark this store as completely loaded.
-            if(searchRes.items.length <= limit) {
+            if(searchRes.items.length < limit) {
                 TagStore.completelyLoaded = true;
             }
             LoadActions.loadFromSearchResult(searchRes);
