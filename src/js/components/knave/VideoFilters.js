@@ -122,8 +122,7 @@ var VideoFilters = React.createClass({
                     isError: true
                 });
             });
-        TRACKING.sendEvent(self, arguments, 
-                           self.state.gender + "/" + self.state.age);
+        TRACKING.sendEvent(self, arguments, self.state.gender + '/' + self.state.age);
     }
 })
 
