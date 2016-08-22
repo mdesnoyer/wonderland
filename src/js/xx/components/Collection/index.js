@@ -51,7 +51,8 @@ export default class XXCollection extends React.Component {
         const className = ['xxCollection'];
         if (type) {
             className.push(`xxCollection--${type}`);
-        } else {
+        }
+        else {
             className.push('xxCollection--video');
         }
 
