@@ -307,7 +307,6 @@ const CollectionsContainer = React.createClass({
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
         const badThumbnails = thumbArrays[3];
-
         return (
             <VideoCollection
                 key={tagId}
@@ -429,13 +428,12 @@ const CollectionsContainer = React.createClass({
 
         const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
         const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
-
         // Find lift for the displayed thumb.
-        const lift = this.props.stores.lifts
-            [gender]
-            [age]
-            [tagId]
-            [thumbnailId] || 0;
+        // const lift = this.props.stores.lifts
+        //     [gender]
+        //     [age]
+        //     [tagId]
+        //     [thumbnailId] || 0;
 
         // Build a map of thumbnail id to array of feature names.
         const thumbnailFeatures = _(this.props.stores.thumbnailFeatures
@@ -455,7 +453,7 @@ const CollectionsContainer = React.createClass({
             <ThumbnailOverlay
                 thumbnails={sortedThumbnails}
                 selectedItem={thumbnailIndex}
-                displayThumbLift={lift}
+                // displayThumbLift={lift}
                 // Bind next/prev functions to store the next/prev thumb id
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}

@@ -28,8 +28,8 @@ import UTILS from '../../modules/utils';
     },
     render: function() {
         var self = this,
-            className = ['xxThumbnail'],
-            opts = !self.props.isMobile && self.props.showHref ? {href: '#'} : {}
+            className = ['xxThumbnail']
+            // opts = !self.props.isMobile && self.props.showHref ? {href: '#'} : {}
         ; 
         if (self.props.extraClass) {
             className.push(self.props.extraClass);
@@ -40,9 +40,11 @@ import UTILS from '../../modules/utils';
         if (self.props.type) {
             className.push('xxThumbnail--'+ self.props.type);
         }
+        // debugger
         return (
             <a
-                {...opts}
+                
+                href="#"
                 className={className.join(' ')}
                 data-score={self.props.score}
                 data-uid={self.props.uid}
