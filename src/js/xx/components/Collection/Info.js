@@ -39,7 +39,8 @@ export default class XXCollectionInfo extends React.Component {
                 });
                 this.handleCountdown();
             }, 1000);
-        } else {
+        }
+        else {
             this.props.setActiveContent('refilter-finished');
         }
     }
