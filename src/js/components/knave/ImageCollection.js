@@ -49,6 +49,7 @@ const ImageCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false} 
+                handleFiltersClick={self.setSelectedPanel(1)}
             />,
             <FilterPanel
                 cancelClickHandler={this.setSelectedPanel(0)}
