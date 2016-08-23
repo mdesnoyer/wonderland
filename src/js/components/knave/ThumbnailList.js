@@ -91,6 +91,7 @@ export const ShowLessThumbnailList = React.createClass({
         return (
             <div>
                 <ThumbnailList
+                    {...this.props}
                     thumbnails={firstPartThumbs}
                 >
                     <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
