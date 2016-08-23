@@ -14,7 +14,29 @@ var SiteHeader = React.createClass({
             'account',
             'primaryNavigation'
         ]),
-        setSidebarContent: PropTypes.func.isRequired
+        setSidebarContent: PropTypes.func
+    },
+
+    getInitialState() {
+        return {sidebarContent: null};
+    },
+
+    getContent() {
+        // Prefer the parent's sidebarContent.
+        if (this.props.sidebarContent) {
+            return this.props.sidebarContent;
+        }
+        return this.state.sidebarContent;
+    },
+
+    getContentFunction() {
+        if (this.props.setSidebarContent) {
+            return this.props.setSidebarContent;
+        }
+        const self = this;
+        return (sidebarContent) => {
+            self.setState({sidebarContent})
+        }
     },
 
     render: function() {
@@ -22,12 +44,12 @@ var SiteHeader = React.createClass({
             <div>
                 <AccountMasqueradeBar />
                 <SiteBanner
-                    setSidebarContent={this.props.setSidebarContent}
-                    sidebarContent={this.props.sidebarContent}
+                    setSidebarContent={this.getContentFunction()}
+                    sidebarContent={this.getContent()}
                 />
                 <Sidebar
-                    content={this.props.sidebarContent}
-                    setContent={this.props.setSidebarContent}
+                    content={this.getContent()}
+                    setContent={this.getContentFunction()}
                 />
             </div>
         );
