@@ -17,7 +17,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -33,13 +34,11 @@ const ImageCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-
     setSelectedPanel: function(panelId) {
         // Hide any open tooltip.
         ReactTooltip.hide();
         this.setState({ selectedPanel : panelId });
     },
-
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
     },
@@ -50,9 +49,9 @@ const ImageCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
-
     getPanels() {
         var self = this;
+        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
