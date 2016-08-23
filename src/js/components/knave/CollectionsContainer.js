@@ -249,6 +249,11 @@ const CollectionsContainer = React.createClass({
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
+        let shareUrl;
+        if (this.props.stores.tagShares[tagId]) {
+            shareUrl = this.props.stores.tagShares[tagId].url;
+        }
+
         return (
             <ImageCollection
                 key={tagId}
@@ -264,7 +269,7 @@ const CollectionsContainer = React.createClass({
                 infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
+                shareUrl={shareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />
@@ -292,6 +297,11 @@ const CollectionsContainer = React.createClass({
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
+        let shareUrl;
+        if (this.props.stores.tagShares[tagId]) {
+            shareUrl = this.props.stores.tagShares[tagId].url;
+        }
+
         return (
             <VideoCollection
                 key={tagId}
@@ -309,7 +319,7 @@ const CollectionsContainer = React.createClass({
                 infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
+                shareUrl={shareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />

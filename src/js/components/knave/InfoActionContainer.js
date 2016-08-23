@@ -2,6 +2,8 @@
 
 import React, {PropTypes} from 'react';
 
+import ReactTooltip from 'react-tooltip';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const InfoActionContainer = React.createClass({
@@ -14,6 +16,10 @@ const InfoActionContainer = React.createClass({
 
         // selectedPanel gets from user input on the parent object
         selectedPanel: PropTypes.number.isRequired
+    },
+
+    componentDidUpdate() {
+        ReactTooltip.rebuild();
     },
 
     render: function() {

@@ -5,7 +5,8 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import AjaxMixin from '../mixins/Ajax';
-import AJAXModule from '../modules/ajax.js';
+import AJAXModule from '../modules/ajax';
+import SESSION from '../modules/session';
 import UTILS from '../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,6 +139,22 @@ export const ThumbnailFeatureStore = {
     },
     set: (gender, age, map) => {
         Object.assign(_thumbnailFeatures[gender][age], map);
+    }
+};
+
+const _tagShares = {};
+export const TagShareStore = {
+    getAll: () => {
+        return _tagShares;
+    },
+    get: id => {
+        return _tagShares[id];
+    },
+    set: map => {
+        Object.assign(_tagShares, map);
+    },
+    has: id => {
+        return undefined !== _tagShares[id];
     }
 };
 
@@ -617,8 +634,130 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             data: {share_token: shareToken}
         };
 
-        LoadActions.loadFromSearchResult({
-            items: [{tag_id: tagId}]
+        LoadActions.loadTags([tagId]);
+    },
+
+    loadTags(tagIds) {
+
+        // Short circuit empty input.
+        if(tagIds.length == 0) {
+            return;
+        }
+
+        // Search uses null (0) demographics.
+        const gender = 0;
+        const age = 0;
+
+        // Bind update objects in outer scope.
+        const updateTagMap = {};
+        const updateVideoMap = {};
+        const updateThumbnailMap = {};
+
+        const tagData = {
+            tag_id: tagIds.join(',')
+        };
+        LoadActions.GET('tags', {data: tagData})
+        .then(tagRes => {
+
+            Object.assign(updateTagMap, tagRes);
+
+            const videoIds = _.values(tagRes).reduce((videoIds, tag) => {
+                if(tag.video_id) {
+                    videoIds.push(tag.video_id);
+                }
+                return videoIds;
+            }, []);
+
+            const videoData = {
+                video_id: videoIds.join(','),
+                fields: UTILS.VIDEO_FIELDS.join(',')
+            };
+
+            LoadActions.GET('videos', {data: videoData})
+            .then(videoRes => {
+
+                // Set each by map of id to resource.
+                Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
+                    map[video.video_id] = video;
+                    return map;
+                }, {}));
+
+                // Store the video thumbnails since they're inline in response.
+                videoRes.videos.map(video => {
+
+                    // For each demo, store its thumbnails by demo keys.
+                    video.demographic_thumbnails.map(dem => {
+
+                        // Shadow gender and age within this scope.
+                        let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                        let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                        if (age === undefined || gender === undefined) {
+                            console.warn('Unknown demo ', dem.age, dem.gender);
+                            return;
+                        }
+
+                        // Build partial update map.
+                        const thumbnailMap = {};
+                        dem.thumbnails.map(t => {
+                            thumbnailMap[t.thumbnail_id] = t;
+                        });
+                        dem.bad_thumbnails.map(t => {
+                            thumbnailMap[t.thumbnail_id] = t;
+                        });
+
+                        Object.assign(updateThumbnailMap, thumbnailMap);
+                    });
+                });
+
+                // Now load the thumbnails for the non-video tags.
+
+                // Get the set of thumbnail ids.
+                const tags = _.values(tagRes);
+                const thumbnailIdSet = _
+                    .chain(tags)
+                    // Skip video tags.
+                    .filter(tag => {
+                        return tag.tag_Type !== UTILS.TAG_TYPE_VIDEO_COL;
+                    })
+                    // Concatentate the array of thumbnail ids.
+                    .reduce((thumbnailIds, tag) => {
+                        thumbnailIds = thumbnailIds.concat(tag.thumbnail_ids);
+                        return thumbnailIds;
+                    }, [])
+                    // Remove duplicates.
+                    .uniq()
+                    .value();
+
+                LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
+                .then(thumbRes => {
+                    const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
+                        map[t.thumbnail_id] = t;
+                        return map;
+                    }, {});
+                    Object.assign(updateThumbnailMap, thumbnailMap);
+
+                    // Set all of these together within one synchronous block.
+                    TagStore.set(updateTagMap);
+                    VideoStore.set(updateVideoMap);
+                    ThumbnailStore.set(gender, age, thumbnailMap);
+
+                    // This is the first point at which we can display
+                    // a meaningful set of results, so dispatch.
+                    Dispatcher.dispatch();
+                    return LoadActions.loadLifts(_.keys(tagRes), gender, age);
+                })
+                .then(liftRes => {
+                    // Map of tag id to lift map.
+                    const tagLiftMap = {};
+                    _.toPairs(liftRes).map(pair => {
+                        const tagId = pair[0];
+                        const liftMap = pair[1];
+                        tagLiftMap[tagId] = liftMap;
+                    });
+                    LiftStore.set(gender, age, tagLiftMap);
+                    Dispatcher.dispatch();
+                });
+            });
         });
     },
 
@@ -657,6 +796,36 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             LoadActions.loadFromSearchResult(searchRes);
         })
+    },
+
+    // Get a share url for a tag.
+    loadShareUrl(tagId) {
+
+        if (TagShareStore.has(tagId)) {
+            return;
+        }
+
+        const updateMap = {};
+        LoadActions.GET('tags/share', {data: {tag_id: tagId}})
+        .then(shareRes => {
+            updateMap.token = shareRes.share_token;
+
+            const longUrl = window.location.origin +
+                '/share/collection/' + tagId +
+                '/account/' + SESSION.state.accountId +
+                '/token/' + updateMap.token + '/';
+
+            UTILS.shortenUrl(longUrl, shortenRes => {
+
+                if (shortenRes.status_code === 200) {
+                    updateMap.url = shortenRes.data.url;
+                } else {
+                    updateMap.url = longUrl;
+                }
+                TagShareStore.set({[tagId]: updateMap});
+                Dispatcher.dispatch();
+            });
+        });
     }
 });
 

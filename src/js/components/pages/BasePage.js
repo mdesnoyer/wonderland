@@ -1,9 +1,11 @@
 'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 
 import SiteHeader from '../wonderland/SiteHeader';
 import Helmet from 'react-helmet';
+import Tooltips from '../Tooltips';
 import SiteFooter from '../wonderland/SiteFooter';
 
 import T from '../../modules/translation';
@@ -43,6 +45,7 @@ const BasePage = React.createClass({
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
                 />
+                <Tooltips />
                 {this.props.children}
                 <SiteFooter />
             </main>

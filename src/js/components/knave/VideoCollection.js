@@ -17,7 +17,7 @@ import {
     DeletePanel,
     DeleteControl} from './InfoActionPanels';
 
-import { DeleteActions } from '../../stores/CollectionStores';
+import {LoadActions} from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -68,16 +68,15 @@ const VideoCollection = React.createClass({
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
-                id={this.props.videoId}
-                type={'video'} // TODO extract
+                tagId={this.props.tagId}
+                shareUrl={this.props.shareUrl}
+                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
             />,
             <EmailPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-                getShareUrl={this.props.getShareUrl}
-                sendResultsEmail={this.props.sendResultsEmail}
-                id={this.props.videoId}
-                type={'video'}
+                shareUrl={this.props.shareUrl}
+                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
+                sendResultsEmail={this.props.sendResultsEmail.bind(null, this.props.tagId, 'video')}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
