@@ -238,7 +238,7 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
 
-        const demo = this.getSelectedDemographic();
+        const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
 
@@ -280,7 +280,7 @@ const CollectionsContainer = React.createClass({
             return this.buildVideoProcessingComponent(tagId);
         }
 
-        const demo = this.getSelectedDemographic();
+        const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
 
