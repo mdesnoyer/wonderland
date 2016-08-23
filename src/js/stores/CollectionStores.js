@@ -280,6 +280,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
                 LiftStore.set(gender, age, tagLiftMap);
 
+                // This is the first point at which we can display
+                // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
             });
         });
