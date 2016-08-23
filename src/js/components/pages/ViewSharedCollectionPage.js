@@ -132,6 +132,26 @@ const ViewSharedCollectionPage = React.createClass({
         );
     },
 
+    getVideoStatus: function(videoId) {
+        var self = this;
+        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
+            .then(function(res) {
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+            })
+            .catch(function(err) {
+                console.log(err)
+            });
+    },
+
+    getShownIds: function() {
+        const tagIds = _.keys(this.state.tags);
+        if (tagIds.length > 0) {
+            return [tagIds[0]];
+        }
+        return [];
+    },
+
+
     render: function() {
         return (
             <main className='xxPage'>
@@ -141,7 +161,7 @@ const ViewSharedCollectionPage = React.createClass({
                 />
                 <SiteHeader />
                 <CollectionsContainer
-                    shownIds={[this.props.params.tagId]}
+                    shownIds={this.getShownIds()}
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,
@@ -153,6 +173,7 @@ const ViewSharedCollectionPage = React.createClass({
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
+                    getVideoStatus={this.getVideoStatus}
                     infoPanelOnly={true}
                 />
                 <SiteFooter />
