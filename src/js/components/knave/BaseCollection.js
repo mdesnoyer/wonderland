@@ -38,23 +38,26 @@ const BaseCollection = React.createClass({
 
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
+        setLiftThumbnailId: PropTypes.func,
 
         // class name for the wrapper around the 
         // component defaults to xxCollection 
         wrapperClassName: PropTypes.string 
+
     },
 
     getDefaultProps: function() {
         return {
             translationOverrideMap: {},
-            wrapperClassName: 'xxCollection' 
+            wrapperClassName: 'xxCollection',
+            onThumbnailClick: () => {},
+            setLiftThumbnailId: () => {}
         }
     },
 
     getInitialState: function() {
         return {
-            smallThumbnailRows: 1,
-            liftThumbnailId: null
+            smallThumbnailRows: 1
         };
     },
 
@@ -98,7 +101,8 @@ const BaseCollection = React.createClass({
                     // TODO would like to remove the need for the T.get
                     lessLabel={T.get('action.showLess')}
                     onLess={onLess}
-                    onMouseEnter={self.onThumbnailMouseEnter}
+                    onMouseEnter={self.props.setLiftThumbnailId}
+                    onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                     onClick={self.props.onThumbnailClick}
                     className="xxThumbnail--lowLight"
                 />;
@@ -108,7 +112,8 @@ const BaseCollection = React.createClass({
                 numberToDisplay={5} // N rows of 6, minus one for each button.
                 moreLabel={T.get('action.showMore')}
                 onMore={onMore}
-                onMouseEnter={self.onThumbnailMouseEnter}
+                onMouseEnter={self.props.setLiftThumbnailId}
+                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                 onClick={self.props.onThumbnailClick}
             />;
         }
@@ -125,7 +130,8 @@ const BaseCollection = React.createClass({
         if(self.props.smallThumbnails.length <= 6) {
             return <ThumbnailList
                 thumbnails={self.props.smallThumbnails}
-                onMouseEnter={self.onThumbnailMouseEnter}
+                onMouseEnter={self.props.setLiftThumbnailId}
+                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                 onClick={self.props.onThumbnailClick}
             />;
         // There's fewer than the number of display rows: put ShowLess in slot 6.
@@ -134,7 +140,8 @@ const BaseCollection = React.createClass({
             return <ShowLessThumbnailList
                 thumbnails={self.props.smallThumbnails}
                 onLess={onLess}
-                onMouseEnter={self.onThumbnailMouseEnter}
+                onMouseEnter={self.props.setLiftThumbnailId}
+                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                 onClick={self.props.onThumbnailClick}
             />;
         // There's more than 6 and they haven't shown more at all.
@@ -143,7 +150,8 @@ const BaseCollection = React.createClass({
                 thumbnails={self.props.smallThumbnails}
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
                 onMore={onMore}
-                onMouseEnter={self.onThumbnailMouseEnter}
+                onMouseEnter={self.props.setLiftThumbnailId}
+                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                 onClick={self.props.onThumbnailClick}
             />
         // There's more thumbs than space to display them and they've expanded
@@ -154,15 +162,11 @@ const BaseCollection = React.createClass({
                 numberToDisplay={rows * 6 - 2} // N rows of 6, minus one for each button.
                 onMore={onMore}
                 onLess={onLess}
-                onMouseEnter={self.onThumbnailMouseEnter}
+                onMouseEnter={self.props.setLiftThumbnailId}
+                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
                 onClick={self.props.onThumbnailClick}
             />
         }
-    },
-
-    onThumbnailMouseEnter: function(thumbnailId) {
-        const self = this;
-        self.setState({liftThumbnailId: thumbnailId})
     },
 
     // Wraps calls to T.get with any keys in
@@ -181,7 +185,6 @@ const BaseCollection = React.createClass({
     },
 
     render: function() {
-
         // Let mapped labels be overriden.
         const unapplyOverride = this.applyTranslationOverride();
 
@@ -193,7 +196,8 @@ const BaseCollection = React.createClass({
                 score={this.props.leftFeatureThumbnail.neon_score}
                 className="xxThumbnail--lowLight"
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
-                onMouseEnter={this.onThumbnailMouseEnter.bind(null, leftThumbnailId)}
+                onMouseEnter={this.props.setLiftThumbnailId.bind(null, leftThumbnailId)}
+                onMouseLeave={this.props.setLiftThumbnailId.bind(null, null)}
                 onClick={this.props.onThumbnailClick.bind(null, leftThumbnailId)}
             />
         );
@@ -203,13 +207,11 @@ const BaseCollection = React.createClass({
                 title={T.get('copy.bestThumbnail')}
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                onMouseEnter={this.onThumbnailMouseEnter.bind(null, rightThumbnailId)}
+                onMouseEnter={this.props.setLiftThumbnailId.bind(null, rightThumbnailId)}
+                onMouseLeave={this.props.setLiftThumbnailId.bind(null, null)}
                 onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
             />
         );
-        const liftThumbnailId = this.state.liftThumbnailId?
-            this.state.liftThumbnailId:
-            this.props.rightFeatureThumbnail.thumbnail_id;
 
         const result = (
             <div className={this.props.wrapperClassName}>
@@ -221,7 +223,6 @@ const BaseCollection = React.createClass({
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
-                        liftThumbnailId={liftThumbnailId}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
                     />

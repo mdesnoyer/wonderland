@@ -97,6 +97,13 @@ const CollectionsContainer = React.createClass({
         return [[0,0]];
     },
 
+    getSelectedDemographic: function(tagId) {
+        if (this.state.selectedDemographic[tagId]) {
+            return this.state.selectedDemographic[tagId];
+        }
+        return [0, 0];
+    },
+
     // Given a tag id, construct a  valid Collection
     // component instance and return it.
     //
@@ -105,40 +112,30 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
 
-        // If a demographic was selected, use it. Else nulls.
-        let gender,
-            age;
-        if (this.state.selectedDemographic[tagId]) {
-            [gender, age] = this.state.selectedDemographic[tagId];
-        } else {
-            [gender, age] = [0, 0];
-        }
-
-        // On demographic selector change, fill in stores.
-        const onDemoChange = (tagId, demoKey) => {
-
-            const selectedDemographic = this.state.selectedDemographic;
-            let gender = demoKey[0];
-            let age = demoKey[1];
-            selectedDemographic[tagId] = [gender, age];
-
-            // Ask stores to load missing values.
-            // And change our state when done.
-            const callback = () => {
-                this.setState({selectedDemographic});
-            };
-            this.props.loadTagForDemographic(tagId, gender, age, callback);
-        };
-
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
-                return this.buildImageCollectionComponent(tagId, onDemoChange, gender, age);
+                return this.buildImageCollectionComponent(tagId);
             case UTILS.TAG_TYPE_VIDEO_COL:
-                return this.buildVideoCollectionComponent(tagId, onDemoChange, gender, age);
+                return this.buildVideoCollectionComponent(tagId);
         }
         // TODO? try-catch: if components fail prop validation, catch
         // and return an error component.
         return <div />;
+    },
+
+    // On demographic selector change, fill in stores.
+    onDemoChange: function(tagId, demoKey) {
+        const selectedDemographic = this.state.selectedDemographic;
+        const gender = demoKey[0];
+        const age = demoKey[1];
+        selectedDemographic[tagId] = [gender, age];
+
+        // Ask stores to load missing values.
+        // And change our state when done.
+        const callback = () => {
+            this.setState({selectedDemographic});
+        };
+        this.props.loadTagForDemographic(tagId, gender, age, callback);
     },
 
     // Given tag id and demo, gives array of
@@ -236,22 +233,21 @@ const CollectionsContainer = React.createClass({
 
     },
 
-    buildImageCollectionComponent: function(tagId, onDemoChange, gender, age) {
+
+    buildImageCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
+
+        const demo = this.getSelectedDemographic();
+        const gender = demo[0];
+        const age = demo[1];
 
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
         const left = thumbArrays[0];
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
 
-        // Show the lift for the base (best) thumbnail
-        // vs the given thumbnail.
-        // TODO
-        const showLiftInInfoPanel = vsThumbnailId => { };
-
-        // The lift map for the selected demographic.
-        const liftMap = this.props.stores.lifts[gender][age];
+        const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
         return (
             <ImageCollection
@@ -262,7 +258,7 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                onDemographicChange={onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemoChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
@@ -270,32 +266,32 @@ const CollectionsContainer = React.createClass({
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
+                thumbLiftMap={thumbLiftMap}
             />
         );
     },
 
-    buildVideoCollectionComponent(tagId, onDemoChange, gender, age) {
+    buildVideoCollectionComponent(tagId, onDemoChange, onThumbnailMouseEnter) {
 
-        const collection = this.props.stores.tags[tagId];
-        const video = this.props.stores.videos[collection.video_id];
-        if (video.state === 'processing' || video.state === 'failed') {
-            return (
-                <VideoProcessing
-                    key={collection.tag_id}
-                    title={video.title}
-                    videoState={video.state}
-                    estimatedTimeRemaining={video.estimated_time_remaining}
-                    duration={video.duration}
-                    videoId={video.video_id}
-                    getVideoStatus={this.props.getVideoStatus}
-                />
-            );
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+
+        if (['processing', 'failed'].includes(video.state)) {
+            return this.buildVideoProcessingComponent(tagId);
         }
+
+        const demo = this.getSelectedDemographic();
+        const gender = demo[0];
+        const age = demo[1];
+
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
         const left = thumbArrays[0];
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
         const badThumbnails = thumbArrays[3];
+
+        const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
+
         return (
             <VideoCollection
                 key={tagId}
@@ -307,7 +303,7 @@ const CollectionsContainer = React.createClass({
                 title={video.title}
                 videoId={video.video_id}
                 tagId={tagId}
-                onDemographicChange={onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemoChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
@@ -315,8 +311,25 @@ const CollectionsContainer = React.createClass({
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
+                thumbLiftMap={thumbLiftMap}
             />
        );
+    },
+
+    buildVideoProcessingComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+        return (
+            <VideoProcessing
+                key={tagId}
+                title={video.title}
+                videoState={video.state}
+                estimatedTimeRemaining={video.estimated_time_remaining}
+                duration={video.duration}
+                videoId={video.video_id}
+                getVideoStatus={this.props.getVideoStatus}
+            />
+        );
     },
 
     // Gets the Thumbnail resource for the
@@ -389,11 +402,9 @@ const CollectionsContainer = React.createClass({
         }
 
         // Get score sorted thumbnails for collection.
-        let gender = 0;
-        let age = 0;
-        if (undefined !== this.state.selectedDemographic[tagId]) {
-            [gender, age] = this.state.selectedDemographic[tagId];
-        }
+        const demo = this.getSelectedDemographic(tagId);
+        const gender = demo[0];
+        const age = demo[1];
 
         // Begin loading features
         this.props.loadFeaturesForTag(tagId, gender, age);

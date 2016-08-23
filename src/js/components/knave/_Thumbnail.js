@@ -13,6 +13,7 @@ const _Thumbnail = React.createClass({
         src: PropTypes.string.isRequired,
         // User action handlers
         onMouseEnter: PropTypes.func,
+        onMouseLeave: PropTypes.func,
         onClick: PropTypes.func,
 
         // Style
@@ -22,6 +23,7 @@ const _Thumbnail = React.createClass({
     getDefaultProps: function() {
         return {
             onMouseEnter: this.noop,
+            onMouseLeave: this.noop,
             onClick: this.noop
         };
     },
@@ -44,6 +46,7 @@ const _Thumbnail = React.createClass({
                     className="xxThumbnail-image"
                     src={self.props.src}
                     onMouseEnter={self.props.onMouseEnter}
+                    onMouseLeave={self.props.onMouseLeave}
                 />
             </a>
         );

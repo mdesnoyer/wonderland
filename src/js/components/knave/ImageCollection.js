@@ -25,27 +25,37 @@ const ImageCollection = React.createClass({
         return {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
-            selectedPanel: 0
+            selectedPanel: 0,
+            liftThumbnailId: null
         };
     },
+
     setSelectedPanel: function(panelId) {
         this.setState({ selectedPanel : panelId });
     },
+
+    setLiftThumbnailId: function(thumbnailId) {
+        this.setState({liftThumbnailId: thumbnailId||this.props.rightFeatureThumbnail.thumbnail_id})
+    },
+
     getPanels() {
+        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
+                    liftValue={liftValue}
                 />
             ];
         }
         return [
             <InfoDemoLiftPanel
                 title={this.props.title}
+                liftValue={liftValue}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
-                displayRefilterButton={false} 
+                displayRefilterButton={false}
             />,
             <FilterPanel />,
             <SharePanel
@@ -86,6 +96,7 @@ const ImageCollection = React.createClass({
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--photo'}
+                setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
     }

@@ -19,6 +19,7 @@ export const ThumbnailList = React.createClass({
         numberToDisplay: PropTypes.number,
 
         onMouseEnter: PropTypes.func,
+        onMouseLeave: PropTypes.func,
         onClick: PropTypes.func,
 
         className: PropTypes.string
@@ -34,6 +35,7 @@ export const ThumbnailList = React.createClass({
         // Make optional prop funcs safe.
         const noop = () => {};
         const onMouseEnter = (this.props.onMouseEnter || noop);
+        const onMouseLeave = (this.props.onMouseLeave || noop);
         const onClick = (this.props.onClick || noop);
         // const showHref = this.props.showHref
         const thumbnails = this.props.thumbnails
@@ -48,6 +50,7 @@ export const ThumbnailList = React.createClass({
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}
                         onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
+                        onMouseLeave={onMouseLeave}
                         onClick={onClick.bind(null, t.thumbnail_id)}
                     />
                 );

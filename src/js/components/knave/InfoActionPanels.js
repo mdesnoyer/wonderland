@@ -3,6 +3,7 @@
 import React, {PropTypes} from 'react';
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
+import Lift from './Lift';
 
 import T from '../../modules/translation';
 
@@ -23,7 +24,10 @@ export const InfoDemoLiftPanel = React.createClass({
         selectedDemographic: PropTypes.array.isRequired,
         // whether or not the panel should display the refilter 
         // button, defaults to true 
-        displayRefilterButton: PropTypes.bool 
+        displayRefilterButton: PropTypes.bool,
+        // The value to show in the Lift component
+        liftValue: PropTypes.number
+
     },
     getDefaultProps: function() {
         return {
@@ -31,8 +35,6 @@ export const InfoDemoLiftPanel = React.createClass({
         };
     },
     render: function() {
-        const lift = <h2>{T.get('label.lift')}</h2>;
-
         return (<div>
             <h1 className="xxCollection-title">
                 {this.props.title}
@@ -43,7 +45,7 @@ export const InfoDemoLiftPanel = React.createClass({
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={this.props.displayRefilterButton} 
             />
-            {lift}
+            <Lift displayThumbLift={this.props.liftValue}/>
         </div>);
     }
 });
@@ -52,12 +54,15 @@ export const InfoLiftPanel = React.createClass({
     propTypes: {
         // User's name of this collection
         title: PropTypes.string.isRequired,
+        lift: PropTypes.number
     },
 
     render: function() {
         return (<div>
-            <h1>{this.props.title}</h1>
-            <h2>{T.get('label.lift')}</h2>
+            <h1 className="xxCollection-title">
+                {this.props.title}
+            </h1>
+            <Lift displayThumbLift={this.props.liftValue} />
         </div>);
     }
 });

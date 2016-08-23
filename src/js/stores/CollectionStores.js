@@ -421,7 +421,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             switch (thumbnailIds.length) {
                 case 1:
                     const onlyId = thumbnailIds[0];
-                    tagLiftMap[tagId] = {onlyId: 0};
+                    tagLiftMap[tagId] = {[onlyId]: 0};
                     return;
                 case 0:
                     tagLiftMap[tagId] = {};
