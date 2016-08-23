@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
+
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
@@ -76,36 +77,36 @@ export const FilterPanel = React.createClass({
 export const EmailPanel = React.createClass({
     propTypes: {
         // generates a shareUrl to use
-        getShareUrl: PropTypes.func.isRequired,
+        loadShareUrl: PropTypes.func.isRequired,
+        // Value to push into the email
+        shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        sendResultsEmail: PropTypes.func.isRequired,
-        // key/id of the object
-        id: PropTypes.string.isRequired,
-        // The type (video,image,gif)
-        type: PropTypes.string.isRequired
+        sendResultsEmail: PropTypes.func.isRequired
     },
+
     getInitialState: function() {
         return {
-            isLoading: true,
             mode: undefined,
             errorMessage: undefined,
-            shareUrl: ''
         }
     },
     componentWillMount: function() {
-        this.props.getShareUrl(
-            this.props.id,
-            this.props.type,
-            this._shareUrlCallback)
+        this.props.loadShareUrl();
     },
-  
-    _shareUrlCallback: function(r) {
-        if (r.status_code === 200) {
-            this.setState({
-                shareUrl: r.data.url
-            });
-        }
+
+    componentDidMount: function() {
+        const clipboard = new Clipboard(this.refs.copyUrl);
+        clipboard.on('success', e => {
+            // Set the tooltip to reflect successful copy.
+            this.props.setTooltipText('action.textCopied');
+            e.clearSelection();
+        });
+        clipboard.on('error', e => {
+            // Ask the user to Ctrl-C.
+            this.props.setTooltipText('action.textSelected');
+        });
     },
+
     _startEmailSend: function(email) {
         // TODO this is risky, and we are relying
         // on shareUrl to be set -- it likely will be
@@ -113,8 +114,6 @@ export const EmailPanel = React.createClass({
         // email without the shareUrl
         this.setState({ mode: 'loading'}, function() {
             this.props.sendResultsEmail(
-                this.props.id,
-                this.props.type,
                 email,
                 this.state.shareUrl,
                 this._sendEmailCallback);
@@ -127,7 +126,7 @@ export const EmailPanel = React.createClass({
                 errorMessage: r.errorMessage
             });
         }
-    }, 
+    },
     render: function() {
         var self = this,
             collectionClassName = self.props.isMobile ?
@@ -236,49 +235,77 @@ export const EmailControl = React.createClass({
 });
 
 export const SharePanel = React.createClass({
+
     propTypes: {
+        // Tag of element
+        tagId: PropTypes.string.isRequired,
         // handles the clicks on facebook/twitter/linkedin buttons
         socialClickHandler: PropTypes.func.isRequired,
+        // Value to push into the form
+        shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        getShareUrl: PropTypes.func.isRequired,
-        // key/id of the object
-        id: PropTypes.string.isRequired,
-        // The type (video,image,gif)
-        type: PropTypes.string.isRequired
+        loadShareUrl: PropTypes.func.isRequired
     },
-    getInitialState: function() {
-        return {
-            shareUrl: '',
-            isLoading: true
-        }
-    },
+
     componentWillMount: function() {
-        this.props.getShareUrl(
-            this.props.id,
-            this.props.type,
-            this._shareUrlCallback)
+        this.props.loadShareUrl();
     },
-  
-    _shareUrlCallback: function(r) {
-        if (r.status_code === 200) {
-            this.setState({
-                shareUrl: r.data.url,
-                isLoading: false
-            });
-        }
-        else {
-            this.setState({ isLoading: false });
-        }
+
+    componentDidMount: function() {
+        const clipboard = new Clipboard(this.refs.copyButton);
     },
+
+    getShareForm() {
+        const shareElement = this.props.shareUrl?
+            (
+                <div className="xxFormField">
+                    <label
+                        className="xxLabel"
+                        htmlFor="xx-share-link"
+                    >{T.get('copy.share.label')}</label>
+                    <input
+                        className="xxInputText"
+                        id={"xx-share-link" + this.props.tagId}
+                        type="text"
+                        value={this.props.shareUrl}
+                        readOnly
+                    />
+                </div>
+            ): <CollectionLoadingText />;
+
+        return (
+            <div>
+                {shareElement}
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                    >{T.get('back')}</button>
+                    <button
+                        className="xxButton xxButton--highlight"
+                        data-clipboard-target={"#xx-share-link" + this.props.tagId}
+                        value={this.props.shareUrl}
+                        ref="copyButton"
+                        type="button"
+                        data-for="staticTooltip"
+                        data-tip={T.get('action.textCopied')}
+                    >{T.get('copy')}</button>
+                </div>
+            </div>
+        );
+    },
+
     render: function() {
-        var self = this,
-            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
-        ;
+
+        const collectionClassName = this.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
+
         return (
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.share.main')}</h2>
                 {
-                    self.props.isMobile ? (
+                    this.props.isMobile ? (
                         <div
                             className="xxOverlay-close"
                             data-action-label="info"
@@ -314,40 +341,7 @@ export const SharePanel = React.createClass({
                 <div className="xxText">
                     <p>{T.get('copy.share.description')}</p>
                 </div>
-                <div className="xxFormField">
-                    <label
-                        className="xxLabel"
-                        htmlFor="xx-share-link"
-                    >{T.get('copy.share.label')}</label>
-                    {
-                        self.state.isLoading ? <CollectionLoadingText /> : (
-                            <input
-                                className="xxInputText"
-                                id={"xx-share-link" + self.props.videoId}
-                                type="text"
-                                value={self.state.shareUrl}
-                                readOnly
-                            />
-                        )
-                    }
-                </div>
-                <div className="xxCollectionAction-buttons">
-                    <button
-                        className="xxButton"
-                        type="button"
-                        data-action-label="info"
-                        onClick={this.props.cancelClickHandler}
-                    >{T.get('back')}</button>
-                    <button
-                        className="xxButton xxButton--highlight"
-                        data-clipboard-target={"#xx-share-link" + self.props.videoId}
-                        value={self.state.shareUrl}
-                        ref="copyUrl"
-                        type="button"
-                        data-for="settableTooltip"
-                        data-tip
-                    >{T.get('copy')}</button>
-                </div>
+                {this.getShareForm()}
             </div>
         );
     }
