@@ -160,6 +160,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Load tags and videos together so we can get thumbnails
         // for only the missing ids.
 
+        // Bind update objects in outer scope.
+        const updateTagMap = {};
+        const updateVideoMap = {};
+        const updateThumbnailMap = {};
+
         // Build tags promise.
         const missingTagIds =  _
             .chain(searchRes.items)
@@ -209,8 +214,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const videoRes = combined[1] || {videos: []};
 
             // Set each by map of id to resource.
-            TagStore.set(tagRes);
-            VideoStore.set(videoRes.videos.reduce((map, video) => {
+            Object.assign(updateTagMap, tagRes);
+            Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
             }, {}));
@@ -221,6 +226,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
+                    // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
                     if (age === undefined || gender === undefined) {
@@ -228,7 +234,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return;
                     }
 
-                    // Build update map.
+                    // Build partial update map.
                     const thumbnailMap = {};
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
@@ -237,7 +243,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
 
-                    ThumbnailStore.set(gender, age, thumbnailMap);
+                    Object.assign(updateThumbnailMap, thumbnailMap);
                 });
             });
 
@@ -262,11 +268,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
             .then(thumbRes => {
-                const thumbMap = thumbRes.thumbnails.reduce((map, t) => {
+                const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                     map[t.thumbnail_id] = t;
                     return map;
                 }, {});
-                ThumbnailStore.set(gender, age, thumbMap);
+                Object.assign(updateThumbnailMap, thumbnailMap);
+
+                // Set all of these together within one synchronous block.
+                TagStore.set(updateTagMap);
+                VideoStore.set(updateVideoMap);
+                ThumbnailStore.set(gender, age, thumbnailMap);
+
+                // This is the first point at which we can display
+                // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
@@ -279,7 +293,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     tagLiftMap[tagId] = liftMap;
                 });
                 LiftStore.set(gender, age, tagLiftMap);
-
                 Dispatcher.dispatch();
             });
         });
@@ -698,10 +711,9 @@ export const Dispatcher = {
 // that page for responsiveness.
 export const Search = {
 
-    // Aggressively load tags.
-    load(count) {
-        const largeCount = count +
-            UTILS.RESULTS_PAGE_SIZE + 1;
+    load(count, onlyThisMany=false) {
+        // Aggressively load tags unless caller specifies only this many.
+        const largeCount = onlyThisMany? count: count + UTILS.RESULTS_PAGE_SIZE + 1;
         LoadActions.loadNNewestTags(largeCount);
     },
 

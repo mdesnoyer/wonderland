@@ -83,6 +83,7 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
+        Search.load(2, true);
         Search.load(UTILS.RESULTS_PAGE_SIZE);
     },
 
@@ -95,7 +96,8 @@ const CollectionsMainPage = React.createClass({
         const currentPage = self.state.currentPage + change
         self.setState({currentPage});
         // Queue another page to load.
-        Search.load((1 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        // Use 2 here: 1 for the 0-indexing of page, 1 for queuing next.
+        Search.load((2 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -229,7 +231,8 @@ const CollectionsMainPage = React.createClass({
         // and slice it to size.
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
-            .filter(t => {return t.hidden !== true})
+            // Filter hidden and empty tags.
+            .filter(t => {return t.hidden !== true && t.thumbnail_ids.length > 0})
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();

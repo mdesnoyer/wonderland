@@ -37,23 +37,29 @@ const VideoCollection = React.createClass({
     },
 
     setLiftThumbnailId: function(thumbnailId) {
-        this.setState({liftThumbnailId: thumbnailId||this.props.rightFeatureThumbnail.thumbnail_id})
+        this.setState({liftThumbnailId: thumbnailId})
+    },
+
+    getLiftValue() {
+        const selectedId = this.state.liftThumbnailId;
+        const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
+        const map = this.props.thumbLiftMap || {};
+        return map[selectedId || defaultId];
     },
 
     getPanels() {
-        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
-                    liftValue={liftValue}
+                    liftValue={this.getLiftValue()}
                 />
             ];
         }
         return [
             <InfoDemoLiftPanel
                 title={this.props.title}
-                liftValue={liftValue}
+                liftValue={this.getLiftValue()}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}

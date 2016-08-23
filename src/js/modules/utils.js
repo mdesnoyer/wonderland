@@ -574,8 +574,9 @@ var UTILS = {
             }
         }
         // Store the remainder.
-        if (working)
+        if (working.length > 0)
             res.push(working);
+
         // Convert lists to CSV strings and return.
         return res.map(list => {
             return list.join(',');
