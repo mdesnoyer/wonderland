@@ -12,12 +12,14 @@ import UTILS from '../../modules/utils';
 const DemographicFilters = React.createClass({
 
     propTypes: {
-        // Tag id of parent
-        tagId: PropTypes.string.isRequired,
+
         // Array [<gender>, <age>] where each is a number key of its enum
+        // e.g., [1, 1] male, 18-19
         selectedDemographicId: PropTypes.array,
+
         // Array of array with enum keys age, gender
         demographicOptions: PropTypes.array,
+
         // Handle demographic selector change
         onChange: PropTypes.func.isRequired
     },
@@ -81,7 +83,7 @@ const DemographicFilters = React.createClass({
                     <li
                         key={key}
                         className={className}
-                        onClick={() => {self.props.onChange(self.props.tagId, option)}}
+                        onClick={() => {self.props.onChange(option)}}
                     >
                         <span className="xxCollectionFilters-versionTitle">{T.get('label.filters')}</span>
                         <span>{label}</span>

@@ -141,7 +141,7 @@ const ViewSharedCollectionPage = React.createClass({
                 />
                 <SiteHeader />
                 <CollectionsContainer
-                    displayIds={[]}
+                    shownIds={[this.props.params.tagId]}
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,

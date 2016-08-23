@@ -344,7 +344,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // Map of tag id to lift map.
                 const tagLiftMap = liftRes;
                 LiftStore.set(gender, age, tagLiftMap);
-
                 Dispatcher.dispatch();
             });
         });
@@ -401,6 +400,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // while processing response.
         const baseTagMap = {};
 
+        const tagLiftMap = {};
+
         missingTagIds.map(tagId => {
 
             // TODO refactor this and CollectionsContainer getLeftRight.
@@ -411,15 +412,25 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const thumbnailMap = _.pick(
                 ThumbnailStore.getAll()[gender][age],
                 tag.thumbnail_ids);
-            const worst = UTILS.worstThumbnail(_.values(thumbnailMap));
 
-            // A video with just a default thumbnail will have no lift.
-            if(_.keys(thumbnailMap).length <= 1) {
-                return;
+            const thumbnailIds = _.keys(thumbnailMap);
+
+            // Special case for 0, 1 thumbnail collections:
+            // 1 is just a map of the image to 0% lift vs itself.
+            // 0 is the null map.
+            switch (thumbnailIds.length) {
+                case 1:
+                    const onlyId = thumbnailIds[0];
+                    tagLiftMap[tagId] = {onlyId: 0};
+                    return;
+                case 0:
+                    tagLiftMap[tagId] = {};
+                    return;
             }
 
             // If the type is video, its default thumbnail
             // is used instead of the worst.
+            const worst = UTILS.worstThumbnail(_.values(thumbnailMap));
             let _default;
             if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
                 const video = VideoStore.get(tag.video_id);
@@ -455,7 +466,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return map;
                     }, {});
                     return tagLiftMap;
-                }, {});
+                }, tagLiftMap);
             }
         });
     },
@@ -487,15 +498,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             return LoadActions.loadLifts([tagId], gender, age);
         })
         .then(liftRes => {
-            const newLiftMap = {};
-            _.toPairs(liftRes).map(pair => {
-                const tagId = pair[0];
-                const liftMap = pair[1];
-                newLiftMap[tagId] = liftMap;
-            })
-
+            const tagLiftMap = liftRes;
             // Set, dispatch and callback.
-            LiftStore.set(gender, age, newLiftMap);
+            LiftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
         })
@@ -639,6 +644,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             LoadActions.loadFromSearchResult(searchRes);
         })
+    }
+});
+
+export const DeleteActions = Object.assign({}, AjaxMixin, {
+
+    deleteCollectionByTagId: function(tagId) {
+        const tag = TagStore.get(tagId);
+        DeleteActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
+            .then(res => {
+                tag.hidden = true;
+                TagStore.set({[res.tag_id]: tag});
+                Dispatcher.dispatch();
+            });
     }
 });
 

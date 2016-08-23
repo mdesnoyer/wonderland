@@ -17,13 +17,15 @@ import {
     DeletePanel,
     DeleteControl} from './InfoActionPanels';
 
+import { DeleteActions } from '../../stores/CollectionStores';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const VideoCollection = React.createClass({
 
     getInitialState: function() {
         return {
-            // What panel to display, based on user input by 
+            // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanel: 0
         };
@@ -43,7 +45,6 @@ const VideoCollection = React.createClass({
         }
         return [
             <InfoDemoLiftPanel
-                tagId={this.props.tagId}
                 title={this.props.title}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
@@ -66,7 +67,6 @@ const VideoCollection = React.createClass({
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
-                id={this.props.videoId}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
         ];

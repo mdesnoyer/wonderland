@@ -23,7 +23,7 @@ const ImageCollection = React.createClass({
 
     getInitialState: function() {
         return {
-            // What panel to display, based on user input by 
+            // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanel: 0
         };
@@ -41,7 +41,6 @@ const ImageCollection = React.createClass({
         }
         return [
             <InfoDemoLiftPanel
-                tagId={this.props.tagId}
                 title={this.props.title}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
@@ -64,7 +63,6 @@ const ImageCollection = React.createClass({
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
-                id={this.props.tagId}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
         ];

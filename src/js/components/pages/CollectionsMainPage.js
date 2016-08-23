@@ -99,31 +99,6 @@ const CollectionsMainPage = React.createClass({
         Search.load((1 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
     },
 
-    // TODO define type here, with a generic id for images
-    // or possibly just always pass tag_id
-    deleteCollection: function(videoId) {
-        const self = this;
-        let params = {
-            video_id: videoId,
-            hidden: true
-        };
-        let promise = self.PUT('videos', {data: params});
-        promise.then(function(res) {
-            let videos = self.state.videos;
-            let tags = self.state.tags;
-            let tagId = videos[videoId].tag_id;
-
-            delete videos[videoId];
-            delete tags[tagId];
-            self.setState({
-                videos: videos,
-                tags: tags
-            });
-        }).catch(function(err) {
-            console.log(err);
-        });
-    },
-
     socialClickHandler: function(service, shareUrl) {
         switch(service) {
             case 'facebook':
@@ -248,6 +223,7 @@ const CollectionsMainPage = React.createClass({
         // and slice it to size.
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
+            .filter(t => {return t.hidden !== true})
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
@@ -261,17 +237,6 @@ const CollectionsMainPage = React.createClass({
             })
             .catch(function(err) {
                 console.log(err)
-            });
-    },
-
-    deleteVideo: function(videoId) {
-        var self = this;
-        self.PUT('videos', {data:{video_id: videoId, hidden: true}})
-            .then(function(res) {
-                // TODO? remove video's tag?
-            })
-            .catch(function(err) {
-                console.log(err);
             });
     },
 
@@ -300,13 +265,10 @@ const CollectionsMainPage = React.createClass({
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features
                     }}
-                    loadThumbnails={this.loadThumbnails}
                     getVideoStatus={this.getVideoStatus}
-                    deleteVideo={this.deleteVideo}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
-                    deleteCollection={this.deleteCollection}
                     socialClickHandler={this.socialClickHandler}
                     getShareUrl={this.getShareUrl}
                     sendResultsEmail={this.sendResultsEmail}
@@ -333,7 +295,7 @@ const CollectionsMainPage = React.createClass({
             <BasePage
                 title={T.get('copy.myCollections.title')}
             >
-                {this.getBody() || this.getLoading()};
+                {this.getBody() || this.getLoading()}
                 <UploadForm />
             </BasePage>
         );

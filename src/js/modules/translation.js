@@ -96,7 +96,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.signOut.heading': '@displayName you are now signed out. Thanks for using Neon.',
             'copy.signOut.body': 'Want to make some more high performing video thumbnails? <a href="@link">Sign In</a> again!',
 
-            'copy.myCollections.title': 'My Collections',
+            'copy.myCollections.title': 'Collections',
 
             'copy.analyzeVideo.title': 'Analyze Video',
             'copy.analyzeVideo.heading': 'Analyze Video',

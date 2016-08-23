@@ -16,8 +16,8 @@ export const InfoDemoLiftPanel = React.createClass({
 
     propTypes: {
         // User's name of this collection
-        tagId: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
+
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.array.isRequired
@@ -29,7 +29,6 @@ export const InfoDemoLiftPanel = React.createClass({
         return (<div>
             <h1 className="xxCollection-title">{this.props.title} [Icon]</h1>
             <DemographicFilters
-                tagId={this.props.tagId}
                 onChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
@@ -61,30 +60,30 @@ export const FilterPanel = React.createClass({
 
 export const EmailPanel = React.createClass({
     propTypes: {
-        // generates a shareUrl to use 
+        // generates a shareUrl to use
         getShareUrl: PropTypes.func.isRequired,
-        // generates a shareUrl to use 
+        // generates a shareUrl to use
         sendResultsEmail: PropTypes.func.isRequired,
-        // key/id of the object 
+        // key/id of the object
         id: PropTypes.string.isRequired,
-        // The type (video,image,gif) 
-        type: PropTypes.string.isRequired 
+        // The type (video,image,gif)
+        type: PropTypes.string.isRequired
     },
     getInitialState: function() {
         return {
-            isLoading: true, 
-            mode: undefined, 
+            isLoading: true,
+            mode: undefined,
             errorMessage: undefined,
-            shareUrl: '' 
+            shareUrl: ''
         }
     },
     componentWillMount: function() {
         this.props.getShareUrl(
-            this.props.id, 
-            this.props.type, 
-            this._shareUrlCallback) 
-    }, 
-    
+            this.props.id,
+            this.props.type,
+            this._shareUrlCallback)
+    },
+  
     _shareUrlCallback: function(r) {
         if (r.status_code === 200) {
             this.setState({
@@ -93,31 +92,31 @@ export const EmailPanel = React.createClass({
         }
     },
     _startEmailSend: function(email) {
-        // TODO this is risky, and we are relying 
-        // on shareUrl to be set -- it likely will be 
-        // but if bitly is slow, we could be sending an 
-        // email without the shareUrl  
-        this.setState({ mode: 'loading'}, function() { 
+        // TODO this is risky, and we are relying
+        // on shareUrl to be set -- it likely will be
+        // but if bitly is slow, we could be sending an
+        // email without the shareUrl
+        this.setState({ mode: 'loading'}, function() {
             this.props.sendResultsEmail(
                 this.props.id,
                 this.props.type,
                 email,
-                this.state.shareUrl, 
-                this._sendEmailCallback); 
-        }); 
+                this.state.shareUrl,
+                this._sendEmailCallback);
+        });
+    },
+    _sendEmailCallback: function(r) {
+        if (r.status_code !== 200) {
+            this.setState({
+                mode: 'error',
+                errorMessage: r.errorMessage
+            });
+        }
     }, 
-    _sendEmailCallback: function(r) { 
-        if (r.status_code !== 200) { 
-            this.setState({ 
-                mode: 'error', 
-                errorMessage: r.errorMessage 
-            }); 
-        }  
-    },   
     render: function() {
         var self = this,
-            collectionClassName = self.props.isMobile ? 
-                'xxOverlay xxOverlay--light xxOverlay--spaced' : 
+            collectionClassName = self.props.isMobile ?
+                'xxOverlay xxOverlay--light xxOverlay--spaced' :
                 'xxCollectionAction',
             userMessage = false
         ;
@@ -130,13 +129,13 @@ export const EmailPanel = React.createClass({
                 break;
             default:
                 break;
-        } 
+        }
         return (
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('email')}</h2>
                {
                     self.props.isMobile ? (
-                        <div 
+                        <div
                             className="xxOverlay-close"
                             data-action-label="info"
                             onClick={self.props.handleBackClick}>
@@ -225,12 +224,12 @@ export const SharePanel = React.createClass({
     propTypes: {
         // handles the clicks on facebook/twitter/linkedin buttons
         socialClickHandler: PropTypes.func.isRequired,
-        // generates a shareUrl to use 
+        // generates a shareUrl to use
         getShareUrl: PropTypes.func.isRequired,
-        // key/id of the object 
+        // key/id of the object
         id: PropTypes.string.isRequired,
-        // The type (video,image,gif) 
-        type: PropTypes.string.isRequired 
+        // The type (video,image,gif)
+        type: PropTypes.string.isRequired
     },
     getInitialState: function() {
         return {
@@ -240,11 +239,11 @@ export const SharePanel = React.createClass({
     },
     componentWillMount: function() {
         this.props.getShareUrl(
-            this.props.id, 
-            this.props.type, 
-            this._shareUrlCallback) 
-    }, 
-    
+            this.props.id,
+            this.props.type,
+            this._shareUrlCallback)
+    },
+  
     _shareUrlCallback: function(r) {
         if (r.status_code === 200) {
             this.setState({
@@ -255,7 +254,7 @@ export const SharePanel = React.createClass({
         else {
             this.setState({ isLoading: false });
         }
-    }, 
+    },
     render: function() {
         var self = this,
             collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
@@ -265,7 +264,7 @@ export const SharePanel = React.createClass({
                 <h2 className="xxTitle">{T.get('copy.share.main')}</h2>
                 {
                     self.props.isMobile ? (
-                        <div 
+                        <div
                             className="xxOverlay-close"
                             data-action-label="info"
                             onClick={this.props.cancelClickHandler}>
@@ -362,24 +361,24 @@ export const ShareControl = React.createClass({
 
 export const DeletePanel = React.createClass({
     propTypes: {
-        // function used to remove a video from the 
-        // UI display 
+
+        // function used to remove a video from the
+        // UI display
         deleteCollection: PropTypes.func.isRequired,
-        // the id corresponding to the object to be deleted
-        id: PropTypes.string.isRequired,
-        // what to do when the cancel button is clicked  
+
+        // what to do when the cancel button is clicked
         cancelClickHandler: PropTypes.func.isRequired
     },
     render: function() {
-        var collectionClassName = this.props.isMobile ? 
-            'xxOverlay xxOverlay--light xxOverlay--spaced' : 
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction';
-        return ( 
+        return (
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
                 {
                     this.props.isMobile ? (
-                        <div 
+                        <div
                             className="xxOverlay-close"
                             data-action-label="info">
                         </div>
@@ -398,7 +397,7 @@ export const DeletePanel = React.createClass({
                     <button
                         className="xxButton xxButton--highlight"
                         type="button"
-                        onClick={() => this.props.deleteCollection(this.props.id)}
+                        onClick={this.props.deleteCollection}
                     >{T.get('delete')}</button>
                 </div>
             </div>

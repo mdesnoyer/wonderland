@@ -13,6 +13,8 @@ import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 
+import { DeleteActions } from '../../stores/CollectionStores';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const CollectionsContainer = React.createClass({
@@ -34,7 +36,6 @@ const CollectionsContainer = React.createClass({
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
         getVideoStatus: PropTypes.func.isRequired,
-        deleteVideo: PropTypes.func.isRequired,
 
         // Defaults to Function to delete/hide a collection from
         // both the backend and frontend display
@@ -258,11 +259,11 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                onDemographicChange={onDemoChange}
+                onDemographicChange={onDemoChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={this.props.deleteCollection}
+                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
@@ -284,7 +285,6 @@ const CollectionsContainer = React.createClass({
                     duration={video.duration}
                     videoId={video.video_id}
                     getVideoStatus={this.props.getVideoStatus}
-                    deleteVideo={this.props.deleteVideo}
                 />
             );
         }
@@ -304,11 +304,11 @@ const CollectionsContainer = React.createClass({
                 title={video.title}
                 videoId={video.video_id}
                 tagId={tagId}
-                onDemographicChange={onDemoChange}
+                onDemographicChange={onDemoChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={this.props.deleteCollection}
+                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 getShareUrl={this.props.getShareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
