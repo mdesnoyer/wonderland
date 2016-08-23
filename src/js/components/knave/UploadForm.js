@@ -240,7 +240,7 @@ var UploadForm = React.createClass({
             self.POST('videos', options)
                 .then(function(json) {
                     if (self.props.onboardingAction) {
-                        self.props.onboardingAction();
+                        self.props.onboardingAction('video', json.video.video_id);
                     }
                     else {
                         // TODO: replace with a loadTag.

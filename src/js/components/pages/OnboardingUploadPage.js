@@ -14,6 +14,7 @@ import BasePage from './BasePage';
 import UploadForm from '../knave/UploadForm';
 import OnboardingSlides from '../knave/OnboardingSlides';
 import OnboardingEmail from '../knave/OnboardingEmail';
+import OnboardingTutorial from '../knave/OnboardingTutorial';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,42 +27,45 @@ const OnboardingUploadPage = React.createClass({
 
 	getInitialState: function() {
 		return {
-			onboardingState: 'initial' // intial // processing // done
+			onboardingState: 'done' // intial // processing // done
 		}
 	},
 
 	render: function() {
-		return (
-			<BasePage
-			    title={T.get('copy.myCollections.title')}
-			    onboardingState={this.state.onboardingState}
-			>
-			{
-				this.state.onboardingState === 'initial' ?
-					(	
+		var content; 
+		switch(this.state.onboardingState) {
+			case 'initial':
+				content = (	
 						<div className="xxUpload">
-							<UploadForm 
-								onboardingAction={this.onboardingAction}
-							/>
+							<UploadForm onboardingAction={this.onboardingAction}/>
 							<div className="xxUploadButton-help">
             					<span className="xxUploadButton-helpCircle"></span>
             					<span className="xxUploadButton-helpLine"></span>
             					<p>SUCK IT </p>
             				</div>	
 						</div>
-
-					) : (
-						<div>
-							<OnboardingSlides />
-							<OnboardingEmail />
-						</div>
-					)
-			}			    
+				);
+				break; 
+			case 'processing':
+				content = <div><OnboardingSlides /><OnboardingEmail /></div>;
+				break; 
+			case 'done':
+				content = <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />;
+				break; 
+		}
+		return (
+			<BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
+				{content}
 			</BasePage>
 		);
 	},
+	onTutorialClose: function(e) {
+	    e.preventDefault();
+	    alert('this works');
+	    this.context.router.replace('/collections/');
+	},
 	onboardingError: function() {
-
+		alert('this works');
 	},
 	onboardingAction: function(type, id) {
 		
