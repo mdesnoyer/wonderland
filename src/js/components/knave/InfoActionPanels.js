@@ -20,19 +20,29 @@ export const InfoDemoLiftPanel = React.createClass({
         title: PropTypes.string.isRequired,
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
-        selectedDemographic: PropTypes.array.isRequired
+        selectedDemographic: PropTypes.array.isRequired,
+        // whether or not the panel should display the refilter 
+        // button, defaults to true 
+        displayRefilterButton: PropTypes.bool 
     },
-
+    getDefaultProps: function() {
+        return {
+            displayRefilterButton: true
+        };
+    },
     render: function() {
         const lift = <h2>{T.get('label.lift')}</h2>;
 
         return (<div>
-            <h1 className="xxCollection-title">{this.props.title} [Icon]</h1>
+            <h1 className="xxCollection-title">
+                {this.props.title}
+            </h1>
             <DemographicFilters
                 tagId={this.props.tagId}
                 onChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
+                displayRefilterButton={this.props.displayRefilterButton} 
             />
             {lift}
         </div>);

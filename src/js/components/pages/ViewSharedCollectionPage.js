@@ -4,8 +4,8 @@ import React, {PropTypes} from 'react';
 
 import _ from 'lodash';
 
-import UTILS from '../../modules/Utils';
-import T from '../../modules/Translation';
+import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';

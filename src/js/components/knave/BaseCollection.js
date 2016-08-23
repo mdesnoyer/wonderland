@@ -38,11 +38,16 @@ const BaseCollection = React.createClass({
 
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
+
+        // class name for the wrapper around the 
+        // component defaults to xxCollection 
+        wrapperClassName: PropTypes.string 
     },
 
     getDefaultProps: function() {
         return {
-            translationOverrideMap: {}
+            translationOverrideMap: {},
+            wrapperClassName: 'xxCollection' 
         }
     },
 
@@ -207,7 +212,7 @@ const BaseCollection = React.createClass({
             this.props.rightFeatureThumbnail.thumbnail_id;
 
         const result = (
-            <div className="xxCollection">
+            <div className={this.props.wrapperClassName}>
                 <div className="xxCollectionImages">
                     {left}
                     {right}
