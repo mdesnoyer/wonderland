@@ -15,7 +15,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,19 +30,17 @@ const ImageCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-
     setSelectedPanel: function(panelId) {
         var self = this;
         self.setState({
             selectedPanel: panelId
         });
     },
-
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId||this.props.rightFeatureThumbnail.thumbnail_id})
     },
-
     getPanels() {
+        var self = this;
         const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
