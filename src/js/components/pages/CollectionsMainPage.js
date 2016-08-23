@@ -211,11 +211,17 @@ const CollectionsMainPage = React.createClass({
             });
         }
     },
-     
-    // Takes a string in [signUp, learnMore]
+
+    // Takes a string in [
+    // learnMore, contact, signUp, account ] or null
     setSidebarContent: function(sidebarContent) {
         const self = this;
         self.setState({sidebarContent});
+    },
+
+    resetSidebarContent: function() {
+        const self = this;
+        self.setState({sidebarContent: null});
     },
 
     getShownIds: function() {
@@ -300,6 +306,8 @@ const CollectionsMainPage = React.createClass({
         return (
             <BasePage
                 title={T.get('copy.myCollections.title')}
+                setSidebarContent={this.setSidebarContent}
+                resetSidebarContent={this.resetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
                 {this.getBody() || this.getLoading()}

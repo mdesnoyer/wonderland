@@ -13,84 +13,69 @@ import T from '../../modules/translation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var Sidebar = React.createClass({
+
     getDefaultProps: function() {
         return {
             content: null
         }
     },
-    getInitialState: function() {
-        var self = this;
-        return {
-            content: self.props.content
-        };
-    },
+
     componentWillReceiveProps: function(nextProps) {
-        var self = this;
-        self.setState({
-            content: nextProps.content
-        }, function() {
-            if (self.state.content === null) {
-                document.body.classList.remove('has-overlayWithNav');
-                document.body.style.marginRight = 0;
-            }
-            else {
-                window.scrollTo(0, 0);
-                ReactDOM.findDOMNode(self).scrollTop = 0;
-                document.body.classList.add('has-overlayWithNav');
-                document.body.style.marginRight = `${scrollbarWidth}px`;
-            }
-        });
-    },
-    handleClose: function(e) {
-        var self = this;
-        e.preventDefault();
-        if (self.props.resetSidebar) {
-            self.props.resetSidebar();
+
+        if (nextProps.content === null) {
+            document.body.classList.remove('has-overlayWithNav');
+            document.body.style.marginRight = 0;
+            return;
         }
-        self.props.setContent(null);
+
+        window.scrollTo(0, 0);
+        ReactDOM.findDOMNode(this).scrollTop = 0;
+        document.body.classList.add('has-overlayWithNav');
+        document.body.style.marginRight = `${scrollbarWidth}px`;
     },
-    handleClick: function(e) {
-        var self = this,
-            content = e.target.name
-        ;
+
+    handleClose: function(e) {
+        const self = this;
         e.preventDefault();
-        self.props.setContent(content);
+        self.props.resetSidebar();
     },
+
+    handleClick: function(e) {
+        const self = this;
+        e.preventDefault();
+        self.props.setContent(e.target.name);
+    },
+
     handleSidebarClick: function(e) {
         e.stopPropagation();
     },
-    render: function() {
-        var self = this,
-            content = null,
-            isHidden = (self.state.content === null)
-        ;
-        switch (self.state.content) {
+
+    getBody: function() {
+        switch (this.props.content) {
             case 'learnMore':
-                content = <LearnMore />;
-                break;
+                return <LearnMore />;
             case 'contact':
-                content = <Contact handleClose={self.handleClose} />;
-                break;
+                return <Contact handleClose={self.handleClose} />;
             case 'signUp':
-                content = <SignUp handleClose={self.handleClose} />;
-                break;
+                return <SignUp handleClose={self.handleClose} />;
             case 'account':
-                content = <Account />;
-                break;
+                return <Account />;
             case 'primaryNavigation':
-                content = <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.state.content} />;
-            default:
-                break;
+                return <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.state.content} />;
         }
+        return null;
+    },
+
+    render: function() {
         return (
             <div
                 className="xxOverlay xxOverlay--scroll xxOverlay--visibleNav"
-                onClick={self.handleClose}
-                hidden={isHidden}
+                onClick={this.handleClose}
+                hidden={!this.props.content}
             >
-                <a href="#" className="xxOverlay-close" onClick={self.handleClose}>{T.get('action.close')}</a>
-                <div className="xxPageOverlay" onClick={self.handleSidebarClick}>
-                    {content}
+                <a href="#" className="xxOverlay-close" onClick={this.handleClose}>{T.get('action.close')}</a>
+                <div className="xxPageOverlay" onClick={this.handleSidebarClick}>
+                    {this.getBody()}
                 </div>
             </div>
         );

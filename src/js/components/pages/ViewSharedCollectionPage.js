@@ -130,10 +130,16 @@ const ViewSharedCollectionPage = React.createClass({
         );
     },
 
-    // Takes a string in [signUp, learnMore]
+    // Takes a string in [
+    // learnMore, contact, signUp, account ] or null
     setSidebarContent: function(sidebarContent) {
         const self = this;
         self.setState({sidebarContent});
+    },
+
+    resetSidebarContent: function() {
+        const self = this;
+        self.setState({sidebarContent: null});
     },
 
     getVideoStatus: function(videoId) {
@@ -160,6 +166,8 @@ const ViewSharedCollectionPage = React.createClass({
             <BasePage
                 meta={this.state.metaTags}
                 title={UTILS.buildPageTitle(this.state.pageTitle)}
+                setSidebarContent={this.setSidebarContent}
+                resetSidebarContent={this.resetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
                 <CollectionsContainer

@@ -1,43 +1,35 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import SiteBanner from './SiteBanner';
 import AccountMasqueradeBar from './AccountMasqueradeBar';
 import T from '../../modules/translation';
 import Sidebar from './Sidebar';
 
 var SiteHeader = React.createClass({
-    getInitialState: function() {
-        const { sidebarContent } = this.props;
 
-        return {
-            sidebarContent: sidebarContent || null // null, learnMore, contact, signUp, account
-        }
+    propTypes: {
+        sidebarContent: PropTypes.oneOf([
+            'learnMore',
+            'contact',
+            'signUp',
+            'account',
+            'primaryNavigation'
+        ]),
+        setSidebarContent: PropTypes.func.isRequired,
+        resetSidebarContent: PropTypes.func.isRequired
     },
-    setSidebarContent: function(content) {
-        this.setState({
-            sidebarContent: content
-        });
-    },
-    componentWillReceiveProps(nextProps) {
-        const { sidebarContent } = nextProps;
 
-        if (sidebarContent) {
-            this.setState({ sidebarContent });
-        }
-    },
     render: function() {
-        const { sidebarContent } = this.state;
-
         return (
             <div>
                 <AccountMasqueradeBar />
                 <SiteBanner
-                    setSidebarContent={this.setSidebarContent}
-                    sidebarContent={sidebarContent}
+                    setSidebarContent={this.props.setSidebarContent}
+                    sidebarContent={this.props.sidebarContent}
                 />
                 <Sidebar
-                    content={sidebarContent}
-                    setContent={this.setSidebarContent}
-                    resetSidebar={this.props.resetSidebar}
+                    content={this.props.sidebarContent}
+                    setContent={this.props.setSidebarContent}
+                    resetSidebar={this.props.resetSidebarContent}
                 />
             </div>
         );

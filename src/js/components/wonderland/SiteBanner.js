@@ -13,14 +13,14 @@ var SiteBanner = React.createClass({
         return (
             <header className="xxHeader">
                 <a href="/" title={T.get('title.home')}>
-                    <img 
+                    <img
                         className="xxLogo"
                         src="/img/xx/logo.svg"
                         alt={T.get('app.companyShortName')}
                         title={T.get('app.companyShortName')}
                     />
                 </a>
-                <SiteNavigation 
+                <SiteNavigation
                     sidebarContent={self.props.sidebarContent}
                     setSidebarContent={self.props.setSidebarContent}
                 />
