@@ -21,7 +21,10 @@ const DemographicFilters = React.createClass({
         demographicOptions: PropTypes.array,
 
         // Handle demographic selector change
-        onChange: PropTypes.func.isRequired
+        onChange: PropTypes.func.isRequired,
+        // Whether or not to display the refilter button 
+        // defaults to true 
+        displayRefilterButton: PropTypes.bool
     },
 
     getInitialState: function() {
@@ -35,7 +38,8 @@ const DemographicFilters = React.createClass({
             selectedDemographicId: [0, 0],
             demographicOptions: [
                 [0, 0], // gender:null, age:null
-            ]
+            ],
+            displayRefilterButton: true
         }
     },
 
@@ -96,11 +100,15 @@ const DemographicFilters = React.createClass({
                 </ul>
             );
         }
+        let buttonDisplay = (<div></div>); 
+        if (self.props.displayRefilterButton) { 
+            buttonDisplay = (<a className="xxCollectionFilterToggle" />); 
+        } 
         return (
-            <div>
-                <a className="xxCollectionFilterToggle" />
-                <div className="xxCollectionFilterMenu">
-                    <strong className="xxCollectionFilter-title">{T.get('label.filters')}</strong>
+            <div className="xxCollectionFilters">
+                {buttonDisplay}
+                <div className="xxCollectionFiltersMenu">
+                    <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
                     {selectedDemoLabel}
                     {optionList}

@@ -45,6 +45,7 @@ const ImageCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
+                displayRefilterButton={false} 
             />,
             <FilterPanel />,
             <SharePanel
@@ -84,6 +85,7 @@ const ImageCollection = React.createClass({
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--photo'}
             />
         );
     }

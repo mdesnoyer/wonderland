@@ -164,6 +164,26 @@
     }
 }
 
+.xxCollection--photo .xxCollectionFilters-title { 
+    z-index: $z-index-above-everything;
+    cursor: pointer;
+    @include arrow(S, 1px, 11px, $secondary-color);
+
+    &::before,
+    &::after {
+        top: -4px;
+        right: 18px;
+        left: auto;
+
+        @include breakpoint-mobile {
+            right: 14px;
+            margin: 0;
+            bottom: auto;
+            top: auto;
+        }
+    }
+} 
+
 .xxCollectionFilters-title {
     z-index: $z-index-above-everything;
     &.has-dropdown {
