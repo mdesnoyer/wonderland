@@ -400,6 +400,11 @@ const CollectionsContainer = React.createClass({
         // Get the same order of list that the collections uses.
         const sortedThumbnails = _.flatten(this.getLeftRightRest(tagId, gender, age));
 
+        // Deal with when the best and worst is the same.
+        if(sortedThumbnails[0] == sortedThumbnails[1]) {
+            sortedThumbnails.shift();
+        }
+
         // Find the current thumbnail index or default to first.
         const thumbnailIndex = _.findIndex(sortedThumbnails, t => {
             return t.thumbnail_id == this.state.overlayThumbnailId;
