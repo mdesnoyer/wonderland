@@ -115,8 +115,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
+            'copy.lift.explanation.default': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
+            'copy.lift.explanation.soloImage': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
             'copy.lift.units': '@lift Lift',
+            'copy.lift.lift': 'Lift',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             'copy.passwordPlaceholder': "••••••••••",

@@ -17,11 +17,9 @@ import T from '../../modules/translation';
 // TODO make *Control a prop of its panel
 
 export const InfoDemoLiftPanel = React.createClass({
-
     propTypes: {
         // User's name of this collection
         title: PropTypes.string.isRequired,
-
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.array.isRequired,
@@ -29,8 +27,8 @@ export const InfoDemoLiftPanel = React.createClass({
         // button, defaults to true 
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
-        liftValue: PropTypes.number
-
+        liftValue: PropTypes.number,
+        isSoloImage: React.PropTypes.bool
     },
     getDefaultProps: function() {
         return {
@@ -38,18 +36,24 @@ export const InfoDemoLiftPanel = React.createClass({
         };
     },
     render: function() {
-        return (<div>
-            <h1 className="xxCollection-title">
-                {this.props.title}
-            </h1>
-            <DemographicFilters
-                onChange={this.props.onDemographicChange}
-                demographicOptions={this.props.demographicOptions}
-                selectedDemographic={this.props.selectedDemographic}
-                displayRefilterButton={this.props.displayRefilterButton} 
-            />
-            <Lift displayThumbLift={this.props.liftValue}/>
-        </div>);
+        var self = this;
+        return (
+            <div>
+                <h1 className="xxCollection-title">
+                    {this.props.title}
+                </h1>
+                <DemographicFilters
+                    onChange={this.props.onDemographicChange}
+                    demographicOptions={this.props.demographicOptions}
+                    selectedDemographic={this.props.selectedDemographic}
+                    displayRefilterButton={this.props.displayRefilterButton} 
+                />
+                <Lift
+                    displayThumbLift={this.props.liftValue}
+                    isSoloImage={self.props.isSoloImage}
+                />
+            </div>
+        );
     }
 });
 
@@ -57,16 +61,22 @@ export const InfoLiftPanel = React.createClass({
     propTypes: {
         // User's name of this collection
         title: PropTypes.string.isRequired,
-        lift: PropTypes.number
+        lift: PropTypes.number,
+        isSoloImage: React.PropTypes.bool
     },
-
     render: function() {
-        return (<div>
-            <h1 className="xxCollection-title">
-                {this.props.title}
-            </h1>
-            <Lift displayThumbLift={this.props.liftValue} />
-        </div>);
+        var self = this;
+        return (
+            <div>
+                <h1 className="xxCollection-title">
+                    {this.props.title}
+                </h1>
+                <Lift
+                    displayThumbLift={this.props.liftValue}
+                    isSoloImage={self.props.isSoloImage}
+                />
+            </div>
+        );
     }
 });
 
