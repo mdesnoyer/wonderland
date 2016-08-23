@@ -48,7 +48,7 @@ var ZoomThumbnail = React.createClass({
                             })
                         }
                     </ul>
-                    <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
+                    <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>{T.get('nav.learnMore')}</a>.</p>
                  </div>
             );
         }

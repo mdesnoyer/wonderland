@@ -51,7 +51,10 @@ const CollectionsContainer = React.createClass({
         sendResultsEmail: PropTypes.func,
 
         // Minimal UI for share.
-        infoPanelOnly: PropTypes.bool
+        infoPanelOnly: PropTypes.bool,
+
+        // Pops the side bar module given a recognized string
+        setSidebarContent: PropTypes.func.isRequired
 
         // TODO add learnmore func.
     },
@@ -450,7 +453,7 @@ const CollectionsContainer = React.createClass({
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
                 closeThumbnailOverlay={this.onOverlayClose}
-                openLearnMore={this.props.openLearnMore}
+                openLearnMore={this.props.setSidebarContent.bind(null, 'learnMore')}
                 thumbnailFeatureNameMap={thumbnailFeatureNameMap}
             />
         );

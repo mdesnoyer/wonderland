@@ -15,13 +15,14 @@ const BasePage = React.createClass({
     propTypes: {
         // Window title.
         title: PropTypes.string,
-
+        meta: PropTypes.array,
         sidebarContent: PropTypes.string
     },
 
     getDefaultProps: () => {
         return {
             title: UTILS.buildPageTitle(T.get('neonScore')),
+            meta: [],
             sidebarContent: null
         };
     },
@@ -30,17 +31,14 @@ const BasePage = React.createClass({
         return UTILS.buildPageTitle(this.props.title);
     },
 
-    getSidebarContent: function() {
-        return null;
-    },
-
     render: function() {
         return (
             <main className='xxPage'>
                 <Helmet
+                    meta={this.props.meta}
                     title={this.getTitle()}
                 />
-                <SiteHeader sidebarContent={this.getSidebarContent()}/>
+                <SiteHeader sidebarContent={this.props.sidebarContent}/>
                 {this.props.children}
                 <SiteFooter />
             </main>

@@ -7,10 +7,8 @@ import _ from 'lodash';
 import UTILS from '../../modules/Utils';
 import T from '../../modules/Translation';
 
-import Helmet from 'react-helmet';
-import SiteHeader from '../wonderland/SiteHeader';
+import BasePage from './BasePage';
 import CollectionsContainer from '../knave/CollectionsContainer';
-import SiteFooter from '../wonderland/SiteFooter';
 import {
     TagStore,
     VideoStore,
@@ -132,6 +130,12 @@ const ViewSharedCollectionPage = React.createClass({
         );
     },
 
+    // Takes a string in [signUp, learnMore]
+    setSidebarContent: function(sidebarContent) {
+        const self = this;
+        self.setState({sidebarContent});
+    },
+
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
@@ -151,15 +155,13 @@ const ViewSharedCollectionPage = React.createClass({
         return [];
     },
 
-
     render: function() {
         return (
-            <main className='xxPage'>
-                <Helmet
-                    meta={this.state.metaTags}
-                    title={UTILS.buildPageTitle(this.state.pageTitle)}
-                />
-                <SiteHeader />
+            <BasePage
+                meta={this.state.metaTags}
+                title={UTILS.buildPageTitle(this.state.pageTitle)}
+                sidebarContent={this.state.sidebarContent}
+            >
                 <CollectionsContainer
                     shownIds={this.getShownIds()}
                     stores={{
@@ -173,11 +175,11 @@ const ViewSharedCollectionPage = React.createClass({
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
+                    setSidebarContent={this.setSidebarContent}
                     getVideoStatus={this.getVideoStatus}
                     infoPanelOnly={true}
                 />
-                <SiteFooter />
-            </main>
+            </BasePage>
         );
     }
 });

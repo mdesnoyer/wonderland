@@ -28,7 +28,6 @@ import {
     Dispatcher,
     Search } from '../../stores/CollectionStores.js';
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const getStateFromStores = () => {
@@ -212,6 +211,12 @@ const CollectionsMainPage = React.createClass({
             });
         }
     },
+     
+    // Takes a string in [signUp, learnMore]
+    setSidebarContent: function(sidebarContent) {
+        const self = this;
+        self.setState({sidebarContent});
+    },
 
     getShownIds: function() {
 
@@ -271,6 +276,7 @@ const CollectionsMainPage = React.createClass({
                     loadThumbnails={LoadActions.loadThumbnails}
                     socialClickHandler={this.socialClickHandler}
                     getShareUrl={this.getShareUrl}
+                    setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
                 />
                 <PagingControl
@@ -294,6 +300,7 @@ const CollectionsMainPage = React.createClass({
         return (
             <BasePage
                 title={T.get('copy.myCollections.title')}
+                sidebarContent={this.state.sidebarContent}
             >
                 {this.getBody() || this.getLoading()}
                 <UploadForm />
