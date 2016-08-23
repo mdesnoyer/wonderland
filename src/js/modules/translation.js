@@ -402,7 +402,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.homePage.signedUp': 'Already Signed Up?',
 
             // Onboarding
-            'copy.onboarding.uploadHelpText': 'Analyze a video at any time by clicking here',
+            'copy.onboarding.uploadHelpText': 'Analyze a video or image by clicking here',
             'copy.onboarding.uploadPageTitle': 'Analyze a Video',
             'copy.onboarding.uploadErrorText': "Oops! We weren't able to analyze that video. Try again with a different video.",
             'copy.onboarding.uploadErrorText.generic': "Oops! We weren't able to analyze that. Please try again.",

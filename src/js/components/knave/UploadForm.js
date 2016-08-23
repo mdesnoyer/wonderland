@@ -434,7 +434,7 @@ var UploadForm = React.createClass({
                 .then(function(res) {
                     // TODO Refactor.
                     if (self.props.onboardingAction) {
-                        self.props.onboardingAction();
+                        self.props.onboardingAction('col');
                     }
                     else {
                         LoadActions.loadFromSearchResult({
@@ -465,7 +465,8 @@ var UploadForm = React.createClass({
             });
     },
     propTypes: {
-        onboardingAction: React.PropTypes.func
+        onboardingAction: React.PropTypes.func,
+        onboardingError: React.PropTypes.func
     }
 });
 
