@@ -15,7 +15,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -35,6 +36,7 @@ const ImageCollection = React.createClass({
         });
     },
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
