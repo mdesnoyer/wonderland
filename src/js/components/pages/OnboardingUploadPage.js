@@ -35,6 +35,11 @@ const OnboardingUploadPage = React.createClass({
             uploadText: T.get('copy.onboarding.uploadHelpText')
         }
     },
+    componentWillMount: function() {
+        if (!SESSION.active()) {
+            this.context.router.push(UTILS.DRY_NAV.DEMO.URL)
+        }
+    },
 
     render: function() {
         var content; 
@@ -42,7 +47,7 @@ const OnboardingUploadPage = React.createClass({
             case 'initial':
                 content = ( 
                         <div className="xxUpload">
-                            <UploadForm onboardingAction={this.onboardingAction} onboardingError={this.onboardingError}/>
+                            <UploadForm onboardingAction={this.onboardingAction} />
                             <div className="xxUploadButton-help">
                                 <span className="xxUploadButton-helpCircle"></span>
                                 <span className="xxUploadButton-helpLine"></span>
@@ -72,10 +77,7 @@ const OnboardingUploadPage = React.createClass({
     },
     onTutorialClose: function(e) {
         e.preventDefault();
-        this.context.router.replace('/collections/');
-    },
-    onboardingError: function(uploadText) {
-        this.setState({ uploadText: uploadText });
+        this.context.router.replace(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
     },
     onboardingAction: function(type, id) {
         if (type === 'video') {

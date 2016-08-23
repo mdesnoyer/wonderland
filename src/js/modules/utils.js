@@ -243,6 +243,13 @@ var UTILS = {
         ONBOARDING_VIDEO_UPLOAD: {
             URL: '/demo/upload/'
         },
+        ONBOARDING_UPLOAD: {
+            URL: '/onboarding/'
+        },
+        COLLLECTIONS_MAIN: {
+            URL: '/collections/'
+        }
+
     },
     COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
         accessTokenKey: 'neonses_at',

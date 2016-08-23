@@ -24,10 +24,11 @@ var DemoPage = React.createClass({
             })
             .then(function (res) {
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL);
+                debugger
+                self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
             })
             .catch(function (err) {
-                self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                self.context.router.push(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
             });
         }
     },

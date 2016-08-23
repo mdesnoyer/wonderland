@@ -110,13 +110,13 @@ render((
 
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
         
-        <Route path={"/onboarding/"} component={OnboardingUploadPage} />
-        
+        <Route path={UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL} component={OnboardingUploadPage} />
+        <Route path={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} component={CollectionsMainPage} />
+
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />
         <Route path="/xx/onboarding/" component={XXOnboarding} />
         <Route path="/xx/blank/" component={XXBlankCanvas} />
-        <Route path="/collections/" component={CollectionsMainPage} />
 
         <Route path="*" component={NotFoundPage} />
 
