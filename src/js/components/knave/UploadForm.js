@@ -239,16 +239,21 @@ var UploadForm = React.createClass({
         else {
             self.POST('videos', options)
                 .then(function(json) {
-                    console.log('post', json);
-                    // TODO: replace with a loadTag.
-                    LoadActions.loadFromSearchResult({
-                        items: [
-                            {
-                                tag_id: json.video.tag_id,
-                                tag_type: UTILS.TAG_TYPE_VIDEO_COL,
-                                video_id: json.video.video_id
-                            }]
-                    });
+                    if (self.props.onboardingAction) {
+                        self.props.onboardingAction();
+                    }
+                    else {
+                        // TODO: replace with a loadTag.
+                        LoadActions.loadFromSearchResult({
+                            items: [
+                                {
+                                    tag_id: json.video.tag_id,
+                                    tag_type: UTILS.TAG_TYPE_VIDEO_COL,
+                                    video_id: json.video.video_id
+                                }]
+                        });
+                    }
+
                 })
                 .catch(function(err) {
                     self.throwUploadError(err);
@@ -428,10 +433,16 @@ var UploadForm = React.createClass({
             self.POST('tags', options)
                 .then(function(res) {
                     // TODO Refactor.
-                    LoadActions.loadFromSearchResult({
-                        items: [{tag_id: res.tag_id}]
-                    });
-                    self.setState(self.getInitialState());
+                    if (self.props.onboardingAction) {
+                        self.props.onboardingAction();
+                    }
+                    else {
+                        LoadActions.loadFromSearchResult({
+                            items: [{tag_id: res.tag_id}]
+                        });
+                        self.setState(self.getInitialState());                        
+                    }
+
                 })
     },
     grabRefreshToken: function() {
@@ -452,6 +463,9 @@ var UploadForm = React.createClass({
             .catch(function (err) {
                 SESSION.end();
             });
+    },
+    propTypes: {
+        onboardingAction: React.PropTypes.func
     }
 });
 

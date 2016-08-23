@@ -46,6 +46,7 @@ import DemoUploadPage from './components/pages/DemoUploadPage';
 import TRACKING from './modules/tracking';
 import CollectionsMainPage from './components/pages/CollectionsMainPage';
 import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
+import OnboardingUploadPage from './components/pages/OnboardingUploadPage';
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,7 +109,9 @@ render((
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
 
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
-
+        
+        <Route path={"/onboarding/"} component={OnboardingUploadPage} />
+        
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />
         <Route path="/xx/onboarding/" component={XXOnboarding} />

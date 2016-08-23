@@ -619,9 +619,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (n <= haveCount) {
             return;
         }
-        if (TagStore.completelyLoaded) {
-            return;
-        }
+        // if (TagStore.completelyLoaded) {
+        //     return;
+        // }
         const limit = n - haveCount;
 
         const options = {

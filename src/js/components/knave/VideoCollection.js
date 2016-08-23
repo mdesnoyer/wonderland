@@ -41,7 +41,7 @@ const VideoCollection = React.createClass({
     },
 
     getPanels() {
-        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
+        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId] || 0;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
