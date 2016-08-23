@@ -1,7 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-
 import XXSelect from '../Select';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,7 +69,7 @@ export default class XXRefilter extends React.Component {
 
         return (
             <div className="xxCollectionAction">
-                <h2 className="xxTitle">Filter Results</h2>
+                <h2 className="xxTitle">{T.get('label.filterResults')}</h2>
                 <p>
                     Filter your video to see images targeted for a specific
                     demographic audience. We’ll need to reprocess the video,

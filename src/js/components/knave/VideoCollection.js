@@ -15,7 +15,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 import { DeleteActions } from '../../stores/CollectionStores';
 
@@ -30,12 +31,14 @@ const VideoCollection = React.createClass({
             selectedPanel: 0
         };
     },
-
     setSelectedPanel: function(panelId) {
-        this.setState({ selectedPanel : panelId });
+        var self = this;
+        self.setState({
+            selectedPanel: panelId
+        });
     },
-
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -49,8 +52,11 @@ const VideoCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
+                handleFiltersClick={self.setSelectedPanel(1)}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -91,7 +97,6 @@ const VideoCollection = React.createClass({
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
-
         };
 
         return (

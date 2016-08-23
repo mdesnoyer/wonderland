@@ -7,6 +7,7 @@ import Message from '../wonderland/Message';
 import T from '../../modules/translation';
 
 import CollectionLoadingText from '../core/CollectionLoadingText';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // TODO candidate for HoC refactor
@@ -23,7 +24,8 @@ export const InfoDemoLiftPanel = React.createClass({
         selectedDemographic: PropTypes.array.isRequired,
         // whether or not the panel should display the refilter 
         // button, defaults to true 
-        displayRefilterButton: PropTypes.bool 
+        displayRefilterButton: PropTypes.bool,
+        handleFiltersClick: PropTypes.func.isRequired
     },
     getDefaultProps: function() {
         return {
@@ -31,8 +33,8 @@ export const InfoDemoLiftPanel = React.createClass({
         };
     },
     render: function() {
+        var self = this;
         const lift = <h2>{T.get('label.lift')}</h2>;
-
         return (<div>
             <h1 className="xxCollection-title">
                 {this.props.title}
@@ -42,6 +44,7 @@ export const InfoDemoLiftPanel = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={this.props.displayRefilterButton} 
+                handleFiltersClick={self.props.handleFiltersClick}
             />
             {lift}
         </div>);
@@ -72,7 +75,7 @@ export const EmailPanel = React.createClass({
     propTypes: {
         // generates a shareUrl to use
         getShareUrl: PropTypes.func.isRequired,
-        // generates a shareUrl to use
+        // TODO
         sendResultsEmail: PropTypes.func.isRequired,
         // key/id of the object
         id: PropTypes.string.isRequired,
@@ -93,7 +96,6 @@ export const EmailPanel = React.createClass({
             this.props.type,
             this._shareUrlCallback)
     },
-  
     _shareUrlCallback: function(r) {
         if (r.status_code === 200) {
             this.setState({

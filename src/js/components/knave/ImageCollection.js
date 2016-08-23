@@ -15,7 +15,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl
+} from './InfoActionPanels';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,9 +30,13 @@ const ImageCollection = React.createClass({
         };
     },
     setSelectedPanel: function(panelId) {
-        this.setState({ selectedPanel : panelId });
+        var self = this;
+        self.setState({
+            selectedPanel: panelId
+        });
     },
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -46,8 +51,11 @@ const ImageCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false} 
+                handleFiltersClick={self.setSelectedPanel(1)}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={this.setSelectedPanel(0)}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -68,7 +76,7 @@ const ImageCollection = React.createClass({
             />,
         ];
     },
-    getControls(){
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
