@@ -137,11 +137,6 @@ const ViewSharedCollectionPage = React.createClass({
         self.setState({sidebarContent});
     },
 
-    resetSidebarContent: function() {
-        const self = this;
-        self.setState({sidebarContent: null});
-    },
-
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
@@ -167,7 +162,6 @@ const ViewSharedCollectionPage = React.createClass({
                 meta={this.state.metaTags}
                 title={UTILS.buildPageTitle(this.state.pageTitle)}
                 setSidebarContent={this.setSidebarContent}
-                resetSidebarContent={this.resetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
                 <CollectionsContainer

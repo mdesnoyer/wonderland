@@ -14,8 +14,7 @@ var SiteHeader = React.createClass({
             'account',
             'primaryNavigation'
         ]),
-        setSidebarContent: PropTypes.func.isRequired,
-        resetSidebarContent: PropTypes.func.isRequired
+        setSidebarContent: PropTypes.func.isRequired
     },
 
     render: function() {
@@ -29,7 +28,6 @@ var SiteHeader = React.createClass({
                 <Sidebar
                     content={this.props.sidebarContent}
                     setContent={this.props.setSidebarContent}
-                    resetSidebar={this.props.resetSidebarContent}
                 />
             </div>
         );

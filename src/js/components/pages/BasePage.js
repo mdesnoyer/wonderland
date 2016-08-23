@@ -17,8 +17,7 @@ const BasePage = React.createClass({
         title: PropTypes.string,
         meta: PropTypes.array,
         sidebarContent: PropTypes.string,
-        setSidebarContent: PropTypes.func.isRequired,
-        resetSidebarContent: PropTypes.func.isRequired
+        setSidebarContent: PropTypes.func.isRequired
     },
 
     getDefaultProps: () => {
@@ -43,7 +42,6 @@ const BasePage = React.createClass({
                 <SiteHeader
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
-                    resetSidebarContent={this.props.resetSidebarContent}
                 />
                 {this.props.children}
                 <SiteFooter />

@@ -219,11 +219,6 @@ const CollectionsMainPage = React.createClass({
         self.setState({sidebarContent});
     },
 
-    resetSidebarContent: function() {
-        const self = this;
-        self.setState({sidebarContent: null});
-    },
-
     getShownIds: function() {
 
         // The size and offset into the list.
@@ -307,7 +302,6 @@ const CollectionsMainPage = React.createClass({
             <BasePage
                 title={T.get('copy.myCollections.title')}
                 setSidebarContent={this.setSidebarContent}
-                resetSidebarContent={this.resetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
                 {this.getBody() || this.getLoading()}

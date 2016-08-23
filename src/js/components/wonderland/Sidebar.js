@@ -37,7 +37,7 @@ var Sidebar = React.createClass({
     handleClose: function(e) {
         const self = this;
         e.preventDefault();
-        self.props.resetSidebar();
+        self.props.setContent(null);
     },
 
     handleClick: function(e) {
