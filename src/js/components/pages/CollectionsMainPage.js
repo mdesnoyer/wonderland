@@ -83,6 +83,7 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
+        Search.load(2, true);
         Search.load(UTILS.RESULTS_PAGE_SIZE);
     },
 
