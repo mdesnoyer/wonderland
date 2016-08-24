@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 
 import CollectionLoadingText from '../core/CollectionLoadingText';
+import VideoFilters from './VideoFilters';
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
@@ -82,11 +83,24 @@ export const InfoLiftPanel = React.createClass({
     }
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export const FilterPanel = React.createClass({
-    render: () => {
-        return <h1>{T.get('label.filterResults')}</h1>;
+    render: function() {
+        return (
+            <VideoFilters
+                /*handleMenuChange={self.refilterMenuChange}
+                handleBackClick={self.handleBackClick}
+                handleDemographicChange={self.props.handleDemographicChange}
+                selectedDemographic={self.props.selectedDemographic}
+                videoId={self.props.videoId}
+                isMobile={self.props.isMobile}*/
+            />
+        );
     }
 });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const EmailPanel = React.createClass({
     propTypes: {

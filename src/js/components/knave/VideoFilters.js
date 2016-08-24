@@ -46,11 +46,7 @@ var VideoFilters = React.createClass({
                         </div>
                     ) : null
                 }
-                <p>
-                    Filter your video to see images targeted for a specific
-                    demographic audience. We’ll need to reprocess the video,
-                    so this may take a few minutes.
-                </p>
+                <p>Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.</p>
                 { errMsg }
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>
