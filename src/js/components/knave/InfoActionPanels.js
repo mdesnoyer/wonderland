@@ -475,7 +475,7 @@ export const AddPanel = React.createClass({
             'xxCollectionAction';
         return (
             <div className={collectionClassName}>
-                <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
+                
                 {
                     this.props.isMobile ? (
                         <div
@@ -488,14 +488,6 @@ export const AddPanel = React.createClass({
                     
                 </div>
                 <UploadForm isAddPanel={true} />
-                <div className="xxCollectionAction-buttons">
-                    <button
-                        className="xxButton"
-                        type="button"
-                        data-action-label="info"
-                        onClick={this.props.cancelClickHandler}
-                        >{T.get('cancel')}</button>
-                </div>
             </div>
         );
     }
