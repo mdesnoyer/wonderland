@@ -164,7 +164,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // load all downstream stores without checking
     // they're already loaded.
     loadFromSearchResult: searchRes => {
-
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -316,7 +315,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     loadVideos(videoIds) {
-
         if(0 == videoIds.length) {
             return;
         }
@@ -774,9 +772,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (n <= haveCount) {
             return;
         }
-        if (TagStore.completelyLoaded) {
-            return;
-        }
+        // if (TagStore.completelyLoaded) {
+        //     return;
+        // }
         const limit = n - haveCount;
 
         const options = {

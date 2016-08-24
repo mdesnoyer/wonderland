@@ -19,7 +19,8 @@ const BasePage = React.createClass({
         title: PropTypes.string,
         meta: PropTypes.array,
         sidebarContent: PropTypes.string,
-        setSidebarContent: PropTypes.func.isRequired,
+        setSidebarContent: PropTypes.func,
+        onboardingState: PropTypes.string,
         // For dynamic tooltips
         tooltipText: PropTypes.string
     },
@@ -37,8 +38,9 @@ const BasePage = React.createClass({
     },
 
     render: function() {
+        let pageStyle = this.props.onboardingState === 'processing' ? "xxPage is-processing" : "xxPage";
         return (
-            <main className='xxPage'>
+            <main className={pageStyle}>
                 <Helmet
                     meta={this.props.meta}
                     title={this.getTitle()}
@@ -49,7 +51,7 @@ const BasePage = React.createClass({
                 />
                 <Tooltips tooltipText={this.props.tooltipText}/>
                 {this.props.children}
-                <SiteFooter />
+                {!this.props.onboardingState ? <SiteFooter /> : null}
             </main>
         );
     }
