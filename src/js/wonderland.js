@@ -62,7 +62,7 @@ render((
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
 
-        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} />
 
         {/* matches /signup and /signup/ */}
         {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}

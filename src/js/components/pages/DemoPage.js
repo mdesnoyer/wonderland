@@ -23,9 +23,7 @@ var DemoPage = React.createClass({
                 host: CONFIG.AUTH_HOST
             })
             .then(function (res) {
-                debugger
                 SESSION.set(res.access_token, res.refresh_token, res.account_ids[0]);
-                debugger
                 self.context.router.replace(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
             })
             .catch(function (err) {
