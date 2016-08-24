@@ -24,6 +24,7 @@ import {
     LiftStore,
     FeatureStore,
     ThumbnailFeatureStore,
+    TagShareStore,
     LoadActions,
     Dispatcher,
     Search } from '../../stores/CollectionStores.js';
@@ -57,7 +58,10 @@ const getStateFromStores = () => {
 
         // Map of gender, age, thumbnail id to array of feature key
         // sorted by value descending.
-        thumbnailFeatures: ThumbnailFeatureStore.getAll()
+        thumbnailFeatures: ThumbnailFeatureStore.getAll(),
+
+        // Map of tag id to {token: <share token>, url: <share url>}
+        tagShares: TagShareStore.getAll()
     };
 };
 
@@ -83,6 +87,7 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
+        Search.load(2, true);
         Search.load(UTILS.RESULTS_PAGE_SIZE);
     },
 
@@ -95,7 +100,8 @@ const CollectionsMainPage = React.createClass({
         const currentPage = self.state.currentPage + change
         self.setState({currentPage});
         // Queue another page to load.
-        Search.load((1 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        // Use 2 here: 1 for the 0-indexing of page, 1 for queuing next.
+        Search.load((2 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -229,7 +235,8 @@ const CollectionsMainPage = React.createClass({
         // and slice it to size.
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
-            .filter(t => {return t.hidden !== true})
+            // Filter hidden and empty tags.
+            .filter(t => {return t.hidden !== true && t.thumbnail_ids.length > 0})
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
@@ -269,7 +276,8 @@ const CollectionsMainPage = React.createClass({
                         thumbnails: this.state.thumbnails,
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
-                        features: this.state.features
+                        features: this.state.features,
+                        tagShares: this.state.tagShares
                     }}
                     getVideoStatus={this.getVideoStatus}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}

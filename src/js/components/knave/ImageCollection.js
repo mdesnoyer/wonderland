@@ -17,6 +17,8 @@ import {
     DeletePanel,
     DeleteControl} from './InfoActionPanels';
 
+import {LoadActions} from '../../stores/CollectionStores';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const ImageCollection = React.createClass({
@@ -35,23 +37,29 @@ const ImageCollection = React.createClass({
     },
 
     setLiftThumbnailId: function(thumbnailId) {
-        this.setState({liftThumbnailId: thumbnailId||this.props.rightFeatureThumbnail.thumbnail_id})
+        this.setState({liftThumbnailId: thumbnailId})
+    },
+
+    getLiftValue() {
+        const selectedId = this.state.liftThumbnailId;
+        const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
+        const map = this.props.thumbLiftMap || {};
+        return map[selectedId || defaultId];
     },
 
     getPanels() {
-        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
-                    liftValue={liftValue}
+                    liftValue={this.getLiftValue()}
                 />
             ];
         }
         return [
             <InfoDemoLiftPanel
                 title={this.props.title}
-                liftValue={liftValue}
+                liftValue={this.getLiftValue()}
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
@@ -61,16 +69,15 @@ const ImageCollection = React.createClass({
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
-                id={this.props.tagId}
-                type={'image'} // TODO extract
+                tagId={this.props.tagId}
+                shareUrl={this.props.shareUrl}
+                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
             />,
             <EmailPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-                getShareUrl={this.props.getShareUrl}
-                sendResultsEmail={this.props.sendResultsEmail}
-                id={this.props.tagId}
-                type={'image'}
+                shareUrl={this.props.shareUrl}
+                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
+                sendResultsEmail={this.props.sendResultsEmail.bind(null, this.props.tagId, 'video')}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}

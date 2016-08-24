@@ -16,6 +16,7 @@ import {
     LiftStore,
     FeatureStore,
     ThumbnailFeatureStore,
+    TagShareStore,
     LoadActions,
     Dispatcher } from '../../stores/CollectionStores.js';
 
@@ -47,7 +48,11 @@ const getStateFromStores = () => {
 
         // Map of gender, age, thumbnail id to array of feature key
         // sorted by value descending.
-        thumbnailFeatures: ThumbnailFeatureStore.getAll()
+        thumbnailFeatures: ThumbnailFeatureStore.getAll(),
+
+        // Map of gender, age, thumbnail id to array of feature key
+        // sorted by value descending.
+        tagShares: TagShareStore.getAll()
     };
 };
 
@@ -160,7 +165,7 @@ const ViewSharedCollectionPage = React.createClass({
         return (
             <BasePage
                 meta={this.state.metaTags}
-                title={UTILS.buildPageTitle(this.state.pageTitle)}
+                title={this.state.pageTitle}
                 setSidebarContent={this.setSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
@@ -172,7 +177,8 @@ const ViewSharedCollectionPage = React.createClass({
                         thumbnails: this.state.thumbnails,
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
-                        features: this.state.features
+                        features: this.state.features,
+                        tagShares: this.state.tagShares
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}

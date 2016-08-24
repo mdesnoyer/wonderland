@@ -238,7 +238,7 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
 
-        const demo = this.getSelectedDemographic();
+        const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
 
@@ -248,6 +248,11 @@ const CollectionsContainer = React.createClass({
         const smallThumbnails = thumbArrays[2];
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
+
+        let shareUrl;
+        if (this.props.stores.tagShares[tagId]) {
+            shareUrl = this.props.stores.tagShares[tagId].url;
+        }
 
         return (
             <ImageCollection
@@ -264,7 +269,7 @@ const CollectionsContainer = React.createClass({
                 infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
+                shareUrl={shareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />
@@ -280,7 +285,7 @@ const CollectionsContainer = React.createClass({
             return this.buildVideoProcessingComponent(tagId);
         }
 
-        const demo = this.getSelectedDemographic();
+        const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
 
@@ -291,6 +296,11 @@ const CollectionsContainer = React.createClass({
         const badThumbnails = thumbArrays[3];
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
+
+        let shareUrl;
+        if (this.props.stores.tagShares[tagId]) {
+            shareUrl = this.props.stores.tagShares[tagId].url;
+        }
 
         return (
             <VideoCollection
@@ -309,7 +319,7 @@ const CollectionsContainer = React.createClass({
                 infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
-                getShareUrl={this.props.getShareUrl}
+                shareUrl={shareUrl}
                 sendResultsEmail={this.props.sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />

@@ -102,7 +102,7 @@ const DemographicFilters = React.createClass({
         }
         let buttonDisplay = (<div></div>); 
         if (self.props.displayRefilterButton) { 
-            buttonDisplay = (<a className="xxCollectionFilterToggle" />); 
+            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFilterToggle" />); 
         } 
         return (
             <div className="xxCollectionFilters">
