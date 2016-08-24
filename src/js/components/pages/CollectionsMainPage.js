@@ -252,20 +252,16 @@ const CollectionsMainPage = React.createClass({
             if (['processing', 'failed'].includes(video.state)) {
                 return true;
             }
-            console.log("DO we make it here"); 
-            console.log(tag); 
         }
         return tag.thumbnail_ids.length > 0;
     },
 
     getVideoStatus: function(videoId) {
         var self = this;
-        console.log("BLAM"); 
-        console.log(videoId); 
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                console.log(res.videos); 
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+                let tagId = res.videos[0].tag_id; 
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
                 console.log(err)

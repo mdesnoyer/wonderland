@@ -320,6 +320,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if(0 == videoIds.length) {
             return;
         }
+        const updateThumbnailMap = {};
         const videoIdSet = _.uniq(videoIds);
         const videoData = {
                 video_id: videoIdSet.join(','),
@@ -681,7 +682,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     map[video.video_id] = video;
                     return map;
                 }, {}));
-
                 // Store the video thumbnails since they're inline in response.
                 videoRes.videos.map(video => {
 
@@ -706,6 +706,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         });
 
                         Object.assign(updateThumbnailMap, thumbnailMap);
+                        ThumbnailStore.set(gender, age, thumbnailMap);
                     });
                 });
 
@@ -717,7 +718,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     .chain(tags)
                     // Skip video tags.
                     .filter(tag => {
-                        return tag.tag_Type !== UTILS.TAG_TYPE_VIDEO_COL;
+                        return tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL;
                     })
                     // Concatentate the array of thumbnail ids.
                     .reduce((thumbnailIds, tag) => {
@@ -727,7 +728,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     // Remove duplicates.
                     .uniq()
                     .value();
-
                 LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
                 .then(thumbRes => {
                     const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
@@ -735,7 +735,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return map;
                     }, {});
                     Object.assign(updateThumbnailMap, thumbnailMap);
-
                     // Set all of these together within one synchronous block.
                     TagStore.set(updateTagMap);
                     VideoStore.set(updateVideoMap);
@@ -766,7 +765,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Return n the number of new tags.
     loadNNewestTags(n) {
         const self = this;
-
         const haveCount = TagStore.countShowable();
         if (n <= haveCount) {
             return;

@@ -338,6 +338,7 @@ const CollectionsContainer = React.createClass({
                 duration={video.duration}
                 videoId={video.video_id}
                 getVideoStatus={this.props.getVideoStatus}
+                deleteVideo={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
             />
         );
     },
