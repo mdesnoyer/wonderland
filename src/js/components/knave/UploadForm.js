@@ -252,6 +252,7 @@ var UploadForm = React.createClass({
                                     video_id: json.video.video_id
                                 }]
                         });
+                        // LoadActions.loadVideos([json.video.video_id]);
                     }
 
                 })

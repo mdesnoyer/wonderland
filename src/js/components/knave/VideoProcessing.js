@@ -47,6 +47,7 @@ var VideoProcessing = React.createClass({
             collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
         errorMessage = self.props.duration >= UTILS.MAX_VIDEO_SIZE ? T.get('error.longVideo') : T.get('error.genericVideo');
+        debugger
         switch (self.props.videoState) {
             case 'failed':
                 title = 'Oops';

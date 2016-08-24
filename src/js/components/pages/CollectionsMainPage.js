@@ -258,7 +258,7 @@ const CollectionsMainPage = React.createClass({
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
             // Filter hidden and empty tags.
-            .filter(t => {return t.hidden !== true && t.thumbnail_ids.length > 0})
+            .filter(t => {return t.hidden !== true})
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();

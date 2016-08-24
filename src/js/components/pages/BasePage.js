@@ -20,7 +20,7 @@ const BasePage = React.createClass({
         meta: PropTypes.array,
         sidebarContent: PropTypes.string,
         setSidebarContent: PropTypes.func,
-        onboardingState: PropTypes.string
+        onboardingState: PropTypes.string,
         // For dynamic tooltips
         tooltipText: PropTypes.string
     },
