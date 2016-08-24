@@ -21,6 +21,7 @@ import {
 
 import {LoadActions} from '../../stores/CollectionStores';
 
+import ImageUploadOverlay from './ImageUploadOverlay';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const ImageCollection = React.createClass({
@@ -91,6 +92,7 @@ const ImageCollection = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
+            <ImageUploadOverlay/>
         ];
     },
     getControls(){
@@ -100,7 +102,7 @@ const ImageCollection = React.createClass({
         return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
     render: function() {
