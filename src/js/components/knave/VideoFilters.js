@@ -46,7 +46,7 @@ var VideoFilters = React.createClass({
             submitClassName.push('xxButton--important');
         }
         return (
-            <div className={collectionClassName}>
+            <div className={collectionClassName} data-vid={self.props.videoId}>
                 <h2 className="xxTitle">Filter Results</h2>
                 {
                     isMeMobile ? (
@@ -58,7 +58,7 @@ var VideoFilters = React.createClass({
                     ) : null
                 }
                 <p>Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.</p>
-                { errMsg }
+                {errMsg}
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>
                     <DropDown

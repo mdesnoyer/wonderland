@@ -49,8 +49,8 @@ const VideoCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
-
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -70,6 +70,7 @@ const VideoCollection = React.createClass({
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                videoId={self.props.tagId}
             />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
