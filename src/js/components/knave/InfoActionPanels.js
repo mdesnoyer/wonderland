@@ -466,3 +466,55 @@ export const DeleteControl = React.createClass({
         );
     }
 });
+
+export const AddPanel = React.createClass({
+    render: function() {
+        return (
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
+                {
+                    this.props.isMobile ? (
+                        <div
+                            className="xxOverlay-close"
+                            data-action-label="info">
+                        </div>
+                    ) : null
+                }
+                <div className="xxText">
+                    <p>{T.get('copy.videoContent.delete')}</p>
+                </div>
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                        >{T.get('cancel')}</button>
+                    <button
+                        className="xxButton xxButton--highlight"
+                        type="button"
+                        onClick={this.props.deleteCollection}
+                    >{T.get('delete')}</button>
+                </div>
+            </div>
+        );
+    }
+})
+
+export const AddControl = React.createClass({
+    render: function() {
+        return (
+            <a
+                data-tip={'add photo data tip'}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="add"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-add">
+                <span>{'add photo'}</span>
+            </a>
+        );
+    }
+})
+
+

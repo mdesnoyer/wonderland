@@ -17,7 +17,9 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl,
+    AddPanel, 
+    AddControl } from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -92,7 +94,10 @@ const ImageCollection = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
-            <ImageUploadOverlay/>
+            <AddPanel
+                deleteCollection={this.props.deleteCollection}
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+            />
         ];
     },
     getControls(){
@@ -100,9 +105,10 @@ const ImageCollection = React.createClass({
             return [];
         }
         return [
-            <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(5)}} />
+            <AddControl handleClick={()=>{this.setSelectedPanel(2)}} />,
+            <ShareControl handleClick={()=>{this.setSelectedPanel(3)}} />,
+            <EmailControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(6)}} />,
         ];
     },
     render: function() {
