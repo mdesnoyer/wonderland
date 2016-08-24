@@ -98,7 +98,7 @@ export const FilterPanel = React.createClass({
                 handleDemographicChange={self.props.handleDemographicChange}
                 selectedDemographic={self.props.selectedDemographic}
                 videoId={self.props.videoId}
-                isMobile={self.props.isMobile}*/
+                */
             />
         );
     }

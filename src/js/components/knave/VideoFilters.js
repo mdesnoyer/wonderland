@@ -12,10 +12,11 @@ import DropDown from './DropDown';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoFilters = React.createClass({
-    propTypes: {
-        handleBackClick: React.PropTypes.func
-    },
     mixins: [AjaxMixin],
+    propTypes: {
+        handleBackClick: React.PropTypes.func,
+        videoId: React.PropTypes.string.isRequired
+    },
     getInitialState: function() {
         var self = this;
         return {
@@ -35,7 +36,8 @@ var VideoFilters = React.createClass({
     },
     render: function() {
         var self = this,
-            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
+            isMeMobile = UTILS.isMeMobile(),
+            collectionClassName = isMeMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''
@@ -47,7 +49,7 @@ var VideoFilters = React.createClass({
             <div className={collectionClassName}>
                 <h2 className="xxTitle">Filter Results</h2>
                 {
-                    self.props.isMobile ? (
+                    isMeMobile ? (
                         <div 
                             className="xxOverlay-close"
                             data-action-label="info"
@@ -90,13 +92,15 @@ var VideoFilters = React.createClass({
         );
     },
     onGenderChange: function(value) {
-        this.setState({
+        var self = this;
+        self.setState({
             gender: value || null,
             isError: false
         });
     },
     onAgeChange: function(value) {
-        this.setState({
+        var self = this;
+        self.setState({
             age: value || null,
             isError: false
         });
@@ -127,8 +131,7 @@ var VideoFilters = React.createClass({
                     isError: true
                 });
             });
-        TRACKING.sendEvent(self, arguments, 
-                           self.state.gender + "/" + self.state.age);
+        TRACKING.sendEvent(self, arguments, self.state.gender + "/" + self.state.age);
     }
 })
 
