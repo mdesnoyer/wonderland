@@ -19,9 +19,10 @@ const BasePage = React.createClass({
         title: PropTypes.string,
         meta: PropTypes.array,
         sidebarContent: PropTypes.string,
-        // setSidebarContent: PropTypes.func.isRequired,
         setSidebarContent: PropTypes.func,
         onboardingState: PropTypes.string
+        // For dynamic tooltips
+        tooltipText: PropTypes.string
     },
 
     getDefaultProps: () => {
@@ -48,7 +49,7 @@ const BasePage = React.createClass({
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
                 />
-                <Tooltips />
+                <Tooltips tooltipText={this.props.tooltipText}/>
                 {this.props.children}
                 {!this.props.onboardingState ? <SiteFooter /> : null}
             </main>

@@ -43,7 +43,6 @@ const BaseCollection = React.createClass({
         // class name for the wrapper around the 
         // component defaults to xxCollection 
         wrapperClassName: PropTypes.string 
-
     },
 
     getDefaultProps: function() {

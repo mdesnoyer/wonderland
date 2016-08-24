@@ -2,13 +2,15 @@
 
 import React, {PropTypes} from 'react';
 
+import ReactTooltip from 'react-tooltip';
+import _ from 'lodash';
+
+import CollectionLoadingText from '../core/CollectionLoadingText';
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
-
 import T from '../../modules/translation';
 
-import CollectionLoadingText from '../core/CollectionLoadingText';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // TODO candidate for HoC refactor
@@ -94,38 +96,22 @@ export const EmailPanel = React.createClass({
         this.props.loadShareUrl();
     },
 
-    componentDidMount: function() {
-        const clipboard = new Clipboard(this.refs.copyUrl);
-        clipboard.on('success', e => {
-            // Set the tooltip to reflect successful copy.
-            this.props.setTooltipText('action.textCopied');
-            e.clearSelection();
-        });
-        clipboard.on('error', e => {
-            // Ask the user to Ctrl-C.
-            this.props.setTooltipText('action.textSelected');
-        });
-    },
-
     _startEmailSend: function(email) {
-        // TODO this is risky, and we are relying
-        // on shareUrl to be set -- it likely will be
-        // but if bitly is slow, we could be sending an
-        // email without the shareUrl
         this.setState({ mode: 'loading'}, function() {
             this.props.sendResultsEmail(
                 email,
-                this.state.shareUrl,
                 this._sendEmailCallback);
         });
     },
     _sendEmailCallback: function(r) {
-        if (r.status_code !== 200) {
-            this.setState({
-                mode: 'error',
-                errorMessage: r.errorMessage
-            });
+        const self = this;
+        if (r.status_code === 200) {
+            return self.setState({mode: 'success'});
         }
+        this.setState({
+            mode: 'error',
+            errorMessage: r.errorMessage
+        });
     },
     render: function() {
         var self = this,
@@ -201,6 +187,7 @@ export const EmailPanel = React.createClass({
                                 <button
                                     className="xxButton xxButton--highlight"
                                     type="button"
+                                    disabled={!this.props.shareUrl}
                                     onClick={() => {this._startEmailSend(
                                         self.refs.email.value.trim())}}
                                 >{T.get('send')}</button>
@@ -253,6 +240,25 @@ export const SharePanel = React.createClass({
 
     componentDidMount: function() {
         const clipboard = new Clipboard(this.refs.copyButton);
+        clipboard.on('success', e => {
+            e.clearSelection();
+        });
+        // If the copy API is available on this device,
+        // set the tooltip to show that text was copied
+        // instead of just selected.
+        if(_.isFunction(document.execCommand)) {
+            this.setTooltipCode('action.textCopied');
+        } else {
+            this.setTooltipCode('action.textSelected');
+        }
+        // This binds selectableTooltip to the Copy button.
+        ReactTooltip.rebuild();
+    },
+
+    setTooltipCode(code) {
+        if (this.props.setTooltipText) {
+            this.props.setTooltipText(T.get(code));
+        }
     },
 
     getShareForm() {
@@ -284,13 +290,14 @@ export const SharePanel = React.createClass({
                         onClick={this.props.cancelClickHandler}
                     >{T.get('back')}</button>
                     <button
+                        disabled={!this.props.shareUrl}
                         className="xxButton xxButton--highlight"
                         data-clipboard-target={"#xx-share-link" + this.props.tagId}
                         value={this.props.shareUrl}
                         ref="copyButton"
                         type="button"
-                        data-for="staticTooltip"
-                        data-tip={T.get('action.textCopied')}
+                        data-for="settableTooltip"
+                        data-tip
                     >{T.get('copy')}</button>
                 </div>
             </div>
@@ -320,22 +327,37 @@ export const SharePanel = React.createClass({
                         ><span>Link</span></span>
                     </li>
                     <li className="xxCollectionShare-item">
-                        <a data-social-action-label="facebook"
+                        <a
+                            data-social-action-label="facebook"
                             onClick={() => {this.props.socialClickHandler('facebook')}}
                             className="xxCollectionShare-anchor xxCollectionShare-fb"
-                        ><span>Facebook</span></a>
+                            data-for="staticTooltip"
+                            data-tip={T.get('tooltip.share.facebook')}
+                        >
+                            <span>Facebook</span>
+                        </a>
                     </li>
                     <li className="xxCollectionShare-item">
-                        <a data-social-action-label="twitter"
+                        <a
+                            data-social-action-label="twitter"
                             onClick={() => {this.props.socialClickHandler('twitter')}}
                             className="xxCollectionShare-anchor xxCollectionShare-twitter"
-                        ><span>Twitter</span></a>
+                            data-for="staticTooltip"
+                            data-tip={T.get('tooltip.share.twitter')}
+                        >
+                            <span>Twitter</span>
+                        </a>
                     </li>
                     <li className="xxCollectionShare-item">
-                        <a data-social-action-label="linkedin"
+                        <a
+                            data-social-action-label="linkedin"
                             onClick={() => {this.props.socialClickHandler('linkedin')}}
                             className="xxCollectionShare-anchor xxCollectionShare-linkedin"
-                        ><span>LinkedIn</span></a>
+                            data-for="staticTooltip"
+                            data-tip={T.get('tooltip.share.linkedin')}
+                        >
+                            <span>LinkedIn</span>
+                        </a>
                     </li>
                 </ul>
                 <div className="xxText">

@@ -19,6 +19,8 @@ const InfoActionContainer = React.createClass({
     },
 
     componentDidUpdate() {
+        // Needed to display the static tooltips that are bound
+        // to newly mounted UI elements.
         ReactTooltip.rebuild();
     },
 

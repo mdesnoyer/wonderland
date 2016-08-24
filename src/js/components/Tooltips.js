@@ -3,32 +3,32 @@
 import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
+
+import UTILS from '../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const Tooltips = React.createClass({
-
     render: function() {
-        // TODO re-implement settable tooltip with func passing.
-        /*
-            <ReactTooltip
-                id="settableTooltip"
-                ref="settableTooltip"
-                event="click"
-                eventOff="mouseout"
-                effect="solid"
-                place="bottom"
-                delayHide={UTILS.TOOLTIP_DELAY_MILLIS}
-                type="dark"
-            />
-        /**/
         return (
-            <ReactTooltip
-                id="staticTooltip"
-                class="xxHoverTooltip"
-                effect="solid"
-                place="left"
-                type="light"
-            />
+            <div>
+                <ReactTooltip
+                    id="staticTooltip"
+                    class="xxHoverTooltip"
+                    effect="solid"
+                    place="bottom"
+                    type="light"
+                />
+                <ReactTooltip
+                    id="settableTooltip"
+                    effect="solid"
+                    place="bottom"
+                    event="click"
+                    type="dark"
+                >
+                    <span>{this.props.tooltipText}</span>
+                </ReactTooltip>
+
+            </div>
         );
     }
 });
