@@ -33,7 +33,6 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-
     setSelectedPanel: function(panelId) {
         // Clear any open tooltip.
         ReactTooltip.hide();
@@ -67,6 +66,7 @@ const VideoCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
+                handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
             />,
             <FilterPanel />,
             <SharePanel

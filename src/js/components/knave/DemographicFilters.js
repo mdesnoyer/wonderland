@@ -24,7 +24,8 @@ const DemographicFilters = React.createClass({
         onChange: PropTypes.func.isRequired,
         // Whether or not to display the refilter button 
         // defaults to true 
-        displayRefilterButton: PropTypes.bool
+        displayRefilterButton: PropTypes.bool,
+        handleRefiltersPanelClick: React.PropTypes.func
     },
 
     getInitialState: function() {
@@ -71,7 +72,12 @@ const DemographicFilters = React.createClass({
         }
         return genderLabel + '/' + ageLabel;
     },
-
+    handleRefiltersPanelClick: function(e) {
+        var self = this;
+        if (self.props.handleRefiltersPanelClick) {
+            self.props.handleRefiltersPanelClick(e);
+        }
+    },
     render: function() {
         const self = this;
         const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
@@ -102,7 +108,14 @@ const DemographicFilters = React.createClass({
         }
         let buttonDisplay = (<div></div>); 
         if (self.props.displayRefilterButton) { 
-            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFilterToggle" />); 
+            buttonDisplay = (
+                <a
+                    data-for="staticTooltip"
+                    data-tip={T.get('tooltip.refilter.button')}
+                    className="xxCollectionFilterToggle"
+                    onClick={self.handleRefiltersPanelClick}
+                />
+            ); 
         } 
         return (
             <div className="xxCollectionFilters">
