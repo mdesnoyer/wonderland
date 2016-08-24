@@ -34,10 +34,23 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
+    componentDidMount: function() {
+        var self = this;
+        self._isMounted = true;
+    },
+    componentWillUnmount: function() {
+        var self = this;
+        self._isMounted = false;
+    },
     setSelectedPanel: function(panelId) {
+        var self = this;
         // Clear any open tooltip.
         ReactTooltip.hide();
-        this.setState({selectedPanel: panelId});
+        if (self._isMounted) {
+            self.setState({
+                selectedPanel: panelId
+            });
+        }
     },
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
@@ -50,6 +63,7 @@ const VideoCollection = React.createClass({
         return map[selectedId || defaultId];
     },
     getPanels() {
+        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel

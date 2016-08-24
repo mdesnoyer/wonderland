@@ -170,9 +170,10 @@ const CollectionsMainPage = React.createClass({
         let promise = self.GET(apiUrl, options)
         promise.then(function(res) {
             var longUrl = window.location.origin +
-                 uiUrl + id + '/account/' +
-                 SESSION.state.accountId + '/token/' +
-                 res.share_token + '/';
+                uiUrl + id + '/account/' +
+                SESSION.state.accountId + '/token/' +
+                res.share_token + '/'
+            ;
             UTILS.shortenUrl(longUrl, callback)
         }).catch(function(err) {
             console.log(err);
@@ -236,7 +237,6 @@ const CollectionsMainPage = React.createClass({
     },
 
     setTooltipText: function(tooltipText) {
-        console.log('stt', tooltipText);
         this.setState({tooltipText});
     },
 
@@ -271,7 +271,7 @@ const CollectionsMainPage = React.createClass({
                 res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
-                console.log(err)
+                console.log(err);
             });
     },
 

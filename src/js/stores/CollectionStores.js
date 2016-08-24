@@ -883,7 +883,7 @@ export const Search = {
 
     load(count, onlyThisMany=false) {
         // Aggressively load tags unless caller specifies only this many.
-        const largeCount = onlyThisMany? count: count + UTILS.RESULTS_PAGE_SIZE + 1;
+        const largeCount = onlyThisMany ? count : count + UTILS.RESULTS_PAGE_SIZE + 1;
         LoadActions.loadNNewestTags(largeCount);
     },
 
