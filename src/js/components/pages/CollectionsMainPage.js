@@ -170,10 +170,9 @@ const CollectionsMainPage = React.createClass({
         let promise = self.GET(apiUrl, options)
         promise.then(function(res) {
             var longUrl = window.location.origin +
-                uiUrl + id + '/account/' +
-                SESSION.state.accountId + '/token/' +
-                res.share_token + '/'
-            ;
+                 uiUrl + id + '/account/' +
+                 SESSION.state.accountId + '/token/' +
+                 res.share_token + '/';
             UTILS.shortenUrl(longUrl, callback)
         }).catch(function(err) {
             console.log(err);
@@ -237,6 +236,7 @@ const CollectionsMainPage = React.createClass({
     },
 
     setTooltipText: function(tooltipText) {
+        console.log('stt', tooltipText);
         this.setState({tooltipText});
     },
 
@@ -258,20 +258,35 @@ const CollectionsMainPage = React.createClass({
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
             // Filter hidden and empty tags.
-            .filter(t => {return t.hidden !== true})
+            .filter(this.isShowableTag)
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
+    },
+
+    isShowableTag: function(tag) {
+	if (tag.hidden === true) {
+	    return false;
+        }
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            const video = this.state.videos[tag.video_id];
+            // We show a special placeholder component for these states.
+            if (['processing', 'failed'].includes(video.state)) {
+                return true;
+            }
+        }
+        return tag.thumbnail_ids.length > 0;
     },
 
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+                let tagId = res.videos[0].tag_id; 
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
-                console.log(err);
+                console.log(err)
             });
     },
 

@@ -17,8 +17,7 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl
-} from './InfoActionPanels';
+    DeleteControl} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -34,11 +33,13 @@ const ImageCollection = React.createClass({
             liftThumbnailId: null
         };
     },
+
     setSelectedPanel: function(panelId) {
         // Hide any open tooltip.
         ReactTooltip.hide();
         this.setState({ selectedPanel : panelId });
     },
+
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
     },
@@ -49,6 +50,7 @@ const ImageCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
+
     getPanels() {
         var self = this;
         if (this.props.infoPanelOnly) {
@@ -67,13 +69,10 @@ const ImageCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
-                displayRefilterButton={false} 
-                handleFiltersClick={self.setSelectedPanel(1)}
+                displayRefilterButton={false}
                 isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
             />,
-            <FilterPanel
-                cancelClickHandler={this.setSelectedPanel(0)}
-            />,
+            <FilterPanel />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -94,7 +93,7 @@ const ImageCollection = React.createClass({
             />,
         ];
     },
-    getControls() {
+    getControls(){
         if (this.props.infoPanelOnly) {
             return [];
         }

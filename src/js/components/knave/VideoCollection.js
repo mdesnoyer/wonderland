@@ -17,8 +17,7 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl
-} from './InfoActionPanels';
+    DeleteControl} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -34,24 +33,13 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
-    componentDidMount: function() {
-        var self = this;
-        self._isMounted = true;
-    },
-    componentWillUnmount: function() {
-        var self = this;
-        self._isMounted = false;
-    },
+
     setSelectedPanel: function(panelId) {
-        var self = this;
         // Clear any open tooltip.
         ReactTooltip.hide();
-        if (self._isMounted) {
-            self.setState({
-                selectedPanel: panelId
-            });
-        }
+        this.setState({selectedPanel: panelId});
     },
+
     setLiftThumbnailId: function(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
     },
@@ -62,8 +50,8 @@ const VideoCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
+
     getPanels() {
-        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -79,11 +67,8 @@ const VideoCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
-                handleFiltersClick={self.setSelectedPanel(1)}
             />,
-            <FilterPanel
-                cancelClickHandler={this.setSelectedPanel(0)}
-            />,
+            <FilterPanel />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -123,6 +108,7 @@ const VideoCollection = React.createClass({
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
+
         };
 
         return (

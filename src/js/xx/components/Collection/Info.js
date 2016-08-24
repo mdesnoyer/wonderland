@@ -39,8 +39,7 @@ export default class XXCollectionInfo extends React.Component {
                 });
                 this.handleCountdown();
             }, 1000);
-        }
-        else {
+        } else {
             this.props.setActiveContent('refilter-finished');
         }
     }
@@ -59,18 +58,18 @@ export default class XXCollectionInfo extends React.Component {
                     activeContent === 'refilter-processing' ? (
                         <a
                             href=""
-                            className="xxCollectionFiltersToggle XXCollectionFiltersToggle--countdown"
+                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
                             onClick={e => e.preventDefault()}>
-                            <span className="xxCollectionFiltersToggle-label">
+                            <span className="xxCollectionFilterToggle-label">
                                 {renderedTime(Math.floor(time / 60), time % 60)}
                             </span>
                         </a>
                     ) : (
                         <a
                             href=""
-                            className="xxCollectionFiltersToggle"
+                            className="xxCollectionFilterToggle"
                             onClick={e => setActiveContent('refilter', e)}>
-                            <span className="xxCollectionFiltersToggle-label">Refilter</span>
+                            <span className="xxCollectionFilterToggle-label">Refilter</span>
                         </a>
                     )
                 }

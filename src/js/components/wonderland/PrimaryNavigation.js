@@ -42,12 +42,10 @@ var PrimaryNavigation = React.createClass({
                     }
                 })
                 .catch(function(err) {
-                    if (self._isMounted) {
-                        self.setState({
-                            hasUser: false,
-                            username: T.get('nav.account')
-                        });
-                    }
+                    self.setState({
+                        hasUser: false,
+                        username: T.get('nav.account')
+                    });
                 })
             ;
         }

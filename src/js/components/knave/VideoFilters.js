@@ -36,7 +36,7 @@ var VideoFilters = React.createClass({
         }
         return (
             <div className={collectionClassName}>
-                <h2 className="xxTitle">{T.get('label.filterResults')}</h2>
+                <h2 className="xxTitle">Filter Results</h2>
                 {
                     self.props.isMobile ? (
                         <div 
@@ -122,7 +122,8 @@ var VideoFilters = React.createClass({
                     isError: true
                 });
             });
-        TRACKING.sendEvent(self, arguments, self.state.gender + '/' + self.state.age);
+        TRACKING.sendEvent(self, arguments, 
+                           self.state.gender + "/" + self.state.age);
     }
 })
 

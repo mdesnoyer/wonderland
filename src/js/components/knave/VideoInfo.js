@@ -151,21 +151,21 @@ var VideoInfo = React.createClass({
                             {
                                 (self.props.videoState === UTILS.VIDEO_STATE_ENUM.processing) ? (
                                     <div className="xxCollectionFiltersProcessing">
-                                        <div className="xxCollectionFiltersToggle XXCollectionFiltersToggle--countdown"></div>
+                                        <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                         {
                                             (self.props.timeRemaining !== null && self.props.timeRemaining > 0) ? (
                                                 <span><Countdown 
                                                     seconds={self.props.timeRemaining} 
                                                     onFinish={self.onTimerFinished} 
-                                                    classPrefix="xxCollectionFiltersCountdown" />
+                                                    classPrefix="xxCollectionFilterCountdown" />
                                                 </span>
                                             ) : (
-                                                <span className="xxCollectionFiltersCountdown">{T.get('timer.loading')}</span>
+                                                <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>
                                             )
                                         }
                                     </div>
                                 ) : (
-                                    <a className="xxCollectionFiltersToggle"
+                                    <a className="xxCollectionFilterToggle"
                                         data-action-label="refilter"
                                         data-for="staticTooltip"
                                         onClick={self.props.handleMenuChange} >

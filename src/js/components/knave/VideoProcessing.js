@@ -24,7 +24,7 @@ var VideoProcessing = React.createClass({
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        if (self.props.title !== nextProps.title && self.props.estimatedTimeRemaining !== nextProps.estimatedTimeRemaining) {
+        if (self.props.title !== nextProps.title && self.props.videoState === 'processing') {
             self.props.getVideoStatus(self.props.videoId);
         }
         else if ((self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) || (self.props.videoState !== nextProps.videoState)) {
@@ -79,11 +79,11 @@ var VideoProcessing = React.createClass({
                 if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {
                     countdown = (<Countdown
                         seconds={estimatedTimeRemaining}
-                        classPrefix="xxCollectionFiltersCountdown"
+                        classPrefix="xxCollectionFilterCountdown"
                     />);
                 }
                 else {
-                    countdown = <span className="xxCollectionFiltersCountdown">{T.get('timer.loading')}</span>;
+                    countdown = <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>;
                 }
                 break;
         }
@@ -98,7 +98,7 @@ var VideoProcessing = React.createClass({
                     {
                         isError ? null : (
                             <div className="xxCollectionFilters">
-                                <div className="xxCollectionFiltersToggle XXCollectionFiltersToggle--countdown"></div>
+                                <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                 <span>{countdown}</span>
                             </div>
                         )

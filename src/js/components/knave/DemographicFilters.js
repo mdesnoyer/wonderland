@@ -8,7 +8,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+//
 const DemographicFilters = React.createClass({
 
     propTypes: {
@@ -24,8 +24,7 @@ const DemographicFilters = React.createClass({
         onChange: PropTypes.func.isRequired,
         // Whether or not to display the refilter button 
         // defaults to true 
-        displayRefilterButton: PropTypes.bool,
-        handleFiltersClick: PropTypes.func.isRequired
+        displayRefilterButton: PropTypes.bool
     },
 
     getInitialState: function() {
@@ -33,6 +32,7 @@ const DemographicFilters = React.createClass({
             isOpen: false
         };
     },
+
     getDefaultProps: function() {
         return {
             selectedDemographicId: [0, 0],
@@ -42,20 +42,20 @@ const DemographicFilters = React.createClass({
             displayRefilterButton: true
         }
     },
+
     toggleOpen: function() {
         const self = this;
         this.setState({
             isOpen: !self.state.isOpen
         });
     },
+
     getLabelFromId(id) {
         let genderLabel,
-            ageLabel
-        ;
+            ageLabel;
         if(id[0] === 0) {
             genderLabel = T.get('none');
-        }
-        else {
+        } else {
             let gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[id[0]];
             genderLabel = _.find(UTILS.FILTERS_GENDER, i => {
                 return i.value == gender;
@@ -63,8 +63,7 @@ const DemographicFilters = React.createClass({
         }
         if(id[1] === 0) {
             ageLabel = T.get('none');
-        }
-        else {
+        } else {
             let age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[id[1]];
             ageLabel = _.find(UTILS.FILTERS_AGE, i => {
                 return i.value == age;
@@ -72,11 +71,7 @@ const DemographicFilters = React.createClass({
         }
         return genderLabel + '/' + ageLabel;
     },
-    handleFiltersClick: function(e) {
-        var self = this;
-        e.preventDefault();
-        self.props.handleFiltersClick();
-    },
+
     render: function() {
         const self = this;
         const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
@@ -101,13 +96,13 @@ const DemographicFilters = React.createClass({
             });
             optionList = (
                 <ul className="xxCollectionFilters-dropdown">
-                    {options}
+                {options}
                 </ul>
             );
         }
         let buttonDisplay = (<div></div>); 
         if (self.props.displayRefilterButton) { 
-            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFiltersToggle" onClick={self.handleFiltersClick} />); 
+            buttonDisplay = (<a data-for="staticTooltip" data-tip={T.get('tooltip.refilter.button')} className="xxCollectionFilterToggle" />); 
         } 
         return (
             <div className="xxCollectionFilters">
@@ -115,16 +110,12 @@ const DemographicFilters = React.createClass({
                 <div className="xxCollectionFiltersMenu">
                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
                     <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
-                        {selectedDemoLabel}
-                        {optionList}
+                    {selectedDemoLabel}
+                    {optionList}
                     </span>
                 </div>
-            </div>
-        );
+            </div>);
     }
 });
 
 export default DemographicFilters;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
