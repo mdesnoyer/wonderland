@@ -1,6 +1,7 @@
 'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
+import {findDOMNode} from 'react-dom'
 
 import _ from 'lodash';
 
@@ -76,7 +77,10 @@ const CollectionsMainPage = React.createClass({
     getInitialState: function() {
         return Object.assign(
             getStateFromStores(),
-            {currentPage: 0}
+            {
+                currentPage: 0,
+                tooltipText: undefined
+            }
         );
     },
 
@@ -99,8 +103,8 @@ const CollectionsMainPage = React.createClass({
         const self = this;
         const currentPage = self.state.currentPage + change
         self.setState({currentPage});
-        // Queue another page to load.
-        // Use 2 here: 1 for the 0-indexing of page, 1 for queuing next.
+        // Queue another page to load:
+        // use +2 here: +1 to offset 0-indexing of page, +1 to queue next.
         Search.load((2 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
     },
 
@@ -231,6 +235,11 @@ const CollectionsMainPage = React.createClass({
         });
     },
 
+    setTooltipText: function(tooltipText) {
+        console.log('stt', tooltipText);
+        this.setState({tooltipText});
+    },
+
     // Takes a string in [
     // learnMore, contact, signUp, account ] or null
     setSidebarContent: function(sidebarContent) {
@@ -300,6 +309,7 @@ const CollectionsMainPage = React.createClass({
                     getShareUrl={this.getShareUrl}
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
+                    setTooltipText={this.setTooltipText}
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}
@@ -321,9 +331,11 @@ const CollectionsMainPage = React.createClass({
     render: function() {
         return (
             <BasePage
+                ref="basepage"
                 title={T.get('copy.myCollections.title')}
                 setSidebarContent={this.setSidebarContent}
                 sidebarContent={this.state.sidebarContent}
+                tooltipText={this.state.tooltipText}
             >
                 {this.getBody() || this.getLoading()}
                 <UploadForm />

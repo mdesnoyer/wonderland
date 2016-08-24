@@ -274,6 +274,7 @@ const CollectionsContainer = React.createClass({
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
+                setTooltipText={this.props.setTooltipText}
             />
         );
     },
@@ -326,6 +327,7 @@ const CollectionsContainer = React.createClass({
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
+                setTooltipText={this.props.setTooltipText}
             />
        );
     },

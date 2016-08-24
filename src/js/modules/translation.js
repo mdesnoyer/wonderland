@@ -258,6 +258,9 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Tooltips
             'tooltip.refilter.button': 'Refilter',
+            'tooltip.share.facebook': 'Share on Facebook',
+            'tooltip.share.twitter': 'Share on Twitter',
+            'tooltip.share.linkedin': 'Share on LinkedIn',
  
             // Labels
             'label.username' : 'Username',

@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import ReactTooltip from 'react-tooltip';
+
 import BaseCollection from './BaseCollection';
 
 import T from '../../modules/translation';
@@ -33,6 +35,8 @@ const VideoCollection = React.createClass({
     },
 
     setSelectedPanel: function(panelId) {
+        // Clear any open tooltip.
+        ReactTooltip.hide();
         this.setState({selectedPanel: panelId});
     },
 
@@ -71,6 +75,7 @@ const VideoCollection = React.createClass({
                 tagId={this.props.tagId}
                 shareUrl={this.props.shareUrl}
                 loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
+                setTooltipText={this.props.setTooltipText}
             />,
             <EmailPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
