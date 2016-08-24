@@ -68,7 +68,9 @@ const VideoCollection = React.createClass({
                 selectedDemographic={this.props.selectedDemographic}
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}

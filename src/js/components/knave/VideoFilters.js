@@ -12,6 +12,9 @@ import DropDown from './DropDown';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoFilters = React.createClass({
+    propTypes: {
+        handleBackClick: React.PropTypes.func
+    },
     mixins: [AjaxMixin],
     getInitialState: function() {
         var self = this;
@@ -20,6 +23,12 @@ var VideoFilters = React.createClass({
             age: null,
             isError: false
         };
+    },
+    handleBackClick: function(e) {
+        var self = this;
+        if (self.handleBackClick) {
+            self.props.handleBackClick();
+        }
     },
     componentWillUnmount: function() {
         E.clearErrors();
@@ -42,7 +51,7 @@ var VideoFilters = React.createClass({
                         <div 
                             className="xxOverlay-close"
                             data-action-label="info"
-                            onClick={self.props.handleBackClick}>
+                            onClick={self.handleBackClick}>
                         </div>
                     ) : null
                 }
@@ -68,7 +77,7 @@ var VideoFilters = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={self.props.handleBackClick}
+                        onClick={self.handleBackClick}
                         >{T.get('back')}</button>
                     <button
                         className={submitClassName.join(' ')}

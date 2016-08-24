@@ -86,11 +86,15 @@ export const InfoLiftPanel = React.createClass({
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const FilterPanel = React.createClass({
+    propTypes: {
+        cancelClickHandler: React.PropTypes.func
+    },
     render: function() {
+        var self = this;
         return (
             <VideoFilters
+                handleBackClick={self.props.cancelClickHandler}
                 /*handleMenuChange={self.refilterMenuChange}
-                handleBackClick={self.handleBackClick}
                 handleDemographicChange={self.props.handleDemographicChange}
                 selectedDemographic={self.props.selectedDemographic}
                 videoId={self.props.videoId}

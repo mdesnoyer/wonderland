@@ -236,7 +236,6 @@ const CollectionsMainPage = React.createClass({
     },
 
     setTooltipText: function(tooltipText) {
-        console.log('stt', tooltipText);
         this.setState({tooltipText});
     },
 
