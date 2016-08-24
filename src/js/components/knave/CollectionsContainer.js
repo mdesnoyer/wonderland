@@ -287,7 +287,6 @@ const CollectionsContainer = React.createClass({
 
         console.log(video.state);
         if (['processing', 'failed'].includes(video.state)) {
-            debugger;
             if (tag.thumbnail_ids.length === 0) {
                 return this.buildVideoProcessingComponent(tagId);    
             }
