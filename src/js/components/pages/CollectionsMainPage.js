@@ -231,9 +231,6 @@ const CollectionsMainPage = React.createClass({
         });
     },
 
-    sendResultsEmailForImages(gender, age, tagId, email, shareUrl, callback) {
-    },
-
     // Takes a string in [
     // learnMore, contact, signUp, account ] or null
     setSidebarContent: function(sidebarContent) {
