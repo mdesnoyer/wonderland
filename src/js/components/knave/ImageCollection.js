@@ -51,7 +51,6 @@ const ImageCollection = React.createClass({
     },
     getPanels() {
         var self = this;
-        const liftValue = this.props.thumbLiftMap[this.state.liftThumbnailId]
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
