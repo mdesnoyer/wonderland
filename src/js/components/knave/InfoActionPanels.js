@@ -96,10 +96,6 @@ export const FilterPanel = React.createClass({
             <VideoFilters
                 handleBackClick={self.props.cancelClickHandler}
                 videoId={self.props.videoId}
-                /*handleMenuChange={self.refilterMenuChange}
-                handleDemographicChange={self.props.handleDemographicChange}
-                selectedDemographic={self.props.selectedDemographic}
-                */
             />
         );
     }
