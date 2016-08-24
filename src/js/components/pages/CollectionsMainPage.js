@@ -175,8 +175,10 @@ const CollectionsMainPage = React.createClass({
         });
     },
 
-    sendResultsEmail: function(id, type, email, shareUrl, callback) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
+
+        const self = this;
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(email)) {
            callback({
                'status_code' : 400,
@@ -184,38 +186,52 @@ const CollectionsMainPage = React.createClass({
            });
            return;
         }
-        // TODO type = images
-        if (type == 'video') {
-            // TODO selected demographic could be taken into account here
-            // for now just default to top level thumbnails
-            let ts = this.state.videos[id].demographic_thumbnails[0].thumbnails;
-            ts = UTILS.fixThumbnails(ts, true);
-            var options = {
-                data: {
-                    subject: UTILS.RESULTS_EMAIL_SUBJECT,
-                    to_email_address: email,
-                    template_slug: UTILS.RESULTS_MANDRILL_SLUG,
-                    template_args: {
-                        'top_thumbnail': RENDITIONS.findRendition(ts[0], 425, 240),
-                        'lift': UTILS.makePercentage(ts[0].lift, 0, true),
-                        'thumbnail_one': RENDITIONS.findRendition(ts[1], 140, 79),
-                        'thumbnail_two': RENDITIONS.findRendition(ts[2], 140, 79),
-                        'thumbnail_three': RENDITIONS.findRendition(ts[3], 140, 79),
-                        'collection_url': shareUrl
-                    }
-                }
-            };
-            let promise = this.POST('email', options);
-            promise.then(function(res) {
-                TRACKING.sendEvent(this, arguments, id);
-                callback({'status_code' : 200});
-            }).catch(function(err) {
-                callback({
-                    'status_code' : 400,
-                    'errorMessage' : 'unknown error sending email'
-                });
-            });
+
+        const best = fourThumbnails[0];
+        const first = fourThumbnails[1];
+        const second = fourThumbnails[2];
+        const third = fourThumbnails[3];
+
+        // TODO add wait for share load.
+        const shareUrl = self.state.tagShares[tagId].url;
+
+        const tag = self.state.tags[tagId];
+        const lift = self.state.lifts[gender][age][tagId][best.thumbnail_id];
+
+        const renditionTop = RENDITIONS.findRendition(best, 425, 240);
+        const rendition1 = RENDITIONS.findRendition(first, 140, 79);
+        const rendition2 = RENDITIONS.findRendition(second, 140, 79);
+        const rendition3 = RENDITIONS.findRendition(third, 140, 79);
+
+        const data = {
+            subject: UTILS.RESULTS_EMAIL_SUBJECT,
+            to_email_address: email,
+            // TODO put slug for image collection.
+            template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+            template_args: {
+                'top_thumbnail': renditionTop,
+                'lift': UTILS.makePercentage(lift, 0, true),
+                'thumbnail_one': rendition1,
+                'thumbnail_two': rendition2,
+                'thumbnail_three': rendition3,
+                'collection_url': shareUrl
+            }
         }
+
+        self.POST('email', {data})
+        .then(function(res) {
+            TRACKING.sendEvent(self, arguments, tagId);
+            callback({'status_code' : 200});
+        })
+        .catch(function(err) {
+            callback({
+                'status_code' : 400,
+                'errorMessage' : 'unknown error sending email'
+            });
+        });
+    },
+
+    sendResultsEmailForImages(gender, age, tagId, email, shareUrl, callback) {
     },
 
     // Takes a string in [

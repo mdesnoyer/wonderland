@@ -77,7 +77,7 @@ const ImageCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 shareUrl={this.props.shareUrl}
                 loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
-                sendResultsEmail={this.props.sendResultsEmail.bind(null, this.props.tagId, 'video')}
+                sendResultsEmail={this.props.sendResultsEmail}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}

@@ -673,8 +673,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 fields: UTILS.VIDEO_FIELDS.join(',')
             };
 
-            LoadActions.GET('videos', {data: videoData})
-            .then(videoRes => {
+            const videoPromise = videoIds.length > 0?
+                LoadActions.GET('videos', {data: videoData}):
+                Promise.resolve({videos: []});
+
+            videoPromise.then(videoRes => {
 
                 // Set each by map of id to resource.
                 Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {

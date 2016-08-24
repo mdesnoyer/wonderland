@@ -94,38 +94,22 @@ export const EmailPanel = React.createClass({
         this.props.loadShareUrl();
     },
 
-    componentDidMount: function() {
-        const clipboard = new Clipboard(this.refs.copyUrl);
-        clipboard.on('success', e => {
-            // Set the tooltip to reflect successful copy.
-            this.props.setTooltipText('action.textCopied');
-            e.clearSelection();
-        });
-        clipboard.on('error', e => {
-            // Ask the user to Ctrl-C.
-            this.props.setTooltipText('action.textSelected');
-        });
-    },
-
     _startEmailSend: function(email) {
-        // TODO this is risky, and we are relying
-        // on shareUrl to be set -- it likely will be
-        // but if bitly is slow, we could be sending an
-        // email without the shareUrl
         this.setState({ mode: 'loading'}, function() {
             this.props.sendResultsEmail(
                 email,
-                this.state.shareUrl,
                 this._sendEmailCallback);
         });
     },
     _sendEmailCallback: function(r) {
-        if (r.status_code !== 200) {
-            this.setState({
-                mode: 'error',
-                errorMessage: r.errorMessage
-            });
+        const self = this;
+        if (r.status_code === 200) {
+            return self.setState({mode: 'success'});
         }
+        this.setState({
+            mode: 'error',
+            errorMessage: r.errorMessage
+        });
     },
     render: function() {
         var self = this,

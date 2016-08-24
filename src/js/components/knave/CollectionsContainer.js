@@ -249,10 +249,12 @@ const CollectionsContainer = React.createClass({
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
-        let shareUrl;
-        if (this.props.stores.tagShares[tagId]) {
-            shareUrl = this.props.stores.tagShares[tagId].url;
-        }
+        const shareUrl = (tagId in this.props.stores.tagShares)?
+            this.props.stores.tagShares[tagId].url:
+            undefined;
+
+        const emailThumbnails = _.flatten([right, smallThumbnails]);
+        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
         return (
             <ImageCollection
@@ -270,7 +272,7 @@ const CollectionsContainer = React.createClass({
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
-                sendResultsEmail={this.props.sendResultsEmail}
+                sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />
         );
@@ -297,10 +299,12 @@ const CollectionsContainer = React.createClass({
 
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
-        let shareUrl;
-        if (this.props.stores.tagShares[tagId]) {
-            shareUrl = this.props.stores.tagShares[tagId].url;
-        }
+        const shareUrl = (tagId in this.props.stores.tagShares)?
+            this.props.stores.tagShares[tagId].url:
+            undefined;
+
+        const emailThumbnails = _.flatten([right, smallThumbnails]);
+        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
         return (
             <VideoCollection
@@ -320,10 +324,26 @@ const CollectionsContainer = React.createClass({
                 deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
-                sendResultsEmail={this.props.sendResultsEmail}
+                sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
             />
        );
+    },
+
+    bindSendResultsEmail: function(gender, age, tagId, thumbnails) {
+
+        // Bind array of the top four thumbnails for emails.
+        const fourThumbnails = thumbnails.slice(0, 4)
+        // TODO deal with fewer than four thumbnails.
+        while (fourThumbnails.length < 4) {
+            // Filling in with something guaranteed.
+            fourThumbnails.push(thumbnails[0]);
+        }
+
+        return this.props.sendResultsEmail?
+            this.props.sendResultsEmail.bind(
+                null, gender, age, tagId, fourThumbnails):
+            () => {};
     },
 
     buildVideoProcessingComponent(tagId) {
