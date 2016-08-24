@@ -73,7 +73,7 @@ const VideoCollection = React.createClass({
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-                videoId={self.props.tagId}
+                videoId={self.props.videoId}
             />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
