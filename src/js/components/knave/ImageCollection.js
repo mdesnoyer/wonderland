@@ -105,10 +105,10 @@ const ImageCollection = React.createClass({
             return [];
         }
         return [
-            <AddControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <ShareControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(4)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(6)}} />,
+            <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
+            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <AddControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
     render: function() {

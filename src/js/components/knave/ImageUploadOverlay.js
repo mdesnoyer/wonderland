@@ -73,7 +73,7 @@ var ImageUploadOverlay = React.createClass({
                             onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
                         />
                     </div>
-                    { self.state.isNextClicked ? (
+                    { self.state.isNextClicked || self.props.isAddPanel ? (
                         <div>
                         { 
                             !isMobile ? (

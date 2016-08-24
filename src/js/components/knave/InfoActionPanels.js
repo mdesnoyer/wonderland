@@ -10,6 +10,7 @@ import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
 import T from '../../modules/translation';
+import UploadForm from '../knave/UploadForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -469,6 +470,9 @@ export const DeleteControl = React.createClass({
 
 export const AddPanel = React.createClass({
     render: function() {
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
+            'xxCollectionAction';
         return (
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
@@ -481,8 +485,9 @@ export const AddPanel = React.createClass({
                     ) : null
                 }
                 <div className="xxText">
-                    <p>{T.get('copy.videoContent.delete')}</p>
+                    
                 </div>
+                <UploadForm isAddPanel={true} />
                 <div className="xxCollectionAction-buttons">
                     <button
                         className="xxButton"
@@ -490,11 +495,6 @@ export const AddPanel = React.createClass({
                         data-action-label="info"
                         onClick={this.props.cancelClickHandler}
                         >{T.get('cancel')}</button>
-                    <button
-                        className="xxButton xxButton--highlight"
-                        type="button"
-                        onClick={this.props.deleteCollection}
-                    >{T.get('delete')}</button>
                 </div>
             </div>
         );

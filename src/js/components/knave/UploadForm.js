@@ -115,6 +115,27 @@ var UploadForm = React.createClass({
         if (self.state.isOpenPhoto || self.state.isOpenVideo) {
             className.push('has-dialog');
         };
+        if (self.props.isAddPanel) {
+            return (
+                <ImageUploadOverlay
+                    error={self.state.error || null}
+                    key="upload-photo"
+                    formatData={self.formatData}
+                    grabDropBox={self.grabDropBox}
+                    sendLocalPhotos={self.sendLocalPhotos}
+                    sendFormattedData={self.sendFormattedData}
+                    toggleOpen={self.toggleOpen}
+                    photoUploadMode={self.state.photoUploadMode}
+                    photoUploadCount={self.state.photoUploadCount}
+                    photoErrorCount={self.state.photoErrorCount}
+                    updateField={self.updateField}
+                    photoCollectionName={self.state.photoCollectionName}
+                    photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
+                    numberUploadedCount={self.state.numberUploadedCount}
+                    isAddPanel={self.props.isAddPanel}
+                />
+            )
+        }
         return (
             <div className={className.join(' ')}>
                 <OverLayMessage 
