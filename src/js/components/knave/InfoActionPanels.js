@@ -30,7 +30,8 @@ export const InfoDemoLiftPanel = React.createClass({
         // The value to show in the Lift component
         liftValue: PropTypes.number,
         isSoloImage: React.PropTypes.bool,
-        handleRefiltersPanelClick: React.PropTypes.func
+        handleRefiltersPanelClick: React.PropTypes.func,
+        isRefiltering: React.PropTypes.bool
     },
     getDefaultProps: function() {
         return {
@@ -50,6 +51,7 @@ export const InfoDemoLiftPanel = React.createClass({
                     selectedDemographic={this.props.selectedDemographic}
                     displayRefilterButton={this.props.displayRefilterButton} 
                     handleRefiltersPanelClick={self.props.handleRefiltersPanelClick}
+                    isRefiltering={self.props.isRefiltering}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}
@@ -88,7 +90,7 @@ export const InfoLiftPanel = React.createClass({
 export const FilterPanel = React.createClass({
     propTypes: {
         cancelClickHandler: React.PropTypes.func,
-        videoId: React.PropTypes.string
+        videoId: React.PropTypes.string,
     },
     render: function() {
         var self = this;

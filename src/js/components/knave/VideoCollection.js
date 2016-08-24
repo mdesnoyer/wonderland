@@ -24,7 +24,9 @@ import {LoadActions} from '../../stores/CollectionStores';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const VideoCollection = React.createClass({
-
+    propTypes: {
+        isRefiltering: React.PropTypes.bool
+    },
     getInitialState: function() {
         return {
             // What panel to display, based on user input by
@@ -67,6 +69,7 @@ const VideoCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
+                isRefiltering={self.props.isRefiltering}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}

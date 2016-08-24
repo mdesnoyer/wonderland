@@ -283,9 +283,17 @@ const CollectionsContainer = React.createClass({
 
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
+        let isRefiltering = false;
 
+        console.log(video.state);
         if (['processing', 'failed'].includes(video.state)) {
-            return this.buildVideoProcessingComponent(tagId);
+            debugger;
+            if (tag.thumbnail_ids.length === 0) {
+                return this.buildVideoProcessingComponent(tagId);    
+            }
+            else {
+                isRefiltering = true;
+            }
         }
 
         const demo = this.getSelectedDemographic(tagId);
@@ -328,6 +336,7 @@ const CollectionsContainer = React.createClass({
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
+                isRefiltering={isRefiltering}
             />
        );
     },
