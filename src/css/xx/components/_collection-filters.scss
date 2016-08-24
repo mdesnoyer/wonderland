@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxCollectionFiltersToggle {
+.xxCollectionFilterToggle {
     position: relative;
     z-index: 1;
     color: $accent-color;
@@ -40,7 +40,7 @@
     }
 
     &:hover {
-        .xxCollectionFiltersToggle-label {
+        .xxCollectionFilterToggle-label {
             color: $base-color;
         }
 
@@ -93,7 +93,7 @@
     }
 }
 
-.xxCollectionFiltersToggle-label {
+.xxCollectionFilterToggle-label {
     position: absolute;
     top: 7px;
     right: 100%;
@@ -104,7 +104,7 @@
     pointer-events: none;
     transition: color $default-transition;
 
-    .xxCollectionFiltersToggle--countdown & {
+    .xxCollectionFilterToggle--countdown & {
         min-width: 80px;
         height: 27px;
         top: 0;
