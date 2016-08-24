@@ -104,7 +104,10 @@ var ZoomThumbnail = React.createClass({
                 </div>
                 <div className="xxImageZoom-content">
                     {self.getValenceDisplay()}
-                    <Lift displayThumbLift={self.props.displayThumbLift}/>
+                    <Lift
+                        displayThumbLift={self.props.displayThumbLift}
+                        isSoloImage={self.props.total === 1}
+                    />
                     <nav className="xxImageZoom-nav">
                         <a
                             href="#"
