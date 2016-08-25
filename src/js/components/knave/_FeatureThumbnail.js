@@ -16,15 +16,22 @@ const propTypes = {
     onClick: PropTypes.func,
 };
 
+
+
 function FeatureThumbnail(props) {
+    const wrapperClass = props.isSoloImage ? 'xxThumbnailSolorBlurWrapper' : '';
+    const soloMessage = props.isSoloImage ? <div className="xxThumbnailSolorMessage"> Add more images by clicking the plus sign to the right </div> : null;
     return (
         <div className="xxCollectionImages-featured">
             <h2 className="xxCollection-subtitle">
                 {props.title}
             </h2>
-            <Thumbnail
-                {...props}
-            />
+                {soloMessage}
+            <div className={wrapperClass}>
+                <Thumbnail
+                    {...props}
+                />
+            </div>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
@@ -17,6 +17,7 @@ import {AddActions, LoadActions} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
+import ImageUploadPanel from './ImageUploadPanel';
 import OverLayMessage from './OverLayMessage'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -115,6 +116,27 @@ var UploadForm = React.createClass({
         if (self.state.isOpenPhoto || self.state.isOpenVideo) {
             className.push('has-dialog');
         };
+        if (self.props.isAddPanel) {
+            return (
+                <ImageUploadPanel
+                    error={self.state.error || null}
+                    key="upload-photo"
+                    formatData={self.formatData}
+                    grabDropBox={self.grabDropBox}
+                    sendLocalPhotos={self.sendLocalPhotos}
+                    sendFormattedData={self.sendFormattedData}
+                    toggleOpen={self.toggleOpen}
+                    photoUploadMode={self.state.photoUploadMode}
+                    photoUploadCount={self.state.photoUploadCount}
+                    photoErrorCount={self.state.photoErrorCount}
+                    updateField={self.updateField}
+                    photoCollectionName={self.state.photoCollectionName}
+                    photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
+                    numberUploadedCount={self.state.numberUploadedCount}
+                    cancelClickHandler={self.props.cancelClickHandler}
+                />
+            );
+        }
         return (
             <div className={className.join(' ')}>
                 <OverLayMessage 
@@ -343,14 +365,15 @@ var UploadForm = React.createClass({
     },
     sendFormattedData: function(formData) {
         var self = this,
+            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
             options = {
                 data: formData,
                 processData : false,
                 contentType: 'multipart/form-data'
             }
         ;
-        self.POST('thumbnails', options)
-            .then(function(res) {
+        self.POST(address, options)
+           .then(function(res) {
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
@@ -361,6 +384,8 @@ var UploadForm = React.createClass({
                                 photoUploadMode:'success',
                                 error: null 
                                 }, function() {
+                                    // if add panel load the new thumbnails asssociated with the tag
+                                    self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
                                     setTimeout(function() {
                                     self.setState({ photoUploadMode:'initial' });
                                     }, 3000)
@@ -368,17 +393,18 @@ var UploadForm = React.createClass({
                     }
                 });
             })
-            .catch(function(err) {
-                self.setState({
-                photoUploadMode:'initial'
-                },  function() {
-                    self.throwUploadError(err);
-                });
-            }); 
+           .catch(function(err) {
+               self.setState({
+               photoUploadMode:'initial'
+               },  function() {
+                   self.throwUploadError(err);
+               });
+           }); 
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
             dropBoxUrlsArray = urls.map(function(a) {return a.link;}).join(","),
+            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
             options = {
                 data: {
                     url: dropBoxUrlsArray
@@ -390,7 +416,7 @@ var UploadForm = React.createClass({
             photoUploadCount: urls.length,
             numberUploadedCount: Math.round(urls.length) / 2
             }, function() {
-                self.POST('thumbnails', options)
+                self.POST(address, options)
                 .then(function(res) {
                     var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                     self.setState({
@@ -398,8 +424,12 @@ var UploadForm = React.createClass({
                         photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                         error: null 
                     },  function() {
+                        if (self.props.isAddPanel) {
+                            LoadActions.loadTags([self.props.tagId]);
+                            self.setState(self.getInitialState());
+                        };
                         setTimeout( function() {
-                            self.setState({ photoUploadMode:'initial' });
+                        self.setState({ photoUploadMode:'initial' });
                         }, 2000);
                     });
                 })
@@ -431,20 +461,18 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-            self.POST('tags', options)
-                .then(function(res) {
-                    // TODO Refactor.
-                    if (self.props.onboardingAction) {
-                        self.props.onboardingAction('col');
-                    }
-                    else {
-                        LoadActions.loadFromSearchResult({
-                            items: [{tag_id: res.tag_id}]
-                        });
-                        self.setState(self.getInitialState());                        
-                    }
-
-                })
+        self.POST('tags', options)
+            .then(function(res) {
+                if (self.props.onboardingAction) {
+                    self.props.onboardingAction('col');
+                }
+                else {
+                    LoadActions.loadFromSearchResult({
+                        items: [{tag_id: res.tag_id}]
+                    });
+                    self.setState(self.getInitialState());                        
+                }
+            })
     },
     grabRefreshToken: function() {
         var self = this;
@@ -452,22 +480,24 @@ var UploadForm = React.createClass({
             url: CONFIG.AUTH_HOST + 'refresh_token',
             data: JSON.stringify({
                 token : SESSION.state.refreshToken
-            }),
+        }),
             contentType: 'application/json',
             method: 'POST',
             crossDomain: true,
             type: 'json'
         })
-            .then(function (res) {
-                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
-            })
-            .catch(function (err) {
-                SESSION.end();
-            });
+        .then(function (res) {
+            SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
+        })
+        .catch(function (err) {
+            SESSION.end();
+        });
     },
     propTypes: {
         onboardingAction: React.PropTypes.func,
-        onboardingError: React.PropTypes.func
+        onboardingError: React.PropTypes.func,
+        cancelClickHandler: React.PropTypes.func,
+        isAddPanel: React.PropTypes.bool
     }
 });
 

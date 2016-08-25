@@ -10,6 +10,7 @@ import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
 import T from '../../modules/translation';
+import UploadForm from '../knave/UploadForm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -466,3 +467,47 @@ export const DeleteControl = React.createClass({
         );
     }
 });
+
+export const AddPanel = React.createClass({
+    render: function() {
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
+            'xxCollectionAction';
+        return (
+            <div className={collectionClassName}>
+            <h2 className="xxTitle">{T.get('copy.videoContent.add.title')}</h2>
+                {
+                    this.props.isMobile ? (
+                        <div
+                            className="xxOverlay-close"
+                            data-action-label="info">
+                        </div>
+                    ) : null
+                }
+                <UploadForm 
+                    isAddPanel={true} 
+                    tagId={this.props.tagId}
+                    cancelClickHandler={this.props.cancelClickHandler}
+                />
+            </div>
+        );
+    }
+})
+
+export const AddControl = React.createClass({
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.videoContent.add.tooltip')}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="add"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-add">
+                <span>{T.get('copy.videoContent.add.tooltip')}</span>
+            </a>
+        );
+    }
+})
+
+

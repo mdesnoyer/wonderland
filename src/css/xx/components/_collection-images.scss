@@ -47,7 +47,35 @@ $mobile-all-images-gutter-width: 3px;
             margin-left: 0;
         }
     }
+
 }
+
+.xxThumbnailSolorMessage {
+    z-index: 1000;
+    position: absolute;
+    text-align: center;
+    margin-top: 10%;
+    width: 21%;
+    margin-left: 5%;
+    font-size: 1em;
+    font-weight: bold;
+    color: $white;
+    text-shadow: 2px 2px 8px black;
+        @include breakpoint-mobile {
+            width: 25%;
+            margin-left: 10%;
+            font-size: 1.5em;
+    }
+} 
+
+.xxThumbnailSolorBlurWrapper {
+    pointer-events:none;
+    filter: url(blur.svg#blur);
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+}
+
 
 .xxCollectionImages-all {
     clear: both;
