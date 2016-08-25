@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import _ from 'lodash';
 
@@ -10,111 +10,144 @@ import {
     ThumbnailList,
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
-    ShowMoreLessThumbnailList} from './ThumbnailList';
+    ShowMoreLessThumbnailList } from './ThumbnailList';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const BaseCollection = React.createClass({
+const propTypes = {
 
-    propTypes: {
+    // Left and right large thumbnail
+    leftFeatureThumbnail: PropTypes.object.isRequired,
+    rightFeatureThumbnail: PropTypes.object.isRequired,
 
-        // Left and right large thumbnail
-        leftFeatureThumbnail: PropTypes.object.isRequired,
-        rightFeatureThumbnail: PropTypes.object.isRequired,
+    // A map of T get key string to T get key
+    // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
+    // overrides "Show More" with "View Low Scores"
+    translationOverrideMap: PropTypes.object,
 
-        // A map of T get key string to T get key
-        // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
-        // overrides "Show More" with "View Low Scores"
-        translationOverrideMap: PropTypes.object,
+    infoActionPanels: PropTypes.array.isRequired,
+    infoActionControls: PropTypes.array.isRequired,
 
-        infoActionPanels: PropTypes.array.isRequired,
-        infoActionControls: PropTypes.array.isRequired,
+    // List of thumbnails to be displayed as small items
+    smallThumbnails: PropTypes.array.isRequired,
 
-        // List of thumbnails to be displayed as small items
-        smallThumbnails: PropTypes.array.isRequired,
+    // Handlers for image events
+    onThumbnailClick: PropTypes.func,
+    setLiftThumbnailId: PropTypes.func,
 
-        // Handlers for image events
-        onThumbnailClick: PropTypes.func,
-        setLiftThumbnailId: PropTypes.func,
+    // class name for the wrapper around the
+    // component defaults to xxCollection
+    wrapperClassName: PropTypes.string,
 
-        // class name for the wrapper around the
-        // component defaults to xxCollection
-        wrapperClassName: PropTypes.string
-    },
+    selectedPanel: PropTypes.number.isRequired,
 
-    getDefaultProps: function() {
-        return {
-            translationOverrideMap: {},
-            wrapperClassName: 'xxCollection',
-            onThumbnailClick: () => {},
-            setLiftThumbnailId: () => {}
-        }
-    },
+    smallBadThumbnails: PropTypes.array,
+};
 
-    getInitialState: function() {
-        return {
-            smallThumbnailRows: 1
-        };
-    },
+const defaultProps = {
+    translationOverrideMap: {},
+    wrapperClassName: 'xxCollection',
+    onThumbnailClick: () => {},
+    setLiftThumbnailId: () => {},
+};
 
-    buildThumbnailList: function() {
 
-        // TODO Extract 6 (number per row) and 3 (number of rows added per ShowMore)
-        // to constants. This is in some way implemented in CSS.
+class BaseCollection extends React.Component {
 
-        const self = this;
-        const onMore = (e) => {
-            e.preventDefault();
-            self.setState({
-                smallThumbnailRows: self.state.smallThumbnailRows + 3
-            });
-        };
-        const onLess = (e) => {
-            e.preventDefault();
-            self.setState({
-                smallThumbnailRows: 1
-            });
-        };
+    constructor(props) {
+        super(props);
+        this.state = { smallThumbnailRows: 1 };
 
+        this.onLeftThumbnailClick = this.onLeftThumbnailClick.bind(this);
+        this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
+        this.onMore = this.onMore.bind(this);
+        this.onLess = this.onLess.bind(this);
+
+        this.setDefaultLiftThumbnail = this.setDefaultLiftThumbnail.bind(this);
+        this.setLiftThumbnailToLeft = this.setLiftThumbnailToLeft.bind(this);
+        this.setLiftThumbnailToRight = this.setLiftThumbnailToRight.bind(this);
+    }
+
+    onLeftThumbnailClick() {
+        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
+        this.props.onThumbnailClick(leftThumbnailId);
+    }
+
+    onRightThumbnailClick() {
+        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
+        this.props.onThumbnailClick(rightThumbnailId);
+    }
+
+    // TODO Extract 6 (number per row) and 3 (number of rows added per ShowMore)
+    // to constants. This is in some way implemented in CSS.
+    onMore(e) {
+        e.preventDefault();
+        this.setState({
+            smallThumbnailRows: this.state.smallThumbnailRows + 3,
+        });
+    }
+
+    onLess(e) {
+        e.preventDefault();
+        this.setState({
+            smallThumbnailRows: 1,
+        });
+    }
+
+    setDefaultLiftThumbnail() {
+        this.props.setLiftThumbnailId(null);
+    }
+
+    setLiftThumbnailToLeft() {
+        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
+        this.props.setLiftThumbnailId.bind(leftThumbnailId);
+    }
+
+    setLiftThumbnailToRight() {
+        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
+        this.props.setLiftThumbnailId(rightThumbnailId);
+    }
+
+    getThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
 
         // 2 cases for video:
         // Expanded: ShowLess with more than one row
         // Initial: ShowMore with one row
-        if(!_.isEmpty(self.props.smallBadThumbnails)) {
-            if(rows > 1) {
+        if (!_.isEmpty(this.props.smallBadThumbnails)) {
+            if (rows > 1) {
                 // Constrain good thumbnails to 5.
-                const truncatedSmallThumbnails = self.props.smallThumbnails.slice(0, 5);
+                const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
                 const thumbnails = _.flatten([
                     truncatedSmallThumbnails,
-                    self.props.smallBadThumbnails.slice(0, 6)
+                    this.props.smallBadThumbnails.slice(0, 6),
                 ]);
                 const numberToDisplay = truncatedSmallThumbnails.length;
-                return <ShowLessThumbnailList
+                return (<ShowLessThumbnailList
                     thumbnails={thumbnails}
                     numberToDisplay={numberToDisplay}
                     // TODO would like to remove the need for the T.get
                     lessLabel={T.get('action.showLess')}
-                    onLess={onLess}
-                    onMouseEnter={self.props.setLiftThumbnailId}
-                    onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                    onClick={self.props.onThumbnailClick}
+                    onLess={this.onLess}
+                    onMouseEnter={this.props.setLiftThumbnailId}
+                    onMouseLeave={this.setDefaultLiftThumbnail}
+                    onClick={this.props.onThumbnailClick}
                     className="xxThumbnail--lowLight"
-                />;
+                />);
             }
-            return <ShowMoreThumbnailList
-                thumbnails={self.props.smallThumbnails}
+            return (<ShowMoreThumbnailList
+                thumbnails={this.props.smallThumbnails}
                 numberToDisplay={5} // N rows of 6, minus one for each button.
                 moreLabel={T.get('action.showMore')}
-                onMore={onMore}
-                onMouseEnter={self.props.setLiftThumbnailId}
-                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                onClick={self.props.onThumbnailClick}
-            />;
+                onMore={this.onMore}
+                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.props.onThumbnailClick}
+            />);
         }
 
         // 4 cases:
@@ -126,68 +159,64 @@ const BaseCollection = React.createClass({
         //   in right-hand spot in last row
 
         // There's fewer than or exactly one row of thumbs: no button.
-        if(self.props.smallThumbnails.length <= 6) {
-            return <ThumbnailList
-                thumbnails={self.props.smallThumbnails}
-                onMouseEnter={self.props.setLiftThumbnailId}
-                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                onClick={self.props.onThumbnailClick}
-            />;
+        if (this.props.smallThumbnails.length <= 6) {
+            return (<ThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.props.onThumbnailClick}
+            />);
         // There's fewer than the number of display rows: put ShowLess in slot 6.
         // (Add one to length for the ShowLess button.)
-        } else if (self.props.smallThumbnails.length + 1 <= rows*6) {
-            return <ShowLessThumbnailList
-                thumbnails={self.props.smallThumbnails}
-                onLess={onLess}
-                onMouseEnter={self.props.setLiftThumbnailId}
-                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                onClick={self.props.onThumbnailClick}
-            />;
+        } else if (this.props.smallThumbnails.length + 1 <= rows * 6) {
+            return (<ShowLessThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                onLess={this.onLess}
+                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.props.onThumbnailClick}
+            />);
         // There's more than 6 and they haven't shown more at all.
-        } else if (rows == 1) {
-            return <ShowMoreThumbnailList
-                thumbnails={self.props.smallThumbnails}
+        } else if (rows === 1) {
+            return (<ShowMoreThumbnailList
+                thumbnails={this.props.smallThumbnails}
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
-                onMore={onMore}
-                onMouseEnter={self.props.setLiftThumbnailId}
-                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                onClick={self.props.onThumbnailClick}
-            />
+                onMore={this.onMore}
+                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.props.onThumbnailClick}
+            />);
         // There's more thumbs than space to display them and they've expanded
         // once or more: put ShowMore and ShowLess.
-        } else {
-            return <ShowMoreLessThumbnailList
-                thumbnails={self.props.smallThumbnails}
-                numberToDisplay={rows * 6 - 2} // N rows of 6, minus one for each button.
-                onMore={onMore}
-                onLess={onLess}
-                onMouseEnter={self.props.setLiftThumbnailId}
-                onMouseLeave={self.props.setLiftThumbnailId.bind(null, null)}
-                onClick={self.props.onThumbnailClick}
-            />
         }
-    },
+        return (<ShowMoreLessThumbnailList
+            thumbnails={this.props.smallThumbnails}
+            numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
+            onMore={this.onMore}
+            onLess={this.onLess}
+            onMouseEnter={this.props.setLiftThumbnailId}
+            onMouseLeave={this.setDefaultLiftThumbnail}
+            onClick={this.props.onThumbnailClick}
+        />);
+    }
 
     // Wraps calls to T.get with any keys in
     // this.props.translationOverrideMap.
     //
     // Returns function that removes the wrapper.
-    applyTranslationOverride: function() {
-
+    applyTranslationOverride() {
         const mapped = this.props.translationOverrideMap;
         const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key) => {
-            return get(key in mapped? mapped[key]: key);
-        });
+        T.get = _.wrap(T.get, (get, key) =>
+            get(key in mapped ? mapped[key] : key));
 
         return () => { T.get = originalTGet; };
-    },
+    }
 
-    render: function() {
+    render() {
         // Let mapped labels be overriden.
         const unapplyOverride = this.applyTranslationOverride();
 
-        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
         // The main left and right feature thumbnails
         const left = (
             <FeatureThumbnail
@@ -195,20 +224,20 @@ const BaseCollection = React.createClass({
                 score={this.props.leftFeatureThumbnail.neon_score}
                 className="xxThumbnail--lowLight"
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
-                onMouseEnter={this.props.setLiftThumbnailId.bind(null, leftThumbnailId)}
-                onMouseLeave={this.props.setLiftThumbnailId.bind(null, null)}
-                onClick={this.props.onThumbnailClick.bind(null, leftThumbnailId)}
+                onMouseEnter={this.setLiftThumbnailToLeft}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onLeftThumbnailClick}
             />
         );
-        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
+
         const right = (
             <FeatureThumbnail
                 title={T.get('copy.bestThumbnail')}
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                onMouseEnter={this.props.setLiftThumbnailId.bind(null, rightThumbnailId)}
-                onMouseLeave={this.props.setLiftThumbnailId.bind(null, null)}
-                onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
+                onMouseEnter={this.setLiftThumbnailToRight}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onRightThumbnailClick}
             />
         );
 
@@ -217,7 +246,7 @@ const BaseCollection = React.createClass({
                 <div className="xxCollectionImages">
                     {left}
                     {right}
-                    {this.buildThumbnailList()}
+                    {this.getThumbnailList()}
                 </div>
                 <div className="xxCollection-content">
                     <InfoActionContainer
@@ -234,7 +263,10 @@ const BaseCollection = React.createClass({
 
         return result;
     }
-});
+}
+
+BaseCollection.propTypes = propTypes;
+BaseCollection.defaultProps = defaultProps;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
