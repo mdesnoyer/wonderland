@@ -20,7 +20,7 @@ const propTypes = {
     onboardingState: PropTypes.string,
     // For dynamic tooltips
     tooltipText: PropTypes.string,
-    children: PropTypes.array.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 const childContextTypes = {
