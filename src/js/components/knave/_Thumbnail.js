@@ -36,6 +36,7 @@ function Thumbnail(props) {
         xxThumbnail--highLight xxThumbnail--neon ${props.className}`;
     return (
         <a
+            href="#"
             className={className}
             data-score={props.score}
             onClick={props.onClick}

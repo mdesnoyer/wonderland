@@ -66,7 +66,7 @@ const ImageCollection = React.createClass({
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
-                    isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
+                    isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
                 />
             ];
         }
@@ -78,7 +78,7 @@ const ImageCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
-                isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
+                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
             />,
             <FilterPanel />,
             <SharePanel
@@ -140,6 +140,7 @@ const ImageCollection = React.createClass({
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.setLiftThumbnailId}
+                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
             />
         );
     },
