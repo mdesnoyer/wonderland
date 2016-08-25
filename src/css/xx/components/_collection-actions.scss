@@ -67,4 +67,13 @@
     }
 }
 
+.xxCollectionActions-add {
+    line-height: 16px;
+
+    &::after {
+        @include font-awesome('f055');
+        font-size: 16px;
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

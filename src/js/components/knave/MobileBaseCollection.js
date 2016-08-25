@@ -155,6 +155,7 @@ const MobileBaseCollection = React.createClass({
                 score={this.props.rightFeatureThumbnail.neon_score}
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
                 onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
+                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
             />
         );
 

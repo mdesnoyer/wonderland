@@ -333,6 +333,7 @@ var UTILS = {
     CONFIRM_MANDRILL_SLUG: 'support-email',
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
+    IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
     VERSION: '1.9.1',
     DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,
@@ -364,7 +365,7 @@ var UTILS = {
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
     FACEBOOK_APP_ID: '315978068791558',
-    MAX_IMAGE_FILE_SIZE: 2000000,
+    MAX_IMAGE_FILE_SIZE: 2500000,
     MAX_IMAGE_CHUNK_SIZE: 10000000,
     MAX_IMAGE_FILES_ALLOWED: 100,
     UPLOAD_TRANSITION: 200,

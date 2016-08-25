@@ -269,6 +269,13 @@ $zindex-upload-drag-and-drop: 1;
     background: $white;
 
 }
+.xxUploadDialog-drag-drop-panel {
+    float: right;
+    position: relative;
+    width: 100%;
+    min-width: ($page-min-width - $gutter-width) * 1/5 + $gutter-width;
+    background: $white;
+}
 
 .xxUploadDialog-block {
     margin: 0 auto;
@@ -289,6 +296,9 @@ $zindex-upload-drag-and-drop: 1;
         background: transparent;
         pointer: none;
         border: none; 
+     }
+     & > .xxButton-cancel {
+        width: 50%;
      }
      & > .xxInputText-upload {
         width: 55%;
