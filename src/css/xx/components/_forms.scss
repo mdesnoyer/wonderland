@@ -299,6 +299,13 @@
     }
 
     &--highlight {
+
+        @include breakpoint-mobile {
+            border-color: $accent-color !important;
+            background: $accent-color !important;
+            color: $white !important;
+        }
+
         &,
         &[disabled],
         &[disabled]:hover {
