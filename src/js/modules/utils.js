@@ -333,6 +333,7 @@ var UTILS = {
     CONFIRM_MANDRILL_SLUG: 'support-email',
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
+    IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
     VERSION: '1.9.1',
     DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,

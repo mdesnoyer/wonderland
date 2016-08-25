@@ -167,6 +167,13 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.api.heading': 'API Documentation',
             'copy.api.body': 'TODO',
 
+            'copy.email.oneResultLiftString': 'Once you upload another image, we will start making lift calculations. These calcuations will compare each image against the lowest ranking image of the collection.', 
+            'copy.email.oneResultButtonString': 'View Result', 
+            'copy.email.oneResultSeeMoreString': 'Check out your image, and learn about why your image got the score it did.', 
+            'copy.email.multipleResultsLiftString': 'We predict that your top-scoring photo will get @lift more clicks than the lowest-scoring photo in your collection. See the NeonScores for your other photos, and learn about why your photos got the scores they did.',
+            'copy.email.multipleResultsButtonString': 'Show All Results', 
+            'copy.email.multipleResultsSeeMoreString': 'See the NeonScores for your other images, and learn about why your images got the scores they did.', 
+
             'copy.telemetry.title': 'Telemetry',
             'copy.telemetry.heading': 'Telemetry',
             'copy.telemetry.body': 'TODO',
