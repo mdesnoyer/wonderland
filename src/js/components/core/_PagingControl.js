@@ -19,6 +19,8 @@ const propTypes = {
 
 class PagingControl extends React.Component {
 
+    static displayName = 'PagingControl'
+
     constructor(props) {
         super(props);
         this.handleKeyEvent = this.handleKeyEvent.bind(this);
@@ -79,10 +81,11 @@ class PagingControl extends React.Component {
         }
     }
 
-    handleNav(change) {
+    handleNav(change, ...rest) {
+        const self = this;
         window.scrollTo(0, 0);
-        TRACKING.sendEvent(this, [change], this.props.currentPage);
-        this.props.changeCurrentPage(change);
+        TRACKING.sendEvent(self, rest, self.props.currentPage);
+        self.props.changeCurrentPage(change);
     }
 
     render() {

@@ -94,8 +94,8 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
-        Search.load(2, true);
-        Search.load(UTILS.RESULTS_PAGE_SIZE);
+        const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
+        Search.load(2, true, callback);
     },
 
     updateState: function() {
@@ -117,10 +117,14 @@ const CollectionsMainPage = React.createClass({
     loadMoreFromSearch(useCurrentPage=true) {
         // Queue another page to load:
         // use +2 here: +1 to offset 0-indexing of page, +1 to queue next.
-        if(useCurrentPage) {
-            Search.load((2 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        const count = useCurrentPage ?
+            this.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
+            TagStore.count();
+
+        if(this.state.searchQuery) {
+            Search.loadWithQuery(count, this.state.searchQuery);
         } else {
-            Search.load(TagStore.count() + 2 * UTILS.RESULTS_PAGE_SIZE);
+            Search.load(count);
         }
     },
 
@@ -345,15 +349,16 @@ const CollectionsMainPage = React.createClass({
         const self = this;
         const searchQuery = e.target.value.trim();
         if (!searchQuery) {
-            FilteredTagStore.reset();
+            FilteredTagStore.resetFilter();
         } else {
-            FilteredTagStore.filter = (tag) => {
+            FilteredTagStore.setFilter(tag => {
                 return tag.hidden !== true && self.filterOnTitle(searchQuery, tag);
-            }
+            });
         }
         self.setState({
             searchQuery,
-            selectedTags: FilteredTagStore.getAll()
+            currentPage: 0,
+            selectedTags: FilteredTagStore.getAll(),
         })
     },
 
