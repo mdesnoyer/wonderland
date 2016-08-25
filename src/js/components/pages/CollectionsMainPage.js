@@ -1,7 +1,5 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
-import {findDOMNode} from 'react-dom'
 
 import _ from 'lodash';
 
@@ -28,7 +26,7 @@ import {
     TagShareStore,
     LoadActions,
     Dispatcher,
-    Search } from '../../stores/CollectionStores.js';
+    Search } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

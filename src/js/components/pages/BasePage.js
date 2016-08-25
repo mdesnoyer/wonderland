@@ -1,64 +1,73 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-import React, {PropTypes} from 'react';
-import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
+
+import Helmet from 'react-helmet';
 
 import SiteHeader from '../wonderland/SiteHeader';
-import Helmet from 'react-helmet';
-import Tooltips from '../Tooltips';
+import Tooltips from '../knave/Tooltips';
 import SiteFooter from '../wonderland/SiteFooter';
-
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const BasePage = React.createClass({
 
-    propTypes: {
-        // Window title.
-        title: PropTypes.string,
-        meta: PropTypes.array,
-        sidebarContent: PropTypes.string,
-        setSidebarContent: PropTypes.func,
-        onboardingState: PropTypes.string,
-        // For dynamic tooltips
-        tooltipText: PropTypes.string
-    },
+const propTypes = {
+    // Window title.
+    title: PropTypes.string,
+    meta: PropTypes.array,
+    sidebarContent: PropTypes.string,
+    setSidebarContent: PropTypes.func,
+    onboardingState: PropTypes.string,
+    // For dynamic tooltips
+    tooltipText: PropTypes.string,
+    children: PropTypes.array.isRequired,
+};
 
-    childContextTypes: {
-        isMobile: PropTypes.bool
-    },
+const childContextTypes = {
+    isMobile: PropTypes.bool,
+};
 
-    getInitialState: function () {
+const defaultProps = {
+    title: UTILS.buildPageTitle(T.get('neonScore')),
+    meta: [],
+    sidebarContent: null,
+};
+
+class BasePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { windowWidth: window.outerWidth };
+        this.handleWindowResize = this.handleWindowResize.bind(this);
+    }
+
+    getChildContext() {
         return {
-            windowWidth: window.outerWidth,
+            isMobile: UTILS.isMobile(),
         };
-    },
+    }
 
-    getDefaultProps: () => {
-        return {
-            title: UTILS.buildPageTitle(T.get('neonScore')),
-            meta: [],
-            sidebarContent: null
-        };
-    },
-
-    getChildContext: () => {
-        return {
-            isMobile: UTILS.isMobile()
-        };
-    },
-
-    componentDidMount: function() {
+    componentDidMount() {
         window.addEventListener('resize', this.handleWindowResize);
         this.handleWindowResize();
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         window.removeEventListener('resize', this.handleWindowResize);
-    },
+    }
 
-    handleWindowResize: function() {
+    getTitle() {
+        return UTILS.buildPageTitle(this.props.title);
+    }
+
+    getMeta() {
+        return this.props.meta.concat([{
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0',
+        }]);
+    }
+
+    handleWindowResize() {
         const windowWidth = window.outerWidth;
 
         if (this.state.windowWidth !== windowWidth) {
@@ -72,21 +81,12 @@ const BasePage = React.createClass({
         } else {
             document.documentElement.classList.remove('is-mobile');
         }
-    },
+    }
 
-    getTitle: function() {
-        return UTILS.buildPageTitle(this.props.title);
-    },
-
-    getMeta: function() {
-        return this.props.meta.concat([{
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1.0'
-        }]);
-    },
-
-    render: function() {
-        let pageStyle = this.props.onboardingState === 'processing' ? "xxPage is-processing" : "xxPage";
+    render() {
+        let pageStyle = this.props.onboardingState === 'processing' ?
+            'xxPage is-processing' :
+            'xxPage';
         return (
             <main className={pageStyle}>
                 <Helmet
@@ -97,12 +97,16 @@ const BasePage = React.createClass({
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
                 />
-                <Tooltips tooltipText={this.props.tooltipText}/>
+                <Tooltips tooltipText={this.props.tooltipText} />
                 {this.props.children}
                 {!this.props.onboardingState ? <SiteFooter /> : null}
             </main>
         );
     }
-});
+}
+
+BasePage.propTypes = propTypes;
+BasePage.defaultProps = defaultProps;
+BasePage.childContextTypes = childContextTypes;
 
 export default BasePage;
