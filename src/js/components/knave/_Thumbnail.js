@@ -8,6 +8,9 @@ const propTypes = {
     // The neon score [0-99]
     score: PropTypes.number,
 
+    // The accessibility title
+    alt: PropTypes.string,
+
     // Image url with appropriate dimensions
     src: PropTypes.string.isRequired,
 
@@ -39,7 +42,7 @@ function Thumbnail(props) {
         >
             <img
                 className="xxThumbnail-image"
-                alt={props.score}
+                alt={props.title + props.score}
                 src={props.src}
                 onMouseEnter={props.onMouseEnter}
                 onMouseLeave={props.onMouseLeave}
