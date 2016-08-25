@@ -106,28 +106,33 @@ const VideoCollection = React.createClass({
         ];
     },
 
-    render: function() {
+    getMobile: function() {
+        const overrideMap = {
+            'copy.worstThumbnail': 'copy.currentThumbnail',
+            'copy.bestThumbnail': 'copy.topNeonImage',
+        };
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                translationOverrideMap={overrideMap}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--photo'}
+                liftValue={this.getLiftValue()}
+            />
+        );
+    },
+
+    getDesktop: function() {
         // Apply Video component-specific labels.
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
-
         };
 
-        if (this.context.isMobile) {
-            return (
-                <MobileBaseCollection
-                    {...this.props}
-                    infoActionPanels={this.getPanels()}
-                    infoActionControls={this.getControls()}
-                    selectedPanel={this.state.selectedPanel}
-                    wrapperClassName={'xxCollection xxCollection--photo'}
-                    liftValue={this.getLiftValue()}
-                />
-            );
-        }
         return (
             <BaseCollection
                 {...this.props}
@@ -139,6 +144,13 @@ const VideoCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 

@@ -105,19 +105,21 @@ const ImageCollection = React.createClass({
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
         ];
     },
-    render: function() {
-        if (this.context.isMobile) {
-            return (
-                <MobileBaseCollection
-                    {...this.props}
-                    infoActionPanels={this.getPanels()}
-                    infoActionControls={this.getControls()}
-                    selectedPanel={this.state.selectedPanel}
-                    wrapperClassName={'xxCollection xxCollection--photo'}
-                    liftValue={this.getLiftValue()}
-                />
-            );
-        }
+
+    getMobile() {
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--photo'}
+                liftValue={this.getLiftValue()}
+            />
+        );
+    },
+
+    getDesktop() {
         return (
             <BaseCollection
                 {...this.props}
@@ -128,6 +130,13 @@ const ImageCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 
