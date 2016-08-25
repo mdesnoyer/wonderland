@@ -133,9 +133,9 @@ var UploadForm = React.createClass({
                     photoCollectionName={self.state.photoCollectionName}
                     photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                     numberUploadedCount={self.state.numberUploadedCount}
-                    isAddPanel={self.props.isAddPanel}
+                    cancelClickHandler={self.props.cancelClickHandler}
                 />
-            )
+            );
         }
         return (
             <div className={className.join(' ')}>
@@ -365,65 +365,46 @@ var UploadForm = React.createClass({
     },
     sendFormattedData: function(formData) {
         var self = this,
+            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
             options = {
                 data: formData,
                 processData : false,
                 contentType: 'multipart/form-data'
             }
         ;
-        debugger
-            // if (self.props.isAddPanel) {
-            //     options.data.tagId = self.props.tagId;
-                var address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
-            // }  
-            debugger
-               self.POST('thumbnails?tag_id=' + self.props.tagId, options)
-                   .then(function(res) {
-                    debugger
-                       // if (self.props.isAddPanel) {
-                       //      self.setState({
-                       //          photoUploadMode:'success',
-                       //          error: null 
-                       //          }, function() {
-                       //              debugger
-                                    
-                       //              setTimeout(function() {
-                       //              self.setState({ photoUploadMode:'initial' });
-                       //              }, 3000)
-                       //      });
-                       //  }
-                       //  else {
-                            var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+        self.POST(address, options)
+           .then(function(res) {
+                var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                self.setState({
+                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
+                    }, function() {
+                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
-                                photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                                numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
+                                photoUploadMode:'success',
+                                error: null 
                                 }, function() {
-                                    if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
-                                        self.setState({
-                                            photoUploadMode:'success',
-                                            error: null 
-                                            }, function() {
-                                                self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
-                                                setTimeout(function() {
-                                                self.setState({ photoUploadMode:'initial' });
-                                                }, 3000)
-                                        });                         
-                                }
-                            });
-     
-                        // }
-                                          })
-                   .catch(function(err) {
-                       self.setState({
-                       photoUploadMode:'initial'
-                       },  function() {
-                           self.throwUploadError(err);
-                       });
-                   }); 
+                                    // if add panel load the new thumbnails asssociated with the tag
+                                    self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
+                                    setTimeout(function() {
+                                    self.setState({ photoUploadMode:'initial' });
+                                    }, 3000)
+                            });                         
+                    }
+                });
+            })
+           .catch(function(err) {
+               self.setState({
+               photoUploadMode:'initial'
+               },  function() {
+                   self.throwUploadError(err);
+               });
+           }); 
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
             dropBoxUrlsArray = urls.map(function(a) {return a.link;}).join(","),
+            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
             options = {
                 data: {
                     url: dropBoxUrlsArray
@@ -435,8 +416,7 @@ var UploadForm = React.createClass({
             photoUploadCount: urls.length,
             numberUploadedCount: Math.round(urls.length) / 2
             }, function() {
-            var address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
-               self.POST('thumbnails?tag_id=' + self.props.tagId, options)
+                self.POST(address, options)
                 .then(function(res) {
                     var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                     self.setState({
@@ -444,7 +424,10 @@ var UploadForm = React.createClass({
                         photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                         error: null 
                     },  function() {
-                        self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
+                        if (self.props.isAddPanel) {
+                            LoadActions.loadTags([self.props.tagId]);
+                            self.setState(self.getInitialState());
+                        };
                         setTimeout( function() {
                         self.setState({ photoUploadMode:'initial' });
                         }, 2000);
@@ -478,20 +461,18 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-            self.POST('tags', options)
-                .then(function(res) {
-                    // TODO Refactor.
-                    if (self.props.onboardingAction) {
-                        self.props.onboardingAction('col');
-                    }
-                    else {
-                        LoadActions.loadFromSearchResult({
-                            items: [{tag_id: res.tag_id}]
-                        });
-                        self.setState(self.getInitialState());                        
-                    }
-
-                })
+        self.POST('tags', options)
+            .then(function(res) {
+                if (self.props.onboardingAction) {
+                    self.props.onboardingAction('col');
+                }
+                else {
+                    LoadActions.loadFromSearchResult({
+                        items: [{tag_id: res.tag_id}]
+                    });
+                    self.setState(self.getInitialState());                        
+                }
+            })
     },
     grabRefreshToken: function() {
         var self = this;
@@ -499,22 +480,24 @@ var UploadForm = React.createClass({
             url: CONFIG.AUTH_HOST + 'refresh_token',
             data: JSON.stringify({
                 token : SESSION.state.refreshToken
-            }),
+        }),
             contentType: 'application/json',
             method: 'POST',
             crossDomain: true,
             type: 'json'
         })
-            .then(function (res) {
-                SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
-            })
-            .catch(function (err) {
-                SESSION.end();
-            });
+        .then(function (res) {
+            SESSION.forceSet(res.access_token, res.refresh_token, res.account_ids[0]);
+        })
+        .catch(function (err) {
+            SESSION.end();
+        });
     },
     propTypes: {
         onboardingAction: React.PropTypes.func,
-        onboardingError: React.PropTypes.func
+        onboardingError: React.PropTypes.func,
+        cancelClickHandler: React.PropTypes.func,
+        isAddPanel: React.PropTypes.bool
     }
 });
 

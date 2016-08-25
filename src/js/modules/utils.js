@@ -363,7 +363,7 @@ var UTILS = {
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
     FACEBOOK_APP_ID: '315978068791558',
-    MAX_IMAGE_FILE_SIZE: 2000000,
+    MAX_IMAGE_FILE_SIZE: 2500000,
     MAX_IMAGE_CHUNK_SIZE: 10000000,
     MAX_IMAGE_FILES_ALLOWED: 100,
     UPLOAD_TRANSITION: 200,

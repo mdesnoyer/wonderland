@@ -417,7 +417,7 @@ export const DeletePanel = React.createClass({
             'xxCollectionAction';
         return (
             <div className={collectionClassName}>
-                <h2 className="xxTitle">Update collection</h2>
+                <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
                 {
                     this.props.isMobile ? (
                         <div
@@ -475,7 +475,7 @@ export const AddPanel = React.createClass({
             'xxCollectionAction';
         return (
             <div className={collectionClassName}>
-            <h2 className="xxTitle">Update collection</h2>
+            <h2 className="xxTitle">{T.get('copy.videoContent.add.title')}</h2>
                 {
                     this.props.isMobile ? (
                         <div
@@ -484,7 +484,11 @@ export const AddPanel = React.createClass({
                         </div>
                     ) : null
                 }
-                <UploadForm isAddPanel={true} tagId={this.props.tagId} />
+                <UploadForm 
+                    isAddPanel={true} 
+                    tagId={this.props.tagId}
+                    cancelClickHandler={this.props.cancelClickHandler}
+                />
             </div>
         );
     }
@@ -494,13 +498,13 @@ export const AddControl = React.createClass({
     render: function() {
         return (
             <a
-                data-tip={'add photo data tip'}
+                data-tip={T.get('copy.videoContent.add.tooltip')}
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="add"
                 onClick={this.props.handleClick}
                 className="xxCollectionActions-anchor xxCollectionActions-add">
-                <span>{'add photo'}</span>
+                <span>{T.get('copy.videoContent.add.tooltip')}</span>
             </a>
         );
     }
