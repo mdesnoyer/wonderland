@@ -257,17 +257,32 @@ const CollectionsMainPage = React.createClass({
         return _(this.state.tags)
             .orderBy(['created'], ['desc'])
             // Filter hidden and empty tags.
-            .filter(t => {return t.hidden !== true && t.thumbnail_ids.length > 0})
+            .filter(this.isShowableTag)
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
+    },
+
+    isShowableTag: function(tag) {
+	if (tag.hidden === true) {
+	    return false;
+        }
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            const video = this.state.videos[tag.video_id];
+            // We show a special placeholder component for these states.
+            if (['processing', 'failed'].includes(video.state)) {
+                return true;
+            }
+        }
+        return tag.thumbnail_ids.length > 0;
     },
 
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
+                let tagId = res.videos[0].tag_id; 
+                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
                 console.log(err)

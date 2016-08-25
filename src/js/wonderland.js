@@ -46,6 +46,7 @@ import DemoUploadPage from './components/pages/DemoUploadPage';
 import TRACKING from './modules/tracking';
 import CollectionsMainPage from './components/pages/CollectionsMainPage';
 import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
+import OnboardingUploadPage from './components/pages/OnboardingUploadPage';
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,7 +62,7 @@ render((
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
 
-        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} />
 
         {/* matches /signup and /signup/ */}
         {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}
@@ -108,12 +109,14 @@ render((
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
 
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
+        
+        <Route path={UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL} component={OnboardingUploadPage} />
+        <Route path={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} component={CollectionsMainPage} />
 
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />
         <Route path="/xx/onboarding/" component={XXOnboarding} />
         <Route path="/xx/blank/" component={XXBlankCanvas} />
-        <Route path="/collections/" component={CollectionsMainPage} />
 
         <Route path="*" component={NotFoundPage} />
 

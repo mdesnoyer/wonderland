@@ -24,7 +24,7 @@ var VideoProcessing = React.createClass({
     },
     componentWillReceiveProps: function(nextProps) {
         var self = this;
-        if (self.props.title !== nextProps.title && self.props.estimatedTimeRemaining !== nextProps.estimatedTimeRemaining) {
+        if (self.props.title !== nextProps.title && self.props.videoState === 'processing') {
             self.props.getVideoStatus(self.props.videoId);
         }
         else if ((self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) || (self.props.videoState !== nextProps.videoState)) {
