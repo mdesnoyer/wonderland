@@ -44,6 +44,7 @@ const _DEFAULT_LOCALE = 'en-US',
             none: 'None',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
+            'copy.searchBar.placeholder': 'Search on title',
 
             'action.signIn': 'Sign In',
             'action.signUp': 'Sign Up',

@@ -12,12 +12,14 @@ import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
 import BasePage from './BasePage';
+import SearchForm from '../core/SearchForm';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
     TagStore,
+    FilteredTagStore,
     VideoStore,
     ThumbnailStore,
     LiftStore,
@@ -37,6 +39,8 @@ const getStateFromStores = () => {
         //
         // Map of tag id to tag.
         tags: TagStore.getAll(),
+        // A submap of tags, of those results that are showable
+        selectedTags: FilteredTagStore.getAll(),
 
         // Map of video id to video.
         videos: VideoStore.getAll(),
@@ -77,6 +81,7 @@ const CollectionsMainPage = React.createClass({
             getStateFromStores(),
             {
                 currentPage: 0,
+                searchQuery: undefined,
                 tooltipText: undefined
             }
         );
@@ -100,10 +105,23 @@ const CollectionsMainPage = React.createClass({
     changeCurrentPage(change) {
         const self = this;
         const currentPage = self.state.currentPage + change
-        self.setState({currentPage});
+        self.setState({currentPage}, this.loadMoreFromSearch);
+
+    },
+
+    // Ask the search provider to get more results.
+    //
+    // If useCurrentPage, only load the page is near the end of the pages.
+    //
+    // If not, load more based on how many are in store.
+    loadMoreFromSearch(useCurrentPage=true) {
         // Queue another page to load:
         // use +2 here: +1 to offset 0-indexing of page, +1 to queue next.
-        Search.load((2 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        if(useCurrentPage) {
+            Search.load((2 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        } else {
+            Search.load(TagStore.count() + 2 * UTILS.RESULTS_PAGE_SIZE);
+        }
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -245,25 +263,26 @@ const CollectionsMainPage = React.createClass({
     },
 
     getShownIds: function() {
-
         // The size and offset into the list.
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
-        const offset = pageSize * (this.state.currentPage);
+        const offset = pageSize * this.state.currentPage;
 
         // Get the ordered array of all tag ids
         // and slice it to size.
-        return _(this.state.tags)
+        const ids = _(this.state.selectedTags)
             .orderBy(['created'], ['desc'])
-            // Filter hidden and empty tags.
-            .filter(this.isShowableTag)
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
+        if(ids.length < UTILS.RESULTS_PAGE_SIZE) {
+            this.loadMoreFromSearch(false)
+        }
+        return ids;
     },
 
     isShowableTag: function(tag) {
-	if (tag.hidden === true) {
-	    return false;
+        if (tag.hidden === true) {
+            return false;
         }
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const video = this.state.videos[tag.video_id];
@@ -275,11 +294,37 @@ const CollectionsMainPage = React.createClass({
         return tag.thumbnail_ids.length > 0;
     },
 
+    // Get the name of a tag, else the title of
+    // the tag's video, else the empty string.
+    getTagName(tag) {
+        if (tag.name) {
+            return tag.name;
+        }
+        if(tag.tag_type = UTILS.TAG_TYPE_VIDEO_COL) {
+            return this.state.videos[tag.video_id].title;
+        }
+        return '';
+    },
+
+    // Given a tag, return true if its name or its video title
+    // contains search query.
+    filterOnTitle: function(query, tag) {
+        if (!this.state.searchQuery) {
+            return true;
+        }
+        const q = this.state.searchQuery.toLowerCase();
+        const name = this.getTagName(tag).toLowerCase();
+        if (!name) {
+            return false;
+        }
+        return -1 !== name.search(q);
+    },
+
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                let tagId = res.videos[0].tag_id; 
+                let tagId = res.videos[0].tag_id;
                 res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
@@ -296,10 +341,27 @@ const CollectionsMainPage = React.createClass({
         return Search.hasMoreThan(itemCount);
     },
 
-    getBody: function() {
-        if (!TagStore.countShowable()) {
-            return;
+    onSearchFormChange: function(e) {
+        const self = this;
+        const searchQuery = e.target.value.trim();
+        if (!searchQuery) {
+            FilteredTagStore.reset();
+        } else {
+            FilteredTagStore.filter = (tag) => {
+                return tag.hidden !== true && self.filterOnTitle(searchQuery, tag);
+            }
         }
+        self.setState({
+            searchQuery,
+            selectedTags: FilteredTagStore.getAll()
+        })
+    },
+
+    onSearchFormSubmit: function(e) {
+        e.preventDefault();
+    },
+
+    getResults: function() {
         return (
             <div>
                 <CollectionsContainer
@@ -341,6 +403,11 @@ const CollectionsMainPage = React.createClass({
     },
 
     render: function() {
+        let body = this.getLoading();
+        if (FilteredTagStore.count() > 0 || Search.pending <= 0) {
+            body = this.getResults();
+        }
+
         return (
             <BasePage
                 {...this.props}
@@ -350,7 +417,12 @@ const CollectionsMainPage = React.createClass({
                 sidebarContent={this.state.sidebarContent}
                 tooltipText={this.state.tooltipText}
             >
-                {this.getBody() || this.getLoading()}
+                <SearchForm
+                    query={this.state.searchQuery}
+                    onChange={this.onSearchFormChange}
+                    onSubmit={this.onSearchFormSubmit}
+                />
+                {body}
                 <UploadForm />
             </BasePage>
         );
