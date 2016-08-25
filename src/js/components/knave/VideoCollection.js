@@ -118,7 +118,7 @@ const VideoCollection = React.createClass({
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
-                wrapperClassName={'xxCollection xxCollection--photo'}
+                wrapperClassName={'xxCollection xxCollection--video'}
                 liftValue={this.getLiftValue()}
             />
         );
