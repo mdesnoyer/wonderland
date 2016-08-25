@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -25,6 +26,10 @@ import {LoadActions} from '../../stores/CollectionStores';
 
 const ImageCollection = React.createClass({
 
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
+
     getInitialState: function() {
         return {
             // What panel to display, based on user input by
@@ -37,7 +42,7 @@ const ImageCollection = React.createClass({
     setSelectedPanel: function(panelId) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanel : panelId });
+        this.setState({selectedPanel : panelId});
     },
 
     setLiftThumbnailId: function(thumbnailId) {
@@ -101,6 +106,18 @@ const ImageCollection = React.createClass({
         ];
     },
     render: function() {
+        if (this.context.isMobile) {
+            return (
+                <MobileBaseCollection
+                    {...this.props}
+                    infoActionPanels={this.getPanels()}
+                    infoActionControls={this.getControls()}
+                    selectedPanel={this.state.selectedPanel}
+                    wrapperClassName={'xxCollection xxCollection--photo'}
+                    liftValue={this.getLiftValue()}
+                />
+            );
+        }
         return (
             <BaseCollection
                 {...this.props}

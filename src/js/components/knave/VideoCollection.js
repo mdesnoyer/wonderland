@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -24,6 +25,10 @@ import {LoadActions} from '../../stores/CollectionStores';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const VideoCollection = React.createClass({
+
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
 
     getInitialState: function() {
         return {
@@ -111,6 +116,18 @@ const VideoCollection = React.createClass({
 
         };
 
+        if (this.context.isMobile) {
+            return (
+                <MobileBaseCollection
+                    {...this.props}
+                    infoActionPanels={this.getPanels()}
+                    infoActionControls={this.getControls()}
+                    selectedPanel={this.state.selectedPanel}
+                    wrapperClassName={'xxCollection xxCollection--photo'}
+                    liftValue={this.getLiftValue()}
+                />
+            );
+        }
         return (
             <BaseCollection
                 {...this.props}

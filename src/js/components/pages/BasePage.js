@@ -24,6 +24,16 @@ const BasePage = React.createClass({
         tooltipText: PropTypes.string
     },
 
+    childContextTypes: {
+        isMobile: PropTypes.bool
+    },
+
+    getInitialState: function () {
+        return {
+            windowWidth: window.outerWidth,
+        };
+    },
+
     getDefaultProps: () => {
         return {
             title: UTILS.buildPageTitle(T.get('neonScore')),
@@ -32,15 +42,53 @@ const BasePage = React.createClass({
         };
     },
 
+    getChildContext: () => {
+        return {
+            isMobile: UTILS.isMobile()
+        };
+    },
+
+    componentDidMount: function() {
+        window.addEventListener('resize', this.handleWindowResize);
+        this.handleWindowResize();
+    },
+
+    componentWillUnmount: function() {
+        window.removeEventListener('resize', this.handleWindowResize);
+    },
+
+    handleWindowResize: function() {
+        const windowWidth = window.outerWidth;
+
+        if (this.state.windowWidth !== windowWidth) {
+            this.setState({
+                windowWidth,
+            });
+        }
+
+        if (windowWidth < UTILS.DETECT_MOBILE_WIDTH_PX) {
+            document.documentElement.classList.add('is-mobile');
+        } else {
+            document.documentElement.classList.remove('is-mobile');
+        }
+    },
+
     getTitle: function() {
         return UTILS.buildPageTitle(this.props.title);
+    },
+
+    getMeta: function() {
+        return this.props.meta.concat([{
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0'
+        }]);
     },
 
     render: function() {
         return (
             <main className='xxPage'>
                 <Helmet
-                    meta={this.props.meta}
+                    meta={this.getMeta()}
                     title={this.getTitle()}
                 />
                 <SiteHeader

@@ -327,6 +327,7 @@ var UTILS = {
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
     VERSION: '1.9.1',
+    DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
@@ -629,6 +630,10 @@ var UTILS = {
         return _.find(demos, demo => {
             return demo.gender == genderLabel && demo.age == ageLabel;
         });
+    },
+
+    isMobile: () => {
+        return window.outerWidth < UTILS.DETECT_MOBILE_WIDTH_PX;
     }
 };
 

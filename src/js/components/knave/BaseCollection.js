@@ -40,9 +40,9 @@ const BaseCollection = React.createClass({
         onThumbnailClick: PropTypes.func,
         setLiftThumbnailId: PropTypes.func,
 
-        // class name for the wrapper around the 
-        // component defaults to xxCollection 
-        wrapperClassName: PropTypes.string 
+        // class name for the wrapper around the
+        // component defaults to xxCollection
+        wrapperClassName: PropTypes.string
     },
 
     getDefaultProps: function() {

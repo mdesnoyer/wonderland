@@ -61,7 +61,7 @@ var Sidebar = React.createClass({
             case 'account':
                 return <Account />;
             case 'primaryNavigation':
-                return <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.state.content} />;
+                return <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.props.content} />;
         }
         return null;
     },
