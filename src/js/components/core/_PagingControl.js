@@ -1,10 +1,8 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,7 +17,7 @@ const PagingControl = React.createClass({
         currentPage: React.PropTypes.number.isRequired,
 
         // Whether the next control is enabled
-        enableNext: React.PropTypes.bool.isRequired
+        enableNext: React.PropTypes.bool.isRequired,
     },
 
     componentDidMount: function() {
@@ -95,7 +93,7 @@ const PagingControl = React.createClass({
     handleNav: function(change) {
         const self = this;
         window.scrollTo(0, 0);
-        TRACKING.sendEvent(self, arguments, self.props.currentPage);
+        TRACKING.sendEvent(self, [change], self.props.currentPage);
         this.props.changeCurrentPage(change);
     },
 });

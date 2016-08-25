@@ -103,7 +103,7 @@ class BaseCollection extends React.Component {
 
     setLiftThumbnailToLeft() {
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        this.props.setLiftThumbnailId.bind(leftThumbnailId);
+        this.props.setLiftThumbnailId(leftThumbnailId);
     }
 
     setLiftThumbnailToRight() {
