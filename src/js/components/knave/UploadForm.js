@@ -1,4 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
@@ -17,6 +17,7 @@ import {AddActions, LoadActions} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
+import ImageUploadPanel from './ImageUploadPanel';
 import OverLayMessage from './OverLayMessage'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -117,7 +118,7 @@ var UploadForm = React.createClass({
         };
         if (self.props.isAddPanel) {
             return (
-                <ImageUploadOverlay
+                <ImageUploadPanel
                     error={self.state.error || null}
                     key="upload-photo"
                     formatData={self.formatData}
@@ -370,32 +371,55 @@ var UploadForm = React.createClass({
                 contentType: 'multipart/form-data'
             }
         ;
-        self.POST('thumbnails', options)
-            .then(function(res) {
-                var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-                self.setState({
-                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
-                    }, function() {
-                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+        debugger
+            // if (self.props.isAddPanel) {
+            //     options.data.tagId = self.props.tagId;
+                var address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
+            // }  
+            debugger
+               self.POST('thumbnails?tag_id=' + self.props.tagId, options)
+                   .then(function(res) {
+                    debugger
+                       // if (self.props.isAddPanel) {
+                       //      self.setState({
+                       //          photoUploadMode:'success',
+                       //          error: null 
+                       //          }, function() {
+                       //              debugger
+                                    
+                       //              setTimeout(function() {
+                       //              self.setState({ photoUploadMode:'initial' });
+                       //              }, 3000)
+                       //      });
+                       //  }
+                       //  else {
+                            var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                             self.setState({
-                                photoUploadMode:'success',
-                                error: null 
+                                photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                                numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                                 }, function() {
-                                    setTimeout(function() {
-                                    self.setState({ photoUploadMode:'initial' });
-                                    }, 3000)
-                            });                         
-                    }
-                });
-            })
-            .catch(function(err) {
-                self.setState({
-                photoUploadMode:'initial'
-                },  function() {
-                    self.throwUploadError(err);
-                });
-            }); 
+                                    if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+                                        self.setState({
+                                            photoUploadMode:'success',
+                                            error: null 
+                                            }, function() {
+                                                self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
+                                                setTimeout(function() {
+                                                self.setState({ photoUploadMode:'initial' });
+                                                }, 3000)
+                                        });                         
+                                }
+                            });
+     
+                        // }
+                                          })
+                   .catch(function(err) {
+                       self.setState({
+                       photoUploadMode:'initial'
+                       },  function() {
+                           self.throwUploadError(err);
+                       });
+                   }); 
      },
      sendDropBoxUrl: function(urls) {
         var self = this,

@@ -95,6 +95,7 @@ const ImageCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
             <AddPanel
+                tagId={this.props.tagId}
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />

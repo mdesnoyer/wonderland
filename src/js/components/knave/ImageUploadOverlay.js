@@ -56,31 +56,24 @@ var ImageUploadOverlay = React.createClass({
                 dragDropClassKey = 'hint';
                 dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{T.get('imageUpload.collectionCount')}<br/></div>;
         }
-        let containerClassName = self.props.isAddPanel ? '' : "xxUploadDialog"
         return (
-            <div className={containerClassName}>
+            <div className="xxUploadDialog">
                 <div className="xxUploadDialog-drag-drop">
-                    {   self.props.isAddPanel ? <h2>{messageNeeded}</h2> : (
-                        <div>                
-                            <div className="xxUploadDialog-intro">
-                                <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
-                                
-                            </div>
-                    
-                            <div className="xxFormField">
-                                <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
-                                <input
-                                    className="xxInputText"
-                                    placeholder={T.get('imageUpload.placeholderName')}
-                                    type="text"
-                                    required
-                                    onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        )
-                    }   
-                    { self.state.isNextClicked || self.props.isAddPanel ? (
+                    <div className="xxUploadDialog-intro">
+                        <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
+                        <h2>{messageNeeded}</h2>
+                    </div>
+                    <div className="xxFormField">
+                        <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
+                        <input
+                            className="xxInputText"
+                            placeholder={T.get('imageUpload.placeholderName')}
+                            type="text"
+                            required
+                            onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
+                        />
+                    </div>
+                    { self.state.isNextClicked ? (
                         <div>
                         { 
                             !isMobile ? (

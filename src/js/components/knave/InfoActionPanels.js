@@ -417,7 +417,7 @@ export const DeletePanel = React.createClass({
             'xxCollectionAction';
         return (
             <div className={collectionClassName}>
-                <h2 className="xxTitle">{T.get('copy.videoContent.delete.title')}</h2>
+                <h2 className="xxTitle">Update collection</h2>
                 {
                     this.props.isMobile ? (
                         <div
@@ -475,7 +475,7 @@ export const AddPanel = React.createClass({
             'xxCollectionAction';
         return (
             <div className={collectionClassName}>
-                
+            <h2 className="xxTitle">Update collection</h2>
                 {
                     this.props.isMobile ? (
                         <div
@@ -484,10 +484,7 @@ export const AddPanel = React.createClass({
                         </div>
                     ) : null
                 }
-                <div className="xxText">
-                    
-                </div>
-                <UploadForm isAddPanel={true} />
+                <UploadForm isAddPanel={true} tagId={this.props.tagId} />
             </div>
         );
     }
