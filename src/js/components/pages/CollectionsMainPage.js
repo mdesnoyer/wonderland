@@ -206,22 +206,60 @@ const CollectionsMainPage = React.createClass({
         const rendition1 = RENDITIONS.findRendition(first, 140, 79);
         const rendition2 = RENDITIONS.findRendition(second, 140, 79);
         const rendition3 = RENDITIONS.findRendition(third, 140, 79);
+        let data = {};
 
-        const data = {
-            subject: UTILS.RESULTS_EMAIL_SUBJECT,
-            to_email_address: email,
-            // TODO put slug for image collection.
-            template_slug: UTILS.RESULTS_MANDRILL_SLUG,
-            template_args: {
-                'top_thumbnail': renditionTop,
-                'lift': UTILS.makePercentage(lift, 0, true),
-                'thumbnail_one': rendition1,
-                'thumbnail_two': rendition2,
-                'thumbnail_three': rendition3,
-                'collection_url': shareUrl
-            }
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            data = {
+                subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                to_email_address: email,
+                template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+                template_args: {
+                    'top_thumbnail': renditionTop,
+                    'lift': UTILS.makePercentage(lift, 0, true),
+                    'thumbnail_one': rendition1,
+                    'thumbnail_two': rendition2,
+                    'thumbnail_three': rendition3,
+                    'collection_url': shareUrl
+                }
+            };
         }
-
+        else if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            let liftString = '';
+            let buttonString = '';
+            let seeMoreString = ''; 
+            let neonScore = best.neon_score; 
+            if (tag.thumbnail_ids.length <= 1) { 
+                liftString = T.get('copy.email.oneResultLiftString');
+                seeMoreString = T.get('copy.email.oneResultSeeMoreString');
+                buttonString = T.get('copy.email.oneResultButtonString'); 
+            }
+            else { 
+                liftString = T.get('copy.email.multipleResultsLiftString', 
+                    {'@lift': UTILS.makePercentage(lift, 0, true)});
+                buttonString = T.get('copy.email.multipleResultsButtonString'); 
+                seeMoreString = T.get('copy.email.multipleResultsSeeMoreString');
+            }  
+            data = {
+                subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                to_email_address: email,
+                template_slug: UTILS.IMAGE_RESULTS_MANDRILL_SLUG,
+                template_args: {
+                    'top_thumbnail': renditionTop,
+                    'lift_string': liftString,
+                    'button_string': buttonString,
+                    'see_more_string': seeMoreString,  
+                    'collection_url': shareUrl,
+                    'neon_score': neonScore
+                }
+            };
+        } 
+        else { 
+            callback({
+                'status_code' : 400,
+                'errorMessage' : 'unknown tag type unable to send email'
+            });
+            return; 
+        } 
         self.POST('email', {data})
         .then(function(res) {
             TRACKING.sendEvent(self, arguments, tagId);
