@@ -4,7 +4,7 @@ import React from 'react';
 import T from '../../modules/translation';
 import SESSION from '../../modules/session';
 import UTILS from '../../modules/utils';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
