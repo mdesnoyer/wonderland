@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -28,6 +29,10 @@ import ImageUploadOverlay from './ImageUploadOverlay';
 
 const ImageCollection = React.createClass({
 
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
+
     getInitialState: function() {
         return {
             // What panel to display, based on user input by
@@ -40,7 +45,7 @@ const ImageCollection = React.createClass({
     setSelectedPanel: function(panelId) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanel : panelId });
+        this.setState({selectedPanel : panelId});
     },
 
     setLiftThumbnailId: function(thumbnailId) {
@@ -112,7 +117,21 @@ const ImageCollection = React.createClass({
             <AddControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
-    render: function() {
+
+    getMobile() {
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--photo'}
+                liftValue={this.getLiftValue()}
+            />
+        );
+    },
+
+    getDesktop() {
         return (
             <BaseCollection
                 {...this.props}
@@ -123,6 +142,13 @@ const ImageCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 

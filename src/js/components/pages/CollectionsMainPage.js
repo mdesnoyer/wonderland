@@ -1,7 +1,5 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
-import {findDOMNode} from 'react-dom'
 
 import _ from 'lodash';
 
@@ -28,7 +26,7 @@ import {
     TagShareStore,
     LoadActions,
     Dispatcher,
-    Search } from '../../stores/CollectionStores.js';
+    Search } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -236,7 +234,6 @@ const CollectionsMainPage = React.createClass({
     },
 
     setTooltipText: function(tooltipText) {
-        console.log('stt', tooltipText);
         this.setState({tooltipText});
     },
 
@@ -346,6 +343,7 @@ const CollectionsMainPage = React.createClass({
     render: function() {
         return (
             <BasePage
+                {...this.props}
                 ref="basepage"
                 title={T.get('copy.myCollections.title')}
                 setSidebarContent={this.setSidebarContent}

@@ -310,12 +310,12 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoCollection
                 key={tagId}
+                title={video.title}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                title={video.title}
                 videoId={video.video_id}
                 tagId={tagId}
                 onDemographicChange={this.onDemoChange.bind(null, tagId)}

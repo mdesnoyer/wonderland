@@ -45,7 +45,6 @@ export const ThumbnailList = React.createClass({
                     <Thumbnail
                         showHref={true}
                         className={this.props.className||''}
-                        isMobile={false}
                         key={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}

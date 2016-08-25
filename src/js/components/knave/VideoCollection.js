@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -24,6 +25,10 @@ import {LoadActions} from '../../stores/CollectionStores';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const VideoCollection = React.createClass({
+
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
 
     getInitialState: function() {
         return {
@@ -101,14 +106,31 @@ const VideoCollection = React.createClass({
         ];
     },
 
-    render: function() {
+    getMobile: function() {
+        const overrideMap = {
+            'copy.worstThumbnail': 'copy.currentThumbnail',
+            'copy.bestThumbnail': 'copy.topNeonImage',
+        };
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                translationOverrideMap={overrideMap}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--video'}
+                liftValue={this.getLiftValue()}
+            />
+        );
+    },
+
+    getDesktop: function() {
         // Apply Video component-specific labels.
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
-
         };
 
         return (
@@ -122,6 +144,13 @@ const VideoCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 
