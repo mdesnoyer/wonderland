@@ -252,16 +252,7 @@ $zindex-upload-drag-and-drop: 1;
     position: relative;
     width: 100%;
     min-width: ($page-min-width - $gutter-width) * 1/5 + $gutter-width;
-    // z-index: $zindex-upload-drag-and-drop + 1;
-    // box-shadow: 0 0 10px rgba(0, 0, 0, .05);
-    // padding: $gutter-width $gutter-width 24px;
-    // padding: 5%;
-    // padding-top: $gutter-width;
-    // padding-left: $gutter-width;
-    // padding-right: $gutter-width/2;
-    // margin-top: .5em; 
     background: $white;
-
 }
 
 .xxUploadDialog-block {
