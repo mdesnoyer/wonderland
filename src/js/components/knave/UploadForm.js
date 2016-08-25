@@ -435,7 +435,8 @@ var UploadForm = React.createClass({
             photoUploadCount: urls.length,
             numberUploadedCount: Math.round(urls.length) / 2
             }, function() {
-                self.POST('thumbnails', options)
+            var address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
+               self.POST('thumbnails?tag_id=' + self.props.tagId, options)
                 .then(function(res) {
                     var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                     self.setState({
@@ -443,8 +444,9 @@ var UploadForm = React.createClass({
                         photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                         error: null 
                     },  function() {
+                        self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
                         setTimeout( function() {
-                            self.setState({ photoUploadMode:'initial' });
+                        self.setState({ photoUploadMode:'initial' });
                         }, 2000);
                     });
                 })
