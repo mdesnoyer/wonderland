@@ -24,7 +24,7 @@ var ImageUploadPanel = React.createClass({
 	    switch(self.props.photoUploadMode) {
 	        case 'initial':
 	            dragDropClassKey = 'hint';
-	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{T.get('imageUpload.draglocation.directToLocal')}<br/></div>;
+	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/><button className="xxButton xxButton--dragsmall xxButton--highlight">BROWSE FILES</button><br/></div>;
 	            break;
 	        case 'loading':
 	            dragDropClassKey = 'progress';

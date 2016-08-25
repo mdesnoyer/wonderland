@@ -296,8 +296,10 @@
     &:hover {
         border-color: $accent-color;
         color: $base-color;
+    }    
+    &--dragsmall {
+        margin: 0 auto; 
     }
-
     &--highlight {
 
         @include breakpoint-mobile {

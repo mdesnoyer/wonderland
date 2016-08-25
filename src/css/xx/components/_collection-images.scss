@@ -57,7 +57,7 @@ $mobile-all-images-gutter-width: 3px;
     margin-top: 10%;
     width: 21%;
     margin-left: 5%;
-    font-size: 1em;
+    font-size: 1.25em;
     font-weight: bold;
     color: $white;
     text-shadow: 2px 2px 8px black;
@@ -70,6 +70,8 @@ $mobile-all-images-gutter-width: 3px;
 
 .xxThumbnailSolorBlurWrapper {
     pointer-events:none;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
     filter: url(blur.svg#blur);
     -webkit-filter: blur(3px);
     filter: blur(3px);
