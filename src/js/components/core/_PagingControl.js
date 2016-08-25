@@ -23,8 +23,8 @@ class PagingControl extends React.Component {
         super(props);
         this.handleKeyEvent = this.handleKeyEvent.bind(this);
         this.handleNav = this.handleNav.bind(this);
-        this.handleNavPrev = this.handleNav.bind(-1);
-        this.handleNavNext = this.handleNav.bind(+1);
+        this.handleNavPrev = this.handleNav.bind(this, -1);
+        this.handleNavNext = this.handleNav.bind(this, +1);
     }
 
     componentDidMount() {
