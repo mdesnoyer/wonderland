@@ -118,12 +118,6 @@ $mobile-all-images-gutter-width: 3px;
     }
 }
 
-.xxPagingControls {
-    @include breakpoint-mobile {
-        display: none;
-    }
-}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxShowMore {
