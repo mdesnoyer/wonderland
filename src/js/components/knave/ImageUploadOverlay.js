@@ -20,10 +20,30 @@ var ImageUploadOverlay = React.createClass({
         }
     },
     componentDidMount: function() {
+        window.addEventListener('keydown', this.handleKeyEvent);
         // Put focus in the form name input when opening.
         const node = ReactDOM.findDOMNode(this.refs.nameInput);
         if(node) {
             node.focus();
+        }
+    },
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyEvent);
+    },
+
+    handleKeyEvent(e) {
+        // Enter nexts.
+        const self = this;
+        if (e.keyCode === 13) {
+            if (this.state.isNextClicked) {
+                //const e = {
+                //    preventDefault: Function.prototype,
+                //    target: {dataset: {sendTag: true}}};
+                //self.props.toggleOpen(e);
+            } else {
+                self.handleClick();
+            }
         }
     },
     render: function() {
