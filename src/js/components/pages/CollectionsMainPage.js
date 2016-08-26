@@ -309,28 +309,13 @@ const CollectionsMainPage = React.createClass({
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
         const offset = pageSize * this.state.currentPage;
 
-        // Get the ordered array of all tag ids
+        // Get the ordered array of selectable tag ids
         // and slice it to size.
-        const ids = _(this.state.selectedTags)
+        return _(this.state.selectedTags)
             .orderBy(['created'], ['desc'])
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
-        return ids;
-    },
-
-    isShowableTag: function(tag) {
-        if (tag.hidden === true) {
-            return false;
-        }
-        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
-            const video = this.state.videos[tag.video_id];
-            // We show a special placeholder component for these states.
-            if (['processing', 'failed'].includes(video.state)) {
-                return true;
-            }
-        }
-        return tag.thumbnail_ids.length > 0;
     },
 
     // Get the name of a tag, else the title of
@@ -347,16 +332,15 @@ const CollectionsMainPage = React.createClass({
 
     // Given a tag, return true if its name or its video title
     // contains search query.
-    filterOnTitle: function(query, tag) {
-        if (!this.state.searchQuery) {
+    filterOnName: function(query, tag) {
+        if (!query) {
             return true;
         }
-        const q = this.state.searchQuery.toLowerCase();
         const name = this.getTagName(tag).toLowerCase();
         if (!name) {
             return false;
         }
-        return -1 !== name.search(q);
+        return -1 !== name.search(query.toLowerCase());
     },
 
     getVideoStatus: function(videoId) {
@@ -386,9 +370,12 @@ const CollectionsMainPage = React.createClass({
         if (!searchQuery) {
             FilteredTagStore.resetFilter();
         } else {
-            FilteredTagStore.setFilter(tag => {
-                return tag.hidden !== true && self.filterOnTitle(searchQuery, tag);
-            });
+            FilteredTagStore.setFilter(
+                tag => {
+                    return tag.hidden !== true &&
+                           self.filterOnName(searchQuery, tag)
+                }
+            );
         }
         self.setState({
             searchQuery,

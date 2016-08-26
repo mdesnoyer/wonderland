@@ -123,6 +123,9 @@ const ImageCollection = React.createClass({
     },
 
     getMobile() {
+        const overrideMap = {
+            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+        };
         return (
             <MobileBaseCollection
                 {...this.props}
@@ -131,6 +134,7 @@ const ImageCollection = React.createClass({
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
+                translationOverrideMap={overrideMap}
             />
         );
     },

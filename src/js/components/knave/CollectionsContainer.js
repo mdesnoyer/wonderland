@@ -433,6 +433,7 @@ const CollectionsContainer = React.createClass({
         if (!tagId) {
             return null;
         }
+        const tag = this.props.stores.tags[tagId];
 
         // Get score sorted thumbnails for collection.
         const demo = this.getSelectedDemographic(tagId);
@@ -488,6 +489,11 @@ const CollectionsContainer = React.createClass({
             });
         })
 
+        const overrideMap = {};
+        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            overrideMap['copy.lift.explanation.default'] = 'copy.lift.explanation.images';
+        }
+
         return (
             <ThumbnailOverlay
                 thumbnails={sortedThumbnails}
@@ -499,6 +505,7 @@ const CollectionsContainer = React.createClass({
                 closeThumbnailOverlay={this.onOverlayClose}
                 openLearnMore={this.props.setSidebarContent.bind(null, 'learnMore')}
                 thumbnailFeatureNameMap={thumbnailFeatureNameMap}
+                translationOverrideMap={overrideMap}
             />
         );
 

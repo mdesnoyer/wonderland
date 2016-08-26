@@ -15,6 +15,7 @@ import {
 import Lift from '../knave/Lift';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -118,24 +119,9 @@ const MobileBaseCollection = React.createClass({
         return <div>{children}</div>;
     },
 
-    // Wraps calls to T.get with any keys in
-    // this.props.translationOverrideMap.
-    //
-    // Returns function that removes the wrapper.
-    applyTranslationOverride: function() {
-
-        const mapped = this.props.translationOverrideMap;
-        const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key) => {
-            return get(key in mapped? mapped[key]: key);
-        });
-
-        return () => { T.get = originalTGet; };
-    },
-
     render: function() {
         // Let mapped labels be overriden.
-        const unapplyOverride = this.applyTranslationOverride();
+        const unapplyOverride = UTILS.applyTranslationOverride(this.props.translationOverrideMap);
 
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
         // The main left and right feature thumbnails
@@ -173,6 +159,7 @@ const MobileBaseCollection = React.createClass({
                     {right}
                     <Lift
                         displayThumbLift={this.props.liftValue}
+                        translationOverrideMap={this.props.translationOverrideMap}
                     />
                     {this.getThumbnailList()}
                 </div>

@@ -98,10 +98,13 @@ export const FilteredTagStore = {
 
     // Get all that pass filter.
     getAll: function() {
-        return _.filter(_tags, this.filter);
+        // Restore the map structure since filter returns array.
+        const result  = _(_tags)
+            .filter(this.filter)
+            .keyBy('tag_id')
+            .value();
+        return result;
     },
-
-    // Get the count of the filtered tags.
     count: function() {
         return _.values(this.getAll()).length;
     },
@@ -821,7 +824,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
-            options.data.until = oldestTimestamp; 
+            options.data.until = oldestTimestamp;
         }
 
         if (query) {
