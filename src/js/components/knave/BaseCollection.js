@@ -14,6 +14,7 @@ import {
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -200,22 +201,10 @@ class BaseCollection extends React.Component {
         />);
     }
 
-    // Wraps calls to T.get with any keys in
-    // this.props.translationOverrideMap.
-    //
-    // Returns function that removes the wrapper.
-    applyTranslationOverride() {
-        const mapped = this.props.translationOverrideMap;
-        const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key) =>
-            get(key in mapped ? mapped[key] : key));
-
-        return () => { T.get = originalTGet; };
-    }
-
     render() {
         // Let mapped labels be overriden.
-        const unapplyOverride = this.applyTranslationOverride();
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.translationOverrideMap);
 
         // The main left and right feature thumbnails
         const left = (

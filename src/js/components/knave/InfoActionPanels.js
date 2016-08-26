@@ -11,6 +11,7 @@ import Message from '../wonderland/Message';
 import Lift from './Lift';
 import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
+import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,20 +26,27 @@ export const InfoDemoLiftPanel = React.createClass({
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.array.isRequired,
         // whether or not the panel should display the refilter 
-        // button, defaults to true 
+        // button, defaults to true
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
-        isSoloImage: React.PropTypes.bool
+        isSoloImage: React.PropTypes.bool,
+        translationOverrideMap: React.PropTypes.object,
     },
+
     getDefaultProps: function() {
         return {
             displayRefilterButton: true
         };
     },
+
     render: function() {
-        var self = this;
-        return (
+
+        // Let mapped labels be overriden.
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.translationOverrideMap);
+
+        const result = (
             <div>
                 <h1 className="xxCollection-title">
                     {this.props.title}
@@ -47,14 +55,19 @@ export const InfoDemoLiftPanel = React.createClass({
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
                     selectedDemographic={this.props.selectedDemographic}
-                    displayRefilterButton={this.props.displayRefilterButton} 
+                    displayRefilterButton={this.props.displayRefilterButton}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={self.props.isSoloImage}
+                    isSoloImage={this.props.isSoloImage}
+                    translationOverrideMap={this.props.translationOverrideMap}
                 />
             </div>
         );
+
+        unapplyOverride();
+
+        return result;
     }
 });
 
@@ -63,21 +76,24 @@ export const InfoLiftPanel = React.createClass({
         // User's name of this collection
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
-        isSoloImage: React.PropTypes.bool
+        isSoloImage: React.PropTypes.bool,
+        translationOverrideMap: React.PropTypes.object,
     },
     render: function() {
-        var self = this;
-        return (
+
+        const result = (
             <div>
                 <h1 className="xxCollection-title">
                     {this.props.title}
                 </h1>
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={self.props.isSoloImage}
+                    isSoloImage={this.props.isSoloImage}
+                    translationOverrideMap={this.props.translationOverrideMap}
                 />
             </div>
         );
+        return result;
     }
 });
 

@@ -642,7 +642,24 @@ var UTILS = {
 
     isMobile: () => {
         return window.outerWidth < UTILS.DETECT_MOBILE_WIDTH_PX;
+    },
+
+    // Wraps calls to T.get with any keys in
+    // this.props.translationOverrideMap.
+    //
+    // Returns function that removes the wrapper.
+    applyTranslationOverride(mapped) {
+        if (_.isEmpty(mapped)) {
+            // Do nothing.
+            return Function.prototype;
+        }
+        const originalTGet = T.get;
+        T.get = _.wrap(T.get, (get, key) =>
+            get(key in mapped ? mapped[key] : key));
+
+        return () => { T.get = originalTGet; };
     }
+
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

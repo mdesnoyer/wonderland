@@ -60,13 +60,16 @@ const ImageCollection = React.createClass({
     },
 
     getPanels() {
-        var self = this;
+        const overrideMap = {
+            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+        };
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
                     isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                    translationOverrideMap={overrideMap}
                 />
             ];
         }
@@ -79,6 +82,7 @@ const ImageCollection = React.createClass({
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
                 isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                translationOverrideMap={overrideMap}
             />,
             <FilterPanel />,
             <SharePanel
