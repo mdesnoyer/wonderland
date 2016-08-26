@@ -67,6 +67,11 @@ const CollectionsContainer = React.createClass({
             // By default, the demographic is [0,0] meaning gender=none, age=none.
             selectedDemographic: {},
 
+            // If a demographic was selected but it isn't available yet, and a
+            // request has been made to load it, then this will set it
+            // if it becomes loaded.
+            nextSelectedDemographic: {},
+
             // Setting a tag will render the modal overlay thumbnail zoom.
             overlayTagId: null,
             overlayThumbnailId: null
@@ -124,7 +129,7 @@ const CollectionsContainer = React.createClass({
     },
 
     // On demographic selector change, fill in stores.
-    onDemoChange: function(tagId, demoKey) {
+    onDemographicChange: function(tagId, demoKey) {
         const selectedDemographic = this.state.selectedDemographic;
         const gender = demoKey[0];
         const age = demoKey[1];
@@ -265,7 +270,7 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                onDemographicChange={this.onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
@@ -279,7 +284,7 @@ const CollectionsContainer = React.createClass({
         );
     },
 
-    buildVideoCollectionComponent(tagId, onDemoChange, onThumbnailMouseEnter) {
+    buildVideoCollectionComponent(tagId, onDemographicChange, onThumbnailMouseEnter) {
 
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
@@ -325,7 +330,7 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
-                onDemographicChange={this.onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}

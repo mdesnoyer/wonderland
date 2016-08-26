@@ -14,9 +14,9 @@ import DropDown from './DropDown';
 var VideoFilters = React.createClass({
 
     propTypes: {
-        handleBackClick: PropTypes.func,
+        handleBackClick: PropTypes.func.isRequired,
         videoId: PropTypes.string.isRequired,
-        handleSendRefilter: PropTypes.func,
+        handleSendRefilter: PropTypes.func.isRequired,
     },
 
     contextTypes: {
