@@ -1,4 +1,3 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import _ from 'lodash';
@@ -44,23 +43,23 @@ const genderAgeBaseMap = () => {
 
 const _tags = {};
 export const TagStore  = {
+
     getAll: () => {
         return _tags;
     },
+
     get: id => {
         return _tags[id];
     },
+
     set: map => {
         Object.assign(_tags, map);
     },
+
     count: function() {
         return _.values(this.getAll()).length;
     },
-    countShowable: function() {
-        return _.values(this.getAll()).filter(
-            t => { return t.hidden !== true; }
-        ).length ;
-    },
+
     getOldestTimestamp: function() {
         const self = this;
         if (self.count() == 0) {
@@ -74,7 +73,41 @@ export const TagStore  = {
         });
         return moment(oldestTag.created + 'Z').format('x') / 1000;
     },
+
     completelyLoaded: false
+};
+
+// A read-only view of the tag store.
+export const FilteredTagStore = {
+
+    // Set filter to define the tag set.
+    filter: tag => tag.hidden !== true,
+
+    setFilter: function(filter) {
+        FilteredTagStore.filter = filter;
+        FilteredTagStore.completelyLoaded = false;
+    },
+
+    resetFilter: function() {
+        FilteredTagStore.filter = FilteredTagStore.defaultFilter;
+        FilteredTagStore.completelyLoaded = false;
+    },
+
+    // Allow filter to be reset by copying over the default.
+    defaultFilter: tag => tag.hidden !== true,
+
+    // Get all that pass filter.
+    getAll: function() {
+        // Restore the map structure since filter returns array.
+        const result  = _(_tags)
+            .filter(this.filter)
+            .keyBy('tag_id')
+            .value();
+        return result;
+    },
+    count: function() {
+        return _.values(this.getAll()).length;
+    },
 };
 
 const _videos = {};
@@ -409,17 +442,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     // Load lifts for thumbnails from data source.
-    loadLifts: function(tagIds, gender=0, age=0) {
+    loadLifts: function(tagIds, gender=0, age=0, forceLoad=false) {
 
         // Find tags missing from stored lift map for demo.
-        const missingTagIds = tagIds.reduce((missingTagIds, tagId) => {
+        const loadTagIds = forceLoad ?
+            tagIds :
+            tagIds.reduce((loadTagIds, tagId) => {
             if (LiftStore.get(gender, age, tagId) === undefined) {
-                missingTagIds.push(tagId);
+                loadTagIds.push(tagId);
             }
-            return missingTagIds;
+            return loadTagIds;
         }, []);
         // Short circuit if empty.
-        if (0 == missingTagIds.length) {
+        if (0 == loadTagIds.length) {
             return Promise.resolve([]);
         }
 
@@ -431,7 +466,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         const tagLiftMap = {};
 
-        missingTagIds.map(tagId => {
+        loadTagIds.map(tagId => {
 
             // TODO refactor this and CollectionsContainer getLeftRight.
 
@@ -744,7 +779,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     // This is the first point at which we can display
                     // a meaningful set of results, so dispatch.
                     Dispatcher.dispatch();
-                    return LoadActions.loadLifts(_.keys(tagRes), gender, age);
+                    return LoadActions.loadLifts(_.keys(tagRes), gender, age, true);
                 })
                 .then(liftRes => {
                     // Map of tag id to lift map.
@@ -764,15 +799,20 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Tries to fill out the TagStore to n tags
     //
     // Return n the number of new tags.
-    loadNNewestTags(n) {
+    loadNNewestTags(n, query, ...callbacks) {
         const self = this;
-        const haveCount = TagStore.countShowable();
+        const haveCount = FilteredTagStore.count();
+
+        // Short circuit search if we have enough items or everything.
         if (n <= haveCount) {
             return;
         }
-        // if (TagStore.completelyLoaded) {
-        //     return;
-        // }
+        if (TagStore.completelyLoaded) {
+            return;
+        } else if (query && FilteredTagStore.completelyLoaded) {
+            return;
+        }
+
         const limit = n - haveCount;
 
         const options = {
@@ -784,17 +824,32 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
-            options.data.until = oldestTimestamp; 
+            options.data.until = oldestTimestamp;
+        }
+
+        if (query) {
+            options.data.query = query;
         }
 
         self.GET('tags/search', options)
         .then(searchRes => {
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
-                TagStore.completelyLoaded = true;
+                if(query) {
+                    TagStore.completelyLoaded = true;
+                } else {
+                    FilteredTagStore.completelyLoaded = true;
+                }
             }
-            LoadActions.loadFromSearchResult(searchRes);
+            return LoadActions.loadFromSearchResult(searchRes)
         })
+        .then(() => {
+            callbacks.map(callback => {
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            });
+        });
     },
 
     // Get a share url for a tag.
@@ -879,13 +934,30 @@ export const Dispatcher = {
 // that page for responsiveness.
 export const Search = {
 
-    load(count, onlyThisMany=false) {
+    pending: 0,
+
+    getLargeCount(count) {
+        return count + UTILS.RESULTS_PAGE_SIZE + 1;
+    },
+
+    load(count, onlyThisMany=false, callback) {
         // Aggressively load tags unless caller specifies only this many.
-        const largeCount = onlyThisMany? count: count + UTILS.RESULTS_PAGE_SIZE + 1;
-        LoadActions.loadNNewestTags(largeCount);
+        const largeCount = onlyThisMany? count: Search.getLargeCount(count);
+        Search.pending += 1;
+        LoadActions.loadNNewestTags(largeCount, null, Search.decrementPending, callback);
+    },
+
+    loadWithQuery(count, query, callback) {
+        const largeCount = this.getLargeCount();
+        Search.pending += 1;
+        LoadActions.loadNNewestTags(largeCount, query, Search.decrementPending, callback);
     },
 
     hasMoreThan(count) {
-        return TagStore.countShowable() > count;
+        return FilteredTagStore.count() > count;
+    },
+
+    decrementPending() {
+        Search.pending -= 1;
     }
 };

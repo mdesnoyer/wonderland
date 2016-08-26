@@ -333,7 +333,9 @@ var UTILS = {
     CONFIRM_MANDRILL_SLUG: 'support-email',
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
+    IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
     VERSION: '1.9.1',
+    DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
@@ -363,7 +365,7 @@ var UTILS = {
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
     FACEBOOK_APP_ID: '315978068791558',
-    MAX_IMAGE_FILE_SIZE: 2000000,
+    MAX_IMAGE_FILE_SIZE: 2500000,
     MAX_IMAGE_CHUNK_SIZE: 10000000,
     MAX_IMAGE_FILES_ALLOWED: 100,
     UPLOAD_TRANSITION: 200,
@@ -639,7 +641,28 @@ var UTILS = {
         return _.find(demos, demo => {
             return demo.gender == genderLabel && demo.age == ageLabel;
         });
+    },
+
+    isMobile: () => {
+        return window.outerWidth < UTILS.DETECT_MOBILE_WIDTH_PX;
+    },
+
+    // Wraps calls to T.get with any keys in
+    // this.props.translationOverrideMap.
+    //
+    // Returns function that removes the wrapper.
+    applyTranslationOverride(mapped) {
+        if (_.isEmpty(mapped)) {
+            // Do nothing.
+            return Function.prototype;
+        }
+        const originalTGet = T.get;
+        T.get = _.wrap(T.get, (get, key, ...rest) =>
+            get(key in mapped ? mapped[key] : key, ...rest));
+
+        return () => { T.get = originalTGet; };
     }
+
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

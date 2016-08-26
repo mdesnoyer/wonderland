@@ -20,7 +20,8 @@ var ThumbnailOverlay = React.createClass({
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
         displayThumbLift: React.PropTypes.number.isRequired,
-        thumbnailFeatureNameMap: React.PropTypes.object
+        thumbnailFeatureNameMap: React.PropTypes.object,
+        translationOverrideMap: React.PropTypes.object,
     },
     componentDidMount: function() {
         var self = this;
@@ -87,6 +88,7 @@ var ThumbnailOverlay = React.createClass({
                                         extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}
+                                        translationOverrideMap={self.props.translationOverrideMap}
                                     />
                                 );
                             })

@@ -16,7 +16,8 @@ var ZoomThumbnail = React.createClass({
         handleClickPrevious: React.PropTypes.func.isRequired,
         handleClickNext: React.PropTypes.func.isRequired,
         valence: React.PropTypes.array.isRequired,
-        extraClass: React.PropTypes.string
+        extraClass: React.PropTypes.string,
+        translationOverrideMap: React.PropTypes.object,
     },
     getValenceDisplay: function() {
         var self = this,
@@ -107,6 +108,7 @@ var ZoomThumbnail = React.createClass({
                     <Lift
                         displayThumbLift={self.props.displayThumbLift}
                         isSoloImage={self.props.total === 1}
+                        translationOverrideMap={this.props.translationOverrideMap}
                     />
                     <nav className="xxImageZoom-nav">
                         <a

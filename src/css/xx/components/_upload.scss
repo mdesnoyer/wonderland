@@ -69,7 +69,7 @@ $zindex-upload-drag-and-drop: 1;
 
     .is-hidden > & {
         display: none;
-    } 
+    }
     .has-dialog > & {
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
@@ -131,6 +131,7 @@ $zindex-upload-drag-and-drop: 1;
         right: 27px;
         bottom: 26px;
         border: 4px solid $white;
+        background: $accent-color;
 
         &::before,
         &::after {
@@ -151,6 +152,20 @@ $zindex-upload-drag-and-drop: 1;
                 height: 2px;
             }
         }
+
+        &--photo::before {
+            @include font-awesome('f030'); // fa-camera
+            top: 16px;
+            left: 0;
+            font-size: 28px;
+        }
+
+        &--video::before {
+            @include font-awesome('f03d'); // fa-video-camera
+            top: 16px;
+            left: 0;
+            font-size: 28px;
+        }
     }
 }
 
@@ -166,6 +181,13 @@ $zindex-upload-drag-and-drop: 1;
     opacity: 0;
     pointer-events: none;
     transition: opacity $default-transition;
+
+    // Display label without mouse hover
+    @include breakpoint-mobile {
+        opacity: 1;
+        top: 12px;
+        font-size: 11px;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -202,6 +224,11 @@ $zindex-upload-drag-and-drop: 1;
         @include breakpoint-mobile {
             width: 100px;
             margin-top: 0;
+
+            &--important {
+                width: 48%;
+                float: right;
+            }
         }
     }
 
@@ -247,6 +274,13 @@ $zindex-upload-drag-and-drop: 1;
     background: $white;
 
 }
+.xxUploadDialog-drag-drop-panel {
+    float: right;
+    position: relative;
+    width: 100%;
+    min-width: ($page-min-width - $gutter-width) * 1/5 + $gutter-width;
+    background: $white;
+}
 
 .xxUploadDialog-block {
     margin: 0 auto;
@@ -267,6 +301,9 @@ $zindex-upload-drag-and-drop: 1;
         background: transparent;
         pointer: none;
         border: none; 
+     }
+     & > .xxButton-cancel {
+        width: 50%;
      }
      & > .xxInputText-upload {
         width: 55%;
@@ -303,7 +340,6 @@ $zindex-upload-drag-and-drop: 1;
     padding-right: 20px;
     color: $secondary-color;
     line-height: $upload-button-size;
-    pointer-events: none;
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset + $upload-button-size + ($upload-button-help-circle-size - $upload-button-size) / 2 + $upload-button-help-line-length;

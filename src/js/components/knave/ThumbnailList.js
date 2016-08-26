@@ -5,6 +5,9 @@ import Thumbnail from './_Thumbnail';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
+import { 
+    ImageServingEnableControl,
+    ImageServingDisableControl} from './InfoActionPanels';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const ThumbnailList = React.createClass({
@@ -45,14 +48,13 @@ export const ThumbnailList = React.createClass({
                     <Thumbnail
                         showHref={true}
                         className={this.props.className||''}
-                        isMobile={false}
                         key={t.thumbnail_id}
                         score={t.neon_score}
                         src={RENDITIONS.findRendition(t)}
                         onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
                         onMouseLeave={onMouseLeave}
                         onClick={onClick.bind(null, t.thumbnail_id)}
-                    />
+                    /> 
                 );
             });
 
@@ -136,6 +138,114 @@ export const ShowMoreThumbnailList = React.createClass({
                     <span>{this.props.moreLabel}</span>
                 </strong>
             </ThumbnailList>
+        );
+    }
+});
+
+export const ServingStatusThumbnailList = React.createClass({
+
+    propTypes: {
+        thumbnails: PropTypes.array.isRequired,
+        onMore: PropTypes.func.isRequired,
+        // Control how many images are shown before the ShowMore.
+        numberToDisplay: PropTypes.number.isRequired,
+        // Label for ShowMore button
+        moreLabel: PropTypes.string,
+        // control to enable a thumbnail 
+        enableClick: PropTypes.func.isRequired, 
+        // control to disable a thumbnail 
+        disableClick: PropTypes.func.isRequired 
+    },
+
+    getDefaultProps: function() {
+        return {
+            moreLabel: T.get('action.showMore'),
+            className: '' 
+        }
+    },
+    getMoreClassName: function() { 
+        if (this.props.thumbnails.length > 9) {
+            return "xxCollectionActions-more"
+        } 
+        else { 
+            return "xxCollectionActions-more xxCollectionActions-more--disabled"
+        } 
+    },
+    getControl: function(t) { 
+        if (t.enabled) { 
+            return (<ImageServingDisableControl handleClick={()=>{}} />)
+        } 
+    },
+    getClassName: function(t) { 
+        if (t.enabled) { 
+            return this.props.className;
+        } 
+        if (t.enabled) { 
+            return this.props.className + ' xxThumbnail--disabled';
+        } 
+    },  
+    render: function() {
+        const thumbnailSetOne = this.props.thumbnails
+            .slice(0, 3)
+            .map(t => {
+                return (
+                    <Thumbnail
+                        showHref={true}
+                        className={this.getClassName(t)}
+                        key={t.thumbnail_id}
+                        score={t.neon_score}
+                        src={RENDITIONS.findRendition(t)}
+                        children={this.getControl(t)}
+                    />
+                );
+            });
+        const thumbnailSetTwo = this.props.thumbnails
+            .slice(3, 6)
+            .map(t => {
+                return (
+                    <Thumbnail
+                        showHref={true}
+                        className={this.props.className||''}
+                        key={t.thumbnail_id}
+                        score={t.neon_score}
+                        src={RENDITIONS.findRendition(t)}
+                        children={this.getControl(t)}
+                    />
+                );
+            });
+        const thumbnailSetThree = this.props.thumbnails
+            .slice(6, 9)
+            .map(t => {
+                return (
+                    <Thumbnail
+                        showHref={true}
+                        className={this.props.className||''}
+                        key={t.thumbnail_id}
+                        score={t.neon_score}
+                        src={RENDITIONS.findRendition(t)}
+                        children={this.getControl(t)}
+                    />
+                );
+            });
+
+        return (
+            <div>
+                <div className="xxCollectionImages-serving">
+                    {thumbnailSetOne}
+                </div>
+                <div className="xxCollectionImages-serving">
+                    {thumbnailSetTwo}
+                </div>
+                <div className="xxCollectionImages-serving">
+                    {thumbnailSetThree}
+                </div>
+                <div className={this.getMoreClassName()}                 
+                    data-tip={'More'}
+                    data-for="staticTooltip"
+                    data-place="bottom">
+                </div>
+                
+            </div>
         );
     }
 });

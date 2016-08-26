@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -17,13 +18,20 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl,
+    AddPanel, 
+    AddControl } from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
+import ImageUploadOverlay from './ImageUploadOverlay';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const ImageCollection = React.createClass({
+
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
 
     getInitialState: function() {
         return {
@@ -37,7 +45,7 @@ const ImageCollection = React.createClass({
     setSelectedPanel: function(panelId) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanel : panelId });
+        this.setState({selectedPanel : panelId});
     },
 
     setLiftThumbnailId: function(thumbnailId) {
@@ -52,13 +60,16 @@ const ImageCollection = React.createClass({
     },
 
     getPanels() {
-        var self = this;
+        const overrideMap = {
+            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+        };
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
-                    isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
+                    isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                    translationOverrideMap={overrideMap}
                 />
             ];
         }
@@ -70,7 +81,8 @@ const ImageCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
-                isSoloImage={self.props.rightFeatureThumbnail.thumbnail_id === self.props.leftFeatureThumbnail.thumbnail_id}
+                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                translationOverrideMap={overrideMap}
             />,
             <FilterPanel />,
             <SharePanel
@@ -91,6 +103,11 @@ const ImageCollection = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
+            <AddPanel
+                tagId={this.props.tagId}
+                deleteCollection={this.props.deleteCollection}
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+            />
         ];
     },
     getControls(){
@@ -100,10 +117,29 @@ const ImageCollection = React.createClass({
         return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <AddControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
-    render: function() {
+
+    getMobile() {
+        const overrideMap = {
+            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+        };
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--photo'}
+                liftValue={this.getLiftValue()}
+                translationOverrideMap={overrideMap}
+            />
+        );
+    },
+
+    getDesktop() {
         return (
             <BaseCollection
                 {...this.props}
@@ -112,8 +148,16 @@ const ImageCollection = React.createClass({
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.setLiftThumbnailId}
+                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 

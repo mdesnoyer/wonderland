@@ -285,10 +285,9 @@ const CollectionsContainer = React.createClass({
         const video = this.props.stores.videos[tag.video_id];
         let isRefiltering = false;
 
-        console.log(video.state);
         if (['processing', 'failed'].includes(video.state)) {
             if (tag.thumbnail_ids.length === 0) {
-                return this.buildVideoProcessingComponent(tagId);    
+                return this.buildVideoProcessingComponent(tagId);
             }
             else {
                 isRefiltering = true;
@@ -317,12 +316,13 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoCollection
                 key={tagId}
+                title={video.title}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
+                goodThumbnails={emailThumbnails} 
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                title={video.title}
                 videoId={video.video_id}
                 tagId={tagId}
                 onDemographicChange={this.onDemoChange.bind(null, tagId)}
@@ -441,6 +441,7 @@ const CollectionsContainer = React.createClass({
         if (!tagId) {
             return null;
         }
+        const tag = this.props.stores.tags[tagId];
 
         // Get score sorted thumbnails for collection.
         const demo = this.getSelectedDemographic(tagId);
@@ -496,6 +497,11 @@ const CollectionsContainer = React.createClass({
             });
         })
 
+        const overrideMap = {};
+        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            overrideMap['copy.lift.explanation.default'] = 'copy.lift.explanation.images';
+        }
+
         return (
             <ThumbnailOverlay
                 thumbnails={sortedThumbnails}
@@ -507,6 +513,7 @@ const CollectionsContainer = React.createClass({
                 closeThumbnailOverlay={this.onOverlayClose}
                 openLearnMore={this.props.setSidebarContent.bind(null, 'learnMore')}
                 thumbnailFeatureNameMap={thumbnailFeatureNameMap}
+                translationOverrideMap={overrideMap}
             />
         );
 

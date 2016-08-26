@@ -1,35 +1,42 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Thumbnail from './_Thumbnail';
-import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var FeatureThumbnail = React.createClass({
-    propTypes: {
-        title: PropTypes.string.isRequired,
-        className: PropTypes.string,
-        score: PropTypes.number.isRequired,
-        src: PropTypes.string.isRequired,
-        tagId: PropTypes.string,
-        thumbnaiId: PropTypes.string,
-        onMouseEnter: PropTypes.func,
-        onClick: PropTypes.func
-    },
-    render: function() {
-        return (
-            <div className="xxCollectionImages-featured">
-                <h2 className="xxCollection-subtitle">
-                    {this.props.title}
-                </h2>
+const propTypes = {
+    title: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    score: PropTypes.number.isRequired,
+    src: PropTypes.string.isRequired,
+    tagId: PropTypes.string,
+    thumbnaiId: PropTypes.string,
+    onMouseEnter: PropTypes.func,
+    onClick: PropTypes.func,
+};
+
+
+
+function FeatureThumbnail(props) {
+    const wrapperClass = props.isSoloImage ? 'xxThumbnailSolorBlurWrapper' : '';
+    const soloMessage = props.isSoloImage ? <div className="xxThumbnailSolorMessage"> Add more images by clicking the plus sign to the right </div> : null;
+    return (
+        <div className="xxCollectionImages-featured">
+            <h2 className="xxCollection-subtitle">
+                {props.title}
+            </h2>
+                {soloMessage}
+            <div className={wrapperClass}>
                 <Thumbnail
-                    {...this.props}
+                    {...props}
                 />
             </div>
-        );
-    }
-});
+        </div>
+    );
+}
+
+FeatureThumbnail.propTypes = propTypes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

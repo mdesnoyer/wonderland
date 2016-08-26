@@ -7,7 +7,7 @@ import XXLift from '../Lift';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class XXCollectionImages extends React.Component {
+class XXCollectionImages extends React.Component {
     constructor(props) {
         super(props);
 

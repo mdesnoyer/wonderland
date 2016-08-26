@@ -1,8 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $small-thumbnail-width: calc(99.9% * 1/6 - #{$gutter-width});
+$medium-thumbnail-width: calc(99.9% * 1/4 - #{$gutter-width});
 
 $mobile-featured-images-gutter-width: 6px;
+$mobile-serving-images-gutter-width: 3px;
 $mobile-all-images-gutter-width: 3px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -47,7 +49,56 @@ $mobile-all-images-gutter-width: 3px;
             margin-left: 0;
         }
     }
+
 }
+
+.xxCollectionImages-serving {
+    float: left;
+    width: calc((99.9% + #{$gutter-width}) * 1/3 - #{$gutter-width});
+
+    @include breakpoint-mobile {
+        width: calc((99.9% + #{$mobile-serving-images-gutter-width}) * 1/3 - #{$mobile-serving-images-gutter-width});
+    }
+
+    & + & {
+        margin: 0 0 0 $gutter-width;
+
+        @include breakpoint-mobile {
+            float: right;
+            margin-left: 0;
+        }
+    }
+
+}
+
+.xxThumbnailSolorMessage {
+    z-index: 1000;
+    position: absolute;
+    text-align: center;
+    margin-top: 10%;
+    width: 21%;
+    margin-left: 5%;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: $white;
+    text-shadow: 2px 2px 8px black;
+        @include breakpoint-mobile {
+            width: 25%;
+            margin-left: 10%;
+            font-size: 1.5em;
+    }
+} 
+
+.xxThumbnailSolorBlurWrapper {
+    pointer-events:none;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    filter: url(blur.svg#blur);
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+}
+
 
 .xxCollectionImages-all {
     clear: both;
@@ -75,6 +126,10 @@ $mobile-all-images-gutter-width: 3px;
             margin-top: 0;
             margin-right: $mobile-all-images-gutter-width;
             margin-bottom: $mobile-all-images-gutter-width;
+        }
+        &--vertical {
+            float: none;
+            width: $medium-thumbnail-width;
         }
     }
 
@@ -115,12 +170,6 @@ $mobile-all-images-gutter-width: 3px;
     &:hover {
         border-color: rgba($accent-color, 0.5);
         color: $secondary-color;
-    }
-}
-
-.xxPagingControls {
-    @include breakpoint-mobile {
-        display: none;
     }
 }
 

@@ -21,6 +21,10 @@ var Lift = React.createClass({
         }
     },
     render: function() {
+        // Let mapped labels be overriden.
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.translationOverrideMap);
+
         var self = this,
             rawLift = isNaN(self.props.displayThumbLift) ? 0 : self.props.displayThumbLift,
             cookedLift,
@@ -47,8 +51,8 @@ var Lift = React.createClass({
         defaultThumbnailLiftPercent = UTILS.makePercentage(defaultThumbnailLift, 2, true);
         neonThumbnailLiftPercent = UTILS.makePercentage(neonThumbnailLift, 2, true);
         liftMark = self.props.isSoloImage ? T.get('copy.lift.lift') : T.get('copy.lift.units', {'@lift': displayLiftPercent}),
-        liftExplanation = self.props.isSoloImage ? T.get('copy.lift.explanation.soloImage') : T.get('copy.lift.explanation.default')
-        return (
+        liftExplanation = self.props.isSoloImage ? T.get('copy.lift.explanation.soloImage') : T.get('copy.lift.explanation.default');
+        const result = (
             <div className="xxLift">
                 <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={self._animationTime} transitionLeaveTimeout={self._animationTime}>
                     <div className="xxLift-container" key={`lift-${displayLiftPercent}-${neonThumbnailLiftPercent}-${defaultThumbnailLiftPercent}`}>
@@ -62,6 +66,8 @@ var Lift = React.createClass({
                 <p className="xxLift-text">{liftExplanation}</p>
             </div>
         );
+        unapplyOverride();
+        return result;
     }
 })
 

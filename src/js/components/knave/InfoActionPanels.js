@@ -11,6 +11,11 @@ import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
 import T from '../../modules/translation';
+import UploadForm from '../knave/UploadForm';
+import UTILS from '../../modules/utils';
+import {
+    ServingStatusThumbnailList,
+} from './ThumbnailList';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,22 +30,29 @@ export const InfoDemoLiftPanel = React.createClass({
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.array.isRequired,
         // whether or not the panel should display the refilter 
-        // button, defaults to true 
+        // button, defaults to true
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
         isSoloImage: React.PropTypes.bool,
         handleRefiltersPanelClick: React.PropTypes.func,
-        isRefiltering: React.PropTypes.bool
+        isRefiltering: React.PropTypes.bool,
+        translationOverrideMap: React.PropTypes.object,
     },
+
     getDefaultProps: function() {
         return {
             displayRefilterButton: true
         };
     },
+
     render: function() {
-        var self = this;
-        return (
+
+        // Let mapped labels be overriden.
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.translationOverrideMap);
+
+        const result = (
             <div>
                 <h1 className="xxCollection-title">
                     {this.props.title}
@@ -49,16 +61,21 @@ export const InfoDemoLiftPanel = React.createClass({
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
                     selectedDemographic={this.props.selectedDemographic}
-                    displayRefilterButton={this.props.displayRefilterButton} 
-                    handleRefiltersPanelClick={self.props.handleRefiltersPanelClick}
-                    isRefiltering={self.props.isRefiltering}
+                    displayRefilterButton={this.props.displayRefilterButton}
+                    handleRefiltersPanelClick={this.props.handleRefiltersPanelClick}
+                    isRefiltering={this.props.isRefiltering}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={self.props.isSoloImage}
+                    isSoloImage={this.props.isSoloImage}
+                    translationOverrideMap={this.props.translationOverrideMap}
                 />
             </div>
         );
+
+        unapplyOverride();
+
+        return result;
     }
 });
 
@@ -67,21 +84,24 @@ export const InfoLiftPanel = React.createClass({
         // User's name of this collection
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
-        isSoloImage: React.PropTypes.bool
+        isSoloImage: React.PropTypes.bool,
+        translationOverrideMap: React.PropTypes.object,
     },
     render: function() {
-        var self = this;
-        return (
+
+        const result = (
             <div>
                 <h1 className="xxCollection-title">
                     {this.props.title}
                 </h1>
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={self.props.isSoloImage}
+                    isSoloImage={this.props.isSoloImage}
+                    translationOverrideMap={this.props.translationOverrideMap}
                 />
             </div>
         );
+        return result;
     }
 });
 
@@ -103,7 +123,113 @@ export const FilterPanel = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export const ServingStatusPanel = React.createClass({
+    propTypes: {
+
+        // function used to remove a video from the
+        // UI display
+        disableCollection: PropTypes.func.isRequired,
+
+        // what to do when the cancel button is clicked
+        cancelClickHandler: PropTypes.func.isRequired,
+
+        // what to do on enable click
+        enableClick: PropTypes.func.isRequired, 
+        
+        // what to do on disable click 
+        disableClick: PropTypes.func.isRequired, 
+
+        // list of goodThumbnails 
+        goodThumbnails: PropTypes.array
+    },
+    render: function() {
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
+            'xxCollectionAction';
+        return (
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('copy.videoContent.disable.title')}</h2>
+                <ServingStatusThumbnailList
+                    thumbnails={this.props.goodThumbnails}
+                    numberToDisplay={6}
+                    onMore={() => {}}
+                    enableClick={this.props.enableClick} 
+                    disableClick={this.props.disableClick} 
+                    className='xxThumbnail--noscore xxThumbnail--vertical'
+                />
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton xxButton--fullwidth"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                        >{T.get('back')}
+                    </button>
+                </div> 
+            </div> 
+        );
+    }
+});
+
+
+export const ImageServingEnableControl = React.createClass({
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.thumbnailServing.enable.title')}
+                data-for="staticTooltip"
+                data-place="left"
+                data-action-label="delete"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-enableserving">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
+    }
+}); 
+
+export const ImageServingDisableControl = React.createClass({
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.thumbnailServing.disable.title')}
+                data-for="staticTooltip"
+                data-place="left"
+                data-action-label="disable serving"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-disableserving">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
+    }
+}); 
+
+export const ServingStatusControl = React.createClass({
+
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.videoContent.disable.title')}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="delete"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-disable">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
+    }
+});
 
 export const EmailPanel = React.createClass({
     propTypes: {
@@ -485,3 +611,47 @@ export const DeleteControl = React.createClass({
         );
     }
 });
+
+export const AddPanel = React.createClass({
+    render: function() {
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
+            'xxCollectionAction';
+        return (
+            <div className={collectionClassName}>
+            <h2 className="xxTitle">{T.get('copy.videoContent.add.title')}</h2>
+                {
+                    this.props.isMobile ? (
+                        <div
+                            className="xxOverlay-close"
+                            data-action-label="info">
+                        </div>
+                    ) : null
+                }
+                <UploadForm 
+                    isAddPanel={true} 
+                    tagId={this.props.tagId}
+                    cancelClickHandler={this.props.cancelClickHandler}
+                />
+            </div>
+        );
+    }
+})
+
+export const AddControl = React.createClass({
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.videoContent.add.tooltip')}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="add"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-add">
+                <span>{T.get('copy.videoContent.add.tooltip')}</span>
+            </a>
+        );
+    }
+})
+
+

@@ -55,13 +55,13 @@ var Sidebar = React.createClass({
             case 'learnMore':
                 return <LearnMore />;
             case 'contact':
-                return <Contact handleClose={self.handleClose} />;
+                return <Contact handleClose={this.handleClose} />;
             case 'signUp':
-                return <SignUp handleClose={self.handleClose} />;
+                return <SignUp handleClose={this.handleClose} />;
             case 'account':
                 return <Account />;
             case 'primaryNavigation':
-                return <PrimaryNavigation handleClick={self.handleClick} sidebarContent={self.state.content} />;
+                return <PrimaryNavigation handleClick={this.handleClick} sidebarContent={this.props.content} />;
         }
         return null;
     },

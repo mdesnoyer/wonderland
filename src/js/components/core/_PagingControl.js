@@ -1,51 +1,48 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-import UTILS from '../../modules/utils';
+import { Search } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const PagingControl = React.createClass({
+const propTypes = {
+    // Updates parent current page.
+    changeCurrentPage: PropTypes.func.isRequired,
 
-    propTypes: {
+    // Current page, 0-indexed.
+    currentPage: React.PropTypes.number.isRequired,
 
-        // Updates parent current page.
-        changeCurrentPage: PropTypes.func.isRequired,
+    // Whether the next control is enabled
+    enableNext: React.PropTypes.bool.isRequired,
+};
 
-        // Current page, 0-indexed.
-        currentPage: React.PropTypes.number.isRequired,
+class PagingControl extends React.Component {
 
-        // Whether the next control is enabled
-        enableNext: React.PropTypes.bool.isRequired
-    },
+    static displayName = 'PagingControl'
 
-    componentDidMount: function() {
+    constructor(props) {
+        super(props);
+        this.handleKeyEvent = this.handleKeyEvent.bind(this);
+        this.handleNav = this.handleNav.bind(this);
+        this.handleNavPrev = this.handleNav.bind(this, -1);
+        this.handleNavNext = this.handleNav.bind(this, +1);
+    }
+
+    componentDidMount() {
         document.body.onkeydown = this.handleKeyEvent;
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         document.body.onkeydown = undefined;
-    },
-
-    handleKeyEvent: function(e) {
-        const self = this;
-        switch (e.keyCode) {
-            case 37: // Left Arrow
-                return this.props.currentPage > 0 && self.handleNav(-1);
-            case 39: // Right Arrow
-                return this.props.enableNext && self.handleNav(+1);
-        }
-    },
+    }
 
     getPrevButton() {
         if (this.props.currentPage > 0) {
             return (
                 <button
-                    ref="prevButton"
-                    onClick={this.handleNav.bind(null, -1)}
+                    onClick={this.handleNavPrev}
                     aria-label={T.get('action.previous')}
                     title={T.get('action.previous')}
                     className={"xxPagingControls-prev"}
@@ -55,15 +52,14 @@ const PagingControl = React.createClass({
             );
         }
         return null;
-    },
+    }
 
     getNextButton() {
         if (this.props.enableNext) {
             return (
                 <button
-                    ref="nextButton"
                     disabled={!this.props.enableNext}
-                    onClick={this.handleNav.bind(null, +1)}
+                    onClick={this.handleNavNext}
                     className={"xxPagingControls-next"}
                     aria-label={T.get('action.next')}
                 >
@@ -71,10 +67,34 @@ const PagingControl = React.createClass({
                 </button>
             );
         }
+        if (Search.pending > 0) {
+            return (
+                <span>{T.get('copy.loading')}</span>
+            );
+        }
         return null;
-    },
+    }
 
-    render: function() {
+    handleKeyEvent(e) {
+        if (e.keyCode === 37) {
+            if (this.props.currentPage > 0) {
+                this.handleNavPrev();
+            }
+        } else if (e.keyCode === 39) {
+            if (this.props.enableNext) {
+                this.handleNavNext();
+            }
+        }
+    }
+
+    handleNav(change, ...rest) {
+        const self = this;
+        window.scrollTo(0, 0);
+        TRACKING.sendEvent(self, rest, self.props.currentPage);
+        self.props.changeCurrentPage(change);
+    }
+
+    render() {
         return (
             <div className="xxPagingControls">
                 <nav className="xxPagingControls-navigation">
@@ -90,15 +110,10 @@ const PagingControl = React.createClass({
                 </nav>
             </div>
         );
-    },
+    }
+}
 
-    handleNav: function(change) {
-        const self = this;
-        window.scrollTo(0, 0);
-        TRACKING.sendEvent(self, arguments, self.props.currentPage);
-        this.props.changeCurrentPage(change);
-    },
-});
+PagingControl.propTypes = propTypes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

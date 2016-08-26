@@ -51,6 +51,7 @@
 
     @include breakpoint-mobile {
         height: $mobile-form-element-height;
+        font-size: 16px;
     }
 
     &[readonly] {
@@ -296,9 +297,18 @@
     &:hover {
         border-color: $accent-color;
         color: $base-color;
+    }    
+    &--dragsmall {
+        margin: 0 auto; 
     }
-
     &--highlight {
+
+        @include breakpoint-mobile {
+            border-color: $accent-color !important;
+            background: $accent-color !important;
+            color: $white !important;
+        }
+
         &,
         &[disabled],
         &[disabled]:hover {

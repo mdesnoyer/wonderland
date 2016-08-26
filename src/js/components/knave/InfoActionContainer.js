@@ -15,7 +15,7 @@ const InfoActionContainer = React.createClass({
         controls: PropTypes.array.isRequired,
 
         // selectedPanel gets from user input on the parent object
-        selectedPanel: PropTypes.number.isRequired
+        selectedPanel: PropTypes.number
     },
 
     componentDidUpdate() {
@@ -27,7 +27,11 @@ const InfoActionContainer = React.createClass({
     render: function() {
         // Convert single child children to array.
         const children = React.Children.toArray(this.props.children);
-        const selected = children[this.props.selectedPanel];
+
+        // Null indicates a collapsed view.
+        const selected = selected !== null?
+            children[this.props.selectedPanel]:
+            null;
         var control_array = this.props.controls;
         const controls = control_array.map(control => {
             return (

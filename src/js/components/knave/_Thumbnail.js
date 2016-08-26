@@ -1,60 +1,65 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const _Thumbnail = React.createClass({
+const propTypes = {
+    // The neon score [0-99]
+    score: PropTypes.number,
 
-    propTypes: {
-        // The neon score [0-99]
-        score: PropTypes.number,
-        // Image url with appropriate dimensions
-        src: PropTypes.string.isRequired,
-        // User action handlers
-        onMouseEnter: PropTypes.func,
-        onMouseLeave: PropTypes.func,
-        onClick: PropTypes.func,
+    // The accessibility title
+    alt: PropTypes.string,
 
-        // Style
-        className: PropTypes.string
-    },
+    // Image url with appropriate dimensions
+    src: PropTypes.string.isRequired,
 
-    getDefaultProps: function() {
-        return {
-            onMouseEnter: this.noop,
-            onMouseLeave: this.noop,
-            onClick: this.noop
-        };
-    },
+    // User action handlers
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onClick: PropTypes.func,
 
-    noop: e => {
-        e.preventDefault();
-    },
+    // Style
+    className: PropTypes.string,
+};
 
-    render: function() {
-        const self = this;
-        const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small xxThumbnail--highLight xxThumbnail--neon ${this.props.className||''}`;
-        return (
-            <a
-                href='#'
-                className={className}
-                data-score={self.props.score}
-                onClick={self.props.onClick}
-            >
-                <img
-                    className="xxThumbnail-image"
-                    src={self.props.src}
-                    onMouseEnter={self.props.onMouseEnter}
-                    onMouseLeave={self.props.onMouseLeave}
-                />
-            </a>
-        );
-    }
-});
+const defaultProps = {
+    className: '',
+    onClick: (e) => e.preventDefault(),
+    // I.e., do nothing.
+    onMouseEnter: Function.prototype,
+    onMouseLeave: Function.prototype,
+    children: (<div></div>) 
+};
+
+function Thumbnail(props) {
+    const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
+        xxThumbnail--highLight xxThumbnail--neon ${props.className}`;
+    return (
+        <div> 
+        <a
+            href="#"
+            className={className}
+            data-score={props.score}
+            onClick={props.onClick}
+        >
+            <img
+                className="xxThumbnail-image"
+                alt={props.title + props.score}
+                src={props.src}
+                onMouseEnter={props.onMouseEnter}
+                onMouseLeave={props.onMouseLeave}
+            />
+        </a>
+        {props.children}
+        </div>
+    );
+}
+
+Thumbnail.propTypes = propTypes;
+Thumbnail.defaultProps = defaultProps;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default _Thumbnail
-
+export default Thumbnail;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

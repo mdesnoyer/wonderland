@@ -1,7 +1,5 @@
-'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
-import {findDOMNode} from 'react-dom'
 
 import _ from 'lodash';
 
@@ -14,12 +12,14 @@ import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
 import BasePage from './BasePage';
+import SearchForm from '../core/SearchForm';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
     TagStore,
+    FilteredTagStore,
     VideoStore,
     ThumbnailStore,
     LiftStore,
@@ -28,7 +28,7 @@ import {
     TagShareStore,
     LoadActions,
     Dispatcher,
-    Search } from '../../stores/CollectionStores.js';
+    Search } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -39,6 +39,8 @@ const getStateFromStores = () => {
         //
         // Map of tag id to tag.
         tags: TagStore.getAll(),
+        // A submap of tags, of those results that are showable
+        selectedTags: FilteredTagStore.getAll(),
 
         // Map of video id to video.
         videos: VideoStore.getAll(),
@@ -79,6 +81,7 @@ const CollectionsMainPage = React.createClass({
             getStateFromStores(),
             {
                 currentPage: 0,
+                searchQuery: '',
                 tooltipText: undefined
             }
         );
@@ -91,8 +94,8 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
-        Search.load(2, true);
-        Search.load(UTILS.RESULTS_PAGE_SIZE);
+        const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
+        Search.load(2, true, callback);
     },
 
     updateState: function() {
@@ -102,10 +105,27 @@ const CollectionsMainPage = React.createClass({
     changeCurrentPage(change) {
         const self = this;
         const currentPage = self.state.currentPage + change
-        self.setState({currentPage});
+        self.setState({currentPage}, this.loadMoreFromSearch);
+
+    },
+
+    // Ask the search provider to get more results.
+    //
+    // If useCurrentPage, only load the page is near the end of the pages.
+    //
+    // If not, load more based on how many are in store.
+    loadMoreFromSearch(useCurrentPage=true) {
         // Queue another page to load:
         // use +2 here: +1 to offset 0-indexing of page, +1 to queue next.
-        Search.load((2 + currentPage) * UTILS.RESULTS_PAGE_SIZE);
+        const count = useCurrentPage ?
+            this.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
+            TagStore.count();
+
+        if(this.state.searchQuery) {
+            Search.loadWithQuery(count, this.state.searchQuery);
+        } else {
+            Search.load(count);
+        }
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -206,22 +226,60 @@ const CollectionsMainPage = React.createClass({
         const rendition1 = RENDITIONS.findRendition(first, 140, 79);
         const rendition2 = RENDITIONS.findRendition(second, 140, 79);
         const rendition3 = RENDITIONS.findRendition(third, 140, 79);
+        let data = {};
 
-        const data = {
-            subject: UTILS.RESULTS_EMAIL_SUBJECT,
-            to_email_address: email,
-            // TODO put slug for image collection.
-            template_slug: UTILS.RESULTS_MANDRILL_SLUG,
-            template_args: {
-                'top_thumbnail': renditionTop,
-                'lift': UTILS.makePercentage(lift, 0, true),
-                'thumbnail_one': rendition1,
-                'thumbnail_two': rendition2,
-                'thumbnail_three': rendition3,
-                'collection_url': shareUrl
-            }
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            data = {
+                subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                to_email_address: email,
+                template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+                template_args: {
+                    'top_thumbnail': renditionTop,
+                    'lift': UTILS.makePercentage(lift, 0, true),
+                    'thumbnail_one': rendition1,
+                    'thumbnail_two': rendition2,
+                    'thumbnail_three': rendition3,
+                    'collection_url': shareUrl
+                }
+            };
         }
-
+        else if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            let liftString = '';
+            let buttonString = '';
+            let seeMoreString = ''; 
+            let neonScore = best.neon_score; 
+            if (tag.thumbnail_ids.length <= 1) { 
+                liftString = T.get('copy.email.oneResultLiftString');
+                seeMoreString = T.get('copy.email.oneResultSeeMoreString');
+                buttonString = T.get('copy.email.oneResultButtonString'); 
+            }
+            else { 
+                liftString = T.get('copy.email.multipleResultsLiftString', 
+                    {'@lift': UTILS.makePercentage(lift, 0, true)});
+                buttonString = T.get('copy.email.multipleResultsButtonString'); 
+                seeMoreString = T.get('copy.email.multipleResultsSeeMoreString');
+            }  
+            data = {
+                subject: UTILS.RESULTS_EMAIL_SUBJECT,
+                to_email_address: email,
+                template_slug: UTILS.IMAGE_RESULTS_MANDRILL_SLUG,
+                template_args: {
+                    'top_thumbnail': renditionTop,
+                    'lift_string': liftString,
+                    'button_string': buttonString,
+                    'see_more_string': seeMoreString,  
+                    'collection_url': shareUrl,
+                    'neon_score': neonScore
+                }
+            };
+        } 
+        else { 
+            callback({
+                'status_code' : 400,
+                'errorMessage' : 'unknown tag type unable to send email'
+            });
+            return; 
+        } 
         self.POST('email', {data})
         .then(function(res) {
             TRACKING.sendEvent(self, arguments, tagId);
@@ -247,41 +305,49 @@ const CollectionsMainPage = React.createClass({
     },
 
     getShownIds: function() {
-
         // The size and offset into the list.
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
-        const offset = pageSize * (this.state.currentPage);
+        const offset = pageSize * this.state.currentPage;
 
-        // Get the ordered array of all tag ids
+        // Get the ordered array of selectable tag ids
         // and slice it to size.
-        return _(this.state.tags)
+        return _(this.state.selectedTags)
             .orderBy(['created'], ['desc'])
-            // Filter hidden and empty tags.
-            .filter(this.isShowableTag)
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
     },
 
-    isShowableTag: function(tag) {
-	if (tag.hidden === true) {
-	    return false;
+    // Get the name of a tag, else the title of
+    // the tag's video, else the empty string.
+    getTagName(tag) {
+        if (tag.name) {
+            return tag.name;
         }
-        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
-            const video = this.state.videos[tag.video_id];
-            // We show a special placeholder component for these states.
-            if (['processing', 'failed'].includes(video.state)) {
-                return true;
-            }
+        if(tag.tag_type = UTILS.TAG_TYPE_VIDEO_COL) {
+            return this.state.videos[tag.video_id].title;
         }
-        return tag.thumbnail_ids.length > 0;
+        return '';
+    },
+
+    // Given a tag, return true if its name or its video title
+    // contains search query.
+    filterOnName: function(query, tag) {
+        if (!query) {
+            return true;
+        }
+        const name = this.getTagName(tag).toLowerCase();
+        if (!name) {
+            return false;
+        }
+        return -1 !== name.search(query.toLowerCase());
     },
 
     getVideoStatus: function(videoId) {
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                let tagId = res.videos[0].tag_id; 
+                let tagId = res.videos[0].tag_id;
                 res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
             })
             .catch(function(err) {
@@ -298,10 +364,32 @@ const CollectionsMainPage = React.createClass({
         return Search.hasMoreThan(itemCount);
     },
 
-    getBody: function() {
-        if (!TagStore.countShowable()) {
-            return;
+    onSearchFormChange: function(e) {
+        const self = this;
+        const searchQuery = e.target.value.trim();
+        if (!searchQuery) {
+            FilteredTagStore.resetFilter();
+        } else {
+            FilteredTagStore.setFilter(
+                tag => {
+                    return tag.hidden !== true &&
+                           self.filterOnName(searchQuery, tag)
+                }
+            );
         }
+        self.setState({
+            searchQuery,
+            currentPage: 0,
+            selectedTags: FilteredTagStore.getAll(),
+        })
+    },
+
+    onSearchFormSubmit: function(e) {
+        e.preventDefault();
+        this.loadMoreFromSearch(false)
+    },
+
+    getResults: function() {
         return (
             <div>
                 <CollectionsContainer
@@ -343,15 +431,29 @@ const CollectionsMainPage = React.createClass({
     },
 
     render: function() {
+        let body = this.getLoading();
+        if (FilteredTagStore.count() > 0 || Search.pending <= 0) {
+            body = this.getResults();
+        }
+
+        const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
+
         return (
             <BasePage
+                {...this.props}
                 ref="basepage"
                 title={T.get('copy.myCollections.title')}
                 setSidebarContent={this.setSidebarContent}
                 sidebarContent={this.state.sidebarContent}
                 tooltipText={this.state.tooltipText}
             >
-                {this.getBody() || this.getLoading()}
+                <SearchForm
+                    query={this.state.searchQuery}
+                    onChange={this.onSearchFormChange}
+                    onSubmit={this.onSearchFormSubmit}
+                    isLoading={isQuerySearchLoading}
+                />
+                {body}
                 <UploadForm />
             </BasePage>
         );

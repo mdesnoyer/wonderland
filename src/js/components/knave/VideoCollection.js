@@ -1,10 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
+import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
 
@@ -17,16 +18,26 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl, 
+    ServingStatusPanel, 
+    ServingStatusControl,
+    ImageServingEnabledControl,
+    ImageServingDisabledControl} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const VideoCollection = React.createClass({
+
     propTypes: {
         isRefiltering: React.PropTypes.bool
     },
+
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
+
     getInitialState: function() {
         return {
             // What panel to display, based on user input by
@@ -93,9 +104,15 @@ const VideoCollection = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
+            <ServingStatusPanel
+                disableCollection={this.props.deleteCollection}
+                goodThumbnails={this.props.goodThumbnails} 
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                enableClick={()=>{this.setSelectedPanel(0)}}
+                disableClick={()=>{this.setSelectedPanel(0)}}
+            />,
         ];
     },
-
     getControls() {
         if (this.props.infoPanelOnly) {
             return [];
@@ -103,18 +120,36 @@ const VideoCollection = React.createClass({
         return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
 
-    render: function() {
+    getMobile: function() {
+        const overrideMap = {
+            'copy.worstThumbnail': 'copy.currentThumbnail',
+            'copy.bestThumbnail': 'copy.topNeonImage',
+        };
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                translationOverrideMap={overrideMap}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanel={this.state.selectedPanel}
+                wrapperClassName={'xxCollection xxCollection--video'}
+                liftValue={this.getLiftValue()}
+            />
+        );
+    },
+
+    getDesktop: function() {
         // Apply Video component-specific labels.
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
-
         };
 
         return (
@@ -128,6 +163,13 @@ const VideoCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    render: function() {
+        if (this.context.isMobile) {
+            return this.getMobile();
+        }
+        return this.getDesktop();
     }
 });
 
