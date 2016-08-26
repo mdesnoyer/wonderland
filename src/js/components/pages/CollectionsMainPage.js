@@ -81,7 +81,7 @@ const CollectionsMainPage = React.createClass({
             getStateFromStores(),
             {
                 currentPage: 0,
-                searchQuery: undefined,
+                searchQuery: '',
                 tooltipText: undefined
             }
         );
@@ -316,9 +316,6 @@ const CollectionsMainPage = React.createClass({
             .slice(offset, pageSize + offset)
             .map(t => {return t.tag_id;})
             .value();
-        if(ids.length < UTILS.RESULTS_PAGE_SIZE) {
-            this.loadMoreFromSearch(false)
-        }
         return ids;
     },
 
@@ -402,6 +399,7 @@ const CollectionsMainPage = React.createClass({
 
     onSearchFormSubmit: function(e) {
         e.preventDefault();
+        this.loadMoreFromSearch(false)
     },
 
     getResults: function() {
@@ -451,6 +449,8 @@ const CollectionsMainPage = React.createClass({
             body = this.getResults();
         }
 
+        const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
+
         return (
             <BasePage
                 {...this.props}
@@ -464,6 +464,7 @@ const CollectionsMainPage = React.createClass({
                     query={this.state.searchQuery}
                     onChange={this.onSearchFormChange}
                     onSubmit={this.onSearchFormSubmit}
+                    isLoading={isQuerySearchLoading}
                 />
                 {body}
                 <UploadForm />

@@ -3,6 +3,7 @@
 import React, { PropTypes } from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
+import { Search } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,6 +65,11 @@ class PagingControl extends React.Component {
                 >
                     {T.get('action.next')}
                 </button>
+            );
+        }
+        if (Search.pending > 0) {
+            return (
+                <span>{T.get('copy.loading')}</span>
             );
         }
         return null;

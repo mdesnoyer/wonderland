@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
@@ -16,6 +17,13 @@ var ImageUploadOverlay = React.createClass({
     getInitialState: function() {
         return {
             isNextClicked: false
+        }
+    },
+    componentDidMount: function() {
+        // Put focus in the form name input when opening.
+        const node = ReactDOM.findDOMNode(this.refs.nameInput);
+        if(node) {
+            node.focus();
         }
     },
     render: function() {
@@ -66,6 +74,7 @@ var ImageUploadOverlay = React.createClass({
                     <div className="xxFormField">
                         <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
                         <input
+                            ref="nameInput"
                             className="xxInputText"
                             placeholder={T.get('imageUpload.placeholderName')}
                             type="text"
@@ -176,8 +185,7 @@ var ImageUploadOverlay = React.createClass({
         self.props.formatData(files);
     },
     propTypes: {
-        error: React.PropTypes.string, 
-        key: React.PropTypes.func,
+        error: React.PropTypes.string,
         formatData: React.PropTypes.func,
         grabDropBox: React.PropTypes.func,
         sendLocalPhotos: React.PropTypes.func,

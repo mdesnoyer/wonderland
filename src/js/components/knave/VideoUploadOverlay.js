@@ -1,12 +1,20 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadOverlay = React.createClass({
+    componentDidMount: function() {
+        // Put focus in the form name input when opening.
+        const node = ReactDOM.findDOMNode(this.refs.urlInput);
+        if(node) {
+            node.focus();
+        }
+    },
     render: function() {
         const { isOnboarding } = this.props;
         const isMobile = window.outerWidth < 768;
@@ -22,7 +30,7 @@ var VideoUploadOverlay = React.createClass({
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
                     <h2 className="xxTitle">
-                        { isMobile ? ('Upload Video') : ('Let’s analyze a video') }
+                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
                     {messageNeeded}
                     <div className="xxFormField">
@@ -30,8 +38,9 @@ var VideoUploadOverlay = React.createClass({
                             {T.get('url')}
                         </label>
                         <input
-                            className="xxInputText"
                             id="xx-upload-url"
+                            ref="urlInput"
+                            className="xxInputText"
                             placeholder={T.get('upload.videoUrl')}
                             type="url"
                             required

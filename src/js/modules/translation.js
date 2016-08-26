@@ -109,6 +109,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.limitMessage': 'You\u2019ve hit your limit. Come back tomorrow to process more videos, or sign up to increase your limit.',
             'copy.analyzeVideo.limitDate': 'Come back tomorrow or sign up to increase your limit.', 
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
+            'copy.analyzeVideo.lets': 'Let\'s analyze a video',
+            'copy.analyzeVideo.upload': 'Upload Video',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',

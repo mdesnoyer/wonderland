@@ -938,11 +938,6 @@ export const Search = {
     },
 
     load(count, onlyThisMany=false, callback) {
-        /*
-        if(Search.pending >= 1) {
-            return;
-        }
-        /**/
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.pending += 1;
