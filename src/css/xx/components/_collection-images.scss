@@ -1,8 +1,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $small-thumbnail-width: calc(99.9% * 1/6 - #{$gutter-width});
+$medium-thumbnail-width: calc(99.9% * 1/4 - #{$gutter-width});
 
 $mobile-featured-images-gutter-width: 6px;
+$mobile-serving-images-gutter-width: 3px;
 $mobile-all-images-gutter-width: 3px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,6 +39,25 @@ $mobile-all-images-gutter-width: 3px;
 
     @include breakpoint-mobile {
         width: calc((99.9% + #{$mobile-featured-images-gutter-width}) * 1/2 - #{$mobile-featured-images-gutter-width});
+    }
+
+    & + & {
+        margin: 0 0 0 $gutter-width;
+
+        @include breakpoint-mobile {
+            float: right;
+            margin-left: 0;
+        }
+    }
+
+}
+
+.xxCollectionImages-serving {
+    float: left;
+    width: calc((99.9% + #{$gutter-width}) * 1/3 - #{$gutter-width});
+
+    @include breakpoint-mobile {
+        width: calc((99.9% + #{$mobile-serving-images-gutter-width}) * 1/3 - #{$mobile-serving-images-gutter-width});
     }
 
     & + & {
@@ -105,6 +126,10 @@ $mobile-all-images-gutter-width: 3px;
             margin-top: 0;
             margin-right: $mobile-all-images-gutter-width;
             margin-bottom: $mobile-all-images-gutter-width;
+        }
+        &--vertical {
+            float: none;
+            width: $medium-thumbnail-width;
         }
     }
 

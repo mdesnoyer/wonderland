@@ -29,12 +29,14 @@ const defaultProps = {
     // I.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
+    children: (<div></div>) 
 };
 
 function Thumbnail(props) {
     const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
         xxThumbnail--highLight xxThumbnail--neon ${props.className}`;
     return (
+        <div> 
         <a
             href="#"
             className={className}
@@ -49,6 +51,8 @@ function Thumbnail(props) {
                 onMouseLeave={props.onMouseLeave}
             />
         </a>
+        {props.children}
+        </div>
     );
 }
 
