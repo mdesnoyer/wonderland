@@ -52,6 +52,23 @@ var UploadForm = React.createClass({
             numberUploadedCount: 0
         };
     },
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyEvent);
+    },
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyEvent);
+    },
+
+    handleKeyEvent(e) {
+        // Escape closes.
+        const self = this;
+        if (e.keyCode === 27) {
+            self.setState(self.getInitialState());
+        }
+    },
+
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
