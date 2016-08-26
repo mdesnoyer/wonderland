@@ -340,7 +340,6 @@ $zindex-upload-drag-and-drop: 1;
     padding-right: 20px;
     color: $secondary-color;
     line-height: $upload-button-size;
-    pointer-events: none;
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset + $upload-button-size + ($upload-button-help-circle-size - $upload-button-size) / 2 + $upload-button-help-line-length;

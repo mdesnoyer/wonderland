@@ -41,14 +41,24 @@ const OnboardingUploadPage = React.createClass({
         }
     },
 
+    onClick: function(e) {
+        this.refs.uploadForm.toggleOpen(e);
+    },
+
     render: function() {
         var content; 
         switch(this.state.onboardingState) {
             case 'initial':
                 content = ( 
                         <div className="xxUpload">
-                            <UploadForm onboardingAction={this.onboardingAction} />
-                            <div className="xxUploadButton-help">
+                            <UploadForm
+                                onboardingAction={this.onboardingAction}
+                                ref="uploadForm"
+                            />
+                            <div
+                                className="xxUploadButton-help"
+                                onClick={this.onClick}
+                            >
                                 <span className="xxUploadButton-helpCircle"></span>
                                 <span className="xxUploadButton-helpLine"></span>
                                 <p>{this.state.uploadText}</p>

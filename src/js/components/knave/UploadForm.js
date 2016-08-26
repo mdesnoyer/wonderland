@@ -40,7 +40,6 @@ var UploadForm = React.createClass({
         var self = this;
         return {
             isOpen: false,
-            error: null,
             isOpenMessage: false,
             isPhotoOpen: false, 
             isVideoOpen: false,
@@ -49,7 +48,8 @@ var UploadForm = React.createClass({
             photoUploadThumbnailIds: [],
             photoCollectionName: '',
             videoUploadUrl:'',
-            numberUploadedCount: 0
+            numberUploadedCount: 0,
+            error: null,
         };
     },
 
@@ -514,7 +514,7 @@ var UploadForm = React.createClass({
         onboardingAction: React.PropTypes.func,
         onboardingError: React.PropTypes.func,
         cancelClickHandler: React.PropTypes.func,
-        isAddPanel: React.PropTypes.bool
+        isAddPanel: React.PropTypes.bool,
     }
 });
 
