@@ -35,12 +35,11 @@ var ImageUploadOverlay = React.createClass({
     handleKeyEvent(e) {
         // Enter nexts.
         const self = this;
+        var isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '';
         if (e.keyCode === 13) {
-            if (this.state.isNextClicked) {
-                //const e = {
-                //    preventDefault: Function.prototype,
-                //    target: {dataset: {sendTag: true}}};
-                //self.props.toggleOpen(e);
+            if (this.state.isNextClicked && isValid) {
+                e.target.dataset.sendTag = true;
+                self.props.toggleOpen(event);
             } else {
                 self.handleClick();
             }
@@ -166,15 +165,14 @@ var ImageUploadOverlay = React.createClass({
                                         <div className="xxUploadDialog-block">
                                             <label>{T.get('imageUpload.submitBelow')}</label>
                                         </div>
-                                        <button
-                                            className={submitClassName.join(' ')}
-                                            type="button"
-                                            onClick={isValid ? self.props.toggleOpen : null}
+                                        <input
                                             data-send-tag={true}
+                                            className={submitClassName.join(' ')}
+                                            onClick={isValid ? self.props.toggleOpen : null}
                                             disabled={!isValid}
-                                        >
-                                            {'Submit Collection'}
-                                        </button>
+                                            type="submit"
+                                            value='Submit Collection'
+                                        />
                                     </div>
                                 ) : null
                             }

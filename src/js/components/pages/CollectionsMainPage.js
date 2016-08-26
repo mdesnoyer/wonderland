@@ -446,13 +446,11 @@ const CollectionsMainPage = React.createClass({
                 setSidebarContent={this.setSidebarContent}
                 sidebarContent={this.state.sidebarContent}
                 tooltipText={this.state.tooltipText}
+                query={this.state.searchQuery}
+                onSearchFormChange={this.onSearchFormChange}
+                onSearchFormSubmit={this.onSearchFormSubmit}
+                isLoading={isQuerySearchLoading}
             >
-                <SearchForm
-                    query={this.state.searchQuery}
-                    onChange={this.onSearchFormChange}
-                    onSubmit={this.onSearchFormSubmit}
-                    isLoading={isQuerySearchLoading}
-                />
                 {body}
                 <UploadForm />
             </BasePage>
