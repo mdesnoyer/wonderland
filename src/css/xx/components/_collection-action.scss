@@ -11,6 +11,11 @@
     .xxTitle {
         margin-top: -5px;
     }
+    &--no-bottom-margin {
+        p {  
+            margin-bottom: 0px; 
+        }
+    } 
 }
 
 .xxCollectionAction-buttons {
@@ -25,6 +30,9 @@
         }
         &--fullwidth { 
            width: 100%;  
+        } 
+        &--extra-margin-top { 
+           margin-top: 20px;  
         } 
     }
 

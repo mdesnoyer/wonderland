@@ -884,7 +884,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 });
 
 export const DeleteActions = Object.assign({}, AjaxMixin, {
-
     deleteCollectionByTagId: function(tagId) {
         const tag = TagStore.get(tagId);
         DeleteActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
@@ -895,6 +894,21 @@ export const DeleteActions = Object.assign({}, AjaxMixin, {
             });
     }
 });
+
+export const ServingStatusActions = Object.assign({}, AjaxMixin, {
+    toggleThumbnailEnabled: function(thumbnail) {
+        //const thumbnail = ThumbnailStore.get(thumbnailId);
+        const thumbnailId = thumbnail.thumbnail_id; 
+        const videoId = thumbnail.video_id; 
+        const video = VideoStore.get(videoId); 
+        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } }; 
+        ServingStatusActions.PUT('thumbnails', options)
+            .then(res => {
+                //Dispatcher.dispatch();
+                LoadActions.loadTags([video.tag_id]); 
+            }); 
+    } 
+}); 
 
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.

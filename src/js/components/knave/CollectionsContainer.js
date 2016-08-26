@@ -329,6 +329,8 @@ const CollectionsContainer = React.createClass({
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
+                enableThumbnail={this.props.enableThumbnail} 
+                disableThumbnail={this.props.disableThumbnail} 
             />
        );
     },

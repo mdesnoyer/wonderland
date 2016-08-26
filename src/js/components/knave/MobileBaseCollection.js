@@ -129,6 +129,7 @@ const MobileBaseCollection = React.createClass({
             <FeatureThumbnail
                 title={T.get('copy.worstThumbnail')}
                 score={this.props.leftFeatureThumbnail.neon_score}
+                enabled={this.props.leftFeatureThumbnail.enabled} 
                 className="xxThumbnail--lowLight"
                 src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
                 onClick={this.props.onThumbnailClick.bind(null, leftThumbnailId)}
@@ -139,6 +140,7 @@ const MobileBaseCollection = React.createClass({
             <FeatureThumbnail
                 title={T.get('copy.bestThumbnail')}
                 score={this.props.rightFeatureThumbnail.neon_score}
+                enabled={this.props.rightFeatureThumbnail.enabled} 
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
                 onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
                 isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
