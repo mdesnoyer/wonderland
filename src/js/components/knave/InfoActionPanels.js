@@ -12,6 +12,9 @@ import Lift from './Lift';
 import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
 import UTILS from '../../modules/utils';
+import {
+    ServingStatusThumbnailList,
+} from './ThumbnailList';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -100,6 +103,114 @@ export const InfoLiftPanel = React.createClass({
 export const FilterPanel = React.createClass({
     render: () => {
         return <h1>{T.get('label.filterResults')}</h1>;
+    }
+});
+
+export const ServingStatusPanel = React.createClass({
+    propTypes: {
+
+        // function used to remove a video from the
+        // UI display
+        disableCollection: PropTypes.func.isRequired,
+
+        // what to do when the cancel button is clicked
+        cancelClickHandler: PropTypes.func.isRequired,
+
+        // what to do on enable click
+        enableClick: PropTypes.func.isRequired, 
+        
+        // what to do on disable click 
+        disableClick: PropTypes.func.isRequired, 
+
+        // list of goodThumbnails 
+        goodThumbnails: PropTypes.array
+    },
+    render: function() {
+        var collectionClassName = this.props.isMobile ?
+            'xxOverlay xxOverlay--light xxOverlay--spaced' :
+            'xxCollectionAction';
+        return (
+            <div className={collectionClassName}>
+                <h2 className="xxTitle">{T.get('copy.videoContent.disable.title')}</h2>
+                <ServingStatusThumbnailList
+                    thumbnails={this.props.goodThumbnails}
+                    numberToDisplay={6}
+                    onMore={() => {}}
+                    enableClick={this.props.enableClick} 
+                    disableClick={this.props.disableClick} 
+                    className='xxThumbnail--noscore xxThumbnail--vertical'
+                />
+                <div className="xxCollectionAction-buttons">
+                    <button
+                        className="xxButton xxButton--fullwidth"
+                        type="button"
+                        data-action-label="info"
+                        onClick={this.props.cancelClickHandler}
+                        >{T.get('back')}
+                    </button>
+                </div> 
+            </div> 
+        );
+    }
+});
+
+
+export const ImageServingEnableControl = React.createClass({
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.thumbnailServing.enable.title')}
+                data-for="staticTooltip"
+                data-place="left"
+                data-action-label="delete"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-enableserving">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
+    }
+}); 
+
+export const ImageServingDisableControl = React.createClass({
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.thumbnailServing.disable.title')}
+                data-for="staticTooltip"
+                data-place="left"
+                data-action-label="disable serving"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-disableserving">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
+    }
+}); 
+
+export const ServingStatusControl = React.createClass({
+
+    propTypes: {
+        handleClick: PropTypes.func.isRequired
+    },
+
+    render: function() {
+        return (
+            <a
+                data-tip={T.get('copy.videoContent.disable.title')}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="delete"
+                onClick={this.props.handleClick}
+                className="xxCollectionActions-anchor xxCollectionActions-disable">
+                <span>{T.get('delete')}</span>
+            </a>
+        );
     }
 });
 

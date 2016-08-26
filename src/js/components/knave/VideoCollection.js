@@ -18,7 +18,11 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl} from './InfoActionPanels';
+    DeleteControl, 
+    ServingStatusPanel, 
+    ServingStatusControl,
+    ImageServingEnabledControl,
+    ImageServingDisabledControl} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -92,9 +96,15 @@ const VideoCollection = React.createClass({
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
+            <ServingStatusPanel
+                disableCollection={this.props.deleteCollection}
+                goodThumbnails={this.props.goodThumbnails} 
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                enableClick={()=>{this.setSelectedPanel(0)}}
+                disableClick={()=>{this.setSelectedPanel(0)}}
+            />,
         ];
     },
-
     getControls() {
         if (this.props.infoPanelOnly) {
             return [];
@@ -102,7 +112,8 @@ const VideoCollection = React.createClass({
         return [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />
         ];
     },
 
