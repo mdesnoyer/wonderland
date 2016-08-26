@@ -61,7 +61,6 @@ const ViewSharedCollectionPage = React.createClass({
     getInitialState: function() {
         return Object.assign(
             {
-                pageTitle: T.get('share'),
                 metaTags: []
             },
             getStateFromStores()
@@ -118,19 +117,7 @@ const ViewSharedCollectionPage = React.createClass({
         const self = this;
         self.setState(getStateFromStores(),
             () => {
-                const stateDiff = {};
-                // Set the page title to the first collection's name.
-                if(!_.isEmpty(self.state.tags)) {
-                    const name = _(self.state.tags)
-                        .values()
-                        .head()
-                        .name;
-                    if(name) {
-                        stateDiff.pageTitle = name;
-                    }
-                }
-                stateDiff.metaTags = self.getMetaTagsFromProps();
-                self.setState(stateDiff);
+                self.setState({metaTags: self.getMetaTagsFromProps()});
             }
         );
     },
@@ -165,7 +152,7 @@ const ViewSharedCollectionPage = React.createClass({
         return (
             <BasePage
                 meta={this.state.metaTags}
-                title={this.state.pageTitle}
+                title={T.get('copy.myCollections.title')}
                 setSidebarContent={this.setSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
