@@ -94,7 +94,6 @@ var ImageUploadPanel = React.createClass({
     },
     propTypes: {
         error: React.PropTypes.string, 
-        key: React.PropTypes.func,
         formatData: React.PropTypes.func,
         grabDropBox: React.PropTypes.func,
         sendLocalPhotos: React.PropTypes.func,

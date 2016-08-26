@@ -224,6 +224,10 @@ $zindex-upload-drag-and-drop: 1;
         @include breakpoint-mobile {
             width: 100px;
             margin-top: 0;
+
+            &--important {
+                width: 100%;
+            }
         }
     }
 
