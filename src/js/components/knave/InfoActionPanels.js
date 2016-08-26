@@ -133,18 +133,14 @@ export const FilterPanel = React.createClass({
 export const ServingStatusPanel = React.createClass({
     propTypes: {
 
-        // function used to remove a video from the
-        // UI display
-        disableCollection: PropTypes.func.isRequired,
-
         // what to do when the cancel button is clicked
         cancelClickHandler: PropTypes.func.isRequired,
 
         // what to do on enable click
-        enableClick: PropTypes.func.isRequired, 
+        enableThumbnail: PropTypes.func.isRequired, 
         
         // what to do on disable click 
-        disableClick: PropTypes.func.isRequired, 
+        disableThumbnail: PropTypes.func.isRequired, 
 
         // list of goodThumbnails 
         goodThumbnails: PropTypes.array
@@ -152,21 +148,22 @@ export const ServingStatusPanel = React.createClass({
     render: function() {
         var collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
-            'xxCollectionAction';
+            'xxCollectionAction xxCollectionAction--no-bottom-margin';
         return (
             <div className={collectionClassName}>
                 <h2 className="xxTitle">{T.get('copy.videoContent.disable.title')}</h2>
+                <div className="xxText">
+                    <p>{T.get('copy.videoContent.servingStatus')}</p>
+                </div>
                 <ServingStatusThumbnailList
                     thumbnails={this.props.goodThumbnails}
-                    numberToDisplay={6}
-                    onMore={() => {}}
-                    enableClick={this.props.enableClick} 
-                    disableClick={this.props.disableClick} 
-                    className='xxThumbnail--noscore xxThumbnail--vertical'
+                    enableClick={this.props.enableThumbnail} 
+                    disableClick={this.props.disableThumbnail} 
+                    className='xxThumbnail--noscore xxThumbnail--fullwidth'
                 />
                 <div className="xxCollectionAction-buttons">
                     <button
-                        className="xxButton xxButton--fullwidth"
+                        className="xxButton xxButton--fullwidth xxButton--extra-margin-top"
                         type="button"
                         data-action-label="info"
                         onClick={this.props.cancelClickHandler}

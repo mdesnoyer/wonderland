@@ -337,6 +337,8 @@ const CollectionsContainer = React.createClass({
                 setTooltipText={this.props.setTooltipText}
                 isRefiltering={isRefiltering}
                 timeRemaining={video.estimated_time_remaining}
+                enableThumbnail={this.props.enableThumbnail}
+                disableThumbnail={this.props.disableThumbnail}
             />
        );
     },

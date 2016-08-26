@@ -53,7 +53,7 @@ const DemographicFilters = React.createClass({
     },
     toggleOpen: function() {
         const self = this;
-        this.setState({
+        self.setState({
             isOpen: !self.state.isOpen
         });
     },
@@ -149,25 +149,26 @@ const DemographicFilters = React.createClass({
     },
 
     getFilterSelect: function() {
+        const self = this;
 
-        if (this.props.isRefiltering) {
+        if (self.props.isRefiltering) {
             return null;
         }
 
-        const selectedDemoLabel = this.getLabelFromId(this.props.selectedDemographic);
+        const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
         let optionList;
-        if (this.state.isOpen) {
-            const options = this.props.demographicOptions.map(function(option) {
+        if (self.state.isOpen) {
+            const options = self.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
-                const className = (option === this.props.selectedDemographic)?
+                const className = (option === self.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
-                const label = this.getLabelFromId(option);
+                const label = self.getLabelFromId(option);
                 return (
                     <li
                         key={key}
                         className={className}
-                        onClick={() => {this.props.onChange(option)}}
+                        onClick={() => {self.props.onChange(option)}}
                     >
                         <span className="xxCollectionFilters-versionTitle">{T.get('label.filters')}</span>
                         <span>{label}</span>
@@ -181,7 +182,7 @@ const DemographicFilters = React.createClass({
             );
         }
         return (
-            <span className="xxCollectionFilters-value" onClick={this.toggleOpen}>
+            <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
                 {selectedDemoLabel}
                 {optionList}
             </span>

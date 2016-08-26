@@ -14,7 +14,11 @@ var SiteHeader = React.createClass({
             'account',
             'primaryNavigation'
         ]),
-        setSidebarContent: PropTypes.func
+        setSidebarContent: PropTypes.func,
+        query: PropTypes.string,
+        onSearchFormChange: PropTypes.func,
+        onSearchFormSubmit: PropTypes.func,
+        isLoading: PropTypes.bool
     },
 
     getInitialState() {
@@ -46,6 +50,10 @@ var SiteHeader = React.createClass({
                 <SiteBanner
                     setSidebarContent={this.getContentFunction()}
                     sidebarContent={this.getContent()}
+                    query={this.props.searchQuery}
+                    onSearchFormChange={this.props.onSearchFormChange}
+                    onSearchFormSubmit={this.props.onSearchFormSubmit}
+                    isLoading={this.props.isLoading}
                 />
                 <Sidebar
                     content={this.getContent()}

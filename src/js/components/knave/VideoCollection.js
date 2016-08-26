@@ -105,11 +105,10 @@ const VideoCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />,
             <ServingStatusPanel
-                disableCollection={this.props.deleteCollection}
                 goodThumbnails={this.props.goodThumbnails} 
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-                enableClick={()=>{this.setSelectedPanel(0)}}
-                disableClick={()=>{this.setSelectedPanel(0)}}
+                enableThumbnail={this.props.enableThumbnail}
+                disableThumbnail={this.props.disableThumbnail}
             />,
         ];
     },

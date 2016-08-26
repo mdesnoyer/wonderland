@@ -131,6 +131,12 @@ $mobile-all-images-gutter-width: 3px;
             float: none;
             width: $medium-thumbnail-width;
         }
+        &--mediumwidth { 
+            width: $medium-thumbnail-width;
+        } 
+        &--fullwidth { 
+            width: 100%;
+        } 
     }
 
     .xxCollection-subtitle {
