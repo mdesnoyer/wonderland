@@ -607,7 +607,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(thumbRes => {
 
             // Configure the reduce/filter.
-            const valueMin = UTILS.VALENCE_THRESHOLD;
             const ignoreIds = UTILS.VALENCE_IGNORE_INDEXES;
             const numToKeep = UTILS.VALENCE_NUM_TO_KEEP;
 
@@ -617,17 +616,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const newThumbnailFeatureMap = {};
 
             thumbRes.thumbnails.map(t => {
-                const featureIdValues = t.feature_ids.reduce((array, idValue) => {
+                const featureIdValues = t.feature_ids ? t.feature_ids.reduce((array, idValue) => {
                     let featureId = idValue[0];
                     let featureValue = idValue[1];
                     if (ignoreIds.indexOf(parseInt(featureId.split('_')[1])) === -1) {
-                        if (featureValue > valueMin) {
-                            array.push(idValue);
-                        }
+                        array.push(idValue);
                     }
-
                     return array;
-                }, []);
+                }, []) : [];
 
                 const sortedIds = _(featureIdValues)
                     .orderBy(idValue => {
