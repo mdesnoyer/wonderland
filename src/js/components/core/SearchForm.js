@@ -18,13 +18,15 @@ function SearchForm(props) {
         null;
 
     return (
-        <form onSubmit={props.onSubmit}>
-            <input
-                type="text"
-                onChange={props.onChange}
-                placeholder={T.get('copy.searchBar.placeholder')}
-                value={props.searchQuery}
-            />
+        <form className="xxSearchBar" onSubmit={props.onSubmit}>
+            <div className="xxSearchInputWrapper">
+                <input
+                    type="text"
+                    onChange={props.onChange}
+                    placeholder={T.get('copy.searchBar.placeholder')}
+                    value={props.searchQuery}
+                />
+            </div>
             {loading}
             <span>
             </span>

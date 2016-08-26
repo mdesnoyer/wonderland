@@ -21,6 +21,10 @@ const propTypes = {
     // For dynamic tooltips
     tooltipText: PropTypes.string,
     children: PropTypes.node.isRequired,
+    query: PropTypes.string,
+    onSearchFormChange: PropTypes.func,
+    onSearchFormSubmit: PropTypes.func,
+    isLoading: PropTypes.bool
 };
 
 const childContextTypes = {
@@ -96,6 +100,10 @@ class BasePage extends React.Component {
                 <SiteHeader
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
+                    query={this.props.searchQuery}
+                    onSearchFormChange={this.props.onSearchFormChange}
+                    onSearchFormSubmit={this.props.onSearchFormSubmit}
+                    isLoading={this.props.isLoading}
                 />
                 <Tooltips tooltipText={this.props.tooltipText} />
                 {this.props.children}
