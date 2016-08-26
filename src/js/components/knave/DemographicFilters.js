@@ -93,20 +93,7 @@ const DemographicFilters = React.createClass({
         }
         if (this.props.isRefiltering) {
             const timeRemaining = this.props.timeRemaining;
-            if (timeRemaining === null) {
-                return (
-                    <div className="xxCollectionFiltersProcessing">
-                        <div
-                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
-                        />
-                        <span
-                            className="xxCollectionFilterCountdown"
-                        >
-                            {T.get('timer.starting')}
-                        </span>
-                    </div>
-                 );
-            } else if (timeRemaining <= 0) {
+            if (timeRemaining === null || timeRemaining <= 0) {
                 return (
                     <div className="xxCollectionFiltersProcessing">
                         <div

@@ -113,12 +113,14 @@ export const FilterPanel = React.createClass({
         cancelClickHandler: React.PropTypes.func,
         videoId: React.PropTypes.string,
     },
+
     refilterVideoThenNavBack(videoId, gender, age) {
         const self = this;
         SendActions.refilterVideo(
             videoId, gender, age,
             self.props.cancelClickHandler);
     },
+
     render: function() {
         return (
             <VideoFilters

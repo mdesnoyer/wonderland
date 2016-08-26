@@ -922,7 +922,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 
         SendActions.POST('videos', { data })
             .then(res => {
-                LoadActions.loadProcessingVideoUntilEstimate(videoId, enumGender, enumAge);
+                LoadActions.loadVideos([videoId], enumGender, enumAge);
                 if (_.isFunction(callback)) {
                     callback(res);
                 }

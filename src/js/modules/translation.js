@@ -274,7 +274,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'imageUpload.imageError': 'The file type you have provided is either to large or the wrong format',
             'imageUpload.draglocation.directToLocal': "Or Click to upload from your desktop!",
             // Timers
-            'timer.starting': 'starting...',
             'timer.loading' : 'loading...',
             'timer.close' : 'almost...',
 
