@@ -6,16 +6,15 @@ import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 
 import CollectionLoadingText from '../core/CollectionLoadingText';
-import VideoFilters from './VideoFilters';
+import VideoFilters from './_VideoFilters';
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
 import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
 import UTILS from '../../modules/utils';
-import {
-    ServingStatusThumbnailList,
-} from './ThumbnailList';
+import { ServingStatusThumbnailList } from './ThumbnailList';
+import { SendActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -37,6 +36,7 @@ export const InfoDemoLiftPanel = React.createClass({
         isSoloImage: React.PropTypes.bool,
         handleRefiltersPanelClick: React.PropTypes.func,
         isRefiltering: React.PropTypes.bool,
+        timeRemaining: PropTypes.number,
         translationOverrideMap: React.PropTypes.object,
     },
 
@@ -64,6 +64,7 @@ export const InfoDemoLiftPanel = React.createClass({
                     displayRefilterButton={this.props.displayRefilterButton}
                     handleRefiltersPanelClick={this.props.handleRefiltersPanelClick}
                     isRefiltering={this.props.isRefiltering}
+                    timeRemaining={this.props.timeRemaining}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}
@@ -112,12 +113,18 @@ export const FilterPanel = React.createClass({
         cancelClickHandler: React.PropTypes.func,
         videoId: React.PropTypes.string,
     },
+    refilterVideoThenNavBack(videoId, gender, age) {
+        const self = this;
+        SendActions.refilterVideo(
+            videoId, gender, age,
+            self.props.cancelClickHandler);
+    },
     render: function() {
-        var self = this;
         return (
             <VideoFilters
-                handleBackClick={self.props.cancelClickHandler}
-                videoId={self.props.videoId}
+                handleBackClick={this.props.cancelClickHandler}
+                handleSendRefilter={this.refilterVideoThenNavBack}
+                videoId={this.props.videoId}
             />
         );
     }

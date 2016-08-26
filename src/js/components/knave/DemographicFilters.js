@@ -4,6 +4,7 @@ import React, {PropTypes} from 'react';
 
 import _ from 'lodash';
 
+import Countdown from '../wonderland/Countdown';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
@@ -22,16 +23,22 @@ const DemographicFilters = React.createClass({
 
         // Handle demographic selector change
         onChange: PropTypes.func.isRequired,
-        // Whether or not to display the refilter button 
-        // defaults to true 
-        displayRefilterButton: PropTypes.bool,
+
+        // Whether or not to show the refilter button
+        // (Default to false)
+        showRefilterButton: PropTypes.bool,
+
+        // Handler to open the refitler panel
         handleRefiltersPanelClick: React.PropTypes.func,
-        isRefiltering: PropTypes.bool
+
+        // If video is refiltering
+        isRefiltering: PropTypes.bool,
+        timeRemaining: PropTypes.number,
     },
 
     getInitialState: function() {
         return {
-            isOpen: false
+            isOpen: false,
         };
     },
 
@@ -71,28 +78,96 @@ const DemographicFilters = React.createClass({
         }
         return genderLabel + '/' + ageLabel;
     },
+
     handleRefiltersPanelClick: function(e) {
-        var self = this;
-        if (self.props.handleRefiltersPanelClick) {
-            self.props.handleRefiltersPanelClick(e);
+        const self = this;
+        if (self.props.isRefiltering) {
+            return;
+        }
+        self.props.handleRefiltersPanelClick(e);
+    },
+
+    getRefilterComponent: function() {
+        if (!this.props.displayRefilterButton) {
+            return null;
+        }
+        if (this.props.isRefiltering) {
+            const timeRemaining = this.props.timeRemaining;
+            if (timeRemaining === null) {
+                return (
+                    <div className="xxCollectionFiltersProcessing">
+                        <div
+                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+                        />
+                        <span
+                            className="xxCollectionFilterCountdown"
+                        >
+                            {T.get('timer.starting')}
+                        </span>
+                    </div>
+                 );
+            } else if (timeRemaining <= 0) {
+                return (
+                    <div className="xxCollectionFiltersProcessing">
+                        <div
+                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+                        />
+                        <span
+                            className="xxCollectionFilterCountdown"
+                        >
+                            {T.get('timer.loading')}
+                        </span>
+                    </div>
+                 );
+            } else {
+                return (
+                    <div className="xxCollectionFiltersProcessing">
+                        <div
+                            className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"
+                        />
+                        <span>
+                            <Countdown
+                                seconds={timeRemaining}
+                                classPrefix="xxCollectionFilterCountdown"
+                            />
+                        </span>
+                    </div>
+                );
+            }
+        } else {
+            return (
+                <div className="xxCollectionFiltersProcessing">
+                    <a
+                        data-for="staticTooltip"
+                        data-tip={T.get('tooltip.refilter.button')}
+                        className="xxCollectionFilterToggle"
+                        onClick={this.handleRefiltersPanelClick}
+                    />
+                </div>
+            );
         }
     },
-    render: function() {
-        const self = this;
-        const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
+
+    getFilterSelect: function() {
+
+        if (this.props.isRefiltering) {
+            return null;
+        }
+
+        const selectedDemoLabel = this.getLabelFromId(this.props.selectedDemographic);
         let optionList;
-        if (self.state.isOpen) {
-            const options = self.props.demographicOptions.map(function(option) {
+        if (this.state.isOpen) {
+            const options = this.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
-                const className = (option === self.props.selectedDemographic)?
+                const className = (option === this.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
-                const label = self.getLabelFromId(option);
+                const label = this.getLabelFromId(option);
                 return (
                     <li
                         key={key}
                         className={className}
-                        onClick={() => {self.props.onChange(option)}}
+                        onClick={() => {this.props.onChange(option)}}
                     >
                         <span className="xxCollectionFilters-versionTitle">{T.get('label.filters')}</span>
                         <span>{label}</span>
@@ -105,33 +180,21 @@ const DemographicFilters = React.createClass({
                 </ul>
             );
         }
-        let buttonDisplay = null; 
-        if (self.props.displayRefilterButton) { 
-            if (self.props.isRefiltering) {
-                buttonDisplay = (
-                        <div>REFILTERING</div>
-                );
-            }
-            else {
-                buttonDisplay = (
-                    <a
-                        data-for="staticTooltip"
-                        data-tip={T.get('tooltip.refilter.button')}
-                        className="xxCollectionFilterToggle"
-                        onClick={self.handleRefiltersPanelClick}
-                    />
-                );
-            }
-        } 
+        return (
+            <span className="xxCollectionFilters-value" onClick={this.toggleOpen}>
+                {selectedDemoLabel}
+                {optionList}
+            </span>
+        );
+    },
+
+    render: function() {
         return (
             <div className="xxCollectionFilters">
-                {buttonDisplay}
+                {this.getRefilterComponent()}
                 <div className="xxCollectionFiltersMenu">
                     <strong className="xxCollectionFilters-title">{T.get('label.filters')}</strong>
-                    <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
-                        {selectedDemoLabel}
-                        {optionList}
-                    </span>
+                    {this.getFilterSelect()}
                 </div>
             </div>);
     }

@@ -194,7 +194,7 @@ export const TagShareStore = {
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Given the result from a tag search API call,
-    // load all downstream stores without checking
+    // load all downstream stores after checking
     // they're already loaded.
     loadFromSearchResult: searchRes => {
         // Short circuit empty input.
@@ -212,7 +212,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Bind update objects in outer scope.
         const updateTagMap = {};
         const updateVideoMap = {};
-        const updateThumbnailMap = {};
 
         // Build tags promise.
         const missingTagIds =  _
@@ -275,6 +274,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
+
                     // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
@@ -291,8 +291,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     dem.bad_thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-
-                    Object.assign(updateThumbnailMap, thumbnailMap);
+                    ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
 
@@ -321,7 +320,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     map[t.thumbnail_id] = t;
                     return map;
                 }, {});
-                Object.assign(updateThumbnailMap, thumbnailMap);
 
                 // Set all of these together within one synchronous block.
                 TagStore.set(updateTagMap);
@@ -347,7 +345,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
     },
 
-    loadVideos(videoIds) {
+    loadVideos(videoIds, liftGender=0, liftAge=0, callback) {
         if(0 == videoIds.length) {
             return;
         }
@@ -372,10 +370,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {
 
-                if (video.state === UTILS.VIDEO_STATE_ENUM.processing) {
-                    return;
-                }
-
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
@@ -396,20 +390,40 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
+
             Dispatcher.dispatch();
 
-            // For video, use default demographics for store.
-            const gender = 0;
-            const age = 0;
-            LoadActions.loadLifts(tagIds, gender, age)
+            LoadActions.loadLifts(tagIds, liftGender, liftAge)
             .then(liftRes => {
                 // Map of tag id to lift map.
                 const tagLiftMap = liftRes;
-                LiftStore.set(gender, age, tagLiftMap);
+                LiftStore.set(liftGender, liftAge, tagLiftMap);
                 Dispatcher.dispatch();
-            });
-        });
 
+                if (_.isFunction(callback)) {
+                    callback(videoRes);
+                }
+            })
+        });
+    },
+
+    // Load video resource until an estimate is provided
+    // or the video status is not processing.
+    // TODO think about where something like this should go.
+    loadProcessingVideoUntilEstimate(videoId, gender=0, age=0) {
+        const repeat = function(videoResponse) {
+            const video = videoResponse.videos[0];
+            if (video.state === UTILS.VIDEO_STATE_ENUM.processing) {
+                if (video.estimated_time_remaining !== null) {
+                    // After time remaining is set, done.
+                    return;
+                }
+                // Else try again.
+                setTimeout(LoadActions.loadProcessingVideoUntilEstimate.bind(null, [videoId], gender, age), 3000);
+            }
+            // After state change from processing, done.
+        };
+        LoadActions.loadVideos([videoId], gender, age, repeat);
     },
 
     // Load thumbnails by ids.
@@ -883,18 +897,40 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     }
 });
 
-export const DeleteActions = Object.assign({}, AjaxMixin, {
+export const SendActions = Object.assign({}, AjaxMixin, {
 
     deleteCollectionByTagId: function(tagId) {
         const tag = TagStore.get(tagId);
-        DeleteActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
+        SendActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
             .then(res => {
                 tag.hidden = true;
                 TagStore.set({[res.tag_id]: tag});
                 Dispatcher.dispatch();
             });
-    }
+    },
+
+    refilterVideo: function(videoId, gender, age, callback) {
+        const data = {
+            external_video_ref: videoId,
+            reprocess: true,
+            gender,
+            age,
+        };
+
+        const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
+        const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
+
+        SendActions.POST('videos', { data })
+            .then(res => {
+                LoadActions.loadProcessingVideoUntilEstimate(videoId, enumGender, enumAge);
+                if (_.isFunction(callback)) {
+                    callback(res);
+                }
+            });
+    },
 });
+
+
 
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.

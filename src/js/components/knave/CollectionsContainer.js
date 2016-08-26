@@ -13,7 +13,7 @@ import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 
-import { DeleteActions } from '../../stores/CollectionStores';
+import { SendActions, } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -269,7 +269,7 @@ const CollectionsContainer = React.createClass({
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
@@ -329,13 +329,14 @@ const CollectionsContainer = React.createClass({
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
                 isRefiltering={isRefiltering}
+                timeRemaining={video.estimated_time_remaining}
             />
        );
     },
@@ -368,7 +369,7 @@ const CollectionsContainer = React.createClass({
                 duration={video.duration}
                 videoId={video.video_id}
                 getVideoStatus={this.props.getVideoStatus}
-                deleteVideo={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
             />
         );
     },

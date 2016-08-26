@@ -15,7 +15,8 @@ var VideoFilters = React.createClass({
     mixins: [AjaxMixin],
     propTypes: {
         handleBackClick: React.PropTypes.func,
-        videoId: React.PropTypes.string.isRequired
+        videoId: React.PropTypes.string.isRequired,
+        handleSendRefilter: React.PropTypes.func,
     },
     getInitialState: function() {
         var self = this;
@@ -106,32 +107,42 @@ var VideoFilters = React.createClass({
         });
     },
     sendRefilter: function() {
-        var self = this,
-            options = {
-                data: {
-                    external_video_ref: self.props.videoId,
-                    reprocess: true,
-                    gender: self.state.gender,
-                    age: self.state.age
+
+        // Allow the parent's refilter function to override.
+        if (this.props.handleSendRefilter) {
+            return this.props.handleSendRefilter(
+               this.props.videoId,
+               this.state.gender,
+               this.state.age);
+        } else {
+
+            var self = this,
+                options = {
+                    data: {
+                        external_video_ref: self.props.videoId,
+                        reprocess: true,
+                        gender: self.state.gender,
+                        age: self.state.age
+                    }
                 }
-            }
-        ;
-        self.POST('videos', options)
-            .then(function(json) {
-                if (self.props.handleMenuChange) {
-                    // TODO stateify age and gender at videoowner level
-                    self.props.handleMenuChange(self.state.age, 
-                        self.state.gender, 
-                        true);
-                }
-            })
-            .catch(function(err) {
-                E.raiseError(err);
-                self.setState({
-                    isError: true
+            ;
+            self.POST('videos', options)
+                .then(function(json) {
+                    if (self.props.handleMenuChange) {
+                        // TODO stateify age and gender at videoowner level
+                        self.props.handleMenuChange(self.state.age, 
+                            self.state.gender, 
+                            true);
+                    }
+                })
+                .catch(function(err) {
+                    E.raiseError(err);
+                    self.setState({
+                        isError: true
+                    });
                 });
-            });
-        TRACKING.sendEvent(self, arguments, self.state.gender + "/" + self.state.age);
+        }
+        TRACKING.sendEvent(this, arguments, this.state.gender + "/" + this.state.age);
     }
 })
 

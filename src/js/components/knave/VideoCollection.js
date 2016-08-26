@@ -63,7 +63,6 @@ const VideoCollection = React.createClass({
         return map[selectedId || defaultId];
     },
     getPanels() {
-        var self = this;
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -80,11 +79,12 @@ const VideoCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
-                isRefiltering={self.props.isRefiltering}
+                isRefiltering={this.props.isRefiltering}
+                timeRemaining={this.props.timeRemaining}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-                videoId={self.props.videoId}
+                videoId={this.props.videoId}
             />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
