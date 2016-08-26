@@ -27,6 +27,7 @@ import {
     ThumbnailFeatureStore,
     TagShareStore,
     LoadActions,
+    ServingStatusActions, 
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
@@ -198,7 +199,12 @@ const CollectionsMainPage = React.createClass({
             console.log(err);
         });
     },
-
+    enableThumbnail: function(thumbnail) { 
+        ServingStatusActions.toggleThumbnailEnabled(thumbnail); 
+    }, 
+    disableThumbnail: function(thumbnail) { 
+        ServingStatusActions.toggleThumbnailEnabled(thumbnail); 
+    }, 
     sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
 
         const self = this;
@@ -412,6 +418,8 @@ const CollectionsMainPage = React.createClass({
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
                     setTooltipText={this.setTooltipText}
+                    enableThumbnail={this.enableThumbnail} 
+                    disableThumbnail={this.disableThumbnail} 
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}

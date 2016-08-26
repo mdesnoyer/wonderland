@@ -50,6 +50,7 @@ export const ThumbnailList = React.createClass({
                         className={this.props.className||''}
                         key={t.thumbnail_id}
                         score={t.neon_score}
+                        enabled={t.enabled} 
                         src={RENDITIONS.findRendition(t)}
                         onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
                         onMouseLeave={onMouseLeave}
@@ -146,15 +147,17 @@ export const ServingStatusThumbnailList = React.createClass({
 
     propTypes: {
         thumbnails: PropTypes.array.isRequired,
-        onMore: PropTypes.func.isRequired,
+        // TODO not necessary right now 
+        /*onMore: PropTypes.func.isRequired,
         // Control how many images are shown before the ShowMore.
         numberToDisplay: PropTypes.number.isRequired,
         // Label for ShowMore button
-        moreLabel: PropTypes.string,
+        moreLabel: PropTypes.string,*/ 
+
         // control to enable a thumbnail 
         enableClick: PropTypes.func.isRequired, 
         // control to disable a thumbnail 
-        disableClick: PropTypes.func.isRequired 
+        disableClick: PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
@@ -163,88 +166,36 @@ export const ServingStatusThumbnailList = React.createClass({
             className: '' 
         }
     },
-    getMoreClassName: function() { 
-        if (this.props.thumbnails.length > 9) {
-            return "xxCollectionActions-more"
-        } 
-        else { 
-            return "xxCollectionActions-more xxCollectionActions-more--disabled"
-        } 
-    },
+
     getControl: function(t) { 
         if (t.enabled) { 
-            return (<ImageServingDisableControl handleClick={()=>{}} />)
-        } 
+            return (<ImageServingDisableControl handleClick={()=>{this.props.disableClick(t)}} />)
+        }
+        else { 
+            return (<ImageServingEnableControl handleClick={()=>{this.props.enableClick(t)}} />)
+        }  
     },
-    getClassName: function(t) { 
-        if (t.enabled) { 
-            return this.props.className;
-        } 
-        if (t.enabled) { 
-            return this.props.className + ' xxThumbnail--disabled';
-        } 
-    },  
     render: function() {
         const thumbnailSetOne = this.props.thumbnails
-            .slice(0, 3)
             .map(t => {
                 return (
                     <Thumbnail
                         showHref={true}
-                        className={this.getClassName(t)}
+                        wrapperClassName={'xxThumbnail-wrapper'} 
+                        className={this.props.className}
                         key={t.thumbnail_id}
                         score={t.neon_score}
+                        enabled={t.enabled} 
                         src={RENDITIONS.findRendition(t)}
                         children={this.getControl(t)}
                     />
                 );
             });
-        const thumbnailSetTwo = this.props.thumbnails
-            .slice(3, 6)
-            .map(t => {
-                return (
-                    <Thumbnail
-                        showHref={true}
-                        className={this.props.className||''}
-                        key={t.thumbnail_id}
-                        score={t.neon_score}
-                        src={RENDITIONS.findRendition(t)}
-                        children={this.getControl(t)}
-                    />
-                );
-            });
-        const thumbnailSetThree = this.props.thumbnails
-            .slice(6, 9)
-            .map(t => {
-                return (
-                    <Thumbnail
-                        showHref={true}
-                        className={this.props.className||''}
-                        key={t.thumbnail_id}
-                        score={t.neon_score}
-                        src={RENDITIONS.findRendition(t)}
-                        children={this.getControl(t)}
-                    />
-                );
-            });
-
         return (
             <div>
-                <div className="xxCollectionImages-serving">
+                <div className="xxCollectionImages-all">
                     {thumbnailSetOne}
                 </div>
-                <div className="xxCollectionImages-serving">
-                    {thumbnailSetTwo}
-                </div>
-                <div className="xxCollectionImages-serving">
-                    {thumbnailSetThree}
-                </div>
-                <div className={this.getMoreClassName()}                 
-                    data-tip={'More'}
-                    data-for="staticTooltip"
-                    data-place="bottom">
-                </div>
-                
             </div>
         );
     }

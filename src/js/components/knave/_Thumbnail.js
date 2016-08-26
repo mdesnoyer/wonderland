@@ -25,18 +25,25 @@ const propTypes = {
 
 const defaultProps = {
     className: '',
+    wrapperClassName: '',
     onClick: (e) => e.preventDefault(),
     // I.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
-    children: (<div></div>) 
+    children: (<div></div>),
+    enabled: true  
 };
 
 function Thumbnail(props) {
+    let disabledClassName = ''; 
+    if (!props.enabled) { 
+        disabledClassName = "xxThumbnail--disabled"; 
+    }
     const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
-        xxThumbnail--highLight xxThumbnail--neon ${props.className}`;
+        xxThumbnail--highLight xxThumbnail--neon ${props.className} ${disabledClassName}`;
+    
     return (
-        <div> 
+        <div className={props.wrapperClassName}> 
         <a
             href="#"
             className={className}
