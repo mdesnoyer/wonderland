@@ -341,7 +341,7 @@ var UTILS = {
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
-    MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes 
+    MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
     RESULTS_PAGE_SIZE: 5,
     MAX_VIDEO_SIZE: 900,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id'],
@@ -370,7 +370,7 @@ var UTILS = {
     MAX_IMAGE_FILES_ALLOWED: 100,
     UPLOAD_TRANSITION: 200,
     IMAGE_FILE_TYPES_ALLOWED: ['.jpeg', '.jpg', '.png', '.tiff', '.gif', '.bmp'],
-    MAX_IMAGE_UPLOAD_COUNT: 5, 
+    MAX_IMAGE_UPLOAD_COUNT: 5,
     NEON_TWITTER_HANDLE: 'neonlab',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
@@ -383,8 +383,8 @@ var UTILS = {
     },
     // TODO? re-write this so it takes an array.
     findDefaultThumbnail: function(thumbSet) {
-        defaultThumbnail = null; 
-        if (thumbSet && thumbSet.thumbnails) { 
+        defaultThumbnail = null;
+        if (thumbSet && thumbSet.thumbnails) {
             var defaultThumbnailArray = thumbSet.thumbnails.filter(
                 x => x.type === 'default');
             var defaultThumbnail = _.minBy(defaultThumbnailArray, 'rank');
@@ -399,9 +399,9 @@ var UTILS = {
                     return;
                 }
             }
-        } 
-        return defaultThumbnail; 
-    }, 
+        }
+        return defaultThumbnail;
+    },
     fixThumbnails: function(rawThumbnails, ignoreBad) {
 
         if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
@@ -419,7 +419,7 @@ var UTILS = {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
-                    break;                    
+                    break;
                 case 'bad_neon':
                     if (!ignoreBad) {
                         neons.push(rawThumbnail);
