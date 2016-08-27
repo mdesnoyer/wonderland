@@ -71,8 +71,9 @@ $mobile-all-images-gutter-width: 3px;
 
 }
 
-.xxThumbnailSolorMessage {
+.xxThumbnailSoloMessage {
     z-index: 998;
+    pointer-events:none;
     position: absolute;
     text-align: center;
     margin-top: 10%;
@@ -87,7 +88,7 @@ $mobile-all-images-gutter-width: 3px;
             margin-left: 10%;
             font-size: 1.5em;
     }
-} 
+}
 
 .xxThumbnailSoloBlurWrapper {
     opacity: 0.5;
