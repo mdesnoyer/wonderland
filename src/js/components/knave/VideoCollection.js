@@ -123,7 +123,8 @@ const VideoCollection = React.createClass({
                 />
             ];
         }
-        return [
+        let account = this.props.account; 
+        let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
                 liftValue={this.getLiftValue()}
@@ -156,8 +157,10 @@ const VideoCollection = React.createClass({
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-            />,
-            <ServingStatusPanel
+            />
+        ];
+        if (account && account.serving_enabled) { 
+            panel_array.push(<ServingStatusPanel
                 goodThumbnails={this.props.goodThumbnails} 
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 enableThumbnail={this.props.enableThumbnail}
@@ -168,20 +171,27 @@ const VideoCollection = React.createClass({
                 videoId={this.props.videoId}
                 panelType='video'
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-            />
-        ];
+            />); 
+        } 
+        return panel_array; 
     },
     getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
-        return [
+        let account = this.props.account;
+        let control_array = [  
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
-            <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
-            <AddControl handleClick={()=>{this.setSelectedPanel(6)}} panelType='video'/>
         ];
+        if (account && account.serving_enabled) {
+            control_array.push(
+                <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
+                <AddControl handleClick={()=>{this.setSelectedPanel(6)}} panelType='video'/>
+            ); 
+        } 
+        return control_array; 
     },
 
     getMobile: function() {
