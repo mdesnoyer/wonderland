@@ -341,7 +341,7 @@ const CollectionsMainPage = React.createClass({
             );
         }
 
-        // If query is nothing or short, then don't use backend.
+        // If query is nothing, then don't use backend.
         if (!searchQuery) {
             // If query is running, cancel.
             if (self.searchFunction) {
@@ -356,7 +356,7 @@ const CollectionsMainPage = React.createClass({
             return;
         }
 
-        // If query is more than two characters, query the backend.
+        // If we have a query:
         // We debounce a function, store it and use it to throttle requests.
         if (!self.searchFunction) {
             self.searchFunction = _.debounce(
