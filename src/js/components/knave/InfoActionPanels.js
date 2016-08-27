@@ -651,7 +651,7 @@ export const AddControl = React.createClass({
     render: function() {
         return (
             <a
-                data-tip={T.get('copy.videoContent.add.tooltip')}
+                data-tip={this.props.panelType === 'video' ? 'Change Defualt Thumbnail' : T.get('copy.videoContent.add.tooltip')}
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="add"
