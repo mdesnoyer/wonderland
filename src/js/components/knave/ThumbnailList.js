@@ -5,7 +5,7 @@ import Thumbnail from './_Thumbnail';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
-import { 
+import {
     ImageServingEnableControl,
     ImageServingDisableControl} from './InfoActionPanels';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,12 +50,12 @@ export const ThumbnailList = React.createClass({
                         className={this.props.className||''}
                         key={t.thumbnail_id}
                         score={t.neon_score}
-                        enabled={t.enabled} 
+                        enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
                         onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
                         onMouseLeave={onMouseLeave}
                         onClick={onClick.bind(null, t.thumbnail_id)}
-                    /> 
+                    />
                 );
             });
 
@@ -76,7 +76,11 @@ export const ShowLessThumbnailList = React.createClass({
         onLess: PropTypes.func.isRequired,
         numberToDisplay: PropTypes.number,
         // Label for ShowMore button
-        lessLabel: PropTypes.string
+        lessLabel: PropTypes.string,
+        // Classname for the part before the showless
+        firstClassName: PropTypes.string,
+        // And for the part after the showless
+        secondClassName: PropTypes.string,
     },
 
     getDefaultProps: function() {
@@ -96,6 +100,7 @@ export const ShowLessThumbnailList = React.createClass({
                 <ThumbnailList
                     {...this.props}
                     thumbnails={firstPartThumbs}
+                    className={this.props.firstClassName}
                 >
                     <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
                         <span>{this.props.lessLabel}</span>
@@ -103,6 +108,7 @@ export const ShowLessThumbnailList = React.createClass({
                 </ThumbnailList>
                 <ThumbnailList
                     {...this.props}
+                    className={this.props.secondClassName}
                     thumbnails={secondPartThumbs}
                 />
             </div>
@@ -147,33 +153,33 @@ export const ServingStatusThumbnailList = React.createClass({
 
     propTypes: {
         thumbnails: PropTypes.array.isRequired,
-        // TODO not necessary right now 
+        // TODO not necessary right now
         /*onMore: PropTypes.func.isRequired,
         // Control how many images are shown before the ShowMore.
         numberToDisplay: PropTypes.number.isRequired,
         // Label for ShowMore button
-        moreLabel: PropTypes.string,*/ 
+        moreLabel: PropTypes.string,*/
 
-        // control to enable a thumbnail 
-        enableClick: PropTypes.func.isRequired, 
-        // control to disable a thumbnail 
+        // control to enable a thumbnail
+        enableClick: PropTypes.func.isRequired,
+        // control to disable a thumbnail
         disableClick: PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
         return {
             moreLabel: T.get('action.showMore'),
-            className: '' 
+            className: ''
         }
     },
 
-    getControl: function(t) { 
-        if (t.enabled) { 
+    getControl: function(t) {
+        if (t.enabled) {
             return (<ImageServingDisableControl handleClick={()=>{this.props.disableClick(t)}} />)
         }
-        else { 
+        else {
             return (<ImageServingEnableControl handleClick={()=>{this.props.enableClick(t)}} />)
-        }  
+        }
     },
     render: function() {
         const thumbnailSetOne = this.props.thumbnails
@@ -181,11 +187,11 @@ export const ServingStatusThumbnailList = React.createClass({
                 return (
                     <Thumbnail
                         showHref={true}
-                        wrapperClassName={'xxThumbnail-wrapper'} 
+                        wrapperClassName={'xxThumbnail-wrapper'}
                         className={this.props.className}
                         key={t.thumbnail_id}
                         score={t.neon_score}
-                        enabled={t.enabled} 
+                        enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
                         children={this.getControl(t)}
                     />

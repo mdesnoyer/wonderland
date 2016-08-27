@@ -137,12 +137,13 @@ class BaseCollection extends React.Component {
                     onMouseEnter={this.props.setLiftThumbnailId}
                     onMouseLeave={this.setDefaultLiftThumbnail}
                     onClick={this.props.onThumbnailClick}
-                    className="xxThumbnail--lowLight"
+                    firstClassName="xxThumbnail--highLight"
+                    secondClassName="xxThumbnail--lowLight"
                 />);
             }
             return (<ShowMoreThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5} // N rows of 6, minus one for each button.
+                numberToDisplay={5}
                 moreLabel={T.get('action.showMore')}
                 onMore={this.onMore}
                 onMouseEnter={this.props.setLiftThumbnailId}

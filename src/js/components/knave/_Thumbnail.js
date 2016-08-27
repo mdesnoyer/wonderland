@@ -49,7 +49,7 @@ function Thumbnail(props) {
             >
                 <img
                     className="xxThumbnail-image"
-                    alt={props.alt + props.score}
+                    alt={props.alt || props.score}
                     src={props.src}
                     onMouseEnter={props.onMouseEnter}
                     onMouseLeave={props.onMouseLeave}

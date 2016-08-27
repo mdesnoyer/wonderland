@@ -129,11 +129,11 @@ const CollectionsContainer = React.createClass({
         return [0, 0];
     },
 
-    // Given a tag id, construct a  valid Collection
+    // Given a tag id, build a valid Collection
     // component instance and return it.
     //
     // Else return an error component.
-    buildCollectionComponent: function(tagId) {
+    getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
 
@@ -485,10 +485,9 @@ const CollectionsContainer = React.createClass({
 
     },
 
-    buildOverlayComponent: function() {
-
+    getOverlayComponent: function() {
+        // If no tag, the overlay hasn't been opened.
         const tagId = this.state.overlayTagId;
-
         if (!tagId) {
             return null;
         }
@@ -499,10 +498,8 @@ const CollectionsContainer = React.createClass({
         const gender = demo[0];
         const age = demo[1];
 
-        // Begin loading features
+        // Begin loading features.
         this.props.loadFeaturesForTag(tagId, gender, age);
-
-        const thumbnailMap = this.getThumbnailMap(tagId);
 
         // Get the same order of list that the collections uses.
         const sortedThumbnails = _.flatten(this.getLeftRightRest(tagId, gender, age));
@@ -521,12 +518,11 @@ const CollectionsContainer = React.createClass({
         // Find the next and previous thumbnail ids for navigation.
         // Use modulo to ensure index is in [0, <length of thumbnails>).
         const thumbnailCount = sortedThumbnails.length;
-
         const nextThumbnailIndex = ( 1 + thumbnailIndex) % thumbnailCount;
         const prevThumbnailIndex = (-1 + thumbnailIndex + thumbnailCount) % thumbnailCount;
-
         const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
         const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
+
         // Find lift for the displayed thumb.
         const lift = this.props.stores.lifts
             [gender]
@@ -535,6 +531,7 @@ const CollectionsContainer = React.createClass({
             [thumbnailId] || 0;
 
         // Build a map of thumbnail id to array of feature names.
+        const thumbnailMap = this.getThumbnailMap(tagId);
         const thumbnailFeatures = _(this.props.stores.thumbnailFeatures
                 [gender]
                 [age])
@@ -571,11 +568,11 @@ const CollectionsContainer = React.createClass({
     },
     render: function() {
         const collections = this.props.shownIds.map(tagId => {
-            return this.buildCollectionComponent(tagId);
+            return this.getCollectionComponent(tagId);
         });
         return (
             <div>
-                {this.buildOverlayComponent()}
+                {this.getOverlayComponent()}
                 <ul>{collections}</ul>
             </div>
         );
