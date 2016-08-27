@@ -108,7 +108,7 @@ const CollectionsMainPage = React.createClass({
 
     // Ask the search provider to get more results.
     //
-    // If useCurrentPage, only load the page is near the end of the pages.
+    // If useCurrentPage, only load if the page is near the end of the pages.
     //
     // If not, load more based on how many are in store.
     loadMoreFromSearch(useCurrentPage=true) {
@@ -218,19 +218,19 @@ const CollectionsMainPage = React.createClass({
         else if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
             let liftString = '';
             let buttonString = '';
-            let seeMoreString = ''; 
-            let neonScore = best.neon_score; 
-            if (tag.thumbnail_ids.length <= 1) { 
+            let seeMoreString = '';
+            let neonScore = best.neon_score;
+            if (tag.thumbnail_ids.length <= 1) {
                 liftString = T.get('copy.email.oneResultLiftString');
                 seeMoreString = T.get('copy.email.oneResultSeeMoreString');
-                buttonString = T.get('copy.email.oneResultButtonString'); 
+                buttonString = T.get('copy.email.oneResultButtonString');
             }
-            else { 
-                liftString = T.get('copy.email.multipleResultsLiftString', 
+            else {
+                liftString = T.get('copy.email.multipleResultsLiftString',
                     {'@lift': UTILS.makePercentage(lift, 0, true)});
-                buttonString = T.get('copy.email.multipleResultsButtonString'); 
+                buttonString = T.get('copy.email.multipleResultsButtonString');
                 seeMoreString = T.get('copy.email.multipleResultsSeeMoreString');
-            }  
+            }
             data = {
                 subject: UTILS.RESULTS_EMAIL_SUBJECT,
                 to_email_address: email,
@@ -239,19 +239,19 @@ const CollectionsMainPage = React.createClass({
                     'top_thumbnail': renditionTop,
                     'lift_string': liftString,
                     'button_string': buttonString,
-                    'see_more_string': seeMoreString,  
+                    'see_more_string': seeMoreString,
                     'collection_url': shareUrl,
                     'neon_score': neonScore
                 }
             };
-        } 
-        else { 
+        }
+        else {
             callback({
                 'status_code' : 400,
                 'errorMessage' : 'unknown tag type unable to send email'
             });
-            return; 
-        } 
+            return;
+        }
         self.POST('email', {data})
         .then(function(res) {
             TRACKING.sendEvent(self, arguments, tagId);
