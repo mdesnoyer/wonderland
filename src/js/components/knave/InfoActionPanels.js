@@ -116,9 +116,15 @@ export const FilterPanel = React.createClass({
 
     refilterVideoThenNavBack(videoId, gender, age) {
         const self = this;
+        const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
+        const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
+        const callback = () => {
+            self.props.cancelClickHandler();
+            self.props.onDemographicChange([enumGender, enumAge]);
+        }
         SendActions.refilterVideo(
-            videoId, gender, age,
-            self.props.cancelClickHandler);
+            videoId, gender, age, callback);
+
     },
 
     render: function() {
