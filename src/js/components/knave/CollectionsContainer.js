@@ -50,7 +50,10 @@ const CollectionsContainer = React.createClass({
         infoPanelOnly: PropTypes.bool,
 
         // Pops the side bar module given a recognized string
-        setSidebarContent: PropTypes.func.isRequired
+        setSidebarContent: PropTypes.func.isRequired,
+
+        // the accountid that owns these containers 
+        ownerAccountId: PropTypes.string.isRequired
     },
 
     getInitialState: function() {
@@ -362,6 +365,8 @@ const CollectionsContainer = React.createClass({
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
+        const account = this.props.stores.accounts[this.props.ownerAccountId];  
+
         return (
             <VideoCollection
                 key={tagId}
@@ -388,6 +393,7 @@ const CollectionsContainer = React.createClass({
                 timeRemaining={video.estimated_time_remaining}
                 enableThumbnail={this.props.enableThumbnail}
                 disableThumbnail={this.props.disableThumbnail}
+                account={account} 
             />
        );
     },
