@@ -283,16 +283,8 @@ var UploadForm = React.createClass({
                         self.props.onboardingAction('video', json.video.video_id);
                     }
                     else {
-                        // TODO: replace with a loadTag.
-                        LoadActions.loadFromSearchResult({
-                            items: [
-                                {
-                                    tag_id: json.video.tag_id,
-                                    tag_type: UTILS.TAG_TYPE_VIDEO_COL,
-                                    video_id: json.video.video_id
-                                }]
-                        });
-                        // LoadActions.loadVideos([json.video.video_id]);
+                        LoadActions.loadTags([json.video.tag_id]);
+                        self.setState({videoUploadUrl: ''});
                     }
 
                 })

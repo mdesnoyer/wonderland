@@ -32,7 +32,7 @@ var VideoUploadOverlay = React.createClass({
         // Enter submits form.
         const self = this;
         if (e.keyCode === 13) {
-            if (this.props.videoUploadUrl) {
+            if (self.props.videoUploadUrl) {
                 e.target.dataset.sendUrl = true;
                 self.props.toggleOpen(e);
             }
