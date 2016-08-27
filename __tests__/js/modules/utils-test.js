@@ -17,3 +17,18 @@ describe('UTILS.makePercentage', () => {
         expect(UTILS.makePercentage(0.0564, 1, false)).toBe('5.6');
     });
 });
+
+// utils bit.ly tests
+// describe('UTILS.shortenUrl', () => {
+//     var output = 'default';
+//     var callback = function(res) {
+//         if (res.status_code === 200) {
+//             output = res.data.url
+//         }
+//     }
+//     UTILS.shortenUrl('localhost:3000/foobar', callback);
+//     it('url shortening', () => {
+//         UTILS.shortenUrl('localhost:3000/foobar', callback);
+//         expect(output).toBe('default');
+//     });
+// });
