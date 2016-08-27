@@ -464,11 +464,14 @@ var UploadForm = React.createClass({
         }
     },
     grabDropBox: function() {
+        console.log(!this.props.panelType === 'video')
+        console.log(!this.props.panelType === 'photo')
+        console.log(!this.props.isAddPanel)
         var self = this,
             options = {
                 success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.sendDropBoxUrl(urls)},
                 linkType: "direct",
-                multiselect: self.props.panelType === 'photo',
+                multiselect:  !self.props.isAddPanel || self.props.panelType === 'photo',
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
