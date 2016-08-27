@@ -73,9 +73,8 @@ var ImageUploadPanel = React.createClass({
 	    					    <input
 	    					        ref="url"
 	    					        className="xxInputText xxInputText--has-urlDrop"
-	    					        id="xx-email-from"
 	    					        type="url"
-	    					        placeholder={'http://somewhere.com/something/'}
+	    					        placeholder={T.get('image.URL')}
 	    					        required
 	    					    />
 	    					    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
@@ -98,7 +97,7 @@ var ImageUploadPanel = React.createClass({
 	    		        className="xxButton xxButton-cancel xxButton--highlight"
 	    		        onClick={self.props.grabDropBox}
 	    		    >
-	    		        Add Dropbox 
+	    		        {T.get('imageUpload.dropBox')}
 	    		    </button>
 	            </div>
 	            </div>
@@ -107,7 +106,7 @@ var ImageUploadPanel = React.createClass({
 	},
 	handleSubmit: function(e) {
 		e.preventDefault();
-		this.props.updateDefaultThumbnail(this.refs.url.value)
+		this.props.updateDefaultThumbnail(this.refs.url.value);
 	},
     onDrop: function (files) {
         var self = this;
