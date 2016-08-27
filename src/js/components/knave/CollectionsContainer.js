@@ -80,6 +80,7 @@ const CollectionsContainer = React.createClass({
         // If the next props have the queued selected
         // demographic, then move the queued selected
         // to the selected one.
+        /*
         const selectedDemographic = this.state.selectedDemographic
         _.map(selectedDemographic, (demo, tagId) => {
             if (demo.length > 2) {
@@ -98,6 +99,7 @@ const CollectionsContainer = React.createClass({
             }
         });
         this.setState({selectedDemographic});
+        /**/
     },
 
     // Return array of gender,age enum array based
@@ -164,30 +166,12 @@ const CollectionsContainer = React.createClass({
         const gender = demoKey[0];
         const age = demoKey[1];
 
-        // Short cut the rest if thumbnails already loaded.
-        const tag = this.props.stores.tags[tagId];
-        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
-            const demoMap = this.props.stores.thumbnails[gender][age];
-            if (this.hasDemographicLoaded(tag.thumbnail_ids, demoMap)) {
-                selectedDemographic[tagId] = [gender, age];
-                this.setState({selectedDemographic});
-                return;
-            }
-        } else {
-            const v = this.props.stores.videos[tag.video_id];
-            const d = UTILS.findDemographicThumbnailObject(
-                v.demographic_thumbnails, gender, age);
-            if (undefined !== d) {
-                selectedDemographic[tagId] = [gender, age];
-                this.setState({selectedDemographic});
-                return;
-            }
-        }
-
         // If this is a video and the demographic isn't in the
         // video store, then put the gender and age in the "next"
         // bucket indexes at 2, 3. In the videocollection willReceiveProps,
         // we check if the next demos are ready and switch to them.
+        /*
+        const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const prevDemo = selectedDemographic[tagId] || [0, 0];
@@ -195,8 +179,9 @@ const CollectionsContainer = React.createClass({
             slice.push(gender, age);
             selectedDemographic[tagId] = slice;
         } else {
-            selectedDemographic[tagId] = [gender, age];
         }
+        /**/
+        selectedDemographic[tagId] = [gender, age];
 
         // Ask stores to load missing values.
         // And change our state when done.
