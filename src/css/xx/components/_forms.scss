@@ -18,6 +18,10 @@
 .xxFormField {
     @include clearfix;
     margin: 0 0 14px;
+
+    &--has-urlDrop {
+        display: inline;
+    }
 }
 
 .xxLabel {
@@ -64,6 +68,14 @@
 
     .has-error > & {
         border-color: $accent-color;
+    }
+    &--has-urlDrop {
+        display: inline;
+        width: 80%;
+        margin-top: 4%;
+        @include breakpoint-mobile {
+            line-height: 37px;
+        }
     }
 }
 
@@ -376,6 +388,12 @@
 
     &--file {
         position: relative;
+    }
+
+    &--has-urlDrop {
+        display: inline;
+        width: 20%;
+        margin-top: 4%;
     }
 }
 

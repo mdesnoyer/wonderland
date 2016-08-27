@@ -151,6 +151,8 @@ var UploadForm = React.createClass({
                     photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                     numberUploadedCount={self.state.numberUploadedCount}
                     cancelClickHandler={self.props.cancelClickHandler}
+                    panelType={self.props.panelType}
+                    updateDefaultThumbnail={self.updateDefaultThumbnail}
                 />
             );
         }
@@ -318,6 +320,9 @@ var UploadForm = React.createClass({
             formData = new FormData(),
             lastIndex = files.length - 1
         ;
+        if (self.props.panelType === 'video') {
+
+        }
         errorFiles = count = size = totalFileNumber = 0;
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {    
@@ -372,11 +377,16 @@ var UploadForm = React.createClass({
                 numberUploadedCount: 0, 
                 photoErrorCount: errorFiles
             },  function() {
-                self.grabRefreshToken(
-                    formDataArray.forEach(function(formData) {
-                        self.sendFormattedData(formData);
-                    })
-                )
+                if(self.props.isAddPanel && self.props.panelType === 'video' ) {
+                    self.multiPartUpdateDefaultThumbnail(formDataArray[0]);
+                }
+                else { 
+                    self.grabRefreshToken(
+                        formDataArray.forEach(function(formData) {
+                            self.sendFormattedData(formData);
+                        })
+                    )
+                }
             });
         }        
     },
@@ -461,9 +471,9 @@ var UploadForm = React.createClass({
     grabDropBox: function() {
         var self = this,
             options = {
-                success: function(urls) {self.sendDropBoxUrl(urls)},
+                success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.sendDropBoxUrl(urls)},
                 linkType: "direct",
-                multiselect: true,
+                multiselect: self.props.panelType === 'photo',
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
@@ -490,6 +500,35 @@ var UploadForm = React.createClass({
                     self.setState(self.getInitialState());                        
                 }
             })
+    },
+    updateDefaultThumbnail: function(url) {
+        var self = this,
+            url = typeof url === 'object' ? url[0].link : url,
+            options = { data: { url: url } }
+        // self.PUT('videos', options)
+        //     .then(function(res) {
+
+        //     })
+        //     .catch(function(err) {
+                
+        //     });
+    },
+    multiPartUpdateDefaultThumbnail: function(formatData) {
+        debugger
+        // var self = this,
+        //     options = {
+        //         data: formData,
+        //         processData : false,
+        //         contentType: 'multipart/form-data'
+        // }
+        // self.PUT('videos', options)
+        //     .then(function(res) {
+
+        //     })
+        //     .catch(function(err) {
+
+        //     })
+
     },
     grabRefreshToken: function() {
         var self = this;
