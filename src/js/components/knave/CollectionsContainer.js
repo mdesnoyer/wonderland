@@ -502,7 +502,10 @@ const CollectionsContainer = React.createClass({
         this.props.loadFeaturesForTag(tagId, gender, age);
 
         // Get the same order of list that the collections uses.
-        const sortedThumbnails = _.flatten(this.getLeftRightRest(tagId, gender, age));
+        const sortedThumbnails = _(this.getLeftRightRest(tagId, gender, age))
+            .flatten()
+            .sortedUniqBy('thumbnail_id')
+            .value();
 
         // Deal with when the best and worst is the same.
         if(sortedThumbnails[0] == sortedThumbnails[1]) {
