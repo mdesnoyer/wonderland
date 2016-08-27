@@ -73,29 +73,27 @@ const CollectionsContainer = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        // If the next props have the queued selected
-        // demographic, then move the queued selected
+        // If the next props have a queued selected
+        // demographic (in indexes 2-3), then move the queued selected
         // to the selected one.
-        /*
-        const selectedDemographic = this.state.selectedDemographic
-        _.map(selectedDemographic, (demo, tagId) => {
-            if (demo.length > 2) {
-                const nextGender = demo[2];
-                const nextAge = demo[3];
+        const selectedDemographic = this.state.selectedDemographic;
+        _.map(selectedDemographic, (selDemo, tagId) => {
+            if (selDemo.length === 4) {
+                const nextGender = selDemo[2];
+                const nextAge = selDemo[3];
                 const tag = nextProps.stores.tags[tagId];
                 const video = nextProps.stores.videos[tag.video_id];
                 const demos = video.demographic_thumbnails;
-                const demo = UTILS.findDemographicThumbnailObject(
+                const foundDemo = UTILS.findDemographicThumbnailObject(
                      demos,
                      nextGender,
                      nextAge);
-                if (demo) {
+                if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }
             }
         });
-        this.setState({selectedDemographic});
-        /**/
+        this.setState({ selectedDemographic });
     },
 
     // Return array of gender,age enum array based
@@ -129,11 +127,11 @@ const CollectionsContainer = React.createClass({
         return [0, 0];
     },
 
-    // Given a tag id, construct a  valid Collection
+    // Given a tag id, build a valid Collection
     // component instance and return it.
     //
     // Else return an error component.
-    buildCollectionComponent: function(tagId) {
+    getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
 
@@ -162,22 +160,24 @@ const CollectionsContainer = React.createClass({
         const gender = demoKey[0];
         const age = demoKey[1];
 
+        let newDemographic = [gender, age];
+
         // If this is a video and the demographic isn't in the
         // video store, then put the gender and age in the "next"
         // bucket indexes at 2, 3. In the videocollection willReceiveProps,
         // we check if the next demos are ready and switch to them.
-        /*
         const tag = this.props.stores.tags[tagId];
-        const video = this.props.stores.videos[tag.video_id];
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
-            const prevDemo = selectedDemographic[tagId] || [0, 0];
-            const slice = prevDemo.slice(0, 2);
-            slice.push(gender, age);
-            selectedDemographic[tagId] = slice;
-        } else {
+            const video = this.props.stores.videos[tag.video_id];
+            const demos = video.demographic_thumbnails;
+            if (!UTILS.findDemographicThumbnailObject(demos, gender, age)) {
+                const prevDemo = this.getSelectedDemographic(tagId);
+                newDemographic = prevDemo.slice(0, 2);
+                newDemographic.push(gender, age);
+            }
         }
-        /**/
-        selectedDemographic[tagId] = [gender, age];
+
+        selectedDemographic[tagId] = newDemographic;
 
         // Ask stores to load missing values.
         // And change our state when done.
@@ -332,13 +332,12 @@ const CollectionsContainer = React.createClass({
 
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-        let isRefiltering = false;
 
+        let isRefiltering = false;
         if (['processing', 'failed'].includes(video.state)) {
             if (tag.thumbnail_ids.length === 0) {
                 return this.buildVideoProcessingComponent(tagId);
-            }
-            else {
+            } else if ('processing' == video.state) {
                 isRefiltering = true;
             }
         }
@@ -485,10 +484,9 @@ const CollectionsContainer = React.createClass({
 
     },
 
-    buildOverlayComponent: function() {
-
+    getOverlayComponent: function() {
+        // If no tag, the overlay hasn't been opened.
         const tagId = this.state.overlayTagId;
-
         if (!tagId) {
             return null;
         }
@@ -499,13 +497,14 @@ const CollectionsContainer = React.createClass({
         const gender = demo[0];
         const age = demo[1];
 
-        // Begin loading features
+        // Begin loading features.
         this.props.loadFeaturesForTag(tagId, gender, age);
 
-        const thumbnailMap = this.getThumbnailMap(tagId);
-
         // Get the same order of list that the collections uses.
-        const sortedThumbnails = _.flatten(this.getLeftRightRest(tagId, gender, age));
+        const sortedThumbnails = _(this.getLeftRightRest(tagId, gender, age))
+            .flatten()
+            .sortedUniqBy('thumbnail_id')
+            .value();
 
         // Deal with when the best and worst is the same.
         if(sortedThumbnails[0] == sortedThumbnails[1]) {
@@ -521,12 +520,11 @@ const CollectionsContainer = React.createClass({
         // Find the next and previous thumbnail ids for navigation.
         // Use modulo to ensure index is in [0, <length of thumbnails>).
         const thumbnailCount = sortedThumbnails.length;
-
         const nextThumbnailIndex = ( 1 + thumbnailIndex) % thumbnailCount;
         const prevThumbnailIndex = (-1 + thumbnailIndex + thumbnailCount) % thumbnailCount;
-
         const nextThumbnailId = sortedThumbnails[nextThumbnailIndex].thumbnail_id;
         const prevThumbnailId = sortedThumbnails[prevThumbnailIndex].thumbnail_id;
+
         // Find lift for the displayed thumb.
         const lift = this.props.stores.lifts
             [gender]
@@ -535,6 +533,7 @@ const CollectionsContainer = React.createClass({
             [thumbnailId] || 0;
 
         // Build a map of thumbnail id to array of feature names.
+        const thumbnailMap = this.getThumbnailMap(tagId);
         const thumbnailFeatures = _(this.props.stores.thumbnailFeatures
                 [gender]
                 [age])
@@ -571,11 +570,11 @@ const CollectionsContainer = React.createClass({
     },
     render: function() {
         const collections = this.props.shownIds.map(tagId => {
-            return this.buildCollectionComponent(tagId);
+            return this.getCollectionComponent(tagId);
         });
         return (
             <div>
-                {this.buildOverlayComponent()}
+                {this.getOverlayComponent()}
                 <ul>{collections}</ul>
             </div>
         );

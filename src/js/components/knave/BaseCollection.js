@@ -37,6 +37,8 @@ const propTypes = {
 
     // Handlers for image events
     onThumbnailClick: PropTypes.func,
+    // Override the onThumbnailClick for right.
+    onRightThumbnailClick: PropTypes.func,
     setLiftThumbnailId: PropTypes.func,
 
     // class name for the wrapper around the
@@ -78,8 +80,12 @@ class BaseCollection extends React.Component {
     }
 
     onRightThumbnailClick() {
-        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-        this.props.onThumbnailClick(rightThumbnailId);
+        if (this.props.onRightThumbnailClick) {
+            this.props.onRightThumbnailClick();
+        } else {
+            const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
+            this.props.onThumbnailClick(rightThumbnailId);
+        }
     }
 
     // TODO Extract 6 (number per row) and 3 (number of rows added per ShowMore)
@@ -137,12 +143,13 @@ class BaseCollection extends React.Component {
                     onMouseEnter={this.props.setLiftThumbnailId}
                     onMouseLeave={this.setDefaultLiftThumbnail}
                     onClick={this.props.onThumbnailClick}
-                    className="xxThumbnail--lowLight"
+                    firstClassName="xxThumbnail--highLight"
+                    secondClassName="xxThumbnail--lowLight"
                 />);
             }
             return (<ShowMoreThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5} // N rows of 6, minus one for each button.
+                numberToDisplay={5}
                 moreLabel={T.get('action.showMore')}
                 onMore={this.onMore}
                 onMouseEnter={this.props.setLiftThumbnailId}

@@ -136,6 +136,7 @@ const VideoCollection = React.createClass({
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                onDemographicChange={this.props.onDemographicChange}
                 videoId={this.props.videoId}
             />,
             <SharePanel
