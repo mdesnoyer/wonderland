@@ -28,7 +28,7 @@ export const InfoDemoLiftPanel = React.createClass({
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.array.isRequired,
-        // whether or not the panel should display the refilter 
+        // whether or not the panel should display the refilter
         // button, defaults to true
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component

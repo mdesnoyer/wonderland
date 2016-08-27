@@ -1,10 +1,9 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
-import T from '../../modules/translation';
 import {
     InfoDemoLiftPanel,
     InfoLiftPanel,
@@ -16,53 +15,94 @@ import {
     DeleteControl,
     AddPanel,
     AddControl } from './InfoActionPanels';
-import {LoadActions} from '../../stores/CollectionStores';
-import ImageUploadOverlay from './ImageUploadOverlay';
+import { LoadActions } from '../../stores/CollectionStores';
 
-export const ImageCollection = React.createClass({
+const contextTypes = {
+    isMobile: PropTypes.bool,
+};
 
-    contextTypes: {
-        isMobile: PropTypes.bool
-    },
+const propTypes = {
+    tagId: PropTypes.string.isRequired,
+    leftFeatureThumbnail: PropTypes.shape({
+        thumbnail_id: PropTypes.string.isRequired,
+    }).isRequired,
+    rightFeatureThumbnail: PropTypes.shape({
+        thumbnail_id: PropTypes.string.isRequired,
+    }).isRequired,
+    thumbLiftMap: PropTypes.object.isRequired,
+    infoPanelOnly: PropTypes.bool,
+    title: PropTypes.string.isRequired,
+    onDemographicChange: PropTypes.func.isRequired,
+    demographicOptions: PropTypes.array.isRequired,
+    selectedDemographic: PropTypes.array.isRequired,
+    shareUrl: PropTypes.string,
+    socialClickHandler: PropTypes.func,
+    setTooltipText: PropTypes.func,
+    sendResultsEmail: PropTypes.func.isRequired,
+    deleteCollection: PropTypes.func.isRequired,
+};
 
-    getInitialState: function() {
-        return {
+export default class ImageCollection extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
-            selectedPanel: 0,
-            liftThumbnailId: null
+            selectedPanelIndex: 0,
+            // Which thumbnail's lift to show
+            liftThumbnailId: null,
         };
-    },
 
-    setSelectedPanel: function(panelId) {
+        this.onControlClick = this.onControlClick.bind(this);
+        this.onCancelClick = this.onCancelClick.bind(this);
+        this.onThumbnailMouseover = this.onThumbnailMouseover.bind(this);
+        this.onSharePanelLoad = this.onSharePanelLoad.bind(this);
+
+        this.onShareControlClick = this.onControlClick.bind(this, 1);
+        this.onEmailControlClick = this.onControlClick.bind(this, 2);
+        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
+        this.onAddControlClick = this.onControlClick.bind(this, 4);
+    }
+
+    onControlClick(selectedPanelIndex) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({selectedPanel : panelId});
-    },
+        this.setState({ selectedPanelIndex });
+    }
 
-    setLiftThumbnailId: function(thumbnailId) {
-        this.setState({liftThumbnailId: thumbnailId})
-    },
+    onThumbnailMouseover(liftThumbnailId) {
+        this.setState({ liftThumbnailId });
+    }
+
+    onCancelClick() {
+        this.onControlClick(0);
+    }
+
+    onSharePanelLoad() {
+        LoadActions.loadShareUrl(this.props.tagId);
+    }
 
     getLiftValue() {
         const selectedId = this.state.liftThumbnailId;
         const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
-    },
+    }
 
     getPanels() {
         const overrideMap = {
-            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+            'copy.lift.explanation.default': 'copy.lift.explanation.images',
         };
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
-                    isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                    isSoloImage={this.isSoloImage()}
                     translationOverrideMap={overrideMap}
-                />
+                />,
             ];
         }
         return [
@@ -73,83 +113,90 @@ export const ImageCollection = React.createClass({
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
-                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                isSoloImage={this.isSoloImage()}
                 translationOverrideMap={overrideMap}
             />,
             <SharePanel
-                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                cancelClickHandler={this.onCancelClick}
                 socialClickHandler={this.props.socialClickHandler}
                 tagId={this.props.tagId}
                 shareUrl={this.props.shareUrl}
-                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
+                loadShareUrl={this.onSharePanelLoad}
                 setTooltipText={this.props.setTooltipText}
             />,
             <EmailPanel
-                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                cancelClickHandler={this.onCancelClick}
                 shareUrl={this.props.shareUrl}
-                loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
+                loadShareUrl={this.onSharePanelLoad}
                 sendResultsEmail={this.props.sendResultsEmail}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
-                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                cancelClickHandler={this.onCancelClick}
             />,
             <AddPanel
                 tagId={this.props.tagId}
                 deleteCollection={this.props.deleteCollection}
-                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-            />
+                cancelClickHandler={this.onCancelClick}
+            />,
         ];
-    },
-    getControls(){
+    }
+
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
         return [
-            <ShareControl handleClick={()=>{this.setSelectedPanel(1)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <AddControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <ShareControl handleClick={this.onShareControlClick} />,
+            <EmailControl handleClick={this.onEmailControlClick} />,
+            <DeleteControl handleClick={this.onDeleteControlClick} />,
+            <AddControl handleClick={this.onAddControlClick} />,
         ];
-    },
+    }
 
-    getMobile() {
+    getMobileComponent() {
         const overrideMap = {
-            'copy.lift.explanation.default': 'copy.lift.explanation.images'
+            'copy.lift.explanation.default': 'copy.lift.explanation.images',
         };
         return (
             <MobileBaseCollection
                 {...this.props}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
-                selectedPanel={this.state.selectedPanel}
+                selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 translationOverrideMap={overrideMap}
             />
         );
-    },
+    }
 
-    getDesktop() {
+    getDesktopComponent() {
         return (
             <BaseCollection
                 {...this.props}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
-                selectedPanel={this.state.selectedPanel}
+                selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
-                setLiftThumbnailId={this.setLiftThumbnailId}
-                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                setLiftThumbnailId={this.onThumbnailMouseover}
+                isSoloImage={this.isSoloImage()}
             />
         );
-    },
-
-    render: function() {
-        if (this.context.isMobile) {
-            return this.getMobile();
-        }
-        return this.getDesktop();
     }
-});
 
-export default ImageCollection;
+    isSoloImage() {
+        return this.props.rightFeatureThumbnail.thumbnail_id ===
+            this.props.leftFeatureThumbnail.thumbnail_id;
+    }
+
+    render() {
+        if (this.context.isMobile) {
+            return this.getMobileComponent();
+        }
+        return this.getDesktopComponent();
+    }
+}
+
+ImageCollection.propTypes = propTypes;
+ImageCollection.contextTypes = contextTypes;
