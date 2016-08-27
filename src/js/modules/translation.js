@@ -275,7 +275,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'imageUpload.uploadMax' : 'It appears that these additional files will take you over the max of 100 photos per image collection.',
             'imageUpload.imageError': 'The file type you have provided is either to large or the wrong format',
             'imageUpload.draglocation.directToLocal': 'Or Click to upload from your desktop!',
-            'imageUpload.addMoreBlurText': 'Add more images by clicking the plus sign to the right',
+            'imageUpload.addMoreBlurText': 'Add more images by clicking here',
             // Timers
             'timer.loading' : 'loading...',
             'timer.close' : 'almost...',

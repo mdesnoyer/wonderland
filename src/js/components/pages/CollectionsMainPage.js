@@ -91,7 +91,7 @@ const CollectionsMainPage = React.createClass({
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
 
-        // Load initial results: first 2 items, then more.
+        // Load initial results: first 2 quickly and a whole page or more.
         const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
         Search.load(2, true, callback);
     },
@@ -107,7 +107,6 @@ const CollectionsMainPage = React.createClass({
         const currentPage = self.state.currentPage + change
         const searchPending = Search.pending > 0;
         self.setState({currentPage, searchPending}, this.loadMoreFromSearch);
-
     },
 
     // Ask the search provider to get more results.
@@ -350,6 +349,7 @@ const CollectionsMainPage = React.createClass({
             // If query is running, cancel.
             if (self.searchFunction) {
                 self.searchFunction.cancel();
+                Search.pending -= 1;
                 self.searchFunction = null;
             }
             self.setState({
@@ -417,6 +417,7 @@ const CollectionsMainPage = React.createClass({
                     currentPage={this.state.currentPage}
                     changeCurrentPage={this.changeCurrentPage}
                     enableNext={this.getPagingEnableNext()}
+                    searchPending={this.state.searchPending}
                 />
            </div>
         );
@@ -436,8 +437,6 @@ const CollectionsMainPage = React.createClass({
             this.getLoading() :
             this.getResults();
 
-        const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
-
         return (
             <BasePage
                 {...this.props}
@@ -449,7 +448,6 @@ const CollectionsMainPage = React.createClass({
                 query={this.state.searchQuery}
                 onSearchFormChange={this.onSearchFormChange}
                 onSearchFormSubmit={this.onSearchFormSubmit}
-                isLoading={isQuerySearchLoading}
             >
                 {body}
                 <UploadForm />

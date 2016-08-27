@@ -9,14 +9,9 @@ const propTypes = {
     searchQuery: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool
 };
 
 function SearchForm(props) {
-    const loading = props.isLoading ?
-        <span>{T.get('copy.loading')}</span> :
-        null;
-
     return (
         <form className="xxSearchBar" onSubmit={props.onSubmit}>
             <div className="xxSearchInputWrapper">
@@ -27,9 +22,6 @@ function SearchForm(props) {
                     value={props.searchQuery}
                 />
             </div>
-            {loading}
-            <span>
-            </span>
         </form>
     );
 }

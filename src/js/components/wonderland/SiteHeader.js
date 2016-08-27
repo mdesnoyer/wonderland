@@ -18,7 +18,6 @@ var SiteHeader = React.createClass({
         query: PropTypes.string,
         onSearchFormChange: PropTypes.func,
         onSearchFormSubmit: PropTypes.func,
-        isLoading: PropTypes.bool
     },
 
     getInitialState() {
@@ -53,7 +52,6 @@ var SiteHeader = React.createClass({
                     query={this.props.searchQuery}
                     onSearchFormChange={this.props.onSearchFormChange}
                     onSearchFormSubmit={this.props.onSearchFormSubmit}
-                    isLoading={this.props.isLoading}
                 />
                 <Sidebar
                     content={this.getContent()}
