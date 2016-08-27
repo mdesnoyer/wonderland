@@ -179,7 +179,7 @@ const VideoCollection = React.createClass({
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
             <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
-            <AddControl handleClick={()=>{this.setSelectedPanel(6)}} />
+            <AddControl handleClick={()=>{this.setSelectedPanel(6)}} panelType='video'/>
         ];
     },
 

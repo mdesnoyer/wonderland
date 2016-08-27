@@ -116,7 +116,7 @@ const ImageCollection = React.createClass({
             <ShareControl handleClick={()=>{this.setSelectedPanel(1)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <AddControl handleClick={()=>{this.setSelectedPanel(4)}} />
+            <AddControl handleClick={()=>{this.setSelectedPanel(4)}} panelType='photo' />
         ];
     },
 
