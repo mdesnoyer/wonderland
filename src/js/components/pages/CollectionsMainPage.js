@@ -16,6 +16,7 @@ import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
+    AccountStore, 
     TagStore,
     FilteredTagStore,
     VideoStore,
@@ -61,7 +62,10 @@ const getStateFromStores = () => {
         thumbnailFeatures: ThumbnailFeatureStore.getAll(),
 
         // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: TagShareStore.getAll()
+        tagShares: TagShareStore.getAll(), 
+
+        // the accounts we have currently 
+        accounts: AccountStore.getAll(), 
     };
 };
 
@@ -388,8 +392,14 @@ const CollectionsMainPage = React.createClass({
         // This is now just a functional stub.
         e.preventDefault();
     },
+    
+    loadAccount: function() { 
+        LoadActions.loadAccount(SESSION.state.accountId);
+    }, 
 
     getResults: function() {
+        this.loadAccount()
+
         return (
             <div>
                 <CollectionsContainer
@@ -401,7 +411,8 @@ const CollectionsMainPage = React.createClass({
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares
+                        tagShares: this.state.tagShares, 
+                        accounts: this.state.accounts 
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
@@ -412,6 +423,7 @@ const CollectionsMainPage = React.createClass({
                     setTooltipText={this.setTooltipText}
                     enableThumbnail={this.enableThumbnail}
                     disableThumbnail={this.disableThumbnail}
+                    ownerAccountId={SESSION.state.accountId} 
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}
