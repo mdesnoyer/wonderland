@@ -23,7 +23,7 @@
 .xxSearchBar {
     position: absolute;
     bottom: -.5em;
-    width: 60%;
+    width: 57.5%;
     left: 15.25%;
     padding-right: 0.25%;
     @include breakpoint-mobile {
@@ -47,7 +47,6 @@
         }
     }
     input {
-        box-sizing: border-box;
         font-family: $sans-serif-family;
         font-weight: 100;
         box-shadow: none !important;
