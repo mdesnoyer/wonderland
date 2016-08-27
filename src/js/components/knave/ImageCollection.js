@@ -103,7 +103,7 @@ const ImageCollection = React.createClass({
             />,
             <AddPanel
                 tagId={this.props.tagId}
-                deleteCollection={this.props.deleteCollection}
+                panelType='photo'
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />
         ];
