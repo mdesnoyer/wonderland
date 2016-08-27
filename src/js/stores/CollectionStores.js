@@ -309,6 +309,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
                     } 
+                    else { 
+                        dem.bad_thumbnails = []; 
+                    }
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
