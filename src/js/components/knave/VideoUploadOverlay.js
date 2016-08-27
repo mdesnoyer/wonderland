@@ -8,11 +8,34 @@ import Message from '../wonderland/Message'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadOverlay = React.createClass({
+
+    propTypes: {
+        error: React.PropTypes.string,
+        toggleOpen: React.PropTypes.func,
+        updateField: React.PropTypes.func,
+        videoUploadUrl: React.PropTypes.string
+    },
+
     componentDidMount: function() {
         // Put focus in the form name input when opening.
         const node = ReactDOM.findDOMNode(this.refs.urlInput);
         if(node) {
             node.focus();
+        }
+        window.addEventListener('keydown', this.handleKeyEvent);
+    },
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyEvent);
+    },
+
+    handleKeyEvent(e) {
+        // Enter submits form.
+        const self = this;
+        if (e.keyCode === 13) {
+            if (this.props.videoUploadUrl) {
+                e.target.dataset.sendUrl = true;
+                self.props.toggleOpen(e);
+            }
         }
     },
     render: function() {
@@ -69,12 +92,6 @@ var VideoUploadOverlay = React.createClass({
             </section>
         );
     },
-    propTypes: {
-        error: React.PropTypes.string,
-        toggleOpen: React.PropTypes.func,
-        updateField: React.PropTypes.func,
-        videoUploadUrl: React.PropTypes.string
-    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

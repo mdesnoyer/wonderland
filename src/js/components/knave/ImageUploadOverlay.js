@@ -39,7 +39,7 @@ var ImageUploadOverlay = React.createClass({
         if (e.keyCode === 13) {
             if (this.state.isNextClicked && isValid) {
                 e.target.dataset.sendTag = true;
-                self.props.toggleOpen(event);
+                self.props.toggleOpen(e);
             } else {
                 self.handleClick();
             }
