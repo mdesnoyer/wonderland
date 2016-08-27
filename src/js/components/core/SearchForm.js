@@ -17,6 +17,7 @@ function SearchForm(props) {
         <span>{T.get('copy.loading')}</span> :
         null;
 
+    console.log('sf', props.isLoading);
     return (
         <form className="xxSearchBar" onSubmit={props.onSubmit}>
             <div className="xxSearchInputWrapper">

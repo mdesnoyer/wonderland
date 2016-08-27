@@ -425,10 +425,6 @@ const CollectionsMainPage = React.createClass({
     },
 
     render: function() {
-        let body = this.getLoading();
-        if (FilteredTagStore.count() > 0 || Search.pending <= 0) {
-            body = this.getResults();
-        }
 
         const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
 
@@ -445,7 +441,7 @@ const CollectionsMainPage = React.createClass({
                 onSearchFormSubmit={this.onSearchFormSubmit}
                 isLoading={isQuerySearchLoading}
             >
-                {body}
+                {this.getResults()}
                 <UploadForm />
             </BasePage>
         );

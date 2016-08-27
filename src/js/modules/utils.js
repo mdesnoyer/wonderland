@@ -598,12 +598,12 @@ var UTILS = {
 
     // Given array of thumbnails, return the thumbnail with best score.
     bestThumbnail: (thumbnails) => {
-        return _.maxBy(thumbnails, 'neon_score');
+        return _.maxBy(thumbnails, ['neon_score', 'created']);
     },
 
     // Given array of thumbnails, return the thumbnail with worst score.
     worstThumbnail: (thumbnails) => {
-        return _.minBy(thumbnails, 'neon_score');
+        return _.minBy(thumbnails, ['neon_score', 'created']);
     },
 
     // Get the Cartesian product of arrays.
