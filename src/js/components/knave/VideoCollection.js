@@ -32,6 +32,14 @@ import {LoadActions} from '../../stores/CollectionStores';
 
 const VideoCollection = React.createClass({
 
+    // A reference to a setTimeout/setInterval for monitoring
+    // the state of a processing video.
+    processingMonitor: null,
+
+    propTypes: {
+        isRefiltering: React.PropTypes.bool
+    },
+
     contextTypes: {
         isMobile: PropTypes.bool
     },
@@ -44,6 +52,51 @@ const VideoCollection = React.createClass({
             liftThumbnailId: null
         };
     },
+    componentDidMount: function() {
+        this.setProcessingMonitor();
+    },
+
+    componentWillUpdate: function(nextProps, nextState) {
+        this.setProcessingMonitor();
+    },
+
+    componentWillUnmount: function() {
+        this.clearProcessingMonitor();
+    },
+
+    setProcessingMonitor: function() {
+        const videoId = this.props.videoId;
+        if (this.props.isRefiltering) {
+
+            // Only set one per video.
+            if(this.processingMonitor) {
+                return;
+            }
+
+            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+            if (this.props.timeRemaining > 5) {
+                const timeout = 1000 * this.props.timeRemaining;
+                setTimeout(monitorFunction, timeout);
+                return;
+            }
+
+            // Let's set a monitor until the video is out of processing.
+            const interval = 1000 * 5;
+            this.processingMonitor = setInterval(monitorFunction, interval);
+            return;
+        }
+
+        // Else, the video is processed so clear a monitor.
+        this.clearProcessingMonitor();
+    },
+
+    clearProcessingMonitor: function() {
+        if (this.processingMonitor !== null) {
+            clearInterval(this.processingMonitor);
+            this.processingMonitor = null;
+        }
+    },
+
 
     setSelectedPanel: function(panelId) {
         // Clear any open tooltip.
@@ -61,7 +114,6 @@ const VideoCollection = React.createClass({
         const map = this.props.thumbLiftMap || {};
         return map[selectedId || defaultId];
     },
-
     getPanels() {
         if (this.props.infoPanelOnly) {
             return [
@@ -78,8 +130,14 @@ const VideoCollection = React.createClass({
                 onDemographicChange={this.props.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
+                handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
+                isRefiltering={this.props.isRefiltering}
+                timeRemaining={this.props.timeRemaining}
             />,
-            <FilterPanel />,
+            <FilterPanel
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+                videoId={this.props.videoId}
+            />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}

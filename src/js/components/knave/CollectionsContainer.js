@@ -13,7 +13,7 @@ import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 
-import { DeleteActions } from '../../stores/CollectionStores';
+import { SendActions, } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,8 +55,6 @@ const CollectionsContainer = React.createClass({
 
         // Pops the side bar module given a recognized string
         setSidebarContent: PropTypes.func.isRequired
-
-        // TODO add learnmore func.
     },
 
     getInitialState: function() {
@@ -67,10 +65,41 @@ const CollectionsContainer = React.createClass({
             // By default, the demographic is [0,0] meaning gender=none, age=none.
             selectedDemographic: {},
 
+            // If a demographic was selected but it isn't available yet, and a
+            // request has been made to load it, then this will set it
+            // if it becomes loaded.
+            nextSelectedDemographic: {},
+
             // Setting a tag will render the modal overlay thumbnail zoom.
             overlayTagId: null,
             overlayThumbnailId: null
         };
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        // If the next props have the queued selected
+        // demographic, then move the queued selected
+        // to the selected one.
+        /*
+        const selectedDemographic = this.state.selectedDemographic
+        _.map(selectedDemographic, (demo, tagId) => {
+            if (demo.length > 2) {
+                const nextGender = demo[2];
+                const nextAge = demo[3];
+                const tag = nextProps.stores.tags[tagId];
+                const video = nextProps.stores.videos[tag.video_id];
+                const demos = video.demographic_thumbnails;
+                const demo = UTILS.findDemographicThumbnailObject(
+                     demos,
+                     nextGender,
+                     nextAge);
+                if (demo) {
+                    selectedDemographic[tagId] = [nextGender, nextAge];
+                }
+            }
+        });
+        this.setState({selectedDemographic});
+        /**/
     },
 
     // Return array of gender,age enum array based
@@ -123,11 +152,35 @@ const CollectionsContainer = React.createClass({
         return <div />;
     },
 
+    // True if a demographic thumbnail map is loaded for
+    // the given arguments.
+    hasDemographicLoaded: function(thumbnailIds, demoMap) {
+        // Check if one of the thumbnails is loaded and set
+        // assume the rest are.
+        return _.every(thumbnailIds, id => {return id in demoMap});
+    },
+
     // On demographic selector change, fill in stores.
-    onDemoChange: function(tagId, demoKey) {
+    onDemographicChange: function(tagId, demoKey) {
         const selectedDemographic = this.state.selectedDemographic;
         const gender = demoKey[0];
         const age = demoKey[1];
+
+        // If this is a video and the demographic isn't in the
+        // video store, then put the gender and age in the "next"
+        // bucket indexes at 2, 3. In the videocollection willReceiveProps,
+        // we check if the next demos are ready and switch to them.
+        /*
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            const prevDemo = selectedDemographic[tagId] || [0, 0];
+            const slice = prevDemo.slice(0, 2);
+            slice.push(gender, age);
+            selectedDemographic[tagId] = slice;
+        } else {
+        }
+        /**/
         selectedDemographic[tagId] = [gender, age];
 
         // Ask stores to load missing values.
@@ -265,11 +318,11 @@ const CollectionsContainer = React.createClass({
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
-                onDemographicChange={this.onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
@@ -279,13 +332,19 @@ const CollectionsContainer = React.createClass({
         );
     },
 
-    buildVideoCollectionComponent(tagId, onDemoChange, onThumbnailMouseEnter) {
+    buildVideoCollectionComponent(tagId) {
 
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
+        let isRefiltering = false;
 
         if (['processing', 'failed'].includes(video.state)) {
-            return this.buildVideoProcessingComponent(tagId);
+            if (tag.thumbnail_ids.length === 0) {
+                return this.buildVideoProcessingComponent(tagId);
+            }
+            else {
+                isRefiltering = true;
+            }
         }
 
         const demo = this.getSelectedDemographic(tagId);
@@ -319,18 +378,20 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
-                onDemographicChange={this.onDemoChange.bind(null, tagId)}
+                onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
+                selectedDemographic={demo}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
-                enableThumbnail={this.props.enableThumbnail} 
-                disableThumbnail={this.props.disableThumbnail} 
+                isRefiltering={isRefiltering}
+                timeRemaining={video.estimated_time_remaining}
+                enableThumbnail={this.props.enableThumbnail}
+                disableThumbnail={this.props.disableThumbnail}
             />
        );
     },
@@ -363,7 +424,7 @@ const CollectionsContainer = React.createClass({
                 duration={video.duration}
                 videoId={video.video_id}
                 getVideoStatus={this.props.getVideoStatus}
-                deleteVideo={DeleteActions.deleteCollectionByTagId.bind(null, tagId)}
+                deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
             />
         );
     },

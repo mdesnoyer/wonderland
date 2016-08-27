@@ -452,6 +452,9 @@ var UTILS = {
             return neons;
         }
     },
+    isMeMobile: function() {
+        return window && window.outerWidth && window.outerWidth < 768; // horrible, ugh, yuck, #shame
+    },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {
         return text.toString().toLowerCase()

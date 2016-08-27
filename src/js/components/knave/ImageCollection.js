@@ -12,7 +12,6 @@ import T from '../../modules/translation';
 import {
     InfoDemoLiftPanel,
     InfoLiftPanel,
-    FilterPanel,
     EmailPanel,
     EmailControl,
     SharePanel,
@@ -84,7 +83,6 @@ const ImageCollection = React.createClass({
                 isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
                 translationOverrideMap={overrideMap}
             />,
-            <FilterPanel />,
             <SharePanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 socialClickHandler={this.props.socialClickHandler}
@@ -115,10 +113,10 @@ const ImageCollection = React.createClass({
             return [];
         }
         return [
-            <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
-            <AddControl handleClick={()=>{this.setSelectedPanel(5)}} />
+            <ShareControl handleClick={()=>{this.setSelectedPanel(1)}} />,
+            <EmailControl handleClick={()=>{this.setSelectedPanel(2)}} />,
+            <DeleteControl handleClick={()=>{this.setSelectedPanel(3)}} />,
+            <AddControl handleClick={()=>{this.setSelectedPanel(4)}} />
         ];
     },
 
