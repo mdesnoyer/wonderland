@@ -1,5 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import _ from 'lodash';
 
@@ -29,8 +28,6 @@ import {
     ServingStatusActions,
     Dispatcher,
     Search } from '../../stores/CollectionStores';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const getStateFromStores = () => {
 
@@ -115,12 +112,13 @@ const CollectionsMainPage = React.createClass({
     //
     // If not, load more based on how many are in store.
     loadMoreFromSearch(useCurrentPage=true) {
+        const self = this;
         const count = useCurrentPage ?
-            this.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
+            self.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
             TagStore.count();
 
-        if(this.state.searchQuery) {
-            Search.loadWithQuery(count, this.state.searchQuery);
+        if(self.state.searchQuery) {
+            Search.loadWithQuery(count, self.state.searchQuery);
         } else {
             Search.load(count);
         }
@@ -328,10 +326,13 @@ const CollectionsMainPage = React.createClass({
 
     onSearchFormChange: function(e) {
         const self = this;
+
+        // Use the query to filter display of results.
         const searchQuery = e.target.value.trim();
         if (!searchQuery) {
             FilteredTagStore.resetFilter();
         } else {
+            // Apply a non-empty search to our data provider.
             FilteredTagStore.setFilter(
                 tag => {
                     return tag.hidden !== true &&
@@ -339,16 +340,47 @@ const CollectionsMainPage = React.createClass({
                 }
             );
         }
+
+        // If query is nothing or short, then don't use backend.
+        if (!searchQuery) {
+            // If query is running, cancel.
+            if (self.searchFunction) {
+                self.searchFunction.cancel();
+                self.searchFunction = null;
+            }
+            self.setState({
+                searchQuery,
+                currentPage: 0,
+                selectedTags: FilteredTagStore.getAll(),
+            });
+            return;
+        }
+
+        // If query is more than two characters, query the backend.
+        // We debounce a function, store it and use it to throttle requests.
+        if (!self.searchFunction) {
+            self.searchFunction = _.debounce(
+                // Run a stateful search.
+                self.loadMoreFromSearch.bind(self, false),
+                // Millis between requests after first one.
+                200,
+                // Invoke immediately.
+                {leading: true, trailing: false}
+            );
+        }
+
+        // Resolve state change then search.
         self.setState({
             searchQuery,
             currentPage: 0,
             selectedTags: FilteredTagStore.getAll(),
-        })
+        }, self.searchFunction);
+
     },
 
     onSearchFormSubmit: function(e) {
+        // This is now just a functional stub.
         e.preventDefault();
-        this.loadMoreFromSearch(false)
     },
 
     getResults: function() {
@@ -420,8 +452,4 @@ const CollectionsMainPage = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default CollectionsMainPage;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

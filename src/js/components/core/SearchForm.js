@@ -14,7 +14,7 @@ const propTypes = {
 
 function SearchForm(props) {
     const loading = props.isLoading ?
-        <span>T.get('copy.loading')</span> :
+        <span>{T.get('copy.loading')}</span> :
         null;
 
     return (
