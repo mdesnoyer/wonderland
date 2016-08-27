@@ -35,7 +35,6 @@ const CollectionsContainer = React.createClass({
         // Map of store identifying key to the store,
         // which is a map of object id to object.
         stores: PropTypes.object.isRequired,
-        getVideoStatus: PropTypes.func.isRequired,
 
         // Defaults to Function to delete/hide a collection from
         // both the backend and frontend display
@@ -43,9 +42,6 @@ const CollectionsContainer = React.createClass({
 
         // ClickHandler for social sharing buttons
         socialClickHandler: PropTypes.func,
-
-        // Allows a component to get a sharing url
-        getShareUrl: PropTypes.func,
 
         // Allows a collection to send results email
         sendResultsEmail: PropTypes.func,
@@ -423,7 +419,6 @@ const CollectionsContainer = React.createClass({
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
                 videoId={video.video_id}
-                getVideoStatus={this.props.getVideoStatus}
                 deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
             />
         );

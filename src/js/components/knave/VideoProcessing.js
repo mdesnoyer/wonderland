@@ -7,33 +7,69 @@ import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
 import Countdown from '../wonderland/Countdown';
-import {LoadActions} from '../../stores/CollectionStores.js';
+import { LoadActions } from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoProcessing = React.createClass({
-    mixins: [AjaxMixin],
+
+    // TODO factor this and VideoCollection's
+    // A reference to a setTimeout/setInterval for monitoring
+    // the state of a processing video.
+    processingMonitor: null,
+
+    propTypes: {
+        title: React.PropTypes.string,
+        videoState: React.PropTypes.string,
+        estimatedTimeRemaining: React.PropTypes.number,
+        duration: React.PropTypes.number,
+        deleteVideo: React.PropTypes.func.isRequired,
+    },
+
     componentDidMount: function() {
-        var self = this;
-        if (self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) {
-            LoadActions.loadVideos([self.props.videoId]);
+        this.setProcessingMonitor();
+    },
+
+    componentWillUpdate: function() {
+        this.setProcessingMonitor();
+    },
+
+    componentWillUnmount: function() {
+        this.clearProcessingMonitor();
+    },
+
+    setProcessingMonitor: function() {
+        const videoId = this.props.videoId;
+        const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+
+        if (this.props.estimatedTimeRemaining > 5) {
+            this.clearProcessingMonitor();
+            const timeout = 1000 * this.props.estimatedTimeRemaining;
+            setTimeout(monitorFunction, timeout);
+            return;
         }
-        else if (self.props.videoState === 'processing') {
-            self.props.getVideoStatus(self.props.videoId);
+
+        // Only set one setInterval per video.
+        if(this.processingMonitor) {
+            return;
+        }
+
+        // Let's set a monitor until the video is out of processing.
+        const interval = 1000 * 5;
+        this.processingMonitor = setInterval(monitorFunction, interval);
+    },
+
+    clearProcessingMonitor: function() {
+        if (this.processingMonitor !== null) {
+            clearInterval(this.processingMonitor);
+            this.processingMonitor = null;
         }
     },
-    componentWillReceiveProps: function(nextProps) {
-        var self = this;
-        if (self.props.title !== nextProps.title && self.props.videoState === 'processing') {
-            self.props.getVideoStatus(self.props.videoId);
-        }
-        else if ((self.props.videoState === 'processing' && !self.props.title && self.props.estimatedTimeRemaining >=0) || (self.props.videoState !== nextProps.videoState)) {
-           LoadActions.loadVideos([self.props.videoId]);
-       }
-    },
+
     handleDeleteClick: function() {
         this.props.deleteVideo(this.props.videoId);
     },
+
     render: function() {
         var self = this,
             title,
@@ -108,18 +144,6 @@ var VideoProcessing = React.createClass({
             </div>
         )
     },
-    propTypes: {
-        title: React.PropTypes.string,
-        videoState: React.PropTypes.string,
-        estimatedTimeRemaining: React.PropTypes.number,
-        duration: React.PropTypes.number,
-        getVideoStatus: React.PropTypes.func.isRequired,
-        deleteVideo: React.PropTypes.func.isRequired
-    }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default VideoProcessing;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -3,7 +3,6 @@ import React, {PropTypes} from 'react';
 
 import _ from 'lodash';
 
-import AjaxMixin from '../../mixins/Ajax';
 import RENDITIONS from '../../modules/renditions';
 import SESSION from '../../modules/session';
 import TRACKING from '../../modules/tracking';
@@ -27,7 +26,7 @@ import {
     ThumbnailFeatureStore,
     TagShareStore,
     LoadActions,
-    ServingStatusActions, 
+    ServingStatusActions,
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
@@ -71,8 +70,6 @@ const getStateFromStores = () => {
 
 const CollectionsMainPage = React.createClass({
 
-    mixins: [AjaxMixin],
-
     contextTypes: {
         router: PropTypes.object.isRequired
     },
@@ -95,6 +92,8 @@ const CollectionsMainPage = React.createClass({
 
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
+
+        // Load initial results: first 2 items, then more.
         const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
         Search.load(2, true, callback);
     },
@@ -116,8 +115,6 @@ const CollectionsMainPage = React.createClass({
     //
     // If not, load more based on how many are in store.
     loadMoreFromSearch(useCurrentPage=true) {
-        // Queue another page to load:
-        // use +2 here: +1 to offset 0-indexing of page, +1 to queue next.
         const count = useCurrentPage ?
             this.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
             TagStore.count();
@@ -166,47 +163,18 @@ const CollectionsMainPage = React.createClass({
             })
         ;
         windowOpen(url);
-        // TODO this is throwing a TypeError
         TRACKING.sendEvent(this, arguments, service);
     },
 
-    // TODO remove callback, and just return the
-    // promise, let the child comp handle the promise
-    getShareUrl: function(id, type, callback) {
-        const self = this;
-        var apiUrl = null,
-            uiUrl = null,
-            options = {}
-        ;
-        // TODO type = images
-        if (type == 'video') {
-            options = {
-                data: {
-                    video_id: id
-                }
-            };
-            apiUrl = 'videos/share'
-            uiUrl = '/share/video/'
-        }
-        let promise = self.GET(apiUrl, options)
-        promise.then(function(res) {
-            var longUrl = window.location.origin +
-                 uiUrl + id + '/account/' +
-                 SESSION.state.accountId + '/token/' +
-                 res.share_token + '/';
-            UTILS.shortenUrl(longUrl, callback)
-        }).catch(function(err) {
-            console.log(err);
-        });
+    enableThumbnail: function(thumbnail) {
+        ServingStatusActions.toggleThumbnailEnabled(thumbnail);
     },
-    enableThumbnail: function(thumbnail) { 
-        ServingStatusActions.toggleThumbnailEnabled(thumbnail); 
-    }, 
-    disableThumbnail: function(thumbnail) { 
-        ServingStatusActions.toggleThumbnailEnabled(thumbnail); 
-    }, 
-    sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
 
+    disableThumbnail: function(thumbnail) {
+        ServingStatusActions.toggleThumbnailEnabled(thumbnail);
+    },
+
+    sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
         const self = this;
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(email)) {
@@ -349,18 +317,6 @@ const CollectionsMainPage = React.createClass({
         return -1 !== name.search(query.toLowerCase());
     },
 
-    getVideoStatus: function(videoId) {
-        var self = this;
-        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
-            .then(function(res) {
-                let tagId = res.videos[0].tag_id;
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadTags([tagId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
-            })
-            .catch(function(err) {
-                console.log(err)
-            });
-    },
-
     getTitle: function() {
         return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
     },
@@ -409,17 +365,15 @@ const CollectionsMainPage = React.createClass({
                         features: this.state.features,
                         tagShares: this.state.tagShares
                     }}
-                    getVideoStatus={this.getVideoStatus}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     loadThumbnails={LoadActions.loadThumbnails}
                     socialClickHandler={this.socialClickHandler}
-                    getShareUrl={this.getShareUrl}
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
                     setTooltipText={this.setTooltipText}
-                    enableThumbnail={this.enableThumbnail} 
-                    disableThumbnail={this.disableThumbnail} 
+                    enableThumbnail={this.enableThumbnail}
+                    disableThumbnail={this.disableThumbnail}
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}

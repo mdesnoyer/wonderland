@@ -129,17 +129,6 @@ const ViewSharedCollectionPage = React.createClass({
         self.setState({sidebarContent});
     },
 
-    getVideoStatus: function(videoId) {
-        var self = this;
-        self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
-            .then(function(res) {
-                res.videos[0].state === 'processed' || res.videos[0].state === 'failed' ? LoadActions.loadVideos([videoId]) : setTimeout(function() {self.getVideoStatus(videoId);}, 30000);
-            })
-            .catch(function(err) {
-                console.log(err)
-            });
-    },
-
     getShownIds: function() {
         const tagIds = _.keys(this.state.tags);
         if (tagIds.length > 0) {

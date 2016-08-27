@@ -18,8 +18,8 @@ import {
     SharePanel,
     ShareControl,
     DeletePanel,
-    DeleteControl, 
-    ServingStatusPanel, 
+    DeleteControl,
+    ServingStatusPanel,
     ServingStatusControl,
     ImageServingEnabledControl,
     ImageServingDisabledControl,
@@ -32,6 +32,7 @@ import {LoadActions} from '../../stores/CollectionStores';
 
 const VideoCollection = React.createClass({
 
+    // TODO factor this and VideoProcessing's
     // A reference to a setTimeout/setInterval for monitoring
     // the state of a processing video.
     processingMonitor: null,
@@ -56,7 +57,7 @@ const VideoCollection = React.createClass({
         this.setProcessingMonitor();
     },
 
-    componentWillUpdate: function(nextProps, nextState) {
+    componentWillUpdate: function() {
         this.setProcessingMonitor();
     },
 
@@ -65,18 +66,18 @@ const VideoCollection = React.createClass({
     },
 
     setProcessingMonitor: function() {
-        const videoId = this.props.videoId;
         if (this.props.isRefiltering) {
-
-            // Only set one per video.
-            if(this.processingMonitor) {
+            const videoId = this.props.videoId;
+            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+            if (this.props.timeRemaining > 5) {
+                this.clearProcessingMonitor();
+                const timeout = 1000 * this.props.timeRemaining;
+                setTimeout(monitorFunction, timeout);
                 return;
             }
 
-            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
-            if (this.props.timeRemaining > 5) {
-                const timeout = 1000 * this.props.timeRemaining;
-                setTimeout(monitorFunction, timeout);
+            // Only set one setInterval per video.
+            if(this.processingMonitor) {
                 return;
             }
 
@@ -96,7 +97,6 @@ const VideoCollection = React.createClass({
             this.processingMonitor = null;
         }
     },
-
 
     setSelectedPanel: function(panelId) {
         // Clear any open tooltip.

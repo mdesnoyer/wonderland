@@ -43,7 +43,7 @@ class BasePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = { windowWidth: window.outerWidth };
-        this.handleWindowResize = this.handleWindowResize.bind(this);
+        this.onWindowResize = this.onWindowResize.bind(this);
     }
 
     getChildContext() {
@@ -53,12 +53,12 @@ class BasePage extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.handleWindowResize);
-        this.handleWindowResize();
+        window.addEventListener('resize', this.onWindowResize);
+        this.onWindowResize();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleWindowResize);
+        window.removeEventListener('resize', this.onWindowResize);
     }
 
     getMeta() {
@@ -79,13 +79,11 @@ class BasePage extends React.Component {
         return <SiteFooter />;
     }
 
-    handleWindowResize() {
+    onWindowResize() {
         const windowWidth = window.outerWidth;
 
         if (this.state.windowWidth !== windowWidth) {
-            this.setState({
-                windowWidth,
-            });
+            this.setState({ windowWidth });
         }
 
         if (windowWidth < UTILS.DETECT_MOBILE_WIDTH_PX) {
