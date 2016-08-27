@@ -504,14 +504,34 @@ var UploadForm = React.createClass({
     updateDefaultThumbnail: function(url) {
         var self = this,
             url = typeof url === 'object' ? url[0].link : url,
-            options = { data: { url: url } }
+            options = { 
+                data: { 
+                    url: url,
+                    videoId: self.props.videoId
+                } 
+            }
+            self.PUT('videos', options)
+            .then(function() {
+            })
+            .catch(function() { 
+            })
+
+
+        // 'videos?video_id=' + self.props.videoId
         // self.PUT('videos', options)
         //     .then(function(res) {
-
+                    // self.setState({
+                    //     photoUploadMode:'success',
+                //      })
         //     })
-        //     .catch(function(err) {
-                
-        //     });
+                // LoadActions.loadTags([self.props.tagId]);
+                            // self.setState(self.getInitialState());
+        // this.props.cancelClickHandler
+        // .catch(function(err) {
+        //     photoUploadMode:'initial'
+        // },  function() {
+        //     self.throwUploadError(err);
+        // });
     },
     multiPartUpdateDefaultThumbnail: function(formatData) {
         debugger
@@ -521,13 +541,16 @@ var UploadForm = React.createClass({
         //         processData : false,
         //         contentType: 'multipart/form-data'
         // }
+        // 'videos?video_id=' + self.props.videoId
         // self.PUT('videos', options)
         //     .then(function(res) {
-
+                // this.props.cancelClickHandler
         //     })
-        //     .catch(function(err) {
-
-        //     })
+        // .catch(function(err) {
+        //     photoUploadMode:'initial'
+        // },  function() {
+        //     self.throwUploadError(err);
+        // });
 
     },
     grabRefreshToken: function() {
