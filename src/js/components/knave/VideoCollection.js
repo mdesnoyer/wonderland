@@ -22,7 +22,9 @@ import {
     ServingStatusPanel, 
     ServingStatusControl,
     ImageServingEnabledControl,
-    ImageServingDisabledControl} from './InfoActionPanels';
+    ImageServingDisabledControl,
+    AddPanel,
+    AddControl } from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -160,6 +162,12 @@ const VideoCollection = React.createClass({
                 enableThumbnail={this.props.enableThumbnail}
                 disableThumbnail={this.props.disableThumbnail}
             />,
+            <AddPanel
+                tagId={this.props.tagId}
+                videoId={this.props.videoId}
+                panelType='video'
+                cancelClickHandler={()=>{this.setSelectedPanel(0)}}
+            />
         ];
     },
     getControls() {
@@ -170,7 +178,8 @@ const VideoCollection = React.createClass({
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
-            <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />
+            <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
+            <AddControl handleClick={()=>{this.setSelectedPanel(6)}} panelType='video'/>
         ];
     },
 

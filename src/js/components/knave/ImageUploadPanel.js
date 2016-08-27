@@ -51,7 +51,7 @@ var ImageUploadPanel = React.createClass({
 	    		{messageNeeded}
 	    		<Dropzone  
 	    		    className="xxDragAndDrop"
-	    		    multiple={true}
+	    		    multiple={self.props.panelType === 'photo'}
 	    		    disableClick={false}
 	    		    activeClassName='xxDragAndDrop--has-dragAndDropHover'
 	    		    encType="multipart/form-data" 
@@ -67,6 +67,22 @@ var ImageUploadPanel = React.createClass({
 	    		        </div>
 	    		    </ReactCSSTransitionGroup>
 	    		</Dropzone>
+	    			{
+	    				self.props.panelType === 'video' ? (
+	    					<form className="xxFormField xxFormField--has-urlDrop" onSubmit={self.handleSubmit}>
+	    					    <input
+	    					        ref="url"
+	    					        className="xxInputText xxInputText--has-urlDrop"
+	    					        type="url"
+	    					        placeholder={T.get('image.URL')}
+	    					        required
+	    					    />
+	    					    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
+	    					    Add URL 
+	    					    </button>
+	    					</form>
+    					) : null 
+	    			}
 	    		<div className="xxUploadDialog-block">
 	    		<div className="xxCollectionAction-buttons">
 	    		    <button
@@ -81,12 +97,16 @@ var ImageUploadPanel = React.createClass({
 	    		        className="xxButton xxButton-cancel xxButton--highlight"
 	    		        onClick={self.props.grabDropBox}
 	    		    >
-	    		        Add Dropbox 
+	    		        {T.get('imageUpload.dropBox')}
 	    		    </button>
 	            </div>
 	            </div>
 	    	</div>
     	);
+	},
+	handleSubmit: function(e) {
+		e.preventDefault();
+		this.props.updateDefaultThumbnail(this.refs.url.value);
 	},
     onDrop: function (files) {
         var self = this;

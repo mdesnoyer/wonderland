@@ -138,6 +138,7 @@ export default class ImageCollection extends React.Component {
                 tagId={this.props.tagId}
                 deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={this.onCancelClick}
+                panelType="photo"
             />,
         ];
     }
@@ -150,7 +151,10 @@ export default class ImageCollection extends React.Component {
             <ShareControl handleClick={this.onShareControlClick} />,
             <EmailControl handleClick={this.onEmailControlClick} />,
             <DeleteControl handleClick={this.onDeleteControlClick} />,
-            <AddControl handleClick={this.onAddControlClick} />,
+            <AddControl
+                handleClick={this.onAddControlClick}
+                panelType="photo"
+            />,
         ];
     }
 

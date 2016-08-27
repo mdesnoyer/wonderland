@@ -623,9 +623,10 @@ export const AddPanel = React.createClass({
         var collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction';
+        var title = this.props.panelType === 'video' ? 'Default Thumbnail' : T.get('copy.videoContent.add.title');
         return (
             <div className={collectionClassName}>
-            <h2 className="xxTitle">{T.get('copy.videoContent.add.title')}</h2>
+            <h2 className="xxTitle">{title}</h2>
                 {
                     this.props.isMobile ? (
                         <div
@@ -634,9 +635,11 @@ export const AddPanel = React.createClass({
                         </div>
                     ) : null
                 }
-                <UploadForm 
+                <UploadForm
+                    panelType={this.props.panelType} 
                     isAddPanel={true} 
                     tagId={this.props.tagId}
+                    videoId={this.props.videoId}
                     cancelClickHandler={this.props.cancelClickHandler}
                 />
             </div>
@@ -648,7 +651,7 @@ export const AddControl = React.createClass({
     render: function() {
         return (
             <a
-                data-tip={T.get('copy.videoContent.add.tooltip')}
+                data-tip={this.props.panelType === 'video' ? T.get('copy.videoContent.tooltip') : T.get('copy.videoContent.add.tooltip')}
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="add"
