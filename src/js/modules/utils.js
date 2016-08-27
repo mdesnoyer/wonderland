@@ -385,8 +385,9 @@ var UTILS = {
     findDefaultThumbnail: function(thumbSet) {
         defaultThumbnail = null; 
         if (thumbSet && thumbSet.thumbnails) { 
-            var defaultThumbnail = thumbSet.thumbnails.find(
+            var defaultThumbnailArray = thumbSet.thumbnails.filter(
                 x => x.type === 'default');
+            var defaultThumbnail = _.minBy(defaultThumbnailArray, 'rank');
             var interestingThumbnails = thumbSet.thumbnails.filter(
                 x => x.type === 'neon' || x.type === 'customupload');
             if (!defaultThumbnail) {

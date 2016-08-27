@@ -107,7 +107,6 @@ var ImageUploadPanel = React.createClass({
 	},
 	handleSubmit: function(e) {
 		e.preventDefault();
-		debugger
 		this.props.updateDefaultThumbnail(this.refs.url.value)
 	},
     onDrop: function (files) {

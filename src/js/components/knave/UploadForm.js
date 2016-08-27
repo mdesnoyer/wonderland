@@ -505,53 +505,47 @@ var UploadForm = React.createClass({
         var self = this,
             url = typeof url === 'object' ? url[0].link : url,
             options = { 
-                data: { 
-                    url: url,
-                    videoId: self.props.videoId
+                data: {
+                    default_thumbnail_url: url,
+                    video_id: self.props.videoId
                 } 
             }
-            self.PUT('videos', options)
-            .then(function() {
+        self.PUT('videos', options)
+            .then(function(res) {
+                self.setState({photoUploadMode: 'success'});
+                LoadActions.loadTags([self.props.tagId],
+                    self.props.cancelClickHandler()
+                );
             })
-            .catch(function() { 
-            })
-
-
-        // 'videos?video_id=' + self.props.videoId
-        // self.PUT('videos', options)
-        //     .then(function(res) {
-                    // self.setState({
-                    //     photoUploadMode:'success',
-                //      })
-        //     })
-                // LoadActions.loadTags([self.props.tagId]);
-                            // self.setState(self.getInitialState());
-        // this.props.cancelClickHandler
-        // .catch(function(err) {
-        //     photoUploadMode:'initial'
-        // },  function() {
-        //     self.throwUploadError(err);
-        // });
+            .catch(function(err) {
+                self.setState({
+                    photoUploadMode:'initial'
+                },  function() {
+                    self.throwUploadError(err);
+                });
+            });
     },
-    multiPartUpdateDefaultThumbnail: function(formatData) {
-        debugger
-        // var self = this,
-        //     options = {
-        //         data: formData,
-        //         processData : false,
-        //         contentType: 'multipart/form-data'
-        // }
-        // 'videos?video_id=' + self.props.videoId
-        // self.PUT('videos', options)
-        //     .then(function(res) {
-                // this.props.cancelClickHandler
-        //     })
-        // .catch(function(err) {
-        //     photoUploadMode:'initial'
-        // },  function() {
-        //     self.throwUploadError(err);
-        // });
-
+    multiPartUpdateDefaultThumbnail: function(formData) {
+        var self = this,
+            options = {
+                data: formData,
+                processData : false,
+                contentType: 'multipart/form-data'
+        }
+        self.PUT('videos?video_id=' + self.props.videoId, options)
+            .then(function(res) {
+                self.setState({photoUploadMode: 'success'});
+                LoadActions.loadTags([self.props.tagId],
+                    self.props.cancelClickHandler()
+                );
+            })
+            .catch(function(err) {
+                self.setState({
+                    photoUploadMode:'initial'
+                },  function() {
+                    self.throwUploadError(err);
+                });
+            });
     },
     grabRefreshToken: function() {
         var self = this;
