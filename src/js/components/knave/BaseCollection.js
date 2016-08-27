@@ -37,6 +37,8 @@ const propTypes = {
 
     // Handlers for image events
     onThumbnailClick: PropTypes.func,
+    // Override the onThumbnailClick for right.
+    onRightThumbnailClick: PropTypes.func,
     setLiftThumbnailId: PropTypes.func,
 
     // class name for the wrapper around the
@@ -78,8 +80,12 @@ class BaseCollection extends React.Component {
     }
 
     onRightThumbnailClick() {
-        const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-        this.props.onThumbnailClick(rightThumbnailId);
+        if (this.props.onRightThumbnailClick) {
+            this.props.onRightThumbnailClick();
+        } else {
+            const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
+            this.props.onThumbnailClick(rightThumbnailId);
+        }
     }
 
     // TODO Extract 6 (number per row) and 3 (number of rows added per ShowMore)

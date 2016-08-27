@@ -89,8 +89,7 @@ $mobile-all-images-gutter-width: 3px;
     }
 } 
 
-.xxThumbnailSolorBlurWrapper {
-    pointer-events:none;
+.xxThumbnailSoloBlurWrapper {
     opacity: 0.5;
     filter: alpha(opacity=50);
     filter: url(blur.svg#blur);

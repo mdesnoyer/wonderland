@@ -26,7 +26,7 @@ export default function FeatureThumbnail(props) {
         }
         return null;
     };
-    const wrapperClass = props.isSoloImage ? 'xxThumbnailSolorBlurWrapper' : '';
+    const wrapperClass = props.isSoloImage ? 'xxThumbnailSoloBlurWrapper' : '';
     return (
         <div className="xxCollectionImages-featured">
             <h2 className="xxCollection-subtitle">

@@ -176,6 +176,13 @@ export default class ImageCollection extends React.Component {
     }
 
     getDesktopComponent() {
+
+        // If the "Add More" overlay is going to be shown,
+        // then clicks on it can select the AddPanel.
+        const onRightThumbnailClick = this.isSoloImage()?
+            this.onAddControlClick :
+            this.props.onThumbnailClick;
+
         return (
             <BaseCollection
                 {...this.props}
@@ -185,6 +192,7 @@ export default class ImageCollection extends React.Component {
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.onThumbnailMouseover}
                 isSoloImage={this.isSoloImage()}
+                onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }
