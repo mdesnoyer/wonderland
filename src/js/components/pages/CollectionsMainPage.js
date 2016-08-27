@@ -77,7 +77,8 @@ const CollectionsMainPage = React.createClass({
             {
                 currentPage: 0,
                 searchQuery: '',
-                tooltipText: undefined
+                tooltipText: undefined,
+                searchPending: false
             }
         );
     },
@@ -96,13 +97,16 @@ const CollectionsMainPage = React.createClass({
     },
 
     updateState: function() {
-        this.setState(getStateFromStores());
+        const state = getStateFromStores();
+        state.searchPending = Search.pending > 0;
+        this.setState(state);
     },
 
     changeCurrentPage(change) {
         const self = this;
         const currentPage = self.state.currentPage + change
-        self.setState({currentPage}, this.loadMoreFromSearch);
+        const searchPending = Search.pending > 0;
+        self.setState({currentPage, searchPending}, this.loadMoreFromSearch);
 
     },
 
@@ -350,6 +354,7 @@ const CollectionsMainPage = React.createClass({
             }
             self.setState({
                 searchQuery,
+                searchPending: Search.pending > 0,
                 currentPage: 0,
                 selectedTags: FilteredTagStore.getAll(),
             });
@@ -372,6 +377,7 @@ const CollectionsMainPage = React.createClass({
         // Resolve state change then search.
         self.setState({
             searchQuery,
+            searchPending: Search.pending > 0,
             currentPage: 0,
             selectedTags: FilteredTagStore.getAll(),
         }, self.searchFunction);
@@ -426,6 +432,10 @@ const CollectionsMainPage = React.createClass({
 
     render: function() {
 
+        const body = (_.isEmpty(this.state.tags) && Search.pending > 0) ?
+            this.getLoading() :
+            this.getResults();
+
         const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
 
         return (
@@ -441,7 +451,7 @@ const CollectionsMainPage = React.createClass({
                 onSearchFormSubmit={this.onSearchFormSubmit}
                 isLoading={isQuerySearchLoading}
             >
-                {this.getResults()}
+                {body}
                 <UploadForm />
             </BasePage>
         );

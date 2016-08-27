@@ -63,11 +63,6 @@ export default class PagingControl extends React.Component {
                 </button>
             );
         }
-        if (Search.pending > 0) {
-            return (
-                <span>{T.get('copy.loading')}</span>
-            );
-        }
         return null;
     }
 
@@ -91,14 +86,15 @@ export default class PagingControl extends React.Component {
     }
 
     render() {
+        const loading = Search.pending > 0 ? '...' : '';
         return (
             <div className="xxPagingControls">
                 <nav className="xxPagingControls-navigation">
                     <div className="xxPagingControls-navigation-item">
                         {this.getPrevButton()}
                     </div>
-                    <div className="xxPagingControls-navigation-item">
-                        {1 + this.props.currentPage}
+                    <div className={"xxPagingControls-navigation-item"}>
+                        {1 + this.props.currentPage + loading}
                     </div>
                     <div className="xxPagingControls-navigation-item">
                         {this.getNextButton()}
