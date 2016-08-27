@@ -311,9 +311,6 @@ var UploadForm = React.createClass({
             formData = new FormData(),
             lastIndex = files.length - 1
         ;
-        if (self.props.panelType === 'video') {
-
-        }
         errorFiles = count = size = totalFileNumber = 0;
         files.forEach((file, index)=> {
             if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
@@ -371,7 +368,7 @@ var UploadForm = React.createClass({
                 if(self.props.isAddPanel && self.props.panelType === 'video' ) {
                     self.multiPartUpdateDefaultThumbnail(formDataArray[0]);
                 }
-                else { 
+                else {
                     self.grabRefreshToken(
                         formDataArray.forEach(function(formData) {
                             self.sendFormattedData(formData);
@@ -429,35 +426,42 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        self.setState({
-            photoUploadMode: 'loading',
-            photoUploadCount: urls.length,
-            numberUploadedCount: Math.round(urls.length) / 2
-            }, function() {
-                self.POST(address, options)
-                .then(function(res) {
-                    var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-                    self.setState({
-                        photoUploadMode:'success',
-                        photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                        error: null
-                    },  function() {
-                        if (self.props.isAddPanel) {
-                            LoadActions.loadTags([self.props.tagId]);
-                            self.setState(self.getInitialState());
-                        };
-                        setTimeout( function() {
-                        self.setState({ photoUploadMode:'initial' });
-                        }, 2000);
-                    });
-                })
-                .catch(function(err) {
-                    photoUploadMode:'initial'
-                },  function() {
-                    self.throwUploadError(err);
+        if (self.state.photoUploadThumbnailIds.length + urls.length > UTILS.MAX_IMAGE_FILES_ALLOWED) {
+                self.setState({
+                    isOpen: true,
+                    photoUploadMode: 'initial',
+                    error: T.get('imageUpload.uploadMax')
                 });
-            });
-
+        }else {
+           self.setState({
+               photoUploadMode: 'loading',
+               photoUploadCount: urls.length,
+               numberUploadedCount: Math.round(urls.length) / 2
+               }, function() {
+                   self.POST(address, options)
+                   .then(function(res) {
+                       var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                       self.setState({
+                           photoUploadMode:'success',
+                           photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                           error: null
+                       },  function() {
+                           if (self.props.isAddPanel) {
+                               LoadActions.loadTags([self.props.tagId]);
+                               self.setState(self.getInitialState());
+                           };
+                           setTimeout( function() {
+                           self.setState({ photoUploadMode:'initial' });
+                           }, 2000);
+                       });
+                   })
+                   .catch(function(err) {
+                       photoUploadMode:'initial'
+                   },  function() {
+                       self.throwUploadError(err);
+                   });
+               });
+        }
     },
     grabDropBox: function() {
         var self = this,
@@ -495,11 +499,11 @@ var UploadForm = React.createClass({
     updateDefaultThumbnail: function(url) {
         var self = this,
             url = typeof url === 'object' ? url[0].link : url,
-            options = { 
+            options = {
                 data: {
                     default_thumbnail_url: url,
                     video_id: self.props.videoId
-                } 
+                }
             }
         self.PUT('videos', options)
             .then(function(res) {
