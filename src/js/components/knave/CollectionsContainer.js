@@ -55,8 +55,6 @@ const CollectionsContainer = React.createClass({
 
         // Pops the side bar module given a recognized string
         setSidebarContent: PropTypes.func.isRequired
-
-        // TODO add learnmore func.
     },
 
     getInitialState: function() {
@@ -76,6 +74,30 @@ const CollectionsContainer = React.createClass({
             overlayTagId: null,
             overlayThumbnailId: null
         };
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        // If the next props have the queued selected
+        // demographic, then move the queued selected
+        // to the selected one.
+        const selectedDemographic = this.state.selectedDemographic
+        _.map(selectedDemographic, (demo, tagId) => {
+            if (demo.length > 2) {
+                const nextGender = demo[2];
+                const nextAge = demo[3];
+                const tag = nextProps.stores.tags[tagId];
+                const video = nextProps.stores.videos[tag.video_id];
+                const demos = video.demographic_thumbnails;
+                const demo = UTILS.findDemographicThumbnailObject(
+                     demos,
+                     nextGender,
+                     nextAge);
+                if (demo) {
+                    selectedDemographic[tagId] = [nextGender, nextAge];
+                }
+            }
+        });
+        this.setState({selectedDemographic});
     },
 
     // Return array of gender,age enum array based
@@ -128,12 +150,53 @@ const CollectionsContainer = React.createClass({
         return <div />;
     },
 
+    // True if a demographic thumbnail map is loaded for
+    // the given arguments.
+    hasDemographicLoaded: function(thumbnailIds, demoMap) {
+        // Check if one of the thumbnails is loaded and set
+        // assume the rest are.
+        return _.every(thumbnailIds, id => {return id in demoMap});
+    },
+
     // On demographic selector change, fill in stores.
     onDemographicChange: function(tagId, demoKey) {
         const selectedDemographic = this.state.selectedDemographic;
         const gender = demoKey[0];
         const age = demoKey[1];
-        selectedDemographic[tagId] = [gender, age];
+
+        // Short cut the rest if thumbnails already loaded.
+        const tag = this.props.stores.tags[tagId];
+        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            const demoMap = this.props.stores.thumbnails[gender][age];
+            if (this.hasDemographicLoaded(tag.thumbnail_ids, demoMap)) {
+                selectedDemographic[tagId] = [gender, age];
+                this.setState({selectedDemographic});
+                return;
+            }
+        } else {
+            const v = this.props.stores.videos[tag.video_id];
+            const d = UTILS.findDemographicThumbnailObject(
+                v.demographic_thumbnails, gender, age);
+            if (undefined !== d) {
+                selectedDemographic[tagId] = [gender, age];
+                this.setState({selectedDemographic});
+                return;
+            }
+        }
+
+        // If this is a video and the demographic isn't in the
+        // video store, then put the gender and age in the "next"
+        // bucket indexes at 2, 3. In the videocollection willReceiveProps,
+        // we check if the next demos are ready and switch to them.
+        const video = this.props.stores.videos[tag.video_id];
+        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            const prevDemo = selectedDemographic[tagId] || [0, 0];
+            const slice = prevDemo.slice(0, 2);
+            slice.push(gender, age);
+            selectedDemographic[tagId] = slice;
+        } else {
+            selectedDemographic[tagId] = [gender, age];
+        }
 
         // Ask stores to load missing values.
         // And change our state when done.
@@ -284,7 +347,7 @@ const CollectionsContainer = React.createClass({
         );
     },
 
-    buildVideoCollectionComponent(tagId, onDemographicChange, onThumbnailMouseEnter) {
+    buildVideoCollectionComponent(tagId) {
 
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
@@ -332,7 +395,7 @@ const CollectionsContainer = React.createClass({
                 tagId={tagId}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
+                selectedDemographic={demo}
                 infoPanelOnly={this.props.infoPanelOnly}
                 deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}

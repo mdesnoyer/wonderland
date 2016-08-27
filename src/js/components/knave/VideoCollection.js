@@ -54,7 +54,7 @@ const VideoCollection = React.createClass({
         this.setProcessingMonitor();
     },
 
-    componentWillUpdate: function() {
+    componentWillUpdate: function(nextProps, nextState) {
         this.setProcessingMonitor();
     },
 
@@ -63,23 +63,23 @@ const VideoCollection = React.createClass({
     },
 
     setProcessingMonitor: function() {
-
-        // Only set one per video.
-        if(this.processingMonitor) {
-            return;
-        }
-
         const videoId = this.props.videoId;
         if (this.props.isRefiltering) {
-            if (this.props.timeRemaining === null) {
-                LoadActions.loadProcessingVideoUntilEstimate(videoId);
+
+            // Only set one per video.
+            if(this.processingMonitor) {
+                return;
+            }
+
+            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+            if (this.props.timeRemaining > 5) {
+                const timeout = 1000 * this.props.timeRemaining;
+                setTimeout(monitorFunction, timeout);
                 return;
             }
 
             // Let's set a monitor until the video is out of processing.
-            const interval = 1000 * ( this.props.timeRemaining > 5?
-                this.props.timeRemaining: 5 );
-            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+            const interval = 1000 * 5;
             this.processingMonitor = setInterval(monitorFunction, interval);
             return;
         }
@@ -89,7 +89,7 @@ const VideoCollection = React.createClass({
     },
 
     clearProcessingMonitor: function() {
-        if (this.processingMonitor !== undefined) {
+        if (this.processingMonitor !== null) {
             clearInterval(this.processingMonitor);
             this.processingMonitor = null;
         }
