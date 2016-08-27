@@ -24,7 +24,8 @@ const propTypes = {
     query: PropTypes.string,
     onSearchFormChange: PropTypes.func,
     onSearchFormSubmit: PropTypes.func,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    searchQuery: PropTypes.string,
 };
 
 const childContextTypes = {

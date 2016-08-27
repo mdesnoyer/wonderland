@@ -41,7 +41,7 @@ var UploadForm = React.createClass({
         return {
             isOpen: false,
             isOpenMessage: false,
-            isPhotoOpen: false, 
+            isPhotoOpen: false,
             isVideoOpen: false,
             photoUploadCount: 0,
             photoUploadMode: 'initial', // initial, loading, success,
@@ -88,9 +88,9 @@ var UploadForm = React.createClass({
         }
         // if there is lingering data and user closes our modal then clean up state
         // cant use a mount because the component is always present
-        else if (self.state.isOpen && 
-                (self.state.photoUploadThumbnailIds.length > 0 || 
-                 self.state.videoUploadUrl !== '' || 
+        else if (self.state.isOpen &&
+                (self.state.photoUploadThumbnailIds.length > 0 ||
+                 self.state.videoUploadUrl !== '' ||
                  self.state.photoCollectionName !== '' )) {
             self.setState(self.getInitialState());
         }
@@ -101,7 +101,7 @@ var UploadForm = React.createClass({
                 isOpenMessage: false,
                 isOpenPhoto: false,
                 isOpenVideo: false,
-            });          
+            });
         }
     },
     updateField: function(field, value) {
@@ -156,7 +156,7 @@ var UploadForm = React.createClass({
         }
         return (
             <div className={className.join(' ')}>
-                <OverLayMessage 
+                <OverLayMessage
                     message={T.get('error.unpaidAccountLimit')}
                     messageFunction={self.props.openSignUp}
                     isOpenMessage={self.state.isOpenMessage}
@@ -169,21 +169,21 @@ var UploadForm = React.createClass({
                 >
                     {T.get('action.analyze')}
                 </a>
-                <ReactCSSTransitionGroup 
+                <ReactCSSTransitionGroup
                     transitionName="xxFadeInOutFast"
                     transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
                     transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
                 >
                     {
                         self.state.isOpen ? (
-                            <div className="xxOverlay" 
+                            <div className="xxOverlay"
                                 ref={overlay => self._overlay = overlay}
                                 onClick={self.handleBgCloseClick}
                                 key="upload-overlay"
                             >
                                 <ReactCSSTransitionGroup
-                                    transitionName="xxFadeInOutFast" 
-                                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+                                    transitionName="xxFadeInOutFast"
+                                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
                                     transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
                                 >
                                 {
@@ -200,7 +200,7 @@ var UploadForm = React.createClass({
                                                 onClick={self.handleOpenVideo}
                                             ><span className="xxUploadTypes-buttonLabel">Video</span></a>
                                         </div>
-                                    ) : null 
+                                    ) : null
                                 }
                                 {
                                     self.state.isOpenPhoto ? (
@@ -220,7 +220,7 @@ var UploadForm = React.createClass({
                                             photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                                             numberUploadedCount={self.state.numberUploadedCount}
                                         />
-                                    ) :  null 
+                                    ) :  null
                                 }
                                 {
                                     self.state.isOpenVideo ? (
@@ -232,7 +232,7 @@ var UploadForm = React.createClass({
                                             videoUploadUrl={self.state.videoUploadUrl}
                                         />
 
-                                    ) :  null 
+                                    ) :  null
                                 }
                                 </ReactCSSTransitionGroup>
                             </div>
@@ -297,12 +297,12 @@ var UploadForm = React.createClass({
                 })
                 .catch(function(err) {
                     self.throwUploadError(err);
-                });    
+                });
         }
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
      sendLocalPhotos: function(e) {
-         var self = this, 
+         var self = this,
              files = e.target.files,
              fileArray = []
          ;
@@ -320,14 +320,14 @@ var UploadForm = React.createClass({
         ;
         errorFiles = count = size = totalFileNumber = 0;
         files.forEach((file, index)=> {
-            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {    
+            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
                 count += 1;
                 size += file.size;
                 totalFileNumber += 1;
                 if (count > UTILS.MAX_IMAGE_UPLOAD_COUNT || size > UTILS.MAX_IMAGE_CHUNK_SIZE) {
                     formDataArray.push(formData);
                     formData = new FormData();
-                    count = 0; 
+                    count = 0;
                     size = 0;
                     if (index === lastIndex) {
                         formData.append('upload', file);
@@ -346,7 +346,7 @@ var UploadForm = React.createClass({
                         formData.append('upload', file);
                     }
                 }
-            } 
+            }
             else {
                 errorFiles += 1;
             };
@@ -366,10 +366,10 @@ var UploadForm = React.createClass({
             });
         }
         else {
-            self.setState({ 
+            self.setState({
                 photoUploadMode: 'loading',
                 photoUploadCount: totalFileNumber,
-                numberUploadedCount: 0, 
+                numberUploadedCount: 0,
                 photoErrorCount: errorFiles
             },  function() {
                 self.grabRefreshToken(
@@ -378,7 +378,7 @@ var UploadForm = React.createClass({
                     })
                 )
             });
-        }        
+        }
     },
     sendFormattedData: function(formData) {
         var self = this,
@@ -399,14 +399,14 @@ var UploadForm = React.createClass({
                         if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
                                 photoUploadMode:'success',
-                                error: null 
+                                error: null
                                 }, function() {
                                     // if add panel load the new thumbnails asssociated with the tag
                                     self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
                                     setTimeout(function() {
                                     self.setState({ photoUploadMode:'initial' });
                                     }, 3000)
-                            });                         
+                            });
                     }
                 });
             })
@@ -416,7 +416,7 @@ var UploadForm = React.createClass({
                },  function() {
                    self.throwUploadError(err);
                });
-           }); 
+           });
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
@@ -428,7 +428,7 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        self.setState({ 
+        self.setState({
             photoUploadMode: 'loading',
             photoUploadCount: urls.length,
             numberUploadedCount: Math.round(urls.length) / 2
@@ -439,7 +439,7 @@ var UploadForm = React.createClass({
                     self.setState({
                         photoUploadMode:'success',
                         photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                        error: null 
+                        error: null
                     },  function() {
                         if (self.props.isAddPanel) {
                             LoadActions.loadTags([self.props.tagId]);
@@ -456,7 +456,7 @@ var UploadForm = React.createClass({
                     self.throwUploadError(err);
                 });
             });
-        
+
     },
     grabDropBox: function() {
         var self = this,
@@ -473,7 +473,7 @@ var UploadForm = React.createClass({
         var self = this,
             options = {
                 data: {
-                    name: self.state.photoCollectionName, 
+                    name: self.state.photoCollectionName,
                     thumbnail_ids: self.state.photoUploadThumbnailIds.join(",")
                 }
             }
@@ -487,7 +487,7 @@ var UploadForm = React.createClass({
                     LoadActions.loadFromSearchResult({
                         items: [{tag_id: res.tag_id}]
                     });
-                    self.setState(self.getInitialState());                        
+                    self.setState(self.getInitialState());
                 }
             })
     },

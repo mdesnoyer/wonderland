@@ -1,11 +1,9 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, { PropTypes } from 'react';
+
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import { Search } from '../../stores/CollectionStores';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const propTypes = {
     // Updates parent current page.
@@ -18,12 +16,11 @@ const propTypes = {
     enableNext: React.PropTypes.bool.isRequired,
 };
 
-class PagingControl extends React.Component {
-
-    static displayName = 'PagingControl'
+export default class PagingControl extends React.Component {
 
     constructor(props) {
         super(props);
+        this.displayName = 'PagingControl';
         this.handleKeyEvent = this.handleKeyEvent.bind(this);
         this.handleNav = this.handleNav.bind(this);
         this.handleNavPrev = this.handleNav.bind(this, -1);
@@ -114,9 +111,3 @@ class PagingControl extends React.Component {
 }
 
 PagingControl.propTypes = propTypes;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default PagingControl;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

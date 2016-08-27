@@ -13,7 +13,7 @@ import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 
-import { SendActions, } from '../../stores/CollectionStores';
+import { SendActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

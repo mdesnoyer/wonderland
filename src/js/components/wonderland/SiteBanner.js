@@ -1,56 +1,49 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import SiteNavigation from '../wonderland/SiteNavigation';
 import SearchForm from '../core/SearchForm';
-
-import SESSION from '../../modules/session';
 import T from '../../modules/translation';
 
+const propTypes = {
+    query: PropTypes.string,
+    onSearchFormChange: PropTypes.func,
+    onSearchFormSubmit: PropTypes.func,
+    isLoading: PropTypes.bool
+};
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export default function SiteBanner(props) {
 
-var SiteBanner = React.createClass({
-    render: function() {
-        var self = this;
-        return (
-            <header className="xxHeader">
-                <a href="/" title={T.get('title.home')}>
-                    <img
-                        className="xxLogo"
-                        src="/img/xx/logo.svg"
-                        alt={T.get('app.companyShortName')}
-                        title={T.get('app.companyShortName')}
-                    />
-                </a>
-                { 
-                    this.props.onSearchFormChange && this.props.onSearchFormSubmit ? (
-                        <SearchForm
-                            query={this.props.searchQuery}
-                            onChange={this.props.onSearchFormChange}
-                            onSubmit={this.props.onSearchFormSubmit}
-                            isLoading={this.props.isLoading}
-                        />                    
-                    ) : null
-                }
-                <SiteNavigation
-                    sidebarContent={self.props.sidebarContent}
-                    setSidebarContent={self.props.setSidebarContent}
+    const getSearchForm = () => {
+        if (props.onSearchFormChange && props.onSearchFormSubmit) {
+            return (
+                <SearchForm
+                    query={props.searchQuery}
+                    onChange={props.onSearchFormChange}
+                    onSubmit={props.onSearchFormSubmit}
+                    isLoading={props.isLoading}
                 />
-            </header>
-        );
-    },
-    PropTypes: {
-        query: React.PropTypes.string,
-        onSearchFormChange: React.PropTypes.func,
-        onSearchFormSubmit: React.PropTypes.func,
-        isLoading: React.PropTypes.bool
-    }
-});
+            );
+        }
+        return null;
+    };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    return (
+        <header className="xxHeader">
+            <a href="/" title={T.get('title.home')}>
+                <img
+                    className="xxLogo"
+                    src="/img/xx/logo.svg"
+                    alt={T.get('app.companyShortName')}
+                    title={T.get('app.companyShortName')}
+                />
+            </a>
+            {getSearchForm()}
+            <SiteNavigation
+                sidebarContent={props.sidebarContent}
+                setSidebarContent={props.setSidebarContent}
+            />
+        </header>
+    );
+}
 
-export default SiteBanner;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SiteBanner.propTypes = propTypes;

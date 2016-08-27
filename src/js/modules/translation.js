@@ -272,7 +272,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'imageUpload.placeholderName': "Let\u2019s start by naming your collection!",
             'imageUpload.uploadMax' : 'It appears that these additional files will take you over the max of 100 photos per image collection.',
             'imageUpload.imageError': 'The file type you have provided is either to large or the wrong format',
-            'imageUpload.draglocation.directToLocal': "Or Click to upload from your desktop!",
+            'imageUpload.draglocation.directToLocal': 'Or Click to upload from your desktop!',
+            'imageUpload.addMoreBlurText': 'Add more images by clicking the plus sign to the right',
             // Timers
             'timer.loading' : 'loading...',
             'timer.close' : 'almost...',
@@ -282,7 +283,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.facebook': 'Share on Facebook',
             'tooltip.share.twitter': 'Share on Twitter',
             'tooltip.share.linkedin': 'Share on LinkedIn',
- 
+
             // Labels
             'label.username' : 'Username',
             'label.accessLevel' : 'Access Level',

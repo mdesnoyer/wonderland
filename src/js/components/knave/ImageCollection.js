@@ -1,14 +1,10 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
 import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
-
 import T from '../../modules/translation';
-
 import {
     InfoDemoLiftPanel,
     InfoLiftPanel,
@@ -18,15 +14,12 @@ import {
     ShareControl,
     DeletePanel,
     DeleteControl,
-    AddPanel, 
+    AddPanel,
     AddControl } from './InfoActionPanels';
-
 import {LoadActions} from '../../stores/CollectionStores';
-
 import ImageUploadOverlay from './ImageUploadOverlay';
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const ImageCollection = React.createClass({
+export const ImageCollection = React.createClass({
 
     contextTypes: {
         isMobile: PropTypes.bool
@@ -159,8 +152,4 @@ const ImageCollection = React.createClass({
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default ImageCollection;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

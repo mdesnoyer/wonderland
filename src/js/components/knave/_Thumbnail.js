@@ -1,8 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, { PropTypes } from 'react';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const propTypes = {
     // The neon score [0-99]
@@ -21,6 +17,10 @@ const propTypes = {
 
     // Style
     className: PropTypes.string,
+    wrapperClassName: PropTypes.string,
+
+    enabled: PropTypes.bool,
+    children: PropTypes.node,
 };
 
 const defaultProps = {
@@ -30,43 +30,35 @@ const defaultProps = {
     // I.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
-    children: (<div></div>),
-    enabled: true  
+    children: (<div />),
+    enabled: true,
 };
 
-function Thumbnail(props) {
-    let disabledClassName = ''; 
-    if (!props.enabled) { 
-        disabledClassName = "xxThumbnail--disabled"; 
-    }
+export default function Thumbnail(props) {
+    const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
     const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
-        xxThumbnail--highLight xxThumbnail--neon ${props.className} ${disabledClassName}`;
-    
+        xxThumbnail--highLight xxThumbnail--neon ${props.className} \
+        ${disabledClassName}`;
+
     return (
-        <div className={props.wrapperClassName}> 
-        <a
-            href="#"
-            className={className}
-            data-score={props.score}
-            onClick={props.onClick}
-        >
-            <img
-                className="xxThumbnail-image"
-                alt={props.title + props.score}
-                src={props.src}
-                onMouseEnter={props.onMouseEnter}
-                onMouseLeave={props.onMouseLeave}
-            />
-        </a>
-        {props.children}
+        <div className={props.wrapperClassName}>
+            <span
+                className={className}
+                data-score={props.score}
+                onClick={props.onClick}
+            >
+                <img
+                    className="xxThumbnail-image"
+                    alt={props.alt + props.score}
+                    src={props.src}
+                    onMouseEnter={props.onMouseEnter}
+                    onMouseLeave={props.onMouseLeave}
+                />
+            </span>
+            {props.children}
         </div>
     );
 }
 
 Thumbnail.propTypes = propTypes;
 Thumbnail.defaultProps = defaultProps;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default Thumbnail;
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
