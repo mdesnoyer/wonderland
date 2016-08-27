@@ -20,7 +20,6 @@ export default class PagingControl extends React.Component {
 
     constructor(props) {
         super(props);
-        this.displayName = 'PagingControl';
         this.handleKeyEvent = this.handleKeyEvent.bind(this);
         this.handleNav = this.handleNav.bind(this);
         this.handleNavPrev = this.handleNav.bind(this, -1);
@@ -111,3 +110,4 @@ export default class PagingControl extends React.Component {
 }
 
 PagingControl.propTypes = propTypes;
+PagingControl.displayName = 'PagingControl';

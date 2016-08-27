@@ -34,7 +34,7 @@ const defaultProps = {
     enabled: true,
 };
 
-export default function Thumbnail(props) {
+function Thumbnail(props) {
     const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
     const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
         xxThumbnail--highLight xxThumbnail--neon ${props.className} \
@@ -62,3 +62,5 @@ export default function Thumbnail(props) {
 
 Thumbnail.propTypes = propTypes;
 Thumbnail.defaultProps = defaultProps;
+
+export default Thumbnail;

@@ -61,15 +61,22 @@ class BasePage extends React.Component {
         window.removeEventListener('resize', this.handleWindowResize);
     }
 
-    getTitle() {
-        return UTILS.buildPageTitle(this.props.title);
-    }
-
     getMeta() {
         return this.props.meta.concat([{
             name: 'viewport',
             content: 'width=device-width, initial-scale=1.0',
         }]);
+    }
+
+    getTitle() {
+        return UTILS.buildPageTitle(this.props.title);
+    }
+
+    getFooter() {
+        if (this.props.onboardingState) {
+            return null;
+        }
+        return <SiteFooter />;
     }
 
     handleWindowResize() {
@@ -108,7 +115,7 @@ class BasePage extends React.Component {
                 />
                 <Tooltips tooltipText={this.props.tooltipText} />
                 {this.props.children}
-                {!this.props.onboardingState ? <SiteFooter /> : null}
+                {this.getFooter()}
             </main>
         );
     }
