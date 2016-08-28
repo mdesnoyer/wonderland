@@ -236,8 +236,7 @@ class BaseCollection extends React.Component {
                 onMouseEnter={this.setLiftThumbnailToRight}
                 onMouseLeave={this.setDefaultLiftThumbnail}
                 onClick={this.onRightThumbnailClick}
-                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id ===
-                    this.props.leftFeatureThumbnail.thumbnail_id}
+                isSoloImage={this.props.isSoloImage ? this.props.isSoloImage : false} 
             />
         );
 

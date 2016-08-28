@@ -195,15 +195,17 @@ export default class ImageCollection extends React.Component {
                 selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.onThumbnailMouseover}
-                isSoloImage={this.isSoloImage()}
+                isSoloImage={this.isSoloImage.bind(this)}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }
 
     isSoloImage() {
-        return this.props.rightFeatureThumbnail.thumbnail_id ===
-            this.props.leftFeatureThumbnail.thumbnail_id;
+        if (this.props) {  
+            return (this.props.thumbnailLength <= 1)
+        }
+        return false; 
     }
 
     render() {

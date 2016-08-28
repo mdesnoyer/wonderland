@@ -319,6 +319,7 @@ const CollectionsContainer = React.createClass({
 
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
+        const thumbsLength = collection.thumbnail_ids.length; 
 
         return (
             <ImageCollection
@@ -328,6 +329,7 @@ const CollectionsContainer = React.createClass({
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
+                thumbnailLength={thumbsLength} 
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
@@ -355,7 +357,7 @@ const CollectionsContainer = React.createClass({
                 return this.buildVideoProcessingComponent(tagId);
             } 
             if (tag.thumbnail_ids.length === 1) {
-                // it's just the default thumbnail, we have a video 
+                // if it's just the default thumbnail, we have a video 
                 // that's still processing.  
                 const tid = tag.thumbnail_ids[0]; 
                 const thumbnail = this.props.stores.thumbnails[0][0][tid];
