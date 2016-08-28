@@ -212,7 +212,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: searchRes => {
+    loadFromSearchResult: (searchRes, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -350,6 +350,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
+
+                callback();
+
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
             .then(liftRes => {
@@ -362,6 +365,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
                 LiftStore.set(gender, age, tagLiftMap);
                 Dispatcher.dispatch();
+
             });
         });
     },
@@ -830,7 +834,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Tries to fill out the TagStore to n tags
     //
     // Return n the number of new tags.
-    loadNNewestTags(n, query, ...callbacks) {
+    loadNNewestTags(n, query, callback) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
@@ -872,14 +876,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     FilteredTagStore.completelyLoaded = true;
                 }
             }
-            return LoadActions.loadFromSearchResult(searchRes)
-        })
-        .then(() => {
-            callbacks.map(callback => {
-                if (_.isFunction(callback)) {
-                    callback();
-                }
-            });
+            LoadActions.loadFromSearchResult(searchRes, callback)
         });
     },
 
@@ -1020,13 +1017,25 @@ export const Search = {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.pending += 1;
-        LoadActions.loadNNewestTags(largeCount, null, Search.decrementPending, callback);
+        const wrapped = () => {
+            Search.decrementPending();
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        };
+        LoadActions.loadNNewestTags(largeCount, null, wrapped);
     },
 
     loadWithQuery(count, query, callback) {
         const largeCount = this.getLargeCount();
         Search.pending += 1;
-        LoadActions.loadNNewestTags(largeCount, query, Search.decrementPending, callback);
+        const wrapped = () => {
+            Search.decrementPending();
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        };
+        LoadActions.loadNNewestTags(largeCount, query, wrapped);
     },
 
     hasMoreThan(count) {

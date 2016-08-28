@@ -162,6 +162,9 @@ export default class ImageCollection extends React.Component {
         const overrideMap = {
             'copy.lift.explanation.default': 'copy.lift.explanation.images',
         };
+        const onRightThumbnailClick = this.isSoloImage()?
+            this.onAddControlClick :
+            this.props.onThumbnailClick;
         return (
             <MobileBaseCollection
                 {...this.props}
@@ -171,6 +174,7 @@ export default class ImageCollection extends React.Component {
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 translationOverrideMap={overrideMap}
+                onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }

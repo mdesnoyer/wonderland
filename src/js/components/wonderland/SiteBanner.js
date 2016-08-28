@@ -8,7 +8,6 @@ const propTypes = {
     query: PropTypes.string,
     onSearchFormChange: PropTypes.func,
     onSearchFormSubmit: PropTypes.func,
-    isLoading: PropTypes.bool
 };
 
 export default function SiteBanner(props) {
@@ -20,7 +19,6 @@ export default function SiteBanner(props) {
                     query={props.searchQuery}
                     onChange={props.onSearchFormChange}
                     onSubmit={props.onSearchFormSubmit}
-                    isLoading={props.isLoading}
                 />
             );
         }
