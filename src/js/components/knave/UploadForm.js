@@ -22,6 +22,8 @@ import OverLayMessage from './OverLayMessage'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
 import accept from 'attr-accept';
+import _ from 'lodash';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var UploadForm = React.createClass({
@@ -415,6 +417,11 @@ var UploadForm = React.createClass({
                    self.throwUploadError(err);
                });
            });
+     },
+     formatDropboxUrls: function(urls) {
+        var self = this;
+        // _.
+
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
