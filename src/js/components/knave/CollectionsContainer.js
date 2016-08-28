@@ -210,17 +210,26 @@ const CollectionsContainer = React.createClass({
             if(ageLabel == 'null') {
                 ageLabel = null;
             }
-            const videoDemo = _.find(
+            let videoDemo = _.find(
                 video.demographic_thumbnails,
                 t => {
                     return (t.gender == genderLabel && t.age == ageLabel);
                 }
             );
-            const allThumbnailMap = _.pick(
-                this.props.stores.thumbnails[gender][age],
-                videoDemo.thumbnails.map(t => {
-                    return t.thumbnail_id;
+            if (videoDemo === undefined) {
+                return []; 
+            }
+            let allThumbnailMap = [];
+            if (videoDemo.thumbnails) { 
+                allThumbnailMap = _.pick(
+                    this.props.stores.thumbnails[gender][age],
+                    videoDemo.thumbnails.map(t => {
+                        return t.thumbnail_id;
                 }));
+            }
+            if (allThumbnailMap.length === 0) {
+                return []; 
+            }
 
             // For the right, use the best scoring.
             const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
@@ -240,7 +249,7 @@ const CollectionsContainer = React.createClass({
                 .value();
 
             // Do the same for the bad thumbnail list.
-            let allBadThumbnailMap = []
+            let allBadThumbnailMap = [];
             if (videoDemo.bad_thumbnails) { 
                 allBadThumbnailMap = _.pick(
                     this.props.stores.thumbnails[gender][age],
@@ -340,7 +349,20 @@ const CollectionsContainer = React.createClass({
         const video = this.props.stores.videos[tag.video_id];
 
         let isRefiltering = false;
-        if (['processing', 'failed'].includes(video.state)) {
+        if (['submit', 'processing', 'failed'].includes(video.state)) {
+               
+            if (video.state == 'submit') { 
+                return this.buildVideoProcessingComponent(tagId);
+            } 
+            if (tag.thumbnail_ids.length === 1) {
+                // it's just the default thumbnail, we have a video 
+                // that's still processing.  
+                const tid = tag.thumbnail_ids[0]; 
+                const thumbnail = this.props.stores.thumbnails[0][0][tid];
+                if (thumbnail.type == 'default') { 
+                    return this.buildVideoProcessingComponent(tagId);
+                }  
+            } 
             if (tag.thumbnail_ids.length === 0) {
                 return this.buildVideoProcessingComponent(tagId);
             } else if ('processing' == video.state) {
@@ -353,6 +375,11 @@ const CollectionsContainer = React.createClass({
         const age = demo[1];
 
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
+
+        if (thumbArrays.length == 0)
+            // we can't find any thumbnails this thing is likely failed
+            return this.buildVideoFailedComponent(tagId);
+
         const left = thumbArrays[0];
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
@@ -424,6 +451,21 @@ const CollectionsContainer = React.createClass({
                 key={tagId}
                 title={video.title}
                 videoState={video.state}
+                estimatedTimeRemaining={video.estimated_time_remaining}
+                duration={video.duration}
+                videoId={video.video_id}
+                deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
+            />
+        );
+    },
+    buildVideoFailedComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+        return (
+            <VideoProcessing
+                key={tagId}
+                title={video.title}
+                videoState={'failed'}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
                 videoId={video.video_id}
