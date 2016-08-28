@@ -324,7 +324,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 .chain(tags)
                 // Skip video tags.
                 .filter(tag => {
-                    return tag.tag_Type !== UTILS.TAG_TYPE_VIDEO_COL;
+                    return tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL;
                 })
                 // Concatentate the array of thumbnail ids.
                 .reduce((thumbnailIds, tag) => {
@@ -385,14 +385,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         LoadActions.GET('videos', {data: videoData})
         .then(videoRes => {
 
-            // Set each by map of id to resource.
-            VideoStore.set(videoRes.videos.reduce((map, video) => {
-                map[video.video_id] = video;
-                return map;
-            }, {}));
 
             // Build update map.
-            const thumbnailMap = {};
+            const thumbnailDemoMap = {};
             const tagIds = [];
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {
@@ -406,21 +401,42 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         console.warn('Unknown demo ', dem.age, dem.gender);
                         return;
                     }
+                    if (thumbnailDemoMap[gender] === undefined) {
+                        thumbnailDemoMap[gender] = {};
+                    }
+                    if (thumbnailDemoMap[gender][age] === undefined) {
+                        thumbnailDemoMap[gender][age] = {};
+                    }
                     dem.thumbnails.map(t => {
-                        thumbnailMap[t.thumbnail_id] = t;
+                        thumbnailDemoMap[gender][age][t.thumbnail_id] = t;
                     });
                     dem.bad_thumbnails.map(t => {
-                        thumbnailMap[t.thumbnail_id] = t;
+                        thumbnailDemoMap[gender][age][t.thumbnail_id] = t;
                     });
 
                     tagIds.push(video.tag_id);
-                    ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
 
+            // Set new value to stores.
+            VideoStore.set(videoRes.videos.reduce((map, video) => {
+                map[video.video_id] = video;
+                return map;
+            }, {}));
+            for (let gender in thumbnailDemoMap) {
+                for (let age in thumbnailDemoMap[gender]) {
+                    if (gender === 'null') {
+                        gender = 0;
+                    }
+                    if (age === 'null') {
+                        age = 0;
+                    }
+                    ThumbnailStore.set(gender, age, thumbnailDemoMap[gender][age]);
+                }
+            }
             Dispatcher.dispatch();
 
-            LoadActions.loadLifts(tagIds, liftGender, liftAge)
+            LoadActions.loadLifts(tagIds, liftGender, liftAge, true)
             .then(liftRes => {
                 // Map of tag id to lift map.
                 const tagLiftMap = liftRes;
@@ -489,7 +505,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const loadTagIds = forceLoad ?
             tagIds :
             tagIds.reduce((loadTagIds, tagId) => {
-            if (LiftStore.get(gender, age, tagId) === undefined) {
+            if (_.isEmpty(TagStore.get(gender, age, tagId))) {
                 loadTagIds.push(tagId);
             }
             return loadTagIds;
@@ -605,6 +621,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(liftRes => {
             const tagLiftMap = liftRes;
             // Set, dispatch and callback.
+            debugger
             LiftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
@@ -708,16 +725,12 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         LoadActions.loadTags([tagId]);
     },
 
-    loadTags(tagIds) {
+    loadTags(tagIds, gender=0, age=0) {
 
         // Short circuit empty input.
         if(tagIds.length == 0) {
             return;
         }
-
-        // Search uses null (0) demographics.
-        const gender = 0;
-        const age = 0;
 
         // Bind update objects in outer scope.
         const updateTagMap = {};
@@ -774,11 +787,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         dem.thumbnails.map(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
-                        if (dem.bad_thumbnails) { 
+                        if (dem.bad_thumbnails) {
                             dem.bad_thumbnails.map(t => {
                                 thumbnailMap[t.thumbnail_id] = t;
                             });
-                        } 
+                        }
 
                         Object.assign(updateThumbnailMap, thumbnailMap);
                         ThumbnailStore.set(gender, age, thumbnailMap);
