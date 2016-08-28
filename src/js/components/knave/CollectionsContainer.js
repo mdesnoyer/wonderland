@@ -240,12 +240,15 @@ const CollectionsContainer = React.createClass({
                 .value();
 
             // Do the same for the bad thumbnail list.
-            const allBadThumbnailMap = _.pick(
-                this.props.stores.thumbnails[gender][age],
-                videoDemo.bad_thumbnails.map(t => {
-                    return t.thumbnail_id;
-                })
-            );
+            let allBadThumbnailMap = []
+            if (videoDemo.bad_thumbnails) { 
+                allBadThumbnailMap = _.pick(
+                    this.props.stores.thumbnails[gender][age],
+                    videoDemo.bad_thumbnails.map(t => {
+                        return t.thumbnail_id;
+                    })
+                );
+            } 
             const more = _
                 .chain(allBadThumbnailMap)
                 .values()
