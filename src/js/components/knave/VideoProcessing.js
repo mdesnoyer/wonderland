@@ -39,10 +39,14 @@ var VideoProcessing = React.createClass({
     },
 
     setProcessingMonitor: function() {
-        const videoId = this.props.videoId;
-        const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
+        const tagId = this.props.tagId;
+        if (!tagId) {
+            // This must be the VideoOwner's VideoProcessing.
+            return;
+        }
+        const monitorFunction = LoadActions.loadTags.bind(null, [tagId], this.props.selectedDemographic[0], this.props.selectedDemographic[1]);
 
-        if (this.props.estimatedTimeRemaining > 5) {
+        if (this.props.estimatedTimeRemaining > 10) {
             this.clearProcessingMonitor();
             const timeout = 1000 * this.props.estimatedTimeRemaining;
             setTimeout(monitorFunction, timeout);
@@ -55,7 +59,7 @@ var VideoProcessing = React.createClass({
         }
 
         // Let's set a monitor until the video is out of processing.
-        const interval = 1000 * 5;
+        const interval = 1000 * 10;
         this.processingMonitor = setInterval(monitorFunction, interval);
     },
 

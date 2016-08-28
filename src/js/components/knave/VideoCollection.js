@@ -67,9 +67,9 @@ const VideoCollection = React.createClass({
 
     setProcessingMonitor: function() {
         if (this.props.isRefiltering) {
-            const videoId = this.props.videoId;
-            const monitorFunction = LoadActions.loadVideos.bind(null, [videoId]);
-            if (this.props.timeRemaining > 5) {
+            const tagId = this.props.tagId;
+            const monitorFunction = LoadActions.loadTags.bind(null, [tagId], this.props.selectedDemographic[0], this.props.selectedDemographic[1]);
+            if (this.props.timeRemaining > 10) {
                 this.clearProcessingMonitor();
                 const timeout = 1000 * this.props.timeRemaining;
                 setTimeout(monitorFunction, timeout);
@@ -82,7 +82,7 @@ const VideoCollection = React.createClass({
             }
 
             // Let's set a monitor until the video is out of processing.
-            const interval = 1000 * 5;
+            const interval = 1000 * 10;
             this.processingMonitor = setInterval(monitorFunction, interval);
             return;
         }

@@ -455,7 +455,9 @@ const CollectionsContainer = React.createClass({
                 videoState={video.state}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
+                tagId={tagId}
                 videoId={video.video_id}
+                selectedDemographic={this.getSelectedDemographic(tagId)}
                 deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
             />
         );
@@ -466,6 +468,7 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoProcessing
                 key={tagId}
+                tagId={tagId}
                 title={video.title}
                 videoState={'failed'}
                 estimatedTimeRemaining={video.estimated_time_remaining}
