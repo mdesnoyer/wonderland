@@ -317,7 +317,7 @@ var UploadForm = React.createClass({
             self.setState({
                 isOpen: true,
                 photoUploadMode: 'initial',
-                error: 'We did not recieve a valid file'
+                error: T.get('imageUpload.imageError')
             })
             return
         }
