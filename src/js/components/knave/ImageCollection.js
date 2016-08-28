@@ -185,7 +185,9 @@ export default class ImageCollection extends React.Component {
         // then clicks on it can select the AddPanel.
         const onRightThumbnailClick = this.isSoloImage()?
             this.onAddControlClick :
-            this.props.onThumbnailClick;
+            this.props.onThumbnailClick.bind(
+                null, 
+                this.props.rightFeatureThumbnail.thumbnail_id);
 
         return (
             <BaseCollection
