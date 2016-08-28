@@ -460,6 +460,7 @@ var UploadForm = React.createClass({
                 };
             });
             self.setState({
+                error: null,
                 photoUploadMode: 'loading',
                 photoUploadCount: splitArray[0].length,
                 numberUploadedCount: 0,
