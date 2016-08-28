@@ -300,6 +300,9 @@ const CollectionsMainPage = React.createClass({
     // Get the name of a tag, else the title of
     // the tag's video, else the empty string.
     getTagName(tag) {
+        if (tag.name == null) { 
+            return ''; 
+        } 
         if (tag.name) {
             return tag.name;
         }
