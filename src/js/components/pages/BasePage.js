@@ -24,7 +24,6 @@ const propTypes = {
     query: PropTypes.string,
     onSearchFormChange: PropTypes.func,
     onSearchFormSubmit: PropTypes.func,
-    isLoading: PropTypes.bool,
     searchQuery: PropTypes.string,
 };
 
@@ -109,7 +108,6 @@ class BasePage extends React.Component {
                     query={this.props.searchQuery}
                     onSearchFormChange={this.props.onSearchFormChange}
                     onSearchFormSubmit={this.props.onSearchFormSubmit}
-                    isLoading={this.props.isLoading}
                 />
                 <Tooltips tooltipText={this.props.tooltipText} />
                 {this.props.children}

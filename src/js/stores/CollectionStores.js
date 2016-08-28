@@ -191,12 +191,28 @@ export const TagShareStore = {
     }
 };
 
+const _accounts = {}; 
+export const AccountStore = {
+    getAll: () => {
+        return _accounts;
+    },
+    get: (id) => {
+        return _accounts[id];
+    },
+    set: map => {
+        Object.assign(_accounts, map);
+    },
+    has: id => {
+        return undefined !== _accounts[id];
+    }
+};
+
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: searchRes => {
+    loadFromSearchResult: (searchRes, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -288,9 +304,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-                    dem.bad_thumbnails.map(t => {
-                        thumbnailMap[t.thumbnail_id] = t;
-                    });
+                    if (dem.bad_thumbnails) { 
+                        dem.bad_thumbnails.map(t => {
+                            thumbnailMap[t.thumbnail_id] = t;
+                        });
+                    } 
+                    else { 
+                        dem.bad_thumbnails = []; 
+                    }
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
@@ -329,6 +350,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
+
+                callback();
+
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
             .then(liftRes => {
@@ -341,6 +365,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
                 LiftStore.set(gender, age, tagLiftMap);
                 Dispatcher.dispatch();
+
             });
         });
     },
@@ -747,9 +772,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         dem.thumbnails.map(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
-                        dem.bad_thumbnails.map(t => {
-                            thumbnailMap[t.thumbnail_id] = t;
-                        });
+                        if (dem.bad_thumbnails) { 
+                            dem.bad_thumbnails.map(t => {
+                                thumbnailMap[t.thumbnail_id] = t;
+                            });
+                        } 
 
                         Object.assign(updateThumbnailMap, thumbnailMap);
                         ThumbnailStore.set(gender, age, thumbnailMap);
@@ -809,7 +836,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Tries to fill out the TagStore to n tags
     //
     // Return n the number of new tags.
-    loadNNewestTags(n, query, ...callbacks) {
+    loadNNewestTags(n, query, callback) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
@@ -851,14 +878,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     FilteredTagStore.completelyLoaded = true;
                 }
             }
-            return LoadActions.loadFromSearchResult(searchRes)
-        })
-        .then(() => {
-            callbacks.map(callback => {
-                if (_.isFunction(callback)) {
-                    callback();
-                }
-            });
+            LoadActions.loadFromSearchResult(searchRes, callback)
         });
     },
 
@@ -889,6 +909,21 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 TagShareStore.set({[tagId]: updateMap});
                 Dispatcher.dispatch();
             });
+        });
+    }, 
+    loadAccount(accountId) {
+        // For now just return, but 
+        // eventually we should check to make 
+        // the account hasn't had any mods  
+        if (AccountStore.has(accountId)) {
+            return;
+        }
+        LoadActions.GET('')
+        .then(res => { 
+            if (res.account_id) { 
+                AccountStore.set({[res.account_id]: res}); 
+                Dispatcher.dispatch();
+            }   
         });
     }
 });
@@ -925,14 +960,12 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled: function(thumbnail) {
-        //const thumbnail = ThumbnailStore.get(thumbnailId);
         const thumbnailId = thumbnail.thumbnail_id; 
         const videoId = thumbnail.video_id; 
         const video = VideoStore.get(videoId); 
         const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } }; 
         ServingStatusActions.PUT('thumbnails', options)
             .then(res => {
-                //Dispatcher.dispatch();
                 LoadActions.loadTags([video.tag_id]); 
             }); 
     } 
@@ -986,13 +1019,25 @@ export const Search = {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.pending += 1;
-        LoadActions.loadNNewestTags(largeCount, null, Search.decrementPending, callback);
+        const wrapped = () => {
+            Search.decrementPending();
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        };
+        LoadActions.loadNNewestTags(largeCount, null, wrapped);
     },
 
     loadWithQuery(count, query, callback) {
         const largeCount = this.getLargeCount();
         Search.pending += 1;
-        LoadActions.loadNNewestTags(largeCount, query, Search.decrementPending, callback);
+        const wrapped = () => {
+            Search.decrementPending();
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        };
+        LoadActions.loadNNewestTags(largeCount, query, wrapped);
     },
 
     hasMoreThan(count) {

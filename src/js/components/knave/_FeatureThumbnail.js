@@ -19,7 +19,7 @@ export default function FeatureThumbnail(props) {
     const getSoloMessage = () => {
         if (props.isSoloImage) {
             return (
-                <div className="xxThumbnailSolorMessage">
+                <div className="xxThumbnailSoloMessage">
                     {T.get('imageUpload.addMoreBlurText')}
                 </div>
             );

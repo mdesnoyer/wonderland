@@ -50,7 +50,10 @@ const CollectionsContainer = React.createClass({
         infoPanelOnly: PropTypes.bool,
 
         // Pops the side bar module given a recognized string
-        setSidebarContent: PropTypes.func.isRequired
+        setSidebarContent: PropTypes.func.isRequired,
+
+        // the accountid that owns these containers 
+        ownerAccountId: PropTypes.string.isRequired
     },
 
     getInitialState: function() {
@@ -207,17 +210,26 @@ const CollectionsContainer = React.createClass({
             if(ageLabel == 'null') {
                 ageLabel = null;
             }
-            const videoDemo = _.find(
+            let videoDemo = _.find(
                 video.demographic_thumbnails,
                 t => {
                     return (t.gender == genderLabel && t.age == ageLabel);
                 }
             );
-            const allThumbnailMap = _.pick(
-                this.props.stores.thumbnails[gender][age],
-                videoDemo.thumbnails.map(t => {
-                    return t.thumbnail_id;
+            if (videoDemo === undefined) {
+                return []; 
+            }
+            let allThumbnailMap = [];
+            if (videoDemo.thumbnails) { 
+                allThumbnailMap = _.pick(
+                    this.props.stores.thumbnails[gender][age],
+                    videoDemo.thumbnails.map(t => {
+                        return t.thumbnail_id;
                 }));
+            }
+            if (allThumbnailMap.length === 0) {
+                return []; 
+            }
 
             // For the right, use the best scoring.
             const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
@@ -237,12 +249,15 @@ const CollectionsContainer = React.createClass({
                 .value();
 
             // Do the same for the bad thumbnail list.
-            const allBadThumbnailMap = _.pick(
-                this.props.stores.thumbnails[gender][age],
-                videoDemo.bad_thumbnails.map(t => {
-                    return t.thumbnail_id;
-                })
-            );
+            let allBadThumbnailMap = [];
+            if (videoDemo.bad_thumbnails) { 
+                allBadThumbnailMap = _.pick(
+                    this.props.stores.thumbnails[gender][age],
+                    videoDemo.bad_thumbnails.map(t => {
+                        return t.thumbnail_id;
+                    })
+                );
+            } 
             const more = _
                 .chain(allBadThumbnailMap)
                 .values()
@@ -304,6 +319,7 @@ const CollectionsContainer = React.createClass({
 
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
+        const thumbsLength = collection.thumbnail_ids.length; 
 
         return (
             <ImageCollection
@@ -313,6 +329,7 @@ const CollectionsContainer = React.createClass({
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
+                thumbnailLength={thumbsLength} 
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
@@ -334,7 +351,20 @@ const CollectionsContainer = React.createClass({
         const video = this.props.stores.videos[tag.video_id];
 
         let isRefiltering = false;
-        if (['processing', 'failed'].includes(video.state)) {
+        if (['submit', 'processing', 'failed'].includes(video.state)) {
+               
+            if (video.state == 'submit') { 
+                return this.buildVideoProcessingComponent(tagId);
+            } 
+            if (tag.thumbnail_ids.length === 1) {
+                // if it's just the default thumbnail, we have a video 
+                // that's still processing.  
+                const tid = tag.thumbnail_ids[0]; 
+                const thumbnail = this.props.stores.thumbnails[0][0][tid];
+                if (thumbnail.type == 'default') { 
+                    return this.buildVideoProcessingComponent(tagId);
+                }  
+            } 
             if (tag.thumbnail_ids.length === 0) {
                 return this.buildVideoProcessingComponent(tagId);
             } else if ('processing' == video.state) {
@@ -347,6 +377,11 @@ const CollectionsContainer = React.createClass({
         const age = demo[1];
 
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
+
+        if (thumbArrays.length == 0)
+            // we can't find any thumbnails this thing is likely failed
+            return this.buildVideoFailedComponent(tagId);
+
         const left = thumbArrays[0];
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
@@ -360,6 +395,8 @@ const CollectionsContainer = React.createClass({
 
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
+
+        const account = this.props.stores.accounts[this.props.ownerAccountId];  
 
         return (
             <VideoCollection
@@ -387,6 +424,7 @@ const CollectionsContainer = React.createClass({
                 timeRemaining={video.estimated_time_remaining}
                 enableThumbnail={this.props.enableThumbnail}
                 disableThumbnail={this.props.disableThumbnail}
+                account={account} 
             />
        );
     },
@@ -415,6 +453,21 @@ const CollectionsContainer = React.createClass({
                 key={tagId}
                 title={video.title}
                 videoState={video.state}
+                estimatedTimeRemaining={video.estimated_time_remaining}
+                duration={video.duration}
+                videoId={video.video_id}
+                deleteVideo={SendActions.deleteCollectionByTagId.bind(null, tagId)}
+            />
+        );
+    },
+    buildVideoFailedComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+        return (
+            <VideoProcessing
+                key={tagId}
+                title={video.title}
+                videoState={'failed'}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
                 videoId={video.video_id}

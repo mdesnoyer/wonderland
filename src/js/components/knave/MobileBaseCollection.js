@@ -44,7 +44,8 @@ const MobileBaseCollection = React.createClass({
 
         // class name for the wrapper around the
         // component defaults to xxCollection
-        wrapperClassName: PropTypes.string
+        wrapperClassName: PropTypes.string,
+        onRightThumbnailClick: PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -119,6 +120,15 @@ const MobileBaseCollection = React.createClass({
         return <div>{children}</div>;
     },
 
+    onRightThumbnailClick: function() {
+        if (this.props.onRightThumbnailClick) {
+            this.props.onRightThumbnailClick();
+        } else {
+            const rightThumbnailId = this.props.rightThumbnailId.thumbnail_id;
+            this.props.onThumbnailClick(rightThumbnailId);
+        }
+    },
+
     render: function() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(this.props.translationOverrideMap);
@@ -142,7 +152,7 @@ const MobileBaseCollection = React.createClass({
                 score={this.props.rightFeatureThumbnail.neon_score}
                 enabled={this.props.rightFeatureThumbnail.enabled} 
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                onClick={this.props.onThumbnailClick.bind(null, rightThumbnailId)}
+                onClick={this.onRightThumbnailClick}
                 isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
             />
         );

@@ -162,6 +162,9 @@ export default class ImageCollection extends React.Component {
         const overrideMap = {
             'copy.lift.explanation.default': 'copy.lift.explanation.images',
         };
+        const onRightThumbnailClick = this.isSoloImage()?
+            this.onAddControlClick :
+            this.props.onThumbnailClick;
         return (
             <MobileBaseCollection
                 {...this.props}
@@ -171,6 +174,7 @@ export default class ImageCollection extends React.Component {
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 translationOverrideMap={overrideMap}
+                onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }
@@ -191,15 +195,17 @@ export default class ImageCollection extends React.Component {
                 selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.onThumbnailMouseover}
-                isSoloImage={this.isSoloImage()}
+                isSoloImage={this.isSoloImage.bind(this)}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }
 
     isSoloImage() {
-        return this.props.rightFeatureThumbnail.thumbnail_id ===
-            this.props.leftFeatureThumbnail.thumbnail_id;
+        if (this.props) {  
+            return (this.props.thumbnailLength <= 1)
+        }
+        return false; 
     }
 
     render() {

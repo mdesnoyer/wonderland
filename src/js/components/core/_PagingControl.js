@@ -14,6 +14,9 @@ const propTypes = {
 
     // Whether the next control is enabled
     enableNext: React.PropTypes.bool.isRequired,
+
+    // Whether a search is pending
+    searchPending: React.PropTypes.bool.isRequired,
 };
 
 export default class PagingControl extends React.Component {
@@ -50,6 +53,22 @@ export default class PagingControl extends React.Component {
         return null;
     }
 
+    getCurrentPage() {
+        if (this.props.enableNext) {
+            return <span>{1 + this.props.currentPage}</span>;
+        }
+        if (this.props.currentPage) {
+            if (this.props.searchPending) {
+                return <span>{1 + this.props.currentPage + '...'}</span>;
+            }
+            return <span>{1 + this.props.currentPage}</span>;
+        }
+        if (this.props.searchPending) {
+            return <span>...</span>;
+        }
+        return null;
+    }
+
     getNextButton() {
         if (this.props.enableNext) {
             return (
@@ -61,11 +80,6 @@ export default class PagingControl extends React.Component {
                 >
                     {T.get('action.next')}
                 </button>
-            );
-        }
-        if (Search.pending > 0) {
-            return (
-                <span>{T.get('copy.loading')}</span>
             );
         }
         return null;
@@ -97,8 +111,8 @@ export default class PagingControl extends React.Component {
                     <div className="xxPagingControls-navigation-item">
                         {this.getPrevButton()}
                     </div>
-                    <div className="xxPagingControls-navigation-item">
-                        {1 + this.props.currentPage}
+                    <div className={"xxPagingControls-navigation-item"}>
+                        {this.getCurrentPage()}
                     </div>
                     <div className="xxPagingControls-navigation-item">
                         {this.getNextButton()}

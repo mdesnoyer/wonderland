@@ -16,6 +16,7 @@ import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
+    AccountStore, 
     TagStore,
     FilteredTagStore,
     VideoStore,
@@ -61,7 +62,10 @@ const getStateFromStores = () => {
         thumbnailFeatures: ThumbnailFeatureStore.getAll(),
 
         // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: TagShareStore.getAll()
+        tagShares: TagShareStore.getAll(), 
+
+        // the accounts we have currently 
+        accounts: AccountStore.getAll(), 
     };
 };
 
@@ -77,7 +81,8 @@ const CollectionsMainPage = React.createClass({
             {
                 currentPage: 0,
                 searchQuery: '',
-                tooltipText: undefined
+                tooltipText: undefined,
+                searchPending: false
             }
         );
     },
@@ -90,20 +95,22 @@ const CollectionsMainPage = React.createClass({
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.updateState);
 
-        // Load initial results: first 2 items, then more.
+        // Load initial results: first 2 quickly and a whole page or more.
         const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
         Search.load(2, true, callback);
     },
 
     updateState: function() {
-        this.setState(getStateFromStores());
+        const state = getStateFromStores();
+        state.searchPending = Search.pending > 0;
+        this.setState(state);
     },
 
     changeCurrentPage(change) {
         const self = this;
         const currentPage = self.state.currentPage + change
-        self.setState({currentPage}, this.loadMoreFromSearch);
-
+        const searchPending = Search.pending > 0;
+        self.setState({currentPage, searchPending}, this.loadMoreFromSearch);
     },
 
     // Ask the search provider to get more results.
@@ -293,6 +300,9 @@ const CollectionsMainPage = React.createClass({
     // Get the name of a tag, else the title of
     // the tag's video, else the empty string.
     getTagName(tag) {
+        if (tag.name == null) { 
+            return ''; 
+        } 
         if (tag.name) {
             return tag.name;
         }
@@ -346,10 +356,12 @@ const CollectionsMainPage = React.createClass({
             // If query is running, cancel.
             if (self.searchFunction) {
                 self.searchFunction.cancel();
+                Search.pending -= 1;
                 self.searchFunction = null;
             }
             self.setState({
                 searchQuery,
+                searchPending: Search.pending > 0,
                 currentPage: 0,
                 selectedTags: FilteredTagStore.getAll(),
             });
@@ -372,6 +384,7 @@ const CollectionsMainPage = React.createClass({
         // Resolve state change then search.
         self.setState({
             searchQuery,
+            searchPending: Search.pending > 0,
             currentPage: 0,
             selectedTags: FilteredTagStore.getAll(),
         }, self.searchFunction);
@@ -382,8 +395,14 @@ const CollectionsMainPage = React.createClass({
         // This is now just a functional stub.
         e.preventDefault();
     },
+    
+    loadAccount: function() { 
+        LoadActions.loadAccount(SESSION.state.accountId);
+    }, 
 
     getResults: function() {
+        this.loadAccount()
+
         return (
             <div>
                 <CollectionsContainer
@@ -395,7 +414,8 @@ const CollectionsMainPage = React.createClass({
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares
+                        tagShares: this.state.tagShares, 
+                        accounts: this.state.accounts 
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
@@ -406,11 +426,13 @@ const CollectionsMainPage = React.createClass({
                     setTooltipText={this.setTooltipText}
                     enableThumbnail={this.enableThumbnail}
                     disableThumbnail={this.disableThumbnail}
+                    ownerAccountId={SESSION.state.accountId} 
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}
                     changeCurrentPage={this.changeCurrentPage}
                     enableNext={this.getPagingEnableNext()}
+                    searchPending={this.state.searchPending}
                 />
            </div>
         );
@@ -425,12 +447,10 @@ const CollectionsMainPage = React.createClass({
     },
 
     render: function() {
-        let body = this.getLoading();
-        if (FilteredTagStore.count() > 0 || Search.pending <= 0) {
-            body = this.getResults();
-        }
 
-        const isQuerySearchLoading = Search.pending > 0 && !!this.state.searchQuery;
+        const body = (_.isEmpty(this.state.tags) && Search.pending > 0) ?
+            this.getLoading() :
+            this.getResults();
 
         return (
             <BasePage
@@ -443,7 +463,6 @@ const CollectionsMainPage = React.createClass({
                 query={this.state.searchQuery}
                 onSearchFormChange={this.onSearchFormChange}
                 onSearchFormSubmit={this.onSearchFormSubmit}
-                isLoading={isQuerySearchLoading}
             >
                 {body}
                 <UploadForm />

@@ -598,12 +598,12 @@ var UTILS = {
 
     // Given array of thumbnails, return the thumbnail with best score.
     bestThumbnail: (thumbnails) => {
-        return _.maxBy(thumbnails, 'neon_score');
+        return _.maxBy(thumbnails, ['neon_score', 'created']);
     },
 
     // Given array of thumbnails, return the thumbnail with worst score.
     worstThumbnail: (thumbnails) => {
-        return _.minBy(thumbnails, 'neon_score');
+        return _.minBy(thumbnails, ['neon_score', 'created']);
     },
 
     // Get the Cartesian product of arrays.
@@ -617,7 +617,7 @@ var UTILS = {
         }, [ [] ]);
     },
 
-    // Find demographic thumbnail object
+    // Find demographic thumbnail object.
     //
     // Given a demographic_thumbnails array of a video,
     // search for the enum (numeric) gender and age
@@ -648,8 +648,7 @@ var UTILS = {
         return window.outerWidth < UTILS.DETECT_MOBILE_WIDTH_PX;
     },
 
-    // Wraps calls to T.get with any keys in
-    // this.props.translationOverrideMap.
+    // Wraps calls to T.get with any keys in map mapped.
     //
     // Returns function that removes the wrapper.
     applyTranslationOverride(mapped) {
