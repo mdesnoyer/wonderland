@@ -350,8 +350,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
-
-                callback();
+                
+                if (_.isFunction(callback)) {
+                    callback();
+                } 
 
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
