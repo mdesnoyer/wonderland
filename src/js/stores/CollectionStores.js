@@ -191,7 +191,7 @@ export const TagShareStore = {
     }
 };
 
-const _accounts = {}; 
+const _accounts = {};
 export const AccountStore = {
     getAll: () => {
         return _accounts;

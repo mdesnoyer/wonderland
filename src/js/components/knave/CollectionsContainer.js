@@ -52,7 +52,7 @@ const CollectionsContainer = React.createClass({
         // Pops the side bar module given a recognized string
         setSidebarContent: PropTypes.func.isRequired,
 
-        // the accountid that owns these containers 
+        // the accountid that owns these containers
         ownerAccountId: PropTypes.string.isRequired
     },
 
@@ -396,7 +396,7 @@ const CollectionsContainer = React.createClass({
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
-        const account = this.props.stores.accounts[this.props.ownerAccountId];  
+        const account = this.props.stores.accounts[this.props.ownerAccountId];
 
         return (
             <VideoCollection

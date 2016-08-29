@@ -62,10 +62,10 @@ const getStateFromStores = () => {
         thumbnailFeatures: ThumbnailFeatureStore.getAll(),
 
         // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: TagShareStore.getAll(), 
+        tagShares: TagShareStore.getAll(),
 
-        // the accounts we have currently 
-        accounts: AccountStore.getAll(), 
+        // the accounts we have currently
+        accounts: AccountStore.getAll(),
     };
 };
 

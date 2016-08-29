@@ -17,6 +17,7 @@ import {
     FeatureStore,
     ThumbnailFeatureStore,
     TagShareStore,
+    AccountStore,
     LoadActions,
     Dispatcher } from '../../stores/CollectionStores.js';
 
@@ -52,7 +53,10 @@ const getStateFromStores = () => {
 
         // Map of gender, age, thumbnail id to array of feature key
         // sorted by value descending.
-        tagShares: TagShareStore.getAll()
+        tagShares: TagShareStore.getAll(),
+
+        // the accounts we have currently
+        accounts: AccountStore.getAll(),
     };
 };
 
@@ -147,6 +151,7 @@ const ViewSharedCollectionPage = React.createClass({
             >
                 <CollectionsContainer
                     shownIds={this.getShownIds()}
+                    ownerAccountId={this.props.params.accountId}
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,
@@ -154,7 +159,8 @@ const ViewSharedCollectionPage = React.createClass({
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares
+                        tagShares: this.state.tagShares,
+                        accounts: this.state.accounts,
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}

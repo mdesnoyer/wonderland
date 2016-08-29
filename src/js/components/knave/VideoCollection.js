@@ -123,7 +123,7 @@ const VideoCollection = React.createClass({
                 />
             ];
         }
-        let account = this.props.account; 
+        let account = this.props.account;
         let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
@@ -159,7 +159,7 @@ const VideoCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
             />
         ];
-        if (account && account.serving_enabled) { 
+        if (account && account.serving_enabled) {
             panel_array.push(<ServingStatusPanel
                 goodThumbnails={this.props.goodThumbnails} 
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
