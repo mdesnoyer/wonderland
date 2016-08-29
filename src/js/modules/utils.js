@@ -345,7 +345,7 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 5,
     MAX_VIDEO_SIZE: 900,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id'],
-    VIDEO_FIELDS_MIN: ['video_id', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id'],
+    VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
