@@ -866,7 +866,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         const limit = n - haveCount;
-
         const options = {
             data: {limit}
         };
@@ -1044,7 +1043,10 @@ export const Search = {
     },
 
     loadWithQuery(count, query, callback) {
-        const largeCount = this.getLargeCount();
+        let largeCount = this.getLargeCount(count);
+        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) { 
+            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE; 
+        } 
         Search.pending += 1;
         const wrapped = () => {
             Search.decrementPending();
