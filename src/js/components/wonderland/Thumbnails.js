@@ -6,7 +6,6 @@ import React from 'react';
 
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import FuzzyTime from '../core/FuzzyTime';
 import AjaxMixin from '../../mixins/Ajax';
 import FeatureThumbnail from '../knave/FeatureThumbnail';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';

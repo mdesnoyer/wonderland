@@ -130,7 +130,7 @@ var VideoProcessing = React.createClass({
         return (
             <div>
                 <article className={collectionClassName.join(' ')}>
-                    <h1 className="xxSubtitle">{self.props.videoState}</h1>
+                    <div className="xxSubtitle">{self.props.videoState}</div>
                     <h1 className="xxCollection-title">
                         {title}
                         {deleteButton}

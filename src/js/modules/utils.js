@@ -376,7 +376,7 @@ var UTILS = {
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    _sortThumbnails: function(a, b) {
+    sortThumbnails: function(a, b) {
         var aScore = (a.neon_score ? a.neon_score : 0),
             bScore = (b.neon_score ? b.neon_score : 0)
         ;
@@ -439,10 +439,10 @@ var UTILS = {
         });
 
         // Pass 2 - sort `custom` by neon_score DESC
-        customs.sort(this._sortThumbnails);
+        customs.sort(this.sortThumbnails);
 
         // Pass 3 - sort `neon` by neon_score DESC
-        neons.sort(this._sortThumbnails);
+        neons.sort(this.sortThumbnails);
 
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
@@ -468,11 +468,6 @@ var UTILS = {
     hasAccessLevel: function(userAccessLevel, accessLevelToCheck) {
         return userAccessLevel & accessLevelToCheck;
     },
-    formatDuration: function(durationSeconds) {
-        var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
-    },
-
     formatTime: (minutes, seconds) => {
         const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
         const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
@@ -508,29 +503,11 @@ var UTILS = {
     properEncodeURI: function(url) {
         return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");
     },
-    getNeonScoreData: function(score) {
-        // Back End now does math - #1253
-        if (score && !isNaN(score) && (score >= 0)) {
-            return {
-                neonScore: score,
-                emoji: NEONSCORES[score].emoji
-            };
-        }
-        else {
-            return {
-                neonScore: UNKNOWN_STRING,
-                emoji: UNKNOWN_EMOJI
-            };
-        }
-    },
     buildPageTitle: function(title) {
         var credit =  T.get('app.credit', {
             '@companyShortName': T.get('app.companyShortName')
         });
         return title + T.get('app.separator') + credit;
-    },
-    makeTitle: function() {
-        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
         // .{,8} === length is at least 8
@@ -540,7 +517,6 @@ var UTILS = {
     isPasswordConfirm: function(state) {
         return state.password === state.verifyPassword;
     },
-    //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
     },
