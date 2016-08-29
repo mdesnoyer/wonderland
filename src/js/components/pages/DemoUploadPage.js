@@ -11,7 +11,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import Countdown from '../wonderland/Countdown';
 import OnboardingSlides from '../wonderland/OnboardingSlides';
 import OnboardingEmail from '../wonderland/OnboardingEmail';
-import VideoUploadForm from '../knave/VideoUploadForm';
+import UploadForm from '../knave/UploadForm';
 
 export default React.createClass({
     mixins: [AjaxMixin],
@@ -88,17 +88,19 @@ export default React.createClass({
         const { videoId } = this.state;
 
         this.getVideo(videoId).then(resp => {
-            const video = resp.videos[0]
-            const timeRemaining = video.estimated_time_remaining || null;
-            const duration = video.duration || null;
-
+            const video = resp.videos[0],
+                timeRemaining = video.estimated_time_remaining || null,
+                duration = video.duration || null
+            ;
             // Update state
             if (duration !== null && duration > this.state.maxVideoSize) {
                 this.showError('time');
             }
 
             if (timeRemaining !== null) {
-                this.setState({seconds: timeRemaining});
+                this.setState({
+                    seconds: timeRemaining
+                });
             }
 
             // Determine when to poll next based on the estimated time
@@ -183,7 +185,7 @@ export default React.createClass({
                                 </a>
                             </header>
                             <div className="xxUpload">
-                                <VideoUploadForm
+                                <UploadForm
                                     isOnboarding
                                     postHookSearch={null}
                                     postHookAnalysis={this.onAnalysisStart}

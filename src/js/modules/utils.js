@@ -3,6 +3,7 @@
 import T from './translation';
 import moment from 'moment';
 import reqwest from 'reqwest';
+import _ from 'lodash';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -242,6 +243,13 @@ var UTILS = {
         ONBOARDING_VIDEO_UPLOAD: {
             URL: '/demo/upload/'
         },
+        ONBOARDING_UPLOAD: {
+            URL: '/onboarding/'
+        },
+        COLLLECTIONS_MAIN: {
+            URL: '/collections/'
+        }
+
     },
     COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
         accessTokenKey: 'neonses_at',
@@ -302,6 +310,19 @@ var UTILS = {
             M: 'Male',
             F: 'Female'
     },
+    FILTER_GENDER_COL_ENUM: {
+        null  : 0,
+        'M'   : 1,
+        'F'   : 2,
+    },
+    FILTER_AGE_COL_ENUM: {
+        null:    0,
+        '18-19': 1,
+        '20-29': 2,
+        '30-39': 3,
+        '40-49': 4,
+        '50+'  : 5
+    },
     TELEMETRY_SNIPPET: 'https://s3.amazonaws.com/neon-cdn-assets/plugins/brightcove-smart-tracker.swf?neonPublisherId=',
     SHARE_LINK_FACEBOOK: 'https://facebook.com/sharer.php',
     SHARE_LINK_TWITTER: 'https://twitter.com/share',
@@ -312,45 +333,63 @@ var UTILS = {
     CONFIRM_MANDRILL_SLUG: 'support-email',
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
+    IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
     VERSION: '1.9.1',
+    DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
-    MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes 
+    MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
     RESULTS_PAGE_SIZE: 5,
+    MAX_RESULTS_PAGE_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
-    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining'],
+    VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id'],
+    VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
     BITLY_SHORTEN_URL: 'https://api-ssl.bitly.com/v3/shorten',
     COOKIE_DEFAULT_PATH: '/',
     VALENCE_THRESHOLD: 0.0005,
-    VALENCE_IGNORE_INDEXES: [0,1],  
+    VALENCE_IGNORE_INDEXES: [0,1],
+    VALENCE_NUM_TO_KEEP: 10,
     TOOLTIP_DELAY_MILLIS: 500,
+    // For calls using comma separated values, the maximum items supported.
+    MAX_CSV_VALUE_COUNT: 100,
+
+    THUMB_TYPE_DEFAULT: 'default',
+    TAG_TYPE_IMAGE_COL: 'col',
+    TAG_TYPE_VIDEO_COL: 'video',
     HELMET_META_TAGS: [{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'},],
 
     // Reference https://developers.facebook.com/apps/315978068791558/dashboard/
     // TODO migrate to an official Neon Facebook app.
     FACEBOOK_APP_ID: '315978068791558',
-
+    MAX_IMAGE_FILE_SIZE: 2500000,
+    MAX_IMAGE_CHUNK_SIZE: 10000000,
+    MAX_IMAGE_FILES_ALLOWED: 100,
+    UPLOAD_TRANSITION: 200,
+    IMAGE_FILE_TYPES_ALLOWED: ['.jpeg', '.jpg', '.png', '.tiff', '.gif', '.bmp'],
+    MAX_IMAGE_UPLOAD_COUNT: 5,
     NEON_TWITTER_HANDLE: 'neonlab',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
-    _sortThumbnails: function(a, b) {
+    sortThumbnails: function(a, b) {
         var aScore = (a.neon_score ? a.neon_score : 0),
             bScore = (b.neon_score ? b.neon_score : 0)
         ;
         return bScore - aScore;
     },
+    // TODO? re-write this so it takes an array.
     findDefaultThumbnail: function(thumbSet) {
-        defaultThumbnail = null; 
-        if (thumbSet && thumbSet.thumbnails) { 
-            var defaultThumbnail = thumbSet.thumbnails.find(
+        defaultThumbnail = null;
+        if (thumbSet && thumbSet.thumbnails) {
+            var defaultThumbnailArray = thumbSet.thumbnails.filter(
                 x => x.type === 'default');
+            var defaultThumbnail = _.minBy(defaultThumbnailArray, 'rank');
             var interestingThumbnails = thumbSet.thumbnails.filter(
                 x => x.type === 'neon' || x.type === 'customupload');
             if (!defaultThumbnail) {
@@ -362,9 +401,9 @@ var UTILS = {
                     return;
                 }
             }
-        } 
-        return defaultThumbnail; 
-    }, 
+        }
+        return defaultThumbnail;
+    },
     fixThumbnails: function(rawThumbnails, ignoreBad) {
 
         if (!(Array.isArray(rawThumbnails) && rawThumbnails.length > 0)) {
@@ -382,7 +421,7 @@ var UTILS = {
             switch (rawThumbnail.type) {
                 case 'neon':
                     neons.push(rawThumbnail);
-                    break;                    
+                    break;
                 case 'bad_neon':
                     if (!ignoreBad) {
                         neons.push(rawThumbnail);
@@ -401,10 +440,10 @@ var UTILS = {
         });
 
         // Pass 2 - sort `custom` by neon_score DESC
-        customs.sort(this._sortThumbnails);
+        customs.sort(this.sortThumbnails);
 
         // Pass 3 - sort `neon` by neon_score DESC
-        neons.sort(this._sortThumbnails);
+        neons.sort(this.sortThumbnails);
 
         // Pass 4 - assemble the output
         nonNeons = customs.concat(defaults);
@@ -414,6 +453,9 @@ var UTILS = {
         else {
             return neons;
         }
+    },
+    isMeMobile: function() {
+        return window && window.outerWidth && window.outerWidth < 768; // horrible, ugh, yuck, #shame
     },
     // HT - https://gist.github.com/mathewbyrne/1280286
     slugify: function(text) {
@@ -427,11 +469,6 @@ var UTILS = {
     hasAccessLevel: function(userAccessLevel, accessLevelToCheck) {
         return userAccessLevel & accessLevelToCheck;
     },
-    formatDuration: function(durationSeconds) {
-        var tempTime = moment.duration(durationSeconds * 1000); // expecting milliseconds
-            return this.leadingZero(tempTime.hours()) + ':' + this.leadingZero(tempTime.minutes()) + ':' + this.leadingZero(tempTime.seconds());
-    },
-
     formatTime: (minutes, seconds) => {
         const formattedMinutes = minutes > 9 ? minutes : `0${minutes}`;
         const formattedSeconds = seconds > 9 ? seconds : `0${seconds}`;
@@ -467,29 +504,11 @@ var UTILS = {
     properEncodeURI: function(url) {
         return encodeURI(url).replace(/'/g,"%27").replace(/"/g,"%22");
     },
-    getNeonScoreData: function(score) {
-        // Back End now does math - #1253
-        if (score && !isNaN(score) && (score >= 0)) {
-            return {
-                neonScore: score,
-                emoji: NEONSCORES[score].emoji
-            };
-        }
-        else {
-            return {
-                neonScore: UNKNOWN_STRING,
-                emoji: UNKNOWN_EMOJI
-            };
-        }
-    },
     buildPageTitle: function(title) {
         var credit =  T.get('app.credit', {
             '@companyShortName': T.get('app.companyShortName')
         });
         return title + T.get('app.separator') + credit;
-    },
-    makeTitle: function() {
-        return T.get('app.companyShortName') + ' ' + T.get('video') + ' ' + moment(Date.now()).format('D MMM YYYY');
     },
     isValidPassword: function(password) {
         // .{,8} === length is at least 8
@@ -499,7 +518,6 @@ var UTILS = {
     isPasswordConfirm: function(state) {
         return state.password === state.verifyPassword;
     },
-    //the following function strips a url of its protocol
     stripProtocol: function(url) {
         return url.replace(/^(https?):/, '');
     },
@@ -524,7 +542,105 @@ var UTILS = {
     },
     validateUrl: function(value) {
           return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    },
+
+    // Given an array of values, format values into comma-separated values
+    // and return as list of CSV string.
+    csvFromArray: (array, batchMax) => {
+
+        if(batchMax === undefined) {
+            batchMax = UTILS.MAX_CSV_VALUE_COUNT;
+        }
+
+        const count = array.length;
+        const res = [];
+        let working = [];
+
+        for (let i = 0; i < count; ++i) {
+            working.push(array[i]);
+            // Store a batch once we've reached the batch maximum.
+            if(i % batchMax == batchMax - 1) {
+                res.push(working);
+                working = [];
+            }
+        }
+        // Store the remainder.
+        if (working.length > 0)
+            res.push(working);
+
+        // Convert lists to CSV strings and return.
+        return res.map(list => {
+            return list.join(',');
+        });
+    },
+
+    // Given array of thumbnails, return the thumbnail with best score.
+    bestThumbnail: (thumbnails) => {
+        return _.orderBy(thumbnails, ['neon_score', 'created'], ['desc', 'desc'])[0];
+    },
+
+    // Given array of thumbnails, return the thumbnail with worst score.
+    worstThumbnail: (thumbnails) => {
+        return _.orderBy(thumbnails, ['neon_score', 'created'], ['asc', 'desc'])[0];
+    },
+
+    // Get the Cartesian product of arrays.
+    productOfArrays: function() {
+        return _.reduce(arguments, function(a, b) {
+            return _.flatten(_.map(a, function(x) {
+                return _.map(b, function(y) {
+                    return x.concat([y]);
+                });
+            }), true);
+        }, [ [] ]);
+    },
+
+    // Find demographic thumbnail object.
+    //
+    // Given a demographic_thumbnails array of a video,
+    // search for the enum (numeric) gender and age
+    // and return the matching object, or null.
+    findDemographicThumbnailObject(demos, gender=0, age=0) {
+        let genderLabel,
+            ageLabel;
+        if (gender == 0) {
+            genderLabel = null;
+        } else {
+            genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+        }
+        if (age == 0) {
+            ageLabel = null;
+        } else {
+            ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+        }
+        if (genderLabel === undefined || ageLabel === undefined) {
+            return null;
+        }
+
+        return _.find(demos, demo => {
+            return demo.gender == genderLabel && demo.age == ageLabel;
+        });
+    },
+
+    isMobile: () => {
+        return window.outerWidth < UTILS.DETECT_MOBILE_WIDTH_PX;
+    },
+
+    // Wraps calls to T.get with any keys in map mapped.
+    //
+    // Returns function that removes the wrapper.
+    applyTranslationOverride(mapped) {
+        if (_.isEmpty(mapped)) {
+            // Do nothing.
+            return Function.prototype;
+        }
+        const originalTGet = T.get;
+        T.get = _.wrap(T.get, (get, key, ...rest) =>
+            get(key in mapped ? mapped[key] : key, ...rest));
+
+        return () => { T.get = originalTGet; };
     }
+
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

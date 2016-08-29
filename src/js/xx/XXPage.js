@@ -171,6 +171,12 @@ export default class XXPage extends React.Component {
                 }
 
                 <XXCollection
+                    type="photo"
+                    title="Thursday evening at Daniel’s"
+                    updateStage={updateStage}
+                />
+
+                <XXCollection
                     hasFilters
                     title="Santa Cruz man wins Mavericks
                         big wave surf competition"

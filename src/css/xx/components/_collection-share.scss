@@ -60,7 +60,7 @@ span.xxCollectionShare-anchor {
         @include font-awesome('f08c');
     }
 }
-.xxCollectionLoadingText {
+.loadingText {
     span {
         animation-name: blink;
         animation-duration: 1.4s;

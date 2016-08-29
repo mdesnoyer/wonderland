@@ -8,7 +8,7 @@ import Account from '../../mixins/Account';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import ReactTooltip from 'react-tooltip';
-import CollectionLoadingText from '../core/CollectionLoadingText';
+import LoadingText from '../core/LoadingText';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,7 +125,7 @@ var ShareLink = React.createClass({
                         htmlFor="xx-share-link"
                     >{T.get('copy.share.label')}</label>
                     {
-                        self.state.isLoading ? <CollectionLoadingText /> : (
+                        self.state.isLoading ? <LoadingText /> : (
                             <input
                                 className="xxInputText"
                                 id={"xx-share-link" + self.props.videoId}
