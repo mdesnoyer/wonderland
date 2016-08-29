@@ -1036,7 +1036,7 @@ export const Search = {
     load(count, onlyThisMany=false, callback) {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
-        Search.pending += 1;
+        Search.incrementPending();
         const wrapped = () => {
             Search.decrementPending();
             if (_.isFunction(callback)) {
@@ -1047,8 +1047,8 @@ export const Search = {
     },
 
     loadWithQuery(count, query, callback) {
-        let largeCount = this.getLargeCount(count);
-        Search.pending += 1;
+        const largeCount = this.getLargeCount(count);
+        Search.incrementPending();
         const wrapped = () => {
             Search.decrementPending();
             if (_.isFunction(callback)) {
@@ -1062,7 +1062,11 @@ export const Search = {
         return FilteredTagStore.count() > count;
     },
 
+    incrementPending() {
+        return Search.pending += 1;
+    },
+
     decrementPending() {
-        Search.pending -= 1;
+        return Search.pending -= 1;
     }
 };

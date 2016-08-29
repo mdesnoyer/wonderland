@@ -129,6 +129,8 @@ const CollectionsMainPage = React.createClass({
         } else {
             Search.load(count);
         }
+        const searchPending = Search.pending > 0;
+        self.setState({ searchPending });
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -386,7 +388,6 @@ const CollectionsMainPage = React.createClass({
         // Resolve state change then search.
         self.setState({
             searchQuery,
-            searchPending: Search.pending > 0,
             currentPage: 0,
             selectedTags: FilteredTagStore.getAll(),
         }, self.searchFunction);
