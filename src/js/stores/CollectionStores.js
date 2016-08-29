@@ -265,7 +265,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (missingVideoIds.length > 0) {
             const videoData = {
                 video_id: missingVideoIds.join(','),
-                fields: UTILS.VIDEO_FIELDS.join(',')
+                fields: UTILS.VIDEO_FIELDS_MIN.join(',')
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
@@ -380,7 +380,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const videoIdSet = _.uniq(videoIds);
         const videoData = {
                 video_id: videoIdSet.join(','),
-                fields: UTILS.VIDEO_FIELDS.join(',')
+                fields: UTILS.VIDEO_FIELDS_MIN.join(',')
             };
         LoadActions.GET('videos', {data: videoData})
         .then(videoRes => {

@@ -312,7 +312,7 @@ const CollectionsMainPage = React.createClass({
         return '';
     },
 
-    // Given a tag, return true if its name or its video title
+    // Given a tag, return true if its name
     // contains search query.
     filterOnName: function(query, tag) {
         if (!query) {

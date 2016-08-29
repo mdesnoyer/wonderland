@@ -401,10 +401,10 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoCollection
                 key={tagId}
-                title={video.title}
+                title={tag.name}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
-                goodThumbnails={emailThumbnails} 
+                goodThumbnails={emailThumbnails}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
@@ -424,7 +424,7 @@ const CollectionsContainer = React.createClass({
                 timeRemaining={video.estimated_time_remaining}
                 enableThumbnail={this.props.enableThumbnail}
                 disableThumbnail={this.props.disableThumbnail}
-                account={account} 
+                account={account}
             />
        );
     },
@@ -451,7 +451,7 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoProcessing
                 key={tagId}
-                title={video.title}
+                title={tag.name}
                 videoState={video.state}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
@@ -469,7 +469,7 @@ const CollectionsContainer = React.createClass({
             <VideoProcessing
                 key={tagId}
                 tagId={tagId}
-                title={video.title}
+                title={tag.name}
                 videoState={'failed'}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
