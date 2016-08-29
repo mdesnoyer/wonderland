@@ -451,7 +451,7 @@ const CollectionsContainer = React.createClass({
         return (
             <VideoProcessing
                 key={tagId}
-                title={tag.name}
+                title={video.title}
                 videoState={video.state}
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
