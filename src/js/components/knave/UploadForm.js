@@ -304,183 +304,7 @@ var UploadForm = React.createClass({
          for (var i = 0, file; file = files[i]; i++) {
              fileArray.push(file);
          }
-         self.formatData(fileArray);
-     },
-     formatData: function(files) {
-        var self = this,
-            formDataArray = [],
-            errorFiles, count, size, totalFileNumber,
-            formData = new FormData(),
-            lastIndex = files.length - 1
-        ;
-        if (files.length <= 0 ) {
-            self.setState({
-                isOpen: true,
-                photoUploadMode: 'initial',
-                error: T.get('imageUpload.imageError')
-            })
-            return
-        }
-        errorFiles = count = size = totalFileNumber = 0;
-        files.forEach((file, index)=> {
-            if (accept({name: file.name, type: file.type }, 'image/*' ) && file.size < UTILS.MAX_IMAGE_FILE_SIZE) {
-                count += 1;
-                size += file.size;
-                totalFileNumber += 1;
-                if (count > UTILS.MAX_IMAGE_UPLOAD_COUNT || size > UTILS.MAX_IMAGE_CHUNK_SIZE) {
-                    formDataArray.push(formData);
-                    formData = new FormData();
-                    count = 0;
-                    size = 0;
-                    if (index === lastIndex) {
-                        formData.append('upload', file);
-                        formDataArray.push(formData);
-                    }
-                    else {
-                        formData.append('upload', file);
-                    }
-                }
-                else {
-                    if (index === lastIndex) {
-                        formData.append('upload', file);
-                        formDataArray.push(formData);
-                    }
-                    else {
-                        formData.append('upload', file);
-                    }
-                }
-            }
-            else {
-                errorFiles += 1;
-            };
-        });
-        if (self.state.photoUploadThumbnailIds.length + totalFileNumber > UTILS.MAX_IMAGE_FILES_ALLOWED) {
-                self.setState({
-                    isOpen: true,
-                    photoUploadMode: 'initial',
-                    error: T.get('imageUpload.uploadMax')
-                });
-        }
-        else if (totalFileNumber === 0 && errorFiles >= 1 ) {
-            self.setState({
-                isOpen: true,
-                photoUploadMode: 'initial',
-                error: T.get('imageUpload.imageError')
-            });
-        }
-        else {
-            self.setState({
-                photoUploadMode: 'loading',
-                photoUploadCount: totalFileNumber,
-                numberUploadedCount: 0,
-                photoErrorCount: errorFiles
-            },  function() {
-                if(self.props.isAddPanel && self.props.panelType === 'video' ) {
-                    self.multiPartUpdateDefaultThumbnail(formDataArray[0]);
-                }
-                else {
-                    self.grabRefreshToken(
-                        formDataArray.forEach(function(formData) {
-                            self.sendFormattedData(formData);
-                        })
-                    )
-                }
-            });
-        }
-    },
-    sendFormattedData: function(formData) {
-        var self = this,
-            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
-            options = {
-                data: formData,
-                processData : false,
-                contentType: 'multipart/form-data'
-            }
-        ;
-        self.POST(address, options)
-           .then(function(res) {
-                var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-                self.setState({
-                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
-                    }, function() {
-                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
-                            self.setState({
-                                photoUploadMode:'success',
-                                error: null
-                                }, function() {
-                                    // if add panel load the new thumbnails asssociated with the tag
-                                    self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
-                                    setTimeout(function() {
-                                    self.setState({ photoUploadMode:'initial' });
-                                    }, 3000)
-                            });
-                    }
-                });
-            })
-           .catch(function(err) {
-               self.setState({
-               photoUploadMode:'initial'
-               },  function() {
-                   self.throwUploadError(err);
-               });
-           });
-     },
-     formatDropboxUrls: function(urls) {
-        var self = this,
-            splitArray = _.partition(urls, function(item) {return item.bytes <= UTILS.MAX_IMAGE_FILE_SIZE}),
-            sendArray = [],
-            arrayToAdd = [],
-            size = 0
-        ;
-        if (self.state.photoUploadThumbnailIds.length + urls.length > UTILS.MAX_IMAGE_FILES_ALLOWED) {
-                self.setState({
-                    isOpen: true,
-                    photoUploadMode: 'initial',
-                    error: T.get('imageUpload.uploadMax')
-                });
-        }
-        else if (splitArray[0].length === 0 && splitArray[1].length >= 1 ) {
-            self.setState({
-                isOpen: true,
-                photoUploadMode: 'initial',
-                error: T.get('imageUpload.imageError')
-            });
-        } else {
-            splitArray[0].forEach(function(item, i) {
-                if (arrayToAdd.length + 1 <= UTILS.MAX_IMAGE_UPLOAD_COUNT && size + item.bytes <= UTILS.MAX_IMAGE_CHUNK_SIZE) {
-                    arrayToAdd.push(item)
-                    size += item.bytes;
-                    if (i === splitArray[0].length - 1){
-                        sendArray.push(arrayToAdd);
-                    }
-                }
-                else {
-                    sendArray.push(arrayToAdd);
-                    arrayToAdd = [];
-                    size = 0
-                    size += item.bytes
-                    arrayToAdd.push(item)
-                    if (i === splitArray[0].length - 1){
-                        sendArray.push(arrayToAdd);
-                    }
-                };
-            });
-            self.setState({
-                error: null,
-                photoUploadMode: 'loading',
-                photoUploadCount: splitArray[0].length,
-                numberUploadedCount: 0,
-                photoErrorCount: splitArray[1].length
-            },  function(){
-                self.grabRefreshToken(
-                    sendArray.forEach(function(formData) {
-                        self.sendDropBoxUrl(formData);
-                    })
-                )
-            })
-        }
-
+         self.formatData(fileArray, 'local');
      },
      sendDropBoxUrl: function(urls) {
         var self = this,
@@ -524,7 +348,8 @@ var UploadForm = React.createClass({
     grabDropBox: function() {
         var self = this,
             options = {
-                success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatDropboxUrls(urls)},
+                success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatData(urls, 'dropbox')},
+                // success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatDropboxUrls(urls)},
                 linkType: "direct",
                 multiselect:  !self.props.isAddPanel || self.props.panelType === 'photo',
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
@@ -619,6 +444,99 @@ var UploadForm = React.createClass({
             SESSION.end();
         });
     },
+    formatData: function(files, type) {
+        var self = this;
+        var sizeTypes = type === 'dropbox' ? 'bytes' : 'size'
+        var filesToParse = _.partition(files, function(item) {return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))})
+        var arrayToSend = []
+        var arrayToAdd = []
+        var size = 0 
+        filesToParse[0].forEach(function(item, index) {
+            if (arrayToAdd.length + 1 <= UTILS.MAX_IMAGE_UPLOAD_COUNT && size + item[sizeTypes] <= UTILS.MAX_IMAGE_CHUNK_SIZE) {
+                arrayToAdd.push(item);
+                size += item[sizeTypes];
+                index === filesToParse[0].length - 1 && arrayToSend.push(arrayToAdd);
+            }
+            else {
+                arrayToSend.push(arrayToAdd);
+                arrayToAdd = [];
+                size = 0;
+                size += item[sizeTypes];
+                arrayToAdd.push(item);
+                index === filesToParse[0].length - 1 && arrayToSend.push(arrayToAdd);
+            }
+        });
+        self.setState({
+            error: null, 
+            photoUploadMode: 'loading',
+            photoUploadCount: filesToParse[0].length,
+            numberUploadedCount: 0,
+            photoErrorCount: filesToParse[1].length 
+        },  function() {
+            if (type !== 'dropbox') { 
+                arrayToSend = self.createFormDataArray(arrayToSend); 
+            }; 
+
+            self.grabRefreshToken(
+                arrayToSend.forEach(function(array) {
+                    self.sendFormattedData(array, type)
+                })
+            )
+        });
+    },
+    sendFormattedData: function(array, type) {
+        var self = this,
+            options,
+            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
+        ;
+        switch(type) {
+            case 'dropbox':
+                options = { data: { url: array.map(function(a) {return a.link;}).join(","),} };
+                break;
+            case 'local' :  
+                options = { data: array, processData : false, contentType: 'multipart/form-data' };
+            break
+        }
+        self.POST(address, options)
+           .then(function(res) {
+                var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
+                self.setState({
+                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
+                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
+                    }, function() {
+                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+                            self.setState({
+                                photoUploadMode:'success',
+                                error: null
+                                }, function() {
+                                    // if add panel load the new thumbnails asssociated with the tag
+                                    self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
+                                    setTimeout(function() {
+                                    self.setState({ photoUploadMode:'initial' });
+                                    }, 3000)
+                            });
+                    }
+                });
+            })
+           .catch(function(err) {
+               self.setState({
+               photoUploadMode:'initial'
+               },  function() {
+                   self.throwUploadError(err);
+               });
+           });
+    },
+    createFormDataArray: function(fileArray) {
+        var formDataArray = [];
+        fileArray.forEach(function(array, i){
+            var formData = new FormData();
+            array.forEach(function(file, i) {
+                formData.append('upload', file);
+            })
+            formDataArray.push(formData);
+        })
+        return formDataArray;
+    },
     propTypes: {
         onboardingAction: React.PropTypes.func,
         onboardingError: React.PropTypes.func,
@@ -632,3 +550,6 @@ var UploadForm = React.createClass({
 export default UploadForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
