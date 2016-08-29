@@ -15,9 +15,8 @@
 .xxPagingControls-navigation-item {
     width: 10%;
     text-align: center;
+
 }
-
-
 
 .xxPagingControls-prev,
 .xxPagingControls-next  {
@@ -39,11 +38,11 @@
 	    &::after {
 	        background: $secondary-color;
 	    }
-	}     
+	}
 }
 
 .xxPagingControls-next {
-    
+
     margin-right: -8px;
     &::before,
     &::after {

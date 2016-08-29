@@ -75,7 +75,6 @@ import UTILS from '../../modules/utils';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- export default Thumbnail
+export default Thumbnail
 
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

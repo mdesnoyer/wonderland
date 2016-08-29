@@ -38,7 +38,7 @@ const optionsAge = [
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class XXUploadDialog extends React.Component {
+export default class XXUploadDialogVideo extends React.Component {
     constructor(props) {
         super(props);
 
@@ -72,7 +72,9 @@ export default class XXUploadDialog extends React.Component {
         return (
             <section className="xxUploadDialog">
                 <div className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">Let’s analyze a video</h2>
+                    <div className="xxUploadDialog-intro">
+                        <h2 className="xxTitle">Let’s analyze a video</h2>
+                    </div>
                     <div className="xxFormField">
                         <label
                             className="xxLabel"

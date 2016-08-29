@@ -45,7 +45,15 @@ export default class XXCollection extends React.Component {
 
     render() {
         const { setActiveContent } = this;
+        const { type } = this.props;
         const { activeContent, isProcessingReady } = this.state;
+
+        const className = ['xxCollection'];
+        if (type) {
+            className.push(`xxCollection--${type}`);
+        } else {
+            className.push('xxCollection--video');
+        }
 
         let content = (
             <XXCollectionInfo
@@ -92,7 +100,7 @@ export default class XXCollection extends React.Component {
         }
 
         return (
-            <article className="xxCollection xxCollection--video">
+            <article className={className.join(' ')}>
                 <div className="xxCollection-content">
                     <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                         {content}
@@ -100,6 +108,7 @@ export default class XXCollection extends React.Component {
                 </div>
 
                 <XXCollectionImages
+                    type={type}
                     isMobile={this.props.isMobile}
                     updateStage={this.props.updateStage}
                 />

@@ -44,6 +44,10 @@ import XXBlankCanvas from './xx/XXBlankCanvas';
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage';
 import DemoUploadPage from './components/pages/DemoUploadPage';
 import TRACKING from './modules/tracking';
+import CollectionsMainPage from './components/pages/CollectionsMainPage';
+import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
+import OnboardingUploadPage from './components/pages/OnboardingUploadPage';
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -58,7 +62,7 @@ render((
         {/* Routes should (where possible) use the DRY_NAV variable)
         and END in a trailing slash - EH */}
 
-        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} />
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} />
 
         {/* matches /signup and /signup/ */}
         {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}
@@ -80,8 +84,11 @@ render((
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
         <Route path="/video/:videoId/" component={VideoPageOwner} />
 
+        {/* The direct_* routes are used by the precompiler proxy to get the page from origin */}
         <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
         <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
+        <Route path="/direct_share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
+        <Route path="/share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
         {/* <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} /> */}
@@ -102,6 +109,9 @@ render((
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
 
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
+        
+        <Route path={UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL} component={OnboardingUploadPage} />
+        <Route path={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} component={CollectionsMainPage} />
 
         <Route path="/xx/" component={XXPage} />
         <Route path="/xx/mobile/" component={XXPageMobile} />

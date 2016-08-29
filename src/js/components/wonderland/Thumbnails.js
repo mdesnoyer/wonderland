@@ -21,6 +21,7 @@ var Thumbnails = React.createClass({
         demographicThumbnails: React.PropTypes.array.isRequired
     },
     getInitialState: function() {
+        // move these up V some of them 
         var self = this;
         var curSelection = self.props.demographicThumbnails[self.props.selectedDemographic];
         var goodThumbs = UTILS.fixThumbnails(curSelection.thumbnails, true);
@@ -40,20 +41,6 @@ var Thumbnails = React.createClass({
             defaultThumbnail: self.props.defaultThumbnail,
             showThumbnails: false
         };
-    },
-    handleKeyEvent: function(e) {
-        var self = this;
-        switch (e.keyCode) {
-            case 27: // Escape
-                self.closeThumbnailOverlay(e);
-                break;
-            case 37: // Left Arrow
-                self.handleClickPrevious(e);
-                break;
-            case 39: // Right Arrow
-                self.handleClickNext(e);
-                break;
-        }
     },
     componentWillReceiveProps: function(nextProps, nextState){
         var self = this;
@@ -113,10 +100,8 @@ var Thumbnails = React.createClass({
                     closeThumbnailOverlay={self.closeThumbnailOverlay}
                     thumbnails={self.state.thumbnails}
                     selectedItem={self.state.selectedItem}
-                    total={self.state.thumbsLength}
                     handleClickPrevious={self.handleClickPrevious}
                     handleClickNext={self.handleClickNext}
-                    handleKeyEvent={self.handleKeyEvent}
                     displayThumbLift={self.props.displayThumbLift || 0}
                     openLearnMore={self.props.openLearnMore}
                 />

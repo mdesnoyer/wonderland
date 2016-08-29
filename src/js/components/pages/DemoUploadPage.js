@@ -11,7 +11,7 @@ import SiteHeader from '../wonderland/SiteHeader';
 import Countdown from '../wonderland/Countdown';
 import OnboardingSlides from '../wonderland/OnboardingSlides';
 import OnboardingEmail from '../wonderland/OnboardingEmail';
-import VideoUploadForm from '../knave/VideoUploadForm';
+import UploadForm from '../knave/UploadForm';
 
 export default React.createClass({
     mixins: [AjaxMixin],
@@ -185,7 +185,7 @@ export default React.createClass({
                                 </a>
                             </header>
                             <div className="xxUpload">
-                                <VideoUploadForm
+                                <UploadForm
                                     isOnboarding
                                     postHookSearch={null}
                                     postHookAnalysis={this.onAnalysisStart}

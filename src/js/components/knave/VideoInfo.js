@@ -19,13 +19,10 @@ var VideoInfo = React.createClass({
         }
     },
     getInitialState: function() {
-        var self = this,
-            demographicOptions = []
-        ;
         return {
-            selectedDemographic: self.props.selectedDemographic,
-            demographicThumbnails: self.props.demographicThumbnails,
-            demographicOptions: self.getDemographicOptions(),
+            selectedDemographic: this.props.selectedDemographic,
+            demographicThumbnails: this.props.demographicThumbnails,
+            demographicOptions: this.getDemographicOptions(),
             dropdownOpen: false
         }
     },

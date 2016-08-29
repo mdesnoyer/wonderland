@@ -6,30 +6,74 @@ import VideoDelete from './VideoDelete';
 import T from '../../modules/translation';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
-import Countdown from '../wonderland/Countdown'; 
+import Countdown from '../wonderland/Countdown';
+import { LoadActions } from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoProcessing = React.createClass({
-    mixins: [AjaxMixin],
-    getInitialState: function() {
-        return {
-            maxVideoSize: UTILS.MAX_VIDEO_SIZE
+
+    // TODO factor this and VideoCollection's
+    // A reference to a setTimeout/setInterval for monitoring
+    // the state of a processing video.
+    processingMonitor: null,
+
+    propTypes: {
+        title: React.PropTypes.string,
+        videoState: React.PropTypes.string,
+        estimatedTimeRemaining: React.PropTypes.number,
+        duration: React.PropTypes.number,
+        deleteVideo: React.PropTypes.func.isRequired,
+    },
+
+    componentDidMount: function() {
+        this.setProcessingMonitor();
+    },
+
+    componentWillUpdate: function() {
+        this.setProcessingMonitor();
+    },
+
+    componentWillUnmount: function() {
+        this.clearProcessingMonitor();
+    },
+
+    setProcessingMonitor: function() {
+        const tagId = this.props.tagId;
+        if (!tagId) {
+            // This must be the VideoOwner's VideoProcessing.
+            return;
+        }
+        const monitorFunction = LoadActions.loadTags.bind(null, [tagId], this.props.selectedDemographic[0], this.props.selectedDemographic[1]);
+
+        if (this.props.estimatedTimeRemaining > 10) {
+            this.clearProcessingMonitor();
+            const timeout = 1000 * this.props.estimatedTimeRemaining;
+            setTimeout(monitorFunction, timeout);
+            return;
+        }
+
+        // Only set one setInterval per video.
+        if(this.processingMonitor) {
+            return;
+        }
+
+        // Let's set a monitor until the video is out of processing.
+        const interval = 1000 * 10;
+        this.processingMonitor = setInterval(monitorFunction, interval);
+    },
+
+    clearProcessingMonitor: function() {
+        if (this.processingMonitor !== null) {
+            clearInterval(this.processingMonitor);
+            this.processingMonitor = null;
         }
     },
-    componentWillMount: function() {
-        var self = this;
-        self.GET('limits')
-            .then(function(res) {
-                self.setState({
-                    maxVideoSize: res.max_video_size || UTILS.MAX_VIDEO_SIZE
-                })
-            })
-            .catch(function(err) {
-            })
+
+    handleDeleteClick: function() {
+        this.props.deleteVideo(this.props.videoId);
     },
-    componentWillReceiveProps: function(nextProps) {
-    }, 
+
     render: function() {
         var self = this,
             title,
@@ -38,11 +82,11 @@ var VideoProcessing = React.createClass({
             errorMessageComponent,
             isError,
             seconds,
-            timeRemaining, 
+            estimatedTimeRemaining,
             countdown = null,
             collectionClassName = ['xxCollection', 'xxCollection--video']
         ;
-        errorMessage = self.props.duration >= self.state.maxVideoSize ? T.get('error.longVideo') : T.get('error.genericVideo');
+        errorMessage = self.props.duration >= UTILS.MAX_VIDEO_SIZE ? T.get('error.longVideo') : T.get('error.genericVideo');
         switch (self.props.videoState) {
             case 'failed':
                 title = 'Oops';
@@ -53,7 +97,7 @@ var VideoProcessing = React.createClass({
                         type="button"
                         onClick={self.handleDeleteClick}
                     >
-                        <img 
+                        <img
                             src="/img/xx/close.png"
                             alt={T.get('action.close')}
                             title={T.get('action.close')}
@@ -70,67 +114,40 @@ var VideoProcessing = React.createClass({
                 deleteButton = '';
                 isError = false;
                 seconds = self.props.seconds;
-                timeRemaining = self.props.timeRemaining;
+                estimatedTimeRemaining = self.props.estimatedTimeRemaining;
                 collectionClassName.push('xxCollection--processing');
-                if (timeRemaining !== null && timeRemaining >= 1) {  
-                    countdown = (<Countdown 
-                        seconds={timeRemaining}
+                if (estimatedTimeRemaining !== null && estimatedTimeRemaining >= 1) {
+                    countdown = (<Countdown
+                        seconds={estimatedTimeRemaining}
                         classPrefix="xxCollectionFilterCountdown"
                     />);
-                } 
+                }
                 else {
-                    countdown = (
-                        <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span> 
-                    );
+                    countdown = <span className="xxCollectionFilterCountdown">{T.get('timer.loading')}</span>;
                 }
                 break;
         }
-        if (self.state.isHidden) { 
-            return (<div></div>);
-        }  
-
-        return ( 
-            <div> 
+        return (
+            <div>
                 <article className={collectionClassName.join(' ')}>
                     <div className="xxSubtitle">{self.props.videoState}</div>
                     <h1 className="xxCollection-title">
                         {title}
                         {deleteButton}
                     </h1>
-                    { 
+                    {
                         isError ? null : (
                             <div className="xxCollectionFilters">
                                 <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                 <span>{countdown}</span>
                             </div>
-                        )  
-                    } 
+                        )
+                    }
                     {errorMessageComponent}
                 </article>
-            </div> 
+            </div>
         )
     },
-    handleDeleteClick: function() {
-        var self = this, options = {}
-        ;
-        options.data = {
-            video_id: self.props.videoId,
-            hidden: true
-        }
-        self.PUT('videos', options)
-            .then(function(res) {
-                self.setState({
-                    isHidden:true
-                });
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
-    }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default VideoProcessing;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
