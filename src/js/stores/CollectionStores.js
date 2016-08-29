@@ -857,15 +857,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Short circuit search if we have enough items or everything.
         if (n <= haveCount) {
+            callback && callback();
             return;
         }
         if (TagStore.completelyLoaded) {
+            callback && callback();
             return;
         } else if (query && FilteredTagStore.completelyLoaded) {
+            callback && callback();
             return;
         }
 
-        const limit = n - haveCount;
+        // Ensure searches are no bigger than the max.
+        const limit = _.min([n - haveCount, UTILS.MAX_SEARCH_SIZE]);
         const options = {
             data: {limit}
         };
@@ -887,9 +891,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
                 if(query) {
-                    TagStore.completelyLoaded = true;
-                } else {
                     FilteredTagStore.completelyLoaded = true;
+                } else {
+                    TagStore.completelyLoaded = true;
                 }
             }
             LoadActions.loadFromSearchResult(searchRes, callback)
@@ -1044,9 +1048,6 @@ export const Search = {
 
     loadWithQuery(count, query, callback) {
         let largeCount = this.getLargeCount(count);
-        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) { 
-            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE; 
-        } 
         Search.pending += 1;
         const wrapped = () => {
             Search.decrementPending();
