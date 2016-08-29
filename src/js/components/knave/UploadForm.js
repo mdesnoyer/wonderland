@@ -439,6 +439,13 @@ var UploadForm = React.createClass({
                     photoUploadMode: 'initial',
                     error: T.get('imageUpload.uploadMax')
                 });
+        }
+        else if (splitArray[0].length === 0 && splitArray[1].length >= 1 ) {
+            self.setState({
+                isOpen: true,
+                photoUploadMode: 'initial',
+                error: T.get('imageUpload.imageError')
+            });
         } else {
             splitArray[0].forEach(function(item, i) {
                 if (arrayToAdd.length + 1 <= UTILS.MAX_IMAGE_UPLOAD_COUNT && size + item.bytes <= UTILS.MAX_IMAGE_CHUNK_SIZE) {
