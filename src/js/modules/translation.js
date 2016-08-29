@@ -47,6 +47,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.currentThumbnail': 'Current Thumbnail',
             'copy.searchBar.placeholder': 'Search on title',
 
+            'action.loading': 'Loading',
             'action.signIn': 'Sign In',
             'action.signUp': 'Sign Up',
             'action.signOut': 'Sign Out',
@@ -260,6 +261,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+
             // image upload page
             'imageUpload.draglocation': 'Drag and Drop your image(s) here.',
             'imageUpload.folders': 'Sorry, no folders.',
@@ -279,6 +281,7 @@ const _DEFAULT_LOCALE = 'en-US',
             // Timers
             'timer.loading' : 'loading...',
             'timer.close' : 'almost...',
+            'timer.almost' : 'almost...',
 
             // Tooltips
             'tooltip.refilter.button': 'Refilter',

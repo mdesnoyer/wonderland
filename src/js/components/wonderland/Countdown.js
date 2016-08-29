@@ -1,12 +1,18 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 import React from 'react';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
+import CountdownClock from './CountdownClock';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 export default class Countdown extends React.Component {
+
     constructor(props) {
         super(props);
-
-        this.state = {
+        const self = this;
+        self.state = {
             seconds: parseInt(props.seconds || 1),
             classPrefix: props.classPrefix || 'xxOnboardingCountdown', 
             displayLoading: props.displayLoading || false
@@ -14,38 +20,42 @@ export default class Countdown extends React.Component {
     }
 
     componentDidMount() {
-            this.setProcessingTimer();
+        const self = this;
+        self.setProcessingTimer();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
+        const self = this;
+        self.setState({
             seconds: nextProps.seconds
         }, function() {
-            this.setProcessingTimer()
+            self.setProcessingTimer();
         });
     }
 
     componentWillUnmount() {
-        if (this.__processingTimer) {
-            clearTimeout(this.__processingTimer);
+        const self = this;
+        if (self.__processingTimer) {
+            clearTimeout(self.__processingTimer);
         }
     }
 
     setProcessingTimer() {
-        clearTimeout(this.__processingTimer);
-        this.__processingTimer = setTimeout(() => {
-            const { seconds } = this.state;
+        const self = this;
+        clearTimeout(self.__processingTimer);
+        self.__processingTimer = setTimeout(() => {
+            const { seconds } = self.state;
 
             if (seconds > 1) {
-                this.setProcessingTimer();
+                self.setProcessingTimer();
             }
             else {
-                if (this.props.onFinish) {
-                    this.props.onFinish();
+                if (self.props.onFinish) {
+                    self.props.onFinish();
                 }
             }
             if (seconds > 0) {
-                this.setState({
+                self.setState({
                     seconds: seconds - 1
                 });
             }
@@ -53,48 +63,43 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        var seconds = this.state.seconds,
-            classPrefix = this.state.classPrefix,
+        const self = this,
+            seconds = self.state.seconds,
+            classPrefix = self.state.classPrefix,
             classPrefixLabel = classPrefix + '-label'
         ;
-        if (this.state.seconds > 1) {
+        if (self.state.seconds > 1) {
             return (
-                <div className={classPrefix}>
-                    <span className={classPrefixLabel}>
-                        {
-                            UTILS.formatTime(
-                                Math.floor(seconds / 60),
-                                Math.floor(seconds % 60),
-                            )
-                        }
-                    </span>
-                </div>
-            )
+                <CountdownClock
+                    outerClass={classPrefix}
+                    innerClass={classPrefixLabel}
+                    displayValue={UTILS.formatTime(Math.floor(seconds / 60), Math.floor(seconds % 60))}
+                />
+            );
         }
-        else if (this.state.displayLoading) {
-            if (this.state.seconds && this.state.seconds > 1) {  
-                this.state.displayLoading = false;
+        else if (self.state.displayLoading) {
+            if (self.state.seconds && self.state.seconds > 1) {  
+                self.state.displayLoading = false;
             } 
-            return (  
-                <div className={classPrefix}>
-                    <span className={classPrefixLabel}>
-                        {
-                            T.get('timer.loading')
-                        }
-                    </span>
-                </div>
-            )
+            return (
+                <CountdownClock
+                    outerClass={classPrefix}
+                    innerClass={classPrefixLabel}
+                    displayValue={T.get('timer.loading')}
+                />
+            );
         } 
         else {
             return (
-                <div className={classPrefix}>
-                    <span className={classPrefixLabel}>
-                        {
-                            T.get('timer.close')
-                        }
-                    </span>
-                </div>
-            )
+                <CountdownClock
+                    outerClass={classPrefix}
+                    innerClass={classPrefixLabel}
+                    displayValue={T.get('timer.almost')}
+                />
+            );
         }
     }
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
