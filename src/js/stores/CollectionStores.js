@@ -970,6 +970,19 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
     },
+    sendEmail: function(data, callback) { 
+        SendActions.POST('email', {data})
+        .then(function(res) {
+            callback({'status_code' : 200});
+        })
+        .catch(function(err) {
+            callback({
+                'status_code' : 400,
+                'errorMessage' : 'unknown error sending email'
+            });
+        });
+       
+    } 
 });
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {

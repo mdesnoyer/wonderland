@@ -26,6 +26,7 @@ import {
     ThumbnailFeatureStore,
     TagShareStore,
     LoadActions,
+    SendActions,
     ServingStatusActions,
     Dispatcher,
     Search } from '../../stores/CollectionStores';
@@ -259,17 +260,8 @@ const CollectionsMainPage = React.createClass({
             });
             return;
         }
-        self.POST('email', {data})
-        .then(function(res) {
-            TRACKING.sendEvent(self, arguments, tagId);
-            callback({'status_code' : 200});
-        })
-        .catch(function(err) {
-            callback({
-                'status_code' : 400,
-                'errorMessage' : 'unknown error sending email'
-            });
-        });
+        TRACKING.sendEvent(self, arguments, tagId);
+        SendActions.sendEmail(data, callback); 
     },
 
     setTooltipText: function(tooltipText) {
