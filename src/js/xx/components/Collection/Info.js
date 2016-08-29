@@ -45,7 +45,7 @@ export default class XXCollectionInfo extends React.Component {
     }
 
     render() {
-        const { hasFilters, isMobile, title, activeContent, stage, setActiveContent, updateStage } = this.props;
+        const { hasFilters, isMobile, title, type, activeContent, stage, setActiveContent, updateStage } = this.props;
         const { time } = this.state;
 
         return (
@@ -95,21 +95,15 @@ export default class XXCollectionInfo extends React.Component {
                                 lift="200%"
                                 barWidth="100%"
                                 barOriginalWidth="33.3%"
+                                type={type}
                             />
                         ) : (
-                            stage && stage === 'image-hover2' ? (
-                                <XXLift
-                                    lift="125%"
-                                    barWidth="75%"
-                                    barOriginalWidth="33.3%"
-                                />
-                            ) : (
-                                <XXLift
-                                    lift="48%"
-                                    barWidth="49%"
-                                    barOriginalWidth="33.3%"
-                                />
-                            )
+                            <XXLift
+                                lift="48%"
+                                barWidth="49%"
+                                barOriginalWidth="33.3%"
+                                type={type}
+                            />
                         )
                     )
                 }

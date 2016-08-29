@@ -67,4 +67,40 @@
     }
 }
 
+.xxCollectionActions-disable {
+    &::after {
+        @include font-awesome('f12d');
+    }
+}
+
+.xxCollectionActions-add {
+    line-height: 16px;
+
+    &::after {
+        @include font-awesome('f055');
+        font-size: 16px;
+    }
+}
+
+.xxCollectionActions-enableserving {
+    color: green;
+    float: right; 
+
+    &::after {
+        @include font-awesome('f00c');
+        font-size: 20px;
+        
+    }
+}
+
+.xxCollectionActions-disableserving {
+    color: red;
+    float: right; 
+
+    &::after {
+        @include font-awesome('f00d');
+        font-size: 20px;
+    }
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

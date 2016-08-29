@@ -22,7 +22,7 @@ let TRACKING = {
     findSynthEventIndex: function(eventArray, eventArguments) {
         var funcName;
         for (var i = 0; i < eventArray.length; i++) {
-            if (eventArray[i].hasOwnProperty('_dispatchListeners')) {
+            if (eventArray[i] && eventArray[i].hasOwnProperty('_dispatchListeners')) {
                 funcName = this.returnFunctionName(i, eventArguments);
                 break;
             }

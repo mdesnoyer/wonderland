@@ -115,6 +115,7 @@ var PagingControls = React.createClass({
     },
     handleNextButton: function(e) {
         var self = this;
+        console.log(self, arguments, self.props.currentPage);
         TRACKING.sendEvent(self, arguments, self.props.currentPage);
         self.doNext();
     },

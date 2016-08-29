@@ -13,6 +13,11 @@ import DropDown from './DropDown';
 
 var VideoFilters = React.createClass({
     mixins: [AjaxMixin],
+    propTypes: {
+        handleBackClick: React.PropTypes.func,
+        videoId: React.PropTypes.string.isRequired,
+        handleSendRefilter: React.PropTypes.func,
+    },
     getInitialState: function() {
         var self = this;
         return {
@@ -21,12 +26,19 @@ var VideoFilters = React.createClass({
             isError: false
         };
     },
+    handleBackClick: function(e) {
+        var self = this;
+        if (self.handleBackClick) {
+            self.props.handleBackClick();
+        }
+    },
     componentWillUnmount: function() {
         E.clearErrors();
     },
     render: function() {
         var self = this,
-            collectionClassName = self.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
+            isMeMobile = UTILS.isMeMobile(),
+            collectionClassName = isMeMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''
@@ -35,23 +47,19 @@ var VideoFilters = React.createClass({
             submitClassName.push('xxButton--important');
         }
         return (
-            <div className={collectionClassName}>
+            <div className={collectionClassName} data-vid={self.props.videoId}>
                 <h2 className="xxTitle">Filter Results</h2>
                 {
-                    self.props.isMobile ? (
+                    isMeMobile ? (
                         <div 
                             className="xxOverlay-close"
                             data-action-label="info"
-                            onClick={self.props.handleBackClick}>
+                            onClick={self.handleBackClick}>
                         </div>
                     ) : null
                 }
-                <p>
-                    Filter your video to see images targeted for a specific
-                    demographic audience. We’ll need to reprocess the video,
-                    so this may take a few minutes.
-                </p>
-                { errMsg }
+                <p>Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.</p>
+                {errMsg}
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>
                     <DropDown
@@ -72,7 +80,7 @@ var VideoFilters = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={self.props.handleBackClick}
+                        onClick={self.handleBackClick}
                         >{T.get('back')}</button>
                     <button
                         className={submitClassName.join(' ')}
@@ -85,45 +93,56 @@ var VideoFilters = React.createClass({
         );
     },
     onGenderChange: function(value) {
-        this.setState({
+        var self = this;
+        self.setState({
             gender: value || null,
             isError: false
         });
     },
     onAgeChange: function(value) {
-        this.setState({
+        var self = this;
+        self.setState({
             age: value || null,
             isError: false
         });
     },
     sendRefilter: function() {
-        var self = this,
-            options = {
-                data: {
-                    external_video_ref: self.props.videoId,
-                    reprocess: true,
-                    gender: self.state.gender,
-                    age: self.state.age
+
+        // Allow the parent's refilter function to override.
+        if (this.props.handleSendRefilter) {
+            return this.props.handleSendRefilter(
+               this.props.videoId,
+               this.state.gender,
+               this.state.age);
+        } else {
+
+            var self = this,
+                options = {
+                    data: {
+                        external_video_ref: self.props.videoId,
+                        reprocess: true,
+                        gender: self.state.gender,
+                        age: self.state.age
+                    }
                 }
-            }
-        ;
-        self.POST('videos', options)
-            .then(function(json) {
-                if (self.props.handleMenuChange) {
-                    // TODO stateify age and gender at videoowner level
-                    self.props.handleMenuChange(self.state.age, 
-                        self.state.gender, 
-                        true);
-                }
-            })
-            .catch(function(err) {
-                E.raiseError(err);
-                self.setState({
-                    isError: true
+            ;
+            self.POST('videos', options)
+                .then(function(json) {
+                    if (self.props.handleMenuChange) {
+                        // TODO stateify age and gender at videoowner level
+                        self.props.handleMenuChange(self.state.age, 
+                            self.state.gender, 
+                            true);
+                    }
+                })
+                .catch(function(err) {
+                    E.raiseError(err);
+                    self.setState({
+                        isError: true
+                    });
                 });
-            });
-        TRACKING.sendEvent(self, arguments, 
-                           self.state.gender + "/" + self.state.age);
+        }
+        TRACKING.sendEvent(this, arguments, this.state.gender + "/" + this.state.age);
     }
 })
 

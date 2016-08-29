@@ -18,6 +18,10 @@
 .xxFormField {
     @include clearfix;
     margin: 0 0 14px;
+
+    &--has-urlDrop {
+        display: inline;
+    }
 }
 
 .xxLabel {
@@ -27,6 +31,12 @@
     width: 100%;
     color: $tertiary-color;
     line-height: 26px;
+    
+    &--hasUpload {
+        margin-top: 1em;
+        text-align: left;
+        // background: blue;
+    }
 }
 
 .xxInputText {
@@ -45,6 +55,7 @@
 
     @include breakpoint-mobile {
         height: $mobile-form-element-height;
+        font-size: 16px;
     }
 
     &[readonly] {
@@ -57,6 +68,14 @@
 
     .has-error > & {
         border-color: $accent-color;
+    }
+    &--has-urlDrop {
+        display: inline;
+        width: 80%;
+        margin-top: 4%;
+        @include breakpoint-mobile {
+            line-height: 37px;
+        }
     }
 }
 
@@ -110,6 +129,11 @@
 
     .xxFormField + .xxFormField & {
         margin-top: -2px;
+    }
+
+    .has-downloaded-note > & {
+        text-align: center;
+        color: $accent-color;
     }
 }
 
@@ -285,9 +309,18 @@
     &:hover {
         border-color: $accent-color;
         color: $base-color;
+    }    
+    &--dragsmall {
+        margin: 0 auto; 
     }
-
     &--highlight {
+
+        @include breakpoint-mobile {
+            border-color: $accent-color !important;
+            background: $accent-color !important;
+            color: $white !important;
+        }
+
         &,
         &[disabled],
         &[disabled]:hover {
@@ -351,6 +384,32 @@
         @include breakpoint-mobile {
             border-color: $tertiary-color;
         }
+    }
+
+    &--file {
+        position: relative;
+    }
+
+    &--has-urlDrop {
+        display: inline;
+        width: 20%;
+        margin-top: 4%;
+    }
+}
+
+.xxButton-fileInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+
+    &::-webkit-file-upload-button {
+        cursor: pointer;
     }
 }
 
