@@ -613,6 +613,7 @@ const CollectionsContainer = React.createClass({
                 thumbnails={sortedThumbnails}
                 selectedItem={thumbnailIndex}
                 displayThumbLift={lift}
+                tagType={tag.tag_type}
                 // Bind next/prev functions to store the next/prev thumb id
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}
