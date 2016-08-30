@@ -442,8 +442,7 @@ const CollectionsMainPage = React.createClass({
     },
 
     render: function() {
-
-        const body = (_.isEmpty(this.state.tags) && Search.pending > 0) ?
+        const body = (_.isEmpty(this.state.tags) && Search.pending > 0 && Search.emptySearch == false) ?
             this.getLoading() :
             this.getResults();
 
