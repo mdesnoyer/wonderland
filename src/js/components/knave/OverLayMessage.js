@@ -2,6 +2,7 @@
 
 import React from 'react';
 import T from '../../modules/translation';
+import OverlayErrorFiles from './OverlayErrorFiles';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,7 +27,6 @@ var OverLayMessage = React.createClass({
             description,
             firstButtonLabel,
             secondButtonLabel
-
         ;
 
         switch(self.props.type) {
@@ -50,6 +50,7 @@ var OverLayMessage = React.createClass({
                             <div className="xxOverlay-content">
                             <h2 className="xxTitle">{title}</h2>
                             <h3 className="xxOnboardingSlide-description">{description}</h3>
+                            <OverlayErrorFiles />
                             <fieldset>
                                 <div className="xxCollectionAction-buttons">
                                     <button

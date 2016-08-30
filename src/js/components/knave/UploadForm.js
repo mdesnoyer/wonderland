@@ -41,7 +41,7 @@ var UploadForm = React.createClass({
         var self = this;
         return {
             isOpen: false,
-            isOpenMessage: false,
+            isOpenMessage: true,
             isPhotoOpen: false,
             isVideoOpen: false,
             photoUploadCount: 0,
@@ -53,15 +53,12 @@ var UploadForm = React.createClass({
             error: null,
         };
     },
-
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyEvent);
     },
-
     componentWillUnmount() {
         window.removeEventListener('keydown', this.handleKeyEvent);
     },
-
     handleKeyEvent(e) {
         // Escape closes.
         const self = this;
@@ -69,7 +66,6 @@ var UploadForm = React.createClass({
             self.setState(self.getInitialState());
         }
     },
-
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
@@ -123,6 +119,9 @@ var UploadForm = React.createClass({
         }
         this.setState(this.getInitialState());
     },
+    handleOpenMessageErrorFiles: function(e) {
+        alert('alert')
+    },
     render: function() {
         const { isOnboarding } = this.props;
         var self = this,
@@ -154,6 +153,7 @@ var UploadForm = React.createClass({
                     cancelClickHandler={self.props.cancelClickHandler}
                     panelType={self.props.panelType}
                     updateDefaultThumbnail={self.updateDefaultThumbnail}
+                    handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
                 />
             );
         }
@@ -217,11 +217,12 @@ var UploadForm = React.createClass({
                                             toggleOpen={self.toggleOpen}
                                             photoUploadMode={self.state.photoUploadMode}
                                             photoUploadCount={self.state.photoUploadCount}
-                                            photoErrorCount={self.state.photoErrorCount}
+                                            photoErrorCount={self.state.photoErrorCount.length}
                                             updateField={self.updateField}
                                             photoCollectionName={self.state.photoCollectionName}
                                             photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
                                             numberUploadedCount={self.state.numberUploadedCount}
+                                            handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
                                         />
                                     ) :  null
                                 }
@@ -305,57 +306,18 @@ var UploadForm = React.createClass({
              fileArray.push(file);
          }
          self.formatData(fileArray, 'local');
-     },
-     sendDropBoxUrl: function(urls) {
-        var self = this,
-            dropBoxUrlsArray = urls.map(function(a) {return a.link;}).join(","),
-            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails',
-            options = {
-                data: {
-                    url: dropBoxUrlsArray
-                }
-            }
-        ;
-        self.POST(address, options)
-        .then(function(res) {
-             var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
-             self.setState({
-                 photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                 numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
-                 }, function() {
-                     if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
-                         self.setState({
-                             photoUploadMode:'success',
-                             error: null
-                             }, function() {
-                                 // if add panel load the new thumbnails asssociated with the tag
-                                 self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
-                                 setTimeout(function() {
-                                 self.setState({ photoUploadMode:'initial' });
-                                 }, 3000)
-                         });
-                 }
-             });
-         })
-        .catch(function(err) {
-            self.setState({
-            photoUploadMode:'initial'
-            },  function() {
-                self.throwUploadError(err);
-            });
-        });
     },
     grabDropBox: function() {
         var self = this,
             options = {
-                success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatData(urls, 'dropbox')},
-                // success: function(urls) {self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatDropboxUrls(urls)},
+                success: function(urls) { self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatData(urls, 'dropbox') },
+                cancel: function() { self.setState({ photoUploadMode:'initial'}) },
                 linkType: "direct",
-                multiselect:  !self.props.isAddPanel || self.props.panelType === 'photo',
+                multiselect: !self.props.isAddPanel || self.props.panelType === 'photo',
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
-            Dropbox.choose(options);
+        Dropbox.choose(options);
     },
     sendCollectionTag: function() {
         var self = this,
@@ -471,12 +433,9 @@ var UploadForm = React.createClass({
             photoUploadMode: 'loading',
             photoUploadCount: filesToParse[0].length,
             numberUploadedCount: 0,
-            photoErrorCount: filesToParse[1].length 
+            photoErrorCount: filesToParse[1]
         },  function() {
-            if (type !== 'dropbox') { 
-                arrayToSend = self.createFormDataArray(arrayToSend); 
-            }; 
-
+            if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
             self.grabRefreshToken(
                 arrayToSend.forEach(function(array) {
                     self.sendFormattedData(array, type)
@@ -509,7 +468,6 @@ var UploadForm = React.createClass({
                                 photoUploadMode:'success',
                                 error: null
                                 }, function() {
-                                    // if add panel load the new thumbnails asssociated with the tag
                                     self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
                                     setTimeout(function() {
                                     self.setState({ photoUploadMode:'initial' });
