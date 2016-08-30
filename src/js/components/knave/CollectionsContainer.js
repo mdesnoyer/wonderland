@@ -356,12 +356,18 @@ const CollectionsContainer = React.createClass({
             if (video.state == 'submit') { 
                 return this.buildVideoProcessingComponent(tagId);
             } 
+            if (video.state == 'failed') { 
+                return this.buildVideoFailedComponent(tagId);
+            }
+ 
             if (tag.thumbnail_ids.length === 1) {
                 // if it's just the default thumbnail, we have a video 
                 // that's still processing.  
                 const tid = tag.thumbnail_ids[0]; 
                 const thumbnail = this.props.stores.thumbnails[0][0][tid];
-                if (thumbnail.type == 'default') { 
+                // we can't find the thumbnail in our stores, meaning it's 
+                // older or the default just hasn't showed up yet. 
+                if (!thumbnail || thumbnail.type == 'default') { 
                     return this.buildVideoProcessingComponent(tagId);
                 }  
             } 
@@ -613,6 +619,7 @@ const CollectionsContainer = React.createClass({
                 thumbnails={sortedThumbnails}
                 selectedItem={thumbnailIndex}
                 displayThumbLift={lift}
+                tagType={tag.tag_type}
                 // Bind next/prev functions to store the next/prev thumb id
                 handleClickNext={this.onOverlayClickNextPrev.bind(null, nextThumbnailId)}
                 handleClickPrevious={this.onOverlayClickNextPrev.bind(null, prevThumbnailId)}

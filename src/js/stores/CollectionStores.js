@@ -621,7 +621,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(liftRes => {
             const tagLiftMap = liftRes;
             // Set, dispatch and callback.
-            debugger
             LiftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
@@ -857,15 +856,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Short circuit search if we have enough items or everything.
         if (n <= haveCount) {
+            callback && callback();
             return;
         }
         if (TagStore.completelyLoaded) {
+            callback && callback();
             return;
         } else if (query && FilteredTagStore.completelyLoaded) {
+            callback && callback();
             return;
         }
 
-        const limit = n - haveCount;
+        // Ensure searches are no bigger than the max.
+        const limit = _.min([n - haveCount, UTILS.MAX_SEARCH_SIZE]);
         const options = {
             data: {limit}
         };
@@ -887,11 +890,15 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
                 if(query) {
-                    TagStore.completelyLoaded = true;
-                } else {
                     FilteredTagStore.completelyLoaded = true;
+                } else {
+                    TagStore.completelyLoaded = true;
                 }
             }
+            if (searchRes.items.length === 0) {
+                callback && callback(true);
+            } 
+            
             LoadActions.loadFromSearchResult(searchRes, callback)
         });
     },
@@ -970,6 +977,19 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
     },
+    sendEmail: function(data, callback) { 
+        SendActions.POST('email', {data})
+        .then(function(res) {
+            callback({'status_code' : 200});
+        })
+        .catch(function(err) {
+            callback({
+                'status_code' : 400,
+                'errorMessage' : 'unknown error sending email'
+            });
+        });
+       
+    } 
 });
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {
@@ -1024,6 +1044,7 @@ export const Dispatcher = {
 export const Search = {
 
     pending: 0,
+    emptySearch: false, 
 
     getLargeCount(count) {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
@@ -1032,9 +1053,14 @@ export const Search = {
     load(count, onlyThisMany=false, callback) {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
-        Search.pending += 1;
-        const wrapped = () => {
+        Search.incrementPending();
+ 
+        const wrapped = (isEmpty) => {
             Search.decrementPending();
+            if (isEmpty) { 
+                Search.setEmptySearch(true); 
+                Dispatcher.dispatch();
+            }
             if (_.isFunction(callback)) {
                 callback();
             }
@@ -1043,13 +1069,14 @@ export const Search = {
     },
 
     loadWithQuery(count, query, callback) {
-        let largeCount = this.getLargeCount(count);
-        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) { 
-            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE; 
-        } 
-        Search.pending += 1;
-        const wrapped = () => {
+        const largeCount = this.getLargeCount(count);
+        Search.incrementPending();
+        const wrapped = (isEmpty) => {
             Search.decrementPending();
+            if (isEmpty) { 
+                Search.setEmptySearch(true); 
+                Dispatcher.dispatch();
+            }
             if (_.isFunction(callback)) {
                 callback();
             }
@@ -1061,7 +1088,15 @@ export const Search = {
         return FilteredTagStore.count() > count;
     },
 
+    setEmptySearch() { 
+        return Search.emptySearch = true; 
+    },
+ 
+    incrementPending() {
+        return Search.pending += 1;
+    },
+
     decrementPending() {
-        Search.pending -= 1;
+        return Search.pending -= 1;
     }
 };

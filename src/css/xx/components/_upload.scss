@@ -257,6 +257,10 @@ $zindex-upload-drag-and-drop: 1;
     padding: $gutter-width $gutter-width 42px;
     background: $white;
 
+    @include breakpoint-mobile {
+        min-width: 100%; // #1724
+    }
+
     & > .xxButton {
         width: 100%;
         margin-top: 26px;
@@ -272,8 +276,11 @@ $zindex-upload-drag-and-drop: 1;
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
-
+    @include breakpoint-mobile {
+        min-width: 100%; // #1724
+    }
 }
+
 .xxUploadDialog-drag-drop-panel {
     float: right;
     position: relative;

@@ -1,12 +1,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import _ from 'lodash';
 
 import T from '../../modules/translation';
 import ZoomThumbnail from './ZoomThumbnail';
-import ReactDOM from 'react-dom';
+import UTILS from '../../modules/utils';
 import scrollbarWidth from '../../xx/utils/scrollbarWidth';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,6 +56,20 @@ var ThumbnailOverlay = React.createClass({
                 return self.props.handleClickNext(e);
         }
     },
+    getExtraClass: function(thumbnail, index) {
+        // If this is the left feature thumbnail, then it is always lowlight.
+        if (index === 0) {
+            return 'xxThumbnail--lowLight';
+        }
+        if (thumbnail.type === 'neon') {
+            return 'xxThumbnail--highLight';
+        }
+        if (this.props.tagType === UTILS.TAG_TYPE_IMAGE_COL &&
+                thumbnail.type === 'customupload') {
+            return 'xxThumbnail--highLight';
+        }
+        return 'xxThumbnail--lowLight';
+    },
     render: function() {
         var self = this;
         return (
@@ -85,7 +100,7 @@ var ThumbnailOverlay = React.createClass({
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}
                                         valence={valence}
-                                        extraClass={thumbnail.type === 'neon' ? 'xxThumbnail--highLight' : 'xxThumbnail--lowLight'}
+                                        extraClass={self.getExtraClass(thumbnail, i)}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}
                                         translationOverrideMap={self.props.translationOverrideMap}
