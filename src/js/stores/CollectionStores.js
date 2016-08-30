@@ -621,7 +621,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(liftRes => {
             const tagLiftMap = liftRes;
             // Set, dispatch and callback.
-            debugger
             LiftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
@@ -896,6 +895,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     TagStore.completelyLoaded = true;
                 }
             }
+            if (searchRes.items.length === 0) {
+                callback && callback(true);
+            } 
+            
             LoadActions.loadFromSearchResult(searchRes, callback)
         });
     },
@@ -1041,6 +1044,7 @@ export const Dispatcher = {
 export const Search = {
 
     pending: 0,
+    emptySearch: false, 
 
     getLargeCount(count) {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
@@ -1050,8 +1054,13 @@ export const Search = {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
-        const wrapped = () => {
+ 
+        const wrapped = (isEmpty) => {
             Search.decrementPending();
+            if (isEmpty) { 
+                Search.setEmptySearch(true); 
+                Dispatcher.dispatch();
+            }
             if (_.isFunction(callback)) {
                 callback();
             }
@@ -1062,8 +1071,12 @@ export const Search = {
     loadWithQuery(count, query, callback) {
         const largeCount = this.getLargeCount(count);
         Search.incrementPending();
-        const wrapped = () => {
+        const wrapped = (isEmpty) => {
             Search.decrementPending();
+            if (isEmpty) { 
+                Search.setEmptySearch(true); 
+                Dispatcher.dispatch();
+            }
             if (_.isFunction(callback)) {
                 callback();
             }
@@ -1075,6 +1088,10 @@ export const Search = {
         return FilteredTagStore.count() > count;
     },
 
+    setEmptySearch() { 
+        return Search.emptySearch = true; 
+    },
+ 
     incrementPending() {
         return Search.pending += 1;
     },
