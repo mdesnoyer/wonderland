@@ -123,13 +123,15 @@ const CollectionsMainPage = React.createClass({
         const self = this;
         const count = useCurrentPage ?
             self.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
-            TagStore.count();
+            FilteredTagStore.count();
 
         if(self.state.searchQuery) {
             Search.loadWithQuery(count, self.state.searchQuery);
         } else {
             Search.load(count);
         }
+        const searchPending = Search.pending > 0;
+        self.setState({ searchPending });
     },
 
     socialClickHandler: function(service, shareUrl) {
@@ -331,6 +333,9 @@ const CollectionsMainPage = React.createClass({
 
         // Use the query to filter display of results.
         const searchQuery = e.target.value.trim();
+
+        // Update the stateful filteredtagstore.
+        FilteredTagStore.completelyLoaded = false;
         if (!searchQuery) {
             FilteredTagStore.resetFilter();
         } else {
@@ -367,16 +372,14 @@ const CollectionsMainPage = React.createClass({
                 // Run a stateful search.
                 self.loadMoreFromSearch.bind(self, false),
                 // Millis between requests after first one.
-                200,
-                // Invoke immediately.
-                {leading: true, trailing: false}
+                1000,
+                {leading: true, trailing: true}
             );
         }
 
         // Resolve state change then search.
         self.setState({
             searchQuery,
-            searchPending: Search.pending > 0,
             currentPage: 0,
             selectedTags: FilteredTagStore.getAll(),
         }, self.searchFunction);
