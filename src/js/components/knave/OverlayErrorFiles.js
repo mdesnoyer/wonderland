@@ -7,23 +7,11 @@ var OverlayErrorFiles = React.createClass({
 			return (
 				<ul className="xxOverlay-scrollbox">
 					{
-						self.props.errorFiles.map(function(file, id) {
-							// return <li className="scrollbox-item"> </>
-							debugger
-
+						this.props.errorFiles.map(function(file, id) {
+							var sizeType = file.hasOwnProperty('bytes') ? 'bytes' : 'size';
+							return <li> {file.name + ' - ' + file[sizeType]} </li>
 						})
 					}
-					<li className="scrollbox-item">
-					Name: "oiwhdoihwd" - 56KB   
-					</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
-					<li className="scrollbox-item">1</li>
 				</ul>
 			);	
 		}
