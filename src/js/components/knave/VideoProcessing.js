@@ -26,6 +26,9 @@ var VideoProcessing = React.createClass({
         deleteVideo: React.PropTypes.func.isRequired,
     },
 
+    getDefaultPropTypes: function() { 
+        return { selectedDemographic : [0,0] }; 
+    }, 
     componentDidMount: function() {
         this.setProcessingMonitor();
     },
@@ -39,12 +42,18 @@ var VideoProcessing = React.createClass({
     },
 
     setProcessingMonitor: function() {
-        const tagId = this.props.tagId;
+        const tagId = this.props.tagId, 
+              selectedDemographic = this.props.selectedDemographic || [0,0]
+        ;
         if (!tagId) {
             // This must be the VideoOwner's VideoProcessing.
             return;
         }
-        const monitorFunction = LoadActions.loadTags.bind(null, [tagId], this.props.selectedDemographic[0], this.props.selectedDemographic[1]);
+        const monitorFunction = LoadActions.loadTags.bind(
+            null, 
+            [tagId], 
+            selectedDemographic[0], 
+            selectedDemographic[1]);
 
         if (this.props.estimatedTimeRemaining > 10) {
             this.clearProcessingMonitor();
