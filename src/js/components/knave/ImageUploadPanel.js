@@ -34,7 +34,8 @@ var ImageUploadPanel = React.createClass({
 	                        {`${Math.round((self.props.numberUploadedCount) / self.props.photoUploadCount * 100)}%`}
 	                    </span>
 	                    {"Uploading (" + self.props.photoUploadCount + ") files."}<br/>
-	                    {self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null}
+	                    {self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null}<br/>
+	                    You can view these files by clicking <a onClick={self.props.handleOpenMessageErrorFiles}>here</a> 
 	                </div>
 	            );
 	            break;

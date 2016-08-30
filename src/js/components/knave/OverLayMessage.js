@@ -22,69 +22,48 @@ var OverLayMessage = React.createClass({
         }
     },
     render: function() {
-        var self = this,
-            title,
-            description,
-            firstButtonLabel,
-            secondButtonLabel
-        ;
-
-        switch(self.props.type) {
-            case 'limit':
-                title = T.get('copy.analyzeVideo.maxLimitHit');
-                description = T.get('copy.analyzeVideo.limitDate');
-                firstButtonLabel = T.get('gotIt');
-                secondButtonLabel = T.get('action.signUp');
-                break;
-            default:
-                title ='title';
-                description ='description';
-                firstButtonLabel ='firstButtonLabel';
-                secondButtonLabel ='secondButtonLabel';
-        }
+        var self = this;
+        var message = typeof self.props.overlayCode === 'number' ? 'general' : self.props.overlayCode
         return (
             <div>
-                {
-                    self.state.isOpen ? (
-                        <section className="xxOverlay">
-                            <div className="xxOverlay-content">
-                            <h2 className="xxTitle">{title}</h2>
-                            <h3 className="xxOnboardingSlide-description">{description}</h3>
-                            <OverlayErrorFiles />
-                            <fieldset>
-                                <div className="xxCollectionAction-buttons">
-                                    <button
-                                        className="xxButton xxButton--highlight"
-                                        type="button"
-                                        data-button-type="close"
-                                        onClick={self.handleClick}
-                                    >{firstButtonLabel}</button>
-                                    <button
-                                        className="xxButton xxButton--highlight"
-                                        type="button"
-                                        data-button-type="action"
-                                        onClick={self.handleClick}
-                                    >{secondButtonLabel}</button>
-                                </div>
-                            </fieldset>
-                            </div>
-                        </section>
-                    ): null
-                }
+                <section className="xxOverlay">
+                    <div className="xxOverlay-content">
+                    <h2 className="xxTitle">{T.get('uploadError.title.' + message )}</h2>
+                    <h3 className="xxOnboardingSlide-description">{T.get('uploadError.msg.' + message)}</h3>
+                    <OverlayErrorFiles errorFiles={self.props.errorFiles} />
+                    <fieldset>
+                        <div className="xxCollectionAction-buttons">
+                            <button
+                                className="xxButton xxButton--highlight"
+                                type="button"
+                                data-button-type="close"
+                                onClick={self.handleClick}
+                            >{'Got It!'}</button>
+                            <button
+                                className="xxButton xxButton--highlight"
+                                type="button"
+                                data-button-type="action"
+                                onClick={self.handleClick}
+                            >{"placeholder"}</button>
+                        </div>
+                    </fieldset>
+                    </div>
+                </section>
             </div>
         );
     },
     handleClick: function(e) {
-        var self = this,
-            buttonType = e.target.dataset.buttonType === "action"
-        ;
-        self.setState({
-            isOpen: !self.state.isOpen
-        }, function() {
-            if (self.props.messageFunction && buttonType) {
-                self.props.messageFunction(e); 
-            }
-        });
+        this.props.overlayReset(e);
+        // var self = this,
+        //     buttonType = e.target.dataset.buttonType === "action"
+        // ;
+        // self.setState({
+        //     isOpen: !self.state.isOpen
+        // }, function() {
+        //     if (self.props.messageFunction && buttonType) {
+        //         self.props.messageFunction(e); 
+        //     }
+        // });
     },
     getDefaultProps: function() {
         return {

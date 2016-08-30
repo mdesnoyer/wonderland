@@ -50,6 +50,9 @@ var UploadForm = React.createClass({
             photoCollectionName: '',
             videoUploadUrl:'',
             numberUploadedCount: 0,
+            overlayCode: null, 
+            photoErrorCount:[],
+            errorFiles: [],
             error: null,
         };
     },
@@ -98,6 +101,7 @@ var UploadForm = React.createClass({
                 isOpenMessage: false,
                 isOpenPhoto: false,
                 isOpenVideo: false,
+                overlayCode: null
             });
         }
     },
@@ -120,7 +124,14 @@ var UploadForm = React.createClass({
         this.setState(this.getInitialState());
     },
     handleOpenMessageErrorFiles: function(e) {
+        e.preventDefault();
         alert('alert')
+        var err = { code: 'viewErrFiles' };
+        this.throwUploadError(err);
+    },
+    handleOverlayReset: function(e) {
+        e.preventDefault();
+        this.setState({ overlayCode: null, isOpen: true});
     },
     render: function() {
         const { isOnboarding } = this.props;
@@ -159,12 +170,9 @@ var UploadForm = React.createClass({
         }
         return (
             <div className={className.join(' ')}>
-                <OverLayMessage
-                    message={T.get('error.unpaidAccountLimit')}
-                    messageFunction={self.props.openSignUp}
-                    isOpenMessage={self.state.isOpenMessage}
-                    type="limit"
-                />
+                {
+                    self.state.overlayCode  ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
+                }
                 <a
                     className="xxUploadButton"
                     title={T.get('action.analyze')}
@@ -253,13 +261,17 @@ var UploadForm = React.createClass({
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
                 break;
             case 402:
-                self.setState({ isOpenMessage: true });
+                self.setState({ overlayCode: 'limit' });
                 break;
+            case 404: 
+            //redirect to a 404 page that has a link back to the collections home
+            break;
             default:
-                self.setState({
-                    isOpen: true,
-                    error: T.get('copy.onboarding.uploadErrorText.generic')
-                });
+                self.setState({ overlayCode: err.code });
+                // self.setState({
+                //     isOpen: true,
+                //     error: T.get('copy.onboarding.uploadErrorText.generic')
+                // });
         }
     },
     sendVideoUrl: function() {
@@ -428,12 +440,18 @@ var UploadForm = React.createClass({
                 index === filesToParse[0].length - 1 && arrayToSend.push(arrayToAdd);
             }
         });
+         if (filesToParse[0].length === 0){
+            self.setState({ overlayCode: 'AllFiles', isOpen: false, errorFiles: filesToParse[1] });
+            return 
+        }
+        debugger
         self.setState({
             error: null, 
             photoUploadMode: 'loading',
             photoUploadCount: filesToParse[0].length,
             numberUploadedCount: 0,
-            photoErrorCount: filesToParse[1]
+            photoErrorCount: filesToParse[1],
+            errorFiles: filesToParse[1]
         },  function() {
             if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
             self.grabRefreshToken(
