@@ -862,7 +862,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     //         if false, don't call the backend if the number of
     //             tags in the FilteredTagStore exceeds n
     //         if true, always call the backend
-    loadNNewestTags(n, query, type, force, callback) {
+    loadNNewestTags(n, query=null, type=null, force=false, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
@@ -1069,7 +1069,7 @@ export const Search = {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
     },
 
-    load(count, onlyThisMany=false, callback) {
+    load(count, onlyThisMany=false, callback=null) {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
@@ -1077,14 +1077,14 @@ export const Search = {
         LoadActions.loadNNewestTags(largeCount, null, null, false, wrapped);
     },
 
-    loadWithQuery(count, query, type, callback) {
+    loadWithQuery(count, query=null, type=null, callback=null) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(largeCount, query, type, false, wrapped);
     },
 
-    reload(count, query, type, callback) {
+    reload(count, query=null, type=null, callback=null) {
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(count, query, type, true, wrapped);
