@@ -1,3 +1,13 @@
+$header_background_color: #333;
+$header_text_color: #FDFDFD;
+$alternate_row_background_color: #DDD;
+
+$table_width: 450px;
+$table_width_mobile: 300px; 
+$table_body_height: 300px;
+// $column_one_width: 200px;
+// $column_two_width: 200px;
+// $column_three_width: 350px;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .has-overlayDark {
@@ -124,33 +134,128 @@
     margin: 0 auto;
     text-align: center;
     transform: translateY(-50%);
+    @include breakpoint-mobile {
+        // height: $mobile-form-element-height;
+        width: 300px; 
+    }
 
     .xxButton {
         margin: 24px auto 0;
     }
-    .xxOverlay-scrollbox {
-        overflow: scroll;
-        list-style: none;
-        height: 6em;
-        width: 100%;
-        position: relative;
-        background: $bg-color;
-        border: 3px solid $base-color; 
-        & > li {
+    // .xxOverlay-scrollbox {
+    //     overflow: scroll;
+    //     list-style: none;
+    //     height: 6em;
+    //     width: 100%;
+    //     position: relative;
+    //     background: $bg-color;
+    //     border: 3px solid $accent-color;
+    //     & > li {
 
-            padding: 1%;
-            border-top: $processing-ribbon-height solid $accent-color;
-            background: $white;
-            margin: 2%; 
+    //         padding: 1%;
+    //         // border-top: $processing-ribbon-height solid $accent-color;
+    //         background: $white;
+    //         margin: 2%; 
 
-            & > span:first-of-type {
-                text-align: left; 
-            }
-            & > span:last-of-type {
-                text-align: right; 
+    //         & > span:first-of-type {
+    //             &::before {
+    //                 @include font-awesome('f15b');
+    //             }
+    //             // max-width: 40%;
+    //             text-align: left;
+    //             float: left; 
+    //         }
+    //         & > span:last-of-type {
+    //             // float: right;
+    //         }
+    //     }
+    // }
+    // #table-wrapper {
+    //   position:relative;
+    // }
+    // #table-scroll {
+    //   height: 150px;
+    //   overflow: auto;  
+    //   margin-top: 20px;
+    // }
+    // #table-wrapper table {
+    //   width:100%;
+
+    // }
+    // #table-wrapper table * {
+    //   background:yellow;
+    //   color:black;
+    // }
+    // #table-wrapper table thead {
+    //   position: absolute;   
+    //   top: -20px;
+    //   z-index: 2;
+    //   height: 20px;
+    //   width: 35%;
+    //   border:1px solid red;
+    // }
+
+    .fixed_headers {
+      width: $table_width;
+      table-layout: fixed;
+      border-collapse: collapse;
+
+      @include breakpoint-mobile {
+          width: $table_width_mobile; 
+      }
+      
+      th { text-decoration: underline; }
+      th, td {
+        padding: 5px;
+        text-align: left;
+      }
+      
+      td:nth-child(1), th:nth-child(1) { 
+            min-width: $table_width * .45;
+            @include breakpoint-mobile {
+                min-width: $table_width_mobile * .45; 
             }
         }
+
+       td:nth-child(1){
+            &::before {
+            @include font-awesome('f15b');
+            padding-right: 5%;
+           }
+        }  
+
+      td:nth-child(2), th:nth-child(2) { 
+        min-width: $table_width * .15; 
+        @include breakpoint-mobile {
+            min-width: $table_width_mobile * .15;
+        }
     }
+      td:nth-child(3), th:nth-child(3) { 
+        width: $table_width * .40; 
+        @include breakpoint-mobile {
+            width: $table_width_mobile * .40
+        }
+    }
+
+      thead {
+        background-color: $header_background_color;
+        color: $header_text_color;
+        tr {
+          display: block;
+          position: relative;
+        }
+      }
+      tbody {
+        display: block;
+        overflow: auto;
+        width: 100%;
+        height: $table_body_height;
+        tr:nth-child(even) {
+          background-color: $alternate_row_background_color;
+        }
+      }
+  }
+
 
 }
 
