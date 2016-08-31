@@ -212,7 +212,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: (searchRes, callback) => {
+    loadFromSearchResult: (searchRes, force, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -229,21 +229,25 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const updateTagMap = {};
         const updateVideoMap = {};
 
-        // Build tags promise.
-        const missingTagIds =  _
-            .chain(searchRes.items)
+        const searchResTagIds = _.chain(searchRes.items)
             .reduce((tagIds, tag) => {
                 tagIds.push(tag.tag_id);
                 return tagIds;
             }, [])
-            // Omit all the stored ones.
-            .difference(_.keys(TagStore.getAll()))
             .uniq()
             .value();
+
+        // Decide which tag ids to search for.
+        const searchForTagIds = force ?
+            // If forced, search for all of them.
+            searchResTagIds :
+            // Else omit the ones we've already loaded.
+            _.difference(searchResTagIds, _.keys(TagStore.getAll()));
+
         let tagPromise = Promise.resolve({});
-        if (missingTagIds.length > 0) {
+        if (searchForTagIds.length > 0) {
             const tagData = {
-                tag_id: missingTagIds.join(',')
+                tag_id: searchForTagIds.join(',')
             };
             tagPromise = LoadActions.GET('tags', {data: tagData});
         }
@@ -850,21 +854,32 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Tries to fill out the TagStore to n tags
     //
     // Return n the number of new tags.
-    loadNNewestTags(n, query, callback) {
+    // Inputs
+    //     n- integer- number of tags we want to have in the TagStore
+    //     query- string- filter applied on Tag name
+    //     type- a UTILS.TAG_TYPE_*, filter applied on Tag tag_type
+    //     force- bool, false by default
+    //         if false, don't call the backend if the number of
+    //             tags in the FilteredTagStore exceeds n
+    //         if true, always call the backend
+    loadNNewestTags(n, query, type, force, callback) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
-        // Short circuit search if we have enough items or everything.
-        if (n <= haveCount) {
-            callback && callback();
-            return;
-        }
-        if (TagStore.completelyLoaded) {
-            callback && callback();
-            return;
-        } else if (query && FilteredTagStore.completelyLoaded) {
-            callback && callback();
-            return;
+        // If force, skip these checks that return early.
+        if (!force) {
+            // Short circuit search if we have enough items or everything.
+            if (n <= haveCount && !force) {
+                callback && callback();
+                return;
+            }
+            if (TagStore.completelyLoaded) {
+                callback && callback();
+                return;
+            } else if (query && FilteredTagStore.completelyLoaded) {
+                callback && callback();
+                return;
+            }
         }
 
         // Ensure searches are no bigger than the max.
@@ -875,14 +890,18 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Find the oldest timestamp.
         const oldestTimestamp = TagStore.getOldestTimestamp();
 
-        if (oldestTimestamp) {
+        // If force, we always load the front (i.e., latest) tags,
+        // so no need to set the "until" parameter.
+        if (!force && oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
             options.data.until = oldestTimestamp;
         }
-
         if (query) {
             options.data.query = query;
+        }
+        if (type) {
+            options.data.tag_type = type;
         }
 
         self.GET('tags/search', options)
@@ -897,9 +916,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             if (searchRes.items.length === 0) {
                 callback && callback(true);
-            } 
-            
-            LoadActions.loadFromSearchResult(searchRes, callback)
+            }
+
+            LoadActions.loadFromSearchResult(searchRes, false, callback)
         });
     },
 
@@ -1044,7 +1063,7 @@ export const Dispatcher = {
 export const Search = {
 
     pending: 0,
-    emptySearch: false, 
+    emptySearch: false,
 
     getLargeCount(count) {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
@@ -1054,44 +1073,44 @@ export const Search = {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
- 
-        const wrapped = (isEmpty) => {
-            Search.decrementPending();
-            if (isEmpty) { 
-                Search.setEmptySearch(true); 
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
-        LoadActions.loadNNewestTags(largeCount, null, wrapped);
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(largeCount, null, null, false, wrapped);
     },
 
     loadWithQuery(count, query, callback) {
-        const largeCount = this.getLargeCount(count);
+        const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
-        const wrapped = (isEmpty) => {
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(largeCount, query, null, false, wrapped);
+    },
+
+    reload(count, query, type, callback) {
+        Search.incrementPending();
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(count, query, type, true, wrapped);
+    },
+
+    getWrappedCallback(callback) {
+        const wrapped = () => {
             Search.decrementPending();
-            if (isEmpty) { 
-                Search.setEmptySearch(true); 
+            if (isEmpty) {
+                Search.setEmptySearch(true);
                 Dispatcher.dispatch();
             }
             if (_.isFunction(callback)) {
                 callback();
             }
         };
-        LoadActions.loadNNewestTags(largeCount, query, wrapped);
     },
 
     hasMoreThan(count) {
         return FilteredTagStore.count() > count;
     },
 
-    setEmptySearch() { 
-        return Search.emptySearch = true; 
+    setEmptySearch() {
+        return Search.emptySearch = true;
     },
- 
+
     incrementPending() {
         return Search.pending += 1;
     },

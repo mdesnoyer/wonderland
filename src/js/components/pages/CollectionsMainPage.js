@@ -99,6 +99,7 @@ const CollectionsMainPage = React.createClass({
         // Load initial results: first 2 quickly and a whole page or more.
         const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
         Search.load(2, true, callback);
+        setInterval(Search.reload.bind(null, 5), 5000);
     },
 
     updateState: function() {
