@@ -1077,11 +1077,11 @@ export const Search = {
         LoadActions.loadNNewestTags(largeCount, null, null, false, wrapped);
     },
 
-    loadWithQuery(count, query, callback) {
+    loadWithQuery(count, query, type, callback) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(largeCount, query, null, false, wrapped);
+        LoadActions.loadNNewestTags(largeCount, query, type, false, wrapped);
     },
 
     reload(count, query, type, callback) {
