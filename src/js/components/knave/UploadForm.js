@@ -54,7 +54,17 @@ var UploadForm = React.createClass({
             photoErrorCount:[],
             errorFiles: [],
             error: null,
+            totalUploaded: null
         };
+    },
+    componentWillMount: function() {
+        var self = this; 
+        if (self.props.isAddPanel && self.props.panelType === 'photo') {
+            self.GET('tags', { data: { tag_id: self.props.tagId } })
+            .then(function(res) {
+                self.setState({ totalUploaded: res[self.props.tagId].thumbnail_ids.length })
+            });
+        }
     },
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyEvent);
@@ -76,15 +86,7 @@ var UploadForm = React.createClass({
             self.sendCollectionTag();
         }
         else if (e.target.dataset.sendUrl === "true") {
-            self.setState({
-                error: null,
-                isOpen: false,
-                isOpenMessage: false,
-                isOpenPhoto: false,
-                isOpenVideo: false
-            }, function() {
                 self.sendVideoUrl();
-            });
         }
         // if there is lingering data and user closes our modal then clean up state
         // cant use a mount because the component is always present
@@ -125,9 +127,7 @@ var UploadForm = React.createClass({
     },
     handleOpenMessageErrorFiles: function(e) {
         e.preventDefault();
-        alert('alert')
-        var err = { code: 'viewErrFiles' };
-        this.throwUploadError(err);
+        this.throwUploadError({ code: 'ImgViewErrFiles' });
     },
     handleOverlayReset: function(e) {
         e.preventDefault();
@@ -146,32 +146,37 @@ var UploadForm = React.createClass({
         };
         if (self.props.isAddPanel) {
             return (
-                <ImageUploadPanel
-                    error={self.state.error || null}
-                    key="upload-photo"
-                    formatData={self.formatData}
-                    grabDropBox={self.grabDropBox}
-                    sendLocalPhotos={self.sendLocalPhotos}
-                    sendFormattedData={self.sendFormattedData}
-                    toggleOpen={self.toggleOpen}
-                    photoUploadMode={self.state.photoUploadMode}
-                    photoUploadCount={self.state.photoUploadCount}
-                    photoErrorCount={self.state.photoErrorCount}
-                    updateField={self.updateField}
-                    photoCollectionName={self.state.photoCollectionName}
-                    photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
-                    numberUploadedCount={self.state.numberUploadedCount}
-                    cancelClickHandler={self.props.cancelClickHandler}
-                    panelType={self.props.panelType}
-                    updateDefaultThumbnail={self.updateDefaultThumbnail}
-                    handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
-                />
+                <div>
+                {
+                    self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
+                }
+                    <ImageUploadPanel
+                        error={self.state.error || null}
+                        key="upload-photo"
+                        formatData={self.formatData}
+                        grabDropBox={self.grabDropBox}
+                        sendLocalPhotos={self.sendLocalPhotos}
+                        sendFormattedData={self.sendFormattedData}
+                        toggleOpen={self.toggleOpen}
+                        photoUploadMode={self.state.photoUploadMode}
+                        photoUploadCount={self.state.photoUploadCount}
+                        photoErrorCount={self.state.photoErrorCount.length}
+                        updateField={self.updateField}
+                        photoCollectionName={self.state.photoCollectionName}
+                        photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
+                        numberUploadedCount={self.state.numberUploadedCount}
+                        cancelClickHandler={self.props.cancelClickHandler}
+                        panelType={self.props.panelType}
+                        updateDefaultThumbnail={self.updateDefaultThumbnail}
+                        handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
+                    />
+                </div>
             );
         }
         return (
             <div className={className.join(' ')}>
                 {
-                    self.state.overlayCode  ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
+                    self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
                 }
                 <a
                     className="xxUploadButton"
@@ -267,7 +272,7 @@ var UploadForm = React.createClass({
             //redirect to a 404 page that has a link back to the collections home
             break;
             default:
-                self.setState({ overlayCode: err.code });
+                self.setState({ isOpen: false, overlayCode: err.code });
                 // self.setState({
                 //     isOpen: true,
                 //     error: T.get('copy.onboarding.uploadErrorText.generic')
@@ -285,17 +290,19 @@ var UploadForm = React.createClass({
             }
         ;
         if (!UTILS.validateUrl(self.state.videoUploadUrl)) {
-            self.setState({
-                isOpen: true,
-                isOpenVideo: true,
-                error: T.get('copy.urlShortener.messageBody')
-            });
+            self.throwUploadError({ code: 'VidInalidUrl' });
+            return
         }
-        else {
+        self.setState({
+            isOpen: false,
+            isOpenPhoto: false,
+            isOpenVideo: false
+        },  function() {
             self.POST('videos', options)
                 .then(function(json) {
                     if (self.props.onboardingAction) {
                         self.props.onboardingAction('video', json.video.video_id);
+                        self.setState({videoUploadUrl: ''});
                     }
                     else {
                         LoadActions.loadTags([json.video.tag_id]);
@@ -306,10 +313,10 @@ var UploadForm = React.createClass({
                 .catch(function(err) {
                     self.throwUploadError(err);
                 });
-        }
+        })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
-     sendLocalPhotos: function(e) {
+    sendLocalPhotos: function(e) {
          var self = this,
              files = e.target.files,
              fileArray = []
@@ -440,26 +447,34 @@ var UploadForm = React.createClass({
                 index === filesToParse[0].length - 1 && arrayToSend.push(arrayToAdd);
             }
         });
-         if (filesToParse[0].length === 0){
-            self.setState({ overlayCode: 'AllFiles', isOpen: false, errorFiles: filesToParse[1] });
+        if (filesToParse[0].length === 0) { 
+            self.throwUploadError({ code: 'AllFiles' })
+            // self.setState({ overlayCode: 'AllFiles', isOpen: false, errorFiles: filesToParse[1] });
+            return
+        }
+        if (self.state.photoUploadThumbnailIds.length + filesToParse[0].length  > UTILS.MAX_IMAGE_FILES_ALLOWED ||
+            self.state.totalUploaded + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
+         ) {
+            self.throwUploadError({ code: 'ImgUploadMax' })
+            // self.setState({ overlayCode: 'ImgUploadMax', isOpen: false, errorFiles: [] });
             return 
         }
-        debugger
-        self.setState({
-            error: null, 
-            photoUploadMode: 'loading',
-            photoUploadCount: filesToParse[0].length,
-            numberUploadedCount: 0,
-            photoErrorCount: filesToParse[1],
-            errorFiles: filesToParse[1]
-        },  function() {
-            if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
-            self.grabRefreshToken(
-                arrayToSend.forEach(function(array) {
-                    self.sendFormattedData(array, type)
-                })
-            )
-        });
+            self.setState({
+                error: null, 
+                photoUploadMode: 'loading',
+                photoUploadCount: filesToParse[0].length,
+                numberUploadedCount: 0,
+                photoErrorCount: filesToParse[1],
+                errorFiles: filesToParse[1]
+            },  function() {
+                debugger
+                if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
+                // self.grabRefreshToken(
+                //     arrayToSend.forEach(function(array) {
+                //         // self.sendFormattedData(array, type)
+                //     })
+                // )
+            });
     },
     sendFormattedData: function(array, type) {
         var self = this,

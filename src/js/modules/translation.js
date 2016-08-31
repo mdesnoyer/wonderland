@@ -500,7 +500,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.msg.ImgCollectionName': 'Please enter a Collection name.',
 
             'uploadError.title.VidInalidUrl': 'Invalid URL',
-            'uploadError.msg.VidInalidUrl': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/'
+            'uploadError.msg.VidInalidUrl': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
+
+            'uploadError.title.ImgUploadMax': 'Over 100 Images!',
+            'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
+
         },
         'en-GB': {
         },

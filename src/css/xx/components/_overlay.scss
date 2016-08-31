@@ -128,6 +128,30 @@
     .xxButton {
         margin: 24px auto 0;
     }
+    .xxOverlay-scrollbox {
+        overflow: scroll;
+        list-style: none;
+        height: 6em;
+        width: 100%;
+        position: relative;
+        background: $bg-color;
+        border: 3px solid $base-color; 
+        & > li {
+
+            padding: 1%;
+            border-top: $processing-ribbon-height solid $accent-color;
+            background: $white;
+            margin: 2%; 
+
+            & > span:first-of-type {
+                text-align: left; 
+            }
+            & > span:last-of-type {
+                text-align: right; 
+            }
+        }
+    }
+
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
