@@ -84,27 +84,18 @@ var ImageUploadPanel = React.createClass({
 	    					</form>
     					) : null 
 	    			}
-	    		<div className="xxUploadDialog-block">
-	    		<div className="xxCollectionAction-buttons">
-	    		    <button
-			            className="xxButton xxButton-cancel"
-			            type="button"
-			            data-action-label="info"
-			            onClick={self.props.cancelClickHandler}
-			            >{T.get('back')}</button>
-	    		    <button
-	    		        id="dropBoxSDK"
-	    		        disabled={self.props.photoUploadMode === 'loading'}
-	    		        className="xxButton xxButton-cancel xxButton--highlight"
-	    		        onClick={self.props.grabDropBox}
-	    		    >
-	    		        {T.get('imageUpload.dropBox')}
-	    		    </button>
-	            </div>
+	    		
+	    		<div className="xxUploadButtonsChooser"> 
+	    			<button className="xxButton xxButton--Chooser-Dropbox"></button>
+	    			<button className="xxButton xxButton--Chooser-Computer"></button>
+	    			<button className="xxButton xxButton--Chooser-URL"></button>
 	            </div>
 	    	</div>
     	);
 	},
+	// margin-left: 12.5%;
+	// width: 100%;
+	// margin-right: 12.5%;
 	handleSubmit: function(e) {
 		e.preventDefault();
 		this.props.updateDefaultThumbnail(this.refs.url.value);
@@ -136,3 +127,38 @@ var ImageUploadPanel = React.createClass({
 export default ImageUploadPanel
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+    		// <div className="xxCollectionAction-buttons">
+    		//     <button
+		    //         className="xxButton xxButton-cancel"
+		    //         type="button"
+		    //         data-action-label="info"
+		    //         onClick={self.props.cancelClickHandler}
+		    //         >{T.get('back')}</button>
+    		//     <button
+    		//         id="dropBoxSDK"
+    		//         disabled={self.props.photoUploadMode === 'loading'}
+    		//         className="xxButton xxButton-cancel xxButton--highlight"
+    		//         onClick={self.props.grabDropBox}
+    		//     >
+    		//         {T.get('imageUpload.dropBox')}
+    		//     </button>
+    		//     <button
+    		//         id="dropBoxSDK"
+    		//         disabled={self.props.photoUploadMode === 'loading'}
+    		//         className="xxButton xxButton-cancel xxButton--highlight"
+    		//         onClick={self.props.grabDropBox}
+    		//     >
+    		//         {T.get('imageUpload.dropBox')}
+    		//     </button>
+    		//     <button
+    		//         id="dropBoxSDK"
+    		//         disabled={self.props.photoUploadMode === 'loading'}
+    		//         className="xxButton xxButton-cancel xxButton--highlight"
+    		//         onClick={self.props.grabDropBox}
+    		//     >
+    		//         {T.get('imageUpload.dropBox')}
+    		//     </button>
+      //       </div>

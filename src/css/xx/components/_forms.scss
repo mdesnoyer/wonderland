@@ -395,6 +395,46 @@
         width: 20%;
         margin-top: 4%;
     }
+    
+    &--Chooser-Dropbox {
+        // width: 25%;
+        background:blue;
+        position:relative;
+        &::before {
+            @include font-awesome('f16b');
+        }
+    }
+    &--Chooser-Computer {
+        // width: 25%;
+        background:black;
+        position:relative;
+        -webkit-appearance: none;
+
+        &::-webkit-file-upload-button {
+            cursor: pointer;
+        }
+        &::before {
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            @include font-awesome('f108');
+        }
+    }
+    &--Chooser-URL {
+        // width: 25%;
+        background:yellow;
+        position:relative;
+        &::before {
+            @include font-awesome('f0c1');
+        }
+    }
+
+}
+.xxUploadButtonsChooser{
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .xxButton-fileInput {
