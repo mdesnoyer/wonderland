@@ -120,8 +120,7 @@ var ImageUploadOverlay = React.createClass({
                                         transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
                                         transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
                                     >
-                                        
-                                    <UploadProgressContainer mode="success" />
+                                    <UploadProgressContainer mode={self.props.photoUploadMode} />
                                     
                                     </ReactCSSTransitionGroup>
                                 </Dropzone>
