@@ -21,8 +21,8 @@
         box-sizing: border-box;
         width: 27px;
         height: 27px;
-        border-radius: 50%;
-        border: 1px solid $accent-color;
+        // border-radius: 50%;
+        color: $accent-color;
         background: $white;
         font-size: 15px;
         line-height: 26px;

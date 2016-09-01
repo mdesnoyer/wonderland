@@ -406,6 +406,45 @@ $zindex-upload-drag-and-drop: 1;
         background: rgba($accent-color, .05);
         border-style: solid;
     }
+
+}
+.xxDragAndDrop-spinner{
+      position: relative;
+      // width: 20px;
+      // height: 20px; 
+    &::after {
+       @include font-awesome('f021');
+            margin: 50px auto;
+            display: block;
+            box-sizing: border-box;
+            width: 100px;
+            height: 100px;
+            background: $white;
+            color: $accent-color;
+            font-size: 100px;
+            line-height: 1;
+            text-align: center;
+            transform: rotate(-60deg);
+            transform-origin: 50% 50%;
+            transform: rotate(0deg);
+            animation: rotate 2s infinite linear;
+    }
+}
+.xxDragAndDrop-success {
+    position: relative;
+    &::after {
+       @include font-awesome('f05d');
+       margin: 50px auto;
+       display: block;
+       box-sizing: border-box;
+       width: 100px;
+       height: 100px;
+       background: $white;
+       color: $accent-color;
+       font-size: 100px;
+       line-height: 1;
+       text-align: center;
+    }
 }
 
 .xxDragAndDrop-content {
@@ -419,6 +458,7 @@ $zindex-upload-drag-and-drop: 1;
     line-height: 16px;
     text-align: center;
     transform: translateY(-50%);
+    font-size: 10px;
 }
 .xxDragAndDrop-hint,
 .xxDragAndDrop-complete {

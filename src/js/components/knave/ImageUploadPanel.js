@@ -9,92 +9,79 @@ import AjaxMixin from '../../mixins/Ajax';
 
 import Dropzone from 'react-dropzone'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import UploadProgressContainer from './UploadProgressContainer/';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var ImageUploadPanel = React.createClass({
+	getInitialState: function() {
+		return {
+			isUrlOpen: false
+		}
+	},
 	render: function () {
 		var self = this,
-		    submitClassName = ['xxButton', 'xxButton--highlight'],
-		    className = ['xxUploadDialog'],
-		    dragDropClassKey,
-		    dropzoneContent,
-		    messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null
+		    submitClassName = ['xxButton', 'xxButton--highlight']
 	    ;
-	    switch(self.props.photoUploadMode) {
-	        case 'initial':
-	            dragDropClassKey = 'hint';
-	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/></div>;
-	            break;
-	        case 'loading':
-	            dragDropClassKey = 'progress';
-	            dropzoneContent = (
-	                <div>
-	                    <span className="xxDragAndDrop-progressCounter">
-	                        {`${Math.round((self.props.numberUploadedCount) / self.props.photoUploadCount * 100)}%`}
-	                    </span>
-	                    {"Uploading (" + self.props.photoUploadCount + ") files."}<br/>
-	                    {self.props.photoErrorCount > 0 ? ("Unable to upload (" + self.props.photoErrorCount + ") files due to file type/size." ) : null}<br/>
-	                    You can view these files by clicking <a onClick={self.props.handleOpenMessageErrorFiles}>here</a> 
-	                </div>
-	            );
-	            break;
-	        case 'success': 
-	            dragDropClassKey = 'complete';
-	            dropzoneContent = <div>{"Uploaded (" + self.props.photoUploadCount + ") files" }<br/></div>;
-	            break; 
-	        default: 
-	            dragDropClassKey = 'hint';
-	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/>{T.get('imageUpload.collectionCount')}<br/></div>;
-	    }
+	    var props = self.props;
+	    const isMobile = window.outerWidth < 768;
 	    return (
 	    	<div className="xxUploadDialog-drag-drop-panel">
-	    		{messageNeeded}
-	    		<Dropzone  
-	    		    className="xxDragAndDrop"
-	    		    multiple={self.props.panelType === 'photo'}
-	    		    disableClick={false}
-	    		    activeClassName='xxDragAndDrop--has-dragAndDropHover'
-	    		    encType="multipart/form-data" 
-	    		    onDrop={self.onDrop}
-	    		>
-	    		     <ReactCSSTransitionGroup 
-	    		        transitionName="xxFadeInOutFast"
-	    		        transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
-	    		        transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
-	    		    >
-	    		        <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-	    		            {dropzoneContent}
-	    		        </div>
-	    		    </ReactCSSTransitionGroup>
-	    		</Dropzone>
-	    			{
-	    				self.props.panelType === 'video' ? (
-	    					<form className="xxFormField xxFormField--has-urlDrop" onSubmit={self.handleSubmit}>
-	    					    <input
-	    					        ref="url"
-	    					        className="xxInputText xxInputText--has-urlDrop"
-	    					        type="url"
-	    					        placeholder={T.get('image.URL')}
-	    					        required
-	    					    />
-	    					    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
-	    					    Add URL 
-	    					    </button>
-	    					</form>
-    					) : null 
-	    			}
-	    			<div className="xxUploadDialog-block">
-	    			<label className="xxLabel"> OR CHOOSE FROM </label>
-	    			</div>
-	    		
+
+    			{
+    				// self.props.panelType === 'video' ? (
+    				self.state.isUrlOpen ? (
+    					<div>
+    					<form className="xxFormField xxFormField--has-urlDrop" onSubmit={self.handleSubmit}>
+    					    <input
+    					        ref="url"
+    					        className="xxInputText xxInputText--has-urlDrop"
+    					        type="url"
+    					        placeholder={T.get('image.URL')}
+    					        required
+    					    />
+    					    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
+    					    Add URL 
+    					    </button>
+    					</form>
+    					<button className="xxButton" onClick={self.handleUrlClick}>Close</button>
+    					</div>
+					) : null 
+    			}
+	    		{ self.state.isUrlOpen ? null : (  
+			    		    isMobile ?  <UploadProgressContainer mode={self.props.photoUploadMode} {...props} /> : (
+			    		        <div className="xxUploadDialog-block">
+			    		        <Dropzone  
+			    		            className="xxDragAndDrop"
+			    		            multiple={true}
+			    		            disableClick={true}
+			    		            activeClassName='xxDragAndDrop--has-dragAndDropHover'
+			    		            encType="multipart/form-data" 
+			    		            onDrop={self.onDrop}
+			    		        >
+			    		             <ReactCSSTransitionGroup 
+			    		                transitionName="xxFadeInOutFast"
+			    		                transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+			    		                transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+			    		            >
+			    		            <UploadProgressContainer mode={self.props.photoUploadMode} {...props} />
+			    		            </ReactCSSTransitionGroup>
+			    		        </Dropzone>
+			    		        <div className="xxUploadDialog-block">
+			    		            <label className="xxLabel"> OR CHOOSE FROM </label>
+			    		        </div>
+
+			    		        </div>    
+			    		    )
+	    			)
+	    		}
+	    		<div className="xxUploadDialog-block">
 	    			<div className="xxUploadButtonsChooser">
-	    				
 	    			    <button 
 	    			        className="xxButton xxButton--Chooser-Dropbox"
 	    			        id="dropBoxSDK"
 	    			        disabled={self.props.photoUploadMode === 'loading'}
-	    			        onClick={self.props.grabDropBox}
+	    			        onClick={self.handleDropBoxClick}
 	    			    ></button>
 	    			    <button 
 	    			        onClick={self.handleInputClick}
@@ -109,12 +96,12 @@ var ImageUploadPanel = React.createClass({
 	    			            onChange={self.props.sendLocalPhotos}
 	    			        />
 	    			    </button>
-	    			    <button className="xxButton xxButton--Chooser-URL"></button>
+	    			    {self.props.panelType === 'video' ? <button className="xxButton xxButton--Chooser-URL" onClick={self.handleUrlClick}></button> : null }
 	    			</div>
 	    			<div className="xxUploadButtonsChooser">
 		    			<label className="xxLabel">Dropbox</label> 
 		    			<label className="xxLabel">Desktop</label> 
-		    			<label className="xxLabel">URL</label> 
+		    			{self.props.panelType === 'video' ? (<label className="xxLabel">URL</label>) : null }
 	    			</div>
 	    			<div className="xxCollectionAction-buttons">
 	    			    <button
@@ -125,14 +112,24 @@ var ImageUploadPanel = React.createClass({
 	    			        >{T.get('back')}
 	    			    </button>
 	    			</div>
+	    			</div>
 	    	</div>
     	);
 	},
+	handleDropBoxClick: function() {
+		this.setState({isUrlOpen: false});
+		this.props.grabDropBox();
+	},
+	handleUrlClick: function() {
+		this.setState({isUrlOpen: !this.state.isUrlOpen});
+	},
     handleInputClick: function() {
+    	this.setState({isUrlOpen: false});
         document.getElementById("file-input").click();
     },
 	handleSubmit: function(e) {
 		e.preventDefault();
+		this.setState({isUrlOpen: false});
 		this.props.updateDefaultThumbnail(this.refs.url.value);
 	},
     onDrop: function (files) {
@@ -162,38 +159,3 @@ var ImageUploadPanel = React.createClass({
 export default ImageUploadPanel
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-    		// <div className="xxCollectionAction-buttons">
-    		//     <button
-		    //         className="xxButton xxButton-cancel"
-		    //         type="button"
-		    //         data-action-label="info"
-		    //         onClick={self.props.cancelClickHandler}
-		    //         >{T.get('back')}</button>
-    		//     <button
-    		//         id="dropBoxSDK"
-    		//         disabled={self.props.photoUploadMode === 'loading'}
-    		//         className="xxButton xxButton-cancel xxButton--highlight"
-    		//         onClick={self.props.grabDropBox}
-    		//     >
-    		//         {T.get('imageUpload.dropBox')}
-    		//     </button>
-    		//     <button
-    		//         id="dropBoxSDK"
-    		//         disabled={self.props.photoUploadMode === 'loading'}
-    		//         className="xxButton xxButton-cancel xxButton--highlight"
-    		//         onClick={self.props.grabDropBox}
-    		//     >
-    		//         {T.get('imageUpload.dropBox')}
-    		//     </button>
-    		//     <button
-    		//         id="dropBoxSDK"
-    		//         disabled={self.props.photoUploadMode === 'loading'}
-    		//         className="xxButton xxButton-cancel xxButton--highlight"
-    		//         onClick={self.props.grabDropBox}
-    		//     >
-    		//         {T.get('imageUpload.dropBox')}
-    		//     </button>
-      //       </div>
