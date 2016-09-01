@@ -14,8 +14,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 export const InitialDisplay = React.createClass({
-    propTypes: {
-    },
+    // propTypes: {
+    // },
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
@@ -26,8 +26,8 @@ export const InitialDisplay = React.createClass({
 });
 
 export const MobileInitialDisplay = React.createClass({
-    propTypes: {
-    },
+    // propTypes: {
+    // },
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-hint" key="drag-and-drop-hint">
@@ -39,24 +39,25 @@ export const MobileInitialDisplay = React.createClass({
 
 
 export const LoadingDisplay = React.createClass({
-    propTypes: {
-    	numberUploadedCount:
-    	photoErrorCount:,
-    	handleOpenMessageErrorFiles:,
-    	photoUploadCount: 
-    },
+    // propTypes: {
+    // 	numberUploadedCount:
+    // 	photoErrorCount:,
+    // 	handleOpenMessageErrorFiles:,
+    // 	photoUploadCount: 
+    // },
     render: function() { 
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
         		<span className="xxDragAndDrop-progressCounter">
-        		    {`${Math.round((this.props.numberUploadedCount) / this.props.photoUploadCount * 100)}%`}
+        		    {`${Math.round((100) / 100 * 100)}%`}
         		</span>
         		{"Uploading (" + this.props.photoUploadCount + ") files."}<br/>
         		{
         			this.props.photoErrorCount > 0 ? (
-        				{"Unable to upload (" + this.props.photoErrorCount + ") files due to file type/size."}
-        				{You can view these files by clicking}
+                        <div>
+        				{"Unable to upload (" + 100 + ") files due to file type/size. You can view these files by clicking"}
         				<a onClick={this.props.handleOpenMessageErrorFiles}>here</a> 
+                        </div>
         				) : null
 				}
         	</div>
@@ -66,20 +67,22 @@ export const LoadingDisplay = React.createClass({
 
 
 export const MobileLoadingDisplay = React.createClass({
-    propTypes: {
-    	photoErrorCount:,
-    	handleOpenMessageErrorFiles:,
-    	photoUploadCount:
-    },
+    // propTypes: {
+    // 	photoErrorCount:,
+    // 	handleOpenMessageErrorFiles:,
+    // 	photoUploadCount:
+    // },
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
         		<div className="xxDragDrop-spinner"></div>
         		{"Uploading (" + this.props.photoUploadCount + ") files."}<br/>
         		{
-        			this.props.photoErrorCount > 0 ? ( 
+        			this.props.photoErrorCount > 0 ? (
+                        <div> 
         				{"Unable to upload (" + this.props.photoErrorCount + ") files due to file type/size."}
         				<button onClick={this.props.handleOpenMessageErrorFiles}>View Errors</button> 
+                        </div>
         			) : null 
     			}
         	</div>
@@ -89,9 +92,9 @@ export const MobileLoadingDisplay = React.createClass({
 
 
 export const SuccessDisplay = React.createClass({
-    propTypes: {
-    	photoUploadCount: 
-    },
+    // propTypes: {
+    // 	photoUploadCount: 
+    // },
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-complete" key="drag-and-drop-complete">
@@ -104,9 +107,9 @@ export const SuccessDisplay = React.createClass({
 
 
 export const MobileSuccessDisplay = React.createClass({
-    propTypes: {
-    	photoUploadCount:
-    },
+    // propTypes: {
+    // 	photoUploadCount:
+    // },
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">

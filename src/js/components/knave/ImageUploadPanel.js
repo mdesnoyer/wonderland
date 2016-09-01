@@ -24,7 +24,7 @@ var ImageUploadPanel = React.createClass({
 	    switch(self.props.photoUploadMode) {
 	        case 'initial':
 	            dragDropClassKey = 'hint';
-	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/><button className="xxButton xxButton--dragsmall xxButton--highlight">BROWSE FILES</button><br/></div>;
+	            dropzoneContent = <div>{T.get('imageUpload.draglocation')}<br/></div>;
 	            break;
 	        case 'loading':
 	            dragDropClassKey = 'progress';
@@ -84,18 +84,53 @@ var ImageUploadPanel = React.createClass({
 	    					</form>
     					) : null 
 	    			}
+	    			<div className="xxUploadDialog-block">
+	    			<label className="xxLabel"> OR CHOOSE FROM </label>
+	    			</div>
 	    		
-	    		<div className="xxUploadButtonsChooser"> 
-	    			<button className="xxButton xxButton--Chooser-Dropbox"></button>
-	    			<button className="xxButton xxButton--Chooser-Computer"></button>
-	    			<button className="xxButton xxButton--Chooser-URL"></button>
-	            </div>
+	    			<div className="xxUploadButtonsChooser">
+	    				
+	    			    <button 
+	    			        className="xxButton xxButton--Chooser-Dropbox"
+	    			        id="dropBoxSDK"
+	    			        disabled={self.props.photoUploadMode === 'loading'}
+	    			        onClick={self.props.grabDropBox}
+	    			    ></button>
+	    			    <button 
+	    			        onClick={self.handleInputClick}
+	    			        className="xxButton xxButton--Chooser-Computer"
+	    			    >
+	    			        <input
+	    			            disabled={self.props.photoUploadMode === 'loading'}
+	    			            id="file-input"
+	    			            type="file"
+	    			            multiple
+	    			            accept="image/*"
+	    			            onChange={self.props.sendLocalPhotos}
+	    			        />
+	    			    </button>
+	    			    <button className="xxButton xxButton--Chooser-URL"></button>
+	    			</div>
+	    			<div className="xxUploadButtonsChooser">
+		    			<label className="xxLabel">Dropbox</label> 
+		    			<label className="xxLabel">Desktop</label> 
+		    			<label className="xxLabel">URL</label> 
+	    			</div>
+	    			<div className="xxCollectionAction-buttons">
+	    			    <button
+	    			        className="xxButton xxButton--fullwidth xxButton--extra-margin-top"
+	    			        type="button"
+	    			        data-action-label="info"
+	    			        onClick={this.props.cancelClickHandler}
+	    			        >{T.get('back')}
+	    			    </button>
+	    			</div>
 	    	</div>
     	);
 	},
-	// margin-left: 12.5%;
-	// width: 100%;
-	// margin-right: 12.5%;
+    handleInputClick: function() {
+        document.getElementById("file-input").click();
+    },
 	handleSubmit: function(e) {
 		e.preventDefault();
 		this.props.updateDefaultThumbnail(this.refs.url.value);

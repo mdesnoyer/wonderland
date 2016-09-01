@@ -1,36 +1,42 @@
+import React, {PropTypes} from 'react';
 
+import {
+		MobileInitialDisplay,
+		MobileLoadingDisplay,
+		MobileSuccessDisplay,
+		InitialDisplay,
+		LoadingDisplay,
+		SuccessDisplay
+	} from './UploadDisplays'; 
 
 
 var UploadProgressContainer = React.createClass({
-	propTypes: {
-		mode:, 
-		
-	}
-	if(isMobile) {
-		return (
-			<div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-			    {
-			        self.props.mode === 'initial' && <MobileInitialDisplay />
-			        self.props.mode === 'loading' && <MobileLoadingDisplay />
-			        self.props.mode === 'success' && <MobileSuccessDisplay />
-			    }
-			</div>
-		);	
-	}
-	else {
-		return (
-			<div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-			    {
-			        self.props.mode === 'initial' && <InitialDisplay />
-			        self.props.mode === 'loading' && <LoadingDisplay />
-			        self.props.mode === 'success' && <SuccessDisplay />
-			    }
-			</div>	
-		);
+	// propTypes: {
+	// 	mode:, 
+	// }
+	render: function () {
+		if(false) {
+			return (
+				<div>
+				        {this.props.mode === 'initial' && <MobileInitialDisplay />}
+				        {this.props.mode === 'loading' && <MobileLoadingDisplay />}
+				        {this.props.mode === 'success' && <MobileSuccessDisplay />}
+				</div>
+			);	
+		}
+		else {
+			return (
+				<div>
+				        {this.props.mode === 'initial' && <InitialDisplay />}
+				        {this.props.mode === 'loading' && <LoadingDisplay />}
+				        {this.props.mode === 'success' && <SuccessDisplay />}
+				</div>	
+			);
+		}
 	}
 })
 
-
+export default UploadProgressContainer
 
 
 

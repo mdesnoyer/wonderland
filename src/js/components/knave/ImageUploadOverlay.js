@@ -10,6 +10,7 @@ import AjaxMixin from '../../mixins/Ajax';
 
 import Dropzone from 'react-dropzone'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import UploadProgressContainer from './UploadProgressContainer/';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -105,6 +106,7 @@ var ImageUploadOverlay = React.createClass({
                     </div>
                     { self.state.isNextClicked ? (
                         <div>
+
                                 <Dropzone  
                                     className="xxDragAndDrop"
                                     multiple={true}
@@ -118,32 +120,42 @@ var ImageUploadOverlay = React.createClass({
                                         transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
                                         transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
                                     >
-                                        <div className={"xxDragAndDrop-content xxDragAndDrop-" + dragDropClassKey } key={"drag-and-drop-"+ dragDropClassKey}>
-                                            {dropzoneContent}
-                                        </div>
+                                        
+                                    <UploadProgressContainer mode="success" />
+                                    
                                     </ReactCSSTransitionGroup>
                                 </Dropzone>
+                                <div className="xxUploadDialog-block">
+                                <label className="xxLabel"> OR CHOOSE FROM </label>
+                                </div>
+                                <div className="xxUploadButtonsChooser"> 
+                                    <button 
+                                        className="xxButton xxButton--Chooser-Dropbox"
+                                        id="dropBoxSDK"
+                                        disabled={self.props.photoUploadMode === 'loading'}
+                                        onClick={self.props.grabDropBox}
+                                    ></button>
+                                    <button 
+                                        onClick={self.handleInputClick}
+                                        className="xxButton xxButton--Chooser-Computer"
+                                    >
+                                        <input
+                                            disabled={self.props.photoUploadMode === 'loading'}
+                                            id="file-input"
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={self.props.sendLocalPhotos}
+                                        />
+                                    </button>
+                                </div>
+                                <div className="xxUploadButtonsChooser">
+                                <label className="xxLabel">Dropbox</label> 
+                                <label className="xxLabel">Desktop</label> 
+                                </div>
                             <div className="xxUploadDialog-block">
                                 <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                             </div>
-                                        <div className="xxUploadButtonsChooser"> 
-                                            <button 
-                                                className="xxButton xxButton--Chooser-Dropbox"
-                                                id="dropBoxSDK"
-                                                disabled={self.props.photoUploadMode === 'loading'}
-                                                onClick={self.props.grabDropBox}
-                                            ></button>
-                                             <input 
-                                                className="xxButton xxButton--Chooser-Computer"
-                                                disabled={self.props.photoUploadMode === 'loading'}
-                                                type="file"
-                                                multiple
-                                                accept="image/*"
-                                                onChange={self.props.sendLocalPhotos}
-                                            />
-                                            <button className="xxButton xxButton--Chooser-URL"></button>
-                                        </div>
-
                             { 
                                 isValid ? (
                                     <div>
@@ -176,6 +188,9 @@ var ImageUploadOverlay = React.createClass({
                     </div>
             </div>
         );
+    },
+    handleInputClick: function() {
+        document.getElementById("file-input").click();
     },
     handleClick: function() {
         var self = this;

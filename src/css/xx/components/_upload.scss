@@ -399,7 +399,7 @@ $zindex-upload-drag-and-drop: 1;
     width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});;;
     margin: 0px auto; 
     border: 3px solid $accent-color;
-    padding: calc((99.9% - #{$gutter-width}) * 1/4 + #{$gutter-width});;;
+    padding: calc((99.9% - #{$gutter-width}) * 1/10 + #{$gutter-width});;;
     transition: background $default-transition;
     border-style: dotted;
     &--has-dragAndDropHover {
