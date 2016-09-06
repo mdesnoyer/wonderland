@@ -212,7 +212,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: (searchRes, force, callback) => {
+    loadFromSearchResult: (searchRes, reload, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -238,8 +238,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             .value();
 
         // Decide which tag ids to search for.
-        const searchForTagIds = force ?
-            // If forced, search for all of them.
+        const searchForTagIds = reload ?
+            // If reloading, search for all of them.
             searchResTagIds :
             // Else omit the ones we've already loaded.
             _.difference(searchResTagIds, _.keys(TagStore.getAll()));
@@ -254,7 +254,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Build promise for videos referenced from tags.
         let videoPromise = Promise.resolve({videos: []})
-        const missingVideoIds = _
+
+        let usingVideoIds;
+        if (reload) {
+            // Just get every video id in the search result.
+            usingVideoIds = _(searchRes.items)
+            .reduce((videoIds, tag) => {
+                if(tag.video_id) {
+                    videoIds.push(tag.video_id);
+                }
+                return videoIds;
+            }, [])
+        } else {
+            usingVideoIds = _
             .chain(searchRes.items)
             .reduce((videoIds, tag) => {
                 if(tag.video_id) {
@@ -266,9 +278,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             .difference(_.keys(VideoStore.getAll()))
             .uniq()
             .value();
-        if (missingVideoIds.length > 0) {
+        }
+        if (usingVideoIds.length > 0) {
             const videoData = {
-                video_id: missingVideoIds.join(','),
+                video_id: usingVideoIds.join(','),
                 fields: UTILS.VIDEO_FIELDS_MIN.join(',')
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
@@ -308,13 +321,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-                    if (dem.bad_thumbnails) { 
+                    if (dem.bad_thumbnails) {
                         dem.bad_thumbnails.map(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
-                    } 
-                    else { 
-                        dem.bad_thumbnails = []; 
+                    }
+                    else {
+                        dem.bad_thumbnails = [];
                     }
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
@@ -354,10 +367,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
-                
+
                 if (_.isFunction(callback)) {
                     callback();
-                } 
+                }
 
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
@@ -503,10 +516,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     // Load lifts for thumbnails from data source.
-    loadLifts: function(tagIds, gender=0, age=0, forceLoad=false) {
+    loadLifts: function(tagIds, gender=0, age=0, reload=false) {
 
         // Find tags missing from stored lift map for demo.
-        const loadTagIds = forceLoad ?
+        const loadTagIds = reload ?
             tagIds :
             tagIds.reduce((loadTagIds, tagId) => {
             if (_.isEmpty(TagStore.get(gender, age, tagId))) {
@@ -858,18 +871,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     //     n- integer- number of tags we want to have in the TagStore
     //     query- string- filter applied on Tag name
     //     type- a UTILS.TAG_TYPE_*, filter applied on Tag tag_type
-    //     force- bool, false by default
+    //     reload- bool
     //         if false, don't call the backend if the number of
     //             tags in the FilteredTagStore exceeds n
-    //         if true, always call the backend
-    loadNNewestTags(n, query=null, type=null, force=false, callback=null) {
+    //         if true, always call the backend, reloading those
+    //             tags we have stored.
+    loadNNewestTags(n, query=null, type=null, reload=false, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
-        // If force, skip these checks that return early.
-        if (!force) {
+        // If reloading, skip these checks that return early.
+        if (!reload) {
             // Short circuit search if we have enough items or everything.
-            if (n <= haveCount && !force) {
+            if (n <= haveCount) {
                 callback && callback();
                 return;
             }
@@ -882,17 +896,23 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
         }
 
-        // Ensure searches are no bigger than the max.
-        const limit = _.min([n - haveCount, UTILS.MAX_SEARCH_SIZE]);
+        let limit;
+        if (!reload) {
+            // Ensure searches are no bigger than the max.
+            limit = Math.min(n - haveCount, UTILS.MAX_SEARCH_SIZE);
+        } else {
+            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE);
+        }
         const options = {
             data: {limit}
         };
+
         // Find the oldest timestamp.
         const oldestTimestamp = TagStore.getOldestTimestamp();
 
-        // If force, we always load the front (i.e., latest) tags,
+        // If reloading, we always load the front (i.e., latest) tags,
         // so no need to set the "until" parameter.
-        if (!force && oldestTimestamp) {
+        if (!reload && oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
             options.data.until = oldestTimestamp;
@@ -918,7 +938,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback && callback(true);
             }
 
-            LoadActions.loadFromSearchResult(searchRes, false, callback)
+            LoadActions.loadFromSearchResult(searchRes, reload, callback)
         });
     },
 
@@ -1091,7 +1111,7 @@ export const Search = {
     },
 
     getWrappedCallback(callback) {
-        const wrapped = () => {
+        return (isEmpty) => {
             Search.decrementPending();
             if (isEmpty) {
                 Search.setEmptySearch(true);

@@ -340,6 +340,7 @@ var UTILS = {
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
+    POLL_INTERVAL_SECONDS: 20,
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
     RESULTS_PAGE_SIZE: 5,
