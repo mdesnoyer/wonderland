@@ -78,17 +78,17 @@ var ImageUploadOverlay = React.createClass({
                             {
                                 isMobile ?  <UploadProgressContainer mode={self.props.photoUploadMode} {...props} /> : (
                                     <div>
-                                    <Dropzone  
+                                    <Dropzone
                                         className="xxDragAndDrop"
                                         multiple={true}
                                         disableClick={true}
                                         activeClassName='xxDragAndDrop--has-dragAndDropHover'
-                                        encType="multipart/form-data" 
+                                        encType="multipart/form-data"
                                         onDrop={self.onDrop}
                                     >
-                                         <ReactCSSTransitionGroup 
+                                         <ReactCSSTransitionGroup
                                             transitionName="xxFadeInOutFast"
-                                            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+                                            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
                                             transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
                                         >
                                         <UploadProgressContainer mode={self.props.photoUploadMode} {...props} />
@@ -97,17 +97,17 @@ var ImageUploadOverlay = React.createClass({
                                     <div className="xxUploadDialog-block">
                                         <label className="xxLabel"> OR CHOOSE FROM </label>
                                     </div>
-                                    </div>    
+                                    </div>
                                 )
                             }
-                            <div className="xxUploadButtonsChooser"> 
-                                <button 
+                            <div className="xxUploadButtonsChooser">
+                                <button
                                     className="xxButton xxButton--Chooser-Dropbox"
                                     id="dropBoxSDK"
                                     disabled={self.props.photoUploadMode === 'loading'}
                                     onClick={self.props.grabDropBox}
                                 ></button>
-                                <button 
+                                <button
                                     onClick={self.handleInputClick}
                                     className="xxButton xxButton--Chooser-Computer"
                                 >
@@ -122,13 +122,13 @@ var ImageUploadOverlay = React.createClass({
                                 </button>
                             </div>
                             <div className="xxUploadButtonsChooser">
-                                <label className="xxLabel">Dropbox</label> 
-                                <label className="xxLabel">Desktop</label> 
+                                <label className="xxLabel">Dropbox</label>
+                                <label className="xxLabel">Desktop</label>
                             </div>
                         <div className="xxUploadDialog-block">
                             <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>
-                        { 
+                        {
                             isValid ? (
                                 <div>
                                     <div className="xxUploadDialog-block">
@@ -155,7 +155,7 @@ var ImageUploadOverlay = React.createClass({
     handleClick: function() {
         var self = this;
         if (self.props.photoCollectionName !== '' ) {
-            self.setState({ isNextClicked: true});    
+            self.setState({ isNextClicked: true});
         }
     },
     onDrop: function (files) {
@@ -184,29 +184,3 @@ var ImageUploadOverlay = React.createClass({
 export default ImageUploadOverlay;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-// <div className="xxButton xxButton--uploadDialog xxButton--highlight xxButton--file">
-// {T.get('imageUpload.local')}
-//     <input
-//         disabled={self.props.photoUploadMode === 'loading'}
-//         type="file"
-//         name="upload"
-//         multiple
-//         accept= "image/*"
-//         className="xxButton-fileInput"
-//         onChange={self.props.sendLocalPhotos}
-//     />
-// </div>
-// <button className="xxButton xxButton-center" disabled >
-//     {T.get('imageUpload.or')}
-// </button>
-// <button
-//     id="dropBoxSDK"
-//     disabled={self.props.photoUploadMode === 'loading'}
-//     className="xxButton xxButton--highlight"
-//     onClick={self.props.grabDropBox}
-// >
-//     {T.get('imageUpload.dropBox')}
-// </button>
-

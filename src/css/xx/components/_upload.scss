@@ -211,7 +211,7 @@ $zindex-upload-drag-and-drop: 1;
 
     .xxTitle {
         margin-bottom: 28px;
-        
+
         @include breakpoint-mobile {
             margin-bottom: 20px;
         }
@@ -307,7 +307,7 @@ $zindex-upload-drag-and-drop: 1;
         width: 20%;
         background: transparent;
         pointer: none;
-        border: none; 
+        border: none;
      }
      & > .xxButton-cancel {
         width: 50%;
@@ -404,7 +404,7 @@ $zindex-upload-drag-and-drop: 1;
 .xxDragAndDrop {
     position: relative;
     width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});;;
-    margin: 0px auto; 
+    margin: 0px auto;
     border: 3px solid $accent-color;
     padding: calc((99.9% - #{$gutter-width}) * 1/10 + #{$gutter-width});;;
     transition: background $default-transition;
@@ -417,8 +417,6 @@ $zindex-upload-drag-and-drop: 1;
 }
 .xxDragAndDrop-spinner{
       position: relative;
-      // width: 20px;
-      // height: 20px; 
     &::after {
        @include font-awesome('f021');
             margin: 50px auto;

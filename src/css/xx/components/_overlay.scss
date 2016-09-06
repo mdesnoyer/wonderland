@@ -3,11 +3,9 @@ $header_text_color: #FDFDFD;
 $alternate_row_background_color: #DDD;
 
 $table_width: 450px;
-$table_width_mobile: 300px; 
+$table_width_mobile: 300px;
 $table_body_height: 200px;
-// $column_one_width: 200px;
-// $column_two_width: 200px;
-// $column_three_width: 350px;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .has-overlayDark {
@@ -136,7 +134,7 @@ $table_body_height: 200px;
     transform: translateY(-50%);
     @include breakpoint-mobile {
         // height: $mobile-form-element-height;
-        width: 300px; 
+        width: 300px;
     }
 
     .xxButton {
@@ -149,19 +147,19 @@ $table_body_height: 200px;
       border-collapse: collapse;
 
       @include breakpoint-mobile {
-          width: $table_width_mobile; 
+          width: $table_width_mobile;
       }
-      
+
       th { text-decoration: underline; }
       th, td {
         padding: 5px;
         text-align: left;
       }
-      
-      td:nth-child(1), th:nth-child(1) { 
+
+      td:nth-child(1), th:nth-child(1) {
             min-width: $table_width * .50;
             @include breakpoint-mobile {
-                min-width: $table_width_mobile * .50; 
+                min-width: $table_width_mobile * .50;
             }
         }
 
@@ -170,16 +168,16 @@ $table_body_height: 200px;
             @include font-awesome('f15b');
             padding-right: 5%;
            }
-        }  
+        }
 
-      td:nth-child(2), th:nth-child(2) { 
-        min-width: $table_width * .15; 
+      td:nth-child(2), th:nth-child(2) {
+        min-width: $table_width * .15;
         @include breakpoint-mobile {
             min-width: $table_width_mobile * .15;
         }
     }
-      td:nth-child(3), th:nth-child(3) { 
-        width: $table_width * .35; 
+      td:nth-child(3), th:nth-child(3) {
+        width: $table_width * .35;
         @include breakpoint-mobile {
             width: $table_width_mobile * .35
         }
