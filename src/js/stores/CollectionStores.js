@@ -925,7 +925,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback && callback(true);
             }
 
-            LoadActions.loadFromSearchResult(searchRes, false, callback)
+            LoadActions.loadFromSearchResult(searchRes, reload, callback)
         });
     },
 
