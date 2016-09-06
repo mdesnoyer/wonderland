@@ -29,7 +29,6 @@ var ImageUploadPanel = React.createClass({
 	    	<div className="xxUploadDialog-drag-drop-panel">
 
     			{
-    				// self.props.panelType === 'video' ? (
     				self.state.isUrlOpen ? (
     					<div>
     					<form className="xxFormField xxFormField--has-urlDrop" onSubmit={self.handleSubmit}>
@@ -41,27 +40,29 @@ var ImageUploadPanel = React.createClass({
     					        required
     					    />
     					    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
-    					    Add URL 
+    					    Add URL
     					    </button>
     					</form>
-    					<button className="xxButton" onClick={self.handleUrlClick}>Close</button>
+                        <div className="xxCollectionAction-buttons">
+    					   <button className="xxButton xxButton--fullwidth xxButton--extra-margin-top" onClick={self.handleUrlClick}>Close</button>
+                        </div>
     					</div>
-					) : null 
+					) : null
     			}
-	    		{ self.state.isUrlOpen ? null : (  
+	    		{ self.state.isUrlOpen ? null : (
 			    		    isMobile ?  <UploadProgressContainer mode={self.props.photoUploadMode} {...props} /> : (
 			    		        <div className="xxUploadDialog-block">
-			    		        <Dropzone  
+			    		        <Dropzone
 			    		            className="xxDragAndDrop"
 			    		            multiple={true}
 			    		            disableClick={true}
 			    		            activeClassName='xxDragAndDrop--has-dragAndDropHover'
-			    		            encType="multipart/form-data" 
+			    		            encType="multipart/form-data"
 			    		            onDrop={self.onDrop}
 			    		        >
-			    		             <ReactCSSTransitionGroup 
+			    		             <ReactCSSTransitionGroup
 			    		                transitionName="xxFadeInOutFast"
-			    		                transitionEnterTimeout={UTILS.UPLOAD_TRANSITION} 
+			    		                transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
 			    		                transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
 			    		            >
 			    		            <UploadProgressContainer mode={self.props.photoUploadMode} {...props} />
@@ -71,19 +72,19 @@ var ImageUploadPanel = React.createClass({
 			    		            <label className="xxLabel"> OR CHOOSE FROM </label>
 			    		        </div>
 
-			    		        </div>    
+			    		        </div>
 			    		    )
 	    			)
 	    		}
 	    		<div className="xxUploadDialog-block">
 	    			<div className="xxUploadButtonsChooser">
-	    			    <button 
+	    			    <button
 	    			        className="xxButton xxButton--Chooser-Dropbox"
 	    			        id="dropBoxSDK"
 	    			        disabled={self.props.photoUploadMode === 'loading'}
 	    			        onClick={self.handleDropBoxClick}
 	    			    ></button>
-	    			    <button 
+	    			    <button
 	    			        onClick={self.handleInputClick}
 	    			        className="xxButton xxButton--Chooser-Computer"
 	    			    >
@@ -99,8 +100,8 @@ var ImageUploadPanel = React.createClass({
 	    			    {self.props.panelType === 'video' ? <button className="xxButton xxButton--Chooser-URL" onClick={self.handleUrlClick}></button> : null }
 	    			</div>
 	    			<div className="xxUploadButtonsChooser">
-		    			<label className="xxLabel">Dropbox</label> 
-		    			<label className="xxLabel">Desktop</label> 
+		    			<label className="xxLabel">Dropbox</label>
+		    			<label className="xxLabel">Desktop</label>
 		    			{self.props.panelType === 'video' ? (<label className="xxLabel">URL</label>) : null }
 	    			</div>
 	    			<div className="xxCollectionAction-buttons">
@@ -137,7 +138,7 @@ var ImageUploadPanel = React.createClass({
         self.props.formatData(files);
     },
     propTypes: {
-        error: React.PropTypes.string, 
+        error: React.PropTypes.string,
         formatData: React.PropTypes.func,
         grabDropBox: React.PropTypes.func,
         sendLocalPhotos: React.PropTypes.func,

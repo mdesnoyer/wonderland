@@ -25,13 +25,12 @@ export const InitialDisplay = React.createClass({
 
 export const MobileInitialDisplay = React.createClass({
     render: function() {
-        return null 
+        return null
     }
 });
 
 export const LoadingDisplay = React.createClass({
     render: function() {
-    debugger 
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
         		<span className="xxDragAndDrop-progressCounter">
@@ -41,9 +40,8 @@ export const LoadingDisplay = React.createClass({
         		{
         			this.props.photoErrorCount > 0 ? (
                         <div>
-        				{"To view the (" + this.props.photoErrorCount + ") error files click "}<br/>
-        				{"You can view these files by clicking "}
-                        <a onClick={this.props.handleOpenMessageErrorFiles}>here</a> 
+        				{"To view the (" + this.props.photoErrorCount + ") error file(s) click "}
+                        <a onClick={this.props.handleOpenMessageErrorFiles}>here</a>
                         </div>
         				) : null
 				}
@@ -60,11 +58,11 @@ export const MobileLoadingDisplay = React.createClass({
         		{"Uploading (" + this.props.photoUploadCount + ") files."}<br/>
         		{
         			this.props.photoErrorCount > 0 ? (
-                        <div> 
-        				{"To view the" + this.props.photoErrorCount + ") files due to file type/size."}
-        				<button onClick={this.props.handleOpenMessageErrorFiles}>View Errors</button> 
+                        <div>
+        				{this.props.photoErrorCount + " files with errors."}
+        				<button onClick={this.props.handleOpenMessageErrorFiles}>View Errors</button>
                         </div>
-        			) : null 
+        			) : null
     			}
         	</div>
         );
@@ -75,9 +73,9 @@ export const SuccessDisplay = React.createClass({
     render: function() {
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-complete" key="drag-and-drop-complete">
-        		{"Uploaded (" + this.props.photoUploadCount + ") files" }<br/>;
+        		{"Uploaded (" + this.props.photoUploadCount + ") files" }<br/>
         	</div>
-        	
+
         );
     }
 });

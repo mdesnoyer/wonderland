@@ -304,13 +304,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-                    if (dem.bad_thumbnails) { 
+                    if (dem.bad_thumbnails) {
                         dem.bad_thumbnails.map(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
-                    } 
-                    else { 
-                        dem.bad_thumbnails = []; 
+                    }
+                    else {
+                        dem.bad_thumbnails = [];
                     }
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
@@ -350,10 +350,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
-                
+
                 if (_.isFunction(callback)) {
                     callback();
-                } 
+                }
 
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
@@ -621,7 +621,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(liftRes => {
             const tagLiftMap = liftRes;
             // Set, dispatch and callback.
-            debugger
             LiftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
@@ -924,20 +923,20 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 Dispatcher.dispatch();
             });
         });
-    }, 
+    },
     loadAccount(accountId) {
-        // For now just return, but 
-        // eventually we should check to make 
-        // the account hasn't had any mods  
+        // For now just return, but
+        // eventually we should check to make
+        // the account hasn't had any mods
         if (AccountStore.has(accountId)) {
             return;
         }
         LoadActions.GET('')
-        .then(res => { 
-            if (res.account_id) { 
-                AccountStore.set({[res.account_id]: res}); 
+        .then(res => {
+            if (res.account_id) {
+                AccountStore.set({[res.account_id]: res});
                 Dispatcher.dispatch();
-            }   
+            }
         });
     }
 });
@@ -974,16 +973,16 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled: function(thumbnail) {
-        const thumbnailId = thumbnail.thumbnail_id; 
-        const videoId = thumbnail.video_id; 
-        const video = VideoStore.get(videoId); 
-        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } }; 
+        const thumbnailId = thumbnail.thumbnail_id;
+        const videoId = thumbnail.video_id;
+        const video = VideoStore.get(videoId);
+        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } };
         ServingStatusActions.PUT('thumbnails', options)
             .then(res => {
-                LoadActions.loadTags([video.tag_id]); 
-            }); 
-    } 
-}); 
+                LoadActions.loadTags([video.tag_id]);
+            });
+    }
+});
 
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.
@@ -1044,9 +1043,9 @@ export const Search = {
 
     loadWithQuery(count, query, callback) {
         let largeCount = this.getLargeCount(count);
-        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) { 
-            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE; 
-        } 
+        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) {
+            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE;
+        }
         Search.pending += 1;
         const wrapped = () => {
             Search.decrementPending();
