@@ -1110,22 +1110,17 @@ export const Search = {
         LoadActions.loadNNewestTags(count, query, type, true, wrapped);
     },
 
-    loadWithQuery(count, query, callback) {
-        let largeCount = this.getLargeCount(count);
-        if (largeCount > UTILS.MAX_RESULTS_PAGE_SIZE) {
-            largeCount = UTILS.MAX_RESULTS_PAGE_SIZE;
-        }
-        Search.pending += 1;
-        const wrapped = () => {
-            Search.decrementPending();
-            if (isEmpty) {
-                Search.setEmptySearch(true);
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
+    getWrappedCallback(callback) {
+            return (isEmpty) => {
+                Search.decrementPending();
+                if (isEmpty) {
+                    Search.setEmptySearch(true);
+                    Dispatcher.dispatch();
+                }
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            };
     },
 
     hasMoreThan(count) {
