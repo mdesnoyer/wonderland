@@ -134,23 +134,16 @@ var ImageUploadOverlay = React.createClass({
                         <div className="xxUploadDialog-block">
                             <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>
-                        {
-                            isValid ? (
-                                <div>
-                                    <div className="xxUploadDialog-block">
-                                        <label>{T.get('imageUpload.submitBelow')}</label>
-                                    </div>
-                                    <input
-                                        data-send-tag={true}
-                                        className={submitClassName.join(' ')}
-                                        onClick={isValid ? self.props.toggleOpen : null}
-                                        disabled={!isValid}
-                                        type="submit"
-                                        value='Submit Collection'
-                                    />
+                                <div className="xxUploadDialog-block">
+                                    <label>{T.get('imageUpload.submitBelow')}</label>
                                 </div>
-                            ) : null
-                        }
+                                <input
+                                    data-send-tag={true}
+                                    className={submitClassName.join(' ')}
+                                    onClick={self.props.toggleOpen}
+                                    type="submit"
+                                    value='Submit Collection'
+                                />
                     </div>
             </div>
         );

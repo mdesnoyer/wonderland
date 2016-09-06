@@ -217,10 +217,10 @@ const CollectionsContainer = React.createClass({
                 }
             );
             if (videoDemo === undefined) {
-                return []; 
+                return [];
             }
             let allThumbnailMap = [];
-            if (videoDemo.thumbnails) { 
+            if (videoDemo.thumbnails) {
                 allThumbnailMap = _.pick(
                     this.props.stores.thumbnails[gender][age],
                     videoDemo.thumbnails.map(t => {
@@ -228,7 +228,7 @@ const CollectionsContainer = React.createClass({
                 }));
             }
             if (allThumbnailMap.length === 0) {
-                return []; 
+                return [];
             }
 
             // For the right, use the best scoring.
@@ -238,7 +238,7 @@ const CollectionsContainer = React.createClass({
                 {thumbnails: _.values(allThumbnailMap)}
             );
             const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
-
+            debugger
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
@@ -250,14 +250,14 @@ const CollectionsContainer = React.createClass({
 
             // Do the same for the bad thumbnail list.
             let allBadThumbnailMap = [];
-            if (videoDemo.bad_thumbnails) { 
+            if (videoDemo.bad_thumbnails) {
                 allBadThumbnailMap = _.pick(
                     this.props.stores.thumbnails[gender][age],
                     videoDemo.bad_thumbnails.map(t => {
                         return t.thumbnail_id;
                     })
                 );
-            } 
+            }
             const more = _
                 .chain(allBadThumbnailMap)
                 .values()
@@ -271,9 +271,8 @@ const CollectionsContainer = React.createClass({
             const allThumbnailMap = _.pick(
                 this.props.stores.thumbnails[gender][age],
                 tag.thumbnail_ids)
-            const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-            const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
-
+            const right = UTILS.bestThumbnail(_.values(allThumbnailMap) || []);
+            const left = UTILS.worstThumbnail(_.values(allThumbnailMap) || []);
             // Build the list of thumbnails to display below.
             const rest = _
                 .chain(allThumbnailMap)
@@ -319,7 +318,7 @@ const CollectionsContainer = React.createClass({
 
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
-        const thumbsLength = collection.thumbnail_ids.length; 
+        const thumbsLength = collection.thumbnail_ids.length;
 
         return (
             <ImageCollection
@@ -329,7 +328,7 @@ const CollectionsContainer = React.createClass({
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
                 smallThumbnails={smallThumbnails}
-                thumbnailLength={thumbsLength} 
+                thumbnailLength={thumbsLength}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
@@ -352,25 +351,25 @@ const CollectionsContainer = React.createClass({
 
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
-               
-            if (video.state == 'submit') { 
+
+            if (video.state == 'submit') {
                 return this.buildVideoProcessingComponent(tagId);
-            } 
-            if (video.state == 'failed') { 
+            }
+            if (video.state == 'failed') {
                 return this.buildVideoFailedComponent(tagId);
             }
- 
+
             if (tag.thumbnail_ids.length === 1) {
-                // if it's just the default thumbnail, we have a video 
-                // that's still processing.  
-                const tid = tag.thumbnail_ids[0]; 
+                // if it's just the default thumbnail, we have a video
+                // that's still processing.
+                const tid = tag.thumbnail_ids[0];
                 const thumbnail = this.props.stores.thumbnails[0][0][tid];
-                // we can't find the thumbnail in our stores, meaning it's 
-                // older or the default just hasn't showed up yet. 
-                if (!thumbnail || thumbnail.type == 'default') { 
+                // we can't find the thumbnail in our stores, meaning it's
+                // older or the default just hasn't showed up yet.
+                if (!thumbnail || thumbnail.type == 'default') {
                     return this.buildVideoProcessingComponent(tagId);
-                }  
-            } 
+                }
+            }
             if (tag.thumbnail_ids.length === 0) {
                 return this.buildVideoProcessingComponent(tagId);
             } else if ('processing' == video.state) {
