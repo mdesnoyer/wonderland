@@ -238,7 +238,7 @@ const CollectionsContainer = React.createClass({
                 {thumbnails: _.values(allThumbnailMap)}
             );
             const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
-            debugger
+
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
@@ -271,8 +271,9 @@ const CollectionsContainer = React.createClass({
             const allThumbnailMap = _.pick(
                 this.props.stores.thumbnails[gender][age],
                 tag.thumbnail_ids)
-            const right = UTILS.bestThumbnail(_.values(allThumbnailMap) || []);
-            const left = UTILS.worstThumbnail(_.values(allThumbnailMap) || []);
+            const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
+            const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
+
             // Build the list of thumbnails to display below.
             const rest = _
                 .chain(allThumbnailMap)

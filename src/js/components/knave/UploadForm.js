@@ -58,9 +58,9 @@ var UploadForm = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        // if (self.props.isAddPanel && self.props.panelType === 'photo') {
-        //     self.setState({ totalUploaded: TagStore.get(self.props.tagId).thumbnail_ids.length || 0});
-        // };
+        if (self.props.isAddPanel && self.props.panelType === 'photo') {
+            self.setState({ totalUploaded: TagStore.get(self.props.tagId).thumbnail_ids.length || 0});
+        };
     },
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyEvent);
@@ -339,12 +339,10 @@ var UploadForm = React.createClass({
             }
         ;
         if (self.state.photoCollectionName === '') {
-            debugger
             self.throwUploadError({ code: 'ImgCollectionName' });
             return;
         }
-        if (self.state.photoUploadThumbnailIds.length < 1){
-            debugger
+        if (self.state.photoUploadThumbnailIds.length < 1) {
             self.throwUploadError({ code: 'NoImages' });
             return;
         };
