@@ -254,7 +254,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Build promise for videos referenced from tags.
         let videoPromise = Promise.resolve({videos: []})
-        const missingVideoIds = _
+
+        let usingVideoIds;
+        if (reload) {
+            // Just get every video id in the search result.
+            usingVideoIds = _(searchRes.items)
+            .reduce((videoIds, tag) => {
+                if(tag.video_id) {
+                    videoIds.push(tag.video_id);
+                }
+                return videoIds;
+            }, [])
+        } else {
+            usingVideoIds = _
             .chain(searchRes.items)
             .reduce((videoIds, tag) => {
                 if(tag.video_id) {
@@ -266,9 +278,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             .difference(_.keys(VideoStore.getAll()))
             .uniq()
             .value();
-        if (missingVideoIds.length > 0) {
+        }
+        if (usingVideoIds.length > 0) {
             const videoData = {
-                video_id: missingVideoIds.join(','),
+                video_id: usingVideoIds.join(','),
                 fields: UTILS.VIDEO_FIELDS_MIN.join(',')
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
