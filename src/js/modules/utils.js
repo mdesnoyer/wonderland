@@ -340,10 +340,11 @@ var UTILS = {
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
+    POLL_INTERVAL_SECONDS: 20,
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
     RESULTS_PAGE_SIZE: 5,
-    MAX_RESULTS_PAGE_SIZE: 25,
+    MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id'],
     VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id'],

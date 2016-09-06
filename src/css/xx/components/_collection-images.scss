@@ -73,7 +73,7 @@ $mobile-all-images-gutter-width: 3px;
 
 .xxThumbnailSoloMessage {
     z-index: 998;
-    pointer-events:none;
+    pointer-events: none;
     position: absolute;
     text-align: center;
     margin-top: 10%;
@@ -82,11 +82,11 @@ $mobile-all-images-gutter-width: 3px;
     font-size: 1.25em;
     font-weight: bold;
     color: $white;
-    text-shadow: 2px 2px 8px black;
-        @include breakpoint-mobile {
-            width: 25%;
-            margin-left: 10%;
-            font-size: 1.5em;
+    text-shadow: 2px 2px 8px $mine-shaft;
+    @include breakpoint-mobile {
+        width: 25%;
+        margin-left: 10%;
+        font-size: 1.5em;
     }
 }
 

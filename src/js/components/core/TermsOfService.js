@@ -100,8 +100,8 @@ var TermsOfService = React.createClass({
                     <blockquote>
                         Attention: Copyright Agent<br></br>
                         Neon Labs, Inc.<br></br>
-                        156 2nd Street <br></br>
-                        San Francisco, CA 94105
+                        70 South Park St.<br></br>
+                        San Francisco, CA 94107
                     </blockquote>
                 <h1 className="xxPage-Subtitle">Notice:</h1>
                 <p>To be effective, the notification must be in writing and contain the following information:</p>
