@@ -970,20 +970,20 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 Dispatcher.dispatch();
             });
         });
-    }, 
+    },
     loadAccount(accountId) {
-        // For now just return, but 
-        // eventually we should check to make 
-        // the account hasn't had any mods  
+        // For now just return, but
+        // eventually we should check to make
+        // the account hasn't had any mods
         if (AccountStore.has(accountId)) {
             return;
         }
         LoadActions.GET('')
-        .then(res => { 
-            if (res.account_id) { 
-                AccountStore.set({[res.account_id]: res}); 
+        .then(res => {
+            if (res.account_id) {
+                AccountStore.set({[res.account_id]: res});
                 Dispatcher.dispatch();
-            }   
+            }
         });
     }
 });
@@ -1016,7 +1016,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
     },
-    sendEmail: function(data, callback) { 
+    sendEmail: function(data, callback) {
         SendActions.POST('email', {data})
         .then(function(res) {
             callback({'status_code' : 200});
@@ -1027,22 +1027,22 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 'errorMessage' : 'unknown error sending email'
             });
         });
-       
-    } 
+
+    }
 });
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled: function(thumbnail) {
-        const thumbnailId = thumbnail.thumbnail_id; 
-        const videoId = thumbnail.video_id; 
-        const video = VideoStore.get(videoId); 
-        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } }; 
+        const thumbnailId = thumbnail.thumbnail_id;
+        const videoId = thumbnail.video_id;
+        const video = VideoStore.get(videoId);
+        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } };
         ServingStatusActions.PUT('thumbnails', options)
             .then(res => {
-                LoadActions.loadTags([video.tag_id]); 
-            }); 
-    } 
-}); 
+                LoadActions.loadTags([video.tag_id]);
+            });
+    }
+});
 
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.
@@ -1111,16 +1111,16 @@ export const Search = {
     },
 
     getWrappedCallback(callback) {
-        return (isEmpty) => {
-            Search.decrementPending();
-            if (isEmpty) {
-                Search.setEmptySearch(true);
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
+            return (isEmpty) => {
+                Search.decrementPending();
+                if (isEmpty) {
+                    Search.setEmptySearch(true);
+                    Dispatcher.dispatch();
+                }
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            };
     },
 
     hasMoreThan(count) {
