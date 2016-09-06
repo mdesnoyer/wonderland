@@ -45,7 +45,7 @@ var VideoFilters = React.createClass({
 
     render: function() {
         var self = this,
-            collectionClassName = self.context.isMobile? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
+            collectionClassName = self.context.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''

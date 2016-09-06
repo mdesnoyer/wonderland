@@ -1,7 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
@@ -20,6 +21,11 @@ var ImageUploadOverlay = React.createClass({
             isNextClicked: false
         }
     },
+
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
+
     componentDidMount: function() {
         window.addEventListener('keydown', this.handleKeyEvent);
         // Put focus in the form name input when opening.
@@ -47,16 +53,16 @@ var ImageUploadOverlay = React.createClass({
         }
     },
     render: function() {
-        const isMobile = window.outerWidth < 768;
         var self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
-            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== ''
+            isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '',
+            props = self.props
         ;
-            if (isValid) {
-                submitClassName.push('xxButton--important');
-            };
-        var props = self.props
+        const isMobile = self.context.isMobile;
+
+        if (isValid) { submitClassName.push('xxButton--important'); };
+
         return (
             <div className="xxUploadDialog">
                 <div className="xxUploadDialog-drag-drop">

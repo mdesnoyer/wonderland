@@ -12,7 +12,7 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
-import {AddActions, LoadActions} from '../../stores/CollectionStores.js';
+import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
@@ -41,7 +41,6 @@ var UploadForm = React.createClass({
         var self = this;
         return {
             isOpen: false,
-            isOpenMessage: true,
             isPhotoOpen: false,
             isVideoOpen: false,
             photoUploadCount: 0,
@@ -60,11 +59,8 @@ var UploadForm = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
-            self.GET('tags', { data: { tag_id: self.props.tagId } })
-            .then(function(res) {
-                self.setState({ totalUploaded: res[self.props.tagId].thumbnail_ids.length })
-            });
-        }
+            self.setState({ totalUploaded: TagStore.get(self.props.tagId).thumbnail_ids.length || 0});
+        };
     },
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyEvent);
@@ -100,7 +96,6 @@ var UploadForm = React.createClass({
             self.setState({
                 error: null,
                 isOpen: !self.state.isOpen,
-                isOpenMessage: false,
                 isOpenPhoto: false,
                 isOpenVideo: false,
                 overlayCode: null
@@ -286,7 +281,7 @@ var UploadForm = React.createClass({
             }
         ;
         if (!UTILS.validateUrl(self.state.videoUploadUrl)) {
-            self.throwUploadError({ code: 'VidInalidUrl' });
+            self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
         self.setState({

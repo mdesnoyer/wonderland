@@ -483,24 +483,24 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'uploadError.title.general': 'Upload Error',
             'uploadError.msg.general': 'Oops! We weren’t able to upload your photos. Please try again.',
-            
+
             'uploadError.title.AllFiles': 'File Type/Size Error',
             'uploadError.msg.AllFiles': 'Oops! We weren’t able to upload your photos because we don’t support the file type or the file size was too large. Please try again. What types of files do we support?',
 
             'uploadError.title.ImgAllFilesWrongFormat': 'Wrong Format',
             'uploadError.msg.ImgAllFilesWrongFormat': 'Oops! We weren’t able to upload your photos because we don’t support the file type. Please try again. What types of files do we support?',
-             
+
             'uploadError.title.ImgAllFilesTooBig': 'Large Files',
             'uploadError.msg.ImgAllFilesTooBig': 'Oops! We couldn’t upload your photos because the file size was too large. We accept files up to XX MB. Please try again.',
-             
+
             'uploadError.title.ImgViewErrFiles': 'Files We Had Trouble With',
             'uploadError.msg.ImgViewErrFiles': 'We couldn’t upload some of your photos. Upload more photos or hit “Submit" below to start analyzing your existing photos. ',
-             
+
             'uploadError.title.ImgCollectionName': 'No Collection Name',
             'uploadError.msg.ImgCollectionName': 'Please enter a Collection name.',
 
-            'uploadError.title.VidInalidUrl': 'Invalid URL',
-            'uploadError.msg.VidInalidUrl': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
+            'uploadError.title.VidInvalidUrl': 'Invalid URL',
+            'uploadError.msg.VidInvalidUrl': 'Please enter a valid, external URL with protocol e.g. http://somewhere.com/something/',
 
             'uploadError.title.ImgUploadMax': 'Over 100 Images!',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
