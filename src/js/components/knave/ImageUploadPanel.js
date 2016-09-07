@@ -139,7 +139,7 @@ var ImageUploadPanel = React.createClass({
     },
     onDrop: function (files) {
         var self = this;
-        self.props.formatData(files);
+        self.props.sendLocalPhotos(files);
     },
     propTypes: {
         error: React.PropTypes.string,

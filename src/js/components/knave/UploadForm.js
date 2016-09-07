@@ -309,7 +309,7 @@ var UploadForm = React.createClass({
     },
     sendLocalPhotos: function(e) {
          var self = this,
-             files = e.target.files,
+             files = e.target ? e.target.files : e,
              fileArray = []
          ;
          for (var i = 0, file; file = files[i]; i++) {
