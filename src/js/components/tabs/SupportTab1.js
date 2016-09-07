@@ -12,7 +12,7 @@ var SupportTab1 = React.createClass({
         return (
             <section className="xxText">
                 <h1 className="xxCollection-title">Overview</h1>
-                <p>Neon surfaces the most engaging imagery for your content. Our software is built on science- and machine learning-based models that can predict how people will subconsciously engage with different images. Using this software, we analyze your videos, identify and surface the most engaging still images from the video, and serve and test the images on your site as video thumbnails.</p>
+                <p>Neon surfaces the most engaging imagery for your content. Our software is built on science- and machine learning-based models that can predict how people will subconsciously engage with different images. Using this software, we analyze your videos, identify and surface the most engaging images or clip and serve and test the images on your site as video thumbnails.</p>
 
                 <h1 className="xxCollection-title">Get Started</h1>
                 <p>It&rsquo;s simple. Visit <a href="http://app.neon-lab.com" rel="external">http://app.neon-lab.com</a> to try it out. You can use the app with or without signing up for an account.</p>
@@ -24,10 +24,10 @@ var SupportTab1 = React.createClass({
                             <img src="/img/support/overview/1-analyze-video.png" />
                         </figure>
                     </li>
-                    <li>Click &ldquo;Submit&rdquo; to begin the video analysis process.</li>
+                    <li>Click &ldquo;Submit&rdquo; to begin the analysis process.</li>
 
-                    <li>Neon&rsquo;s software will analyze your video to surface the most clickable thumbnails. This process takes about two times the length of the video to complete. If you&rsquo;re logged in, you can navigate away from your Neon account and check back later without affecting the process. If you aren't logged in, you must either keep your browser open until the video has finished processing, or you can enter your email address to receive an email when your video is done processing.</li>
-                    <li>When your video is done processing, your video results page will show the highest- and lowest-scoring thumbnails for each video you&rsquo;ve processed. The NeonScore is the number in the orange or grey box on the image. The higher the score, the more likely the image is to be clicked.
+                    <li>Neon&rsquo;s software will analyze your content to surface the most clickable thumbnails, GIFs or images. This process takes about two times the length of the video to complete or a few minutes for still images. If you’re logged in, you can navigate away from your Neon account and check back later without affecting the process. If you aren't logged in, you must either keep your browser open until the content has finished processing, or you can enter your email address to receive an email when your content has been processed.".</li>
+                        <li>When your content has been processed, your results page will show the highest- and lowest-scoring images or highest-scoring GIF for each set of content you&rsquo;ve processed. The NeonScore is the number in the orange or grey box on the image. The higher the score, the higher the projected engagement rate."
                         <figure>
                             <img src="/img/support/overview/2-high-and-low-scoring-images.png" />
                         </figure>
