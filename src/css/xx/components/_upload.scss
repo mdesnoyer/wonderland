@@ -297,25 +297,8 @@ $zindex-upload-drag-and-drop: 1;
     & > .xxButton {
         display: inline-block;
         position: relative;
-        width: 40%;
+        width: 100%;
     }
-    & > .xxButton--inputfile {
-    -webkit-appearance: none;
-
-    }
-    & > .xxButton-center {
-        width: 20%;
-        background: transparent;
-        pointer: none;
-        border: none;
-     }
-     & > .xxButton-cancel {
-        width: 50%;
-     }
-     & > .xxInputText-upload {
-        width: 55%;
-        margin-right: 5%;
-     }
 }
 .xxUploadDialog-intro {
     .xxTitle {

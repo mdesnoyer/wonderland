@@ -54,7 +54,7 @@ var ImageUploadOverlay = React.createClass({
     },
     render: function() {
         var self = this,
-            submitClassName = ['xxButton', 'xxButton--highlight'],
+            submitClassName = ['xxButton', 'xxButton--highlight', 'xxButton--fullwidth', 'xxButton--extra-margin-top' ],
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
             isValid = self.props.photoUploadMode === 'initial' &&  self.props.photoUploadThumbnailIds.length > 0 && self.props.photoCollectionName !== '',
             props = self.props
@@ -134,16 +134,18 @@ var ImageUploadOverlay = React.createClass({
                         <div className="xxUploadDialog-block">
                             <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
                         </div>
-                                <div className="xxUploadDialog-block">
-                                    <label>{T.get('imageUpload.submitBelow')}</label>
-                                </div>
-                                <input
-                                    data-send-tag={true}
-                                    className={submitClassName.join(' ')}
-                                    onClick={self.props.toggleOpen}
-                                    type="submit"
-                                    value='Submit Collection'
-                                />
+                        <div className="xxUploadDialog-block">
+                            <label>{T.get('imageUpload.submitBelow')}</label>
+                        </div>
+                        <div className="xxUploadDialog-block">
+                            <input
+                                data-send-tag={true}
+                                className={submitClassName.join(' ')}
+                                onClick={self.props.toggleOpen}
+                                type="submit"
+                                value={T.get('imageUpload.submit')}
+                            />
+                        </div>
                     </div>
             </div>
         );
