@@ -198,6 +198,8 @@ const VideoCollection = React.createClass({
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
+            'action.showMore': 'copy.thumbnails.low',
+            'action.showLess': 'copy.thumbnails.high'
         };
         return (
             <MobileBaseCollection
