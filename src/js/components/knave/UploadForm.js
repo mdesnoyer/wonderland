@@ -155,7 +155,7 @@ var UploadForm = React.createClass({
                         toggleOpen={self.toggleOpen}
                         photoUploadMode={self.state.photoUploadMode}
                         photoUploadCount={self.state.photoUploadCount}
-                        photoErrorCount={self.state.photoErrorCount.length}
+                        photoErrorCount={self.state.errorFiles.length}
                         updateField={self.updateField}
                         photoCollectionName={self.state.photoCollectionName}
                         photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
@@ -225,7 +225,7 @@ var UploadForm = React.createClass({
                                             toggleOpen={self.toggleOpen}
                                             photoUploadMode={self.state.photoUploadMode}
                                             photoUploadCount={self.state.photoUploadCount}
-                                            photoErrorCount={self.state.photoErrorCount.length}
+                                            photoErrorCount={self.state.errorFiles.length}
                                             updateField={self.updateField}
                                             photoCollectionName={self.state.photoCollectionName}
                                             photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
@@ -468,7 +468,6 @@ var UploadForm = React.createClass({
                 photoUploadMode: 'loading',
                 photoUploadCount: filesToParse[0].length,
                 numberUploadedCount: 0,
-                photoErrorCount: filesToParse[1],
                 errorFiles: filesToParse[1]
             },  function() {
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
@@ -502,7 +501,7 @@ var UploadForm = React.createClass({
                         if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
                                 photoUploadMode:'success',
-                                error: null
+                                errorFiles: []
                                 }, function() {
                                     self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
                                     setTimeout(function() {

@@ -529,7 +529,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
 
             'uploadError.title.NoImages': 'No Images Posted',
-            'uploadError.msg.NoImages': 'Upload images to see your Neon Scores!'
+            'uploadError.msg.NoImages': 'Upload images to see your Neon Scores!',
+
+            'uploadError.title.limit': 'You\u2019ve hit your limit!',
+            'uploadError.msg.limit': 'You\u2019ve hit your limit. Come back tomorrow to process more content, or sign up to increase your limit.',
 
         },
         'en-GB': {
