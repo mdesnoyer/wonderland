@@ -18,9 +18,9 @@ var OverlayErrorFiles = React.createClass({
 					{
 						this.props.errorFiles.map(function(file, id) {
 							var sizeType = file.hasOwnProperty('bytes') ? 'bytes' : 'size';
-							var message = file[sizeType] >= UTILS.MAX_IMAGE_FILE_SIZE ? 'File Over 2.5MB' : 'Invaild File Type'
+							var message = file[sizeType] >= UTILS.MAX_IMAGE_FILE_SIZE ? 'File Over 10MB' : 'Invaild File Type'
 							return (
-							 <tr>
+							 <tr key={id}>
 							 	<td>{file.name}</td>
 							 	<td>{UTILS.bytesToSize(file[sizeType])}</td>
 							 	<td>{message}</td>

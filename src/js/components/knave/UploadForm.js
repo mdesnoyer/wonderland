@@ -466,8 +466,6 @@ var UploadForm = React.createClass({
             self.throwUploadError({ code: 'ImgUploadMax' });
             return;
         };
-        console.log(filesToParse[0])
-        console.log(filesToParse[1])
             self.setState({
                 photoUploadMode: 'loading',
                 photoUploadCount: filesToParse[0].length,
@@ -475,7 +473,6 @@ var UploadForm = React.createClass({
                 errorFiles: filesToParse[1]
             },  function() {
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
-                console.log(arrayToSend) 
                 self.grabRefreshToken(
                     arrayToSend.forEach(function(array) {
                         self.props.panelType === 'video' ? self.multiPartUpdateDefaultThumbnail(array) : self.sendFormattedData(array, type)
