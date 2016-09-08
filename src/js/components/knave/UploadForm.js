@@ -50,7 +50,6 @@ var UploadForm = React.createClass({
             videoUploadUrl:'',
             numberUploadedCount: 0,
             overlayCode: null,
-            photoErrorCount:[],
             errorFiles: [],
             error: null,
             totalUploaded: null
@@ -94,7 +93,7 @@ var UploadForm = React.createClass({
         }
         else {
             self.setState({
-                error: null,
+                errorFiles: [],
                 isOpen: !self.state.isOpen,
                 isOpenPhoto: false,
                 isOpenVideo: false,
@@ -257,17 +256,21 @@ var UploadForm = React.createClass({
     throwUploadError: function(err) {
         var self = this;
         switch(err.code) {
+            case 0:
+            console.log('YOOO')
+                self.setState({ isOpen: false, overlayCode: 'limit' });
+                break;  
             case 401:
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
                 break;
             case 402:
-                self.setState({ overlayCode: 'limit' });
+                self.setState({ photoUploadMode:'initial', isOpen: false, overlayCode: 'limit' });
                 break;
             case 404:
                 self.context.router.replace('*');
                 break;
             default:
-                self.setState({ isOpen: false, overlayCode: err.code });
+                self.setState({ photoUploadMode:'initial', isOpen: false, overlayCode: err.code });
         }
     },
     sendVideoUrl: function() {
@@ -463,14 +466,16 @@ var UploadForm = React.createClass({
             self.throwUploadError({ code: 'ImgUploadMax' });
             return;
         };
+        console.log(filesToParse[0])
+        console.log(filesToParse[1])
             self.setState({
-                error: null,
                 photoUploadMode: 'loading',
                 photoUploadCount: filesToParse[0].length,
                 numberUploadedCount: 0,
                 errorFiles: filesToParse[1]
             },  function() {
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
+                console.log(arrayToSend) 
                 self.grabRefreshToken(
                     arrayToSend.forEach(function(array) {
                         self.props.panelType === 'video' ? self.multiPartUpdateDefaultThumbnail(array) : self.sendFormattedData(array, type)
@@ -492,12 +497,14 @@ var UploadForm = React.createClass({
                 break;
         }
         self.POST(address, options)
-           .then(function(res) {
+            .then(function(res) {
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
                     photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
                     numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
                     }, function() {
+                        console.log(self.state.numberUploadedCount)
+                        console.log(self.state.photoUploadCount)
                         if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
                             self.setState({
                                 photoUploadMode:'success',
@@ -511,13 +518,10 @@ var UploadForm = React.createClass({
                     }
                 });
             })
-           .catch(function(err) {
-               self.setState({
-               photoUploadMode:'initial'
-               },  function() {
-                   self.throwUploadError(err);
-               });
-           });
+            .catch(function(err) {
+                console.log(err)
+                self.throwUploadError(err);
+            });
     },
     createFormDataArray: function(fileArray) {
         var formDataArray = [];
