@@ -363,6 +363,18 @@ var UploadForm = React.createClass({
                 }
             });
     },
+    // sendCollectionTag: function() {
+    //     var self = this, 
+    //         options = { data: { name: self.state.photoCollectionName } }
+    //     ;
+    //     self.POST('tags', options)
+    //         .then(function(res) {
+                // self.setState({})
+                // move to the next state of the posting
+            // });
+
+    // },
+    // updateTagName
     updateDefaultThumbnail: function(url) {
         var self = this,
             url = typeof url === 'object' ? url[0].link : url,

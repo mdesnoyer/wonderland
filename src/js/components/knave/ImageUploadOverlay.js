@@ -185,3 +185,91 @@ var ImageUploadOverlay = React.createClass({
 export default ImageUploadOverlay;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// return (
+//     <div className="xxUploadDialog">
+//         <div className="xxUploadDialog-drag-drop">
+//             <div className="xxUploadDialog-intro">
+//                 <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
+//             </div>
+//             <div className="xxFormField">
+//                 <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
+//                 <input
+//                     ref="nameInput"
+//                     className="xxInputText"
+//                     placeholder={T.get('imageUpload.placeholderName')}
+//                     type="text"
+//                     value={self.props.photoCollectionName}
+//                     required
+//                     onChange={e => self.props.updateField('photoCollectionName', e.target.value)}
+//                 />
+//             </div>
+//                     {
+//                         isMobile ?  <UploadProgressContainer mode={self.props.photoUploadMode} {...props} /> : (
+//                             <div>
+//                             <Dropzone
+//                                 className="xxDragAndDrop"
+//                                 multiple={true}
+//                                 disableClick={true}
+//                                 activeClassName='xxDragAndDrop--has-dragAndDropHover'
+//                                 encType="multipart/form-data"
+//                                 onDrop={self.onDrop}
+//                             >
+//                                  <ReactCSSTransitionGroup
+//                                     transitionName="xxFadeInOutFast"
+//                                     transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
+//                                     transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+//                                 >
+//                                 <UploadProgressContainer mode={self.props.photoUploadMode} {...props} />
+//                                 </ReactCSSTransitionGroup>
+//                             </Dropzone>
+//                             <div className="xxUploadDialog-block">
+//                                 <label className="xxLabel"> OR CHOOSE FROM </label>
+//                             </div>
+//                             </div>
+//                         )
+//                     }
+//                     <div className="xxUploadButtonsChooser">
+//                         <button
+//                             className="xxButton xxButton--Chooser-Dropbox"
+//                             id="dropBoxSDK"
+//                             disabled={self.props.photoUploadMode === 'loading'}
+//                             onClick={self.props.grabDropBox}
+//                         ></button>
+//                         <button
+//                             onClick={self.handleInputClick}
+//                             className="xxButton xxButton--Chooser-Computer"
+//                         >
+//                             <input
+//                                 disabled={self.props.photoUploadMode === 'loading'}
+//                                 id="file-input"
+//                                 type="file"
+//                                 multiple
+//                                 accept="image/*"
+//                                 onChange={self.props.sendLocalPhotos}
+//                             />
+//                         </button>
+//                     </div>
+//                     <div className="xxUploadButtonsChooser">
+//                         <label className="xxLabel">Dropbox</label>
+//                         <label className="xxLabel">Desktop</label>
+//                     </div>
+//                 <div className="xxUploadDialog-block">
+//                     <label className="xxLabel">{self.props.photoUploadThumbnailIds.length + " of 100 files uploaded" }</label>
+//                 </div>
+//                 <div className="xxUploadDialog-block">
+//                     <label>{T.get('imageUpload.submitBelow')}</label>
+//                 </div>
+//                 <div className="xxUploadDialog-block">
+//                     <input
+//                         data-send-tag={true}
+//                         className={submitClassName.join(' ')}
+//                         onClick={self.props.toggleOpen}
+//                         type="submit"
+//                         value={T.get('imageUpload.submit')}
+//                     />
+//                 </div>
+//             </div>
+//     </div>
