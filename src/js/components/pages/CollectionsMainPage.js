@@ -343,8 +343,7 @@ const CollectionsMainPage = React.createClass({
             // Apply a non-empty search to our data provider.
             FilteredTagStore.setFilter(
                 tag => {
-                    return tag.hidden !== true &&
-                           self.filterOnName(searchQuery, tag)
+                    return tag.hidden !== true && self.filterOnName(searchQuery, tag)
                 }
             );
         }

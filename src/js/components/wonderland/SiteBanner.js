@@ -8,10 +8,10 @@ const propTypes = {
     query: PropTypes.string,
     onSearchFormChange: PropTypes.func,
     onSearchFormSubmit: PropTypes.func,
+    killNav: React.PropTypes.bool.isRequired
 };
 
 export default function SiteBanner(props) {
-
     const getSearchForm = () => {
         if (props.onSearchFormChange && props.onSearchFormSubmit) {
             return (
@@ -24,6 +24,7 @@ export default function SiteBanner(props) {
         }
         return null;
     };
+    const siteNavigationElement = props.killNav ? null : <SiteNavigation sidebarContent={props.sidebarContent} setSidebarContent={props.setSidebarContent} />;
 
     return (
         <header className="xxHeader">
@@ -36,10 +37,7 @@ export default function SiteBanner(props) {
                 />
             </a>
             {getSearchForm()}
-            <SiteNavigation
-                sidebarContent={props.sidebarContent}
-                setSidebarContent={props.setSidebarContent}
-            />
+            {siteNavigationElement}
         </header>
     );
 }

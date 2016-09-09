@@ -119,7 +119,7 @@ gulp.task('clipboardJs', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-gulp.task('config',['clean:config'] ,function() {
+gulp.task('config', ['clean:config'] ,function() {
     return gulp.src(configSrc)
         .pipe(rename('config.json'))
         .pipe(gulp.dest('./env'))
@@ -139,6 +139,8 @@ gulp.task('redirects', function() {
     return gulp.src(redirects_src)
         .pipe(gulp.dest('./build/'));
 });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('fonts', function() {
     var fontAwesome = gulp.src('node_modules/font-awesome/fonts/*');

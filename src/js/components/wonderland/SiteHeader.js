@@ -5,7 +5,6 @@ import T from '../../modules/translation';
 import Sidebar from './Sidebar';
 
 var SiteHeader = React.createClass({
-
     propTypes: {
         sidebarContent: PropTypes.oneOf([
             'learnMore',
@@ -18,8 +17,13 @@ var SiteHeader = React.createClass({
         query: PropTypes.string,
         onSearchFormChange: PropTypes.func,
         onSearchFormSubmit: PropTypes.func,
+        killNav: React.PropTypes.bool
     },
-
+    getDefaultProps: function() {
+        return {
+            killNav: false
+        }
+    },
     getInitialState() {
         return {sidebarContent: null};
     },
@@ -43,6 +47,7 @@ var SiteHeader = React.createClass({
     },
 
     render: function() {
+        const self = this;
         return (
             <div>
                 <AccountMasqueradeBar />
@@ -52,6 +57,7 @@ var SiteHeader = React.createClass({
                     query={this.props.searchQuery}
                     onSearchFormChange={this.props.onSearchFormChange}
                     onSearchFormSubmit={this.props.onSearchFormSubmit}
+                    killNav={self.props.killNav}
                 />
                 <Sidebar
                     content={this.getContent()}

@@ -1,0 +1,23 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.timeline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+    margin-bottom: 1%;
+}
+
+.timeline__moment {
+    margin: 0 0 1% 0;
+    flex: 0 0 32%; // grow shrink basis
+}
+
+.timeline__snapshot {
+    width: 100%;
+    height: auto;;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

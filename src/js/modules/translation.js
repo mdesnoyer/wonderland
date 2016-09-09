@@ -449,6 +449,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.servingState': 'OK',
             'copy.failedState': 'Failed',
 
+            // Moment Page
+            'copy.timelinePage.title': 'Timeline: @title',
+
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
             'copy.homePage.description': 'Upload a video or some photos and Neon will show you the images or GIFs that will get you the most clicks.',
