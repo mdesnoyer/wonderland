@@ -18,6 +18,7 @@ import VideoUploadOverlay from './VideoUploadOverlay';
 import ImageUploadOverlay from './ImageUploadOverlay';
 import ImageUploadPanel from './ImageUploadPanel';
 import OverLayMessage from './OverLayMessage'
+import UploadActionsContainer from './UploadActionsContainer';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
@@ -41,18 +42,15 @@ var UploadForm = React.createClass({
         var self = this;
         return {
             isOpen: false,
-            isPhotoOpen: false,
-            isVideoOpen: false,
-            photoUploadCount: 0,
-            photoUploadMode: 'initial', // initial, loading, success,
-            photoUploadThumbnailIds: [],
-            photoCollectionName: '',
-            videoUploadUrl:'',
-            numberUploadedCount: 0,
-            overlayCode: null,
-            errorFiles: [],
-            error: null,
-            totalUploaded: null
+            tagId: null,
+            formState: 'addVideo', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
+            // urlInput:, 
+            collectionName:'', 
+            // uploadState:,    //initial // loading // success
+            // uploadedTotal:,
+            // uploadThumbnailIds: [],
+            // errorFiles: [],
+            // overlayCode: null
         };
     },
     componentWillMount: function() {
@@ -77,29 +75,7 @@ var UploadForm = React.createClass({
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
-        if (e.target.dataset.sendTag === "true") {
-            self.sendCollectionTag();
-        }
-        else if (e.target.dataset.sendUrl === "true") {
-                self.sendVideoUrl();
-        }
-        // if there is lingering data and user closes our modal then clean up state
-        // cant use a mount because the component is always present
-        else if (self.state.isOpen &&
-                (self.state.photoUploadThumbnailIds.length > 0 ||
-                 self.state.videoUploadUrl !== '' ||
-                 self.state.photoCollectionName !== '' )) {
-            self.setState(self.getInitialState());
-        }
-        else {
-            self.setState({
-                errorFiles: [],
-                isOpen: !self.state.isOpen,
-                isOpenPhoto: false,
-                isOpenVideo: false,
-                overlayCode: null
-            });
-        }
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
     },
     updateField: function(field, value) {
         var self = this;
@@ -107,11 +83,13 @@ var UploadForm = React.createClass({
     },
     handleOpenPhoto: function(e) {
         e.preventDefault();
-        this.setState({ isOpenPhoto: true });
+        // this.setState({ isOpenPhoto: true });
+        this.setState({ formState: 'addCollection' });
     },
     handleOpenVideo: function(e) {
         e.preventDefault();
-        this.setState({ isOpenVideo: true });
+        // this.setState({ isOpenVideo: true });
+        this.setState({ formState: 'addVideo' });
     },
     handleBgCloseClick: function(e) {
         if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
@@ -127,132 +105,44 @@ var UploadForm = React.createClass({
         e.preventDefault();
         this.setState({ overlayCode: null, isOpen: true});
     },
+    handleInputClick: function() {
+        document.getElementById("file-input").click();
+    },
+    handleNameSubmit: function() {
+        this.sendCollectionName();
+    },
     render: function() {
-        const { isOnboarding } = this.props;
         var self = this,
             className = ['xxUpload']
         ;
         if (self.state.isOpen) {
             className.push('is-open');
         };
-        if (self.state.isOpenPhoto || self.state.isOpenVideo) {
+        if (self.state.formState === 'addVideo' || self.state.formState === 'addCollection') {
             className.push('has-dialog');
         };
-        if (self.props.isAddPanel) {
-            return (
-                <div>
-                {
-                    self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
-                }
-                    <ImageUploadPanel
-                        error={self.state.error || null}
-                        key="upload-photo"
-                        formatData={self.formatData}
-                        grabDropBox={self.grabDropBox}
-                        sendLocalPhotos={self.sendLocalPhotos}
-                        sendFormattedData={self.sendFormattedData}
-                        toggleOpen={self.toggleOpen}
-                        photoUploadMode={self.state.photoUploadMode}
-                        photoUploadCount={self.state.photoUploadCount}
-                        photoErrorCount={self.state.errorFiles.length}
-                        updateField={self.updateField}
-                        photoCollectionName={self.state.photoCollectionName}
-                        photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
-                        numberUploadedCount={self.state.numberUploadedCount}
-                        cancelClickHandler={self.props.cancelClickHandler}
-                        panelType={self.props.panelType}
-                        updateDefaultThumbnail={self.updateDefaultThumbnail}
-                        handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
-                    />
-                </div>
-            );
-        }
         return (
             <div className={className.join(' ')}>
-                {
-                    self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null
-                }
-                <a
-                    className="xxUploadButton"
-                    title={T.get('action.analyze')}
-                    onClick={self.toggleOpen}
-                >
-                    {T.get('action.analyze')}
-                </a>
-                <ReactCSSTransitionGroup
-                    transitionName="xxFadeInOutFast"
-                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
-                    transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
-                >
-                    {
-                        self.state.isOpen ? (
-                            <div className="xxOverlay"
-                                ref={overlay => self._overlay = overlay}
-                                onClick={self.handleBgCloseClick}
-                                key="upload-overlay"
-                            >
-                                <ReactCSSTransitionGroup
-                                    transitionName="xxFadeInOutFast"
-                                    transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
-                                    transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
-                                >
-                                {
-                                    !self.state.isOpenPhoto && !self.state.isOpenVideo ? (
-                                        <div className="xxUploadTypes" key="upload-types">
-                                            <a
-                                                href=""
-                                                className="xxUploadTypes-button xxUploadTypes-button--photo"
-                                                onClick={self.handleOpenPhoto}
-                                            ><span className="xxUploadTypes-buttonLabel">Photo</span></a>
-                                            <a
-                                                href=""
-                                                className="xxUploadTypes-button xxUploadTypes-button--video"
-                                                onClick={self.handleOpenVideo}
-                                            ><span className="xxUploadTypes-buttonLabel">Video</span></a>
-                                        </div>
-                                    ) : null
-                                }
-                                {
-                                    self.state.isOpenPhoto ? (
-                                        <ImageUploadOverlay
-                                            error={self.state.error || null}
-                                            key="upload-photo"
-                                            formatData={self.formatData}
-                                            grabDropBox={self.grabDropBox}
-                                            sendLocalPhotos={self.sendLocalPhotos}
-                                            sendFormattedData={self.sendFormattedData}
-                                            toggleOpen={self.toggleOpen}
-                                            photoUploadMode={self.state.photoUploadMode}
-                                            photoUploadCount={self.state.photoUploadCount}
-                                            photoErrorCount={self.state.errorFiles.length}
-                                            updateField={self.updateField}
-                                            photoCollectionName={self.state.photoCollectionName}
-                                            photoUploadThumbnailIds={self.state.photoUploadThumbnailIds}
-                                            numberUploadedCount={self.state.numberUploadedCount}
-                                            handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
-                                        />
-                                    ) :  null
-                                }
-                                {
-                                    self.state.isOpenVideo ? (
-                                         <VideoUploadOverlay
-                                            error={self.state.error || null}
-                                            key="upload-video"
-                                            toggleOpen={self.toggleOpen}
-                                            updateField={self.updateField}
-                                            videoUploadUrl={self.state.videoUploadUrl}
-                                        />
+                { self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null }
+                { !self.props.addPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
+                { !self.state.isOpen ? null : (
+                        <UploadActionsContainer 
+                            formState={self.state.formState} 
+                            tagId={self.state.tagId}
+                            collectionName={self.state.collectionName}
+                            toggleOpen={self.toggleOpen}
+                            updateField={self.updateField}
+                            handleOpenVideo={self.handleOpenVideo}
+                            handleOpenPhoto={self.handleOpenPhoto}
+                            handleNameSubmit={self.handleNameSubmit}
 
-                                    ) :  null
-                                }
-                                </ReactCSSTransitionGroup>
-                            </div>
-                        ) : null
-                    }
-                </ReactCSSTransitionGroup>
+                        />
+                    )
+                }
             </div>
         );
     },
+
     throwUploadError: function(err) {
         var self = this;
         switch(err.code) {
@@ -332,49 +222,17 @@ var UploadForm = React.createClass({
         ;
         Dropbox.choose(options);
     },
-    sendCollectionTag: function() {
-        var self = this,
-            options = {
-                data: {
-                    name: self.state.photoCollectionName,
-                    thumbnail_ids: self.state.photoUploadThumbnailIds.join(",")
-                }
-            }
-        ;
-        if (self.state.photoCollectionName === '') {
-            self.throwUploadError({ code: 'ImgCollectionName' });
-            return;
-        }
-        if (self.state.photoUploadThumbnailIds.length < 1) {
-            self.throwUploadError({ code: 'NoImages' });
-            return;
-        };
 
+    sendCollectionName: function() {
+        var self = this, 
+            options = { data: { name: self.state.collectionName } }
+        ;
+        debugger
         self.POST('tags', options)
             .then(function(res) {
-                if (self.props.onboardingAction) {
-                    self.props.onboardingAction('col');
-                }
-                else {
-                    LoadActions.loadFromSearchResult({
-                        items: [{tag_id: res.tag_id}]
-                    });
-                    self.setState(self.getInitialState());
-                }
+                self.setState({ tagId: res.tag_id });
             });
     },
-    // sendCollectionTag: function() {
-    //     var self = this, 
-    //         options = { data: { name: self.state.photoCollectionName } }
-    //     ;
-    //     self.POST('tags', options)
-    //         .then(function(res) {
-                // self.setState({})
-                // move to the next state of the posting
-            // });
-
-    // },
-    // updateTagName
     updateDefaultThumbnail: function(url) {
         var self = this,
             url = typeof url === 'object' ? url[0].link : url,
@@ -556,6 +414,3 @@ var UploadForm = React.createClass({
 export default UploadForm;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-

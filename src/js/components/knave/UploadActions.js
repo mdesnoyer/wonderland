@@ -1,3 +1,29 @@
+import React from 'react';
+
+import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
+import TRACKING from '../../modules/tracking';
+
+import reqwest from 'reqwest';
+import SESSION from '../../modules/session';
+
+import Account from '../../mixins/Account';
+import AjaxMixin from '../../mixins/Ajax';
+
+import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
+
+import VideoUploadOverlay from './VideoUploadOverlay';
+import ImageUploadOverlay from './ImageUploadOverlay';
+import ImageUploadPanel from './ImageUploadPanel';
+import OverLayMessage from './OverLayMessage'
+
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import cookie from 'react-cookie';
+import accept from 'attr-accept';
+import _ from 'lodash';
+import Dropzone from 'react-dropzone';
+import UploadProgressContainer from './UploadProgressContainer/';
+
 
 export const UploadChooser = React.createClass({
     render: function() {
@@ -6,12 +32,12 @@ export const UploadChooser = React.createClass({
         	    <a
         	        href=""
         	        className="xxUploadTypes-button xxUploadTypes-button--photo"
-        	        onClick={this.handleOpenPhoto}
+        	        onClick={this.props.handleOpenPhoto}
         	    ><span className="xxUploadTypes-buttonLabel">Photo</span></a>
         	    <a
         	        href=""
         	        className="xxUploadTypes-button xxUploadTypes-button--video"
-        	        onClick={this.handleOpenVideo}
+        	        onClick={this.props.handleOpenVideo}
         	    ><span className="xxUploadTypes-buttonLabel">Video</span></a>
         	</div>
         );
@@ -29,10 +55,18 @@ export const CollctionNameInput = React.createClass({
         	        className="xxInputText"
         	        placeholder={T.get('imageUpload.placeholderName')}
         	        type="text"
-        	        value={this.props.photoCollectionName}
+        	        value={this.props.collectionName}
         	        required
-        	        onChange={e => this.props.updateField('photoCollectionName', e.target.value)}
+        	        onChange={e => this.props.updateField('collectionName', e.target.value)}
         	    />
+        	    <div className="xxUploadDialog-block">
+        	        <input
+        	            className='xxButton xxButton--important'
+        	            onClick={this.props.handleNameSubmit}
+        	            type="submit"
+        	            value={T.get('imageUpload.submit')}
+        	        />
+        	    </div>
         	</div>
         );
     }
@@ -45,7 +79,7 @@ export const CollectionSubmitButton = React.createClass({
         	    <input
         	        data-send-tag={true}
         	        className={submitClassName.join(' ')}
-        	        onClick={self.props.toggleOpen}
+        	        onClick={this.props.toggleOpen}
         	        type="submit"
         	        value={T.get('imageUpload.submit')}
         	    />
@@ -59,16 +93,16 @@ export const DesktopUploadButton = React.createClass({
     render: function() {
         return (
         	<button
-        	    onClick={self.handleInputClick}
+        	    onClick={this.handleInputClick}
         	    className="xxButton xxButton--Chooser-Computer"
         	>
         	    <input
-        	        disabled={self.props.photoUploadMode === 'loading'}
+        	        disabled={this.props.photoUploadMode === 'loading'}
         	        id="file-input"
         	        type="file"
         	        multiple
         	        accept="image/*"
-        	        onChange={self.props.sendLocalPhotos}
+        	        onChange={this.props.sendLocalPhotos}
         	    />
         	</button>
         );
@@ -81,8 +115,8 @@ export const DropBoxUploadButton = React.createClass({
         	<button
         	    className="xxButton xxButton--Chooser-Dropbox"
         	    id="dropBoxSDK"
-        	    disabled={self.props.photoUploadMode === 'loading'}
-        	    onClick={self.props.grabDropBox}
+        	    disabled={this.props.photoUploadMode === 'loading'}
+        	    onClick={this.props.grabDropBox}
         	></button>
         );
     }
@@ -94,10 +128,10 @@ export const UrlUploadButton = React.createClass({
         	<div>
 	        	<button 
 	        		className="xxButton xxButton--Chooser-URL"
-	        		onClick={self.handleUrlClick}>
+	        		onClick={this.handleUrlClick}>
 	        	</button>
 	        	<div className="xxCollectionAction-buttons">
-	        	   <button className="xxButton xxButton--fullwidth xxButton--extra-margin-top" onClick={self.handleUrlClick}>Close</button>
+	        	   <button className="xxButton xxButton--fullwidth xxButton--extra-margin-top" onClick={this.handleUrlClick}>Close</button>
 	        	</div>
         	</div>
         );
@@ -107,7 +141,7 @@ export const UrlUploadButton = React.createClass({
 export const UrlUploadInput = React.createClass({
     render: function() {
         return (
-        	<form className="xxFormField xxFormField--has-urlDrop" onSubmit={self.handleSubmit}>
+        	<form className="xxFormField xxFormField--has-urlDrop" onSubmit={this.handleSubmit}>
         	    <input
         	        ref="url"
         	        className="xxInputText xxInputText--has-urlDrop"
@@ -124,74 +158,69 @@ export const UrlUploadInput = React.createClass({
 });
 
 
-export const DragAndDrop = React.createClass({
+export const DragAndDrop = React.createClass({	
     render: function() {
+    	var props = this.props;
         return (
         	<div>
         		{
-        			isMobile ?  <UploadProgressContainer mode={self.props.photoUploadMode} {...props} /> : (
-        	    
-	        	    <div className="xxUploadDialog-block">
-	        	    <Dropzone
-	        	        className="xxDragAndDrop"
-	        	        multiple={true}
-	        	        disableClick={true}
-	        	        activeClassName='xxDragAndDrop--has-dragAndDropHover'
-	        	        encType="multipart/form-data"
-	        	        onDrop={self.onDrop}
-	        	    >
-	        	         <ReactCSSTransitionGroup
-	        	            transitionName="xxFadeInOutFast"
-	        	            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
-	        	            transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
-	        	        >
-	        	        <UploadProgressContainer mode={self.props.photoUploadMode} {...props} />
-	        	        </ReactCSSTransitionGroup>
-        	    	</Dropzone>
+        			false ?  <UploadProgressContainer mode={this.props.photoUploadMode} {...props} /> : (
+        	    	<div>
+		        	    <div className="xxUploadDialog-block">
+		        	    <Dropzone
+		        	        className="xxDragAndDrop"
+		        	        multiple={true}
+		        	        disableClick={true}
+		        	        activeClassName='xxDragAndDrop--has-dragAndDropHover'
+		        	        encType="multipart/form-data"
+		        	        onDrop={this.onDrop}
+		        	    >
+		        	         <ReactCSSTransitionGroup
+		        	            transitionName="xxFadeInOutFast"
+		        	            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
+		        	            transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
+		        	        >
+		        	        <UploadProgressContainer mode={this.props.photoUploadMode} {...props} />
+		        	        </ReactCSSTransitionGroup>
+	        	    	</Dropzone>
+		        	    </div>
+	        	    	<div className="xxUploadDialog-block">
+		    	        	<label className="xxLabel"> OR CHOOSE FROM </label>
+		        	    </div>
 	        	    </div>
-        	    	<div className="xxUploadDialog-block">
-	    	        	<label className="xxLabel"> OR CHOOSE FROM </label>
-	        	    </div>
-        			);
+        			)
         		}
     	    </div>
-	    );
+	    )
     },
     onDrop: function (files) {
-        var self = this;
-        self.props.sendLocalPhotos(files);
+        this.props.sendLocalPhotos(files);
     },
 });
 
 
-export const XXXX = React.createClass({
-    render: function() {
-        return (
-        );
-    }
-});
 
-export const XXXX = React.createClass({
-    render: function() {
-        return (
-        );
-    }
-});
+// export const XXXX = React.createClass({
+//     render: function() {
+//         return (
+//         );
+//     }
+// });
 
-export const XXXX = React.createClass({
-    render: function() {
-        return (
-        );
-    }
-});
+// export const XXXX = React.createClass({
+//     render: function() {
+//         return (
+//         );
+//     }
+// });
 
 
-export const XXXX = React.createClass({
-    render: function() {
-        return (
-        );
-    }
-});
+// export const XXXX = React.createClass({
+//     render: function() {
+//         return (
+//         );
+//     }
+// });
 
 
 
