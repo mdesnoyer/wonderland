@@ -138,6 +138,10 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
 
+        if (collection.thumbnail_ids.length < 1) {
+            return <div />;   
+        }
+
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
                 return this.buildImageCollectionComponent(tagId);
@@ -278,7 +282,7 @@ const CollectionsContainer = React.createClass({
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
-                // .omit([right.thumbnail_id, left.thumbnail_id])
+                .omit([right.thumbnail_id, left.thumbnail_id])
                 .values()
                 // Order by score, best to worst, then created time for stability.
                 .orderBy(['neon_score', 'created'], ['desc', 'asc'])

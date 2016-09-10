@@ -64,9 +64,7 @@ var UploadActionsContainer = React.createClass({
 			    >
 			    	<VideoUploadOverlay {...props}/>;
 			    </div>
-			)
-
-			
+			)			
 		};
 
 		if (this.props.formState === 'updateVideoDefault') {
@@ -114,6 +112,7 @@ var UploadActionsContainer = React.createClass({
 									</div>
 								)
 							}
+							<CollectionSubmitButton />
 						</div>
 					</div>
 				</div>

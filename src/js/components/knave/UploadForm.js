@@ -135,6 +135,7 @@ var UploadForm = React.createClass({
                             handleOpenVideo={self.handleOpenVideo}
                             handleOpenPhoto={self.handleOpenPhoto}
                             handleNameSubmit={self.handleNameSubmit}
+                            grabDropBox={self.grabDropBox}
 
                         />
                     )
