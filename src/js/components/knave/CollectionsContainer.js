@@ -278,7 +278,7 @@ const CollectionsContainer = React.createClass({
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
-                .omit([right.thumbnail_id, left.thumbnail_id])
+                // .omit([right.thumbnail_id, left.thumbnail_id])
                 .values()
                 // Order by score, best to worst, then created time for stability.
                 .orderBy(['neon_score', 'created'], ['desc', 'asc'])
