@@ -38,7 +38,6 @@ import _ from 'lodash';
 
 
 var UploadActionsContainer = React.createClass({
-	
 	render: function () {
 	var props = this.props;
 		if (this.props.formState === 'chooseUploadType') {
@@ -70,7 +69,8 @@ var UploadActionsContainer = React.createClass({
 		if (this.props.formState === 'updateVideoDefault') {
 			return (
 				<div className="xxUploadDialog-drag-drop-panel">
-					<DragAndDrop {...props}/> 
+					{!this.props.showUrlUploader ? <DragAndDrop {...props}/> : <UrlUploadInput {...props}/> }
+					<div className="xxUploadDialog-block">
 					<div className="xxUploadButtonsChooser">
 						<DropBoxUploadButton {...props}/>
 						<DesktopUploadButton {...props}/>
@@ -80,6 +80,16 @@ var UploadActionsContainer = React.createClass({
 					    <label className="xxLabel">Dropbox</label>
 					    <label className="xxLabel">Desktop</label>
 					    <label className="xxLabel">URL</label>
+					</div>
+					</div>
+					<div className="xxCollectionAction-buttons">
+					    <button
+					        className="xxButton xxButton--fullwidth xxButton--extra-margin-top"
+					        type="button"
+					        data-action-label="info"
+					        onClick={this.props.handleCancelClick}
+					        >{T.get('back')}
+					    </button>
 					</div>
 				</div>
 			);
@@ -130,6 +140,15 @@ var UploadActionsContainer = React.createClass({
 					<div className="xxUploadButtonsChooser">
 					    <label className="xxLabel">Dropbox</label>
 					    <label className="xxLabel">Desktop</label>
+					</div>
+					<div className="xxCollectionAction-buttons">
+					    <button
+					        className="xxButton xxButton--fullwidth xxButton--extra-margin-top"
+					        type="button"
+					        data-action-label="info"
+					        onClick={this.props.handleCancelClick}
+					        >{T.get('back')}
+					    </button>
 					</div>
 				</div>
 			) 	

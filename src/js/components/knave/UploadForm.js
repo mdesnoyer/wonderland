@@ -51,7 +51,8 @@ var UploadForm = React.createClass({
             uploadedTotal: null,
             uploadThumbnailIds: [],
             errorFiles: [],
-            overlayCode: null
+            overlayCode: null,
+            showUrlUploader: false
         };
     },
     componentWillMount: function() {
@@ -64,6 +65,12 @@ var UploadForm = React.createClass({
                 formState: 'updateCollection'
             });
         };
+        if (self.props.isAddPanel && self.props.panelType === 'video') {
+            self.setState({
+                isOpen: true,
+                formState: 'updateVideoDefault'             
+            })
+        }
     },
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyEvent);
@@ -110,18 +117,41 @@ var UploadForm = React.createClass({
         this.setState({ overlayCode: null, isOpen: true});
     },
     handleInputClick: function() {
+        if (this.state.formState === 'updateVideoDefault') { this.setState({ showUrlUploader: false})} ;
         document.getElementById("file-input").click();
     },
     handleNameSubmit: function() {
         this.sendCollectionName();
     },
     handleCollectionLoad: function() {
-        LoadActions.loadTags([this.state.tagId]);
-        this.setState(this.getInitialState());
+        if (this.props.onboardingAction) {
+            this.props.onboardingAction('col');
+        }
+        else {
+            LoadActions.loadFromSearchResult({ items: [{tag_id: this.state.tagId}] });
+            this.setState(this.getInitialState());
+        }
     },
     handleUrlSubmit: function() {
         this.sendVideoUrl();
-    }, 
+    },
+    handleUpdateVideoDefault: function(e) {
+        e.preventDefault();
+        this.setState({
+            showUrlUploader: false,
+            uploadState: 'loading',
+            uploadingTotal: 1
+        },  function() {
+            this.updateDefaultThumbnail(this.state.urlInput)
+        })
+    },
+    handleshowUrlUploader: function() {
+        this.setState({ showUrlUploader: !this.state.showUrlUploader });
+    },
+    handleCancelClick: function() {
+        // this.setState(this.getInitialState());
+        this.props.cancelClickHandler();
+    },
     render: function() {
         var self = this,
             className = ['xxUpload']
@@ -140,6 +170,7 @@ var UploadForm = React.createClass({
                         <UploadActionsContainer 
                             formState={self.state.formState}
                             uploadState={self.state.uploadState}
+                            showUrlUploader={self.state.showUrlUploader}
                             urlInput={self.state.urlInput} 
                             tagId={self.state.tagId}
                             collectionName={self.state.collectionName}
@@ -155,6 +186,10 @@ var UploadForm = React.createClass({
                             handleNameSubmit={self.handleNameSubmit}
                             handleCollectionLoad={self.handleCollectionLoad}
                             handleUrlSubmit={self.handleUrlSubmit}
+                            handleUpdateVideoDefault={self.handleUpdateVideoDefault}
+                            handleshowUrlUploader={self.handleshowUrlUploader}
+                            handleInputClick={self.handleInputClick}
+                            handleCancelClick={self.handleCancelClick}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -183,7 +218,6 @@ var UploadForm = React.createClass({
         }
     },
     sendVideoUrl: function() {
-        debugger
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -193,19 +227,15 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        debugger
         if (!UTILS.validateUrl(self.state.urlInput)) {
-            debugger
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
-        debugger
         self.setState({
             isOpen: false
         },  function() {
             self.POST('videos', options)
                 .then(function(json) {
-                    debugger
                     if (self.props.onboardingAction) {
                         self.props.onboardingAction('video', json.video.video_id);
                         self.setState({urlInput: ''});
@@ -217,7 +247,6 @@ var UploadForm = React.createClass({
 
                 })
                 .catch(function(err) {
-                    debugger
                     self.throwUploadError(err);
                 });
         })
@@ -243,6 +272,7 @@ var UploadForm = React.createClass({
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
+        if (self.state.formState === 'updateVideoDefault') { self.setState({ showUrlUploader: false})} ;
         Dropbox.choose(options);
     },
 
@@ -270,10 +300,14 @@ var UploadForm = React.createClass({
         },  function() {
                 self.PUT('videos?video_id=' + self.props.videoId, options)
                     .then(function(res) {
-                        self.setState({uploadState: 'success'});
-                        LoadActions.loadTags([self.state.tagId],
-                            self.props.cancelClickHandler()
-                        );
+                        self.setState({
+                            uploadState: 'success'
+                        },  function() {
+                            LoadActions.loadTags([self.state.tagId])
+                            setTimeout(function() {
+                            self.setState({ uploadState: 'initial' });
+                            }, 4000)                           
+                        })
                     })
                     .catch(function(err) {
                         self.setState({
@@ -293,10 +327,14 @@ var UploadForm = React.createClass({
         }
         self.PUT('videos?video_id=' + self.props.videoId, options)
             .then(function(res) {
-                self.setState({uploadState: 'success'});
-                LoadActions.loadTags([self.state.tagId],
-                    self.props.cancelClickHandler()
-                );
+                self.setState({
+                    uploadState: 'success'
+                },  function() {
+                    LoadActions.loadTags([self.state.tagId])
+                    setTimeout(function() {
+                    self.setState({ uploadState: 'initial' });
+                    }, 4000)   
+                })
             })
             .catch(function(err) {
                 self.setState({

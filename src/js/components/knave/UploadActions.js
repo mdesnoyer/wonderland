@@ -81,7 +81,7 @@ export const CollectionSubmitButton = React.createClass({
         	        className="xxButton xxButton--important"
         	        onClick={this.props.handleCollectionLoad}
         	        type="submit"
-        	        value={T.get('imageUpload.submit')}
+        	        value='Done'
         	    />
         	</div>
         );
@@ -93,7 +93,7 @@ export const DesktopUploadButton = React.createClass({
     render: function() {
         return (
         	<button
-        	    onClick={this.handleInputClick}
+        	    onClick={this.props.handleInputClick}
         	    className="xxButton xxButton--Chooser-Computer"
         	>
         	    <input
@@ -106,9 +106,6 @@ export const DesktopUploadButton = React.createClass({
         	    />
         	</button>
         );
-    },
-    handleInputClick: function() {
-        document.getElementById("file-input").click();
     }
 });
 
@@ -128,15 +125,10 @@ export const DropBoxUploadButton = React.createClass({
 export const UrlUploadButton = React.createClass({
     render: function() {
         return (
-        	<div>
-	        	<button 
-	        		className="xxButton xxButton--Chooser-URL"
-	        		onClick={this.handleUrlClick}>
-	        	</button>
-	        	<div className="xxCollectionAction-buttons">
-	        	   <button className="xxButton xxButton--fullwidth xxButton--extra-margin-top" onClick={this.handleUrlClick}>Close</button>
-	        	</div>
-        	</div>
+        	<button 
+        		className="xxButton xxButton--Chooser-URL"
+        		onClick={this.props.handleshowUrlUploader}>
+        	</button>
         );
     }
 });
@@ -144,13 +136,15 @@ export const UrlUploadButton = React.createClass({
 export const UrlUploadInput = React.createClass({
     render: function() {
         return (
-        	<form className="xxFormField xxFormField--has-urlDrop" onSubmit={this.handleSubmit}>
+        	<form className="xxFormField xxFormField--has-urlDrop" onSubmit={this.props.handleUpdateVideoDefault}>
         	    <input
-        	        ref="url"
+        	        name="url"
         	        className="xxInputText xxInputText--has-urlDrop"
         	        type="url"
         	        placeholder={T.get('image.URL')}
         	        required
+                    value={this.props.urlInput}
+                    onChange={e => this.props.updateField('urlInput', e.target.value)}
         	    />
         	    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
         	    Add URL
