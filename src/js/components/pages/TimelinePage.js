@@ -76,7 +76,8 @@ var timelinePage = React.createClass({
                 title: T.get('copy.timelinePage.title', {
                     '@title': timelineConfig.TITLE
                 }),
-                feed: timelineConfig.FEED
+                feed: timelineConfig.FEED,
+                threshold: timelineConfig.THRESHOLD
             }, function() {
                 self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
@@ -119,6 +120,7 @@ var timelinePage = React.createClass({
                         videos: self.state.videos,
                     }}
                     feed={self.state.feed}
+                    threshold={self.state.threshold}
                 />
                 <SiteFooter />
             </main>
