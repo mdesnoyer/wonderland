@@ -138,7 +138,7 @@ const CollectionsContainer = React.createClass({
 
         const collection = this.props.stores.tags[tagId];
 
-        if (collection.thumbnail_ids.length < 1) {
+        if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div />;   
         }
 

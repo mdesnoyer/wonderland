@@ -43,8 +43,8 @@ var UploadForm = React.createClass({
         return {
             isOpen: false,
             tagId: null,
-            formState: 'addCollection', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
-            // urlInput:, 
+            formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
+            urlInput:'', 
             collectionName:'', 
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
@@ -119,6 +119,9 @@ var UploadForm = React.createClass({
         LoadActions.loadTags([this.state.tagId]);
         this.setState(this.getInitialState());
     },
+    handleUrlSubmit: function() {
+        this.sendVideoUrl();
+    }, 
     render: function() {
         var self = this,
             className = ['xxUpload']
@@ -136,7 +139,8 @@ var UploadForm = React.createClass({
                 { !self.state.isOpen ? null : (
                         <UploadActionsContainer 
                             formState={self.state.formState}
-                            uploadState={self.state.uploadState} 
+                            uploadState={self.state.uploadState}
+                            urlInput={self.state.urlInput} 
                             tagId={self.state.tagId}
                             collectionName={self.state.collectionName}
                             uploadingTotal={self.state.uploadingTotal}
@@ -150,6 +154,7 @@ var UploadForm = React.createClass({
                             handleOpenPhoto={self.handleOpenPhoto}
                             handleNameSubmit={self.handleNameSubmit}
                             handleCollectionLoad={self.handleCollectionLoad}
+                            handleUrlSubmit={self.handleUrlSubmit}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -178,37 +183,41 @@ var UploadForm = React.createClass({
         }
     },
     sendVideoUrl: function() {
+        debugger
         var self = this,
             videoId = UTILS.generateId(),
             options = {
                 data: {
                     external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.videoUploadUrl))
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput))
                 }
             }
         ;
-        if (!UTILS.validateUrl(self.state.videoUploadUrl)) {
+        debugger
+        if (!UTILS.validateUrl(self.state.urlInput)) {
+            debugger
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
+        debugger
         self.setState({
-            isOpen: false,
-            isOpenPhoto: false,
-            isOpenVideo: false
+            isOpen: false
         },  function() {
             self.POST('videos', options)
                 .then(function(json) {
+                    debugger
                     if (self.props.onboardingAction) {
                         self.props.onboardingAction('video', json.video.video_id);
-                        self.setState({videoUploadUrl: ''});
+                        self.setState({urlInput: ''});
                     }
                     else {
                         LoadActions.loadTags([json.video.tag_id]);
-                        self.setState({videoUploadUrl: ''});
+                        self.setState({urlInput: ''});
                     }
 
                 })
                 .catch(function(err) {
+                    debugger
                     self.throwUploadError(err);
                 });
         })
