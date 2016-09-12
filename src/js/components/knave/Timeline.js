@@ -14,13 +14,17 @@ const Timeline = React.createClass({
     propTypes: {
         stores: React.PropTypes.object.isRequired,
         feed: React.PropTypes.string,
-        threshold: React.PropTypes.number
+        pageSize: React.PropTypes.number.isRequired, 
+        threshold: React.PropTypes.number.isRequired,
+        showNeonScore: React.PropTypes.bool.isRequired
     },
     getDefaultProps: function() {
         return {
             stores: {},
             feed: '',
-            threshold: 0
+            pageSize: UTILS.RESULTS_PAGE_SIZE,
+            threshold: 0,
+            showNeonScore: false
         }
     },
     getInitialState: function() {
@@ -49,8 +53,6 @@ const Timeline = React.createClass({
                     
                     // Get a video's thumbnails
                     const demographicThumbnailObject = UTILS.findDemographicThumbnailObject(v.demographic_thumbnails);
-                    
-                    
                     if (demographicThumbnailObject && demographicThumbnailObject.thumbnails) {
 
                         // We are only interested in good thumbnails (neon ones)    
@@ -84,25 +86,38 @@ const Timeline = React.createClass({
         ;
         return (
             <div>
-                <ol className="timeline" data-threshold={self.props.threshold} data-feed={self.props.feed}>
+                <ol
+                    className="timeline"
+                    data-threshold={self.props.threshold}
+                    data-show-neonscore={self.props.showNeonScore}
+                    data-feed={self.props.feed}
+                    data-page-size={self.props.pageSize}
+                >
                     {
                         snapshots.map(function(snapshot, i) {
+                            let neonScoreElement = self.props.showNeonScore ? <figcaption className="timeline__score">{snapshot.neonScore}</figcaption> : null;
                             return (
-                                <li className="timeline__moment" key={i}>
+                                <li
+                                    className="timeline__moment"
+                                    key={i}
+                                    data-score={snapshot.neonScore}
+                                    data-video-id={snapshot.videoId}
+                                    data-thumbnail-id={snapshot.videoId}
+                                    data-timestamp={snapshot.timestamp}
+                                >
                                     <a
                                         download
                                         href={snapshot.highSrc}
                                     >
-                                        <img
-                                            className="timeline__snapshot"
-                                            data-video-id={snapshot.videoId}
-                                            data-thumbnail-id={snapshot.videoId}
-                                            data-timestamp={snapshot.timestamp}
-                                            data-neonscore={snapshot.neonScore}
-                                            src={snapshot.lowSrc}
-                                            alt=''
-                                            title=''
-                                        />
+                                        <figure>
+                                            <img
+                                                className="timeline__snapshot"
+                                                src={snapshot.lowSrc}
+                                                alt=''
+                                                title=''
+                                            />
+                                            {neonScoreElement}
+                                        </figure>
                                     </a>
                                 </li>
                             );
