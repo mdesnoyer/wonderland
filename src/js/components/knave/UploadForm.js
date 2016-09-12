@@ -43,20 +43,26 @@ var UploadForm = React.createClass({
         return {
             isOpen: false,
             tagId: null,
-            formState: 'addVideo', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
+            formState: 'addCollection', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
             // urlInput:, 
             collectionName:'', 
-            // uploadState:,    //initial // loading // success
-            // uploadedTotal:,
-            // uploadThumbnailIds: [],
-            // errorFiles: [],
-            // overlayCode: null
+            uploadState: 'initial',  //initial // loading // success
+            uploadingTotal: null,
+            uploadedTotal: null,
+            uploadThumbnailIds: [],
+            errorFiles: [],
+            overlayCode: null
         };
     },
     componentWillMount: function() {
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
-            self.setState({ totalUploaded: TagStore.get(self.props.tagId).thumbnail_ids.length || 0});
+            self.setState({ 
+                uploadTotal: TagStore.get(self.props.tagId).thumbnail_ids.length || 0,
+                tagId: self.props.tagId,
+                isOpen: true,
+                formState: 'updateCollection'
+            });
         };
     },
     componentDidMount() {
@@ -83,12 +89,10 @@ var UploadForm = React.createClass({
     },
     handleOpenPhoto: function(e) {
         e.preventDefault();
-        // this.setState({ isOpenPhoto: true });
         this.setState({ formState: 'addCollection' });
     },
     handleOpenVideo: function(e) {
         e.preventDefault();
-        // this.setState({ isOpenVideo: true });
         this.setState({ formState: 'addVideo' });
     },
     handleBgCloseClick: function(e) {
@@ -111,11 +115,15 @@ var UploadForm = React.createClass({
     handleNameSubmit: function() {
         this.sendCollectionName();
     },
+    handleCollectionLoad: function() {
+        LoadActions.loadTags([this.state.tagId]);
+        this.setState(this.getInitialState());
+    },
     render: function() {
         var self = this,
             className = ['xxUpload']
         ;
-        if (self.state.isOpen) {
+        if (self.state.isOpen && !self.props.isAddPanel) {
             className.push('is-open');
         };
         if (self.state.formState === 'addVideo' || self.state.formState === 'addCollection') {
@@ -124,44 +132,49 @@ var UploadForm = React.createClass({
         return (
             <div className={className.join(' ')}>
                 { self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null }
-                { !self.props.addPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
+                { !self.props.isAddPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
                 { !self.state.isOpen ? null : (
                         <UploadActionsContainer 
-                            formState={self.state.formState} 
+                            formState={self.state.formState}
+                            uploadState={self.state.uploadState} 
                             tagId={self.state.tagId}
                             collectionName={self.state.collectionName}
+                            uploadingTotal={self.state.uploadingTotal}
+                            uploadedTotal={self.state.uploadedTotal}
+                            uploadThumbnailIds={self.state.uploadThumbnailIds}
+                            errorFiles={self.state.errorFiles}
+                            overlayCode={self.state.overlayCode}
                             toggleOpen={self.toggleOpen}
                             updateField={self.updateField}
                             handleOpenVideo={self.handleOpenVideo}
                             handleOpenPhoto={self.handleOpenPhoto}
                             handleNameSubmit={self.handleNameSubmit}
+                            handleCollectionLoad={self.handleCollectionLoad}
                             grabDropBox={self.grabDropBox}
-
+                            sendLocalPhotos={self.sendLocalPhotos}
                         />
                     )
                 }
             </div>
         );
     },
-
     throwUploadError: function(err) {
         var self = this;
         switch(err.code) {
             case 0:
-            console.log('YOOO')
-                self.setState({ isOpen: false, overlayCode: 'limit' });
+                self.setState({ isOpen: false, overlayCode: 'timeout' });
                 break;  
             case 401:
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
                 break;
             case 402:
-                self.setState({ photoUploadMode:'initial', isOpen: false, overlayCode: 'limit' });
+                self.setState({ uploadState:'initial', isOpen: false, overlayCode: 'limit' });
                 break;
             case 404:
                 self.context.router.replace('*');
                 break;
             default:
-                self.setState({ photoUploadMode:'initial', isOpen: false, overlayCode: err.code });
+                self.setState({ uploadState:'initial', isOpen: false, overlayCode: err.code });
         }
     },
     sendVideoUrl: function() {
@@ -215,7 +228,7 @@ var UploadForm = React.createClass({
         var self = this,
             options = {
                 success: function(urls) { self.props.panelType === 'video' ? self.updateDefaultThumbnail(urls) : self.formatData(urls, 'dropbox') },
-                cancel: function() { self.setState({ photoUploadMode:'initial'}) },
+                cancel: function() { self.setState({ uploadState:'initial'}) },
                 linkType: "direct",
                 multiselect: !self.props.isAddPanel || self.props.panelType === 'photo',
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
@@ -228,7 +241,6 @@ var UploadForm = React.createClass({
         var self = this, 
             options = { data: { name: self.state.collectionName } }
         ;
-        debugger
         self.POST('tags', options)
             .then(function(res) {
                 self.setState({ tagId: res.tag_id });
@@ -244,19 +256,19 @@ var UploadForm = React.createClass({
                 }
             }
         self.setState({
-            photoUploadMode: 'loading',
-            photoUploadCount: 1
+            uploadState: 'loading',
+            uploadingTotal: 1
         },  function() {
                 self.PUT('videos?video_id=' + self.props.videoId, options)
                     .then(function(res) {
-                        self.setState({photoUploadMode: 'success'});
-                        LoadActions.loadTags([self.props.tagId],
+                        self.setState({uploadState: 'success'});
+                        LoadActions.loadTags([self.state.tagId],
                             self.props.cancelClickHandler()
                         );
                     })
                     .catch(function(err) {
                         self.setState({
-                            photoUploadMode:'initial'
+                            uploadState:'initial'
                         },  function() {
                             self.throwUploadError(err);
                         });
@@ -272,14 +284,14 @@ var UploadForm = React.createClass({
         }
         self.PUT('videos?video_id=' + self.props.videoId, options)
             .then(function(res) {
-                self.setState({photoUploadMode: 'success'});
-                LoadActions.loadTags([self.props.tagId],
+                self.setState({uploadState: 'success'});
+                LoadActions.loadTags([self.state.tagId],
                     self.props.cancelClickHandler()
                 );
             })
             .catch(function(err) {
                 self.setState({
-                    photoUploadMode:'initial'
+                    uploadState:'initial'
                 },  function() {
                     self.throwUploadError(err);
                 });
@@ -331,16 +343,16 @@ var UploadForm = React.createClass({
             self.throwUploadError({ code: 'AllFiles' })
             return;
         };
-        if (self.state.photoUploadThumbnailIds.length + filesToParse[0].length  > UTILS.MAX_IMAGE_FILES_ALLOWED ||
-            self.state.totalUploaded + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
+        if (self.state.uploadThumbnailIds.length + filesToParse[0].length  > UTILS.MAX_IMAGE_FILES_ALLOWED ||
+            self.state.uploadTotal + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
          ) {
             self.throwUploadError({ code: 'ImgUploadMax' });
             return;
         };
             self.setState({
-                photoUploadMode: 'loading',
-                photoUploadCount: filesToParse[0].length,
-                numberUploadedCount: 0,
+                uploadState: 'loading',
+                uploadingTotal: filesToParse[0].length,
+                uploadedTotal: 0,
                 errorFiles: filesToParse[1]
             },  function() {
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
@@ -353,8 +365,7 @@ var UploadForm = React.createClass({
     },
     sendFormattedData: function(array, type) {
         var self = this,
-            options,
-            address =  self.props.isAddPanel ? 'thumbnails?tag_id=' + self.props.tagId : 'thumbnails'
+            options
         ;
         switch(type) {
             case 'dropbox':
@@ -364,23 +375,21 @@ var UploadForm = React.createClass({
                 options = { data: array, processData : false, contentType: 'multipart/form-data' };
                 break;
         }
-        self.POST(address, options)
+        self.POST('thumbnails?tag_id=' + self.state.tagId, options)
             .then(function(res) {
                 var thumbnailIds = res.thumbnails.map(function(a) {return a.thumbnail_id;});
                 self.setState({
-                    photoUploadThumbnailIds: self.state.photoUploadThumbnailIds.concat(thumbnailIds),
-                    numberUploadedCount: self.state.numberUploadedCount + thumbnailIds.length
+                    uploadThumbnailIds: self.state.uploadThumbnailIds.concat(thumbnailIds),
+                    uploadedTotal: self.state.uploadedTotal + thumbnailIds.length
                     }, function() {
-                        console.log(self.state.numberUploadedCount)
-                        console.log(self.state.photoUploadCount)
-                        if (self.state.numberUploadedCount >= self.state.photoUploadCount) {
+                        if (self.state.uploadedTotal >= self.state.uploadingTotal) {
                             self.setState({
-                                photoUploadMode:'success',
+                                uploadState:'success',
                                 errorFiles: []
                                 }, function() {
-                                    self.props.isAddPanel && LoadActions.loadTags([self.props.tagId]);
+                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId]);
                                     setTimeout(function() {
-                                    self.setState({ photoUploadMode:'initial' });
+                                    self.setState({ uploadState: 'initial' });
                                     }, 3000)
                             });
                     }

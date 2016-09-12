@@ -22,18 +22,18 @@ var UploadProgressContainer = React.createClass({
         if(isMobile) {
             return (
                 <div>
-                        {this.props.mode === 'initial' && <MobileInitialDisplay {...props} />}
-                        {this.props.mode === 'loading' && <MobileLoadingDisplay {...props} />}
-                        {this.props.mode === 'success' && <MobileSuccessDisplay {...props} />}
+                        {this.props.uploadState === 'initial' && <MobileInitialDisplay {...props} />}
+                        {this.props.uploadState === 'loading' && <MobileLoadingDisplay {...props} />}
+                        {this.props.uploadState === 'success' && <MobileSuccessDisplay {...props} />}
                 </div>
             );
         }
         else {
             return (
                 <div>
-                        {this.props.mode === 'initial' && <InitialDisplay {...props} />}
-                        {this.props.mode === 'loading' && <LoadingDisplay {...props} />}
-                        {this.props.mode === 'success' && <SuccessDisplay {...props} />}
+                        {this.props.uploadState === 'initial' && <InitialDisplay {...props} />}
+                        {this.props.uploadState === 'loading' && <LoadingDisplay {...props} />}
+                        {this.props.uploadState === 'success' && <SuccessDisplay {...props} />}
                 </div>
             );
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -64,7 +64,7 @@ export const CollctionNameInput = React.createClass({
         	            className='xxButton xxButton--important'
         	            onClick={this.props.handleNameSubmit}
         	            type="submit"
-        	            value={T.get('imageUpload.submit')}
+        	            value={'Submit Name'}
         	        />
         	    </div>
         	</div>
@@ -78,8 +78,8 @@ export const CollectionSubmitButton = React.createClass({
         	<div className="xxUploadDialog-block">
         	    <input
         	        data-send-tag={true}
-        	        className={submitClassName.join(' ')}
-        	        onClick={this.props.toggleOpen}
+        	        className="xxButton xxButton--important"
+        	        onClick={this.props.handleCollectionLoad}
         	        type="submit"
         	        value={T.get('imageUpload.submit')}
         	    />
@@ -97,7 +97,7 @@ export const DesktopUploadButton = React.createClass({
         	    className="xxButton xxButton--Chooser-Computer"
         	>
         	    <input
-        	        disabled={this.props.photoUploadMode === 'loading'}
+        	        disabled={this.props.uploadState === 'loading'}
         	        id="file-input"
         	        type="file"
         	        multiple
@@ -106,6 +106,9 @@ export const DesktopUploadButton = React.createClass({
         	    />
         	</button>
         );
+    },
+    handleInputClick: function() {
+        document.getElementById("file-input").click();
     }
 });
 
@@ -115,7 +118,7 @@ export const DropBoxUploadButton = React.createClass({
         	<button
         	    className="xxButton xxButton--Chooser-Dropbox"
         	    id="dropBoxSDK"
-        	    disabled={this.props.photoUploadMode === 'loading'}
+        	    disabled={this.props.uploadState === 'loading'}
         	    onClick={this.props.grabDropBox}
         	></button>
         );
@@ -158,13 +161,18 @@ export const UrlUploadInput = React.createClass({
 });
 
 
-export const DragAndDrop = React.createClass({	
+export const DragAndDrop = React.createClass({
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },	
     render: function() {
-    	var props = this.props;
+    	var props = this.props,
+            isMobile = this.context.isMobile
+        ;
         return (
         	<div>
         		{
-        			false ?  <UploadProgressContainer mode={this.props.photoUploadMode} {...props} /> : (
+        			// isMobile ?  <UploadProgressContainer uploadState={this.props.uploadState} {...props} /> : (
         	    	<div>
 		        	    <div className="xxUploadDialog-block">
 		        	    <Dropzone
@@ -180,7 +188,7 @@ export const DragAndDrop = React.createClass({
 		        	            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
 		        	            transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
 		        	        >
-		        	        <UploadProgressContainer mode={this.props.photoUploadMode} {...props} />
+		        	        <UploadProgressContainer {...props}/>
 		        	        </ReactCSSTransitionGroup>
 	        	    	</Dropzone>
 		        	    </div>
@@ -188,7 +196,7 @@ export const DragAndDrop = React.createClass({
 		    	        	<label className="xxLabel"> OR CHOOSE FROM </label>
 		        	    </div>
 	        	    </div>
-        			)
+        			// )
         		}
     	    </div>
 	    )

@@ -98,21 +98,21 @@ var UploadActionsContainer = React.createClass({
 					            <h2 className="xxTitle">{T.get('imageUpload.uploadImage')}</h2>
 					        </div>
 							{
-								!this.props.tagId ? <CollctionNameInput {...props}/> 	: (
+								!this.props.tagId ? <CollctionNameInput {...props}/> : (
 									<div>
-									<DragAndDrop {...props}/> 
-										<div className="xxUploadButtonsChooser">
-											<DropBoxUploadButton {...props}/>
-											<DesktopUploadButton {...props}/>
-										</div>
-										<div className="xxUploadButtonsChooser">
-										    <label className="xxLabel">Dropbox</label>
-										    <label className="xxLabel">Desktop</label>
-										</div>
+										<DragAndDrop {...props}/> 
+											<div className="xxUploadButtonsChooser">
+												<DropBoxUploadButton {...props}/>
+												<DesktopUploadButton {...props}/>
+											</div>
+											<div className="xxUploadButtonsChooser">
+											    <label className="xxLabel">Dropbox</label>
+											    <label className="xxLabel">Desktop</label>
+											</div>
+										<CollectionSubmitButton {...props}/>
 									</div>
 								)
 							}
-							<CollectionSubmitButton />
 						</div>
 					</div>
 				</div>

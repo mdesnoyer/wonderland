@@ -534,6 +534,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.limit': 'You\u2019ve hit your limit!',
             'uploadError.msg.limit': 'You\u2019ve hit your limit. Come back tomorrow to process more content, or sign up to increase your limit.',
 
+            'uploadError.title.timeout': 'Time Out',
+            'uploadError.msg.timeout': 'Oops! It appears your request timed out. Don\u2019t worry we got your images and they should load shortly',
+
         },
         'en-GB': {
         },
