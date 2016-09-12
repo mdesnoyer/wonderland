@@ -13,12 +13,14 @@ import _ from 'lodash';
 const Timeline = React.createClass({
     propTypes: {
         stores: React.PropTypes.object.isRequired,
-        feed: React.PropTypes.string
+        feed: React.PropTypes.string,
+        threshold: React.PropTypes.number
     },
     getDefaultProps: function() {
         return {
             stores: {},
-            feed: ''
+            feed: '',
+            threshold: 0
         }
     },
     getInitialState: function() {
@@ -53,7 +55,7 @@ const Timeline = React.createClass({
 
                         // We are only interested in good thumbnails (neon ones)    
                         const neonThumbnails = demographicThumbnailObject.thumbnails.filter(function(t) {
-                            return t.type === 'neon'
+                            return (t.type === 'neon' && t.neon_score >= self.props.threshold)
                         });
                     
                         // We need to iterate each one and get the best rendition
@@ -63,7 +65,8 @@ const Timeline = React.createClass({
                                 thumbnailId: t.thumbnail_id,
                                 timestamp: new Date(t.updated).getTime(),
                                 lowSrc: RENDITIONS.findRendition(t, 160 * 3, 90 * 3),
-                                highSrc: t.url
+                                highSrc: t.url,
+                                neonScore: t.neon_score
                             });
                         });
 
@@ -81,7 +84,7 @@ const Timeline = React.createClass({
         ;
         return (
             <div>
-                <ol className="timeline">
+                <ol className="timeline" data-threshold={self.props.threshold} data-feed={self.props.feed}>
                     {
                         snapshots.map(function(snapshot, i) {
                             return (
@@ -95,6 +98,7 @@ const Timeline = React.createClass({
                                             data-video-id={snapshot.videoId}
                                             data-thumbnail-id={snapshot.videoId}
                                             data-timestamp={snapshot.timestamp}
+                                            data-neonscore={snapshot.neonScore}
                                             src={snapshot.lowSrc}
                                             alt=''
                                             title=''
