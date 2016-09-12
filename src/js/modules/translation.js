@@ -313,6 +313,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
+            'label.defaultImage' : 'Default Image',
             'label.username' : 'Username',
             'label.accessLevel' : 'Access Level',
             'label.created' : 'Created',
@@ -531,8 +532,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.ImgUploadMax': 'Over 100 Images!',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
 
-            'uploadError.title.NoImages': 'No Images Posted',
-            'uploadError.msg.NoImages': 'Upload images to see your Neon Scores!'
+            'uploadError.title.NoImages': 'No Photos Uploaded',
+            'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.'
 
         },
         'en-GB': {
