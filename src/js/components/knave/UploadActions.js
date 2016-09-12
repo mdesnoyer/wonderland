@@ -166,7 +166,7 @@ export const DragAndDrop = React.createClass({
         return (
         	<div>
         		{
-        			// isMobile ?  <UploadProgressContainer uploadState={this.props.uploadState} {...props} /> : (
+        			isMobile ?  <UploadProgressContainer uploadState={this.props.uploadState} {...props} /> : (
         	    	<div>
 		        	    <div className="xxUploadDialog-block">
 		        	    <Dropzone
@@ -190,7 +190,7 @@ export const DragAndDrop = React.createClass({
 		    	        	<label className="xxLabel"> OR CHOOSE FROM </label>
 		        	    </div>
 	        	    </div>
-        			// )
+        			)
         		}
     	    </div>
 	    )

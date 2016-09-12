@@ -38,13 +38,20 @@ import _ from 'lodash';
 
 
 var UploadActionsContainer = React.createClass({
+	handleBgCloseClick: function(e){
+		debugger
+		if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
+		    return;
+		}
+		this.props.handleBgCloseClick()
+	},
 	render: function () {
 	var props = this.props;
 		if (this.props.formState === 'chooseUploadType') {
 			return (
 				<div className="xxOverlay"
-			        ref={overlay => self._overlay = overlay}
-			        onClick={self.handleBgCloseClick}
+			        ref={overlay => this._overlay = overlay}
+			        onClick={this.handleBgCloseClick}
 			        key="upload-overlay"
 			    >
 					<div className="xxUploadDialog">
@@ -57,8 +64,8 @@ var UploadActionsContainer = React.createClass({
 		if (this.props.formState === 'addVideo') {
 			return (
 				<div className="xxOverlay"
-			        ref={overlay => self._overlay = overlay}
-			        onClick={self.handleBgCloseClick}
+			        ref={overlay => this._overlay = overlay}
+			        onClick={this.handleBgCloseClick}
 			        key="upload-overlay"
 			    >
 			    	<VideoUploadOverlay {...props}/>;
@@ -110,6 +117,9 @@ var UploadActionsContainer = React.createClass({
 							{
 								!this.props.tagId ? <CollctionNameInput {...props}/> : (
 									<div>
+									<div className="xxUploadDialog-block">
+									    <label className="xxLabel">{this.props.uploadedTotal + " of 100 files uploaded" }</label>
+									</div>
 										<DragAndDrop {...props}/> 
 											<div className="xxUploadButtonsChooser">
 												<DropBoxUploadButton {...props}/>
@@ -132,6 +142,9 @@ var UploadActionsContainer = React.createClass({
 		if (this.props.formState === 'updateCollection') {
 			return (
 				<div className="xxUploadDialog-drag-drop-panel">
+					<div className="xxUploadDialog-block">
+					    <label className="xxLabel">{this.props.uploadedTotal + " of 100 files uploaded" }</label>
+					</div>
 					<DragAndDrop {...props}/> 
 					<div className="xxUploadButtonsChooser">
 						<DropBoxUploadButton {...props}/>

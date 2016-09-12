@@ -48,7 +48,7 @@ var UploadForm = React.createClass({
             collectionName:'', 
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
-            uploadedTotal: null,
+            uploadedTotal: 0,
             uploadThumbnailIds: [],
             errorFiles: [],
             overlayCode: null,
@@ -59,7 +59,7 @@ var UploadForm = React.createClass({
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
             self.setState({ 
-                uploadTotal: TagStore.get(self.props.tagId).thumbnail_ids.length || 0,
+                uploadedTotal: TagStore.get(self.props.tagId).thumbnail_ids.length || 0,
                 tagId: self.props.tagId,
                 isOpen: true,
                 formState: 'updateCollection'
@@ -103,9 +103,7 @@ var UploadForm = React.createClass({
         this.setState({ formState: 'addVideo' });
     },
     handleBgCloseClick: function(e) {
-        if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
-            return;
-        }
+        debugger
         this.setState(this.getInitialState());
     },
     handleOpenMessageErrorFiles: function(e) {
@@ -149,7 +147,6 @@ var UploadForm = React.createClass({
         this.setState({ showUrlUploader: !this.state.showUrlUploader });
     },
     handleCancelClick: function() {
-        // this.setState(this.getInitialState());
         this.props.cancelClickHandler();
     },
     render: function() {
@@ -164,7 +161,13 @@ var UploadForm = React.createClass({
         };
         return (
             <div className={className.join(' ')}>
-                { self.state.overlayCode ? <OverLayMessage overlayCode={self.state.overlayCode} overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} /> : null }
+                { self.state.overlayCode ? (
+                    <OverLayMessage 
+                        handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles} 
+                        overlayCode={self.state.overlayCode} 
+                        overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} 
+                    /> ) : null 
+                }
                 { !self.props.isAddPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
                 { !self.state.isOpen ? null : (
                         <UploadActionsContainer 
@@ -190,6 +193,8 @@ var UploadForm = React.createClass({
                             handleshowUrlUploader={self.handleshowUrlUploader}
                             handleInputClick={self.handleInputClick}
                             handleCancelClick={self.handleCancelClick}
+                            handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
+                            handleBgCloseClick={self.handleBgCloseClick}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -391,7 +396,7 @@ var UploadForm = React.createClass({
             return;
         };
         if (self.state.uploadThumbnailIds.length + filesToParse[0].length  > UTILS.MAX_IMAGE_FILES_ALLOWED ||
-            self.state.uploadTotal + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
+            self.state.uploadedTotal + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
          ) {
             self.throwUploadError({ code: 'ImgUploadMax' });
             return;
@@ -432,7 +437,7 @@ var UploadForm = React.createClass({
                         if (self.state.uploadedTotal >= self.state.uploadingTotal) {
                             self.setState({
                                 uploadState:'success',
-                                errorFiles: []
+                                // errorFiles: []
                                 }, function() {
                                     self.props.isAddPanel && LoadActions.loadTags([self.state.tagId]);
                                     setTimeout(function() {

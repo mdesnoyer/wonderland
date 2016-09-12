@@ -139,7 +139,7 @@ const CollectionsContainer = React.createClass({
         const collection = this.props.stores.tags[tagId];
 
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
-            return <div />;   
+            return <div key={tagId}/>;   
         }
 
         switch(collection.tag_type) {
@@ -150,7 +150,7 @@ const CollectionsContainer = React.createClass({
         }
         // TODO? try-catch: if components fail prop validation, catch
         // and return an error component.
-        return <div />;
+        return <div key={tagId}/>;
     },
 
     // True if a demographic thumbnail map is loaded for
