@@ -48,7 +48,7 @@ var timelinePage = React.createClass({
         self.setState({
             isPolling: true
         }, function() {
-            LoadActions.loadNNewestTags(UTILS.RESULTS_PAGE_SIZE * 2, null, UTILS.TAG_TYPE_VIDEO_COL, true, function() {
+            LoadActions.loadNNewestTags(self.state.pageSize, null, UTILS.TAG_TYPE_VIDEO_COL, true, function() {
                 self.setState({
                     videos: VideoStore.getAll(),
                     isLoading: false,
@@ -77,7 +77,9 @@ var timelinePage = React.createClass({
                     '@title': timelineConfig.TITLE
                 }),
                 feed: timelineConfig.FEED,
-                threshold: timelineConfig.THRESHOLD
+                pageSize: timelineConfig.PAGESIZE,
+                threshold: timelineConfig.THRESHOLD,
+                showNeonScore: timelineConfig.SHOWNEONSCORE
             }, function() {
                 self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
@@ -120,7 +122,9 @@ var timelinePage = React.createClass({
                         videos: self.state.videos,
                     }}
                     feed={self.state.feed}
+                    pageSize={self.state.pageSize}
                     threshold={self.state.threshold}
+                    showNeonScore={self.state.showNeonScore}
                 />
                 <SiteFooter />
             </main>

@@ -1,13 +1,5 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$thumbnail-small-score-size: 30px;
-$thumbnail-large-score-size: 42px;
-$mobile-thumbnail-score-size: 24px;
-
-$thumbnail-hover-size-px: 2px;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 .xxThumbnail {
     display: block;
     position: relative;
@@ -50,10 +42,6 @@ $thumbnail-hover-size-px: 2px;
         &::after {
             background-color: $base-color;
         }
-    }
-
-    &--small {
-        // empty
     }
 
     &--noscore { 
