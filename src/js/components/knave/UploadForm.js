@@ -263,7 +263,7 @@ var UploadForm = React.createClass({
                 .catch(function(err) {
                     self.setState({ uploadState:'initial'
                     },  function() {
-                        self.throwUploadError(err);        
+                        self.throwUploadError(err);
                     })
                 });
         })
