@@ -42,7 +42,6 @@ export const UploadChooser = React.createClass({
     }
 });
 
-
 export const CollctionNameInput = React.createClass({
     render: function() {
         return (
@@ -86,7 +85,6 @@ export const CollectionSubmitButton = React.createClass({
         );
     }
 });
-
 
 export const DesktopUploadButton = React.createClass({
     render: function() {
@@ -158,7 +156,6 @@ export const UrlUploadInput = React.createClass({
     }
 });
 
-
 export const DragAndDrop = React.createClass({
     contextTypes: {
         isMobile: PropTypes.bool
@@ -203,39 +200,3 @@ export const DragAndDrop = React.createClass({
         this.props.sendLocalPhotos(files);
     },
 });
-
-
-
-// export const XXXX = React.createClass({
-//     render: function() {
-//         return (
-//         );
-//     }
-// });
-
-// export const XXXX = React.createClass({
-//     render: function() {
-//         return (
-//         );
-//     }
-// });
-
-
-// export const XXXX = React.createClass({
-//     render: function() {
-//         return (
-//         );
-//     }
-// });
-
-
-
-
-
-
-
-
-
-
-
-

@@ -156,7 +156,6 @@ const MobileBaseCollection = React.createClass({
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        // debugger 
         const result = (
             <div className={this.props.wrapperClassName}>
                 <div className="xxCollection-content">
