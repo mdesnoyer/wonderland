@@ -241,35 +241,32 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        if (sendUrlType === 'gif') { options.data['result_type'] = 'clips' }
-        debugger  
+        if (sendUrlType === 'gif') { options.data['result_type'] = 'clips' };
         if (!UTILS.validateUrl(self.state.urlInput)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
-        debugger
-        // self.setState({
-        //     isOpen: false
-        // },  function() {
-        //     self.POST('videos', options)
-        //         .then(function(json) {
-        //             if (self.props.onboardingAction) {
-        //                 self.props.onboardingAction('video', json.video.video_id);
-        //                 self.setState({urlInput: ''});
-        //             }
-        //             else {
-        //                 LoadActions.loadTags([json.video.tag_id]);
-        //                 self.setState({urlInput: ''});
-        //             }
-
-        //         })
-        //         .catch(function(err) {
-        //             self.setState({ uploadState:'initial'
-        //             },  function() {
-        //                 self.throwUploadError(err);        
-        //             })
-        //         });
-        // })
+        self.setState({
+            isOpen: false
+        },  function() {
+            self.POST('videos', options)
+                .then(function(json) {
+                    if (self.props.onboardingAction) {
+                        self.props.onboardingAction('video', json.video.video_id);
+                        self.setState({urlInput: ''});
+                    }
+                    else {
+                        LoadActions.loadTags([json.video.tag_id]);
+                        self.setState({urlInput: ''});
+                    }
+                })
+                .catch(function(err) {
+                    self.setState({ uploadState:'initial'
+                    },  function() {
+                        self.throwUploadError(err);        
+                    })
+                });
+        })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
     sendLocalPhotos: function(e) {

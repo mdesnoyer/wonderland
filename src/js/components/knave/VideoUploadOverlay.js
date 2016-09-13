@@ -77,29 +77,25 @@ var VideoUploadOverlay = React.createClass({
                         />
                     </div>
                     <div className="xxFormButtons">
-                        {
-                            isMobile ? (
-                                <button
-                                    className="xxButton"
-                                    type="button"
-                                    onClick={self.props.toggleOpen}
-                                >{T.get('back')}</button>
-                            ) : null
-                        }
-                        <button
-                            disabled={!isValid}
-                            className={submitClassName.join(' ')}
-                            type="submit"
-                            data-send-url-type="thumbnails"
-                            onClick={self.props.handleUrlSubmit}
-                        >Thumbs</button>
-                        <button
-                            disabled={!isValid}
-                            className={submitClassName.join(' ')}
-                            type="submit"
-                            data-send-url-type="gif"
-                            onClick={self.props.handleUrlSubmit}
-                        >GIFS</button>
+                    <label className="xxLabel" htmlFor="xx-upload-url">
+                        GIVE ME
+                    </label>
+                        <div className="xxUploadButtonsChooser">
+                            <button
+                                disabled={!isValid}
+                                className={submitClassName.join(' ')}
+                                type="submit"
+                                data-send-url-type="thumbnails"
+                                onClick={self.props.handleUrlSubmit}
+                            >Thumbnails</button>
+                            <button
+                                disabled={!isValid}
+                                className={submitClassName.join(' ')}
+                                type="submit"
+                                data-send-url-type="gif"
+                                onClick={self.props.handleUrlSubmit}
+                            >GIFs</button>
+                        </div>
                     </div>
                 </div>
             </section>
