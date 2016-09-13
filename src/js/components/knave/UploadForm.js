@@ -205,6 +205,7 @@ var UploadForm = React.createClass({
                             handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
+                            sendGifVideoUrl={self.sendGifVideoUrl}
                         />
                     )
                 }
@@ -267,6 +268,26 @@ var UploadForm = React.createClass({
                 });
         })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
+    },
+    sendGifVideoUrl: function() {
+        var self = this
+            videoId = UTILS.generateId(),
+            options = {
+                data: {
+                    external_video_ref: videoId,
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput)),
+                    result_type: 'clips'
+                }
+            }
+        ;
+        self.POST('videos', options)
+            .then(function(res) {
+                debugger
+            })
+            .catch(function(err) {
+                debugger
+            });
+
     },
     sendLocalPhotos: function(e) {
          var self = this,
