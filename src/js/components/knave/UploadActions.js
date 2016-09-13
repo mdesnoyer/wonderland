@@ -61,6 +61,7 @@ export const CollctionNameInput = React.createClass({
         	    />
         	    <div className="xxUploadDialog-block">
         	        <input
+                        disabled={this.props.collectionName === ''}
         	            className='xxButton xxButton--important'
         	            onClick={this.props.handleNameSubmit}
         	            type="submit"
@@ -77,7 +78,7 @@ export const CollectionSubmitButton = React.createClass({
         return (
         	<div className="xxUploadDialog-block">
         	    <input
-        	        data-send-tag={true}
+                    disabled={this.props.uploadState === 'loading'}
         	        className="xxButton xxButton--important"
         	        onClick={this.props.handleCollectionLoad}
         	        type="submit"
@@ -113,6 +114,7 @@ export const DropBoxUploadButton = React.createClass({
     render: function() {
         return (
         	<button
+                disabled={this.props.uploadState === 'loading'}
         	    className="xxButton xxButton--Chooser-Dropbox"
         	    id="dropBoxSDK"
         	    disabled={this.props.uploadState === 'loading'}
@@ -125,7 +127,8 @@ export const DropBoxUploadButton = React.createClass({
 export const UrlUploadButton = React.createClass({
     render: function() {
         return (
-        	<button 
+        	<button
+                disabled={this.props.uploadState === 'loading'} 
         		className="xxButton xxButton--Chooser-URL"
         		onClick={this.props.handleshowUrlUploader}>
         	</button>
@@ -146,7 +149,10 @@ export const UrlUploadInput = React.createClass({
                     value={this.props.urlInput}
                     onChange={e => this.props.updateField('urlInput', e.target.value)}
         	    />
-        	    <button className='xxButton xxButton--highlight xxButton--has-urlDrop'>
+        	    <button 
+                    className='xxButton xxButton--highlight xxButton--has-urlDrop'
+                    disabled={this.props.uploadState === 'loading'}
+                >
         	    Add URL
         	    </button>
         	</form>

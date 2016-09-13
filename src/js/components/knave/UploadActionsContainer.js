@@ -38,15 +38,19 @@ import _ from 'lodash';
 
 
 var UploadActionsContainer = React.createClass({
-	handleBgCloseClick: function(e){
-		debugger
+	handleBgCloseClick: function(e) {
 		if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
 		    return;
 		}
 		this.props.handleBgCloseClick()
 	},
+	contextTypes: {
+	    isMobile: PropTypes.bool
+	},
 	render: function () {
 	var props = this.props;
+	const isMobile = this.context.isMobile;
+
 		if (this.props.formState === 'chooseUploadType') {
 			return (
 				<div className="xxOverlay"
@@ -85,7 +89,7 @@ var UploadActionsContainer = React.createClass({
 					</div>
 					<div className="xxUploadButtonsChooser">
 					    <label className="xxLabel">Dropbox</label>
-					    <label className="xxLabel">Desktop</label>
+					    <label className="xxLabel">{isMobile ? "My Phone" : "Desktop"}</label>
 					    <label className="xxLabel">URL</label>
 					</div>
 					</div>
@@ -127,7 +131,7 @@ var UploadActionsContainer = React.createClass({
 											</div>
 											<div className="xxUploadButtonsChooser">
 											    <label className="xxLabel">Dropbox</label>
-											    <label className="xxLabel">Desktop</label>
+											    <label className="xxLabel">{isMobile ? "My Phone" : "Desktop"}</label>
 											</div>
 										<CollectionSubmitButton {...props}/>
 									</div>
@@ -152,7 +156,7 @@ var UploadActionsContainer = React.createClass({
 					</div>
 					<div className="xxUploadButtonsChooser">
 					    <label className="xxLabel">Dropbox</label>
-					    <label className="xxLabel">Desktop</label>
+					    <label className="xxLabel">{isMobile ? "My Phone" : "Desktop"}</label>
 					</div>
 					<div className="xxCollectionAction-buttons">
 					    <button

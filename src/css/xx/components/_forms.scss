@@ -414,6 +414,11 @@
             height: 99%;
             background: white;
             @include font-awesome('f108');
+        }  
+        @include breakpoint-mobile {
+            &::before {
+                @include font-awesome('f10b');
+            }            
         }
     }
     &--Chooser-URL {

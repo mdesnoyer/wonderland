@@ -103,16 +103,18 @@ var UploadForm = React.createClass({
         this.setState({ formState: 'addVideo' });
     },
     handleBgCloseClick: function(e) {
-        debugger
-        this.setState(this.getInitialState());
+        // this.setState(this.getInitialState());
     },
     handleOpenMessageErrorFiles: function(e) {
         e.preventDefault();
         this.throwUploadError({ code: 'ImgViewErrFiles' });
     },
     handleOverlayReset: function(e) {
-        e.preventDefault();
-        this.setState({ overlayCode: null, isOpen: true});
+        // e.preventDefault();
+        if (this.props.onboardingAction && this.state.overlayCode === 'timeout' ) {
+            this.props.onboardingAction('col');
+        }
+        this.setState({ overlayCode: null, isOpen: true });
     },
     handleInputClick: function() {
         if (this.state.formState === 'updateVideoDefault') { this.setState({ showUrlUploader: false})} ;
@@ -219,7 +221,7 @@ var UploadForm = React.createClass({
                 self.context.router.replace('*');
                 break;
             default:
-                self.setState({ uploadState:'initial', isOpen: false, overlayCode: err.code });
+                self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
     sendVideoUrl: function() {
@@ -252,7 +254,10 @@ var UploadForm = React.createClass({
 
                 })
                 .catch(function(err) {
-                    self.throwUploadError(err);
+                    self.setState({ uploadState:'initial'
+                    },  function() {
+                        self.throwUploadError(err);        
+                    })
                 });
         })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
