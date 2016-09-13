@@ -15,8 +15,6 @@ import AjaxMixin from '../../mixins/Ajax';
 import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
-import ImageUploadOverlay from './ImageUploadOverlay';
-import ImageUploadPanel from './ImageUploadPanel';
 import OverLayMessage from './OverLayMessage'
 import UploadActionsContainer from './UploadActionsContainer';
 
@@ -43,7 +41,7 @@ var UploadForm = React.createClass({
         return {
             isOpen: false,
             tagId: null,
-            formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType // closed
+            formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
             urlInput:'', 
             collectionName:'', 
             uploadState: 'initial',  //initial // loading // success
@@ -88,6 +86,7 @@ var UploadForm = React.createClass({
     toggleOpen: function(e) {
         var self = this;
         e.preventDefault();
+        // if clicks out of their upload box then return to the choose upload type state
         self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
     },
     updateField: function(field, value) {
@@ -95,35 +94,39 @@ var UploadForm = React.createClass({
         self.setState({ [field]: value });
     },
     handleOpenPhoto: function(e) {
+        // if user wants to post a collection
         e.preventDefault();
         this.setState({ formState: 'addCollection' });
     },
     handleOpenVideo: function(e) {
+        // if user wants to post a video
         e.preventDefault();
         this.setState({ formState: 'addVideo' });
     },
-    handleBgCloseClick: function(e) {
-        // this.setState(this.getInitialState());
-    },
     handleOpenMessageErrorFiles: function(e) {
+        // if the user wants to see the files with errors throw appriprate overlay message
         e.preventDefault();
         this.throwUploadError({ code: 'ImgViewErrFiles' });
     },
     handleOverlayReset: function(e) {
-        // e.preventDefault();
+        e.preventDefault();
         if (this.props.onboardingAction && this.state.overlayCode === 'timeout' ) {
+        // when there is a timeout on onboarding upload route to the tutotiral then collections page
             this.props.onboardingAction('col');
         }
         this.setState({ overlayCode: null, isOpen: true });
     },
     handleInputClick: function() {
+        // when the input is clicked on update default video thumb show the dragdrop again
         if (this.state.formState === 'updateVideoDefault') { this.setState({ showUrlUploader: false})} ;
+        // due to css formating this fakes that the user is clicking the input when they are actullay clicking a dummy dom
         document.getElementById("file-input").click();
     },
     handleNameSubmit: function() {
         this.sendCollectionName();
     },
     handleCollectionLoad: function() {
+        //when a collection is done loading handle onboarding and regular actions
         if (this.props.onboardingAction) {
             this.props.onboardingAction('col');
         }
@@ -136,6 +139,7 @@ var UploadForm = React.createClass({
         this.sendVideoUrl();
     },
     handleUpdateVideoDefault: function(e) {
+        //set state to loading once a user has submitted their new default thumb
         e.preventDefault();
         this.setState({
             showUrlUploader: false,
@@ -146,9 +150,11 @@ var UploadForm = React.createClass({
         })
     },
     handleshowUrlUploader: function() {
+        //toggle for URL input of updating video default thumb
         this.setState({ showUrlUploader: !this.state.showUrlUploader });
     },
     handleCancelClick: function() {
+        //hanlder for when the user click "back" button on the action panel
         this.props.cancelClickHandler();
     },
     render: function() {
@@ -167,7 +173,8 @@ var UploadForm = React.createClass({
                     <OverLayMessage 
                         handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles} 
                         overlayCode={self.state.overlayCode} 
-                        overlayReset={self.handleOverlayReset} errorFiles={self.state.errorFiles} 
+                        overlayReset={self.handleOverlayReset} 
+                        errorFiles={self.state.errorFiles} 
                     /> ) : null 
                 }
                 { !self.props.isAddPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
@@ -196,7 +203,6 @@ var UploadForm = React.createClass({
                             handleInputClick={self.handleInputClick}
                             handleCancelClick={self.handleCancelClick}
                             handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
-                            handleBgCloseClick={self.handleBgCloseClick}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -282,6 +288,7 @@ var UploadForm = React.createClass({
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
+        // when updating the video default thumbnail exit out of url input box if dropbox button clicked 
         if (self.state.formState === 'updateVideoDefault') { self.setState({ showUrlUploader: false})} ;
         Dropbox.choose(options);
     },
@@ -293,10 +300,14 @@ var UploadForm = React.createClass({
         self.POST('tags', options)
             .then(function(res) {
                 self.setState({ tagId: res.tag_id });
+            })
+            .catch(function(err){
+                self.throwUploadError(err);
             });
     },
     updateDefaultThumbnail: function(url) {
         var self = this,
+        // this logic below is to handle both dropbox objects and url string that come in when updating a thumbnail 
             url = typeof url === 'object' ? url[0].link : url,
             options = {
                 data: {
@@ -396,10 +407,12 @@ var UploadForm = React.createClass({
                 index === filesToParse[0].length - 1 && arrayToSend.push(arrayToAdd);
             }
         });
+        // if there are no files to parse show approriate error message
         if (filesToParse[0].length === 0) {
             self.throwUploadError({ code: 'AllFiles' })
             return;
         };
+        // if the number of thumbnails to be uploaded + the current thumbnail count is over 100 throw approriate error message
         if (self.state.uploadThumbnailIds.length + filesToParse[0].length  > UTILS.MAX_IMAGE_FILES_ALLOWED ||
             self.state.uploadedTotal + filesToParse[0].length > UTILS.MAX_IMAGE_FILES_ALLOWED
          ) {
@@ -412,6 +425,7 @@ var UploadForm = React.createClass({
                 uploadedTotal: 0,
                 errorFiles: filesToParse[1]
             },  function() {
+                // if the request is a mulitpart form create and array of formdata objects 
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
                 self.grabRefreshToken(
                     arrayToSend.forEach(function(array) {
@@ -424,10 +438,13 @@ var UploadForm = React.createClass({
         var self = this,
             options
         ;
+
         switch(type) {
+            // if the request is dropbox then create a csv of all the url strings
             case 'dropbox':
                 options = { data: { url: array.map(function(a) {return a.link;}).join(","),} };
                 break;
+            // if the request is a multipart form add the proper parameters to the request
             case 'local' :
                 options = { data: array, processData : false, contentType: 'multipart/form-data' };
                 break;

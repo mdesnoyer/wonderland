@@ -25,8 +25,6 @@ import AjaxMixin from '../../mixins/Ajax';
 import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
-import ImageUploadOverlay from './ImageUploadOverlay';
-import ImageUploadPanel from './ImageUploadPanel';
 import OverLayMessage from './OverLayMessage'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -38,12 +36,6 @@ import _ from 'lodash';
 
 
 var UploadActionsContainer = React.createClass({
-	handleBgCloseClick: function(e) {
-		if (this._overlay !== e.target && this._overlay.children[0] !== e.target && this._overlay.contains(e.target)) {
-		    return;
-		}
-		this.props.handleBgCloseClick()
-	},
 	contextTypes: {
 	    isMobile: PropTypes.bool
 	},
@@ -55,7 +47,6 @@ var UploadActionsContainer = React.createClass({
 			return (
 				<div className="xxOverlay"
 			        ref={overlay => this._overlay = overlay}
-			        onClick={this.handleBgCloseClick}
 			        key="upload-overlay"
 			    >
 					<div className="xxUploadDialog">
@@ -69,7 +60,6 @@ var UploadActionsContainer = React.createClass({
 			return (
 				<div className="xxOverlay"
 			        ref={overlay => this._overlay = overlay}
-			        onClick={this.handleBgCloseClick}
 			        key="upload-overlay"
 			    >
 			    	<VideoUploadOverlay {...props}/>;
