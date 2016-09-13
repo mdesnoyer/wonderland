@@ -90,15 +90,15 @@ var VideoUploadOverlay = React.createClass({
                             disabled={!isValid}
                             className={submitClassName.join(' ')}
                             type="submit"
-                            data-send-url={true}
+                            data-send-url-type="thumbnails"
                             onClick={self.props.handleUrlSubmit}
                         >Thumbs</button>
                         <button
                             disabled={!isValid}
                             className={submitClassName.join(' ')}
                             type="submit"
-                            data-send-url={true}
-                            onClick={self.props.sendGifVideoUrl}
+                            data-send-url-type="gif"
+                            onClick={self.props.handleUrlSubmit}
                         >GIFS</button>
                     </div>
                 </div>

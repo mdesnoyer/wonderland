@@ -135,8 +135,9 @@ var UploadForm = React.createClass({
             this.setState(this.getInitialState());
         }
     },
-    handleUrlSubmit: function() {
-        this.sendVideoUrl();
+    handleUrlSubmit: function(e) {
+        debugger
+        this.sendVideoUrl(e.target.dataset.sendUrlType);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -205,7 +206,6 @@ var UploadForm = React.createClass({
                             handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
-                            sendGifVideoUrl={self.sendGifVideoUrl}
                         />
                     )
                 }
@@ -231,7 +231,7 @@ var UploadForm = React.createClass({
                 self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
-    sendVideoUrl: function() {
+    sendVideoUrl: function(sendUrlType) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -241,53 +241,36 @@ var UploadForm = React.createClass({
                 }
             }
         ;
+        if (sendUrlType === 'gif') { options.data['result_type'] = 'clips' }
+        debugger  
         if (!UTILS.validateUrl(self.state.urlInput)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
-        self.setState({
-            isOpen: false
-        },  function() {
-            self.POST('videos', options)
-                .then(function(json) {
-                    if (self.props.onboardingAction) {
-                        self.props.onboardingAction('video', json.video.video_id);
-                        self.setState({urlInput: ''});
-                    }
-                    else {
-                        LoadActions.loadTags([json.video.tag_id]);
-                        self.setState({urlInput: ''});
-                    }
+        debugger
+        // self.setState({
+        //     isOpen: false
+        // },  function() {
+        //     self.POST('videos', options)
+        //         .then(function(json) {
+        //             if (self.props.onboardingAction) {
+        //                 self.props.onboardingAction('video', json.video.video_id);
+        //                 self.setState({urlInput: ''});
+        //             }
+        //             else {
+        //                 LoadActions.loadTags([json.video.tag_id]);
+        //                 self.setState({urlInput: ''});
+        //             }
 
-                })
-                .catch(function(err) {
-                    self.setState({ uploadState:'initial'
-                    },  function() {
-                        self.throwUploadError(err);        
-                    })
-                });
-        })
+        //         })
+        //         .catch(function(err) {
+        //             self.setState({ uploadState:'initial'
+        //             },  function() {
+        //                 self.throwUploadError(err);        
+        //             })
+        //         });
+        // })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
-    },
-    sendGifVideoUrl: function() {
-        var self = this
-            videoId = UTILS.generateId(),
-            options = {
-                data: {
-                    external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput)),
-                    result_type: 'clips'
-                }
-            }
-        ;
-        self.POST('videos', options)
-            .then(function(res) {
-                debugger
-            })
-            .catch(function(err) {
-                debugger
-            });
-
     },
     sendLocalPhotos: function(e) {
          var self = this,
