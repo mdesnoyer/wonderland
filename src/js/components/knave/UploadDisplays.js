@@ -33,17 +33,17 @@ export const MobileInitialDisplay = React.createClass({
 export const LoadingDisplay = React.createClass({
     
     render: function() {
-        var message = T.get('imageUpload.currentCount', {'@number': this.props.photoUploadCount }),
-            errorMessage = T.get('imageUpload.UploadErrors.message', {'@number': this.props.photoErrorCount })
+        var message = T.get('imageUpload.currentCount', {'@number': this.props.uploadingTotal }),
+            errorMessage = T.get('imageUpload.UploadErrors.message', {'@number': this.props.errorFiles.length })
         ;
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-progress" key="drag-and-drop-progress">
         		<span className="xxDragAndDrop-progressCounter">
-        		    {`${Math.round((this.props.numberUploadedCount) / this.props.photoUploadCount * 100)}%`}
+        		    {`${Math.round((this.props.uploadedTotal) / this.props.uploadingTotal * 100)}%`}
         		</span>
                 <span dangerouslySetInnerHTML={{__html: message}} /><br/>
                 {
-                    this.props.photoErrorCount > 0 ? (
+                    this.props.errorFiles.length > 0 ? (
                         <div>
                         <span dangerouslySetInnerHTML={{__html: errorMessage}} /><br/>
                         <button onClick={this.props.handleOpenMessageErrorFiles}>{T.get('imageUpload.UploadErrors.link')}</button>
@@ -57,15 +57,15 @@ export const LoadingDisplay = React.createClass({
 
 export const MobileLoadingDisplay = React.createClass({
     render: function() {
-        var message = T.get('imageUpload.currentCount', {'@number': this.props.photoUploadCount }),
-            errorMessage = T.get('imageUpload.UploadErrors.message', {'@number': this.props.photoErrorCount })
+        var message = T.get('imageUpload.currentCount', {'@number': this.props.uploadingTotal }),
+            errorMessage = T.get('imageUpload.UploadErrors.message', {'@number': this.props.errorFiles.length })
         ;
         return (
         	<div className="xxUploadDialog-block">
         		<div className="xxDragAndDrop-spinner"></div>
         		<span dangerouslySetInnerHTML={{__html: message}} /><br/>
         		{
-        			this.props.photoErrorCount > 0 ? (
+        			this.props.errorFiles.length > 0 ? (
                         <div>
         				<span dangerouslySetInnerHTML={{__html: errorMessage}} /><br/>
         				<button onClick={this.props.handleOpenMessageErrorFiles}>{T.get('imageUpload.UploadErrors.link')}</button>
@@ -79,7 +79,7 @@ export const MobileLoadingDisplay = React.createClass({
 
 export const SuccessDisplay = React.createClass({
     render: function() {
-        var message = T.get('imageUpload.UploadCount', {'@number': this.props.photoUploadCount });
+        var message = T.get('imageUpload.UploadCount', {'@number': this.props.uploadingTotal });
         return (
         	<div className="xxDragAndDrop-content xxDragAndDrop-complete" key="drag-and-drop-complete">
         		<span dangerouslySetInnerHTML={{__html: message}} /><br/>
@@ -91,11 +91,11 @@ export const SuccessDisplay = React.createClass({
 
 export const MobileSuccessDisplay = React.createClass({
     render: function() {
-        var message = T.get('imageUpload.UploadCount', {'@number': this.props.photoUploadCount });
+        var message = T.get('imageUpload.UploadCount', {'@number': this.props.uploadingTotal });
         return (
         	<div className="xxUploadDialog-block">
         		<div className="xxDragAndDrop-success"></div>
-        		{"Uploaded (" + this.props.photoUploadCount  + ") files" }<br/>
+        		{"Uploaded (" + this.props.uploadingTotal  + ") files" }<br/>
         	</div>
         );
     }

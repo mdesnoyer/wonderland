@@ -532,8 +532,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.ImgUploadMax': 'Over 100 Images!',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
 
+            'uploadError.title.limit': 'You\u2019ve hit your limit!',
+            'uploadError.msg.limit': 'You\u2019ve hit your limit. Come back tomorrow to process more content, or sign up to increase your limit.',
+
+            'uploadError.title.timeout': 'Time Out',
+            'uploadError.msg.timeout': 'Oops! It appears your request timed out. Don\u2019t worry we got your images and they should load shortly',
+
             'uploadError.title.NoImages': 'No Photos Uploaded',
-            'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.'
+            'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
 
         },
         'en-GB': {
