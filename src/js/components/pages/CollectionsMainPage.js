@@ -35,9 +35,10 @@ const getStateFromStores = () => {
 
     return {
         // These are stores of tag, video, thumbnail resources.
-        //
+
         // Map of tag id to tag.
         tags: TagStore.getAll(),
+
         // A submap of tags, of those results that are showable
         selectedTags: FilteredTagStore.getAll(),
 
@@ -48,7 +49,7 @@ const getStateFromStores = () => {
         thumbnails: ThumbnailStore.getAll(),
 
         // Map of gender, age, tag id to map of thumb id to lift float
-        //
+
         // Note: This assumes the tag has only one base thumbnail
         // for comparisons: for a video with a default thumbnail,
         // it is the default thumbnail. In all other cases, it's

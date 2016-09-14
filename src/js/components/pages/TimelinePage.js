@@ -1,67 +1,61 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-
 import Helmet from 'react-helmet';
 import SiteHeader from '../wonderland/SiteHeader';
 import SiteFooter from '../wonderland/SiteFooter';
-
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import TRACKING from '../../modules/tracking';
-
 import _ from 'lodash';
-
-import {VideoStore} from '../../stores/CollectionStores.js';
-import {LoadActions} from '../../stores/CollectionStores.js';
-
-import Timeline from '../knave/Timeline';
-
 import AjaxMixin from '../../mixins/Ajax';
+import {LoadActions, Dispatcher, ThumbnailStore} from '../../stores/CollectionStores.js';
+import Timeline from '../knave/Timeline';
 import SESSION from '../../modules/session';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var timelinePage = React.createClass({
+    mixins: [AjaxMixin],
     _interval: null,
+    _videoFilter: null,
+    _thumbnailFilter: null,
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
-    mixins: [AjaxMixin],
-    getInitialState: function() {
+    getStateFromStores: function() {
+        const allThumbnails = ThumbnailStore.getAll();
+        let thumbnails = {};
+        if (allThumbnails && allThumbnails[0] && allThumbnails[0][0]) {
+            thumbnails = allThumbnails[0][0];
+        }
         return {
-            videos: [],
-            title: '',
-            isLoading: true,
-            isPolling: true
+            thumbnails: thumbnails
         }
     },
-    componentWillUnmount: function() {
-        const self = this;
-        if (self._interval !== null) {
-            clearInterval(self._interval);
-            self._interval = null;
-        }
+    updateState: function() {
+        const self = this,
+            state = self.getStateFromStores()
+        ;
+        self.setState(state);
     },
-    fetchData: function() {
+    getInitialState: function() {
         const self = this;
-        self.setState({
-            isPolling: true
-        }, function() {
-            LoadActions.loadNNewestTags(self.state.actualPageSize, null, UTILS.TAG_TYPE_VIDEO_COL, true, function() {
-                self.setState({
-                    videos: VideoStore.getAll(),
-                    isLoading: false,
-                    isPolling: false
-                });
-            });
-        });
+        return Object.assign(
+            self.getStateFromStores(),
+            {
+                thumbnails: {},
+                title: '',
+                isLoading: true,
+                isPolling: true
+            }
+        );
     },
     componentWillMount: function() {
         const self = this,
             timelineId = self.props.params.timelineId,
             timelineConfigFile = require('../../../../env/timeline.config.json')
         ;
+        Dispatcher.register(self.updateState);
         let timelineConfig = {};
         try {
             timelineConfig = timelineConfigFile[timelineId];
@@ -76,21 +70,25 @@ var timelinePage = React.createClass({
                     '@title': timelineConfig.TITLE
                 }),
                 feed: timelineConfig.FEED,
-                initialPageSize: timelineConfig.PAGESIZE,
-                actualPageSize: timelineConfig.PAGESIZE,
+                pageSize: timelineConfig.PAGESIZE,
+                pollMinutes: timelineConfig.POLLMINUTES,
                 threshold: timelineConfig.THRESHOLD,
                 showNeonScore: timelineConfig.SHOWNEONSCORE,
-                pollMinutes: timelineConfig.POLLMINUTES
             }, function() {
-                self.POST('authenticate', {
-                    host: CONFIG.AUTH_HOST,
-                    data: {
-                        username: timelineConfig.UN,
-                        password: timelineConfig.PW
-                    }
-                })
+                SESSION.signIn(timelineConfig.UN, timelineConfig.PW)
                     .then(function (res) {
                         SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
+                        // Setup our filters
+                        self._videoFilter = function(v) {
+                                return ((this.state.feed === '') || (v.custom_data && v.custom_data.feed && v.custom_data.feed === this.state.feed));
+                            }.bind(self)
+                            // passing in self allows us to access this.state.feed
+                        ;
+                        self._thumbnailFilter = function(t) {
+                                return (t.type === 'neon' && t.neon_score >= this.state.threshold)
+                            }.bind(self)
+                            // passing in self allows us to access this.state.threshold
+                        ;
                         self.fetchData();
                         self._interval = setInterval(self.fetchData, self.state.pollMinutes * 60 * 1000); // minutes to milliseconds
                     })
@@ -104,21 +102,49 @@ var timelinePage = React.createClass({
             self.context.router.replace(UTILS.DRY_NAV.NOT_FOUND.URL);
         }
     },
+    componentWillUnmount: function() {
+        const self = this;
+        if (self._interval !== null) {
+            clearInterval(self._interval);
+            self._interval = null;
+        }
+    },
+    fetchData: function() {
+        const self = this;
+        self.setState({
+            isPolling: true
+        }, function() {
+            LoadActions.loadNNewestTags(
+                self.state.pageSize,
+                null,
+                UTILS.TAG_TYPE_VIDEO_COL,
+                true,
+                self._videoFilter,
+                self._thumbnailFilter, function() {
+                    self.setState({
+                        isLoading: false,
+                        isPolling: false
+                    });
+                }
+            );
+        });
+    },
     loadMore: function(e) {
         const self = this;
         e.preventDefault();
-        // Increase the actualPageSize and force a fetch
         self.setState({
             isLoading: true,
-            actualPageSize: self.state.actualPageSize + self.state.initialPageSize
         }, function() {
-            self.fetchData();
+            LoadActions.loadNOlderTags(self.state.pageSize, UTILS.TAG_TYPE_VIDEO_COL, self._videoFilter, self._thumbnailFilter, function() {
+                self.setState({
+                    isLoading: false
+                });
+            });
         })
     },
     render: function() {
         const self = this,
             loadingComponent = self.state.isLoading ? <div className="xxOverlay"><div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div></div> : null,
-            pollingComponentClass = self.state.isPolling ? 'timelinePolling is-visible' : 'timelinePolling is-hidden',
             pageTitle = UTILS.buildPageTitle(self.state.title)
         ;
         return (
@@ -134,10 +160,6 @@ var timelinePage = React.createClass({
                 <section className="xxText">
                     <div className="timelinePage__masthead">
                         <h1 className="xxTitle">{self.state.title}</h1>
-                        <aside className={pollingComponentClass}>
-                            <b className="timelinePolling__message">{T.get('copy.timelinePage.pollingMessage')}</b>
-                            <i className="timelinePolling__spinner"></i>
-                        </aside>
                     </div>
                     <p>{T.get('copy.timelinePage.instructions', {
                         '@value': self.state.pollMinutes,
@@ -145,13 +167,10 @@ var timelinePage = React.createClass({
                     })}</p>
                 </section>
                 <Timeline
-                    stores={{
-                        videos: self.state.videos,
-                    }}
-                    feed={self.state.feed}
-                    threshold={self.state.threshold}
                     showNeonScore={self.state.showNeonScore}
                     pageTitle={pageTitle}
+                    snapshots={self.state.thumbnails}
+                    isPolling={self.state.isPolling}
                 />
                 <nav className="timelinePage__actions">
                     <a className="xxButton xxButton--highlight" href="#" onClick={self.loadMore}>{T.get('action.loadMore')}</a>
