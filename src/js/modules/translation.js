@@ -313,6 +313,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
+            'label.defaultImage' : 'Default Image',
             'label.username' : 'Username',
             'label.accessLevel' : 'Access Level',
             'label.created' : 'Created',
@@ -449,6 +450,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.servingState': 'OK',
             'copy.failedState': 'Failed',
 
+            // Moment Page
+            'copy.timelinePage.title': 'Timeline: @title',
+
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
             'copy.homePage.description': 'Upload a video or some photos and Neon will show you the images or GIFs that will get you the most clicks.',
@@ -528,14 +532,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.ImgUploadMax': 'Over 100 Images!',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
 
-            'uploadError.title.NoImages': 'No Images Posted',
-            'uploadError.msg.NoImages': 'Upload images to see your Neon Scores!',
-
             'uploadError.title.limit': 'You\u2019ve hit your limit!',
             'uploadError.msg.limit': 'You\u2019ve hit your limit. Come back tomorrow to process more content, or sign up to increase your limit.',
 
             'uploadError.title.timeout': 'Time Out',
             'uploadError.msg.timeout': 'Oops! It appears your request timed out. Don\u2019t worry we got your images and they should load shortly',
+
+            'uploadError.title.NoImages': 'No Photos Uploaded',
+            'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
 
         },
         'en-GB': {
