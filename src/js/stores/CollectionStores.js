@@ -136,6 +136,19 @@ export const ThumbnailStore = {
     }
 };
 
+const _clips = genderAgeBaseMap();
+export const ClipsStore = {
+    getAll: () => {
+        return _clips;
+    },
+    get: (gender, age, map) => {
+        return _clips[gender][age][id];
+    },
+    set: (gender, age, map) => {
+        Object.assign(_thumbnails[gender][age], map);   
+    }
+};
+
 const _lifts = genderAgeBaseMap();
 export const LiftStore = {
     getAll: () => {
@@ -228,6 +241,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Bind update objects in outer scope.
         const updateTagMap = {};
         const updateVideoMap = {};
+        const updateClipMap = {};
 
         const searchResTagIds = _.chain(searchRes.items)
             .reduce((tagIds, tag) => {
@@ -302,11 +316,36 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {
+                //
+                
+                
+                video.demographic_clip_ids.map(dem => {
+                    let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                    let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                    if (age === undefined || gender === undefined) {
+                        console.warn('Unknown demo ', dem.age, dem.gender);
+                        return;
+                    }
+                    LoadActions.loadClips(dem.clip_ids)
+                    .then(clipRes => {
+                        if (clipRes.clips.length > 0) {
+                            // debugger 
+                            ClipsStore.set(gender, age, clipRes.clips)
+                            console.log(ClipsStore.getAll())
+                        }
+                    })
+                })
+
+                
+                
+
+
+
 
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
-
+                    
                     // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
@@ -317,7 +356,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
                     // Build partial update map.
                     const thumbnailMap = {};
+                    
                     dem.thumbnails.map(t => {
+                        
                         thumbnailMap[t.thumbnail_id] = t;
                     });
                     if (dem.bad_thumbnails) {
@@ -328,6 +369,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     else {
                         dem.bad_thumbnails = [];
                     }
+                    debugger 
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
@@ -335,7 +377,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Now load the thumbnails for the non-video tags.
 
             // Get the set of thumbnail ids.
+            
             const tags = _.values(tagRes);
+            
             const thumbnailIdSet = _
                 .chain(tags)
                 // Skip video tags.
@@ -350,7 +394,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // Remove duplicates.
                 .uniq()
                 .value();
-
+                 
             LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
             .then(thumbRes => {
                 const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
@@ -487,7 +531,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Load thumbnails by ids.
     loadThumbnails: function(thumbnailIds, gender=0, age=0, fields=[]) {
-
         // Empty array of ids is no-op.
         if(thumbnailIds.length == 0) {
             return Promise.resolve({thumbnails: []});
@@ -511,6 +554,30 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             params = {};
             Object.assign(params, baseParams, {thumbnail_id: thumbArgs[0]});
             return LoadActions.GET('thumbnails', {data: params});
+        }
+    },
+
+    loadClips: function(clipIds, gender=0, age=0, fields=[]) {
+        if(clipIds.length == 0) {
+            return Promise.resolve({clips: []});
+        }
+        const clipArgs = UTILS.csvFromArray(clipIds);
+        // const baseParams = getBaseParamsForDemoRequest(gender, age, fields);
+        let params;
+        if (clipArgs.length > 1) {
+            clipArgs.map(arg => {
+                // Build this batch's params by copying base params and adding the tid arg.
+                params = {};
+                Object.assign(params, {clip_ids: arg});
+                // Object.assign(params, baseParams, {clip_id: arg});
+                LoadActions.batch('GET', 'clips', params);
+            });
+            return LoadActions.sendBatch();
+        } else {
+            params = {};
+            Object.assign(params, {clip_ids: clipArgs[0]});
+            // Object.assign(params, baseParams, {clip_id: clipArgs[0]});
+            return LoadActions.GET('clips', {data: params});
         }
     },
 
