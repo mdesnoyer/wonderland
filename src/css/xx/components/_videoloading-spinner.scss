@@ -50,11 +50,6 @@ $onboarding-text-padding: 18px;
     }
 }
 
-.pollingSpinner {
-    @extend .genericSpinner;
-    float: right;
-}
-
 .xxValenceloadingSpinner {
     @extend .genericSpinner;
     float: right;

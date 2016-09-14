@@ -18,6 +18,7 @@ var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
 var jest = require('gulp-jest');
+var envify = require('gulp-envify');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -115,6 +116,23 @@ gulp.task('clipboardJs', function() {
         .pipe(reload({
             stream: true
         }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+gulp.task('timelineConfig', ['clean:timelineConfig'] ,function() {
+    return gulp.src('./env/timeline/timeline.config.json.raw')
+        .pipe(rename('timeline.config.json'))
+        .pipe(envify())
+        .pipe(gulp.dest('./env'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+gulp.task('clean:timelineConfig', function() {
+      return gulp.src('./env/timeline.config.json', {read: false})
+        .pipe(clean());
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -238,7 +256,7 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -248,7 +266,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'config', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);

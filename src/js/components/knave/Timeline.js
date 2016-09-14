@@ -5,6 +5,7 @@ import React from 'react';
 import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
+import moment from 'moment';
 
 import _ from 'lodash';
 
@@ -14,15 +15,14 @@ const Timeline = React.createClass({
     propTypes: {
         stores: React.PropTypes.object.isRequired,
         feed: React.PropTypes.string,
-        pageSize: React.PropTypes.number.isRequired, 
         threshold: React.PropTypes.number.isRequired,
-        showNeonScore: React.PropTypes.bool.isRequired
+        showNeonScore: React.PropTypes.bool.isRequired,
+        pageTitle: React.PropTypes.string.isRequired
     },
     getDefaultProps: function() {
         return {
             stores: {},
             feed: '',
-            pageSize: UTILS.RESULTS_PAGE_SIZE,
             threshold: 0,
             showNeonScore: false
         }
@@ -65,8 +65,8 @@ const Timeline = React.createClass({
                             snapshots.push({
                                 videoId: v.video_id,
                                 thumbnailId: t.thumbnail_id,
-                                timestamp: new Date(t.updated).getTime(),
-                                lowSrc: RENDITIONS.findRendition(t, 160 * 3, 90 * 3),
+                                timestamp: t.updated,
+                                lowSrc: RENDITIONS.findRendition(t, 160 * 2.5, 90 * 2.5),
                                 highSrc: t.url,
                                 neonScore: t.neon_score
                             });
@@ -82,8 +82,16 @@ const Timeline = React.createClass({
     },
     render: function() {
         const self = this,
-            snapshots = self.getSnapshots()
+            snapshots = self.getSnapshots(),
+            snapshotsCount = snapshots.length
         ;
+        // Wee bit hacky but does the job for now - EH
+        if (snapshotsCount > 0) {
+            document.title = '(' + snapshotsCount + ') ' + self.props.pageTitle;
+        }
+        else {
+            document.title = self.props.pageTitle;   
+        }
         return (
             <div>
                 <ol
@@ -91,30 +99,35 @@ const Timeline = React.createClass({
                     data-threshold={self.props.threshold}
                     data-show-neonscore={self.props.showNeonScore}
                     data-feed={self.props.feed}
-                    data-page-size={self.props.pageSize}
+                    data-snapshots-count={snapshots.length}
                 >
                     {
                         snapshots.map(function(snapshot, i) {
-                            let neonScoreElement = self.props.showNeonScore ? <figcaption className="timeline__score">{snapshot.neonScore}</figcaption> : null;
+                            let neonScoreElement = self.props.showNeonScore ? <figcaption className="timeline__score">{snapshot.neonScore}</figcaption> : null,
+                                fuzzyTimestamp = moment.utc(snapshot.timestamp).fromNow(),
+                                uniqueKey = snapshot.videoId + snapshot.thumbnailId
+                            ;
                             return (
                                 <li
                                     className="timeline__moment"
-                                    key={i}
+                                    key={uniqueKey}
                                     data-score={snapshot.neonScore}
                                     data-video-id={snapshot.videoId}
-                                    data-thumbnail-id={snapshot.videoId}
+                                    data-thumbnail-id={snapshot.thumbnailId}
                                     data-timestamp={snapshot.timestamp}
                                 >
                                     <a
+                                        id={uniqueKey}
                                         download
                                         href={snapshot.highSrc}
+                                        className="timeline__download"
                                     >
                                         <figure>
                                             <img
                                                 className="timeline__snapshot"
                                                 src={snapshot.lowSrc}
-                                                alt=''
-                                                title=''
+                                                alt={fuzzyTimestamp}
+                                                title={fuzzyTimestamp}
                                             />
                                             {neonScoreElement}
                                         </figure>
