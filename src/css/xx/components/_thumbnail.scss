@@ -1,59 +1,55 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-$thumbnail-small-score-size: 30px;
-$thumbnail-large-score-size: 42px;
-$mobile-thumbnail-score-size: 24px;
-
-$thumbnail-hover-size-px: 2px;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// .x-* are silent classes used for extending only
+.x-neonscore {
+    position: absolute;
+    bottom: 0;
+    height: $thumbnail-small-score-size;
+    color: $white;
+    font-size: 14px;
+    line-height: $thumbnail-small-score-size;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 10;
+    @include breakpoint-mobile {
+        height: $mobile-thumbnail-score-size;
+        font-size: 10px;
+        line-height: $mobile-thumbnail-score-size;
+    }
+}
 
 .xxThumbnail {
     display: block;
     position: relative;
     width: 100%;
-
     &::before {
         content: '';
         display: block;
         padding: 0 0 100%;
     }
-
     &::after {
+        @extend .x-neonscore;
         content: attr(data-score);
-        position: absolute;
-        bottom: 0;
         left: 0;
         width: $thumbnail-small-score-size;
-        height: $thumbnail-small-score-size;
-        color: $white;
-        font-size: 14px;
-        line-height: $thumbnail-small-score-size;
-        vertical-align: middle;
-        text-align: center;
-
         @include breakpoint-mobile {
             width: $mobile-thumbnail-score-size;
-            height: $mobile-thumbnail-score-size;
-            font-size: 10px;
-            line-height: $mobile-thumbnail-score-size;
         }
     }
 
     &--highLight {
+        &::before,
         &::after {
             background-color: rgba($accent-color, 0.9);
         }
     }
 
     &--lowLight {
+        &::before,
         &::after {
             background-color: $base-color;
         }
-    }
-
-    &--small {
-        // empty
     }
 
     &--noscore { 
@@ -63,22 +59,33 @@ $thumbnail-hover-size-px: 2px;
     }
 
     &--large {
+        &::before,
         &::after {
-            width: $thumbnail-large-score-size;
             height: $thumbnail-large-score-size;
             font-size: 18px;
             line-height: $thumbnail-large-score-size;
-
             @include breakpoint-mobile {
-                width: $mobile-thumbnail-score-size;
                 height: $mobile-thumbnail-score-size;
                 font-size: 10px;
                 line-height: $mobile-thumbnail-score-size;
             }
         }
+        &::after {
+            left: 0;
+            width: $thumbnail-large-score-size;
+            @include breakpoint-mobile {
+                width: $mobile-thumbnail-score-size;
+            }
+        }
+        &::before {
+            left: $thumbnail-large-score-size * 1.05;
+            @include breakpoint-mobile {
+                left: $mobile-thumbnail-score-size * 1.05;
+            }
+        }
     }
 
-    &--default,{
+    &--default {
         cursor: pointer;
     }
 
@@ -89,7 +96,9 @@ $thumbnail-hover-size-px: 2px;
     &--zoom {
         cursor: default;
         &::before {
-            display: none;
+            @extend .x-neonscore;
+            content: attr(data-score-label);
+            padding: 0; // need to reset the greedy 100% declared above
         }
     }
 
@@ -98,23 +107,36 @@ $thumbnail-hover-size-px: 2px;
     }
 
     &--zoom#{&}--highLight {
+        &::before,
         &::after {
             background-color: $accent-color;
         }
     }
+
+    &--zoom#{&}--default {
+        &::before {
+            padding-left: 0.618em;
+            padding-right: 0.618em;
+        }
+    }
+
     &--disabled { 
         opacity: 0.4;
         filter: alpha(opacity=40);
-        background-color: #000;
+        background-color: $secondary-color;
     }
 
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxThumbnail-wrapper { 
     width: calc(99.9% * 1/3 - 24px); 
     float: left;
     margin-right: 20px;  
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxThumbnail-image {
     box-sizing: content-box;

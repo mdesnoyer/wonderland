@@ -27,25 +27,14 @@ $onboarding-text-padding: 18px;
     animation: flickerAnimation 2s infinite;
 }
 
-.xxValenceloadingSpinner {
-    float: right;
-    position: relative;
-    z-index: 1;
-    bottom: 40px;
+.genericSpinner {
     color: $accent-color;
-    cursor: pointer;
     transform: rotate(0deg);
     animation: rotate 2s infinite linear;
     display: inline-block;
-    margin-left: .5em;
-
-    @include breakpoint-mobile {
-        display: none;
-    }
-
+    position: relative;
     &::after {
         @include font-awesome('f021');
-
         display: block;
         box-sizing: border-box;
         width: 27px;
@@ -58,14 +47,31 @@ $onboarding-text-padding: 18px;
         text-align: center;
         transform: rotate(-60deg);
         transform-origin: 50% 50%;
+    }
+}
+
+.pollingSpinner {
+    @extend .genericSpinner;
+    float: right;
+}
+
+.xxValenceloadingSpinner {
+    @extend .genericSpinner;
+    float: right;
+    z-index: 1;
+    bottom: 40px;
+    cursor: pointer;
+    margin-left: .5em;
+    @include breakpoint-mobile {
+        display: none;
+    }
+    &::after {
         transition: transform $default-transition, color $default-transition;
     }
-
     &:hover {
         .xxCollectionFilterToggle-label {
             color: $base-color;
         }
-
         &::after {
             background: $accent-color;
             color: $white;
