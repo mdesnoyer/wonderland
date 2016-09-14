@@ -453,7 +453,7 @@ const _DEFAULT_LOCALE = 'en-US',
 
             // Moment Page
             'copy.timelinePage.title': 'Live Stream: @title',
-            'copy.timelinePage.instructions': 'The best recent images from your live stream will be generated every @value @unit. Click on an image to download it.',
+            'copy.timelinePage.instructions': 'The best recent images from your live stream will be generated. Click on an image to download it.',
             'copy.timelinePage.pollingMessage': 'Checking for new Images',
 
             // Home page

@@ -7,7 +7,7 @@
         'THRESHOLD': 0,
         'SHOWNEONSCORE': true,
         'PAGESIZE': 10,
-        'POLLMINUTES': 5
+        'POLLMINUTES': 0.25
     },
     oracle2016b: {
         'UN': 'read_only_oracle',
@@ -17,7 +17,7 @@
         'THRESHOLD': 0,
         'SHOWNEONSCORE': true,
         'PAGESIZE': 10,
-        'POLLMINUTES': 5
+        'POLLMINUTES': 0.25
     },
     ign: {
         'UN': 'read_only_ign',
@@ -27,6 +27,6 @@
         'THRESHOLD': 0,
         'SHOWNEONSCORE': true,
         'PAGESIZE': 10,
-        'POLLMINUTES': 0.1
+        'POLLMINUTES': 0.10
     }
 }
