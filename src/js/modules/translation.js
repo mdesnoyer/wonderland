@@ -47,6 +47,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.currentThumbnail': 'Current Thumbnail',
             'copy.searchBar.placeholder': 'Search by collection name ',
 
+            'action.loadMore': 'Load More',
             'action.loading': 'Loading',
             'action.signIn': 'Sign In',
             'action.signUp': 'Sign Up',
@@ -313,6 +314,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
+            'label.defaultImage' : 'Default Image',
             'label.username' : 'Username',
             'label.accessLevel' : 'Access Level',
             'label.created' : 'Created',
@@ -450,7 +452,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.failedState': 'Failed',
 
             // Moment Page
-            'copy.timelinePage.title': 'Timeline: @title',
+            'copy.timelinePage.title': 'Live Stream: @title',
+            'copy.timelinePage.instructions': 'The best recent images from your live stream will be generated every @value @unit. Click on an image to download it.',
+            'copy.timelinePage.pollingMessage': 'Checking for new Images',
 
             // Home page
             'copy.homePage.title': 'Find your most clickable images',
@@ -531,8 +535,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.ImgUploadMax': 'Over 100 Images!',
             'uploadError.msg.ImgUploadMax': 'It appears that these additional files will take you over the max of 100 photos per image collection.',
 
-            'uploadError.title.NoImages': 'No Images Posted',
-            'uploadError.msg.NoImages': 'Upload images to see your Neon Scores!'
+            'uploadError.title.limit': 'You\u2019ve hit your limit!',
+            'uploadError.msg.limit': 'You\u2019ve hit your limit. Come back tomorrow to process more content, or sign up to increase your limit.',
+
+            'uploadError.title.timeout': 'Time Out',
+            'uploadError.msg.timeout': 'Oops! It appears your request timed out. Don\u2019t worry we got your images and they should load shortly',
+
+            'uploadError.title.NoImages': 'No Photos Uploaded',
+            'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
 
         },
         'en-GB': {

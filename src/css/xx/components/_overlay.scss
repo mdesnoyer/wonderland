@@ -146,6 +146,7 @@ $table_body_height: 200px;
       table-layout: fixed;
       border-collapse: collapse;
 
+
       @include breakpoint-mobile {
           width: $table_width_mobile;
       }
@@ -154,9 +155,16 @@ $table_body_height: 200px;
       th, td {
         padding: 5px;
         text-align: left;
+        overflow: hidden;
+        white-space: -o-pre-wrap; 
+        word-wrap: break-word;
+        white-space: pre-wrap; 
+        white-space: -moz-pre-wrap; 
+        white-space: -pre-wrap; 
       }
 
       td:nth-child(1), th:nth-child(1) {
+            max-width: $table_width * .50;
             min-width: $table_width * .50;
             @include breakpoint-mobile {
                 min-width: $table_width_mobile * .50;

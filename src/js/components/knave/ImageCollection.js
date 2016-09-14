@@ -174,6 +174,7 @@ export default class ImageCollection extends React.Component {
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 translationOverrideMap={overrideMap}
+                isSoloImage={this.isSoloImage.bind(this)}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
         );
