@@ -136,7 +136,6 @@ var UploadForm = React.createClass({
         }
     },
     handleUrlSubmit: function(e) {
-        debugger
         this.sendVideoUrl(e.target.dataset.sendUrlType);
     },
     handleUpdateVideoDefault: function(e) {
