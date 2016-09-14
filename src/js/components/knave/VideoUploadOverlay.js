@@ -112,28 +112,3 @@ var VideoUploadOverlay = React.createClass({
 export default VideoUploadOverlay;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-// <div className="xxFormButtons">
-// <label className="xxLabel" htmlFor="xx-upload-url">
-//     GIVE ME
-// </label>
-//     <div className="xxUploadButtonsChooser">
-//         <button
-//             disabled={!isValid}
-//             className={submitClassName.join(' ')}
-//             type="submit"
-//             data-send-url-type="thumbnails"
-//             onClick={self.props.handleUrlSubmit}
-//         >Thumbnails</button>
-//         <button
-//             disabled={!isValid}
-//             className={submitClassName.join(' ')}
-//             type="submit"
-//             data-send-url-type="gif"
-//             onClick={self.props.handleUrlSubmit}
-//         >GIFs</button>
-//     </div>
-// </div>
