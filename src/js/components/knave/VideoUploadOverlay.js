@@ -98,7 +98,7 @@ var VideoUploadOverlay = React.createClass({
                         </div>
                         <div className="xxUploadButtonsChooser">
                             <label className="xxLabel">Thumbnails</label>
-                            <label className="xxLabel">GIF</label>
+                            <label className="xxLabel">GIFs</label>
                         </div>
                     </div>
                 
