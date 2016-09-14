@@ -329,7 +329,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     LoadActions.loadClips(dem.clip_ids)
                     .then(clipRes => {
                         if (clipRes.clips.length > 0) {
-                            // debugger 
+                            debugger 
                             ClipsStore.set(gender, age, clipRes.clips)
                             console.log(ClipsStore.getAll())
                         }
@@ -369,8 +369,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     else {
                         dem.bad_thumbnails = [];
                     }
-                    debugger 
+                    // debugger 
                     ThumbnailStore.set(gender, age, thumbnailMap);
+                    // console.log(ThumbnailStore.getAll())
                 });
             });
 
