@@ -31,6 +31,8 @@ import {
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
+import GifClip from '../knave/GifClip';
+
 const getStateFromStores = () => {
 
     return {
@@ -395,11 +397,33 @@ const CollectionsMainPage = React.createClass({
         LoadActions.loadAccount(SESSION.state.accountId);
     }, 
 
+    handleMouseEnter: function(e) {
+        e.target.play()
+    },
+
+    handleOnMouseLeave: function(e) {
+      e.target.pause();
+    },
+
+    handleClick: function(e) {
+
+    },
+
     getResults: function() {
         this.loadAccount()
-
+        const url = 'http://s3.amazonaws.com/host-thumbnails/zmwpqq7dfkubotxgb03j3s80/e57g910y5t8o88fcn3boyl36s/d6c9cf2dff0c4d3392b151d989035d48/w1280_h720.mp4'
         return (
             <div>
+                <div className="xxCollection xxCollection--video">
+                    <div className="xxCollectionImages">
+                        <GifClip url={url} />
+                    </div>
+                    <div className="xxCollection-content">
+                        content
+                        <a href="a" ></a>
+                        <button onClick={this.handleClick}>download</button>
+                    </div>
+                </div>
                 <CollectionsContainer
                     shownIds={this.getShownIds()}
                     stores={{

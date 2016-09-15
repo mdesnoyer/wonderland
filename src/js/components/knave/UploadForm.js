@@ -240,7 +240,10 @@ var UploadForm = React.createClass({
                 }
             }
         ;
-        if (sendUrlType === 'gif') { options.data['result_type'] = 'clips' };
+        if (sendUrlType === 'gif') { 
+            options.data['result_type'] = 'clips' 
+            
+        };
         if (!UTILS.validateUrl(self.state.urlInput)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
