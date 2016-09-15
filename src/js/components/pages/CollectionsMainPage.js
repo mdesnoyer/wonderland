@@ -397,7 +397,6 @@ const CollectionsMainPage = React.createClass({
 
     getResults: function() {
         this.loadAccount()
-
         return (
             <div>
                 <CollectionsContainer

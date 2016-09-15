@@ -123,6 +123,19 @@ export const VideoStore = {
     }
 };
 
+const _clips = genderAgeBaseMap();
+export const ClipsStore = {
+    getAll: () => {
+        return _clips;
+    },
+    get: (gender, age, map) => {
+        return _clips[gender][age][id];
+    },
+    set: (gender, age, map) => {
+        Object.assign(_clips[gender][age], map);   
+    }
+};
+
 const _thumbnails = genderAgeBaseMap();
 export const ThumbnailStore = {
     getAll: () => {
@@ -133,19 +146,6 @@ export const ThumbnailStore = {
     },
     set: (gender, age, map) => {
         Object.assign(_thumbnails[gender][age], map);
-    }
-};
-
-const _clips = genderAgeBaseMap();
-export const ClipsStore = {
-    getAll: () => {
-        return _clips;
-    },
-    get: (gender, age, map) => {
-        return _clips[gender][age][id];
-    },
-    set: (gender, age, map) => {
-        Object.assign(_thumbnails[gender][age], map);   
     }
 };
 
@@ -225,6 +225,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
+
     loadFromSearchResult: (searchRes, reload, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
@@ -300,6 +301,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
+        // debugger
 
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
@@ -307,40 +309,54 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Unpack promises.
             const tagRes = combined[0] || {};
             const videoRes = combined[1] || {videos: []};
+            
+
             // Set each by map of id to resource.
+            
+            // debugger
             Object.assign(updateTagMap, tagRes);
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
             }, {}));
+            debugger 
+
+
+            var testingDemoClip = videoRes.videos;
+
+            console.log(_.flattenDeep(testingDemoClip))
+            // var holderArray = []
+            // testingDemoClip.map(function(index, elem) {
+            //     index.demographic_clip_ids.map(function(item, i) {
+            //         item.clip_ids.map(function(i){
+            //             console.log
+            //             holderArray.push(i)
+            //         })
+            //         // console.log(item[i].clip_ids) 
+            //     })
+            // })
+            // console.log(holderArray)
+
 
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {
                 //
                 
-                
-                video.demographic_clip_ids.map(dem => {
-                    let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
-                    let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
-                    if (age === undefined || gender === undefined) {
-                        console.warn('Unknown demo ', dem.age, dem.gender);
-                        return;
-                    }
-                    LoadActions.loadClips(dem.clip_ids)
-                    .then(clipRes => {
-                        if (clipRes.clips.length > 0) {
-                            debugger 
-                            ClipsStore.set(gender, age, clipRes.clips)
-                            console.log(ClipsStore.getAll())
-                        }
-                    })
-                })
-
-                
-                
-
-
-
+                // video.demographic_clip_ids.map(dem => {
+                //     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                //     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                //     if (age === undefined || gender === undefined) {
+                //         console.warn('Unknown demo ', dem.age, dem.gender);
+                //         return;
+                //     }
+                //     LoadActions.loadClips(dem.clip_ids)
+                //     .then(clipRes => {
+                //         if (clipRes.clips.length > 0) {
+                //             ClipsStore.set(gender, age, clipRes.clips)
+                //             console.log(ClipsStore.getAll())
+                //         }
+                //     })
+                // })
 
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
@@ -993,6 +1009,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         self.GET('tags/search', options)
         .then(searchRes => {
+            
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
                 if(query) {
@@ -1157,6 +1174,7 @@ export const Search = {
     },
 
     load(count, onlyThisMany=false, callback=null) {
+        
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
