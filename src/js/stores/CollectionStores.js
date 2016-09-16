@@ -315,30 +315,39 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             
             // debugger
             Object.assign(updateTagMap, tagRes);
+            debugger
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
             }, {}));
-            // debugger
-            console.log(UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids'])))
-            
+            debugger
+            var megastore  =  UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids']))
 
 
-
-
-
+            megastore.forEach(function(item, i){
+                // debugger
+            })        
             var holderArray = []
             videoRes.videos.map(function(index, elem) {
                 index.demographic_clip_ids.map(function(item, i) {
                     item.clip_ids.map(function(i){
-                        // console.log
-                        
                         holderArray.push(i)
                     })
-                    // console.log(item[i].clip_ids) 
                 })
             })
+
+            LoadActions.loadClips(holderArray)
+            .then(res => {
+                
+                Object.assign(updateClipMap, res.clips.reduce((map, clip) => {
+                    debugger
+                    map[clip.clip_id] = clip
+                    debugger
+                    return clip;
+                }));
+            });
             
+            debugger
             
 
             console.log(updateClipMap)
