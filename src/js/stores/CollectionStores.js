@@ -319,24 +319,28 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 map[video.video_id] = video;
                 return map;
             }, {}));
-            debugger 
+            // debugger
+            // console.log(UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids'])))
+            
 
 
-            var testingDemoClip = videoRes.videos;
 
-            console.log(_.flattenDeep(testingDemoClip))
-            // var holderArray = []
-            // testingDemoClip.map(function(index, elem) {
-            //     index.demographic_clip_ids.map(function(item, i) {
-            //         item.clip_ids.map(function(i){
-            //             console.log
-            //             holderArray.push(i)
-            //         })
-            //         // console.log(item[i].clip_ids) 
-            //     })
-            // })
-            // console.log(holderArray)
 
+
+            var holderArray = []
+            videoRes.videos.map(function(index, elem) {
+                index.demographic_clip_ids.map(function(item, i) {
+                    item.clip_ids.map(function(i){
+                        // console.log
+                        holderArray.push(i)
+                    })
+                    // console.log(item[i].clip_ids) 
+                })
+            })
+            console.log(holderArray)
+            Object.assign(updateClipMap, holderArray)
+
+            console.log(updateClipMap)
 
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {

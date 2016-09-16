@@ -650,8 +650,34 @@ var UTILS = {
        if (bytes == 0) return '0 Byte';
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-    }
+    },
+    pickDeep: function(collection, predicate, thisArg) {
+        var self = this; 
+        if (_.isFunction(predicate)) {
+            predicate = _.iteratee(predicate, thisArg);
+        } else {
+            var keys = _.flatten(_.rest(arguments));
+            predicate = function(val, key) {
+                return _.includes(keys, key);
+            }
+        }
 
+        return _.transform(collection, function(memo, val, key) {
+            var include = predicate(val, key);
+            if (!include && _.isObject(val)) {
+                val = self.pickDeep(val, predicate);
+                include = !_.isEmpty(val);
+            }
+            if (include) {
+                _.isArray(collection) ? memo.push(val) : memo[key] = val;
+            }
+        });
+    },
+    isIn: function(collection) {
+        return function(value, key) {
+            return _.includes(collection, key);
+        }
+    }
 
 };
 
