@@ -320,7 +320,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 return map;
             }, {}));
             // debugger
-            // console.log(UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids'])))
+            console.log(UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids'])))
             
 
 
@@ -332,13 +332,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 index.demographic_clip_ids.map(function(item, i) {
                     item.clip_ids.map(function(i){
                         // console.log
+                        
                         holderArray.push(i)
                     })
                     // console.log(item[i].clip_ids) 
                 })
             })
-            console.log(holderArray)
-            Object.assign(updateClipMap, holderArray)
+            
+            
 
             console.log(updateClipMap)
 
