@@ -293,7 +293,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Unpack promises.
             const tagRes = combined[0] || {};
             const videoRes = combined[1] || {videos: []};
-
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {

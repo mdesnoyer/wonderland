@@ -135,8 +135,8 @@ var UploadForm = React.createClass({
             this.setState(this.getInitialState());
         }
     },
-    handleUrlSubmit: function() {
-        this.sendVideoUrl();
+    handleUrlSubmit: function(e) {
+        this.sendVideoUrl(e.target.dataset.sendUrlType);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -230,7 +230,7 @@ var UploadForm = React.createClass({
                 self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
-    sendVideoUrl: function() {
+    sendVideoUrl: function(sendUrlType) {
         var self = this,
             videoId = UTILS.generateId(),
             options = {
@@ -240,6 +240,7 @@ var UploadForm = React.createClass({
                 }
             }
         ;
+        if (sendUrlType === 'gif') { options.data['result_type'] = 'clips' };
         if (!UTILS.validateUrl(self.state.urlInput)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
@@ -257,12 +258,11 @@ var UploadForm = React.createClass({
                         LoadActions.loadTags([json.video.tag_id]);
                         self.setState({urlInput: ''});
                     }
-
                 })
                 .catch(function(err) {
                     self.setState({ uploadState:'initial'
                     },  function() {
-                        self.throwUploadError(err);        
+                        self.throwUploadError(err);
                     })
                 });
         })
