@@ -132,7 +132,7 @@ export const ClipsStore = {
         return _clips[gender][age][id];
     },
     set: (gender, age, map) => {
-        Object.assign(_clips[gender][age], map);   
+        Object.assign(_clips[gender][age], map);
     }
 };
 
@@ -312,45 +312,41 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             
 
             // Set each by map of id to resource.
-            
-            // debugger
+
             Object.assign(updateTagMap, tagRes);
-            debugger
-            Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
-                map[video.video_id] = video;
-                return map;
-            }, {}));
-            debugger
-            var megastore  =  UTILS.pickDeep(videoRes.videos, UTILS.isIn(['clip_ids']))
-
-
-            megastore.forEach(function(item, i){
-                // debugger
-            })        
+            
+            //grab all clip IDs 
             var holderArray = []
             videoRes.videos.map(function(index, elem) {
                 index.demographic_clip_ids.map(function(item, i) {
                     item.clip_ids.map(function(i){
                         holderArray.push(i)
-                    })
-                })
-            })
-
-            LoadActions.loadClips(holderArray)
-            .then(res => {
-                
-                Object.assign(updateClipMap, res.clips.reduce((map, clip) => {
-                    debugger
-                    map[clip.clip_id] = clip
-                    debugger
-                    return clip;
-                }));
+                    });
+                });
             });
-            
-            debugger
-            
 
-            console.log(updateClipMap)
+
+            if (holderArray.length > 1) {
+                
+                const clipsData = {
+                  clip_ids: holderArray.join(',')
+                }
+                LoadActions.GET('clips', {data: clipsData})
+                .then(res => {
+                    Object.assign(updateClipMap, res.clips.reduce((map, clip) => {
+                        map[clip.clip_id] = clip;
+                        return map
+                    }, {}))
+                    ClipsStore.set(0, 0, updateClipMap)
+                    Dispatcher.dispatch();
+                });
+            };
+            Object.assign(updateTagMap, tagRes);
+            Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
+                map[video.video_id] = video;
+                return map;
+            }, {}));
+                
 
             // Store the video thumbnails since they're inline in response.
             videoRes.videos.map(video => {
@@ -437,7 +433,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 TagStore.set(updateTagMap);
                 VideoStore.set(updateVideoMap);
                 ThumbnailStore.set(gender, age, thumbnailMap);
-
+                // ClipsStore.set(0, 0, updateClipMap)
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
@@ -839,7 +835,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     loadTags(tagIds, gender=0, age=0) {
-
+        // debugger
         // Short circuit empty input.
         if(tagIds.length == 0) {
             return;
@@ -976,7 +972,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     loadNNewestTags(n, query=null, type=null, reload=false, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
-
+        // debugger
         // If reloading, skip these checks that return early.
         if (!reload) {
             // Short circuit search if we have enough items or everything.
@@ -1035,7 +1031,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             if (searchRes.items.length === 0) {
                 callback && callback(true);
             }
-
+            // debugger
             LoadActions.loadFromSearchResult(searchRes, reload, callback)
         });
     },

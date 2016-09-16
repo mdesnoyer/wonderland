@@ -137,11 +137,10 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-
+        debugger
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div key={tagId}/>;   
         }
-
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
                 return this.buildImageCollectionComponent(tagId);
@@ -350,10 +349,10 @@ const CollectionsContainer = React.createClass({
     },
 
     buildVideoCollectionComponent(tagId) {
-
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-
+        const clip = this.props.stores.clips[0][0][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
+        // debugger
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
 
@@ -408,6 +407,15 @@ const CollectionsContainer = React.createClass({
 
         const account = this.props.stores.accounts[this.props.ownerAccountId];
 
+        // console.log(this.props.stores.tags)
+        // console.log(this.props.stores.videos)
+        // console.log(this.props.stores.clips)
+        // console.log(this.props.stores.clips[0][0])
+        // console.log(this.props.stores.thumbnails)
+        // console.log(clip)
+        // console.log(tag)
+        // console.log(video)
+        // debugger
         return (
             <VideoCollection
                 key={tagId}
