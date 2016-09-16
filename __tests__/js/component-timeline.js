@@ -15,12 +15,11 @@ const Timeline = require('../../src/js/components/knave/Timeline').default;
 describe('Component: Timeline', function() {
         
     const minProps = {
-            stores: {
-                videos: {}
-            },
-            feed: ''
-        }
-    ;
+        snapshots: {},
+        showNeonScore: true,
+        pageTitle: 'Test',
+        isPolling: false
+    };
 
     it('Renders without exploding', () => {
         const wrapper = shallow(<Timeline {...minProps} />);

@@ -100,6 +100,15 @@ var Session = {
         var self = this;
         return self.state.masqueradeAccountId;
     },
+    signIn: function(username, password) {
+        return AjaxModule.doPost('authenticate', {
+            host: CONFIG.AUTH_HOST,
+            data: {
+                username: username,
+                password: password
+            }
+        }).promise;
+    },
     end: function() {
         var ret,
             ss = window.sessionStorage
