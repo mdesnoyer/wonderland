@@ -14,8 +14,8 @@ export default class OnboardingTutorial extends React.Component {
             slides.push(
                 {
                     id: 'neonscore',
-                    title: T.get('copy.tutorial.neonscore.title'),
-                    description: T.get('copy.tutorial.neonscore.description'),
+                    title: T.get('copy.tutorial.neonScore.title'),
+                    description: T.get('copy.tutorial.neonScore.description'),
                     image: '/img/tutorial-neonscore.png',
                     first: true,
                 },
@@ -45,8 +45,8 @@ export default class OnboardingTutorial extends React.Component {
                 },
                 {
                     id: 'neonscore',
-                    title: T.get('copy.tutorial.neonscore.title'),
-                    description: T.get('copy.tutorial.neonscore.description'),
+                    title: T.get('copy.tutorial.neonScore.title'),
+                    description: T.get('copy.tutorial.neonScore.description'),
                     image: '/img/tutorial-neonscore.png',
                 },
                 {

@@ -212,7 +212,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: (searchRes, reload, callback) => {
+    loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -235,7 +235,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 return tagIds;
             }, [])
             .uniq()
-            .value();
+            .value()
+        ;
 
         // Decide which tag ids to search for.
         const searchForTagIds = reload ?
@@ -253,7 +254,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         // Build promise for videos referenced from tags.
-        let videoPromise = Promise.resolve({videos: []})
+        let videoPromise = Promise.resolve({videos: []});
 
         let usingVideoIds;
         if (reload) {
@@ -292,7 +293,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Unpack promises.
             const tagRes = combined[0] || {};
-            const videoRes = combined[1] || {videos: []};
+            let videoRes = combined[1] || {videos: []};
+
+            // Filter
+            if (videoFilter) {
+                videoRes.videos = videoRes.videos.filter(videoFilter);
+            }
+            videoRes.video_count = videoRes.videos.length; // hackety-hack
 
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
@@ -307,7 +314,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
-
                     // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
@@ -316,8 +322,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return;
                     }
 
+                    // Filter
+                    if (thumbnailFilter) {
+                        dem.thumbnails = dem.thumbnails.filter(thumbnailFilter);
+                        dem.bad_thumbnails = dem.bad_thumbnails.filter(thumbnailFilter);
+                    }
+
                     // Build partial update map.
-                    const thumbnailMap = {};
+                    let thumbnailMap = {};
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
@@ -329,6 +341,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     else {
                         dem.bad_thumbnails = [];
                     }
+
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
@@ -876,7 +889,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     //             tags in the FilteredTagStore exceeds n
     //         if true, always call the backend, reloading those
     //             tags we have stored.
-    loadNNewestTags(n, query=null, type=null, reload=false, callback=null) {
+    loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
@@ -928,7 +941,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         .then(searchRes => {
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
-                if(query) {
+                if (query) {
                     FilteredTagStore.completelyLoaded = true;
                 } else {
                     TagStore.completelyLoaded = true;
@@ -938,7 +951,31 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback && callback(true);
             }
 
-            LoadActions.loadFromSearchResult(searchRes, reload, callback)
+            LoadActions.loadFromSearchResult(searchRes, reload, videoFilter, thumbnailFilter, callback)
+        });
+    },
+
+    loadNOlderTags(n, type=null, videoFilter=null, thumbnailFilter=null, callback=null) {
+        const self = this,
+            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE),
+            options = {
+                data: {limit}
+            }
+        ;
+        options.data.until = TagStore.getOldestTimestamp();
+        if (type) {
+            options.data.tag_type = type;
+        }
+        self.GET('tags/search', options)
+        .then(searchRes => {
+            if(searchRes.items.length < limit) {
+                TagStore.completelyLoaded = true;
+            }
+            if (searchRes.items.length === 0) {
+                callback && callback(true);
+            }
+
+            LoadActions.loadFromSearchResult(searchRes, false, videoFilter, thumbnailFilter, callback)
         });
     },
 
@@ -1094,20 +1131,20 @@ export const Search = {
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(largeCount, null, null, false, wrapped);
+        LoadActions.loadNNewestTags(largeCount, null, null, false, null, null, wrapped);
     },
 
     loadWithQuery(count, query=null, type=null, callback=null) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(largeCount, query, type, false, wrapped);
+        LoadActions.loadNNewestTags(largeCount, query, type, false, null, null, wrapped);
     },
 
     reload(count, query=null, type=null, callback=null) {
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(count, query, type, true, wrapped);
+        LoadActions.loadNNewestTags(count, query, type, true, null, null, wrapped);
     },
 
     getWrappedCallback(callback) {
