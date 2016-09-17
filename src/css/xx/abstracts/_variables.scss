@@ -10,6 +10,7 @@ $gutter-width: 24px; // gutters are fixed width, columns are fluid
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+$breakpoint-baby-bear: 455px;
 $breakpoint-mobile: 767px; // below iPad size but could be anything
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -105,5 +106,12 @@ $z-index-feature-content: 100;
 $default-transition-speed: 0.2s;
 $default-transition-easing: ease-in-out;
 $default-transition: $default-transition-speed $default-transition-easing;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$thumbnail-small-score-size: 30px;
+$thumbnail-large-score-size: 42px;
+$mobile-thumbnail-score-size: 24px;
+$thumbnail-hover-size-px: 2px;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

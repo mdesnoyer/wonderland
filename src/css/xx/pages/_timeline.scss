@@ -1,0 +1,21 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.x-timelinePage__layout {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.timelinePage__masthead {
+    @extend .x-timelinePage__layout;
+    justify-content: space-between;
+}
+
+.timelinePage__actions {
+    @extend .x-timelinePage__layout;
+    justify-content: center;
+    margin-bottom: 1vw;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

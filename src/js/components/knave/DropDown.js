@@ -5,7 +5,7 @@ import React from 'react';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var DropDown = React.createClass({
-    getInitialState: function(){
+    getInitialState: function() {
         var self = this;
         return {
             isOpen: false,

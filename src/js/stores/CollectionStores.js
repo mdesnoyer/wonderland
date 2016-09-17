@@ -212,7 +212,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
-    loadFromSearchResult: (searchRes, callback) => {
+    loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter, callback) => {
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -229,28 +229,45 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const updateTagMap = {};
         const updateVideoMap = {};
 
-        // Build tags promise.
-        const missingTagIds =  _
-            .chain(searchRes.items)
+        const searchResTagIds = _.chain(searchRes.items)
             .reduce((tagIds, tag) => {
                 tagIds.push(tag.tag_id);
                 return tagIds;
             }, [])
-            // Omit all the stored ones.
-            .difference(_.keys(TagStore.getAll()))
             .uniq()
-            .value();
+            .value()
+        ;
+
+        // Decide which tag ids to search for.
+        const searchForTagIds = reload ?
+            // If reloading, search for all of them.
+            searchResTagIds :
+            // Else omit the ones we've already loaded.
+            _.difference(searchResTagIds, _.keys(TagStore.getAll()));
+
         let tagPromise = Promise.resolve({});
-        if (missingTagIds.length > 0) {
+        if (searchForTagIds.length > 0) {
             const tagData = {
-                tag_id: missingTagIds.join(',')
+                tag_id: searchForTagIds.join(',')
             };
             tagPromise = LoadActions.GET('tags', {data: tagData});
         }
 
         // Build promise for videos referenced from tags.
-        let videoPromise = Promise.resolve({videos: []})
-        const missingVideoIds = _
+        let videoPromise = Promise.resolve({videos: []});
+
+        let usingVideoIds;
+        if (reload) {
+            // Just get every video id in the search result.
+            usingVideoIds = _(searchRes.items)
+            .reduce((videoIds, tag) => {
+                if(tag.video_id) {
+                    videoIds.push(tag.video_id);
+                }
+                return videoIds;
+            }, [])
+        } else {
+            usingVideoIds = _
             .chain(searchRes.items)
             .reduce((videoIds, tag) => {
                 if(tag.video_id) {
@@ -262,9 +279,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             .difference(_.keys(VideoStore.getAll()))
             .uniq()
             .value();
-        if (missingVideoIds.length > 0) {
+        }
+        if (usingVideoIds.length > 0) {
             const videoData = {
-                video_id: missingVideoIds.join(','),
+                video_id: usingVideoIds.join(','),
                 fields: UTILS.VIDEO_FIELDS_MIN.join(',')
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
@@ -275,7 +293,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Unpack promises.
             const tagRes = combined[0] || {};
-            const videoRes = combined[1] || {videos: []};
+            let videoRes = combined[1] || {videos: []};
+
+            // Filter
+            if (videoFilter) {
+                videoRes.videos = videoRes.videos.filter(videoFilter);
+            }
+            videoRes.video_count = videoRes.videos.length; // hackety-hack
 
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
@@ -290,7 +314,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
-
                     // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
@@ -299,19 +322,26 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return;
                     }
 
+                    // Filter
+                    if (thumbnailFilter) {
+                        dem.thumbnails = dem.thumbnails.filter(thumbnailFilter);
+                        dem.bad_thumbnails = dem.bad_thumbnails.filter(thumbnailFilter);
+                    }
+
                     // Build partial update map.
-                    const thumbnailMap = {};
+                    let thumbnailMap = {};
                     dem.thumbnails.map(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-                    if (dem.bad_thumbnails) { 
+                    if (dem.bad_thumbnails) {
                         dem.bad_thumbnails.map(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
-                    } 
-                    else { 
-                        dem.bad_thumbnails = []; 
                     }
+                    else {
+                        dem.bad_thumbnails = [];
+                    }
+
                     ThumbnailStore.set(gender, age, thumbnailMap);
                 });
             });
@@ -350,10 +380,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
-                
+
                 if (_.isFunction(callback)) {
                     callback();
-                } 
+                }
 
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
@@ -499,10 +529,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     // Load lifts for thumbnails from data source.
-    loadLifts: function(tagIds, gender=0, age=0, forceLoad=false) {
+    loadLifts: function(tagIds, gender=0, age=0, reload=false) {
 
         // Find tags missing from stored lift map for demo.
-        const loadTagIds = forceLoad ?
+        const loadTagIds = reload ?
             tagIds :
             tagIds.reduce((loadTagIds, tagId) => {
             if (_.isEmpty(TagStore.get(gender, age, tagId))) {
@@ -850,46 +880,68 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Tries to fill out the TagStore to n tags
     //
     // Return n the number of new tags.
-    loadNNewestTags(n, query, callback) {
+    // Inputs
+    //     n- integer- number of tags we want to have in the TagStore
+    //     query- string- filter applied on Tag name
+    //     type- a UTILS.TAG_TYPE_*, filter applied on Tag tag_type
+    //     reload- bool
+    //         if false, don't call the backend if the number of
+    //             tags in the FilteredTagStore exceeds n
+    //         if true, always call the backend, reloading those
+    //             tags we have stored.
+    loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
 
-        // Short circuit search if we have enough items or everything.
-        if (n <= haveCount) {
-            callback && callback();
-            return;
-        }
-        if (TagStore.completelyLoaded) {
-            callback && callback();
-            return;
-        } else if (query && FilteredTagStore.completelyLoaded) {
-            callback && callback();
-            return;
+        // If reloading, skip these checks that return early.
+        if (!reload) {
+            // Short circuit search if we have enough items or everything.
+            if (n <= haveCount) {
+                callback && callback();
+                return;
+            }
+            if (TagStore.completelyLoaded) {
+                callback && callback();
+                return;
+            } else if (query && FilteredTagStore.completelyLoaded) {
+                callback && callback();
+                return;
+            }
         }
 
-        // Ensure searches are no bigger than the max.
-        const limit = _.min([n - haveCount, UTILS.MAX_SEARCH_SIZE]);
+        let limit;
+        if (!reload) {
+            // Ensure searches are no bigger than the max.
+            limit = Math.min(n - haveCount, UTILS.MAX_SEARCH_SIZE);
+        } else {
+            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE);
+        }
         const options = {
             data: {limit}
         };
+
         // Find the oldest timestamp.
         const oldestTimestamp = TagStore.getOldestTimestamp();
 
-        if (oldestTimestamp) {
+        // If reloading, we always load the front (i.e., latest) tags,
+        // so no need to set the "until" parameter.
+        if (!reload && oldestTimestamp) {
             // Get float of unix time in seconds
             // (Already in UTC)
             options.data.until = oldestTimestamp;
         }
-
         if (query) {
             options.data.query = query;
+        }
+        if (type) {
+            options.data.tag_type = type;
         }
 
         self.GET('tags/search', options)
         .then(searchRes => {
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
-                if(query) {
+                if (query) {
                     FilteredTagStore.completelyLoaded = true;
                 } else {
                     TagStore.completelyLoaded = true;
@@ -897,9 +949,33 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             if (searchRes.items.length === 0) {
                 callback && callback(true);
-            } 
-            
-            LoadActions.loadFromSearchResult(searchRes, callback)
+            }
+
+            LoadActions.loadFromSearchResult(searchRes, reload, videoFilter, thumbnailFilter, callback)
+        });
+    },
+
+    loadNOlderTags(n, type=null, videoFilter=null, thumbnailFilter=null, callback=null) {
+        const self = this,
+            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE),
+            options = {
+                data: {limit}
+            }
+        ;
+        options.data.until = TagStore.getOldestTimestamp();
+        if (type) {
+            options.data.tag_type = type;
+        }
+        self.GET('tags/search', options)
+        .then(searchRes => {
+            if(searchRes.items.length < limit) {
+                TagStore.completelyLoaded = true;
+            }
+            if (searchRes.items.length === 0) {
+                callback && callback(true);
+            }
+
+            LoadActions.loadFromSearchResult(searchRes, false, videoFilter, thumbnailFilter, callback)
         });
     },
 
@@ -931,20 +1007,20 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 Dispatcher.dispatch();
             });
         });
-    }, 
+    },
     loadAccount(accountId) {
-        // For now just return, but 
-        // eventually we should check to make 
-        // the account hasn't had any mods  
+        // For now just return, but
+        // eventually we should check to make
+        // the account hasn't had any mods
         if (AccountStore.has(accountId)) {
             return;
         }
         LoadActions.GET('')
-        .then(res => { 
-            if (res.account_id) { 
-                AccountStore.set({[res.account_id]: res}); 
+        .then(res => {
+            if (res.account_id) {
+                AccountStore.set({[res.account_id]: res});
                 Dispatcher.dispatch();
-            }   
+            }
         });
     }
 });
@@ -977,7 +1053,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
     },
-    sendEmail: function(data, callback) { 
+    sendEmail: function(data, callback) {
         SendActions.POST('email', {data})
         .then(function(res) {
             callback({'status_code' : 200});
@@ -988,22 +1064,22 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 'errorMessage' : 'unknown error sending email'
             });
         });
-       
-    } 
+
+    }
 });
 
 export const ServingStatusActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled: function(thumbnail) {
-        const thumbnailId = thumbnail.thumbnail_id; 
-        const videoId = thumbnail.video_id; 
-        const video = VideoStore.get(videoId); 
-        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } }; 
+        const thumbnailId = thumbnail.thumbnail_id;
+        const videoId = thumbnail.video_id;
+        const video = VideoStore.get(videoId);
+        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } };
         ServingStatusActions.PUT('thumbnails', options)
             .then(res => {
-                LoadActions.loadTags([video.tag_id]); 
-            }); 
-    } 
-}); 
+                LoadActions.loadTags([video.tag_id]);
+            });
+    }
+});
 
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.
@@ -1044,54 +1120,54 @@ export const Dispatcher = {
 export const Search = {
 
     pending: 0,
-    emptySearch: false, 
+    emptySearch: false,
 
     getLargeCount(count) {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
     },
 
-    load(count, onlyThisMany=false, callback) {
+    load(count, onlyThisMany=false, callback=null) {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
- 
-        const wrapped = (isEmpty) => {
-            Search.decrementPending();
-            if (isEmpty) { 
-                Search.setEmptySearch(true); 
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
-        LoadActions.loadNNewestTags(largeCount, null, wrapped);
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(largeCount, null, null, false, null, null, wrapped);
     },
 
-    loadWithQuery(count, query, callback) {
-        const largeCount = this.getLargeCount(count);
+    loadWithQuery(count, query=null, type=null, callback=null) {
+        const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
-        const wrapped = (isEmpty) => {
-            Search.decrementPending();
-            if (isEmpty) { 
-                Search.setEmptySearch(true); 
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
-        LoadActions.loadNNewestTags(largeCount, query, wrapped);
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(largeCount, query, type, false, null, null, wrapped);
+    },
+
+    reload(count, query=null, type=null, callback=null) {
+        Search.incrementPending();
+        const wrapped = Search.getWrappedCallback(callback);
+        LoadActions.loadNNewestTags(count, query, type, true, null, null, wrapped);
+    },
+
+    getWrappedCallback(callback) {
+            return (isEmpty) => {
+                Search.decrementPending();
+                if (isEmpty) {
+                    Search.setEmptySearch(true);
+                    Dispatcher.dispatch();
+                }
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            };
     },
 
     hasMoreThan(count) {
         return FilteredTagStore.count() > count;
     },
 
-    setEmptySearch() { 
-        return Search.emptySearch = true; 
+    setEmptySearch() {
+        return Search.emptySearch = true;
     },
- 
+
     incrementPending() {
         return Search.pending += 1;
     },

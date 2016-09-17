@@ -45,7 +45,7 @@ var VideoFilters = React.createClass({
 
     render: function() {
         var self = this,
-            collectionClassName = self.context.isMobile? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
+            collectionClassName = self.context.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction',
             isValid = self.state.gender || self.state.age,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             errMsg = self.state.isError ? <Message body={E.getErrors()} flavour="danger" /> : ''
@@ -65,7 +65,7 @@ var VideoFilters = React.createClass({
                         </div>
                     ) : null
                 }
-                <p>Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.</p>
+                <p>{T.get('copy.videoContent.filter.thumbnails')}</p>
                 {errMsg}
                 <div className="xxFormField">
                     <label className="xxLabel">{T.get('label.filters')}</label>

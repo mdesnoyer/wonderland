@@ -211,7 +211,7 @@ $zindex-upload-drag-and-drop: 1;
 
     .xxTitle {
         margin-bottom: 28px;
-        
+
         @include breakpoint-mobile {
             margin-bottom: 20px;
         }
@@ -297,25 +297,8 @@ $zindex-upload-drag-and-drop: 1;
     & > .xxButton {
         display: inline-block;
         position: relative;
-        width: 40%;
+        width: 100%;
     }
-    & > .xxButton--inputfile {
-    -webkit-appearance: none;
-
-    }
-    & > .xxButton-center {
-        width: 20%;
-        background: transparent;
-        pointer: none;
-        border: none; 
-     }
-     & > .xxButton-cancel {
-        width: 50%;
-     }
-     & > .xxInputText-upload {
-        width: 55%;
-        margin-right: 5%;
-     }
 }
 .xxUploadDialog-intro {
     .xxTitle {
@@ -404,14 +387,51 @@ $zindex-upload-drag-and-drop: 1;
 .xxDragAndDrop {
     position: relative;
     width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});;;
-    margin: 0px auto; 
+    margin: 0px auto;
     border: 3px solid $accent-color;
-    padding: calc((99.9% - #{$gutter-width}) * 1/4 + #{$gutter-width});;;
+    padding: calc((99.9% - #{$gutter-width}) * 1/10 + #{$gutter-width});;;
     transition: background $default-transition;
     border-style: dotted;
     &--has-dragAndDropHover {
         background: rgba($accent-color, .05);
         border-style: solid;
+    }
+
+}
+.xxDragAndDrop-spinner{
+      position: relative;
+    &::after {
+       @include font-awesome('f021');
+            margin: 50px auto;
+            display: block;
+            box-sizing: border-box;
+            width: 100px;
+            height: 100px;
+            background: $white;
+            color: $accent-color;
+            font-size: 100px;
+            line-height: 1;
+            text-align: center;
+            transform: rotate(-60deg);
+            transform-origin: 50% 50%;
+            transform: rotate(0deg);
+            animation: rotate 2s infinite linear;
+    }
+}
+.xxDragAndDrop-success {
+    position: relative;
+    &::after {
+       @include font-awesome('f05d');
+       margin: 50px auto;
+       display: block;
+       box-sizing: border-box;
+       width: 100px;
+       height: 100px;
+       background: $white;
+       color: $accent-color;
+       font-size: 100px;
+       line-height: 1;
+       text-align: center;
     }
 }
 
@@ -426,6 +446,7 @@ $zindex-upload-drag-and-drop: 1;
     line-height: 16px;
     text-align: center;
     transform: translateY(-50%);
+    font-size: 10px;
 }
 .xxDragAndDrop-hint,
 .xxDragAndDrop-complete {

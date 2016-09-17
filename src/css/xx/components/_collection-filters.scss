@@ -22,7 +22,7 @@
         width: 27px;
         height: 27px;
         border-radius: 50%;
-        border: 1px solid $accent-color;
+        color: 1px solid $accent-color;
         background: $white;
         font-size: 15px;
         line-height: 26px;
@@ -164,7 +164,7 @@
     }
 }
 
-.xxCollection--photo .xxCollectionFilters-title { 
+.xxCollection--photo .xxCollectionFilters-title {
     z-index: $z-index-above-everything;
     cursor: pointer;
     @include arrow(S, 1px, 11px, $secondary-color);
@@ -182,7 +182,7 @@
             top: auto;
         }
     }
-} 
+}
 
 .xxCollectionFilters-title {
     z-index: $z-index-above-everything;

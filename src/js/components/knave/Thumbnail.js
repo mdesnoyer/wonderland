@@ -2,6 +2,7 @@
 
 import React from 'react';
 import UTILS from '../../modules/utils';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -31,6 +32,7 @@ import UTILS from '../../modules/utils';
             className = ['xxThumbnail'],
             opts = !self.props.isMobile && self.props.showHref ? {href: '#'} : {}
         ; 
+        let dataScoreLabel = (self.props.type === 'default') ? T.get('label.defaultImage') : '';
         if (self.props.extraClass) {
             className.push(self.props.extraClass);
         }
@@ -44,6 +46,7 @@ import UTILS from '../../modules/utils';
             <a
                 {...opts}
                 className={className.join(' ')}
+                data-score-label={dataScoreLabel}
                 data-score={self.props.score}
                 data-uid={self.props.uid}
                 onClick={self.handleThumbnailClick}

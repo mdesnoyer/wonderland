@@ -198,6 +198,8 @@ const VideoCollection = React.createClass({
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
+            'action.showMore': 'copy.thumbnails.low',
+            'action.showLess': 'copy.thumbnails.high'
         };
         return (
             <MobileBaseCollection
@@ -207,6 +209,7 @@ const VideoCollection = React.createClass({
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--video'}
+                isSoloImage={this.isSoloImage}
                 liftValue={this.getLiftValue()}
             />
         );
@@ -229,9 +232,17 @@ const VideoCollection = React.createClass({
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--video'}
+                isSoloImage={this.isSoloImage}
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
+    },
+
+    isSoloImage: function() {
+        if (this.props) {  
+            return (this.props.thumbnailLength <= 1)
+        }
+        return false; 
     },
 
     render: function() {

@@ -42,6 +42,7 @@
     'components/feature-content',
     'components/forms',
     'components/lift',
+    'components/timeline',
     'components/overlay',
     'components/tabs',
     'components/tag-list',
@@ -67,5 +68,6 @@
 
 // 6. Page-specific styles
 @import
-    'pages/home'
+    'pages/home',
+    'pages/timeline'
 ;

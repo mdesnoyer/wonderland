@@ -153,10 +153,9 @@ const MobileBaseCollection = React.createClass({
                 enabled={this.props.rightFeatureThumbnail.enabled} 
                 src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
                 onClick={this.onRightThumbnailClick}
-                isSoloImage={this.props.rightFeatureThumbnail.thumbnail_id === this.props.leftFeatureThumbnail.thumbnail_id}
+                isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-
         const result = (
             <div className={this.props.wrapperClassName}>
                 <div className="xxCollection-content">
