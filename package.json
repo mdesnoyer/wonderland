@@ -82,10 +82,13 @@
     "test": "jest"
   },
   "jest": {
+    "setupFiles": ["__tests__/before.js"],
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "unmockedModulePathPatterns": [
       "react",
-      "enzyme"
+      "enzyme",
+      "fnv-plus",
+      "lodash"
     ]
   }
 }
