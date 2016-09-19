@@ -38,6 +38,7 @@ var AjaxMixin = {
         this.apiCalls.map(function(apiCall) {
             apiCall.cancel();
         });
+        this.__batch = [];
     },
 
     componentWillUnmount: function() {
