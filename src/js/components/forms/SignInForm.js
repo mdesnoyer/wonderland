@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+
 import TRACKING from '../../modules/tracking';
 import AjaxMixin from '../../mixins/Ajax';
 import UTILS from '../../modules/utils';
@@ -12,6 +13,7 @@ import Icon from '../core/Icon';
 import {Link} from 'react-router';
 import ModalParent from '../core/ModalParent';
 import AccountMasqueradeModal from '../wonderland/AccountMasqueradeModal';
+import { resetStores } from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -104,7 +106,7 @@ var SignInForm = React.createClass({
         // if (!E.checkForErrors(errorList)) {
         //placeholder for error handling later
         if (true) {
-            TRACKING.sendEvent(self, arguments, email);
+            TRACKING.sendEvent(self, arguments);
             self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
                     data: {
@@ -114,6 +116,7 @@ var SignInForm = React.createClass({
                 })
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
+                    resetStores();
                     self._isSubmitted = false;
                     if (typeof(res.account_ids[0]) === 'undefined') {
                         self.setState({

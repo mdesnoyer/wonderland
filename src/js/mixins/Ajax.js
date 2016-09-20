@@ -34,11 +34,17 @@ var AjaxMixin = {
             }
         });
     },
-    componentWillUnmount: function() {
+    cancelAll: function() {
         this.apiCalls.map(function(apiCall) {
             apiCall.cancel();
         });
+        this.__batch = [];
     },
+
+    componentWillUnmount: function() {
+        this.cancelAll();
+    },
+
     sendBatch: function(options) {
         options = options || {};
         const ret = AJAXModule.sendBatch(this.__batch, options);

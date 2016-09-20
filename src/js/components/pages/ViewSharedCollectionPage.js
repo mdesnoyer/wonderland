@@ -19,7 +19,8 @@ import {
     TagShareStore,
     AccountStore,
     LoadActions,
-    Dispatcher } from '../../stores/CollectionStores.js';
+    Dispatcher,
+    resetStores } from '../../stores/CollectionStores.js';
 
 // TODO Factor this from here and CollectionsMainPage.
 const getStateFromStores = () => {
@@ -79,6 +80,11 @@ const ViewSharedCollectionPage = React.createClass({
             this.props.params.tagId,
             this.props.params.shareToken
         );
+    },
+
+    componentWillUnmount: function() {
+        Dispatcher.unregister(this.updateState);
+        resetStores();
     },
 
     baseMetaTags: [
