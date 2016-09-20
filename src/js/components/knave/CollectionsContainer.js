@@ -351,7 +351,7 @@ const CollectionsContainer = React.createClass({
     buildVideoCollectionComponent(tagId) {
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-        const clip = this.props.stores.clips[0][0][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
+        
         // debugger
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
@@ -384,7 +384,7 @@ const CollectionsContainer = React.createClass({
         const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
-
+        
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
 
         if (thumbArrays.length == 0)
@@ -406,8 +406,16 @@ const CollectionsContainer = React.createClass({
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
         const account = this.props.stores.accounts[this.props.ownerAccountId];
-        // console.log(clip)
-        // debugger
+
+
+        if (video.demographic_clip_ids[0].clip_ids.length > 0 ) {
+            var clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
+            // console.log(clip)
+        }else {
+            var clip = false
+            
+            // console.log(clip)
+        }
 
         return (
             <VideoCollection
@@ -638,11 +646,6 @@ const CollectionsContainer = React.createClass({
 
     },
     render: function() {
-        console.log('rendered')
-        // /
-        if (!_.isEmpty(this.props.stores.videos) && _.isEmpty(this.props.stores.clips[0][0])){
-            return null
-        }
         const collections = this.props.shownIds.map(tagId => {
             return this.getCollectionComponent(tagId);
         });

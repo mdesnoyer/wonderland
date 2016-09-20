@@ -452,7 +452,7 @@ const CollectionsMainPage = React.createClass({
         // console.log(this.state.tags)
         // console.log(this.state.videos)
         // debugger
-        console.log(this.state.clips)
+        // console.log(this.state.clips)
         const body = (_.isEmpty(this.state.tags) && Search.pending > 0 && Search.emptySearch == false) ?
             this.getLoading() :
             this.getResults();

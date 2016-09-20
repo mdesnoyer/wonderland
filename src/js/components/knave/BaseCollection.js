@@ -11,6 +11,7 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
+import GifClip  from './GifClip';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -20,6 +21,7 @@ import UTILS from '../../modules/utils';
 
 const propTypes = {
 
+    features: PropTypes.array.isRequired,
     // Left and right large thumbnail
     leftFeatureThumbnail: PropTypes.object.isRequired,
     rightFeatureThumbnail: PropTypes.object.isRequired,
@@ -239,14 +241,24 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        
+        // console.log(!this.props.clip)
+        // console.log(!this.props.clip)
+        // debugger
+        const renderedMedia = !this.props.clip ? (
+            <div className="xxCollectionImages">
+                {left}
+                {right}
+                {this.getThumbnailList()}
+            </div>
+            ) : (
+            <div className="xxCollectionImages">
+                <GifClip url={this.props.clip.renditions[3].url} />
+            </div>
+            )
+
         const result = (
             <div className={this.props.wrapperClassName}>
-                <div className="xxCollectionImages">
-                    {left}
-                    {right}
-                    {this.getThumbnailList()}
-                </div>
+                {renderedMedia}
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
