@@ -301,8 +301,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
-        // debugger
-
+        
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
 
@@ -310,7 +309,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const tagRes = combined[0] || {};
             const videoRes = combined[1] || {videos: []};
             
-
             // Set each by map of id to resource.
 
             Object.assign(updateTagMap, tagRes);
@@ -352,12 +350,12 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     else {
                         dem.bad_thumbnails = [];
                     }
-                    // debugger 
+
                     ThumbnailStore.set(gender, age, thumbnailMap);
-                    // console.log(ThumbnailStore.getAll())
+
                 });
             });
-
+            
             // Now load the thumbnails for the non-video tags.
 
             // Get the set of thumbnail ids.
@@ -407,13 +405,12 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     map[clip.clip_id] = clip;
                     return map
                 }, {})
-
+                
                 // Set all of these together within one synchronous block.
                 TagStore.set(updateTagMap);
                 VideoStore.set(updateVideoMap);
                 ClipsStore.set(gender, age, clipMap);
                 ThumbnailStore.set(gender, age, thumbnailMap);
-                // ClipsStore.set(0, 0, updateClipMap)
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
@@ -812,7 +809,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     loadTags(tagIds, gender=0, age=0) {
-        // debugger
+
         // Short circuit empty input.
         if(tagIds.length == 0) {
             return;
@@ -904,6 +901,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     .value();
                 LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
                 .then(thumbRes => {
+                    debugger
                     const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                         map[t.thumbnail_id] = t;
                         return map;
@@ -949,7 +947,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     loadNNewestTags(n, query=null, type=null, reload=false, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
-        // debugger
+        
         // If reloading, skip these checks that return early.
         if (!reload) {
             // Short circuit search if we have enough items or everything.
@@ -1008,7 +1006,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             if (searchRes.items.length === 0) {
                 callback && callback(true);
             }
-            // debugger
+
             LoadActions.loadFromSearchResult(searchRes, reload, callback)
         });
     },

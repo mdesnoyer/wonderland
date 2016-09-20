@@ -241,21 +241,20 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        // console.log(!this.props.clip)
-        // console.log(!this.props.clip)
-        // debugger
         const renderedMedia = !this.props.clip ? (
-            <div className="xxCollectionImages">
-                {left}
-                {right}
-                {this.getThumbnailList()}
-            </div>
+                <div className="xxCollectionImages">
+                    {left}
+                    {right}
+                    {this.getThumbnailList()}
+                </div>
             ) : (
-            <div className="xxCollectionImages">
-                <GifClip url={this.props.clip.renditions[3].url} />
-            </div>
-            )
-
+                <div className="xxCollectionImages">
+                    <GifClip 
+                        url={this.props.clip.renditions[3].url}
+                        score={this.props.clip.neon_score}
+                    />
+                </div>
+                )
         const result = (
             <div className={this.props.wrapperClassName}>
                 {renderedMedia}

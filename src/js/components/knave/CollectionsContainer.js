@@ -137,7 +137,7 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-        // debugger
+        
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div key={tagId}/>;   
         }
@@ -352,7 +352,6 @@ const CollectionsContainer = React.createClass({
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
         
-        // debugger
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
 
@@ -407,16 +406,14 @@ const CollectionsContainer = React.createClass({
 
         const account = this.props.stores.accounts[this.props.ownerAccountId];
 
-
         if (video.demographic_clip_ids[0].clip_ids.length > 0 ) {
+            // const clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[gender].clip_ids[age]]
             var clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
             // console.log(clip)
         }else {
             var clip = false
-            
             // console.log(clip)
         }
-
         return (
             <VideoCollection
                 key={tagId}

@@ -6,16 +6,20 @@ export default class GifClip extends React.Component {
     }
 
     render() {
-        var url = this.props.url
+        var url = this.props.url; 
+        var score = Math.round(this.props.score * 100); 
+        // console.log(score)
         return (
-            <video 
-                className="xxGifVideo" 
-                loop
-                onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleOnMouseLeave}
-            >
-                <source src={this.props.url} type="video/mp4"/>
-            </video>
+            <div className="xxGifContainer" data-score={score}>
+                <video 
+                    className="xxGifVideo" 
+                    loop
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleOnMouseLeave}
+                >
+                    <source src={this.props.url} type="video/mp4"/>
+                </video>
+            </div>
         );
     }
 
