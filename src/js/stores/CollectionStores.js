@@ -329,7 +329,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             if (holderArray.length > 1) {
 
                 const clipsData = {
-                  clip_ids: holderArray.join(',')
+                  clip_ids: holderArray.join(','),
+                  fields: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions']
                 }
                 LoadActions.GET('clips', {data: clipsData})
                 .then(res => {
