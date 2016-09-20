@@ -8,7 +8,6 @@ export default class GifClip extends React.Component {
     render() {
         var url = this.props.url; 
         var score = Math.round(this.props.score * 100); 
-        // console.log(score)
         return (
             <div className="xxGifContainer" data-score={score}>
                 <video 
