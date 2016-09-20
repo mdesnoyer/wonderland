@@ -48,7 +48,7 @@ var timelinePage = React.createClass({
         self.setState({
             isPolling: true
         }, function() {
-            LoadActions.loadNNewestTags(self.state.pageSize, null, UTILS.TAG_TYPE_VIDEO_COL, true, function() {
+            LoadActions.loadNNewestTags(self.state.actualPageSize, null, UTILS.TAG_TYPE_VIDEO_COL, true, function() {
                 self.setState({
                     videos: VideoStore.getAll(),
                     isLoading: false,
@@ -60,11 +60,10 @@ var timelinePage = React.createClass({
     componentWillMount: function() {
         const self = this,
             timelineId = self.props.params.timelineId,
-            timelineConfigFile = require('../../../../env/timeline/timeline.config.json')
+            timelineConfigFile = require('../../../../env/timeline.config.json')
         ;
         let timelineConfig = {};
         try {
-            // TODO fetch from file
             timelineConfig = timelineConfigFile[timelineId];
         }
         catch (ex) {
@@ -77,9 +76,11 @@ var timelinePage = React.createClass({
                     '@title': timelineConfig.TITLE
                 }),
                 feed: timelineConfig.FEED,
-                pageSize: timelineConfig.PAGESIZE,
+                initialPageSize: timelineConfig.PAGESIZE,
+                actualPageSize: timelineConfig.PAGESIZE,
                 threshold: timelineConfig.THRESHOLD,
-                showNeonScore: timelineConfig.SHOWNEONSCORE
+                showNeonScore: timelineConfig.SHOWNEONSCORE,
+                pollMinutes: timelineConfig.POLLMINUTES
             }, function() {
                 self.POST('authenticate', {
                     host: CONFIG.AUTH_HOST,
@@ -90,7 +91,8 @@ var timelinePage = React.createClass({
                 })
                     .then(function (res) {
                         SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
-                        self.fetchData(); self._interval = setInterval(self.fetchData, 10000);
+                        self.fetchData();
+                        self._interval = setInterval(self.fetchData, self.state.pollMinutes * 60 * 1000); // minutes to milliseconds
                     })
                     .catch(function (err) {
                         console.log(err);
@@ -102,30 +104,58 @@ var timelinePage = React.createClass({
             self.context.router.replace(UTILS.DRY_NAV.NOT_FOUND.URL);
         }
     },
+    loadMore: function(e) {
+        const self = this;
+        e.preventDefault();
+        // Increase the actualPageSize and force a fetch
+        self.setState({
+            isLoading: true,
+            actualPageSize: self.state.actualPageSize + self.state.initialPageSize
+        }, function() {
+            self.fetchData();
+        })
+    },
     render: function() {
         const self = this,
             loadingComponent = self.state.isLoading ? <div className="xxOverlay"><div className="xxVideoloadingSpinner">{T.get('copy.loading')}</div></div> : null,
-            pollingComponent = self.state.isPolling ? <div className="pollingSpinner"></div> : null
+            pollingComponentClass = self.state.isPolling ? 'timelinePolling is-visible' : 'timelinePolling is-hidden',
+            pageTitle = UTILS.buildPageTitle(self.state.title)
         ;
         return (
             <main className="xxPage">
                 {loadingComponent}
                 <Helmet
-                    title={UTILS.buildPageTitle(self.state.title)}
+                    title={pageTitle}
+                    meta={UTILS.HELMET_META_TAGS}
                 />
                 <SiteHeader
                     killNav={true}
                 />
-                <h1 className="xxTitle">{self.state.title} {pollingComponent}</h1>
+                <section className="xxText">
+                    <div className="timelinePage__masthead">
+                        <h1 className="xxTitle">{self.state.title}</h1>
+                        <aside className={pollingComponentClass}>
+                            <b className="timelinePolling__message">{T.get('copy.timelinePage.pollingMessage')}</b>
+                            <i className="timelinePolling__spinner"></i>
+                        </aside>
+                    </div>
+                    <p>{T.get('copy.timelinePage.instructions', {
+                        '@value': self.state.pollMinutes,
+                        '@unit': self.state.pollMinutes === 1 ? 'minute' : 'minutes'
+                    })}</p>
+                </section>
                 <Timeline
                     stores={{
                         videos: self.state.videos,
                     }}
                     feed={self.state.feed}
-                    pageSize={self.state.pageSize}
                     threshold={self.state.threshold}
                     showNeonScore={self.state.showNeonScore}
+                    pageTitle={pageTitle}
                 />
+                <nav className="timelinePage__actions">
+                    <a className="xxButton xxButton--highlight" href="#" onClick={self.loadMore}>{T.get('action.loadMore')}</a>
+                </nav>
                 <SiteFooter />
             </main>
         );

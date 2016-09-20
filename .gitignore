@@ -6,3 +6,5 @@ build/
 
 env/config.json
 *~
+
+env/timeline.config.json
