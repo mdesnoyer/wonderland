@@ -1,5 +1,37 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+.timeline__container {
+    // empty
+}
+
+.x-timeline-smart-layout {
+    flex: 0 0 (98% * 0.3333); // grow shrink basis
+    @include breakpoint-mobile {
+        flex: 0 0 49%; // grow shrink basis
+    }
+    @include breakpoint-baby-bear {
+        flex: 0 0 100%; // grow shrink basis
+        margin-bottom: 1%;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.timeline__controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1%;
+}
+
+.timeline__controls__control {
+    @extend .x-timeline-smart-layout;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .timeline {
     display: flex;
     flex-direction: row;
@@ -10,13 +42,12 @@
     margin-bottom: 1%;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .timeline__moment {
+    @extend .x-timeline-smart-layout;
     margin: 0 0 1vw 0; // needs to be vw NOT % or Firefox no likey
     position: relative;
-    flex: 0 0 (98% * 0.3333); // grow shrink basis
-    @include breakpoint-mobile {
-        flex: 0 0 49%; // grow shrink basis
-    }
 }
 
 /*a*/.timeline__download {

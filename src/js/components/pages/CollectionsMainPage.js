@@ -16,7 +16,7 @@ import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
-    AccountStore, 
+    AccountStore,
     TagStore,
     FilteredTagStore,
     VideoStore,
@@ -31,15 +31,16 @@ import {
     Dispatcher,
     Search,
     ClipsStore
-     } from '../../stores/CollectionStores';
+    resetStores } from '../../stores/CollectionStores';
 
 const getStateFromStores = () => {
 
     return {
         // These are stores of tag, video, thumbnail resources.
-        //
+
         // Map of tag id to tag.
         tags: TagStore.getAll(),
+
         // A submap of tags, of those results that are showable
         selectedTags: FilteredTagStore.getAll(),
 
@@ -51,7 +52,7 @@ const getStateFromStores = () => {
         thumbnails: ThumbnailStore.getAll(),
 
         // Map of gender, age, tag id to map of thumb id to lift float
-        //
+
         // Note: This assumes the tag has only one base thumbnail
         // for comparisons: for a video with a default thumbnail,
         // it is the default thumbnail. In all other cases, it's
@@ -92,7 +93,7 @@ const CollectionsMainPage = React.createClass({
     },
 
     componentWillMount: function() {
-        if (!SESSION.active()) {
+        if (!SESSION.active() || !SESSION.state.accountId) {
             return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
         }
 
@@ -102,7 +103,15 @@ const CollectionsMainPage = React.createClass({
         // Load initial results: first 2 quickly and a whole page or more.
         const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
         Search.load(2, true, callback);
-        setInterval(Search.reload.bind(null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
+        this.setIntervalId = setInterval(Search.reload.bind(null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
+    },
+
+    componentWillUnmount: function() {
+        if (this.setIntervalId) {
+            clearInterval(this.setIntervalId);
+        }
+        Dispatcher.unregister(this.updateState);
+        resetStores();
     },
 
     updateState: function() {
@@ -341,7 +350,7 @@ const CollectionsMainPage = React.createClass({
         // Update the stateful filteredtagstore.
         FilteredTagStore.completelyLoaded = false;
         if (!searchQuery) {
-            FilteredTagStore.resetFilter();
+            FilteredTagStore.reset();
         } else {
             // Apply a non-empty search to our data provider.
             FilteredTagStore.setFilter(
@@ -393,10 +402,10 @@ const CollectionsMainPage = React.createClass({
         // This is now just a functional stub.
         e.preventDefault();
     },
-    
-    loadAccount: function() { 
+
+    loadAccount: function() {
         LoadActions.loadAccount(SESSION.state.accountId);
-    }, 
+    },
 
     getResults: function() {
         this.loadAccount()
@@ -427,7 +436,7 @@ const CollectionsMainPage = React.createClass({
                     setTooltipText={this.setTooltipText}
                     enableThumbnail={this.enableThumbnail}
                     disableThumbnail={this.disableThumbnail}
-                    ownerAccountId={SESSION.state.accountId} 
+                    ownerAccountId={SESSION.state.accountId}
                 />
                 <PagingControl
                     currentPage={this.state.currentPage}
@@ -447,8 +456,14 @@ const CollectionsMainPage = React.createClass({
         );
     },
 
+    isLoading() {
+        return _.isEmpty(this.state.tags) &&
+            Search.pending > 0 &&
+            Search.emptySearch == false;
+    },
+
     render: function() {
-        const body = (_.isEmpty(this.state.tags) && Search.pending > 0 && Search.emptySearch == false) ?
+        const body = this.isLoading() ?
             this.getLoading() :
             this.getResults();
 

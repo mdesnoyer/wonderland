@@ -39,10 +39,8 @@ const genderAgeBaseMap = () => {
     }
 };
 
-// TODO? factor base store from named stores.
-
 const _tags = {};
-export const TagStore  = {
+export const TagStore = {
 
     getAll: () => {
         return _tags;
@@ -74,7 +72,12 @@ export const TagStore  = {
         return moment(oldestTag.created + 'Z').format('x') / 1000;
     },
 
-    completelyLoaded: false
+    completelyLoaded: false,
+
+    reset: function() {
+        for (let id in _tags) delete _tags[id];
+        TagStore.completelyLoaded = false;
+    },
 };
 
 // A read-only view of the tag store.
@@ -85,11 +88,6 @@ export const FilteredTagStore = {
 
     setFilter: function(filter) {
         FilteredTagStore.filter = filter;
-        FilteredTagStore.completelyLoaded = false;
-    },
-
-    resetFilter: function() {
-        FilteredTagStore.filter = FilteredTagStore.defaultFilter;
         FilteredTagStore.completelyLoaded = false;
     },
 
@@ -105,8 +103,14 @@ export const FilteredTagStore = {
             .value();
         return result;
     },
+
     count: function() {
         return _.values(this.getAll()).length;
+    },
+
+    reset: function() {
+        FilteredTagStore.filter = FilteredTagStore.defaultFilter;
+        FilteredTagStore.completelyLoaded = false;
     },
 };
 
@@ -120,6 +124,9 @@ export const VideoStore = {
     },
     set: map => {
         Object.assign(_videos, map);
+    },
+    reset: () => {
+        for (let id in _videos) delete _videos[id];
     }
 };
 
@@ -146,6 +153,17 @@ export const ThumbnailStore = {
     },
     set: (gender, age, map) => {
         Object.assign(_thumbnails[gender][age], map);
+    },
+    reset: () => {
+        const base = genderAgeBaseMap();
+        for (let g in base) {
+            for (let a in base[g]) {
+                let demo = _thumbnails[g][a];
+                for (let id in demo) {
+                    delete demo[id];
+                }
+            }
+        }
     }
 };
 
@@ -159,6 +177,17 @@ export const LiftStore = {
     },
     set: (gender, age, map) => {
         Object.assign(_lifts[gender][age], map);
+    },
+    reset: () => {
+        const base = genderAgeBaseMap();
+        for (let g in base) {
+            for (let a in base[g]) {
+                let demo = _lifts[g][a];
+                for (let id in demo) {
+                    delete demo[id];
+                }
+            }
+        }
     }
 };
 
@@ -172,6 +201,9 @@ export const FeatureStore = {
     },
     set: map => {
         Object.assign(_features, map);
+    },
+    reset: () => {
+        for (let id in _features) delete _features[id];
     }
 };
 
@@ -185,6 +217,17 @@ export const ThumbnailFeatureStore = {
     },
     set: (gender, age, map) => {
         Object.assign(_thumbnailFeatures[gender][age], map);
+    },
+    reset: () => {
+        const base = genderAgeBaseMap();
+        for (let g in base) {
+            for (let a in base[g]) {
+                let demo = _thumbnailFeatures[g][a];
+                for (let id in demo) {
+                    delete demo[id];
+                }
+            }
+        }
     }
 };
 
@@ -201,6 +244,9 @@ export const TagShareStore = {
     },
     has: id => {
         return undefined !== _tagShares[id];
+    },
+    reset: () => {
+        for (let id in _tagShares) delete _tagShares[id];
     }
 };
 
@@ -217,6 +263,9 @@ export const AccountStore = {
     },
     has: id => {
         return undefined !== _accounts[id];
+    },
+    reset: () => {
+        for (let id in _accounts) delete _accounts[id];
     }
 };
 
@@ -226,7 +275,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // load all downstream stores after checking
     // they're already loaded.
 
-    loadFromSearchResult: (searchRes, reload, callback) => {
+    loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter, callback) => {
+
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -250,7 +300,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 return tagIds;
             }, [])
             .uniq()
-            .value();
+            .value()
+        ;
 
         // Decide which tag ids to search for.
         const searchForTagIds = reload ?
@@ -268,7 +319,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         // Build promise for videos referenced from tags.
-        let videoPromise = Promise.resolve({videos: []})
+        let videoPromise = Promise.resolve({videos: []});
 
         let usingVideoIds;
         if (reload) {
@@ -307,8 +358,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Unpack promises.
             const tagRes = combined[0] || {};
-            const videoRes = combined[1] || {videos: []};
-            
+            let videoRes = combined[1] || {videos: []};
+
+            // Filter
+            if (videoFilter) {
+                videoRes.videos = videoRes.videos.filter(videoFilter);
+            }
+            videoRes.video_count = videoRes.videos.length; // hackety-hack
+
             // Set each by map of id to resource.
 
             Object.assign(updateTagMap, tagRes);
@@ -326,7 +383,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
-                    
                     // Shadow gender and age within this scope.
                     let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
@@ -335,9 +391,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         return;
                     }
 
+                    // Filter
+                    if (thumbnailFilter) {
+                        dem.thumbnails = dem.thumbnails.filter(thumbnailFilter);
+                        dem.bad_thumbnails = dem.bad_thumbnails.filter(thumbnailFilter);
+                    }
+
                     // Build partial update map.
-                    const thumbnailMap = {};
-                    
+
+                    let thumbnailMap = {};
+
                     dem.thumbnails.map(t => {
                         
                         thumbnailMap[t.thumbnail_id] = t;
@@ -944,7 +1007,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     //             tags in the FilteredTagStore exceeds n
     //         if true, always call the backend, reloading those
     //             tags we have stored.
-    loadNNewestTags(n, query=null, type=null, reload=false, callback=null) {
+    loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
         
@@ -997,7 +1060,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
-                if(query) {
+                if (query) {
                     FilteredTagStore.completelyLoaded = true;
                 } else {
                     TagStore.completelyLoaded = true;
@@ -1007,7 +1070,31 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback && callback(true);
             }
 
-            LoadActions.loadFromSearchResult(searchRes, reload, callback)
+            LoadActions.loadFromSearchResult(searchRes, reload, videoFilter, thumbnailFilter, callback)
+        });
+    },
+
+    loadNOlderTags(n, type=null, videoFilter=null, thumbnailFilter=null, callback=null) {
+        const self = this,
+            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE),
+            options = {
+                data: {limit}
+            }
+        ;
+        options.data.until = TagStore.getOldestTimestamp();
+        if (type) {
+            options.data.tag_type = type;
+        }
+        self.GET('tags/search', options)
+        .then(searchRes => {
+            if(searchRes.items.length < limit) {
+                TagStore.completelyLoaded = true;
+            }
+            if (searchRes.items.length === 0) {
+                callback && callback(true);
+            }
+
+            LoadActions.loadFromSearchResult(searchRes, false, videoFilter, thumbnailFilter, callback)
         });
     },
 
@@ -1142,6 +1229,16 @@ export const Dispatcher = {
     },
     register: callback => {
         _registerCallbacks.push(callback);
+    },
+
+    // Find and remove the callback. Return true if found and removed.
+    unregister: callback => {
+        let index = _registerCallbacks.indexOf(callback);
+        if (index === -1) {
+            return false;
+        }
+        _registerCallbacks.splice(index, 1);
+        return true;
     }
 };
 
@@ -1164,33 +1261,33 @@ export const Search = {
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(largeCount, null, null, false, wrapped);
+        LoadActions.loadNNewestTags(largeCount, null, null, false, null, null, wrapped);
     },
 
     loadWithQuery(count, query=null, type=null, callback=null) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(largeCount, query, type, false, wrapped);
+        LoadActions.loadNNewestTags(largeCount, query, type, false, null, null, wrapped);
     },
 
     reload(count, query=null, type=null, callback=null) {
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
-        LoadActions.loadNNewestTags(count, query, type, true, wrapped);
+        LoadActions.loadNNewestTags(count, query, type, true, null, null, wrapped);
     },
 
     getWrappedCallback(callback) {
-            return (isEmpty) => {
-                Search.decrementPending();
-                if (isEmpty) {
-                    Search.setEmptySearch(true);
-                    Dispatcher.dispatch();
-                }
-                if (_.isFunction(callback)) {
-                    callback();
-                }
-            };
+        return (isEmpty) => {
+            Search.decrementPending();
+            if (isEmpty) {
+                Search.setEmptySearch(true);
+                Dispatcher.dispatch();
+            }
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        };
     },
 
     hasMoreThan(count) {
@@ -1207,5 +1304,27 @@ export const Search = {
 
     decrementPending() {
         return Search.pending -= 1;
+    },
+
+    reset() {
+        Search.pending = 0;
+        Search.emptySearch = false;
     }
+};
+
+// Cancel pending requests and reset each store.
+export const resetStores = () => {
+
+    LoadActions.cancelAll();
+    SendActions.cancelAll();
+    ServingStatusActions.cancelAll();
+
+    TagStore.reset();
+    FilteredTagStore.reset();
+    VideoStore.reset();
+    ThumbnailStore.reset();
+    LiftStore.reset();
+    FeatureStore.reset();
+    ThumbnailFeatureStore.reset();
+    Search.reset();
 };

@@ -53,7 +53,7 @@ const CollectionsContainer = React.createClass({
         setSidebarContent: PropTypes.func.isRequired,
 
         // the accountid that owns these containers
-        ownerAccountId: PropTypes.string.isRequired
+        ownerAccountId: PropTypes.string
     },
 
     getInitialState: function() {
@@ -404,7 +404,9 @@ const CollectionsContainer = React.createClass({
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
-        const account = this.props.stores.accounts[this.props.ownerAccountId];
+        const account = this.props.ownerAccountId ?
+            this.props.stores.accounts[this.props.ownerAccountId]:
+            null;
 
         if (video.demographic_clip_ids[0].clip_ids.length > 0 ) {
             // const clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[gender].clip_ids[age]]

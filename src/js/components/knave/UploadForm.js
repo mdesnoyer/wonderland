@@ -131,7 +131,7 @@ var UploadForm = React.createClass({
             this.props.onboardingAction('col');
         }
         else {
-            LoadActions.loadFromSearchResult({ items: [{tag_id: this.state.tagId}] });
+            LoadActions.loadFromSearchResult({ items: [{tag_id: this.state.tagId}] }, false, null, null, null);
             this.setState(this.getInitialState());
         }
     },

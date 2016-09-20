@@ -2,7 +2,11 @@
 
 This document is very much work in progress, please help and if in doubt, lets talk about it.
 
-## Javascript
+## Google JS Styleguide 
+
+- We follow the Google JS Styleguide - https://google.github.io/styleguide/javascriptguide.xml
+
+## Other Javascript
 
 - use `var` always, please use one var for definitions if possible
 - Use NAMES_LIKE_THIS for constant values

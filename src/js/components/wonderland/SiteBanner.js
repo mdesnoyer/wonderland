@@ -24,18 +24,19 @@ export default function SiteBanner(props) {
         }
         return null;
     };
-    const siteNavigationElement = props.killNav ? null : <SiteNavigation sidebarContent={props.sidebarContent} setSidebarContent={props.setSidebarContent} />;
-
-    return (
-        <header className="xxHeader">
-            <a href="/" title={T.get('title.home')}>
-                <img
+    const siteNavigationElement = props.killNav ? null : <SiteNavigation sidebarContent={props.sidebarContent} setSidebarContent={props.setSidebarContent} />,
+        logoImageElement = <img
                     className="xxLogo"
                     src="/img/xx/logo.svg"
                     alt={T.get('app.companyShortName')}
                     title={T.get('app.companyShortName')}
-                />
-            </a>
+                />,
+        logoElement = props.killNav ? logoImageElement : <a href="/" title={T.get('title.home')}>{logoImageElement}</a>
+    ;
+
+    return (
+        <header className="xxHeader">
+            {logoElement}
             {getSearchForm()}
             {siteNavigationElement}
         </header>

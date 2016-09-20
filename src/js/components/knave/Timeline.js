@@ -6,85 +6,76 @@ import UTILS from '../../modules/utils';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import moment from 'moment';
-
+import DropDown from './DropDown';
 import _ from 'lodash';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const Timeline = React.createClass({
     propTypes: {
-        stores: React.PropTypes.object.isRequired,
-        feed: React.PropTypes.string,
-        threshold: React.PropTypes.number.isRequired,
+        snapshots: React.PropTypes.object.isRequired,
         showNeonScore: React.PropTypes.bool.isRequired,
-        pageTitle: React.PropTypes.string.isRequired
+        pageTitle: React.PropTypes.string.isRequired,
+        isPolling: React.PropTypes.bool.isRequired
     },
     getDefaultProps: function() {
         return {
-            stores: {},
-            feed: '',
-            threshold: 0,
+            pageTitle: '',
+            snapshots: {},
+            isPolling: false,
             showNeonScore: false
         }
     },
     getInitialState: function() {
         const self = this;
         return ({
-            videos: []
-        });
+            snapshots: self.props.snapshots,
+            sortedBy: 'timestamp' // timestamp || neonScore
+        })
     },
     componentWillReceiveProps: function(nextProps) {
         const self = this;
-        if (nextProps && nextProps.stores && nextProps.stores.videos) {
+        if (nextProps && nextProps.snapshots) {
             self.setState({
-                videos: nextProps.stores.videos
+                snapshots: nextProps.snapshots
             });
         }
     },
+    handleSortByChange: function(value) {
+        const self = this;
+        self.setState({
+            sortedBy: value
+        });
+    },
     getSnapshots: function() {
-        const self = this,
-            videos = _.values(self.state.videos)
-        ;
-        let snapshots = [];
-        if (videos) {
-            videos.forEach(function(v) {
-                
-                if ((self.props.feed === '') || (v.custom_data && v.custom_data.feed && v.custom_data.feed === self.props.feed)) {
-                    
-                    // Get a video's thumbnails
-                    const demographicThumbnailObject = UTILS.findDemographicThumbnailObject(v.demographic_thumbnails);
-                    if (demographicThumbnailObject && demographicThumbnailObject.thumbnails) {
-
-                        // We are only interested in good thumbnails (neon ones)    
-                        const neonThumbnails = demographicThumbnailObject.thumbnails.filter(function(t) {
-                            return (t.type === 'neon' && t.neon_score >= self.props.threshold)
-                        });
-                    
-                        // We need to iterate each one and get the best rendition
-                        neonThumbnails.forEach(function(t) {
-                            snapshots.push({
-                                videoId: v.video_id,
-                                thumbnailId: t.thumbnail_id,
-                                timestamp: t.updated,
-                                lowSrc: RENDITIONS.findRendition(t, 160 * 2.5, 90 * 2.5),
-                                highSrc: t.url,
-                                neonScore: t.neon_score
-                            });
-                        });
-
-                        // We now got snapshots in the state we want, lets order them
-                        snapshots = _.sortBy(snapshots, 'timestamp').reverse();
-                    }
-                }
+        const self = this;
+        let _snapshots = [];
+        if (!(Object.keys(self.state.snapshots).length === 0
+            && self.state.snapshots.constructor === Object)) {
+            // We need to iterate each one and get the best rendition
+            _.values(self.state.snapshots).forEach(function(t) {
+                _snapshots.push({
+                    videoId: t.video_id,
+                    thumbnailId: t.thumbnail_id,
+                    timestamp: t.updated,
+                    lowSrc: RENDITIONS.findRendition(t, 160 * 2.5, 90 * 2.5),
+                    highSrc: t.url,
+                    neonScore: t.neon_score
+                });
             });
+            // We now got snapshots in the state we want, lets order them
+            _snapshots = _.sortBy(_snapshots, self.state.sortedBy).reverse();
         }
-        return snapshots;
+        return _snapshots;
     },
     render: function() {
         const self = this,
-            snapshots = self.getSnapshots(),
-            snapshotsCount = snapshots.length
+            _snapshots = self.getSnapshots(),
+            snapshotsCount = _snapshots.length,
+            pollingBaseClass = ['timeline__controls__control timelinePolling'],
+            pollingComponentClass = self.props.isPolling ? 'is-visible' : 'is-hidden'
         ;
+        pollingBaseClass.push(pollingComponentClass);
         // Wee bit hacky but does the job for now - EH
         if (snapshotsCount > 0) {
             document.title = '(' + snapshotsCount + ') ' + self.props.pageTitle;
@@ -93,16 +84,39 @@ const Timeline = React.createClass({
             document.title = self.props.pageTitle;   
         }
         return (
-            <div>
+            <div className="timeline__container">
+                <nav className="timeline__controls">
+                    <fieldset className="timeline__controls__control">
+                        <label className="xxLabel">{T.get('label.sortBy')}</label>
+                        <DropDown
+                            options={
+                                [
+                                    {
+                                        label: T.get('date'),
+                                        value: 'timestamp'
+                                        
+                                    },
+                                    {
+                                        label: T.get('neonScore'),
+                                        value: 'neonScore'
+                                    }
+                                ]
+                            }
+                            handleChange={self.handleSortByChange}
+                            label={T.get('date')}
+                        />
+                    </fieldset>
+                    <aside className={pollingBaseClass.join(' ')}>
+                        <b className="timelinePolling__message">{T.get('copy.timelinePage.pollingMessage')}</b>
+                        <i className="timelinePolling__spinner"></i>
+                    </aside>
+                </nav>
                 <ol
                     className="timeline"
-                    data-threshold={self.props.threshold}
-                    data-show-neonscore={self.props.showNeonScore}
-                    data-feed={self.props.feed}
-                    data-snapshots-count={snapshots.length}
+                    data-snapshots-count={snapshotsCount}
                 >
                     {
-                        snapshots.map(function(snapshot, i) {
+                        _snapshots.map(function(snapshot, i) {
                             let neonScoreElement = self.props.showNeonScore ? <figcaption className="timeline__score">{snapshot.neonScore}</figcaption> : null,
                                 fuzzyTimestamp = moment.utc(snapshot.timestamp).fromNow(),
                                 uniqueKey = snapshot.videoId + snapshot.thumbnailId
@@ -111,7 +125,7 @@ const Timeline = React.createClass({
                                 <li
                                     className="timeline__moment"
                                     key={uniqueKey}
-                                    data-score={snapshot.neonScore}
+                                    data-neonscore={snapshot.neonScore}
                                     data-video-id={snapshot.videoId}
                                     data-thumbnail-id={snapshot.thumbnailId}
                                     data-timestamp={snapshot.timestamp}
