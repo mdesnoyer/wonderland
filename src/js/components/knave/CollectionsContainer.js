@@ -407,7 +407,7 @@ const CollectionsContainer = React.createClass({
 
         const account = this.props.stores.accounts[this.props.ownerAccountId];
         // console.log(clip)
-        debugger
+        // debugger
 
         return (
             <VideoCollection
