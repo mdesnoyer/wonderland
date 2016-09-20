@@ -137,7 +137,7 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-        debugger
+        // debugger
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div key={tagId}/>;   
         }
@@ -406,16 +406,9 @@ const CollectionsContainer = React.createClass({
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
         const account = this.props.stores.accounts[this.props.ownerAccountId];
-
-        // console.log(this.props.stores.tags)
-        // console.log(this.props.stores.videos)
-        // console.log(this.props.stores.clips)
-        // console.log(this.props.stores.clips[0][0])
-        // console.log(this.props.stores.thumbnails)
         // console.log(clip)
-        // console.log(tag)
-        // console.log(video)
-        // debugger
+        debugger
+
         return (
             <VideoCollection
                 key={tagId}
@@ -428,6 +421,7 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
+                clip={clip}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}
@@ -644,6 +638,11 @@ const CollectionsContainer = React.createClass({
 
     },
     render: function() {
+        console.log('rendered')
+        // /
+        if (!_.isEmpty(this.props.stores.videos) && _.isEmpty(this.props.stores.clips[0][0])){
+            return null
+        }
         const collections = this.props.shownIds.map(tagId => {
             return this.getCollectionComponent(tagId);
         });

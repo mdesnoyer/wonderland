@@ -239,7 +239,7 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-
+        
         const result = (
             <div className={this.props.wrapperClassName}>
                 <div className="xxCollectionImages">

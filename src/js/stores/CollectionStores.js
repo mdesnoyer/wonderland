@@ -324,10 +324,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     });
                 });
             });
-
-
+            console.log(holderArray)
+            // debugger
             if (holderArray.length > 1) {
-                
+
                 const clipsData = {
                   clip_ids: holderArray.join(',')
                 }

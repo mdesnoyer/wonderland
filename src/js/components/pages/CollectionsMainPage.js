@@ -400,7 +400,6 @@ const CollectionsMainPage = React.createClass({
 
     getResults: function() {
         this.loadAccount()
-
         // console.log(this.state.tags)
         // console.log(this.state.videos)
         // console.log(this.state.clips)
@@ -451,10 +450,10 @@ const CollectionsMainPage = React.createClass({
     render: function() {
         // debugger
         // console.log(this.state.tags)
-        // console.log(this.state.videos)
+        console.log(this.state.videos)
+        // debugger
         // console.log(this.state.clips)
-        debugger
-        const body = (_.isEmpty(this.state.tags)  && Search.pending > 0 && Search.emptySearch == false) ?
+        const body = (_.isEmpty(this.state.tags) && Search.pending > 0 && Search.emptySearch == false) ?
             this.getLoading() :
             this.getResults();
 
