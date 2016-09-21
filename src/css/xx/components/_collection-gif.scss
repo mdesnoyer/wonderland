@@ -2,7 +2,7 @@
 .xxGifContainer {
 	position: relative;
 	width: calc((99.9% + #{$gutter-width}) * 4/5);
-	height: auto;
+	// height: auto;
 	// background: blue;
     &::after {
     @extend .x-neonscore;
@@ -18,7 +18,7 @@
 .xxGifVideo {
     // width: calc((99.9% + #{$gutter-width}) * 3/4 - #{$gutter-width});
     width:100%;
-    // display: block;
+    display: block;
     margin: 0 auto;
     // margin-top: 5%; 
     height: auto;
