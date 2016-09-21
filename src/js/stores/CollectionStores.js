@@ -360,7 +360,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const tagRes = combined[0] || {};
             let videoRes = combined[1] || {videos: []};
 
-            debugger
             // Filter
             if (videoFilter) {
                 videoRes.videos = videoRes.videos.filter(videoFilter);
@@ -778,9 +777,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Load Feature objects for the thumbnails for the given tag
     // for the given demographic.
     loadFeaturesForTag(tagId, gender, age) {
-        console.log(FeatureStore.getAll())
-        console.log(ThumbnailFeatureStore.getAll())
-        debugger
+
         // Get missing thumbnail ids.
         const tag = TagStore.get(tagId);
         const thumbnailIds = _(ThumbnailStore.getAll()[gender][age])
@@ -967,7 +964,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     .value();
                 LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
                 .then(thumbRes => {
-                    debugger
+                    
                     const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                         map[t.thumbnail_id] = t;
                         return map;
@@ -1159,13 +1156,13 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
 
-    refilterVideo: function(videoId, gender, age, callback) {
-        const data = {
+    refilterVideo: function(videoId, gender, age, callback, options={}) {
+        Object.assign(options, {
             external_video_ref: videoId,
             reprocess: true,
             gender,
             age,
-        };
+        });
 
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
@@ -1174,6 +1171,9 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             .then(res => {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
+    },
+    refilterVideoForClip: function(videoId, gender, age, callback) {
+        this.refilterVideo(videoId, gender, age, callback, UTILS.CLIP_OPTIONS); 
     },
     sendEmail: function(data, callback) {
         SendActions.POST('email', {data})

@@ -13,6 +13,7 @@ import {
     ShowMoreLessThumbnailList} from './ThumbnailList';
 
 import Lift from '../knave/Lift';
+import GifClip  from './GifClip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -156,15 +157,16 @@ const MobileBaseCollection = React.createClass({
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        const result = (
-            <div className={this.props.wrapperClassName}>
-                <div className="xxCollection-content">
-                    <InfoActionContainer
-                        children={this.props.infoActionPanels}
-                        controls={this.props.infoActionControls}
-                        selectedPanel={this.props.selectedPanel}
-                    />
-                </div>
+// debugger
+        const renderedMedia = !this.props.clip ? (
+            <div>
+            <div className="xxCollection-content">
+                <InfoActionContainer
+                    children={this.props.infoActionPanels}
+                    controls={this.props.infoActionControls}
+                    selectedPanel={this.props.selectedPanel}
+                />
+            </div>
                 <div className="xxCollectionImages">
                     {left}
                     {right}
@@ -174,6 +176,28 @@ const MobileBaseCollection = React.createClass({
                     />
                     {this.getThumbnailList()}
                 </div>
+            </div>
+            ) : (
+            <div>
+            <div className="xxCollection-content">
+                <h1 className="xxCollection-title">
+                    {this.props.title}
+                </h1>
+            </div>
+            <span>hello</span>
+                <div className="xxCollectionImages">
+                    <GifClip 
+                        url={this.props.clip.renditions[2].url}
+                        score={this.props.clip.neon_score}
+                    />
+                </div>
+            </div>
+                )
+
+
+        const result = (
+            <div className={this.props.wrapperClassName}>
+                {renderedMedia}
             </div>
         );
 

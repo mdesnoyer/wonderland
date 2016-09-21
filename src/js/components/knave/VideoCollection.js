@@ -144,6 +144,7 @@ const VideoCollection = React.createClass({
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 onDemographicChange={this.props.onDemographicChange}
+                clip={this.props.clip}
                 videoId={this.props.videoId}
             />,
             <SharePanel
@@ -221,6 +222,7 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 liftValue={this.getLiftValue()}
+                clip={this.props.clip}
             />
         );
     },

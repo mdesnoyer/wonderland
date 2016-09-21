@@ -40,25 +40,32 @@ export const InfoDemoLiftPanel = React.createClass({
         translationOverrideMap: React.PropTypes.object,
     },
 
+    contextTypes: {
+        isMobile: PropTypes.bool
+    },
+
     getDefaultProps: function() {
         return {
             displayRefilterButton: true
         };
     },
 
+
     render: function() {
-        console.log(this.props.tagId)
-        console.log(LoadActions.loadFeaturesForTag(this.props.tagId, 0, 0))
         
         // Let mapped labels be overriden.
         const whyThisImage = T.get('copy.whyThisImage');
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.translationOverrideMap);
+        // debugger
         const result = (
             <div>
+            { this.props.clip && this.context.isMobile ? null : (
                 <h1 className="xxCollection-title">
                     {this.props.title}
-                </h1>                
+                </h1>
+                )
+            }
                 <DemographicFilters
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}

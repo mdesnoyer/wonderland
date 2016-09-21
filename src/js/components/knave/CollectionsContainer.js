@@ -409,6 +409,7 @@ const CollectionsContainer = React.createClass({
             null;
 
         if (video.demographic_clip_ids[0].clip_ids.length > 0 ) {
+            debugger
             // const clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[gender].clip_ids[age]]
             var clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
             // console.log(clip)

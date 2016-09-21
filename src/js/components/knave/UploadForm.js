@@ -244,6 +244,7 @@ var UploadForm = React.createClass({
         if (sendUrlType === 'gif') { 
             options.data['result_type'] = 'clips';
             options.data['clip_length'] = 3;
+            options.data['n_clips'] = 5;
         };
 
         if (!UTILS.validateUrl(self.state.urlInput)) {
