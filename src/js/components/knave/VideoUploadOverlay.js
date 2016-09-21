@@ -18,43 +18,29 @@ var VideoUploadOverlay = React.createClass({
     contextTypes: {
         isMobile: PropTypes.bool
     },
-
     componentDidMount: function() {
         const self = this;
         ReactDOM.findDOMNode(self.refs.urlInput).focus();
-        window.addEventListener('keydown', self.handleKeyEvent);
     },
-
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyEvent);
-    },
-
-    handleKeyEvent(e) {
-        // Enter submits form.
+    handleSubmit(e) {
         const self = this;
-        if (e.keyCode === 13) {
-            if (self.props.urlInput) {
-                e.target.dataset.sendUrl = true;
-                self.props.toggleOpen(e);
-            }
-        }
+        self.props.toggleOpen(e);
+        self.props.handleUrlSubmit(e);
     },
     render: function() {
-        const { isOnboarding } = this.props;
-
-        var self = this,
+        const { isOnboarding } = this.props,
+            self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
             isValid = !!self.props.urlInput,
-            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null
+            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
+            isMobile = self.context.isMobile
         ;
-        const isMobile = self.context.isMobile;
-
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
         return (
             <section className="xxUploadDialog">
-                <div className="xxUploadDialog-inner">
+                <form className="xxUploadDialog-inner" onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
@@ -80,7 +66,9 @@ var VideoUploadOverlay = React.createClass({
                                     className="xxButton"
                                     type="button"
                                     onClick={self.props.toggleOpen}
-                                >{T.get('back')}</button>
+                                >
+                                    {T.get('back')}
+                                </button>
                             ) : null
                         }
                         <button
@@ -88,10 +76,11 @@ var VideoUploadOverlay = React.createClass({
                             className={submitClassName.join(' ')}
                             type="submit"
                             data-send-url={true}
-                            onClick={self.props.handleUrlSubmit}
-                        >{T.get('upload.submit')}</button>
+                        >
+                            {T.get('upload.submit')}
+                        </button>
                     </div>
-                </div>
+                </form>
             </section>
         );
     },
