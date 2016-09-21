@@ -260,17 +260,11 @@ gulp.task('default', null, function() {
 gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
-    gutil.log('Debug 1');
     gulp.watch('./src/img/**/*', ['images']);
-    gutil.log('Debug 2');
     gulp.watch('./src/css/**/*', ['stylesDebug']);
-    gutil.log('Debug 3');
     gulp.watch(staticsSrc, ['statics']);
-    gutil.log('Debug 4');
     gulp.watch(configSrc, ['config']);
-    gutil.log('Debug 5');
     gulp.watch(timelineConfigSrc, ['timelineConfig']);
-    gutil.log('Debug 6');
     return buildScript('wonderland.js', true);
 });
 
