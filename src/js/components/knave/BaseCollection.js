@@ -21,7 +21,6 @@ import UTILS from '../../modules/utils';
 
 const propTypes = {
 
-    features: PropTypes.array.isRequired,
     // Left and right large thumbnail
     leftFeatureThumbnail: PropTypes.object.isRequired,
     rightFeatureThumbnail: PropTypes.object.isRequired,
@@ -250,7 +249,7 @@ class BaseCollection extends React.Component {
             ) : (
                 <div className="xxCollectionImages">
                     <GifClip 
-                        url={this.props.clip.renditions[3].url}
+                        url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
                     />
                 </div>
