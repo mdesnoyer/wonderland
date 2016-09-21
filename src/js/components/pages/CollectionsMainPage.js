@@ -30,7 +30,7 @@ import {
     ServingStatusActions,
     Dispatcher,
     Search,
-    ClipsStore
+    ClipsStore,
     resetStores } from '../../stores/CollectionStores';
 
 const getStateFromStores = () => {

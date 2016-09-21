@@ -24,7 +24,9 @@ import {
     ImageServingEnabledControl,
     ImageServingDisabledControl,
     AddPanel,
-    AddControl } from './InfoActionPanels';
+    AddControl,
+    DownloadControl
+     } from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -124,6 +126,8 @@ const VideoCollection = React.createClass({
             ];
         }
         let account = this.props.account;
+        
+
         let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
@@ -134,6 +138,7 @@ const VideoCollection = React.createClass({
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
                 isRefiltering={this.props.isRefiltering}
                 timeRemaining={this.props.timeRemaining}
+                clip={this.props.clip}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
@@ -179,12 +184,16 @@ const VideoCollection = React.createClass({
         if (this.props.infoPanelOnly) {
             return [];
         }
+
         let account = this.props.account;
         let control_array = [  
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
             <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
         ];
+
+        this.props.clip && control_array.push(<DownloadControl href={this.props.clip.renditions[0].url}/>); 
+
         if (account && account.serving_enabled) {
             control_array.push(
                 <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,

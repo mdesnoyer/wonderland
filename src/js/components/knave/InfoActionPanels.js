@@ -49,14 +49,14 @@ export const InfoDemoLiftPanel = React.createClass({
     render: function() {
 
         // Let mapped labels be overriden.
+        const whyThisImage = T.get('copy.whyThisImage');
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.translationOverrideMap);
-
         const result = (
             <div>
                 <h1 className="xxCollection-title">
                     {this.props.title}
-                </h1>
+                </h1>                
                 <DemographicFilters
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
@@ -66,11 +66,23 @@ export const InfoDemoLiftPanel = React.createClass({
                     isRefiltering={this.props.isRefiltering}
                     timeRemaining={this.props.timeRemaining}
                 />
-                <Lift
-                    displayThumbLift={this.props.liftValue}
-                    isSoloImage={this.props.isSoloImage}
-                    translationOverrideMap={this.props.translationOverrideMap}
-                />
+                {
+                    this.props.clip ? (
+                        <div>
+                            <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
+                            <ul className="xxTagList">
+                                <li className="xxTagList-item" >test</li>
+                            </ul>
+                            <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>{T.get('nav.learnMore')}</a>.</p>
+                        </div>
+                    ) : (
+                        <Lift
+                            displayThumbLift={this.props.liftValue}
+                            isSoloImage={this.props.isSoloImage}
+                            translationOverrideMap={this.props.translationOverrideMap}
+                        />    
+                    )
+                }
             </div>
         );
 
@@ -535,6 +547,24 @@ export const SharePanel = React.createClass({
         );
     }
 });
+
+export const DownloadControl = React.createClass({
+    render: function() {
+        return (
+            <a
+                href={this.props.href}
+                download={this.props.href}
+                data-tip={'Download'}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="download"
+                className="xxCollectionActions-anchor xxCollectionActions-download">
+                <span>download</span>
+            </a>
+        )
+    }
+})
+
 
 export const ShareControl = React.createClass({
 
