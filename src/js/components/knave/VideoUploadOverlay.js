@@ -20,12 +20,9 @@ var VideoUploadOverlay = React.createClass({
     },
 
     componentDidMount: function() {
-        // Put focus in the form name input when opening.
-        const node = ReactDOM.findDOMNode(this.refs.urlInput);
-        if(node) {
-            node.focus();
-        }
-        window.addEventListener('keydown', this.handleKeyEvent);
+        const self = this;
+        ReactDOM.findDOMNode(self.refs.urlInput).focus();
+        window.addEventListener('keydown', self.handleKeyEvent);
     },
 
     componentWillUnmount() {

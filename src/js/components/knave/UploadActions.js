@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react';
 
+import ReactDOM from 'react-dom';
+
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
@@ -42,13 +44,17 @@ export const UploadChooser = React.createClass({
     }
 });
 
-export const CollctionNameInput = React.createClass({
+export const CollectionNameInput = React.createClass({
+    componentDidMount: function() {
+        const self = this;
+        ReactDOM.findDOMNode(self.refs.textCollectionName).focus();
+    },
     render: function() {
         return (
         	<div className="xxFormField">
         	    <label className="xxLabel">{T.get('imageUpload.collectionName')}</label>
         	    <input
-        	        ref="nameInput"
+        	        ref="textCollectionName"
         	        className="xxInputText"
         	        placeholder={T.get('imageUpload.placeholderName')}
         	        type="text"
@@ -62,7 +68,7 @@ export const CollctionNameInput = React.createClass({
         	            className='xxButton xxButton--important'
         	            onClick={this.props.handleNameSubmit}
         	            type="submit"
-        	            value={'Submit Name'}
+        	            value={T.get('action.submitName')}
         	        />
         	    </div>
         	</div>
@@ -183,7 +189,7 @@ export const DragAndDrop = React.createClass({
 		        	            transitionEnterTimeout={UTILS.UPLOAD_TRANSITION}
 		        	            transitionLeaveTimeout={UTILS.UPLOAD_TRANSITION}
 		        	        >
-		        	        <UploadProgressContainer {...props}/>
+		        	        <UploadProgressContainer {...props} />
 		        	        </ReactCSSTransitionGroup>
 	        	    	</Dropzone>
 		        	    </div>
