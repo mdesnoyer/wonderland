@@ -87,7 +87,7 @@ const OnboardingUploadPage = React.createClass({
     },
     onTutorialClose: function(e) {
         e.preventDefault();
-        this.context.router.replace(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
+        this.context.router.replace(UTILS.DRY_NAV.COLLECTIONS.URL);
     },
     onboardingAction: function(type, id) {
         if (type === 'video') {
