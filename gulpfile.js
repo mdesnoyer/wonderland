@@ -28,6 +28,7 @@ var historyApiFallback = require('connect-history-api-fallback');
 var argv = require('yargs').argv;
 var env = argv.env ? argv.env : 'dev';
 var configSrc   = './env/config.json.' + env;
+var timelineConfigSrc = './env/timeline/timeline.config.json.raw';
 
 var redirects_src;
 if (env == 'prod') {
@@ -87,14 +88,12 @@ function buildStyle(isUglified) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesDebug', function() {
-    gutil.log('stylesDebug');
     buildStyle(false);
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 gulp.task('stylesLive', function() {
-    gutil.log('stylesLive');
     buildStyle(true);
 });
 
@@ -120,14 +119,15 @@ gulp.task('clipboardJs', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-gulp.task('timelineConfig', ['clean:timelineConfig'] ,function() {
-    return gulp.src('./env/timeline/timeline.config.json.raw')
-        .pipe(rename('timeline.config.json'))
+gulp.task('timelineConfig', ['clean:timelineConfig'], function() {
+    return gulp.src(timelineConfigSrc)
         .pipe(envify())
+        .pipe(rename('timeline.config.json'))
         .pipe(gulp.dest('./env'))
         .pipe(reload({
             stream: true
-        }));
+        }))
+    ;
 });
 
 gulp.task('clean:timelineConfig', function() {
@@ -143,7 +143,8 @@ gulp.task('config', ['clean:config'] ,function() {
         .pipe(gulp.dest('./env'))
         .pipe(reload({
             stream: true
-        }));
+        }))
+    ;
 });
 
 gulp.task('clean:config', function() {
@@ -263,6 +264,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 
     gulp.watch('./src/css/**/*', ['stylesDebug']);
     gulp.watch(staticsSrc, ['statics']);
     gulp.watch(configSrc, ['config']);
+    gulp.watch(timelineConfigSrc, ['timelineConfig']);
     return buildScript('wonderland.js', true);
 });
 
