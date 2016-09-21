@@ -1,8 +1,9 @@
 
 .xxGifContainer {
 	position: relative;
-	width: calc((99.9% + #{$gutter-width}) * 4/5);
-	// height: auto;
+	// width: calc((99.9% + #{$gutter-width}) * 4/5);
+	width: 100%;
+    height: auto;
 	// background: blue;
     &::after {
     @extend .x-neonscore;

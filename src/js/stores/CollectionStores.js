@@ -360,6 +360,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const tagRes = combined[0] || {};
             let videoRes = combined[1] || {videos: []};
 
+            debugger
             // Filter
             if (videoFilter) {
                 videoRes.videos = videoRes.videos.filter(videoFilter);
@@ -777,7 +778,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Load Feature objects for the thumbnails for the given tag
     // for the given demographic.
     loadFeaturesForTag(tagId, gender, age) {
-
+        console.log(FeatureStore.getAll())
+        console.log(ThumbnailFeatureStore.getAll())
+        debugger
         // Get missing thumbnail ids.
         const tag = TagStore.get(tagId);
         const thumbnailIds = _(ThumbnailStore.getAll()[gender][age])

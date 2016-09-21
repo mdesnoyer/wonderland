@@ -14,7 +14,7 @@ import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
 import UTILS from '../../modules/utils';
 import { ServingStatusThumbnailList } from './ThumbnailList';
-import { SendActions } from '../../stores/CollectionStores';
+import { SendActions, LoadActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,7 +47,9 @@ export const InfoDemoLiftPanel = React.createClass({
     },
 
     render: function() {
-
+        console.log(this.props.tagId)
+        console.log(LoadActions.loadFeaturesForTag(this.props.tagId, 0, 0))
+        
         // Let mapped labels be overriden.
         const whyThisImage = T.get('copy.whyThisImage');
         const unapplyOverride = UTILS.applyTranslationOverride(

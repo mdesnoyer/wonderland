@@ -139,6 +139,7 @@ const VideoCollection = React.createClass({
                 isRefiltering={this.props.isRefiltering}
                 timeRemaining={this.props.timeRemaining}
                 clip={this.props.clip}
+                tagId={this.props.tagId}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
