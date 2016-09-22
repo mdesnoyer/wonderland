@@ -17,19 +17,8 @@
 } 
 }
 .xxGifVideo {
-    // width: calc((99.9% + #{$gutter-width}) * 3/4 - #{$gutter-width});
     width:100%;
     display: block;
     margin: 0 auto;
-    // margin-top: 5%; 
     height: auto;
-    // &::after {
-    //     @extend .x-neonscore;
-    //     content: attr(data-score);
-    //     left: 0;
-    //     width: $thumbnail-small-score-size;
-    //     @include breakpoint-mobile {
-    //         width: $mobile-thumbnail-score-size;
-    //     }
-    // }
 }

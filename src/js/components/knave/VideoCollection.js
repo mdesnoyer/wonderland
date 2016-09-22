@@ -197,7 +197,7 @@ const VideoCollection = React.createClass({
         ];
 
         this.props.clip && control_array.push(<DownloadControl href={this.props.clip.renditions[0].url}/>); 
-
+        debugger
         if (account && account.serving_enabled) {
             control_array.push(
                 <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
@@ -214,9 +214,19 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
+
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            
+        }
+
         return (
             <MobileBaseCollection
                 {...this.props}
+                clip={currentClip}
+                clipThumb={clipThumb}
+                clipPoster={clipPoster}
                 translationOverrideMap={overrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -224,7 +234,8 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 liftValue={this.getLiftValue()}
-                clip={this.props.clip}
+                onGifClickPrev={this.onGifClickPrev}
+                onGifClickNext={this.onGifClickNext}
             />
         );
     },
@@ -263,7 +274,6 @@ const VideoCollection = React.createClass({
     },
 
     onGifClickPrev: function() {
-        console.log(this.state.selectedGifClip)
         if (this.state.selectedGifClip === 0 ) {
             this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
             return
@@ -273,7 +283,6 @@ const VideoCollection = React.createClass({
     },
 
     onGifClickNext: function() {
-        console.log(this.state.selectedGifClip)
         if (this.state.selectedGifClip === this.props.clipsIds.length - 1) {
             this.setState({ selectedGifClip: 0 });
             return 

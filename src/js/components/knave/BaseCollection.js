@@ -252,14 +252,29 @@ class BaseCollection extends React.Component {
             ) : (
                 
                 <div className="xxCollectionImages">
-                    {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickPrev}>prev</button>}
+                    
                     <GifClip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
                         poster={this.props.clipPoster}
                     />
-                    {this.props.clipsIds.length >1 && <h2>{(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length + ' Gifs '}</h2>}
-                    {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickNext}>next</button>}
+                    {
+                        this.props.clipsIds.length > 1 ? (
+                            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                                <div 
+                                    className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                    onClick={this.props.onGifClickPrev}>
+                                </div>
+                                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                    {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                                </div>
+                                <div 
+                                    className="xxPagingControls-next xxPagingControls-prev--GifClip" 
+                                    onClick={this.props.onGifClickNext}>
+                                </div>
+                            </nav>
+                            ) : null
+                    }
                 </div>
                 )
         const result = (
@@ -270,6 +285,7 @@ class BaseCollection extends React.Component {
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
+                        clip={this.props.clip} 
                     />
                 </div>
             </div>

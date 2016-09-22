@@ -19,6 +19,9 @@ export default class GifClip extends React.Component {
         var score = Math.round(this.props.score); 
         return (
             <div className="xxGifContainer" data-score={score}>
+            <h2 className="xxCollection-subtitle">
+                Top Neon GIF
+            </h2> 
                 <video
                     ref="video" 
                     poster={this.props.poster}
