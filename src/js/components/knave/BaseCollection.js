@@ -243,7 +243,6 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        console.log(this.props.clip)
         const renderedMedia = !this.props.clip ? (
                 <div className="xxCollectionImages">
                     {left}

@@ -412,11 +412,10 @@ const CollectionsContainer = React.createClass({
         const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
         if (clipDemo && clipDemo.clip_ids.length > 0 ) {
             var clipIds = clipDemo.clip_ids;
-            var clip = this.props.stores.clips[gender][age];
+            var clips = this.props.stores.clips[gender][age];
             var clipThumbs = this.props.stores.thumbnails[gender][age];
-            // var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
         } else {
-            var clip = false
+            var clips = false
         }
         return (
             <VideoCollection
@@ -430,7 +429,7 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
-                clips={clip}
+                clips={clips}
                 clipsIds={clipIds}
                 clipThumbs={clipThumbs}
                 getGifClipPosition={this.getGifClipPosition}

@@ -237,12 +237,11 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
-
-        var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
-        var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-        var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
-        // console.log(this.props.clipsIds[this.state.selectedGifClip])
-        // console.log(currentClip) 
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            
+        }
         return (
             <BaseCollection
                 {...this.props}
