@@ -11,7 +11,7 @@ export default class GifClip extends React.Component {
     }
 
     componentDidUpdate(_prevProps, _prevState) {
-      React.findDOMNode(this.refs.video).load(); // you can add logic to check if sources have been changed
+      ReactDOM.findDOMNode(this.refs.video).load();
     }
 
     render() {

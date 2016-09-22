@@ -257,14 +257,14 @@ const VideoCollection = React.createClass({
                 setLiftThumbnailId={this.setLiftThumbnailId}
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
+                selectedGifClip={this.state.selectedGifClip}
             />
         );
     },
 
     onGifClickPrev: function() {
         console.log(this.state.selectedGifClip)
-        debugger
-        if (this.state.selectedGifClip === 0 ){
+        if (this.state.selectedGifClip === 0 ) {
             this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
             return
         }

@@ -252,12 +252,13 @@ class BaseCollection extends React.Component {
             ) : (
                 
                 <div className="xxCollectionImages">
-                {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickPrev}>prev</button>}
+                    {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickPrev}>prev</button>}
                     <GifClip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
                         poster={this.props.clipPoster}
                     />
+                    {this.props.clipsIds.length >1 && <h2>{(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length + ' Gifs '}</h2>}
                     {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickNext}>next</button>}
                 </div>
                 )
