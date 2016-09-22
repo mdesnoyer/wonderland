@@ -428,7 +428,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     });
                 });
             });
-
             const tags = _.values(tagRes);
             
             const thumbnailIdSet = _

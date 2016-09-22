@@ -57,7 +57,6 @@ export const InfoDemoLiftPanel = React.createClass({
         const whyThisImage = T.get('copy.whyThisImage');
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.translationOverrideMap);
-        // debugger
         const result = (
             <div>
             { this.props.clip && this.context.isMobile ? null : (

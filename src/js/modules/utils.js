@@ -622,7 +622,6 @@ var UTILS = {
         if (genderLabel === undefined || ageLabel === undefined) {
             return null;
         }
-
         return _.find(demos, demo => {
             return demo.gender == genderLabel && demo.age == ageLabel;
         });

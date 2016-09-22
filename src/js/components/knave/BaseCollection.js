@@ -209,6 +209,9 @@ class BaseCollection extends React.Component {
         />);
     }
 
+
+
+
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
@@ -240,6 +243,7 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
+        console.log(this.props.clip)
         const renderedMedia = !this.props.clip ? (
                 <div className="xxCollectionImages">
                     {left}
@@ -247,12 +251,15 @@ class BaseCollection extends React.Component {
                     {this.getThumbnailList()}
                 </div>
             ) : (
+                
                 <div className="xxCollectionImages">
+                {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickPrev}>prev</button>}
                     <GifClip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
                         poster={this.props.clipPoster}
                     />
+                    {this.props.clipsIds.length > 1 && <button onClick={this.props.onGifClickNext}>next</button>}
                 </div>
                 )
         const result = (

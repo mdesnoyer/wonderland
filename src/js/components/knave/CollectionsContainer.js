@@ -408,12 +408,13 @@ const CollectionsContainer = React.createClass({
         const account = this.props.ownerAccountId ?
             this.props.stores.accounts[this.props.ownerAccountId]:
             null;
+
         const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
         if (clipDemo && clipDemo.clip_ids.length > 0 ) {
             var clipIds = clipDemo.clip_ids;
-            var clip = this.props.stores.clips[gender][age][clipIds[0]];
-            var clipThumb = this.props.stores.thumbnails[gender][age][clip.thumbnail_id];
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
+            var clip = this.props.stores.clips[gender][age];
+            var clipThumbs = this.props.stores.thumbnails[gender][age];
+            // var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
         } else {
             var clip = false
         }
@@ -429,8 +430,10 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
-                clip={clip}
-                clipPoster={clipPoster}
+                clips={clip}
+                clipsIds={clipIds}
+                clipThumbs={clipThumbs}
+                getGifClipPosition={this.getGifClipPosition}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}
@@ -449,9 +452,6 @@ const CollectionsContainer = React.createClass({
             />
        );
     },
-
-
-
 
     bindSendResultsEmail: function(gender, age, tagId, thumbnails) {
 

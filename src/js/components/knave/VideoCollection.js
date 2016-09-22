@@ -8,6 +8,7 @@ import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
+import RENDITIONS from '../../modules/renditions';
 
 import {
     InfoDemoLiftPanel,
@@ -52,7 +53,8 @@ const VideoCollection = React.createClass({
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanel: 0,
-            liftThumbnailId: null
+            liftThumbnailId: null,
+            selectedGifClip: 0
         };
     },
     componentDidMount: function() {
@@ -236,9 +238,17 @@ const VideoCollection = React.createClass({
             'action.showLess': 'copy.thumbnails.high'
         };
 
+        var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+        var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+        var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
+        // console.log(this.props.clipsIds[this.state.selectedGifClip])
+        // console.log(currentClip) 
         return (
             <BaseCollection
                 {...this.props}
+                clip={currentClip}
+                clipThumb={clipThumb}
+                clipPoster={clipPoster}
                 translationOverrideMap={overrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -246,9 +256,32 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 setLiftThumbnailId={this.setLiftThumbnailId}
+                onGifClickPrev={this.onGifClickPrev}
+                onGifClickNext={this.onGifClickNext}
             />
         );
     },
+
+    onGifClickPrev: function() {
+        console.log(this.state.selectedGifClip)
+        debugger
+        if (this.state.selectedGifClip === 0 ){
+            this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
+            return
+        }
+            this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });    
+        
+    },
+
+    onGifClickNext: function() {
+        console.log(this.state.selectedGifClip)
+        if (this.state.selectedGifClip === this.props.clipsIds.length - 1) {
+            this.setState({ selectedGifClip: 0 });
+            return 
+        };
+        this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
+    },
+
 
     isSoloImage: function() {
         if (this.props) {  

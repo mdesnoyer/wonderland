@@ -1,8 +1,17 @@
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom'; 
 
 export default class GifClip extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    shouldComponentUpdate(nextProps){
+        return this.props.url !== nextProps.url 
+    }
+
+    componentDidUpdate(_prevProps, _prevState) {
+      React.findDOMNode(this.refs.video).load(); // you can add logic to check if sources have been changed
     }
 
     render() {
@@ -10,7 +19,8 @@ export default class GifClip extends React.Component {
         var score = Math.round(this.props.score); 
         return (
             <div className="xxGifContainer" data-score={score}>
-                <video 
+                <video
+                    ref="video" 
                     poster={this.props.poster}
                     className="xxGifVideo" 
                     loop
