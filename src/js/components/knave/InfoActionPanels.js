@@ -76,15 +76,7 @@ export const InfoDemoLiftPanel = React.createClass({
                     timeRemaining={this.props.timeRemaining}
                 />
                 {
-                    this.props.clip ? (
-                        <div>
-                            <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
-                            <ul className="xxTagList">
-                                <li className="xxTagList-item" >test</li>
-                            </ul>
-                            <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>{T.get('nav.learnMore')}</a>.</p>
-                        </div>
-                    ) : (
+                    this.props.clip ? null : (
                         <Lift
                             displayThumbLift={this.props.liftValue}
                             isSoloImage={this.props.isSoloImage}
@@ -142,6 +134,10 @@ export const FilterPanel = React.createClass({
         const callback = () => {
             self.props.cancelClickHandler();
             self.props.onDemographicChange([enumGender, enumAge]);
+        }
+        if (this.props.clip) {
+            return SendActions.refilterVideoForClip(
+                videoId, gender, age, callback);
         }
         SendActions.refilterVideo(
             videoId, gender, age, callback);

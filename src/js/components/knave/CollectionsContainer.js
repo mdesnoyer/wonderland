@@ -6,6 +6,7 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
+import RENDITIONS from '../../modules/renditions';
 import TRACKING from '../../modules/tracking';
 
 import VideoProcessing from './VideoProcessing';
@@ -407,15 +408,14 @@ const CollectionsContainer = React.createClass({
         const account = this.props.ownerAccountId ?
             this.props.stores.accounts[this.props.ownerAccountId]:
             null;
-
-        if (video.demographic_clip_ids[0].clip_ids.length > 0 ) {
-            debugger
-            // const clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[gender].clip_ids[age]]
-            var clip = this.props.stores.clips[gender][age][this.props.stores.videos[tag.video_id].demographic_clip_ids[0].clip_ids[0]]
-            // console.log(clip)
-        }else {
+        const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        if (clipDemo && clipDemo.clip_ids.length > 0 ) {
+            var clipIds = clipDemo.clip_ids;
+            var clip = this.props.stores.clips[gender][age][clipIds[0]];
+            var clipThumb = this.props.stores.thumbnails[gender][age][clip.thumbnail_id];
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
+        } else {
             var clip = false
-            // console.log(clip)
         }
         return (
             <VideoCollection
@@ -430,6 +430,7 @@ const CollectionsContainer = React.createClass({
                 videoId={video.video_id}
                 tagId={tagId}
                 clip={clip}
+                clipPoster={clipPoster}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}
@@ -448,6 +449,9 @@ const CollectionsContainer = React.createClass({
             />
        );
     },
+
+
+
 
     bindSendResultsEmail: function(gender, age, tagId, thumbnails) {
 

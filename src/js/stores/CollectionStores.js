@@ -353,12 +353,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
         
+        let videos;
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
 
             // Unpack promises.
             const tagRes = combined[0] || {};
-            let videoRes = combined[1] || {videos: []};
+            const videoRes = combined[1] || {videos: []};
 
             // Filter
             if (videoFilter) {
@@ -367,7 +368,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             videoRes.video_count = videoRes.videos.length; // hackety-hack
 
             // Set each by map of id to resource.
-
             Object.assign(updateTagMap, tagRes);
             
             //grab all clip IDs 
@@ -377,8 +377,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }, {}));
 
             // Store the video thumbnails since they're inline in response.
-            
-            videoRes.videos.map(video => {
+            videos = videoRes.videos;
+            videos.map(video => {
                 
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
@@ -398,11 +398,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     }
 
                     // Build partial update map.
-
                     let thumbnailMap = {};
-
                     dem.thumbnails.map(t => {
-                        
                         thumbnailMap[t.thumbnail_id] = t;
                     });
                     if (dem.bad_thumbnails) {
@@ -436,9 +433,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             
             const thumbnailIdSet = _
                 .chain(tags)
-                // Skip video tags.
+                // Skip video tags if they don't have clips.
                 .filter(tag => {
-                    return tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL;
+                    if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+                        const video = updateVideoMap[tag.video_id];
+                        return video.demographic_clip_ids.length > 0;
+                    }
+                    return true;
                 })
                 // Concatentate the array of thumbnail ids.
                 .reduce((thumbnailIds, tag) => {
@@ -449,7 +450,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 .uniq()
                 .value();
 
-            
             const thumbnailsPromise = LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
             const clipsPromise = LoadActions.loadClips(clipIds, gender, age)
             
@@ -464,15 +464,25 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return map;
                 }, {});
 
-                const clipMap = clipRes.clips.reduce((map, clip) => {
-                    map[clip.clip_id] = clip;
-                    return map
-                }, {})
+                videos.map(video => {
+                    video.demographic_clip_ids.map(dem => {
+                        const gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                        const age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                        if (age === undefined || gender === undefined) {
+                            console.warn('Unknown demo ', dem.age, dem.gender);
+                            return;
+                        }
+                        const clipMap = {};
+                        dem.clip_ids.map(clip_id => {
+                            clipMap[clip_id] = clipRes.clips.find(clip => clip.clip_id == clip_id);
+                        });
+                        ClipsStore.set(gender, age, clipMap);
+                    })
+                })
                 
                 // Set all of these together within one synchronous block.
                 TagStore.set(updateTagMap);
                 VideoStore.set(updateVideoMap);
-                ClipsStore.set(gender, age, clipMap);
                 ThumbnailStore.set(gender, age, thumbnailMap);
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
@@ -1156,8 +1166,8 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
 
-    refilterVideo: function(videoId, gender, age, callback, options={}) {
-        Object.assign(options, {
+    refilterVideo: function(videoId, gender, age, callback, data={}) {
+        Object.assign(data, {
             external_video_ref: videoId,
             reprocess: true,
             gender,

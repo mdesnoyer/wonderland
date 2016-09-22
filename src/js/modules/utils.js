@@ -349,7 +349,7 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 5,
     MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
-    CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions'],
+    CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions', 'thumbnail_id'],
     CLIP_OPTIONS: {result_type: 'clips', clip_length: 3, n_clips: 5},
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
     VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data', 'demographic_clip_ids'],
@@ -653,34 +653,6 @@ var UTILS = {
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     },
-    pickDeep: function(collection, predicate, thisArg) {
-        var self = this; 
-        if (_.isFunction(predicate)) {
-            predicate = _.iteratee(predicate, thisArg);
-        } else {
-            var keys = _.flatten(_.rest(arguments));
-            predicate = function(val, key) {
-                return _.includes(keys, key);
-            }
-        }
-
-        return _.transform(collection, function(memo, val, key) {
-            var include = predicate(val, key);
-            if (!include && _.isObject(val)) {
-                val = self.pickDeep(val, predicate);
-                include = !_.isEmpty(val);
-            }
-            if (include) {
-                _.isArray(collection) ? memo.push(val) : memo[key] = val;
-            }
-        });
-    },
-    isIn: function(collection) {
-        return function(value, key) {
-            return _.includes(collection, key);
-        }
-    }
-
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

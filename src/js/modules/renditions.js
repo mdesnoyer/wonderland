@@ -67,7 +67,6 @@ var RENDITIONS = {
                 }
             }
         }
-
         return near_match || aspect_ratio_match || thumbnail.url;
     }
 }

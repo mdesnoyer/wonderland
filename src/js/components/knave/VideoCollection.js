@@ -246,7 +246,6 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 setLiftThumbnailId={this.setLiftThumbnailId}
-                clip={this.props.clip}
             />
         );
     },

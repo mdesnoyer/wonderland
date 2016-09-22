@@ -248,9 +248,10 @@ class BaseCollection extends React.Component {
                 </div>
             ) : (
                 <div className="xxCollectionImages">
-                    <GifClip 
+                    <GifClip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
+                        poster={this.props.clipPoster}
                     />
                 </div>
                 )
