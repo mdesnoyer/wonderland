@@ -190,10 +190,8 @@ var UploadForm = React.createClass({
                             onClick={self.toggleOpen}
                             >{T.get('action.analyze')} 
                         </a>
-                        
                     ) : null 
                 }
-                
                 { !self.state.isOpen ? null : (
                         <UploadActionsContainer 
                             formState={self.state.formState}
@@ -225,7 +223,6 @@ var UploadForm = React.createClass({
                     )
                 }
             </div>
-
         );
     },
     throwUploadError: function(err) {

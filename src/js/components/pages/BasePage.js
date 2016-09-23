@@ -94,7 +94,7 @@ class BasePage extends React.Component {
 
     render() {
         let pageStyle 
-        switch(this.props.onboardingState){
+        switch(this.props.onboardingState) {
             case 'processing' :
                 pageStyle = 'xxPage is-processing' 
                 break; 
@@ -103,7 +103,7 @@ class BasePage extends React.Component {
                 break;
             default: 
                 pageStyle = 'xxPage';
-        }
+        };
         return (
             <main className={pageStyle}>
                 <Helmet
