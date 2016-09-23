@@ -2,7 +2,6 @@
 import React, {PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-
 import _ from 'lodash';
 
 import AjaxMixin from '../../mixins/Ajax';
