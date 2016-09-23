@@ -93,9 +93,18 @@ class BasePage extends React.Component {
     }
 
     render() {
-        let pageStyle = this.props.onboardingState === 'processing' ?
-            'xxPage is-processing' :
-            'xxPage';
+        console.log(this.props.onboardingState)
+        let pageStyle 
+        switch(this.props.onboardingState){
+            case 'processing' :
+                pageStyle = 'xxPage is-processing' 
+                break; 
+            case  'initial': 
+                pageStyle = 'xxPage is-onboarding'
+                break;
+            default: 
+                pageStyle = 'xxPage';
+        }
         return (
             <main className={pageStyle}>
                 <Helmet
