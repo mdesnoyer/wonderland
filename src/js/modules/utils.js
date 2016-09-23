@@ -160,99 +160,86 @@ var UTILS = {
     },
     DRY_NAV: {
         HOME: {
-            URL: '/'
+            URL: '/' // needs to remain /
         },
         DASHBOARD: {
-            URL: '/dashboard/'
+            URL: '/dashboard' // NO NEED for trailing slash
         },
         NOT_FOUND: {
-            URL: '/404/'
+            URL: '/404' // NO NEED for trailing slash
         },
         PLUGINS: {
-            URL: '/plugins/'
+            URL: '/plugins/' // DEAD?
         },
         PLUGINS_NEW: {
-            URL: '/plugins/new/'
+            URL: '/plugins/new/' // DEAD?
         },
         PLUGINS_BRIGHTCOVE: {
-            URL: '/plugins/new/brightcove/'
+            URL: '/plugins/new/brightcove/' // DEAD?
         },
         PLUGINS_BRIGHTCOVE_WIZARD: {
-            URL: '/plugins/new/brightcove/wizard/'
+            URL: '/plugins/new/brightcove/wizard/' // DEAD?
         },
         SIGNIN: {
-            URL: '/signin/'
+            URL: '/signin' // NO NEED for trailing slash
         },
         SIGNOUT: {
-            URL: '/signout/'
+            URL: '/signout' // NO NEED for trailing slash
         },
         SETTINGS_ACCOUNT: {
-            URL: '/settings/account/'
+            URL: '/settings/account' // NO NEED for trailing slash
         },
         SETTINGS_USER: {
-            URL: '/settings/user/'
+            URL: '/settings/user' // NO NEED for trailing slash
         },
         SUPPORT: {
-            URL: '/support/'
+            URL: '/support' // NO NEED for trailing slash
         },
         TERMS: {
-            URL: '/terms/'
+            URL: '/terms' // NO NEED for trailing slash
         },
         ACCOUNT_PENDING: {
-            URL: '/account/pending/'
+            URL: '/account/pending' // NO NEED for trailing slash
         },
         ACCOUNT_CONFIRMED: {
-            URL: '/account/confirmed/'
+            URL: '/account/confirmed' // NO NEED for trailing slash
         },
         ACCOUNT_CONFIRM: {
-            URL: '/account/confirm' // needs to have no trailing slash
-        },
-        BILLING: {
-            URL: '/billing/'
+            URL: '/account/confirm' // NO NEED for trailing slash
         },
         TELEMETRY: {
-            URL: '/telemetry/'
+            URL: '/telemetry' // NO NEED for trailing slash
         },
         USER_FORGOT: {
-            URL: '/user/forgot/'
+            URL: '/user/forgot' // NO NEED for trailing slash
         },
         USER_RESET: {
-            URL: '/user/reset/'
+            URL: '/user/reset/' // needs to remain with trailing slash
         },
         API: {
-            URL: '/support/#api'
-        },
-        SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
-            URL: '/support/#brightcove-plugin-guide'
-        },
-        SUPPORT_CUSTOM_PLUGIN_GUIDE: {
-            URL: '/support/#custom-plugin-guide'
+            URL: '/support#api' // NO NEED for trailing slash
         },
         VIDEO_LIBRARY: {
-            URL: '/videos/'
-        },
-        VIDEO_ANALYZE: {
-            URL: '/video/analyze/'
+            URL: '/videos' // DEAD but left for redirect, NO NEED for trailing slash
         },
         URL_SHORTENER: {
-            URL: '/shorturl/'
+            URL: '/shorturl' // NO NEED for trailing slash
         },
         DEMO: {
-            URL: '/demo/'
+            URL: '/demo' // NO NEED for trailing slash
         },
         COOKIES: {
-            URL: '/cookies/'
+            URL: '/cookies' // NO NEED for trailing slash
         },
         ONBOARDING_VIDEO_UPLOAD: {
-            URL: '/demo/upload/'
+            URL: '/demo/upload' // NO NEED for trailing slash
         },
         ONBOARDING_UPLOAD: {
-            URL: '/onboarding/'
+            URL: '/onboarding' // NO NEED for trailing slash
         },
-        COLLLECTIONS_MAIN: {
-            URL: '/collections/'
+        COLLECTIONS: {
+            URL: '/collections' // NO NEED for trailing slash
         }
-
     },
     COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
         accessTokenKey: 'neonses_at',
