@@ -209,9 +209,6 @@ class BaseCollection extends React.Component {
         />);
     }
 
-
-
-
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
@@ -230,7 +227,6 @@ class BaseCollection extends React.Component {
                 onClick={this.onLeftThumbnailClick}
             />
         );
-
         const right = (
             <FeatureThumbnail
                 title={T.get('copy.bestThumbnail')}
@@ -249,10 +245,8 @@ class BaseCollection extends React.Component {
                     {right}
                     {this.getThumbnailList()}
                 </div>
-            ) : (
-                
+            ) : ( 
                 <div className="xxCollectionImages">
-                    
                     <GifClip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
@@ -273,10 +267,10 @@ class BaseCollection extends React.Component {
                                     onClick={this.props.onGifClickNext}>
                                 </div>
                             </nav>
-                            ) : null
+                        ) : null
                     }
                 </div>
-                )
+            );
         const result = (
             <div className={this.props.wrapperClassName}>
                 {renderedMedia}
@@ -290,10 +284,8 @@ class BaseCollection extends React.Component {
                 </div>
             </div>
         );
-
         // Remove translation override.
         unapplyOverride();
-
         return result;
     }
 }

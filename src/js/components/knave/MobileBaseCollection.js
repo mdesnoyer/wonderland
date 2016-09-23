@@ -166,67 +166,67 @@ const MobileBaseCollection = React.createClass({
         );
         const displayClassName = this.state.displayInfo ? ' xxPagingControls-next--mobileGifClosed' : ''
         const renderedMedia = !this.props.clip ? (
-            <div>
-            <div className="xxCollection-content">
-                <InfoActionContainer
-                    children={this.props.infoActionPanels}
-                    controls={this.props.infoActionControls}
-                    selectedPanel={this.props.selectedPanel}
-                />
-            </div>
-                <div className="xxCollectionImages">
-                    {left}
-                    {right}
-                    <Lift
-                        displayThumbLift={this.props.liftValue}
-                        translationOverrideMap={this.props.translationOverrideMap}
-                    />
-                    {this.getThumbnailList()}
+                <div>
+                    <div className="xxCollection-content">
+                        <InfoActionContainer
+                            children={this.props.infoActionPanels}
+                            controls={this.props.infoActionControls}
+                            selectedPanel={this.props.selectedPanel}
+                        />
+                    </div>
+                    <div className="xxCollectionImages">
+                        {left}
+                        {right}
+                        <Lift
+                            displayThumbLift={this.props.liftValue}
+                            translationOverrideMap={this.props.translationOverrideMap}
+                        />
+                        {this.getThumbnailList()}
+                    </div>
                 </div>
-            </div>
             ) : (
-            <div>
-                <div className="xxCollection-content xxCollection-content--mobileGif">
-                    <h1 className="xxCollection-title xxCollection-title--mobileGif ">{this.props.title}</h1>
-                    <div className={"xxPagingControls-next xxPagingControls-next--GifClip" + displayClassName} onClick={this.handleDisplayInfo}></div>
-                </div>
-                <div className="xxCollectionImages">
-                    <GifClip 
-                        url={this.props.clip.renditions[2].url}
-                        score={this.props.clip.neon_score}
-                        poster={this.props.clipPoster}
-                    />
-                    {
-                        this.props.clipsIds.length > 1 ? (
-                            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                                <div 
-                                    className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
-                                    onClick={this.props.onGifClickPrev}>
-                                </div>
-                                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                                    {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
-                                </div>
-                                <div 
-                                    className="xxPagingControls-next xxPagingControls-next--GifClip" 
-                                    onClick={this.props.onGifClickNext}>
-                                </div>
-                            </nav>
+                <div>
+                    <div className="xxCollection-content xxCollection-content--mobileGif">
+                        <h1 className="xxCollection-title xxCollection-title--mobileGif ">{this.props.title}</h1>
+                        <div className={"xxPagingControls-next xxPagingControls-next--GifClip" + displayClassName} onClick={this.handleDisplayInfo}></div>
+                    </div>
+                    <div className="xxCollectionImages">
+                        <GifClip 
+                            url={this.props.clip.renditions[2].url}
+                            score={this.props.clip.neon_score}
+                            poster={this.props.clipPoster}
+                        />
+                        {
+                            this.props.clipsIds.length > 1 ? (
+                                <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                                    <div 
+                                        className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                        onClick={this.props.onGifClickPrev}>
+                                    </div>
+                                    <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                        {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                                    </div>
+                                    <div 
+                                        className="xxPagingControls-next xxPagingControls-next--GifClip" 
+                                        onClick={this.props.onGifClickNext}>
+                                    </div>
+                                </nav>
                             ) : null
-                    }
-                    {
-                        this.state.displayInfo ? (
-                            <div className="xxCollection-content">
-                                <InfoActionContainer
-                                    children={this.props.infoActionPanels}
-                                    controls={this.props.infoActionControls}
-                                    selectedPanel={this.props.selectedPanel}
-                                />
-                            </div>
+                        }
+                        {
+                            this.state.displayInfo ? (
+                                <div className="xxCollection-content">
+                                    <InfoActionContainer
+                                        children={this.props.infoActionPanels}
+                                        controls={this.props.infoActionControls}
+                                        selectedPanel={this.props.selectedPanel}
+                                    />
+                                </div>
                             ) : null
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
-                )
+            )
 
 
         const result = (

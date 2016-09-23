@@ -560,16 +560,16 @@ export const DownloadControl = React.createClass({
             <a
                 href={this.props.href}
                 download={this.props.href}
-                data-tip={'Download'}
+                data-tip={T.get('download')}
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="download"
                 className="xxCollectionActions-anchor xxCollectionActions-download">
-                <span>download</span>
+                <span>{T.get('download')}</span>
             </a>
         )
     }
-})
+});
 
 
 export const ShareControl = React.createClass({
@@ -687,7 +687,7 @@ export const AddPanel = React.createClass({
             </div>
         );
     }
-})
+});
 
 export const AddControl = React.createClass({
     render: function() {
@@ -703,6 +703,6 @@ export const AddControl = React.createClass({
             </a>
         );
     }
-})
+});
 
 

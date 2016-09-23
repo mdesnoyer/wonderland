@@ -46,6 +46,7 @@ const _DEFAULT_LOCALE = 'en-US',
             none: 'None',
             gifs: 'GIFs',
             thumbnails: 'Thumbnails',
+            download: 'Download',
 
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',

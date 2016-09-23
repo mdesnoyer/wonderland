@@ -8,20 +8,20 @@ export default class GifClip extends React.Component {
         context.isMobile
     }
 
-    shouldComponentUpdate(nextProps){
-        return this.props.url !== nextProps.url 
-    }
-
-    componentDidUpdate(_prevProps, _prevState) {
-      ReactDOM.findDOMNode(this.refs.video).load();
-    }
-
     static defaultProps = {
         url: ''
     }
 
     static propTypes = {
         url: React.PropTypes.string.isRequired
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.url !== nextProps.url 
+    }
+
+    componentDidUpdate(_prevProps, _prevState) {
+      ReactDOM.findDOMNode(this.refs.video).load();
     }
 
     handleMouseEnter = (e) => {
@@ -39,9 +39,9 @@ export default class GifClip extends React.Component {
         ; 
         return (
             <div className="xxGifContainer" data-score={score}>
-            <h2 className="xxCollection-subtitle">
-                {T.get('copy.topNeonGif')}
-            </h2> 
+                <h2 className="xxCollection-subtitle">
+                    {T.get('copy.topNeonGif')}
+                </h2> 
                 <video
                     ref="video" 
                     poster={this.props.poster}
