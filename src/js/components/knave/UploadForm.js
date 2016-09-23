@@ -122,8 +122,10 @@ var UploadForm = React.createClass({
         // due to css formating this fakes that the user is clicking the input when they are actullay clicking a dummy dom
         document.getElementById("file-input").click();
     },
-    handleNameSubmit: function() {
-        this.sendCollectionName();
+    handleNameSubmit: function(e) {
+        const self = this;
+        e.preventDefault();
+        self.sendCollectionName();
     },
     handleCollectionLoad: function() {
         //when a collection is done loading handle onboarding and regular actions
@@ -136,7 +138,9 @@ var UploadForm = React.createClass({
         }
     },
     handleUrlSubmit: function(e) {
-        this.sendVideoUrl(e.target.dataset.sendUrlType);
+        const self = this;
+        e.preventDefault();
+        self.sendVideoUrl(e.target.dataset.sendUrlType);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -309,7 +313,8 @@ var UploadForm = React.createClass({
             })
             .catch(function(err){
                 self.throwUploadError(err);
-            });
+            })
+        ;
     },
     updateDefaultThumbnail: function(url) {
         var self = this,
