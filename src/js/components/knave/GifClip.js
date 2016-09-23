@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom'; 
 
 export default class GifClip extends React.Component {
-    constructor(props) {
+    constructor(props, context) {
         super(props);
+        context.isMobile
+        console.log(context.isMobile)
     }
 
     shouldComponentUpdate(nextProps){
@@ -16,7 +18,8 @@ export default class GifClip extends React.Component {
 
     render() {
         var url = this.props.url; 
-        var score = Math.round(this.props.score); 
+        var score = Math.round(this.props.score);
+        var context  = this.context.isMobile 
         return (
             <div className="xxGifContainer" data-score={score}>
             <h2 className="xxCollection-subtitle">
@@ -27,6 +30,7 @@ export default class GifClip extends React.Component {
                     poster={this.props.poster}
                     className="xxGifVideo" 
                     loop
+                    autoPlay={context}
                     onMouseEnter={this.handleMouseEnter}
                     onMouseLeave={this.handleOnMouseLeave}
                 >
@@ -45,13 +49,15 @@ export default class GifClip extends React.Component {
     }
 
     handleMouseEnter = (e) => {
-        e.target.play()
+        !this.context.isMobile  && e.target.play()
     }
 
     handleOnMouseLeave = (e) => {
-        e.target.pause();
+        !this.context.isMobile && e.target.pause();
     }
-
 }
 
+GifClip.contextTypes = {
+    isMobile: PropTypes.bool
+}
 
