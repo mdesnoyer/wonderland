@@ -409,9 +409,6 @@ const CollectionsMainPage = React.createClass({
 
     getResults: function() {
         this.loadAccount()
-        // console.log(this.state.tags)
-        // console.log(this.state.videos)
-        // console.log(this.state.clips)
         return (
             <div>
                 <CollectionsContainer

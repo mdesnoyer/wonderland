@@ -1,20 +1,20 @@
 
 .xxGifContainer {
 	position: relative;
-	// width: calc((99.9% + #{$gutter-width}) * 4/5);
 	width: 100%;
     height: auto;
-	// background: blue;
+    
     &::after {
-    @extend .x-neonscore;
-    content: attr(data-score);
-    left: 0;
-    background-color: rgba($accent-color, 0.9);
-    width: $thumbnail-large-score-size;
-    @include breakpoint-mobile {
-        width: $mobile-thumbnail-score-size;
-    }
-} 
+        @extend .x-neonscore;
+        content: attr(data-score);
+        left: 0;
+        background-color: rgba($accent-color, 0.9);
+        width: $thumbnail-large-score-size;
+        
+        @include breakpoint-mobile {
+            width: $mobile-thumbnail-score-size;
+        }
+    } 
 }
 .xxGifVideo {
     width:100%;

@@ -61,7 +61,7 @@ var VideoUploadOverlay = React.createClass({
                     </div>
                         <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
-                            GIVE ME
+                            {T.get('copy.analyzeVideo.giveMe')}
                         </label>
                             <div className="xxUploadButtonsChooser">
                               <button
@@ -70,14 +70,14 @@ var VideoUploadOverlay = React.createClass({
                                  type="submit"
                                  data-send-url-type="thumbnails"
                                  onClick={self.props.handleUrlSubmit}
-                             >Thumbnails</button>
+                             >{T.get('thumbnails')}</button>
                              <button
                                  disabled={!isValid}
                                  className={submitClassName.join(' ')}
                                  type="submit"
                                  data-send-url-type="gif"
                                  onClick={self.props.handleUrlSubmit}
-                             >GIFs</button>
+                             >{T.get('gifs')}</button>
                         </div>
                     </div>
                 </form>

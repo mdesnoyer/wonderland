@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
+import T from '../../modules/translation'; 
 
 export default class GifClip extends React.Component {
     constructor(props, context) {
@@ -39,7 +40,7 @@ export default class GifClip extends React.Component {
         return (
             <div className="xxGifContainer" data-score={score}>
             <h2 className="xxCollection-subtitle">
-                Top Neon GIF
+                {T.get('copy.topNeonGif')}
             </h2> 
                 <video
                     ref="video" 
