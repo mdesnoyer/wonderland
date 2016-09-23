@@ -15,10 +15,27 @@ export default class GifClip extends React.Component {
       ReactDOM.findDOMNode(this.refs.video).load();
     }
 
+    static defaultProps = {
+        url: ''
+    }
+
+    static propTypes = {
+        url: React.PropTypes.string.isRequired
+    }
+
+    handleMouseEnter = (e) => {
+        !this.context.isMobile  && e.target.play()
+    }
+
+    handleOnMouseLeave = (e) => {
+        !this.context.isMobile && e.target.pause();
+    }
+
     render() {
-        var url = this.props.url; 
-        var score = Math.round(this.props.score);
-        var context  = this.context.isMobile 
+        var url = this.props.url, 
+            score = Math.round(this.props.score),
+            context  = this.context.isMobile
+        ; 
         return (
             <div className="xxGifContainer" data-score={score}>
             <h2 className="xxCollection-subtitle">
@@ -37,22 +54,6 @@ export default class GifClip extends React.Component {
                 </video>
             </div>
         );
-    }
-
-    static defaultProps = {
-        url: ''
-    }
-
-    static propTypes = {
-        url: React.PropTypes.string.isRequired
-    }
-
-    handleMouseEnter = (e) => {
-        !this.context.isMobile  && e.target.play()
-    }
-
-    handleOnMouseLeave = (e) => {
-        !this.context.isMobile && e.target.pause();
     }
 }
 
