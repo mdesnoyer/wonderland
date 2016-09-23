@@ -60,7 +60,10 @@ const MobileBaseCollection = React.createClass({
     },
 
     getInitialState: function() {
-        return {open: false};
+        return {
+            open: false,
+            displayInfo: false
+        };
     },
 
     getThumbnailList: function() {
@@ -130,6 +133,10 @@ const MobileBaseCollection = React.createClass({
         }
     },
 
+    handleDisplayInfo: function() {
+        this.setState({ displayInfo: !this.state.displayInfo });
+    },
+
     render: function() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(this.props.translationOverrideMap);
@@ -157,6 +164,7 @@ const MobileBaseCollection = React.createClass({
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
+        const displayClassName = this.state.displayInfo ? ' xxPagingControls-next--mobileGifClosed' : ''
         const renderedMedia = !this.props.clip ? (
             <div>
             <div className="xxCollection-content">
@@ -178,17 +186,44 @@ const MobileBaseCollection = React.createClass({
             </div>
             ) : (
             <div>
-            <div className="xxCollection-content">
-                <h1 className="xxCollection-title">
-                    {this.props.title}
-                </h1>
-            </div>
-            <span>hello</span>
+                <div className="xxCollection-content xxCollection-content--mobileGif">
+                    <h1 className="xxCollection-title xxCollection-title--mobileGif ">{this.props.title}</h1>
+                    <div className={"xxPagingControls-next xxPagingControls-next--GifClip" + displayClassName} onClick={this.handleDisplayInfo}></div>
+                </div>
                 <div className="xxCollectionImages">
                     <GifClip 
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
+                        poster={this.props.clipPoster}
                     />
+                    {
+                        this.props.clipsIds.length > 1 ? (
+                            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                                <div 
+                                    className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                    onClick={this.props.onGifClickPrev}>
+                                </div>
+                                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                    {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                                </div>
+                                <div 
+                                    className="xxPagingControls-next xxPagingControls-next--GifClip" 
+                                    onClick={this.props.onGifClickNext}>
+                                </div>
+                            </nav>
+                            ) : null
+                    }
+                    {
+                        this.state.displayInfo ? (
+                            <div className="xxCollection-content">
+                                <InfoActionContainer
+                                    children={this.props.infoActionPanels}
+                                    controls={this.props.infoActionControls}
+                                    selectedPanel={this.props.selectedPanel}
+                                />
+                            </div>
+                            ) : null
+                    }
                 </div>
             </div>
                 )

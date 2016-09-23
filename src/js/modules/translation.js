@@ -150,7 +150,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.lift.explanation.soloImage': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
             'copy.lift.units': '@lift Lift',
             'copy.lift.lift': 'Lift',
-            'copy.gif.explanation.default':  'What goes into a NeonScore? We analyze your GIF for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your GIF',
+            'copy.gif.explanation.default':  'How did we choose your GIFs? We analyze your video for over 1,000 valence features that shape human visual preference. We select GIFs that contain the most engaging and high valence sequences in your video.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             

@@ -129,7 +129,6 @@ const VideoCollection = React.createClass({
         }
         let account = this.props.account;
         
-
         let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
@@ -140,8 +139,9 @@ const VideoCollection = React.createClass({
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
                 isRefiltering={this.props.isRefiltering}
                 timeRemaining={this.props.timeRemaining}
-                clip={this.props.clip}
+                clips={this.props.clips}
                 tagId={this.props.tagId}
+
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
@@ -192,12 +192,16 @@ const VideoCollection = React.createClass({
         let account = this.props.account;
         let control_array = [  
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />
         ];
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            control_array.push(<DownloadControl href={currentClip.renditions[0].url}/>);
+        }
 
-        this.props.clip && control_array.push(<DownloadControl href={this.props.clip.renditions[0].url}/>); 
-        debugger
+        control_array.push(<DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />)
+        
         if (account && account.serving_enabled) {
             control_array.push(
                 <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
@@ -218,7 +222,7 @@ const VideoCollection = React.createClass({
         if (this.props.clips) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;   
         }
 
         return (
@@ -236,6 +240,7 @@ const VideoCollection = React.createClass({
                 liftValue={this.getLiftValue()}
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
+                selectedGifClip={this.state.selectedGifClip}
             />
         );
     },

@@ -59,7 +59,7 @@ export const InfoDemoLiftPanel = React.createClass({
             this.props.translationOverrideMap);
         const result = (
             <div>
-            { this.props.clip && this.context.isMobile ? null : (
+            { this.props.clips && this.context.isMobile ? null : (
                 <h1 className="xxCollection-title">
                     {this.props.title}
                 </h1>
@@ -75,7 +75,9 @@ export const InfoDemoLiftPanel = React.createClass({
                     timeRemaining={this.props.timeRemaining}
                 />
                 {
-                    this.props.clip ? null : (
+                    this.props.clips ? (
+                        <p>{T.get('copy.gif.explanation.default')}</p>
+                    ) : (
                         <Lift
                             displayThumbLift={this.props.liftValue}
                             isSoloImage={this.props.isSoloImage}

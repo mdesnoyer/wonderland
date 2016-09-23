@@ -285,7 +285,7 @@ class BaseCollection extends React.Component {
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
-                        clip={this.props.clip} 
+                        clips={this.props.clips} 
                     />
                 </div>
             </div>
