@@ -21,7 +21,7 @@ export default class GifClip extends React.Component {
     }
 
     componentDidUpdate(_prevProps, _prevState) {
-      ReactDOM.findDOMNode(this.refs.video).load();
+        ReactDOM.findDOMNode(this.refs.video).load();
     }
 
     handleMouseEnter = (e) => {

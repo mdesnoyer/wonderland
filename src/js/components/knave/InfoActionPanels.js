@@ -53,8 +53,10 @@ export const InfoDemoLiftPanel = React.createClass({
 
     render: function() {
         
-        // Let mapped labels be overriden.
         const whyThisImage = T.get('copy.whyThisImage');
+        
+        // Let mapped labels be overriden.
+
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.translationOverrideMap);
         const result = (
