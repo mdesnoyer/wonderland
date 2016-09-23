@@ -93,7 +93,6 @@ class BasePage extends React.Component {
     }
 
     render() {
-        console.log(this.props.onboardingState)
         let pageStyle 
         switch(this.props.onboardingState){
             case 'processing' :

@@ -184,16 +184,13 @@ export default React.createClass({
                                     />
                                 </a>
                             </header>
-                            
                             <div className="xxUpload">
-                            <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                                 <UploadForm
                                     isOnboarding
                                     postHookSearch={null}
                                     postHookAnalysis={this.onAnalysisStart}
                                     onDemoError={this.showError}
                                 />
-                                </ReactCSSTransitionGroup>
                                 <div className="xxUploadButton-help">
                                     <span className="xxUploadButton-helpCircle"></span>
                                     <span className="xxUploadButton-helpLine"></span>
