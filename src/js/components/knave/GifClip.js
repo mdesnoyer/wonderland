@@ -5,7 +5,6 @@ export default class GifClip extends React.Component {
     constructor(props, context) {
         super(props);
         context.isMobile
-        console.log(context.isMobile)
     }
 
     shouldComponentUpdate(nextProps){
