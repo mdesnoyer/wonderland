@@ -11,6 +11,7 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
+import GifClip  from './GifClip';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -226,7 +227,6 @@ class BaseCollection extends React.Component {
                 onClick={this.onLeftThumbnailClick}
             />
         );
-
         const right = (
             <FeatureThumbnail
                 title={T.get('copy.bestThumbnail')}
@@ -239,27 +239,53 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-
-        const result = (
-            <div className={this.props.wrapperClassName}>
+        const renderedMedia = !this.props.clip ? (
                 <div className="xxCollectionImages">
                     {left}
                     {right}
                     {this.getThumbnailList()}
                 </div>
+            ) : ( 
+                <div className="xxCollectionImages">
+                    <GifClip
+                        url={this.props.clip.renditions[2].url}
+                        score={this.props.clip.neon_score}
+                        poster={this.props.clipPoster}
+                    />
+                    {
+                        this.props.clipsIds.length > 1 ? (
+                            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                                <div 
+                                    className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                    onClick={this.props.onGifClickPrev}>
+                                </div>
+                                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                    {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                                </div>
+                                <div 
+                                    className="xxPagingControls-next xxPagingControls-prev--GifClip" 
+                                    onClick={this.props.onGifClickNext}>
+                                </div>
+                            </nav>
+                        ) : null
+                    }
+                </div>
+            );
+        const result = (
+            <div className={this.props.wrapperClassName}>
+                {renderedMedia}
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
+                        clips={this.props.clips} 
                     />
                 </div>
             </div>
         );
-
         // Remove translation override.
         unapplyOverride();
-
         return result;
     }
 }

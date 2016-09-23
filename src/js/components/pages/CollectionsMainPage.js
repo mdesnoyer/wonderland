@@ -30,6 +30,7 @@ import {
     ServingStatusActions,
     Dispatcher,
     Search,
+    ClipsStore,
     resetStores } from '../../stores/CollectionStores';
 
 const getStateFromStores = () => {
@@ -43,6 +44,7 @@ const getStateFromStores = () => {
         // A submap of tags, of those results that are showable
         selectedTags: FilteredTagStore.getAll(),
 
+        clips: ClipsStore.getAll(),
         // Map of video id to video.
         videos: VideoStore.getAll(),
 
@@ -407,7 +409,6 @@ const CollectionsMainPage = React.createClass({
 
     getResults: function() {
         this.loadAccount()
-
         return (
             <div>
                 <CollectionsContainer
@@ -415,12 +416,13 @@ const CollectionsMainPage = React.createClass({
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,
+                        clips: this.state.clips,
                         thumbnails: this.state.thumbnails,
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares,
-                        accounts: this.state.accounts
+                        tagShares: this.state.tagShares, 
+                        accounts: this.state.accounts, 
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}

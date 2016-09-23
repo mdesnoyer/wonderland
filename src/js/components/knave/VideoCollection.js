@@ -8,6 +8,7 @@ import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
 
 import T from '../../modules/translation';
+import RENDITIONS from '../../modules/renditions';
 
 import {
     InfoDemoLiftPanel,
@@ -24,7 +25,9 @@ import {
     ImageServingEnabledControl,
     ImageServingDisabledControl,
     AddPanel,
-    AddControl } from './InfoActionPanels';
+    AddControl,
+    DownloadControl
+     } from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -50,7 +53,8 @@ const VideoCollection = React.createClass({
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanel: 0,
-            liftThumbnailId: null
+            liftThumbnailId: null,
+            selectedGifClip: 0
         };
     },
     componentDidMount: function() {
@@ -124,6 +128,7 @@ const VideoCollection = React.createClass({
             ];
         }
         let account = this.props.account;
+        
         let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
@@ -134,10 +139,14 @@ const VideoCollection = React.createClass({
                 handleRefiltersPanelClick={()=>{this.setSelectedPanel(1)}}
                 isRefiltering={this.props.isRefiltering}
                 timeRemaining={this.props.timeRemaining}
+                clips={this.props.clips}
+                tagId={this.props.tagId}
+
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 onDemographicChange={this.props.onDemographicChange}
+                clips={this.props.clips}
                 videoId={this.props.videoId}
             />,
             <SharePanel
@@ -179,12 +188,20 @@ const VideoCollection = React.createClass({
         if (this.props.infoPanelOnly) {
             return [];
         }
+
         let account = this.props.account;
         let control_array = [  
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
-            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />,
-            <DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />,
+            <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />
         ];
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            control_array.push(<DownloadControl href={currentClip.renditions[0].url}/>);
+        }
+
+        control_array.push(<DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />)
+        
         if (account && account.serving_enabled) {
             control_array.push(
                 <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
@@ -201,9 +218,19 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
+
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;   
+        }
+
         return (
             <MobileBaseCollection
                 {...this.props}
+                clip={currentClip}
+                clipThumb={clipThumb}
+                clipPoster={clipPoster}
                 translationOverrideMap={overrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -211,6 +238,9 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 liftValue={this.getLiftValue()}
+                onGifClickPrev={this.onGifClickPrev}
+                onGifClickNext={this.onGifClickNext}
+                selectedGifClip={this.state.selectedGifClip}
             />
         );
     },
@@ -223,10 +253,17 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
-
+        if (this.props.clips) {
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            
+        }
         return (
             <BaseCollection
                 {...this.props}
+                clip={currentClip}
+                clipThumb={clipThumb}
+                clipPoster={clipPoster}
                 translationOverrideMap={overrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -234,9 +271,30 @@ const VideoCollection = React.createClass({
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage}
                 setLiftThumbnailId={this.setLiftThumbnailId}
+                onGifClickPrev={this.onGifClickPrev}
+                onGifClickNext={this.onGifClickNext}
+                selectedGifClip={this.state.selectedGifClip}
             />
         );
     },
+
+    onGifClickPrev: function() {
+        if (this.state.selectedGifClip === 0 ) {
+            this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
+            return
+        }
+            this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });    
+        
+    },
+
+    onGifClickNext: function() {
+        if (this.state.selectedGifClip === this.props.clipsIds.length - 1) {
+            this.setState({ selectedGifClip: 0 });
+            return 
+        };
+        this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
+    },
+
 
     isSoloImage: function() {
         if (this.props) {  

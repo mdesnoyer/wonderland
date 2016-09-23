@@ -46,6 +46,15 @@
     }
 }
 
+.xxCollectionActions-download {
+    line-height: 16px;
+
+    &::after {
+        @include font-awesome('f0ab');
+        font-size: 16px;
+    }
+}
+
 .xxCollectionActions-share {
     line-height: 16px;
 

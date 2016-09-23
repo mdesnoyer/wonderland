@@ -6,6 +6,7 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
+import RENDITIONS from '../../modules/renditions';
 import TRACKING from '../../modules/tracking';
 
 import VideoProcessing from './VideoProcessing';
@@ -137,11 +138,10 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-
+        
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div key={tagId}/>;   
         }
-
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
                 return this.buildImageCollectionComponent(tagId);
@@ -350,10 +350,9 @@ const CollectionsContainer = React.createClass({
     },
 
     buildVideoCollectionComponent(tagId) {
-
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-
+        
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
 
@@ -385,7 +384,7 @@ const CollectionsContainer = React.createClass({
         const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
-
+        
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
 
         if (thumbArrays.length == 0)
@@ -410,6 +409,14 @@ const CollectionsContainer = React.createClass({
             this.props.stores.accounts[this.props.ownerAccountId]:
             null;
 
+        const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        if (clipDemo && clipDemo.clip_ids.length > 0 ) {
+            var clipIds = clipDemo.clip_ids;
+            var clips = this.props.stores.clips[gender][age];
+            var clipThumbs = this.props.stores.thumbnails[gender][age];
+        } else {
+            var clips = false
+        }
         return (
             <VideoCollection
                 key={tagId}
@@ -422,6 +429,10 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
+                clips={clips}
+                clipsIds={clipIds}
+                clipThumbs={clipThumbs}
+                getGifClipPosition={this.getGifClipPosition}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}

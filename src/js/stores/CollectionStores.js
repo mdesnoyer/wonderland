@@ -130,6 +130,19 @@ export const VideoStore = {
     }
 };
 
+const _clips = genderAgeBaseMap();
+export const ClipsStore = {
+    getAll: () => {
+        return _clips;
+    },
+    get: (gender, age, map) => {
+        return _clips[gender][age][id];
+    },
+    set: (gender, age, map) => {
+        Object.assign(_clips[gender][age], map);
+    }
+};
+
 const _thumbnails = genderAgeBaseMap();
 export const ThumbnailStore = {
     getAll: () => {
@@ -261,7 +274,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Given the result from a tag search API call,
     // load all downstream stores after checking
     // they're already loaded.
+
     loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter, callback) => {
+
         // Short circuit empty input.
         if(searchRes.items.length == 0) {
             return;
@@ -277,6 +292,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Bind update objects in outer scope.
         const updateTagMap = {};
         const updateVideoMap = {};
+        const updateClipMap = {};
 
         const searchResTagIds = _.chain(searchRes.items)
             .reduce((tagIds, tag) => {
@@ -336,13 +352,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
-
+        
+        let videos;
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
 
             // Unpack promises.
             const tagRes = combined[0] || {};
-            let videoRes = combined[1] || {videos: []};
+            const videoRes = combined[1] || {videos: []};
 
             // Filter
             if (videoFilter) {
@@ -352,14 +369,17 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
+            
+            //grab all clip IDs 
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
             }, {}));
 
             // Store the video thumbnails since they're inline in response.
-            videoRes.videos.map(video => {
-
+            videos = videoRes.videos;
+            videos.map(video => {
+                
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
@@ -392,18 +412,33 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     }
 
                     ThumbnailStore.set(gender, age, thumbnailMap);
+
                 });
             });
-
+            
             // Now load the thumbnails for the non-video tags.
 
             // Get the set of thumbnail ids.
+
+            var clipIds = []
+            videoRes.videos.map(function(index, elem) {
+                index.demographic_clip_ids.map(function(item, i) {
+                    item.clip_ids.map(function(i) {
+                        clipIds.push(i)
+                    });
+                });
+            });
             const tags = _.values(tagRes);
+            
             const thumbnailIdSet = _
                 .chain(tags)
-                // Skip video tags.
+                // Skip video tags if they don't have clips.
                 .filter(tag => {
-                    return tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL;
+                    if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+                        const video = updateVideoMap[tag.video_id];
+                        return video.demographic_clip_ids.length > 0;
+                    }
+                    return true;
                 })
                 // Concatentate the array of thumbnail ids.
                 .reduce((thumbnailIds, tag) => {
@@ -414,18 +449,40 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 .uniq()
                 .value();
 
-            LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
-            .then(thumbRes => {
+            const thumbnailsPromise = LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
+            const clipsPromise = LoadActions.loadClips(clipIds, gender, age)
+            
+            Promise.all([thumbnailsPromise, clipsPromise])    
+            .then(combinedRes => {
+                const thumbRes = combinedRes[0] || {thumbnails: []};
+                const clipRes = combinedRes[1] || {clips: []};
+
+                // Mapping the response from the thumbnail promise
                 const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                     map[t.thumbnail_id] = t;
                     return map;
                 }, {});
 
+                videos.map(video => {
+                    video.demographic_clip_ids.map(dem => {
+                        const gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                        const age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                        if (age === undefined || gender === undefined) {
+                            console.warn('Unknown demo ', dem.age, dem.gender);
+                            return;
+                        }
+                        const clipMap = {};
+                        dem.clip_ids.map(clip_id => {
+                            clipMap[clip_id] = clipRes.clips.find(clip => clip.clip_id == clip_id);
+                        });
+                        ClipsStore.set(gender, age, clipMap);
+                    })
+                })
+                
                 // Set all of these together within one synchronous block.
                 TagStore.set(updateTagMap);
                 VideoStore.set(updateVideoMap);
                 ThumbnailStore.set(gender, age, thumbnailMap);
-
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
@@ -446,9 +503,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
                 LiftStore.set(gender, age, tagLiftMap);
                 Dispatcher.dispatch();
-
             });
-        });
+        })
     },
 
     loadVideos(videoIds, liftGender=0, liftAge=0, callback) {
@@ -550,7 +606,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Load thumbnails by ids.
     loadThumbnails: function(thumbnailIds, gender=0, age=0, fields=[]) {
-
         // Empty array of ids is no-op.
         if(thumbnailIds.length == 0) {
             return Promise.resolve({thumbnails: []});
@@ -574,6 +629,28 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             params = {};
             Object.assign(params, baseParams, {thumbnail_id: thumbArgs[0]});
             return LoadActions.GET('thumbnails', {data: params});
+        }
+    },
+
+    loadClips: function(clipIds, gender=0, age=0) {
+        if(clipIds.length == 0) {
+            return Promise.resolve({clips: []});
+        }
+        const clipArgs = UTILS.csvFromArray(clipIds);
+        const baseParams = getBaseParamsForDemoRequest(gender, age, UTILS.CLIP_FIELDS);
+        let params;
+        if (clipArgs.length > 1) {
+            clipArgs.map(arg => {
+                // Build this batch's params by copying base params and adding the tid arg.
+                params = {};
+                Object.assign(params, baseParams, {clip_ids: arg});
+                LoadActions.batch('GET', 'clips', params);
+            });
+            return LoadActions.sendBatch();
+        } else {
+            params = {};
+            Object.assign(params, baseParams, {clip_ids: clipArgs[0]});
+            return LoadActions.GET('clips', {data: params});
         }
     },
 
@@ -896,6 +973,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     .value();
                 LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
                 .then(thumbRes => {
+                    
                     const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                         map[t.thumbnail_id] = t;
                         return map;
@@ -941,7 +1019,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
         const self = this;
         const haveCount = FilteredTagStore.count();
-
+        
         // If reloading, skip these checks that return early.
         if (!reload) {
             // Short circuit search if we have enough items or everything.
@@ -988,6 +1066,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         self.GET('tags/search', options)
         .then(searchRes => {
+            
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
                 if (query) {
@@ -1086,13 +1165,13 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
 
-    refilterVideo: function(videoId, gender, age, callback) {
-        const data = {
+    refilterVideo: function(videoId, gender, age, callback, data={}) {
+        Object.assign(data, {
             external_video_ref: videoId,
             reprocess: true,
             gender,
             age,
-        };
+        });
 
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
@@ -1101,6 +1180,9 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             .then(res => {
                 LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
             });
+    },
+    refilterVideoForClip: function(videoId, gender, age, callback) {
+        this.refilterVideo(videoId, gender, age, callback, UTILS.CLIP_OPTIONS); 
     },
     sendEmail: function(data, callback) {
         SendActions.POST('email', {data})
@@ -1186,6 +1268,7 @@ export const Search = {
     },
 
     load(count, onlyThisMany=false, callback=null) {
+        
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();

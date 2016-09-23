@@ -427,6 +427,24 @@
             @include font-awesome('f0c1');
         }
     }
+    &--Chooser-Thumbnail {
+        position:relative;
+        &:enabled {
+            color: $accent-color; 
+        }
+        &::before {
+            @include font-awesome('f1c5');
+        }
+    }
+    &--Chooser-GIF {
+        position:relative;
+        &:enabled {
+            color: $accent-color; 
+        }
+        &::before {
+            @include font-awesome('f01d');
+        }
+    }
 
 }
 .xxUploadButtonsChooser {

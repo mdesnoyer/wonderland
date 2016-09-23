@@ -10,6 +10,10 @@
     justify-content: center;
     flex-wrap: nowrap;
     align-items: center;
+
+    &--GifClip {
+    	margin-top: 2.5%;
+    }
 }
 
 .xxPagingControls-navigation-item {
@@ -33,6 +37,11 @@
 
 	@include arrow(W, 24px, 2px, $quaternary-color);
 
+	&--GifClip {
+		@include arrow(W, 12px, 2px, $quaternary-color);		
+	}
+
+
 	&:hover {
 	    &::before,
 	    &::after {
@@ -48,6 +57,14 @@
     &::after {
         transform-origin: 100% 50%;
     }
+
+    &--mobileGifClosed {
+    	&::before,
+    	&::after {
+    	    transform-origin: 50% -250%;
+    	}
+    }
+
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
