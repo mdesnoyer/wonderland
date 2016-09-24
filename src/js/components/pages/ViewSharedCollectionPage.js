@@ -12,6 +12,7 @@ import CollectionsContainer from '../knave/CollectionsContainer';
 import {
     TagStore,
     VideoStore,
+    ClipStore,
     ThumbnailStore,
     LiftStore,
     FeatureStore,
@@ -33,6 +34,8 @@ const getStateFromStores = () => {
 
         // Map of video id to video.
         videos: VideoStore.getAll(),
+
+        clips: ClipStore.getAll(),
 
         // Map of gender, age, thumbnail id to thumbnail.
         thumbnails: ThumbnailStore.getAll(),
@@ -161,6 +164,7 @@ const ViewSharedCollectionPage = React.createClass({
                     stores={{
                         tags: this.state.tags,
                         videos: this.state.videos,
+                        clips: this.state.clips,
                         thumbnails: this.state.thumbnails,
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,

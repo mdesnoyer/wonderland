@@ -16,61 +16,60 @@ import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
-    AccountStore,
-    TagStore,
-    FilteredTagStore,
-    VideoStore,
-    ThumbnailStore,
-    LiftStore,
-    FeatureStore,
-    ThumbnailFeatureStore,
-    TagShareStore,
+    accountStore,
+    clipStore,
+    featureStore,
+    filteredTagStore,
+    liftStore,
+    tagStore,
+    tagShareStore,
+    thumbnailStore,
+    thumbnailFeatureStore,
+    videoStore,
+    resetStores,
     LoadActions,
     SendActions,
     ServingStatusActions,
     Dispatcher,
-    Search,
-    ClipsStore,
-    resetStores } from '../../stores/CollectionStores';
+    Search } from '../../stores/CollectionStores';
 
 const getStateFromStores = () => {
 
     return {
-        // These are stores of tag, video, thumbnail resources.
-
         // Map of tag id to tag.
-        tags: TagStore.getAll(),
+        tags: tagStore.getAll(),
 
-        // A submap of tags, of those results that are showable
-        selectedTags: FilteredTagStore.getAll(),
+        // A submap of tags, of those results that are showable.
+        selectedTags: filteredTagStore.getAll(),
 
-        clips: ClipsStore.getAll(),
+        // Map of gender, age, clip id to clip.
+        clips: clipStore.getAll(),
+
         // Map of video id to video.
-        videos: VideoStore.getAll(),
+        videos: videoStore.getAll(),
 
         // Map of gender, age, thumbnail id to thumbnail.
-        thumbnails: ThumbnailStore.getAll(),
+        thumbnails: thumbnailStore.getAll(),
 
         // Map of gender, age, tag id to map of thumb id to lift float
-
         // Note: This assumes the tag has only one base thumbnail
         // for comparisons: for a video with a default thumbnail,
         // it is the default thumbnail. In all other cases, it's
         // the worst thumbnail.
-        lifts: LiftStore.getAll(),
+        lifts: liftStore.getAll(),
 
         // Map of feature key to feature name
-        features: FeatureStore.getAll(),
+        features: featureStore.getAll(),
 
         // Map of gender, age, thumbnail id to array of feature key
         // sorted by value descending.
-        thumbnailFeatures: ThumbnailFeatureStore.getAll(),
+        thumbnailFeatures: thumbnailFeatureStore.getAll(),
 
         // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: TagShareStore.getAll(),
+        tagShares: tagShareStore.getAll(),
 
-        // the accounts we have currently
-        accounts: AccountStore.getAll(),
+        // Map of account id to account.
+        accounts: accountStore.getAll(),
     };
 };
 
@@ -136,7 +135,7 @@ const CollectionsMainPage = React.createClass({
         const self = this;
         const count = useCurrentPage ?
             self.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
-            FilteredTagStore.count();
+            filteredTagStore.count();
 
         if(self.state.searchQuery) {
             Search.loadWithQuery(count, self.state.searchQuery);
@@ -348,12 +347,12 @@ const CollectionsMainPage = React.createClass({
         const searchQuery = e.target.value.trim();
 
         // Update the stateful filteredtagstore.
-        FilteredTagStore.completelyLoaded = false;
+        filteredTagStore.completelyLoaded = false;
         if (!searchQuery) {
-            FilteredTagStore.reset();
+            filteredTagStore.reset();
         } else {
             // Apply a non-empty search to our data provider.
-            FilteredTagStore.setFilter(
+            filteredTagStore.setFilter(
                 tag => {
                     return tag.hidden !== true && self.filterOnName(searchQuery, tag)
                 }
@@ -372,7 +371,7 @@ const CollectionsMainPage = React.createClass({
                 searchQuery,
                 searchPending: Search.pending > 0,
                 currentPage: 0,
-                selectedTags: FilteredTagStore.getAll(),
+                selectedTags: filteredTagStore.getAll(),
             });
             return;
         }
@@ -393,7 +392,7 @@ const CollectionsMainPage = React.createClass({
         self.setState({
             searchQuery,
             currentPage: 0,
-            selectedTags: FilteredTagStore.getAll(),
+            selectedTags: filteredTagStore.getAll(),
         }, self.searchFunction);
 
     },

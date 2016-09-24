@@ -1,5 +1,3 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -8,266 +6,154 @@ import AJAXModule from '../modules/ajax';
 import SESSION from '../modules/session';
 import UTILS from '../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-const genderAgeBaseMap = () => {
-    return {
-        0: {
-            0: {},
-            1: {},
-            2: {},
-            3: {},
-            4: {},
-            5: {}
-        },
-        1: {
-            0: {},
-            1: {},
-            2: {},
-            3: {},
-            4: {},
-            5: {}
-        },
-        2: {
-            0: {},
-            1: {},
-            2: {},
-            3: {},
-            4: {},
-            5: {}
-        }
+class Store {
+    constructor() {
+        this.__store = {};
+        this.completelyLoaded = false;
     }
-};
 
-const _tags = {};
-export const TagStore = {
+    getAll() {
+        return this.__store;
+    }
 
-    getAll: () => {
-        return _tags;
-    },
+    get(id) {
+        return this.__store[id];
+    }
 
-    get: id => {
-        return _tags[id];
-    },
+    set(map) {
+        Object.assign(this.__store, map);
+        return this;
+    }
 
-    set: map => {
-        Object.assign(_tags, map);
-    },
+    has(id) {
+        return undefined !== this.get(id);
+    }
 
-    count: function() {
+    count() {
         return _.values(this.getAll()).length;
-    },
+    }
 
-    getOldestTimestamp: function() {
-        const self = this;
-        if (self.count() == 0) {
+    // Get as Unix epoch in seconds.
+    // Return null if store is empty.
+    getOldestTimestamp() {
+        if (this.count() == 0) {
             return null;
         }
 
-        const oldestTag = _(TagStore.getAll())
-        .values()
-        .minBy(tag => {
-            return tag.created;
-        });
-        return moment(oldestTag.created + 'Z').format('x') / 1000;
-    },
+        const oldestItem = _(this.getAll())
+            .values()
+            .minBy(item => item.created);
+        return moment(oldestItem.created + 'Z').format('x') / 1000;
+    }
 
-    completelyLoaded: false,
+    reset() {
+        this.__store = {};
+        this.completelyLoaded = false;
+    }
+}
 
-    reset: function() {
-        for (let id in _tags) delete _tags[id];
-        TagStore.completelyLoaded = false;
-    },
-};
+class DemoStore extends Store {
+    constructor() {
+        super();
+        this.__store = this.genderAgeBaseMap();
+    }
 
-// A read-only view of the tag store.
-export const FilteredTagStore = {
+    get(gender, age, map) {
+        return _clips[gender][age][id];
+    }
 
-    // Set filter to define the tag set.
-    filter: tag => tag.hidden !== true,
+    set(gender, age, map) {
+        Object.assign(this.__store[gender][age], map);
+        return this;
+    }
 
-    setFilter: function(filter) {
-        FilteredTagStore.filter = filter;
-        FilteredTagStore.completelyLoaded = false;
-    },
+    has(gender, age, id) {
+        return undefined !== this.get(gender, age, id);
+    }
 
-    // Allow filter to be reset by copying over the default.
-    defaultFilter: tag => tag.hidden !== true,
+
+    reset() {
+        super.reset();
+        this.__store == this.genderAgeBaseMap();
+        return this;
+    }
+
+    genderAgeBaseMap() {
+        return {
+            0: {
+                0: {},
+                1: {},
+                2: {},
+                3: {},
+                4: {},
+                5: {}
+            },
+            1: {
+                0: {},
+                1: {},
+                2: {},
+                3: {},
+                4: {},
+                5: {}
+            },
+            2: {
+                0: {},
+                1: {},
+                2: {},
+                3: {},
+                4: {},
+                5: {}
+            }
+        }
+    }
+}
+
+class FilteredStore {
+    constructor(sourceStore) {
+        this.sourceStore = sourceStore;
+        this.filter = this.__defaultFilter;
+        this.completelyLoad = false;
+    }
+
+    __defaultFilter(item) {
+        return item.hidden !== true;
+    }
+
+    setFilter(filter) {
+        this.filter = filter;
+    }
 
     // Get all that pass filter.
-    getAll: function() {
-        // Restore the map structure since filter returns array.
-        const result  = _(_tags)
+    getAll() {
+        const result  = _(this.sourceStore.getAll())
             .filter(this.filter)
+             // Restore the map structure since filter returns array.
             .keyBy('tag_id')
             .value();
         return result;
-    },
+    }
 
-    count: function() {
+    count() {
         return _.values(this.getAll()).length;
-    },
-
-    reset: function() {
-        FilteredTagStore.filter = FilteredTagStore.defaultFilter;
-        FilteredTagStore.completelyLoaded = false;
-    },
-};
-
-const _videos = {};
-export const VideoStore = {
-    getAll: () => {
-        return _videos;
-    },
-    get: id => {
-        return _videos[id];
-    },
-    set: map => {
-        Object.assign(_videos, map);
-    },
-    reset: () => {
-        for (let id in _videos) delete _videos[id];
     }
-};
 
-const _clips = genderAgeBaseMap();
-export const ClipsStore = {
-    getAll: () => {
-        return _clips;
-    },
-    get: (gender, age, map) => {
-        return _clips[gender][age][id];
-    },
-    set: (gender, age, map) => {
-        Object.assign(_clips[gender][age], map);
+    reset() {
+        this.filter = this.defaultFilter;
+        this.completelyLoaded = false;
     }
-};
+}
 
-const _thumbnails = genderAgeBaseMap();
-export const ThumbnailStore = {
-    getAll: () => {
-        return _thumbnails;
-    },
-    get: (gender, age, id) => {
-        return _thumbnails[gender][age][id];
-    },
-    set: (gender, age, map) => {
-        Object.assign(_thumbnails[gender][age], map);
-    },
-    reset: () => {
-        const base = genderAgeBaseMap();
-        for (let g in base) {
-            for (let a in base[g]) {
-                let demo = _thumbnails[g][a];
-                for (let id in demo) {
-                    delete demo[id];
-                }
-            }
-        }
-    }
-};
+export const accountStore = new Store();
+export const clipStore = new DemoStore();
+export const featureStore = new Store();
+export const liftStore = new DemoStore();
+export const tagStore = new Store();
+export const tagShareStore = new Store();
+export const thumbnailStore = new DemoStore();
+export const thumbnailFeatureStore = new DemoStore();
+export const videoStore = new Store();
 
-const _lifts = genderAgeBaseMap();
-export const LiftStore = {
-    getAll: () => {
-        return _lifts;
-    },
-    get: (gender, age, id) => {
-        return _lifts[gender][age][id];
-    },
-    set: (gender, age, map) => {
-        Object.assign(_lifts[gender][age], map);
-    },
-    reset: () => {
-        const base = genderAgeBaseMap();
-        for (let g in base) {
-            for (let a in base[g]) {
-                let demo = _lifts[g][a];
-                for (let id in demo) {
-                    delete demo[id];
-                }
-            }
-        }
-    }
-};
-
-const _features = {};
-export const FeatureStore = {
-    getAll: () => {
-        return _features;
-    },
-    get: id => {
-        return _features[id];
-    },
-    set: map => {
-        Object.assign(_features, map);
-    },
-    reset: () => {
-        for (let id in _features) delete _features[id];
-    }
-};
-
-const _thumbnailFeatures = genderAgeBaseMap();
-export const ThumbnailFeatureStore = {
-    getAll: () => {
-        return _thumbnailFeatures;
-    },
-    get: (gender, age, id) => {
-        return _thumbnailFeatures[gender][age][id];
-    },
-    set: (gender, age, map) => {
-        Object.assign(_thumbnailFeatures[gender][age], map);
-    },
-    reset: () => {
-        const base = genderAgeBaseMap();
-        for (let g in base) {
-            for (let a in base[g]) {
-                let demo = _thumbnailFeatures[g][a];
-                for (let id in demo) {
-                    delete demo[id];
-                }
-            }
-        }
-    }
-};
-
-const _tagShares = {};
-export const TagShareStore = {
-    getAll: () => {
-        return _tagShares;
-    },
-    get: id => {
-        return _tagShares[id];
-    },
-    set: map => {
-        Object.assign(_tagShares, map);
-    },
-    has: id => {
-        return undefined !== _tagShares[id];
-    },
-    reset: () => {
-        for (let id in _tagShares) delete _tagShares[id];
-    }
-};
-
-const _accounts = {};
-export const AccountStore = {
-    getAll: () => {
-        return _accounts;
-    },
-    get: (id) => {
-        return _accounts[id];
-    },
-    set: map => {
-        Object.assign(_accounts, map);
-    },
-    has: id => {
-        return undefined !== _accounts[id];
-    },
-    reset: () => {
-        for (let id in _accounts) delete _accounts[id];
-    }
-};
+export const filteredTagStore = new FilteredStore(tagStore);
 
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
@@ -308,7 +194,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // If reloading, search for all of them.
             searchResTagIds :
             // Else omit the ones we've already loaded.
-            _.difference(searchResTagIds, _.keys(TagStore.getAll()));
+            _.difference(searchResTagIds, _.keys(tagStore.getAll()));
 
         let tagPromise = Promise.resolve({});
         if (searchForTagIds.length > 0) {
@@ -341,7 +227,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 return videoIds;
             }, [])
             // Omit all the stored ones.
-            .difference(_.keys(VideoStore.getAll()))
+            .difference(_.keys(videoStore.getAll()))
             .uniq()
             .value();
         }
@@ -352,7 +238,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             };
             videoPromise = LoadActions.GET('videos', {data: videoData});
         }
-        
+
         let videos;
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
@@ -369,8 +255,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
-            
-            //grab all clip IDs 
+
+            //grab all clip IDs
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
@@ -379,7 +265,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Store the video thumbnails since they're inline in response.
             videos = videoRes.videos;
             videos.map(video => {
-                
+
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.map(dem => {
 
@@ -411,11 +297,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         dem.bad_thumbnails = [];
                     }
 
-                    ThumbnailStore.set(gender, age, thumbnailMap);
+                    thumbnailStore.set(gender, age, thumbnailMap);
 
                 });
             });
-            
+
             // Now load the thumbnails for the non-video tags.
 
             // Get the set of thumbnail ids.
@@ -429,7 +315,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
             });
             const tags = _.values(tagRes);
-            
+
             const thumbnailIdSet = _
                 .chain(tags)
                 // Skip video tags if they don't have clips.
@@ -451,8 +337,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             const thumbnailsPromise = LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
             const clipsPromise = LoadActions.loadClips(clipIds, gender, age)
-            
-            Promise.all([thumbnailsPromise, clipsPromise])    
+
+            Promise.all([thumbnailsPromise, clipsPromise])
             .then(combinedRes => {
                 const thumbRes = combinedRes[0] || {thumbnails: []};
                 const clipRes = combinedRes[1] || {clips: []};
@@ -475,14 +361,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         dem.clip_ids.map(clip_id => {
                             clipMap[clip_id] = clipRes.clips.find(clip => clip.clip_id == clip_id);
                         });
-                        ClipsStore.set(gender, age, clipMap);
+                        clipStore.set(gender, age, clipMap);
                     })
                 })
-                
+
                 // Set all of these together within one synchronous block.
-                TagStore.set(updateTagMap);
-                VideoStore.set(updateVideoMap);
-                ThumbnailStore.set(gender, age, thumbnailMap);
+                tagStore.set(updateTagMap);
+                videoStore.set(updateVideoMap);
+                thumbnailStore.set(gender, age, thumbnailMap);
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
@@ -501,7 +387,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     const liftMap = pair[1];
                     tagLiftMap[tagId] = liftMap;
                 });
-                LiftStore.set(gender, age, tagLiftMap);
+                liftStore.set(gender, age, tagLiftMap);
                 Dispatcher.dispatch();
             });
         })
@@ -554,7 +440,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             });
 
             // Set new value to stores.
-            VideoStore.set(videoRes.videos.reduce((map, video) => {
+            videoStore.set(videoRes.videos.reduce((map, video) => {
                 map[video.video_id] = video;
                 return map;
             }, {}));
@@ -566,7 +452,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     if (age === 'null') {
                         age = 0;
                     }
-                    ThumbnailStore.set(gender, age, thumbnailDemoMap[gender][age]);
+                    thumbnailStore.set(gender, age, thumbnailDemoMap[gender][age]);
                 }
             }
             Dispatcher.dispatch();
@@ -575,7 +461,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             .then(liftRes => {
                 // Map of tag id to lift map.
                 const tagLiftMap = liftRes;
-                LiftStore.set(liftGender, liftAge, tagLiftMap);
+                liftStore.set(liftGender, liftAge, tagLiftMap);
                 Dispatcher.dispatch();
 
                 if (_.isFunction(callback)) {
@@ -661,7 +547,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const loadTagIds = reload ?
             tagIds :
             tagIds.reduce((loadTagIds, tagId) => {
-            if (_.isEmpty(TagStore.get(gender, age, tagId))) {
+            if (_.isEmpty(tagStore.get(gender, age, tagId))) {
                 loadTagIds.push(tagId);
             }
             return loadTagIds;
@@ -684,10 +570,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // TODO refactor this and CollectionsContainer getLeftRight.
 
             // Get the worst thumbnail.
-            const tag = TagStore.get(tagId);
+            const tag = tagStore.get(tagId);
 
             const thumbnailMap = _.pick(
-                ThumbnailStore.getAll()[gender][age],
+                thumbnailStore.getAll()[gender][age],
                 tag.thumbnail_ids);
 
             const thumbnailIds = _.keys(thumbnailMap);
@@ -710,7 +596,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const worst = UTILS.worstThumbnail(_.values(thumbnailMap));
             let _default;
             if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
-                const video = VideoStore.get(tag.video_id);
+                const video = videoStore.get(tag.video_id);
                 const demo = UTILS.findDemographicThumbnailObject(
                     video.demographic_thumbnails, gender, age);
                 _default = UTILS.findDefaultThumbnail(demo);
@@ -754,12 +640,12 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Find the missing thumbnail ids.
         const missingThumbIds = [];
-        const tag = TagStore.get(tagId);
+        const tag = tagStore.get(tagId);
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             // These are already loaded!
         } else {
             tag.thumbnail_ids.map(tid => {
-                if (undefined === ThumbnailStore.get(gender, age, tid)) {
+                if (undefined === thumbnailStore.get(gender, age, tid)) {
                     missingThumbIds.push(tid);
                 }
             });
@@ -771,13 +657,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             thumbRes.thumbnails.map(t => {
                 newThumbnailMap[t.thumbnail_id] = t;
             });
-            ThumbnailStore.set(gender, age, newThumbnailMap);
+            thumbnailStore.set(gender, age, newThumbnailMap);
             return LoadActions.loadLifts([tagId], gender, age);
         })
         .then(liftRes => {
             const tagLiftMap = liftRes;
             // Set, dispatch and callback.
-            LiftStore.set(gender, age, tagLiftMap);
+            liftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
         })
@@ -788,8 +674,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     loadFeaturesForTag(tagId, gender, age) {
 
         // Get missing thumbnail ids.
-        const tag = TagStore.get(tagId);
-        const thumbnailIds = _(ThumbnailStore.getAll()[gender][age])
+        const tag = tagStore.get(tagId);
+        const thumbnailIds = _(thumbnailStore.getAll()[gender][age])
             .pick(tag.thumbnail_ids)
             .keys()
             .filter(thumbnailId => {
@@ -949,7 +835,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         }
 
                         Object.assign(updateThumbnailMap, thumbnailMap);
-                        ThumbnailStore.set(gender, age, thumbnailMap);
+                        thumbnailStore.set(gender, age, thumbnailMap);
                     });
                 });
 
@@ -973,16 +859,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     .value();
                 LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
                 .then(thumbRes => {
-                    
+
                     const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
                         map[t.thumbnail_id] = t;
                         return map;
                     }, {});
                     Object.assign(updateThumbnailMap, thumbnailMap);
                     // Set all of these together within one synchronous block.
-                    TagStore.set(updateTagMap);
-                    VideoStore.set(updateVideoMap);
-                    ThumbnailStore.set(gender, age, thumbnailMap);
+                    tagStore.set(updateTagMap);
+                    videoStore.set(updateVideoMap);
+                    thumbnailStore.set(gender, age, thumbnailMap);
 
                     // This is the first point at which we can display
                     // a meaningful set of results, so dispatch.
@@ -997,29 +883,29 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                         const liftMap = pair[1];
                         tagLiftMap[tagId] = liftMap;
                     });
-                    LiftStore.set(gender, age, tagLiftMap);
+                    liftStore.set(gender, age, tagLiftMap);
                     Dispatcher.dispatch();
                 });
             });
         });
     },
 
-    // Tries to fill out the TagStore to n tags
+    // Tries to fill out the tagStore to n tags
     //
     // Return n the number of new tags.
     // Inputs
-    //     n- integer- number of tags we want to have in the TagStore
+    //     n- integer- number of tags we want to have in the tagStore
     //     query- string- filter applied on Tag name
     //     type- a UTILS.TAG_TYPE_*, filter applied on Tag tag_type
     //     reload- bool
     //         if false, don't call the backend if the number of
-    //             tags in the FilteredTagStore exceeds n
+    //             tags in the filteredTagStore exceeds n
     //         if true, always call the backend, reloading those
     //             tags we have stored.
     loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
         const self = this;
-        const haveCount = FilteredTagStore.count();
-        
+        const haveCount = filteredTagStore.count();
+
         // If reloading, skip these checks that return early.
         if (!reload) {
             // Short circuit search if we have enough items or everything.
@@ -1027,10 +913,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback && callback();
                 return;
             }
-            if (TagStore.completelyLoaded) {
+            if (tagStore.completelyLoaded) {
                 callback && callback();
                 return;
-            } else if (query && FilteredTagStore.completelyLoaded) {
+            } else if (query && filteredTagStore.completelyLoaded) {
                 callback && callback();
                 return;
             }
@@ -1048,7 +934,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         };
 
         // Find the oldest timestamp.
-        const oldestTimestamp = TagStore.getOldestTimestamp();
+        const oldestTimestamp = tagStore.getOldestTimestamp();
 
         // If reloading, we always load the front (i.e., latest) tags,
         // so no need to set the "until" parameter.
@@ -1066,13 +952,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         self.GET('tags/search', options)
         .then(searchRes => {
-            
+
             // Mark this store as completely loaded.
             if(searchRes.items.length < limit) {
                 if (query) {
-                    FilteredTagStore.completelyLoaded = true;
+                    filteredTagStore.completelyLoaded = true;
                 } else {
-                    TagStore.completelyLoaded = true;
+                    tagStore.completelyLoaded = true;
                 }
             }
             if (searchRes.items.length === 0) {
@@ -1090,14 +976,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 data: {limit}
             }
         ;
-        options.data.until = TagStore.getOldestTimestamp();
+        options.data.until = tagStore.getOldestTimestamp();
         if (type) {
             options.data.tag_type = type;
         }
         self.GET('tags/search', options)
         .then(searchRes => {
             if(searchRes.items.length < limit) {
-                TagStore.completelyLoaded = true;
+                tagStore.completelyLoaded = true;
             }
             if (searchRes.items.length === 0) {
                 callback && callback(true);
@@ -1140,13 +1026,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // For now just return, but
         // eventually we should check to make
         // the account hasn't had any mods
-        if (AccountStore.has(accountId)) {
+        if (accountStore.has(accountId)) {
             return;
         }
         LoadActions.GET('')
         .then(res => {
             if (res.account_id) {
-                AccountStore.set({[res.account_id]: res});
+                accountStore.set({[res.account_id]: res});
                 Dispatcher.dispatch();
             }
         });
@@ -1156,11 +1042,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 export const SendActions = Object.assign({}, AjaxMixin, {
 
     deleteCollectionByTagId: function(tagId) {
-        const tag = TagStore.get(tagId);
+        const tag = tagStore.get(tagId);
         SendActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
             .then(res => {
                 tag.hidden = true;
-                TagStore.set({[res.tag_id]: tag});
+                tagStore.set({[res.tag_id]: tag});
                 Dispatcher.dispatch();
             });
     },
@@ -1182,7 +1068,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
     refilterVideoForClip: function(videoId, gender, age, callback) {
-        this.refilterVideo(videoId, gender, age, callback, UTILS.CLIP_OPTIONS); 
+        this.refilterVideo(videoId, gender, age, callback, UTILS.CLIP_OPTIONS);
     },
     sendEmail: function(data, callback) {
         SendActions.POST('email', {data})
@@ -1203,7 +1089,7 @@ export const ServingStatusActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled: function(thumbnail) {
         const thumbnailId = thumbnail.thumbnail_id;
         const videoId = thumbnail.video_id;
-        const video = VideoStore.get(videoId);
+        const video = videoStore.get(videoId);
         const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } };
         ServingStatusActions.PUT('thumbnails', options)
             .then(res => {
@@ -1268,7 +1154,7 @@ export const Search = {
     },
 
     load(count, onlyThisMany=false, callback=null) {
-        
+
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany? count: Search.getLargeCount(count);
         Search.incrementPending();
@@ -1303,7 +1189,7 @@ export const Search = {
     },
 
     hasMoreThan(count) {
-        return FilteredTagStore.count() > count;
+        return filteredTagStore.count() > count;
     },
 
     setEmptySearch() {
@@ -1330,13 +1216,14 @@ export const resetStores = () => {
     LoadActions.cancelAll();
     SendActions.cancelAll();
     ServingStatusActions.cancelAll();
-
-    TagStore.reset();
-    FilteredTagStore.reset();
-    VideoStore.reset();
-    ThumbnailStore.reset();
-    LiftStore.reset();
-    FeatureStore.reset();
-    ThumbnailFeatureStore.reset();
     Search.reset();
+
+    tagStore.reset();
+    filteredTagStore.reset();
+    videoStore.reset();
+    clipStore.reset();
+    thumbnailStore.reset();
+    liftStore.reset();
+    featureStore.reset();
+    thumbnailFeatureStore.reset();
 };
