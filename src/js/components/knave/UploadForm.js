@@ -338,7 +338,7 @@ var UploadForm = React.createClass({
                             LoadActions.loadTags([self.state.tagId])
                             setTimeout(function() {
                             self.setState({ uploadState: 'initial' });
-                            }, 4000)                           
+                            }, 4000)
                         })
                     })
                     .catch(function(err) {

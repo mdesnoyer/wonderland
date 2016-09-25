@@ -379,7 +379,6 @@ const CollectionsMainPage = React.createClass({
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
-                    loadThumbnails={LoadActions.loadThumbnails}
                     socialClickHandler={this.socialClickHandler}
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}

@@ -122,7 +122,6 @@ const ViewSharedCollectionPage = React.createClass({
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
-                    loadThumbnails={LoadActions.loadThumbnails}
                     setSidebarContent={this.setSidebarContent}
                     getVideoStatus={this.getVideoStatus}
                     infoPanelOnly={true}
