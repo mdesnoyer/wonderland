@@ -26,6 +26,7 @@ import {
     thumbnailStore,
     thumbnailFeatureStore,
     videoStore,
+    getStateFromStores,
     resetStores,
     LoadActions,
     SendActions,
@@ -33,45 +34,6 @@ import {
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
-const getStateFromStores = () => {
-
-    return {
-        // Map of tag id to tag.
-        tags: tagStore.getAll(),
-
-        // A submap of tags, of those results that are showable.
-        selectedTags: filteredTagStore.getAll(),
-
-        // Map of gender, age, clip id to clip.
-        clips: clipStore.getAll(),
-
-        // Map of video id to video.
-        videos: videoStore.getAll(),
-
-        // Map of gender, age, thumbnail id to thumbnail.
-        thumbnails: thumbnailStore.getAll(),
-
-        // Map of gender, age, tag id to map of thumb id to lift float
-        // Note: This assumes the tag has only one base thumbnail
-        // for comparisons: for a video with a default thumbnail,
-        // it is the default thumbnail. In all other cases, it's
-        // the worst thumbnail.
-        lifts: liftStore.getAll(),
-
-        // Map of feature key to feature name
-        features: featureStore.getAll(),
-
-        // Map of gender, age, thumbnail id to array of feature key
-        // sorted by value descending.
-        thumbnailFeatures: thumbnailFeatureStore.getAll(),
-
-        // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: tagShareStore.getAll(),
-
-        // Map of account id to account.
-        accounts: accountStore.getAll(),
-    };
-};
 
 const CollectionsMainPage = React.createClass({
 

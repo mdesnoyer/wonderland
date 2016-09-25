@@ -6,22 +6,67 @@ import AJAXModule from '../modules/ajax';
 import SESSION from '../modules/session';
 import UTILS from '../modules/utils';
 
+const registerCallbacks = [];
+
+// A class to bind store updates to subscribed components.
+export const Dispatcher = {
+    dispatch() {
+        registerCallbacks.forEach(callback => {
+            callback();
+        });
+        return Dispatcher;
+    },
+
+    register(callback) {
+        registerCallbacks.push(callback);
+        return Dispatcher;
+    },
+
+    // Find and remove the callback. Return true if found and removed.
+    unregister(callback) {
+        const index = registerCallbacks.indexOf(callback);
+        if (index === -1) {
+            return false;
+        }
+        registerCallbacks.splice(index, 1);
+        return true;
+    },
+};
+
+// Given the enum of gender, age, return new Object
+// with their two api request key and value.
+// (Optionally, specify fields in the response.)
+const getBaseParamsForDemoRequest = (gender, age, fields = []) => {
+    const baseParams = {};
+    // If demo parameters are valued and not "null", then include them.
+    if (gender !== 0) {
+        baseParams.gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
+    }
+    if (age !== 0) {
+        baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
+    }
+    if (fields.length > 0) {
+        baseParams.fields = fields.join(',');
+    }
+    return baseParams;
+};
+
 class Store {
     constructor() {
-        this.__store = {};
+        this.store = {};
         this.completelyLoaded = false;
     }
 
     getAll() {
-        return this.__store;
+        return this.store;
     }
 
     get(id) {
-        return this.__store[id];
+        return this.store[id];
     }
 
     set(map) {
-        Object.assign(this.__store, map);
+        Object.assign(this.store, map);
         return this;
     }
 
@@ -36,18 +81,18 @@ class Store {
     // Get as Unix epoch in seconds.
     // Return null if store is empty.
     getOldestTimestamp() {
-        if (this.count() == 0) {
+        if (!this.count()) {
             return null;
         }
 
         const oldestItem = _(this.getAll())
             .values()
             .minBy(item => item.created);
-        return moment(oldestItem.created + 'Z').format('x') / 1000;
+        return moment(`${oldestItem.created}Z`).format('x') / 1000;
     }
 
     reset() {
-        this.__store = {};
+        this.store = {};
         this.completelyLoaded = false;
     }
 }
@@ -55,15 +100,15 @@ class Store {
 class DemoStore extends Store {
     constructor() {
         super();
-        this.__store = this.genderAgeBaseMap();
+        this.store = this.genderAgeBaseMap();
     }
 
-    get(gender, age, map) {
-        return _clips[gender][age][id];
+    get(gender, age, id) {
+        return this.store[gender][age][id];
     }
 
     set(gender, age, map) {
-        Object.assign(this.__store[gender][age], map);
+        Object.assign(this.store[gender][age], map);
         return this;
     }
 
@@ -74,7 +119,7 @@ class DemoStore extends Store {
 
     reset() {
         super.reset();
-        this.__store == this.genderAgeBaseMap();
+        this.store = this.genderAgeBaseMap();
         return this;
     }
 
@@ -86,7 +131,7 @@ class DemoStore extends Store {
                 2: {},
                 3: {},
                 4: {},
-                5: {}
+                5: {},
             },
             1: {
                 0: {},
@@ -94,7 +139,7 @@ class DemoStore extends Store {
                 2: {},
                 3: {},
                 4: {},
-                5: {}
+                5: {},
             },
             2: {
                 0: {},
@@ -102,20 +147,20 @@ class DemoStore extends Store {
                 2: {},
                 3: {},
                 4: {},
-                5: {}
-            }
-        }
+                5: {},
+            },
+        };
     }
 }
 
 class FilteredStore {
     constructor(sourceStore) {
         this.sourceStore = sourceStore;
-        this.filter = this.__defaultFilter;
+        this.filter = this.defaultFilter;
         this.completelyLoad = false;
     }
 
-    __defaultFilter(item) {
+    defaultFilter(item) {
         return item.hidden !== true;
     }
 
@@ -125,7 +170,7 @@ class FilteredStore {
 
     // Get all that pass filter.
     getAll() {
-        const result  = _(this.sourceStore.getAll())
+        const result = _(this.sourceStore.getAll())
             .filter(this.filter)
              // Restore the map structure since filter returns array.
             .keyBy('tag_id')
@@ -161,10 +206,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // load all downstream stores after checking
     // they're already loaded.
 
-    loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter, callback) => {
-
+    loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter,
+                           callback = Function.prototype) => {
         // Short circuit empty input.
-        if(searchRes.items.length == 0) {
+        if (searchRes.items.length === 0) {
             return;
         }
 
@@ -178,7 +223,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Bind update objects in outer scope.
         const updateTagMap = {};
         const updateVideoMap = {};
-        const updateClipMap = {};
 
         const searchResTagIds = _.chain(searchRes.items)
             .reduce((tagIds, tag) => {
@@ -198,30 +242,28 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         let tagPromise = Promise.resolve({});
         if (searchForTagIds.length > 0) {
-            const tagData = {
-                tag_id: searchForTagIds.join(',')
-            };
-            tagPromise = LoadActions.GET('tags', {data: tagData});
+            const tagData = { tag_id: searchForTagIds.join(',') };
+            tagPromise = LoadActions.get('tags', { data: tagData });
         }
 
         // Build promise for videos referenced from tags.
-        let videoPromise = Promise.resolve({videos: []});
+        let videoPromise = Promise.resolve({ videos: [] });
 
         let usingVideoIds;
         if (reload) {
             // Just get every video id in the search result.
             usingVideoIds = _(searchRes.items)
             .reduce((videoIds, tag) => {
-                if(tag.video_id) {
+                if (tag.video_id) {
                     videoIds.push(tag.video_id);
                 }
                 return videoIds;
-            }, [])
+            }, []);
         } else {
             usingVideoIds = _
             .chain(searchRes.items)
             .reduce((videoIds, tag) => {
-                if(tag.video_id) {
+                if (tag.video_id) {
                     videoIds.push(tag.video_id);
                 }
                 return videoIds;
@@ -234,18 +276,17 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (usingVideoIds.length > 0) {
             const videoData = {
                 video_id: usingVideoIds.join(','),
-                fields: UTILS.VIDEO_FIELDS_MIN.join(',')
+                fields: UTILS.VIDEO_FIELDS_MIN.join(','),
             };
-            videoPromise = LoadActions.GET('videos', {data: videoData});
+            videoPromise = LoadActions.get('videos', { data: videoData });
         }
 
         let videos;
         Promise.all([tagPromise, videoPromise])
         .then(combined => {
-
             // Unpack promises.
             const tagRes = combined[0] || {};
-            const videoRes = combined[1] || {videos: []};
+            const videoRes = combined[1] || { videos: [] };
 
             // Filter
             if (videoFilter) {
@@ -255,67 +296,55 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Set each by map of id to resource.
             Object.assign(updateTagMap, tagRes);
-
-            //grab all clip IDs
-            Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
-                map[video.video_id] = video;
-                return map;
-            }, {}));
+            Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => (
+                Object.assign({}, map, { [video.video_id]: video })
+            ), {}));
 
             // Store the video thumbnails since they're inline in response.
             videos = videoRes.videos;
-            videos.map(video => {
-
+            videos.forEach(video => {
                 // For each demo, store its thumbnails by demo keys.
-                video.demographic_thumbnails.map(dem => {
+                video.demographic_thumbnails.forEach(dem => {
+                    const working = Object.assign({}, dem);
 
-                    // Shadow gender and age within this scope.
-                    let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
-                    let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
-                    if (age === undefined || gender === undefined) {
-                        console.warn('Unknown demo ', dem.age, dem.gender);
+                    const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                    const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                    if (demAge === undefined || demGender === undefined) {
                         return;
                     }
 
                     // Filter
                     if (thumbnailFilter) {
-                        dem.thumbnails = dem.thumbnails.filter(thumbnailFilter);
-                        dem.bad_thumbnails = dem.bad_thumbnails.filter(thumbnailFilter);
+                        working.thumbnails = working.thumbnails.filter(thumbnailFilter);
+                        working.bad_thumbnails = working.bad_thumbnails.filter(thumbnailFilter);
                     }
 
                     // Build partial update map.
-                    let thumbnailMap = {};
-                    dem.thumbnails.map(t => {
+                    const thumbnailMap = {};
+                    working.thumbnails.forEach(t => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
-                    if (dem.bad_thumbnails) {
-                        dem.bad_thumbnails.map(t => {
+                    if (working.bad_thumbnails) {
+                        working.bad_thumbnails.forEach(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
                     }
-                    else {
-                        dem.bad_thumbnails = [];
-                    }
 
-                    thumbnailStore.set(gender, age, thumbnailMap);
-
+                    thumbnailStore.set(demGender, demAge, thumbnailMap);
                 });
             });
+
+            const clipIds = videoRes.videos.reduce((_clipIds, video) => {
+                _clipIds.push(...video.demographic_clip_ids.reduce((_ids, dem) => {
+                    _ids.push(...dem.clip_ids);
+                    return _ids;
+                }, []));
+                return _clipIds;
+            }, []);
 
             // Now load the thumbnails for the non-video tags.
-
-            // Get the set of thumbnail ids.
-
-            var clipIds = []
-            videoRes.videos.map(function(index, elem) {
-                index.demographic_clip_ids.map(function(item, i) {
-                    item.clip_ids.map(function(i) {
-                        clipIds.push(i)
-                    });
-                });
-            });
             const tags = _.values(tagRes);
-
+            // Get the set of thumbnail ids.
             const thumbnailIdSet = _
                 .chain(tags)
                 // Skip video tags if they don't have clips.
@@ -328,42 +357,40 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 })
                 // Concatentate the array of thumbnail ids.
                 .reduce((thumbnailIds, tag) => {
-                    thumbnailIds = thumbnailIds.concat(tag.thumbnail_ids);
+                    thumbnailIds.push(...tag.thumbnail_ids);
                     return thumbnailIds;
                 }, [])
                 // Remove duplicates.
                 .uniq()
                 .value();
 
-            const thumbnailsPromise = LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
-            const clipsPromise = LoadActions.loadClips(clipIds, gender, age)
+            const thumbnailsPromise = LoadActions.loadThumbnails(thumbnailIdSet, gender, age);
+            const clipsPromise = LoadActions.loadClips(clipIds, gender, age);
 
             Promise.all([thumbnailsPromise, clipsPromise])
             .then(combinedRes => {
-                const thumbRes = combinedRes[0] || {thumbnails: []};
-                const clipRes = combinedRes[1] || {clips: []};
+                const thumbRes = combinedRes[0] || { thumbnails: [] };
+                const clipRes = combinedRes[1] || { clips: [] };
 
                 // Mapping the response from the thumbnail promise
-                const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
-                    map[t.thumbnail_id] = t;
-                    return map;
-                }, {});
+                const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => (
+                    Object.assign({}, map, { [t.thumbnail_id]: t })
+                ), {});
 
-                videos.map(video => {
-                    video.demographic_clip_ids.map(dem => {
-                        const gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
-                        const age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
-                        if (age === undefined || gender === undefined) {
-                            console.warn('Unknown demo ', dem.age, dem.gender);
+                videos.forEach(video => {
+                    video.demographic_clip_ids.forEach(dem => {
+                        const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                        const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                        if (demAge === undefined || demGender === undefined) {
                             return;
                         }
                         const clipMap = {};
-                        dem.clip_ids.map(clip_id => {
-                            clipMap[clip_id] = clipRes.clips.find(clip => clip.clip_id == clip_id);
+                        dem.clip_ids.forEach(clipId => {
+                            clipMap[clipId] = clipRes.clips.find(clip => clip.clip_id === clipId);
                         });
-                        clipStore.set(gender, age, clipMap);
-                    })
-                })
+                        clipStore.set(demGender, demAge, clipMap);
+                    });
+                });
 
                 // Set all of these together within one synchronous block.
                 tagStore.set(updateTagMap);
@@ -372,17 +399,13 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 // This is the first point at which we can display
                 // a meaningful set of results, so dispatch.
                 Dispatcher.dispatch();
-
-                if (_.isFunction(callback)) {
-                    callback();
-                }
-
+                callback();
                 return LoadActions.loadLifts(_.keys(tagRes), gender, age);
             })
             .then(liftRes => {
                 // Map of tag id to lift map.
                 const tagLiftMap = {};
-                _.toPairs(liftRes).map(pair => {
+                _.toPairs(liftRes).forEach(pair => {
                     const tagId = pair[0];
                     const liftMap = pair[1];
                     tagLiftMap[tagId] = liftMap;
@@ -390,36 +413,30 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 liftStore.set(gender, age, tagLiftMap);
                 Dispatcher.dispatch();
             });
-        })
+        });
     },
 
-    loadVideos(videoIds, liftGender=0, liftAge=0, callback) {
-        if(0 == videoIds.length) {
+    loadVideos(videoIds, liftGender = 0, liftAge = 0, callback = Function.prototype) {
+        if (!videoIds) {
             return;
         }
-        const updateThumbnailMap = {};
         const videoIdSet = _.uniq(videoIds);
         const videoData = {
-                video_id: videoIdSet.join(','),
-                fields: UTILS.VIDEO_FIELDS_MIN.join(',')
-            };
-        LoadActions.GET('videos', {data: videoData})
+            video_id: videoIdSet.join(','),
+            fields: UTILS.VIDEO_FIELDS_MIN.join(','),
+        };
+        LoadActions.get('videos', { data: videoData })
         .then(videoRes => {
-
-
             // Build update map.
             const thumbnailDemoMap = {};
             const tagIds = [];
             // Store the video thumbnails since they're inline in response.
-            videoRes.videos.map(video => {
-
+            videoRes.videos.forEach(video => {
                 // For each demo, store its thumbnails by demo keys.
-                video.demographic_thumbnails.map(dem => {
-
+                video.demographic_thumbnails.forEach(dem => {
                     const gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     const age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
                     if (age === undefined || gender === undefined) {
-                        console.warn('Unknown demo ', dem.age, dem.gender);
                         return;
                     }
                     if (thumbnailDemoMap[gender] === undefined) {
@@ -428,10 +445,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     if (thumbnailDemoMap[gender][age] === undefined) {
                         thumbnailDemoMap[gender][age] = {};
                     }
-                    dem.thumbnails.map(t => {
+                    dem.thumbnails.forEach(t => {
                         thumbnailDemoMap[gender][age][t.thumbnail_id] = t;
                     });
-                    dem.bad_thumbnails.map(t => {
+                    dem.bad_thumbnails.forEach(t => {
                         thumbnailDemoMap[gender][age][t.thumbnail_id] = t;
                     });
 
@@ -440,21 +457,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             });
 
             // Set new value to stores.
-            videoStore.set(videoRes.videos.reduce((map, video) => {
-                map[video.video_id] = video;
-                return map;
-            }, {}));
-            for (let gender in thumbnailDemoMap) {
-                for (let age in thumbnailDemoMap[gender]) {
-                    if (gender === 'null') {
-                        gender = 0;
-                    }
-                    if (age === 'null') {
-                        age = 0;
-                    }
-                    thumbnailStore.set(gender, age, thumbnailDemoMap[gender][age]);
-                }
-            }
+            videoStore.set(videoRes.videos.reduce((map, video) => (
+                Object.assign({}, map, { [video.video_id]: video })
+            ), {}));
+            thumbnailDemoMap.forEach((_x, gender) => {
+                thumbnailDemoMap[gender].forEach((_y, age) => {
+                    const mapGender = gender === 'null' ? 0 : gender;
+                    const mapAge = age === 'null' ? 0 : age;
+                    thumbnailStore.set(mapGender, mapAge, thumbnailDemoMap[mapGender][mapAge]);
+                });
+            });
             Dispatcher.dispatch();
 
             LoadActions.loadLifts(tagIds, liftGender, liftAge, true)
@@ -463,19 +475,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 const tagLiftMap = liftRes;
                 liftStore.set(liftGender, liftAge, tagLiftMap);
                 Dispatcher.dispatch();
-
-                if (_.isFunction(callback)) {
-                    callback(videoRes);
-                }
-            })
+                callback(videoRes);
+            });
         });
     },
 
     // Load video resource until an estimate is provided
     // or the video status is not processing.
     // TODO think about where something like this should go.
-    loadProcessingVideoUntilEstimate(videoId, gender=0, age=0) {
-        const repeat = function(videoResponse) {
+    loadProcessingVideoUntilEstimate(videoId, gender = 0, age = 0) {
+        const repeat = (videoResponse) => {
             const video = videoResponse.videos[0];
             if (video.state === UTILS.VIDEO_STATE_ENUM.processing) {
                 if (video.estimated_time_remaining !== null) {
@@ -483,18 +492,19 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return;
                 }
                 // Else try again.
-                setTimeout(LoadActions.loadProcessingVideoUntilEstimate.bind(null, [videoId], gender, age), 3000);
+                setTimeout(LoadActions.loadProcessingVideoUntilEstimate.bind(
+                    null, [videoId], gender, age), 3000);
             }
             // After state change from processing, done.
         };
-        LoadActions.loadVideos([videoId], gender, age, repeat);
+        return LoadActions.loadVideos([videoId], gender, age, repeat);
     },
 
     // Load thumbnails by ids.
-    loadThumbnails: function(thumbnailIds, gender=0, age=0, fields=[]) {
+    loadThumbnails(thumbnailIds, gender = 0, age = 0, fields = []) {
         // Empty array of ids is no-op.
-        if(thumbnailIds.length == 0) {
-            return Promise.resolve({thumbnails: []});
+        if (!thumbnailIds) {
+            return Promise.resolve({ thumbnails: [] });
         }
 
         // Create array of CSVs of max length.
@@ -503,57 +513,45 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         let params;
         // Batch only large requests since batch is slower.
-        if (thumbArgs.length > 1) {
-            thumbArgs.map(arg => {
+        if (thumbArgs) {
+            thumbArgs.forEach(arg => {
                 // Build this batch's params by copying base params and adding the tid arg.
                 params = {};
-                Object.assign(params, baseParams, {thumbnail_id: arg});
+                Object.assign(params, baseParams, { thumbnail_id: arg });
                 LoadActions.batch('GET', 'thumbnails', params);
             });
             return LoadActions.sendBatch();
-        } else {
-            params = {};
-            Object.assign(params, baseParams, {thumbnail_id: thumbArgs[0]});
-            return LoadActions.GET('thumbnails', {data: params});
         }
+        params = {};
+        Object.assign(params, baseParams, { thumbnail_id: thumbArgs[0] });
+        return LoadActions.get('thumbnails', { data: params });
     },
 
-    loadClips: function(clipIds, gender=0, age=0) {
-        if(clipIds.length == 0) {
-            return Promise.resolve({clips: []});
+    loadClips(clipIds, gender = 0, age = 0, callback = Function.prototype) {
+        if (!clipIds) {
+            return Promise.resolve({ clips: [] });
         }
         const clipArgs = UTILS.csvFromArray(clipIds);
-        const baseParams = getBaseParamsForDemoRequest(gender, age, UTILS.CLIP_FIELDS);
-        let params;
-        if (clipArgs.length > 1) {
-            clipArgs.map(arg => {
-                // Build this batch's params by copying base params and adding the tid arg.
-                params = {};
-                Object.assign(params, baseParams, {clip_ids: arg});
-                LoadActions.batch('GET', 'clips', params);
-            });
-            return LoadActions.sendBatch();
-        } else {
-            params = {};
-            Object.assign(params, baseParams, {clip_ids: clipArgs[0]});
-            return LoadActions.GET('clips', {data: params});
-        }
+        const data = getBaseParamsForDemoRequest(gender, age, UTILS.CLIP_FIELDS);
+        // TODO handle > 100
+        data.clip_ids = clipArgs[0];
+        callback();
+        return LoadActions.get('clips', { data });
     },
 
     // Load lifts for thumbnails from data source.
-    loadLifts: function(tagIds, gender=0, age=0, reload=false) {
-
+    loadLifts(tagIds, gender = 0, age = 0, reload = false) {
         // Find tags missing from stored lift map for demo.
         const loadTagIds = reload ?
             tagIds :
-            tagIds.reduce((loadTagIds, tagId) => {
-            if (_.isEmpty(tagStore.get(gender, age, tagId))) {
-                loadTagIds.push(tagId);
-            }
-            return loadTagIds;
-        }, []);
+            tagIds.reduce((acc, tagId) => {
+                if (_.isEmpty(tagStore.get(gender, age, tagId))) {
+                    acc.push(tagId);
+                }
+                return acc;
+            }, []);
         // Short circuit if empty.
-        if (0 == loadTagIds.length) {
+        if (loadTagIds.length === 0) {
             return Promise.resolve([]);
         }
 
@@ -562,13 +560,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         // Store map of base thumbnail id to tag id for reverse lookup
         // while processing response.
         const baseTagMap = {};
-
         const tagLiftMap = {};
 
-        loadTagIds.map(tagId => {
-
+        loadTagIds.forEach((tagId) => {
             // TODO refactor this and CollectionsContainer getLeftRight.
-
             // Get the worst thumbnail.
             const tag = tagStore.get(tagId);
 
@@ -581,70 +576,69 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Special case for 0, 1 thumbnail collections:
             // 1 is just a map of the image to 0% lift vs itself.
             // 0 is the null map.
-            switch (thumbnailIds.length) {
-                case 1:
-                    const onlyId = thumbnailIds[0];
-                    tagLiftMap[tagId] = {[onlyId]: 0};
-                    return;
-                case 0:
-                    tagLiftMap[tagId] = {};
-                    return;
+            if (thumbnailIds.length === 0) {
+                tagLiftMap[tagId] = {};
+                return;
+            }
+            if (thumbnailIds.length === 1) {
+                tagLiftMap[tagId] = { [thumbnailIds[0]]: 0 };
+                return;
             }
 
             // If the type is video, its default thumbnail
             // is used instead of the worst.
             const worst = UTILS.worstThumbnail(_.values(thumbnailMap));
-            let _default;
-            if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
+            let defaultThumb;
+            if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
                 const video = videoStore.get(tag.video_id);
                 const demo = UTILS.findDemographicThumbnailObject(
                     video.demographic_thumbnails, gender, age);
-                _default = UTILS.findDefaultThumbnail(demo);
+                defaultThumb = UTILS.findDefaultThumbnail(demo);
             }
 
-            const baseThumb = _default? _default: worst;
-            const base_id = baseThumb.thumbnail_id;
-            baseTagMap[base_id] = tagId;
+            const baseThumb = defaultThumb || worst;
+            const baseId = baseThumb.thumbnail_id;
+            baseTagMap[baseId] = tagId;
 
             // Copy params array and assign the thumbnail ids.
-            const vsThumbnailIds = _.keys(_.omit(thumbnailMap, [base_id]));
+            const vsThumbnailIds = _.keys(_.omit(thumbnailMap, [baseId]));
 
             // Batch each MAX_CSV_VALUE_COUNT (100) thumbnail ids.
             const csvArray = UTILS.csvFromArray(vsThumbnailIds);
-            csvArray.map(thumbnail_ids => {
+            csvArray.forEach(csvThumbnailIds => {
                 const params = {};
-                Object.assign(params, baseParams, {base_id, thumbnail_ids});
+                Object.assign(params, baseParams, {
+                    base_id: baseId,
+                    thumbnail_ids: csvThumbnailIds });
                 LoadActions.batch('GET', 'stats/estimated_lift', params);
             });
         });
         return LoadActions.sendBatch({
             // Unpack batch response.
-            successHandler: batches => {
-                return batches.results.reduce((tagLiftMap, batch) => {
+            successHandler: batches => (
+                batches.results.reduce((batchLiftMap, batch) => {
                     const baseId = batch.response.baseline_thumbnail_id;
                     // Use reverse lookup to get the tag id from the base thumb id.
                     const tagId = baseTagMap[baseId];
-                    tagLiftMap[tagId] = batch.response.lift.reduce((map, item) => {
-                        map[item.thumbnail_id] = item.lift;
-                        return map;
-                    }, {});
-                    return tagLiftMap;
-                }, tagLiftMap);
-            }
+                    return Object.assign({}, batchLiftMap, {
+                        [tagId]: batch.response.lift.reduce((map, item) => (
+                        Object.assign({}, map, { [item.thumbnail_id]: item.lift })
+                    ), {}) });
+                }, tagLiftMap)
+            ),
         });
     },
 
     // Load data for given demographic if new.
     // (Written for child callback.)
-    loadTagForDemographic: function(tagId, gender, age, callback) {
-
+    loadTagForDemographic(tagId, gender, age, callback = Function.prototype) {
         // Find the missing thumbnail ids.
         const missingThumbIds = [];
         const tag = tagStore.get(tagId);
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             // These are already loaded!
         } else {
-            tag.thumbnail_ids.map(tid => {
+            tag.thumbnail_ids.forEach(tid => {
                 if (undefined === thumbnailStore.get(gender, age, tid)) {
                     missingThumbIds.push(tid);
                 }
@@ -654,7 +648,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const newThumbnailMap = {};
         LoadActions.loadThumbnails(missingThumbIds, gender, age)
         .then(thumbRes => {
-            thumbRes.thumbnails.map(t => {
+            thumbRes.thumbnails.forEach(t => {
                 newThumbnailMap[t.thumbnail_id] = t;
             });
             thumbnailStore.set(gender, age, newThumbnailMap);
@@ -666,72 +660,68 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             liftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
             callback();
-        })
+        });
+        return LoadActions;
     },
 
     // Load Feature objects for the thumbnails for the given tag
     // for the given demographic.
-    loadFeaturesForTag(tagId, gender, age) {
-
+    loadFeaturesForTag(tagId, gender, age, callback = Function.prototype) {
         // Get missing thumbnail ids.
         const tag = tagStore.get(tagId);
         const thumbnailIds = _(thumbnailStore.getAll()[gender][age])
             .pick(tag.thumbnail_ids)
             .keys()
-            .filter(thumbnailId => {
-                // Remove ones we've already stored.
-                return undefined === ThumbnailFeatureStore.getAll()[gender][age][thumbnailId];
-            })
+            // Remove ones we've already stored.
+            .filter(thumbnailId => (
+                undefined === thumbnailFeatureStore.getAll()[gender][age][thumbnailId]
+            ))
             .value();
 
-        if(thumbnailIds.length == 0) {
-            return;
+        if (thumbnailIds.length === 0) {
+            return LoadActions;
         }
 
         LoadActions.loadThumbnails(thumbnailIds, gender, age, ['thumbnail_id', 'feature_ids'])
         .then(thumbRes => {
-
             // Configure the reduce/filter.
             const ignoreIds = UTILS.VALENCE_IGNORE_INDEXES;
             const numToKeep = UTILS.VALENCE_NUM_TO_KEEP;
 
             // Keep a set of all the feature ids in the response.
-            let featureIdSet = [];
+            const featureIds = [];
 
             const newThumbnailFeatureMap = {};
 
-            thumbRes.thumbnails.map(t => {
+            thumbRes.thumbnails.forEach(t => {
                 const featureIdValues = t.feature_ids ? t.feature_ids.reduce((array, idValue) => {
-                    let featureId = idValue[0];
-                    let featureValue = idValue[1];
-                    if (ignoreIds.indexOf(parseInt(featureId.split('_')[1])) === -1) {
+                    const featureId = idValue[0];
+                    if (ignoreIds.indexOf(parseInt(featureId.split('_')[1], 10)) === -1) {
                         array.push(idValue);
                     }
                     return array;
                 }, []) : [];
 
                 const sortedIds = _(featureIdValues)
-                    .orderBy(idValue => {
-                        return idValue[1];
-                    }, ['desc'])
+                    .orderBy(idValue => idValue[1], ['desc'])
                     .slice(0, numToKeep)
                     .reduce((ids, idValue) => {
                         ids.push(idValue[0]);
                         return ids;
                     }, []);
 
-                featureIdSet = _.union(featureIdSet, sortedIds);
+                featureIds.push(...sortedIds);
                 newThumbnailFeatureMap[t.thumbnail_id] = sortedIds;
             });
 
-            ThumbnailFeatureStore.set(gender, age, newThumbnailFeatureMap);
+            thumbnailFeatureStore.set(gender, age, newThumbnailFeatureMap);
 
-            const missingFeatureIds = _.filter(featureIdSet, featureId => {
-                return undefined === FeatureStore.get(featureId);
-            });
+            const missingFeatureIds = _.filter(_.uniq(featureIds), featureId => (
+                undefined === featureStore.get(featureId)
+            ));
 
-            if (missingFeatureIds.length == 0) {
-                return Promise.resolve({features: []});
+            if (!missingFeatureIds) {
+                return Promise.resolve({ features: [] });
             }
 
             // TODO handle more than 100.
@@ -739,38 +729,37 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 noAccountId: true,
                 data: {
                     fields: ['name', 'key'].join(','),
-                    key: missingFeatureIds.join(',')
-                }
+                    key: missingFeatureIds.join(','),
+                },
             };
-
-            LoadActions.GET('feature', featureData)
-            .then(featureRes => {
-                const newFeatureMap = {};
-                featureRes.features.map(feature => {
-                    // Remove "feature_" prefix.
-                    const featureKey = feature.key.split('feature_').pop();
-                    newFeatureMap[featureKey] = feature.name;
-                });
-                FeatureStore.set(newFeatureMap);
-                Dispatcher.dispatch();
+            return LoadActions.get('feature', featureData);
+        })
+        .then(featureRes => {
+            const newFeatureMap = {};
+            featureRes.features.forEach(feature => {
+                // Remove "feature_" prefix.
+                const featureKey = feature.key.split('feature_').pop();
+                newFeatureMap[featureKey] = feature.name;
             });
+            featureStore.set(newFeatureMap);
+            Dispatcher.dispatch();
         });
+        callback();
+        return LoadActions;
     },
 
-    loadTagByShareToken(accountId, tagId, shareToken) {
+    loadTagByShareToken(accountId, tagId, shareToken, callback = Function.prototype) {
         AJAXModule.baseOptions = {
             overrideAccountId: accountId,
-            data: {share_token: shareToken}
+            data: { share_token: shareToken },
         };
-
-        LoadActions.loadTags([tagId]);
+        return LoadActions.loadTags([tagId], 0, 0, callback);
     },
 
-    loadTags(tagIds, gender=0, age=0) {
-
+    loadTags(tagIds, gender = 0, age = 0, callback = Function.prototype) {
         // Short circuit empty input.
-        if(tagIds.length == 0) {
-            return;
+        if (tagIds.length === 0) {
+            return LoadActions;
         }
 
         // Bind update objects in outer scope.
@@ -778,58 +767,50 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const updateVideoMap = {};
         const updateThumbnailMap = {};
 
-        const tagData = {
-            tag_id: tagIds.join(',')
-        };
-        LoadActions.GET('tags', {data: tagData})
+        const tagData = { tag_id: tagIds.join(',') };
+        LoadActions.get('tags', { data: tagData })
         .then(tagRes => {
-
             Object.assign(updateTagMap, tagRes);
 
-            const videoIds = _.values(tagRes).reduce((videoIds, tag) => {
-                if(tag.video_id) {
-                    videoIds.push(tag.video_id);
+            const videoIds = _.values(tagRes).reduce((acc, tag) => {
+                if (tag.video_id) {
+                    acc.push(tag.video_id);
                 }
-                return videoIds;
+                return acc;
             }, []);
 
             const videoData = {
                 video_id: videoIds.join(','),
-                fields: UTILS.VIDEO_FIELDS.join(',')
+                fields: UTILS.VIDEO_FIELDS.join(','),
             };
 
-            const videoPromise = videoIds.length > 0?
-                LoadActions.GET('videos', {data: videoData}):
-                Promise.resolve({videos: []});
+            const videoPromise = videoIds.length > 0 ?
+                LoadActions.get('videos', { data: videoData }) :
+                Promise.resolve({ videos: [] });
 
             videoPromise.then(videoRes => {
-
                 // Set each by map of id to resource.
-                Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => {
-                    map[video.video_id] = video;
-                    return map;
-                }, {}));
+                Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => (
+                    Object.assign({}, map, { [video.video_id]: video })
+                ), {}));
                 // Store the video thumbnails since they're inline in response.
-                videoRes.videos.map(video => {
-
+                videoRes.videos.forEach((video) => {
                     // For each demo, store its thumbnails by demo keys.
-                    video.demographic_thumbnails.map(dem => {
-
+                    video.demographic_thumbnails.forEach((dem) => {
                         // Shadow gender and age within this scope.
-                        let gender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
-                        let age = UTILS.FILTER_AGE_COL_ENUM[dem.age];
-                        if (age === undefined || gender === undefined) {
-                            console.warn('Unknown demo ', dem.age, dem.gender);
+                        const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
+                        const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
+                        if (demAge === undefined || demGender === undefined) {
                             return;
                         }
 
                         // Build partial update map.
                         const thumbnailMap = {};
-                        dem.thumbnails.map(t => {
+                        dem.thumbnails.forEach(t => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
                         if (dem.bad_thumbnails) {
-                            dem.bad_thumbnails.map(t => {
+                            dem.bad_thumbnails.forEach(t => {
                                 thumbnailMap[t.thumbnail_id] = t;
                             });
                         }
@@ -840,31 +821,25 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
 
                 // Now load the thumbnails for the non-video tags.
-
                 // Get the set of thumbnail ids.
                 const tags = _.values(tagRes);
                 const thumbnailIdSet = _
                     .chain(tags)
                     // Skip video tags.
-                    .filter(tag => {
-                        return tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL;
-                    })
+                    .filter(tag => tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL)
                     // Concatentate the array of thumbnail ids.
-                    .reduce((thumbnailIds, tag) => {
-                        thumbnailIds = thumbnailIds.concat(tag.thumbnail_ids);
-                        return thumbnailIds;
-                    }, [])
+                    .reduce((thumbIds, tag) => thumbIds.concat(tag.thumbnail_ids), [])
                     // Remove duplicates.
                     .uniq()
                     .value();
-                LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
-                .then(thumbRes => {
 
-                    const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => {
-                        map[t.thumbnail_id] = t;
-                        return map;
-                    }, {});
+                LoadActions.loadThumbnails(thumbnailIdSet, gender, age)
+                .then((thumbRes) => {
+                    const thumbnailMap = thumbRes.thumbnails.reduce((thumbMap, thumb) => (
+                        Object.assign({}, thumbMap, { [thumb.thumbnail_id]: thumb })
+                    ), {});
                     Object.assign(updateThumbnailMap, thumbnailMap);
+
                     // Set all of these together within one synchronous block.
                     tagStore.set(updateTagMap);
                     videoStore.set(updateVideoMap);
@@ -878,7 +853,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 .then(liftRes => {
                     // Map of tag id to lift map.
                     const tagLiftMap = {};
-                    _.toPairs(liftRes).map(pair => {
+                    _.toPairs(liftRes).forEach(pair => {
                         const tagId = pair[0];
                         const liftMap = pair[1];
                         tagLiftMap[tagId] = liftMap;
@@ -888,6 +863,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 });
             });
         });
+        callback();
+        return LoadActions;
     },
 
     // Tries to fill out the tagStore to n tags
@@ -902,59 +879,51 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     //             tags in the filteredTagStore exceeds n
     //         if true, always call the backend, reloading those
     //             tags we have stored.
-    loadNNewestTags(n, query=null, type=null, reload=false, videoFilter=null, thumbnailFilter=null, callback=null) {
-        const self = this;
+    loadNNewestTags(n, query = null, type = null, reload = false,
+                    videoFilter = null, thumbnailFilter = null,
+                    callback = Function.prototype) {
         const haveCount = filteredTagStore.count();
 
         // If reloading, skip these checks that return early.
         if (!reload) {
             // Short circuit search if we have enough items or everything.
             if (n <= haveCount) {
-                callback && callback();
-                return;
+                callback();
+                return LoadActions;
             }
             if (tagStore.completelyLoaded) {
-                callback && callback();
-                return;
+                callback();
+                return LoadActions;
             } else if (query && filteredTagStore.completelyLoaded) {
-                callback && callback();
-                return;
+                callback();
             }
         }
 
-        let limit;
-        if (!reload) {
-            // Ensure searches are no bigger than the max.
-            limit = Math.min(n - haveCount, UTILS.MAX_SEARCH_SIZE);
-        } else {
-            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE);
-        }
-        const options = {
-            data: {limit}
-        };
+        // Ensure searches are no bigger than the max.
+        const limit = reload ?
+            Math.min(n, UTILS.MAX_SEARCH_SIZE) :
+            Math.min(n - haveCount, UTILS.MAX_SEARCH_SIZE);
 
-        // Find the oldest timestamp.
-        const oldestTimestamp = tagStore.getOldestTimestamp();
+        const data = { limit };
 
         // If reloading, we always load the front (i.e., latest) tags,
         // so no need to set the "until" parameter.
+        const oldestTimestamp = tagStore.getOldestTimestamp();
         if (!reload && oldestTimestamp) {
             // Get float of unix time in seconds
-            // (Already in UTC)
-            options.data.until = oldestTimestamp;
+            data.until = oldestTimestamp;
         }
         if (query) {
-            options.data.query = query;
+            data.query = query;
         }
         if (type) {
-            options.data.tag_type = type;
+            data.tag_type = type;
         }
 
-        self.GET('tags/search', options)
+        LoadActions.get('tags/search', { data })
         .then(searchRes => {
-
             // Mark this store as completely loaded.
-            if(searchRes.items.length < limit) {
+            if (searchRes.items.length < limit) {
                 if (query) {
                     filteredTagStore.completelyLoaded = true;
                 } else {
@@ -962,183 +931,83 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 }
             }
             if (searchRes.items.length === 0) {
-                callback && callback(true);
+                callback(true);
             }
 
-            LoadActions.loadFromSearchResult(searchRes, reload, videoFilter, thumbnailFilter, callback)
+            LoadActions.loadFromSearchResult(
+                searchRes, reload, videoFilter, thumbnailFilter, callback);
         });
+        return LoadActions;
     },
 
-    loadNOlderTags(n, type=null, videoFilter=null, thumbnailFilter=null, callback=null) {
-        const self = this,
-            limit = Math.min(n, UTILS.MAX_SEARCH_SIZE),
-            options = {
-                data: {limit}
-            }
-        ;
-        options.data.until = tagStore.getOldestTimestamp();
+    loadNOlderTags(n, type = null, videoFilter = null,
+                   thumbnailFilter = null, callback = Function.prototype) {
+        const limit = Math.min(n, UTILS.MAX_SEARCH_SIZE);
+        const until = tagStore.getOldestTimestamp();
+        const data = { limit, until };
         if (type) {
-            options.data.tag_type = type;
+            data.tag_type = type;
         }
-        self.GET('tags/search', options)
+        LoadActions.get('tags/search', { data })
         .then(searchRes => {
-            if(searchRes.items.length < limit) {
+            if (searchRes.items.length < limit) {
                 tagStore.completelyLoaded = true;
             }
-            if (searchRes.items.length === 0) {
-                callback && callback(true);
-            }
-
-            LoadActions.loadFromSearchResult(searchRes, false, videoFilter, thumbnailFilter, callback)
+            LoadActions.loadFromSearchResult(
+                searchRes, false, videoFilter, thumbnailFilter, callback);
         });
+        callback(true);
+        return LoadActions;
     },
 
     // Get a share url for a tag.
-    loadShareUrl(tagId) {
-
-        if (TagShareStore.has(tagId)) {
-            return;
+    loadShareUrl(tagId, callback = Function.prototype) {
+        if (tagShareStore.has(tagId)) {
+            return LoadActions;
         }
 
         const updateMap = {};
-        LoadActions.GET('tags/share', {data: {tag_id: tagId}})
+        const data = { tag_id: tagId };
+        LoadActions.get('tags/share', { data })
         .then(shareRes => {
             updateMap.token = shareRes.share_token;
 
-            const longUrl = window.location.origin +
-                '/share/collection/' + tagId +
-                '/account/' + SESSION.state.accountId +
-                '/token/' + updateMap.token + '/';
+            const base = window.location.origin;
+            const accountId = SESSION.state.accountId;
+            const t = updateMap.token;
+            const longUrl = `${base}/share/collection/${tagId}/account/${accountId}/token/${t}/`;
 
             UTILS.shortenUrl(longUrl, shortenRes => {
-
                 if (shortenRes.status_code === 200) {
                     updateMap.url = shortenRes.data.url;
                 } else {
                     updateMap.url = longUrl;
                 }
-                TagShareStore.set({[tagId]: updateMap});
+                tagShareStore.set({ [tagId]: updateMap });
                 Dispatcher.dispatch();
             });
         });
+        callback();
+        return LoadActions;
     },
+
     loadAccount(accountId) {
         // For now just return, but
         // eventually we should check to make
         // the account hasn't had any mods
         if (accountStore.has(accountId)) {
-            return;
+            return LoadActions;
         }
-        LoadActions.GET('')
+        LoadActions.get()
         .then(res => {
             if (res.account_id) {
-                accountStore.set({[res.account_id]: res});
+                accountStore.set({ [res.account_id]: res });
                 Dispatcher.dispatch();
             }
         });
-    }
+        return LoadActions;
+    },
 });
-
-export const SendActions = Object.assign({}, AjaxMixin, {
-
-    deleteCollectionByTagId: function(tagId) {
-        const tag = tagStore.get(tagId);
-        SendActions.PUT('tags', {data: {tag_id: tagId, hidden: true}})
-            .then(res => {
-                tag.hidden = true;
-                tagStore.set({[res.tag_id]: tag});
-                Dispatcher.dispatch();
-            });
-    },
-
-    refilterVideo: function(videoId, gender, age, callback, data={}) {
-        Object.assign(data, {
-            external_video_ref: videoId,
-            reprocess: true,
-            gender,
-            age,
-        });
-
-        const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
-        const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
-
-        SendActions.POST('videos', { data })
-            .then(res => {
-                LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
-            });
-    },
-    refilterVideoForClip: function(videoId, gender, age, callback) {
-        this.refilterVideo(videoId, gender, age, callback, UTILS.CLIP_OPTIONS);
-    },
-    sendEmail: function(data, callback) {
-        SendActions.POST('email', {data})
-        .then(function(res) {
-            callback({'status_code' : 200});
-        })
-        .catch(function(err) {
-            callback({
-                'status_code' : 400,
-                'errorMessage' : 'unknown error sending email'
-            });
-        });
-
-    }
-});
-
-export const ServingStatusActions = Object.assign({}, AjaxMixin, {
-    toggleThumbnailEnabled: function(thumbnail) {
-        const thumbnailId = thumbnail.thumbnail_id;
-        const videoId = thumbnail.video_id;
-        const video = videoStore.get(videoId);
-        const options = { data : { thumbnail_id: thumbnailId, enabled: !thumbnail.enabled } };
-        ServingStatusActions.PUT('thumbnails', options)
-            .then(res => {
-                LoadActions.loadTags([video.tag_id]);
-            });
-    }
-});
-
-// Given the enum of gender, age, return new Object
-// with their two api request key and value.
-// (Optionally, specify fields in the response.)
-const getBaseParamsForDemoRequest = (gender, age, fields=[]) => {
-
-    const baseParams = {};
-    // If demo parameters are valued and not "null", then include them.
-    if (gender !== 0) {
-        baseParams.gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
-    }
-    if (age !== 0) {
-        baseParams.age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
-    }
-    if (fields.length > 0) {
-        baseParams.fields = fields.join(',');
-    }
-    return baseParams;
-};
-
-const _registerCallbacks = [];
-// A class to bind store updates to subscribed components.
-export const Dispatcher = {
-    dispatch: () => {
-        _registerCallbacks.map(callback => {
-            callback();
-        });
-    },
-    register: callback => {
-        _registerCallbacks.push(callback);
-    },
-
-    // Find and remove the callback. Return true if found and removed.
-    unregister: callback => {
-        let index = _registerCallbacks.indexOf(callback);
-        if (index === -1) {
-            return false;
-        }
-        _registerCallbacks.splice(index, 1);
-        return true;
-    }
-};
 
 // Search intercepts requests to the tag store
 // so that we can known if there is another page
@@ -1153,23 +1022,22 @@ export const Search = {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
     },
 
-    load(count, onlyThisMany=false, callback=null) {
-
+    load(count, onlyThisMany = false, callback = null) {
         // Aggressively load tags unless caller specifies only this many.
-        const largeCount = onlyThisMany? count: Search.getLargeCount(count);
+        const largeCount = onlyThisMany ? count : Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(largeCount, null, null, false, null, null, wrapped);
     },
 
-    loadWithQuery(count, query=null, type=null, callback=null) {
+    loadWithQuery(count, query = null, type = null, callback = null) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(largeCount, query, type, false, null, null, wrapped);
     },
 
-    reload(count, query=null, type=null, callback=null) {
+    reload(count, query = null, type = null, callback = null) {
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(count, query, type, true, null, null, wrapped);
@@ -1193,26 +1061,90 @@ export const Search = {
     },
 
     setEmptySearch() {
-        return Search.emptySearch = true;
+        Search.emptySearch = true;
+        return Search;
     },
 
     incrementPending() {
-        return Search.pending += 1;
+        Search.pending += 1;
+        return Search;
     },
 
     decrementPending() {
-        return Search.pending -= 1;
+        Search.pending -= 1;
+        return Search;
     },
 
     reset() {
         Search.pending = 0;
         Search.emptySearch = false;
-    }
+        return Search;
+    },
 };
+
+export const ServingStatusActions = Object.assign({}, AjaxMixin, {
+    toggleThumbnailEnabled(thumbnail) {
+        const thumbnailId = thumbnail.thumbnail_id;
+        const videoId = thumbnail.video_id;
+        const video = videoStore.get(videoId);
+        const options = {
+            data: {
+                thumbnail_id: thumbnailId,
+                enabled: !thumbnail.enabled } };
+        ServingStatusActions.put('thumbnails', options)
+            .then(() => LoadActions.loadTags([video.tag_id]));
+    },
+});
+
+export const SendActions = Object.assign({}, AjaxMixin, {
+
+    deleteCollectionByTagId(tagId) {
+        const tag = tagStore.get(tagId);
+        const data = { tag_id: tagId, hidden: true };
+        SendActions.put('tags', { data })
+            .then(res => {
+                tag.hidden = true;
+                tagStore.set({ [res.tag_id]: tag });
+                Dispatcher.dispatch();
+            });
+    },
+
+    refilterVideo(videoId, gender, age, callback, data = {}) {
+        Object.assign(data, {
+            gender,
+            age,
+            external_video_ref: videoId,
+            reprocess: true,
+        });
+
+        const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
+        const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
+
+        SendActions.post('videos', { data })
+            .then(() => {
+                LoadActions.loadVideos([videoId], enumGender, enumAge, callback);
+            });
+    },
+
+    refilterVideoForClip(videoId, gender, age, callback) {
+        this.refilterVideo(
+            videoId, gender, age, callback, UTILS.CLIP_OPTIONS);
+    },
+
+    sendEmail(data, callback) {
+        SendActions.post('email', { data })
+        .then(() => callback({ status_code: 200 }))
+        .catch(() => {
+            callback({
+                status_code: 400,
+                errorMessage: 'unknown error sending email',
+            });
+        });
+    },
+});
 
 // Cancel pending requests and reset each store.
 export const resetStores = () => {
-
     LoadActions.cancelAll();
     SendActions.cancelAll();
     ServingStatusActions.cancelAll();
@@ -1227,3 +1159,42 @@ export const resetStores = () => {
     featureStore.reset();
     thumbnailFeatureStore.reset();
 };
+
+// This returns an object that is good defaulted base store
+// state for a top-level component like a page.
+export const getStateFromStores = () => ({
+    // Map of tag id to tag.
+    tags: tagStore.getAll(),
+
+    // A submap of tags, of those results that are showable.
+    selectedTags: filteredTagStore.getAll(),
+
+    // Map of gender, age, clip id to clip.
+    clips: clipStore.getAll(),
+
+    // Map of video id to video.
+    videos: videoStore.getAll(),
+
+    // Map of gender, age, thumbnail id to thumbnail.
+    thumbnails: thumbnailStore.getAll(),
+
+    // Map of gender, age, tag id to map of thumb id to lift float
+    // Note: This assumes the tag has only one base thumbnail
+    // for comparisons: for a video with a default thumbnail,
+    // it is the default thumbnail. In all other cases, it's
+    // the worst thumbnail.
+    lifts: liftStore.getAll(),
+
+    // Map of feature key to feature name
+    features: featureStore.getAll(),
+
+    // Map of gender, age, thumbnail id to array of feature key
+    // sorted by value descending.
+    thumbnailFeatures: thumbnailFeatureStore.getAll(),
+
+    // Map of tag id to {token: <share token>, url: <share url>}
+    tagShares: tagShareStore.getAll(),
+
+    // Map of account id to account.
+    accounts: accountStore.getAll(),
+});
