@@ -3,8 +3,8 @@ jest.unmock('../../../src/js/mixins/Ajax')
 
 import AJAXModule from '../../../src/js/modules/ajax';
 import {
-    TagStore,
-    ThumbnailStore,
+    tagStore,
+    thumbnailStore,
     LoadActions,
     Search,
     resetStores
@@ -12,19 +12,19 @@ import {
 
 describe('Function resetStores', () => {
     it('Deletes the tag store contents', () => {
-        TagStore.set({a: 'tag'});
-        expect(TagStore.count()).toEqual(1);
+        tagStore.set({a: 'tag'});
+        expect(tagStore.count()).toEqual(1);
         resetStores();
-        expect(TagStore.count()).toEqual(0);
-        expect(TagStore.get('a')).toEqual(undefined);
+        expect(tagStore.count()).toEqual(0);
+        expect(tagStore.get('a')).toEqual(undefined);
     });
 
     it('Deletes the thumbnail store contents', () => {
-        ThumbnailStore.set(0, 0, {
+        thumbnailStore.set(0, 0, {
             a: {thumbnail_id: 'a'},
             b: {thumbnail_id: 'b'},
         });
-        ThumbnailStore.set(1, 0, {
+        thumbnailStore.set(1, 0, {
             a: {thumbnail_id: 'a'},
             b: {thumbnail_id: 'b'},
         });

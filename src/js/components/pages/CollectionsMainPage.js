@@ -16,16 +16,8 @@ import PagingControl from '../core/_PagingControl';
 import UploadForm from '../knave/UploadForm';
 
 import {
-    accountStore,
-    clipStore,
-    featureStore,
-    filteredTagStore,
-    liftStore,
     tagStore,
-    tagShareStore,
-    thumbnailStore,
-    thumbnailFeatureStore,
-    videoStore,
+    filteredTagStore,
     getStateFromStores,
     resetStores,
     LoadActions,
@@ -49,7 +41,7 @@ const CollectionsMainPage = React.createClass({
                 searchQuery: '',
                 tooltipText: undefined,
                 searchPending: false
-            }
+            },
         );
     },
 
@@ -237,7 +229,7 @@ const CollectionsMainPage = React.createClass({
             return;
         }
         TRACKING.sendEvent(self, arguments, tagId);
-        SendActions.sendEmail(data, callback); 
+        SendActions.sendEmail(data, callback);
     },
 
     setTooltipText: function(tooltipText) {
@@ -268,9 +260,9 @@ const CollectionsMainPage = React.createClass({
     // Get the name of a tag, else the title of
     // the tag's video, else the empty string.
     getTagName(tag) {
-        if (tag.name == null) { 
-            return ''; 
-        } 
+        if (tag.name == null) {
+            return '';
+        }
         if (tag.name) {
             return tag.name;
         }
@@ -382,8 +374,8 @@ const CollectionsMainPage = React.createClass({
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares, 
-                        accounts: this.state.accounts, 
+                        tagShares: this.state.tagShares,
+                        accounts: this.state.accounts,
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}

@@ -12,7 +12,7 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
-import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
+import {AddActions, LoadActions, tagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import OverLayMessage from './OverLayMessage'
@@ -57,7 +57,7 @@ var UploadForm = React.createClass({
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
             self.setState({ 
-                uploadedTotal: TagStore.get(self.props.tagId).thumbnail_ids.length || 0,
+               uploadedTotal: tagStore.get(self.props.tagId).thumbnail_ids.length || 0,
                 tagId: self.props.tagId,
                 isOpen: true,
                 formState: 'updateCollection'
