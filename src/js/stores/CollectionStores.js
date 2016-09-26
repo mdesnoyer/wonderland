@@ -206,7 +206,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     loadFromSearchResult: (searchRes, reload, videoFilter, thumbnailFilter,
                            callback = Function.prototype) => {
         // Short circuit empty input.
-        if (searchRes.items.length === 0) {
+        if (!searchRes.items.length) {
             return LoadActions;
         }
 
@@ -222,7 +222,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Fetch functions take an array of resource id and return a promise.
     fetchTags(tagIds) {
-        if (!tagIds) {
+        if (!tagIds.length) {
             return Promise.resolve({});
         }
         const tagIdSet = _.uniq(tagIds);
@@ -231,9 +231,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     fetchVideos(videoIds) {
-        if (!videoIds) {
+        if (!videoIds.length) {
             return Promise.resolve({ videos: [] });
         }
+        console.log(videoIds);
         const videoIdSet = _.uniq(videoIds);
         const data = {
             video_id: videoIdSet.join(','),
@@ -245,7 +246,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Load thumbnails by ids.
     fetchThumbnails(thumbnailIds, gender = 0, age = 0, fields = []) {
         // Empty array of ids is no-op.
-        if (!thumbnailIds) {
+        if (!thumbnailIds.length) {
             return Promise.resolve({ thumbnails: [] });
         }
 
@@ -267,21 +268,20 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         return LoadActions.get('thumbnails', { data: params });
     },
 
-    fetchClips(clipIds, gender = 0, age = 0, callback = Function.prototype) {
-        if (!clipIds) {
+    fetchClips(clipIds, gender = 0, age = 0) {
+        if (!clipIds.length) {
             return Promise.resolve({ clips: [] });
         }
-        const clipArgs = UTILS.csvFromArray(clipIds);
         const data = getBaseParamsForDemoRequest(gender, age, UTILS.CLIP_FIELDS);
         // TODO handle > 100
-        data.clip_ids = clipArgs[0];
-        callback();
+        const clipIdSet = _.uniq(clipIds);
+        data.clip_ids = clipIdSet.join(',');
         return LoadActions.get('clips', { data });
     },
 
     // Load lifts for thumbnails from data source.
     fetchLifts(tagIds, gender = 0, age = 0) {
-        if (tagIds.length === 0) {
+        if (!tagIds.length) {
             return Promise.resolve([]);
         }
 
