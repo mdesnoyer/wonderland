@@ -234,7 +234,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (!videoIds.length) {
             return Promise.resolve({ videos: [] });
         }
-        console.log(videoIds);
         const videoIdSet = _.uniq(videoIds);
         const data = {
             video_id: videoIdSet.join(','),
