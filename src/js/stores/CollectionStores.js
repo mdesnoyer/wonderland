@@ -376,7 +376,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             // After state change from processing, done.
         };
-        LoadActions.fetchVideos([videoId]).then(videoResponse => repeat.bind(null, videoResponse);
+        LoadActions.fetchVideos([videoId]).then(videoResponse => repeat.bind(null, videoResponse));
         return LoadActions;
     },
 
