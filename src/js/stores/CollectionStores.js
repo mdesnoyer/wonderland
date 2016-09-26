@@ -669,8 +669,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             });
             liftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
+            callback(tags.length);
         });
-        callback(tags.length);
         return LoadActions;
     },
 
@@ -822,13 +822,12 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 export const Search = {
 
     pending: 0,
-    emptySearch: false,
 
     getLargeCount(count) {
         return count + UTILS.RESULTS_PAGE_SIZE + 1;
     },
 
-    load(count, onlyThisMany = false, callback = null) {
+    load(count, onlyThisMany = false, callback = Function.prototype) {
         // Aggressively load tags unless caller specifies only this many.
         const largeCount = onlyThisMany ? count : Search.getLargeCount(count);
         Search.incrementPending();
@@ -836,39 +835,28 @@ export const Search = {
         LoadActions.loadNNewestTags(largeCount, null, null, false, null, null, wrapped);
     },
 
-    loadWithQuery(count, query = null, type = null, callback = null) {
+    loadWithQuery(count, query = null, type = null, callback = Function.prototype) {
         const largeCount = Search.getLargeCount(count);
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(largeCount, query, type, false, null, null, wrapped);
     },
 
-    reload(count, query = null, type = null, callback = null) {
+    reload(count, query = null, type = null, callback = Function.prototype) {
         Search.incrementPending();
         const wrapped = Search.getWrappedCallback(callback);
         LoadActions.loadNNewestTags(count, query, type, true, null, null, wrapped);
     },
 
     getWrappedCallback(callback) {
-        return (isEmpty) => {
+        return () => {
             Search.decrementPending();
-            if (isEmpty) {
-                Search.setEmptySearch(true);
-                Dispatcher.dispatch();
-            }
-            if (_.isFunction(callback)) {
-                callback();
-            }
-        };
+            callback.call();
+        }
     },
 
     hasMoreThan(count) {
         return filteredTagStore.count() > count;
-    },
-
-    setEmptySearch() {
-        Search.emptySearch = true;
-        return Search;
     },
 
     incrementPending() {
@@ -883,7 +871,6 @@ export const Search = {
 
     reset() {
         Search.pending = 0;
-        Search.emptySearch = false;
         return Search;
     },
 };
