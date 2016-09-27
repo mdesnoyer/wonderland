@@ -285,7 +285,7 @@ var UploadForm = React.createClass({
     sendLocalPhotos: function(e) {
         const self = this;
         const inputs = e.target ? e.target.files : e;
-        const options = {
+        const baseOptions = {
             maxWidth: UTILS.IMAGE_TARGET_WIDTH,
             maxHeight: UTILS.IMAGE_TARGET_HEIGHT,
             canvas: true,
@@ -296,10 +296,9 @@ var UploadForm = React.createClass({
         for (let i = 0; i < inputs.length; ++i) {
             // Read Orientation tag from exif.
             loadImage.parseMetaData(inputs[i], (data) => {
+                const options = Object.assign({}, baseOptions);
                 if (data.exif) {
                     options.orientation = data.exif.get('Orientation');
-                } else {
-                    options.orientation = null;
                 }
 
                 loadImage(inputs[i], (canvas) => {
