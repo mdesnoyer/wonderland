@@ -138,7 +138,7 @@ const MobileBaseCollection = React.createClass({
         this.props.onThumbnailClick(leftThumbnailId);
     },
 
-    handleDisplayInfoc() {
+    handleDisplayInfo() {
         this.setState({ displayInfo: !this.state.displayInfo });
     },
 
