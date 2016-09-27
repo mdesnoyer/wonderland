@@ -12,7 +12,7 @@ import { windowOpen, objectToGetParams } from '../../modules/sharing';
 import BasePage from './BasePage';
 import SearchForm from '../core/SearchForm';
 import CollectionsContainer from '../knave/CollectionsContainer';
-import PagingControl from '../core/_PagingControl';
+import PagingControls from '../core/PagingControls';
 import UploadForm from '../knave/UploadForm';
 
 import {
@@ -394,7 +394,7 @@ const CollectionsMainPage = React.createClass({
                     disableThumbnail={this.disableThumbnail}
                     ownerAccountId={SESSION.state.accountId}
                 />
-                <PagingControl
+                <PagingControls
                     currentPage={this.state.currentPage}
                     changeCurrentPage={this.changeCurrentPage}
                     enableNext={this.getPagingEnableNext()}
