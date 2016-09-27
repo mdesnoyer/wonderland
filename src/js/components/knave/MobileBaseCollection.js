@@ -10,7 +10,7 @@ import {
     ThumbnailList,
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
-    ShowMoreLessThumbnailList} from './ThumbnailList';
+    ShowMoreLessThumbnailList } from './ThumbnailList';
 
 import Lift from '../knave/Lift';
 import GifClip  from './GifClip';
@@ -124,7 +124,7 @@ const MobileBaseCollection = React.createClass({
         return <div>{children}</div>;
     },
 
-    onRightThumbnailClickc() {
+    onRightThumbnailClick() {
         if (this.props.onRightThumbnailClick) {
             this.props.onRightThumbnailClick();
         } else {
