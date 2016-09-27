@@ -12,13 +12,15 @@ import CollectionsContainer from '../knave/CollectionsContainer';
 import {
     LoadActions,
     Dispatcher,
-    resetStores } from '../../stores/CollectionStores.js';
+    Store,
+    cancelActions
+} from '../../stores/CollectionStores.js';
 
 const ViewSharedCollectionPage = React.createClass({
 
     getInitialState: function() {
         return Object.assign(
-            getStateFromStores(),
+            Store.getState(),
             { metaTags: [] },
         );
     },
@@ -35,7 +37,8 @@ const ViewSharedCollectionPage = React.createClass({
 
     componentWillUnmount: function() {
         Dispatcher.unregister(this.updateState);
-        resetStores();
+        Store.resetStores();
+        cancelActions();
     },
 
     baseMetaTags: [
@@ -76,7 +79,7 @@ const ViewSharedCollectionPage = React.createClass({
 
     updateState: function() {
         const self = this;
-        self.setState(getStateFromStores(),
+        self.setState(Store.getState(),
             () => {
                 self.setState({metaTags: self.getMetaTagsFromProps()});
             }

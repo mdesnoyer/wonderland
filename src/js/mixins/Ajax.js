@@ -4,22 +4,22 @@ const AjaxMixin = {
     apiCalls: [],
     batches: [],
     GET(url = '', options = {}) {
-        var ret = AJAXModule.doGet(url, options);
+        const ret = AJAXModule.doGet(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
     POST(url = '', options = {}) {
-        var ret = AJAXModule.doPost(url, options);
+        const ret = AJAXModule.doPost(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
     PUT(url = '', options = {}) {
-        var ret = AJAXModule.doPut(url, options);
+        const ret = AJAXModule.doPut(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
     API(url = '', options = {}) {
-        var ret = AJAXModule.doApiCall(url, options);
+        const ret = AJAXModule.doApiCall(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },

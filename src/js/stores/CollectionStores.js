@@ -36,7 +36,7 @@ export const Dispatcher = {
 // Given the enum of gender, age, return new Object
 // with their two api request key and value.
 // (Optionally, specify fields in the response.)
-const getBaseParamsForDemoRequest = (gender, age, fields = []) => {
+const getBaseParamsForDemoRequest = (gender = null, age = null, fields = []) => {
     const baseParams = {};
     // If demo parameters are valued and not "null", then include them.
     if (gender !== 0) {
@@ -51,10 +51,10 @@ const getBaseParamsForDemoRequest = (gender, age, fields = []) => {
     return baseParams;
 };
 
-class Store {
-    constructor() {
-        this.store = {};
-        this.completelyLoaded = false;
+export class Store {
+    constructor(name) {
+        this.reset();
+        Store.stores[name] = this;
     }
 
     getAll() {
@@ -71,7 +71,7 @@ class Store {
     }
 
     has(id) {
-        return undefined !== this.get(id);
+        return this.get(id) !== undefined;
     }
 
     count() {
@@ -96,10 +96,23 @@ class Store {
         this.completelyLoaded = false;
     }
 }
+// Static registry.
+Store.stores = {};
+
+// Call the reset method on any registered store.
+Store.resetStores = () => {
+    _.values(Store.stores).forEach(store => store.reset());
+    return Store;
+};
+Store.getState = () => (
+    _.reduce(Store.stores, (result, store, name) => (
+        Object.assign({}, result, { [name]: store.getAll() })
+    ), {})
+);
 
 class DemoStore extends Store {
-    constructor() {
-        super();
+    constructor(name) {
+        super(name);
         this.store = this.genderAgeBaseMap();
     }
 
@@ -154,10 +167,10 @@ class DemoStore extends Store {
 }
 
 class FilteredStore {
-    constructor(sourceStore) {
+    constructor(name, sourceStore) {
         this.sourceStore = sourceStore;
-        this.filter = this.defaultFilter;
-        this.completelyLoad = false;
+        this.reset();
+        Store.stores[name] = this;
     }
 
     defaultFilter(item) {
@@ -188,17 +201,17 @@ class FilteredStore {
     }
 }
 
-export const accountStore = new Store();
-export const clipStore = new DemoStore();
-export const featureStore = new Store();
-export const liftStore = new DemoStore();
-export const tagStore = new Store();
-export const tagShareStore = new Store();
-export const thumbnailStore = new DemoStore();
-export const thumbnailFeatureStore = new DemoStore();
-export const videoStore = new Store();
+export const accountStore = new Store('accounts');
+export const clipStore = new DemoStore('clips');
+export const featureStore = new Store('features');
+export const liftStore = new DemoStore('lifts');
+export const tagStore = new Store('tags');
+export const tagShareStore = new Store('tagShares');
+export const thumbnailStore = new DemoStore('thumbnails');
+export const thumbnailFeatureStore = new DemoStore('thumbnailFeatures');
+export const videoStore = new Store('videos');
 
-export const filteredTagStore = new FilteredStore(tagStore);
+export const filteredTagStore = new FilteredStore('selectedTags', tagStore);
 
 export const LoadActions = Object.assign({}, AjaxMixin, {
 
@@ -291,7 +304,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const tagLiftMap = {};
 
         tagIdSet.forEach((tagId) => {
-
             // Get the worst thumbnail.
             const tag = tagStore.get(tagId);
             const thumbnailMap = _.pick(
@@ -381,7 +393,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
     // Load data for given demographic.
     loadTagForDemographic(tagId, gender, age, callback = Function.prototype) {
-
         // Find the missing thumbnail ids.
         const missingThumbIds = [];
         const tag = tagStore.get(tagId);
@@ -538,7 +549,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             tags.forEach(tag => {
                 if (tag.video_id) {
                     if (reload || !videoStore.get(tag.video_id)) {
-                        return fetchVideoIds.push(tag.video_id);
+                        fetchVideoIds.push(tag.video_id);
                     }
                 }
             });
@@ -562,9 +573,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             videos.forEach((video) => {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.forEach((dem) => {
-
-                    const working = Object.assign({}, dem)
-
+                    const working = Object.assign({}, dem);
                     const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
                     if (demAge === undefined || demGender === undefined) {
@@ -852,7 +861,7 @@ export const Search = {
         return () => {
             Search.decrementPending();
             callback.call();
-        }
+        };
     },
 
     hasMoreThan(count) {
@@ -890,7 +899,6 @@ export const ServingStatusActions = Object.assign({}, AjaxMixin, {
 });
 
 export const SendActions = Object.assign({}, AjaxMixin, {
-
     deleteCollectionByTagId(tagId) {
         const tag = tagStore.get(tagId);
         const data = { tag_id: tagId, hidden: true };
@@ -936,58 +944,11 @@ export const SendActions = Object.assign({}, AjaxMixin, {
     },
 });
 
-// Cancel pending requests and reset each store.
-export const resetStores = () => {
+// Cancel pending requests.
+// TODO invert control for that Actions register themselves.
+export const cancelActions = () => {
     LoadActions.cancelAll();
     SendActions.cancelAll();
     ServingStatusActions.cancelAll();
     Search.reset();
-
-    tagStore.reset();
-    filteredTagStore.reset();
-    videoStore.reset();
-    clipStore.reset();
-    thumbnailStore.reset();
-    liftStore.reset();
-    featureStore.reset();
-    thumbnailFeatureStore.reset();
 };
-
-// This returns an object that is good defaulted base store
-// state for a top-level component like a page.
-export const getStateFromStores = () => ({
-    // Map of tag id to tag.
-    tags: tagStore.getAll(),
-
-    // A submap of tags, of those results that are showable.
-    selectedTags: filteredTagStore.getAll(),
-
-    // Map of gender, age, clip id to clip.
-    clips: clipStore.getAll(),
-
-    // Map of video id to video.
-    videos: videoStore.getAll(),
-
-    // Map of gender, age, thumbnail id to thumbnail.
-    thumbnails: thumbnailStore.getAll(),
-
-    // Map of gender, age, tag id to map of thumb id to lift float
-    // Note: This assumes the tag has only one base thumbnail
-    // for comparisons: for a video with a default thumbnail,
-    // it is the default thumbnail. In all other cases, it's
-    // the worst thumbnail.
-    lifts: liftStore.getAll(),
-
-    // Map of feature key to feature name
-    features: featureStore.getAll(),
-
-    // Map of gender, age, thumbnail id to array of feature key
-    // sorted by value descending.
-    thumbnailFeatures: thumbnailFeatureStore.getAll(),
-
-    // Map of tag id to {token: <share token>, url: <share url>}
-    tagShares: tagShareStore.getAll(),
-
-    // Map of account id to account.
-    accounts: accountStore.getAll(),
-});

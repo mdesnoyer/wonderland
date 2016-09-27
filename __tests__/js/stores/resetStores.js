@@ -5,16 +5,18 @@ import AJAXModule from '../../../src/js/modules/ajax';
 import {
     tagStore,
     thumbnailStore,
+    Store,
+    cancelActions,
     LoadActions,
     Search,
-    resetStores
+    Store
 } from '../../../src/js/stores/CollectionStores';
 
-describe('Function resetStores', () => {
+describe('Function Store.resetStores', () => {
     it('Deletes the tag store contents', () => {
         tagStore.set({a: 'tag'});
         expect(tagStore.count()).toEqual(1);
-        resetStores();
+        Store.resetStores();
         expect(tagStore.count()).toEqual(0);
         expect(tagStore.get('a')).toEqual(undefined);
     });
@@ -28,7 +30,7 @@ describe('Function resetStores', () => {
             a: {thumbnail_id: 'a'},
             b: {thumbnail_id: 'b'},
         });
-        resetStores();
+        Store.resetStores();
         expect(ThumbnailStore.get(0, 0, 'a')).toEqual(undefined);
         expect(ThumbnailStore.get(0, 0, 'b')).toEqual(undefined);
         expect(ThumbnailStore.get(1, 0, 'a')).toEqual(undefined);
@@ -48,7 +50,7 @@ describe('Function resetStores', () => {
         Search.load(10);
         expect(Search.pending).toEqual(1);
         expect(LoadActions.apiCalls.length).toEqual(1);
-        resetStores();
+        cancelActions();
         expect(Search.pending).toEqual(0);
         // There are 3 doGets in a load.
         expect(cancel.mock.calls.length).toBe(3);

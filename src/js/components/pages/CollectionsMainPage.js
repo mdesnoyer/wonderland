@@ -18,8 +18,8 @@ import UploadForm from '../knave/UploadForm';
 import {
     tagStore,
     filteredTagStore,
-    getStateFromStores,
-    resetStores,
+    Store,
+    cancelActions,
     LoadActions,
     SendActions,
     ServingStatusActions,
@@ -35,7 +35,7 @@ const CollectionsMainPage = React.createClass({
 
     getInitialState: function() {
         return Object.assign(
-            getStateFromStores(),
+            Store.getState(),
             {
                 currentPage: 0,
                 searchQuery: '',
@@ -70,11 +70,12 @@ const CollectionsMainPage = React.createClass({
             clearInterval(this.setIntervalId);
         }
         Dispatcher.unregister(this.updateState);
-        resetStores();
+        Store.resetStores();
+        cancelActions();
     },
 
     updateState: function() {
-        const state = getStateFromStores();
+        const state = Store.getState();
         state.searchPending = Search.pending > 0;
         this.setState(state);
     },
