@@ -21,8 +21,6 @@ import UploadActionsContainer from './UploadActionsContainer';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
 import accept from 'attr-accept';
-import CanvasExifOrientation from 'canvas-exif-orientation';
-import { ExifReader } from 'mattiasw-exifreader';
 import _ from 'lodash';
 import loadImage from 'blueimp-load-image';
 import toBlob from 'blueimp-canvas-to-blob';
@@ -296,12 +294,16 @@ var UploadForm = React.createClass({
         for (let i = 0; i < inputs.length; ++i) {
             const reader  = new FileReader();
             reader.onload = (event) => {
+                // When result loads, set it to the new image.
                 const result = event.target.result;
                 image.src = result;
             };
 
             const image = new Image();
             image.onload = () => {
+                // When image loads, call the library scale method with dimensions.
+                // formatData wants an input array of File, so call toBlob on the canvas
+                // to get a File-like output.
                 const canvas = loadImage.scale(image, { maxWidth, maxHeight, orientation: true });
                 canvas.toBlob((blob) => {
                     outputs.push(blob);
@@ -310,6 +312,8 @@ var UploadForm = React.createClass({
                     }
                 });
             };
+
+            // For each input, use a FileReader to async read as url encoded data url.
             reader.readAsDataURL(inputs[i]);
         }
 
@@ -426,7 +430,8 @@ var UploadForm = React.createClass({
         const self = this;
         const sizeTypes = type === 'dropbox' ? 'bytes' : 'size';
         const filesToParse = _.partition(files, function(item) {
-            return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
+            return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE &&
+                (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
         let arrayToSend = [];
         let arrayToAdd = [];
         let size = 0;
