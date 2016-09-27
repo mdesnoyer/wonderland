@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
@@ -236,7 +236,6 @@ const CollectionsContainer = React.createClass({
                     allThumbnailMap[thumbnail_id] = this.props.stores.thumbnails[gender][age][thumbnail_id];
                 });
             }
-            console.log(allThumbnailMap);
             
             if (_.isEmpty(allThumbnailMap)) {
                 return [];
