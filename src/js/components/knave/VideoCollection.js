@@ -27,7 +27,7 @@ import {
     AddPanel,
     AddControl,
     DownloadControl
-     } from './InfoActionPanels';
+} from './InfoActionPanels';
 
 import {LoadActions} from '../../stores/CollectionStores';
 
@@ -48,7 +48,7 @@ const VideoCollection = React.createClass({
         isMobile: PropTypes.bool
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
@@ -57,19 +57,19 @@ const VideoCollection = React.createClass({
             selectedGifClip: 0
         };
     },
-    componentDidMount: function() {
+    componentDidMount() {
         this.setProcessingMonitor();
     },
 
-    componentWillUpdate: function() {
+    componentWillUpdate() {
         this.setProcessingMonitor();
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.clearProcessingMonitor();
     },
 
-    setProcessingMonitor: function() {
+    setProcessingMonitor() {
         if (this.props.isRefiltering) {
             const tagId = this.props.tagId;
             const monitorFunction = LoadActions.loadTags.bind(null, [tagId], this.props.selectedDemographic[0], this.props.selectedDemographic[1]);
@@ -95,20 +95,20 @@ const VideoCollection = React.createClass({
         this.clearProcessingMonitor();
     },
 
-    clearProcessingMonitor: function() {
+    clearProcessingMonitor() {
         if (this.processingMonitor !== null) {
             clearInterval(this.processingMonitor);
             this.processingMonitor = null;
         }
     },
 
-    setSelectedPanel: function(panelId) {
+    setSelectedPanel(panelId) {
         // Clear any open tooltip.
         ReactTooltip.hide();
         this.setState({selectedPanel: panelId});
     },
 
-    setLiftThumbnailId: function(thumbnailId) {
+    setLiftThumbnailId(thumbnailId) {
         this.setState({liftThumbnailId: thumbnailId})
     },
 
@@ -211,7 +211,7 @@ const VideoCollection = React.createClass({
         return control_array; 
     },
 
-    getMobile: function() {
+    getMobile() {
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
@@ -236,7 +236,7 @@ const VideoCollection = React.createClass({
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--video'}
-                isSoloImage={this.isSoloImage}
+                isSoloImage={this.isSoloImage()}
                 liftValue={this.getLiftValue()}
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
@@ -245,7 +245,7 @@ const VideoCollection = React.createClass({
         );
     },
 
-    getDesktop: function() {
+    getDesktop() {
         // Apply Video component-specific labels.
         const overrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
@@ -269,7 +269,7 @@ const VideoCollection = React.createClass({
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--video'}
-                isSoloImage={this.isSoloImage}
+                isSoloImage={this.isSoloImage()}
                 setLiftThumbnailId={this.setLiftThumbnailId}
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
@@ -278,32 +278,31 @@ const VideoCollection = React.createClass({
         );
     },
 
-    onGifClickPrev: function() {
+    onGifClickPrev() {
         if (this.state.selectedGifClip === 0 ) {
             this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
             return
         }
             this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });    
-        
     },
 
-    onGifClickNext: function() {
+    onGifClickNext() {
         if (this.state.selectedGifClip === this.props.clipsIds.length - 1) {
             this.setState({ selectedGifClip: 0 });
-            return 
+            return
         };
         this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
     },
 
 
-    isSoloImage: function() {
-        if (this.props) {  
+    isSoloImage() {
+        if (this.props) {
             return (this.props.thumbnailLength <= 1)
         }
-        return false; 
+        return false;
     },
 
-    render: function() {
+    render() {
         if (this.context.isMobile) {
             return this.getMobile();
         }

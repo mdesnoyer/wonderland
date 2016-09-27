@@ -47,6 +47,7 @@ const MobileBaseCollection = React.createClass({
         // component defaults to xxCollection
         wrapperClassName: PropTypes.string,
         onRightThumbnailClick: PropTypes.func,
+        isSoloImage: PropTypes.bool,
     },
 
     getDefaultProps() {
