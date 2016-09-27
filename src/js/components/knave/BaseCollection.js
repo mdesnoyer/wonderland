@@ -242,6 +242,7 @@ class BaseCollection extends React.Component {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
         const className = isLeft ? "xxThumbnail--lowLight" : "";
         const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
+        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
         return (
             <FeatureThumbnail
                 title={title}
@@ -249,9 +250,9 @@ class BaseCollection extends React.Component {
                 enabled={thumbnail.enabled}
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}
-                onClick={onClick}
                 isSoloImage={!isLeft && this.props.isSoloImage}
-                onMouseEnter={this.setLiftThumbnailToLeft}
+                onClick={onClick}
+                onMouseEnter={onMouseEnter}
                 onMouseLeave={this.setDefaultLiftThumbnail}
             />
         );

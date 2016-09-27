@@ -535,6 +535,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
              reload = false, videoFilter = null, thumbnailFilter = null) {
         // Short circuit empty input.
         if (loadTagIds.length === 0) {
+            callback(0);
             return LoadActions;
         }
 
