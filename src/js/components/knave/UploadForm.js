@@ -21,6 +21,8 @@ import UploadActionsContainer from './UploadActionsContainer';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
 import accept from 'attr-accept';
+import CanvasExifOrientation from 'canvas-exif-orientation';
+import { ExifReader } from 'mattiasw-exifreader';
 import _ from 'lodash';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,9 +106,10 @@ var UploadForm = React.createClass({
         this.setState({ formState: 'addVideo' });
     },
     handleOpenMessageErrorFiles: function(e) {
+        const self = this;
         // if the user wants to see the files with errors throw appriprate overlay message
         e.preventDefault();
-        this.throwUploadError({ code: 'ImgViewErrFiles' });
+        self.throwUploadError({ code: 'ImgViewErrFiles' });
     },
     handleOverlayReset: function(e) {
         e.preventDefault();
@@ -278,16 +281,59 @@ var UploadForm = React.createClass({
         })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
+
     sendLocalPhotos: function(e) {
-         var self = this,
-             files = e.target ? e.target.files : e,
-             fileArray = []
-         ;
-         for (var i = 0, file; file = files[i]; i++) {
-             fileArray.push(file);
-         }
-         self.formatData(fileArray, 'local');
+        debugger
+        const self = this;
+        const inputs = e.target ? e.target.files : e;
+        const inputLength = inputs.length;
+        const outputs = [];
+
+        const canvas = document.createElement('canvas');
+        canvas.width = UTILS.IMAGE_TARGET_WIDTH;
+        canvas.height = UTILS.IMAGE_TARGET_HEIGHT;
+        const context = canvas.getContext("2d");
+
+        const reader  = new FileReader();
+
+        const before = new Image();
+        const after = new Image();
+
+        const exif = new ExifReader();
+        reader.onload = (event) => {
+            // Resize and orient.
+            console.log('reader-load');
+            const result = event.target.result;
+            before.src = result;
+            debugger
+            exif.load(new Buffer(result, 'base64'));
+            console.log(exif.getAllTags());
+            console.log('reader-load-end');
+        };
+
+        before.onload = (event) => {
+            console.log('before-image-load');
+            const target = UTILS.getScaledWidthAndHeight(before.width, before.height);
+            context.drawImage(before, 0, 0, target[0], target[1]);
+            after.src = canvas.toDataURL();
+            console.log('before-image-load-end');
+        };
+
+        after.onload = (event) => {
+            console.log('after-image-load');
+            outputs.push(after);
+            if (outputs.length >= inputLength) {
+                self.formatData(outputs, 'local');
+            }
+            console.log('after-image-load-end');
+        };
+
+        for(let i = 0; i < inputLength; ++i) {
+            let file = inputs[i];
+            reader.readAsDataURL(file);
+        }
     },
+
     grabDropBox: function() {
         var self = this,
             options = {
@@ -396,13 +442,16 @@ var UploadForm = React.createClass({
         });
     },
     formatData: function(files, type) {
-        var self = this,
-            sizeTypes = type === 'dropbox' ? 'bytes' : 'size',
-            filesToParse = _.partition(files, function(item) {return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))}),
-            arrayToSend = [],
-            arrayToAdd = [],
-            size = 0
-        ;
+        console.log('formatData', files);
+        debugger
+        const self = this;
+        const sizeTypes = type === 'dropbox' ? 'bytes' : 'size';
+        const filesToParse = _.partition(files, function(item) {
+                return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
+        let arrayToSend = [];
+        let arrayToAdd = [];
+        let size = 0;
+
         filesToParse[0].forEach(function(item, index) {
             if (arrayToAdd.length + 1 <= UTILS.MAX_IMAGE_UPLOAD_COUNT && size + item[sizeTypes] <= UTILS.MAX_IMAGE_CHUNK_SIZE) {
                 arrayToAdd.push(item);

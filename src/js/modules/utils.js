@@ -336,6 +336,8 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 5,
     MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
+    IMAGE_TARGET_WIDTH: 800,
+    IMAGE_TARGET_HEIGHT: 800,
     CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions', 'thumbnail_id'],
     CLIP_OPTIONS: {result_type: 'clips', clip_length: 3, n_clips: 5},
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
@@ -638,6 +640,24 @@ var UTILS = {
        if (bytes == 0) return '0 Byte';
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    },
+
+    getScaledWidthAndHeight(givenWidth, givenHeight) {
+        const targetWidth = UTILS.IMAGE_TARGET_WIDTH;
+        const targetHeight = UTILS.IMAGE_TARGET_HEIGHT;
+        let ratio;
+        if (givenWidth > givenHeight) {
+            if (givenWidth > targetWidth) {
+                ratio = givenWidth / targetWidth;
+                return [targetWidth, Math.round(givenHeight / ratio)];
+            }
+            return [givenWidth, givenHeight];
+        }
+        if (givenHeight > targetHeight) {
+            ratio = givenHeight / targetHeight;
+            return [Math.round(givenWidth / ratio), targetHeight];
+        }
+        return [givenWidth, givenHeight];
     },
 };
 
