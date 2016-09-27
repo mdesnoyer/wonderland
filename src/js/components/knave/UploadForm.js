@@ -24,6 +24,8 @@ import accept from 'attr-accept';
 import CanvasExifOrientation from 'canvas-exif-orientation';
 import { ExifReader } from 'mattiasw-exifreader';
 import _ from 'lodash';
+import loadImage from 'blueimp-load-image';
+import toBlob from 'blueimp-canvas-to-blob';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -283,55 +285,34 @@ var UploadForm = React.createClass({
     },
 
     sendLocalPhotos: function(e) {
-        debugger
         const self = this;
         const inputs = e.target ? e.target.files : e;
-        const inputLength = inputs.length;
+        const maxWidth = UTILS.IMAGE_TARGET_WIDTH;
+        const maxHeight = UTILS.IMAGE_TARGET_HEIGHT;
+
         const outputs = [];
 
-        const canvas = document.createElement('canvas');
-        canvas.width = UTILS.IMAGE_TARGET_WIDTH;
-        canvas.height = UTILS.IMAGE_TARGET_HEIGHT;
-        const context = canvas.getContext("2d");
+        // Process the files by scaling and orienting them.
+        for (let i = 0; i < inputs.length; ++i) {
+            const reader  = new FileReader();
+            reader.onload = (event) => {
+                const result = event.target.result;
+                image.src = result;
+            };
 
-        const reader  = new FileReader();
-
-        const before = new Image();
-        const after = new Image();
-
-        const exif = new ExifReader();
-        reader.onload = (event) => {
-            // Resize and orient.
-            console.log('reader-load');
-            const result = event.target.result;
-            before.src = result;
-            debugger
-            exif.load(new Buffer(result, 'base64'));
-            console.log(exif.getAllTags());
-            console.log('reader-load-end');
-        };
-
-        before.onload = (event) => {
-            console.log('before-image-load');
-            const target = UTILS.getScaledWidthAndHeight(before.width, before.height);
-            context.drawImage(before, 0, 0, target[0], target[1]);
-            after.src = canvas.toDataURL();
-            console.log('before-image-load-end');
-        };
-
-        after.onload = (event) => {
-            console.log('after-image-load');
-            outputs.push(after);
-            if (outputs.length >= inputLength) {
-                self.formatData(outputs, 'local');
-            }
-            console.log('after-image-load-end');
-        };
-
-        for(let i = 0; i < inputLength; ++i) {
-            let file = inputs[i];
-            reader.readAsDataURL(file);
+            const image = new Image();
+            image.onload = () => {
+                const canvas = loadImage.scale(image, { maxWidth, maxHeight, orientation: true });
+                canvas.toBlob((blob) => {
+                    outputs.push(blob);
+                    if (outputs.length === inputs.length) {
+                        self.formatData(outputs, 'local');
+                    }
+                });
+            };
+            reader.readAsDataURL(inputs[i]);
         }
+
     },
 
     grabDropBox: function() {
@@ -411,7 +392,7 @@ var UploadForm = React.createClass({
                     LoadActions.loadTags([self.state.tagId])
                     setTimeout(function() {
                     self.setState({ uploadState: 'initial' });
-                    }, 4000)   
+                    }, 4000)
                 })
             })
             .catch(function(err) {
@@ -442,12 +423,10 @@ var UploadForm = React.createClass({
         });
     },
     formatData: function(files, type) {
-        console.log('formatData', files);
-        debugger
         const self = this;
         const sizeTypes = type === 'dropbox' ? 'bytes' : 'size';
         const filesToParse = _.partition(files, function(item) {
-                return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
+            return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
         let arrayToSend = [];
         let arrayToAdd = [];
         let size = 0;
