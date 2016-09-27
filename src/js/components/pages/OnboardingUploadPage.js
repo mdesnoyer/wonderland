@@ -140,7 +140,6 @@ const OnboardingUploadPage = React.createClass({
                    self.setState({ onboardingState: 'done' }); 
                 } 
                 else if (res.videos[0].state === 'failed') {
-                    console.log(res)
                     self.setState({ 
                         onboardingState: 'initial',
                         overlayCode: 'GeneralVideo'
