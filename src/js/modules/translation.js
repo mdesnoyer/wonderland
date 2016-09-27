@@ -48,6 +48,7 @@ const _DEFAULT_LOCALE = 'en-US',
             thumbnails: 'Thumbnails',
             download: 'Download',
 
+            'copy.gettingFeatures': 'Getting Features',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
             'copy.searchBar.placeholder': 'Search by collection name ',
