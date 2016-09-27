@@ -1,4 +1,4 @@
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
@@ -68,7 +68,7 @@ var UploadForm = React.createClass({
         if (self.props.isAddPanel && self.props.panelType === 'video') {
             self.setState({
                 isOpen: true,
-                formState: 'updateVideoDefault'             
+                formState: 'updateVideoDefault'
             })
         }
     },
@@ -285,36 +285,32 @@ var UploadForm = React.createClass({
     sendLocalPhotos: function(e) {
         const self = this;
         const inputs = e.target ? e.target.files : e;
-        const maxWidth = UTILS.IMAGE_TARGET_WIDTH;
-        const maxHeight = UTILS.IMAGE_TARGET_HEIGHT;
-
+        const options = {
+            maxWidth: UTILS.IMAGE_TARGET_WIDTH,
+            maxHeight: UTILS.IMAGE_TARGET_HEIGHT,
+            canvas: true,
+        };
         const outputs = [];
 
         // Process the files by scaling and orienting them.
         for (let i = 0; i < inputs.length; ++i) {
-            const reader  = new FileReader();
-            reader.onload = (event) => {
-                // When result loads, set it to the new image.
-                const result = event.target.result;
-                image.src = result;
-            };
+            // Read Orientation tag from exif.
+            loadImage.parseMetaData(inputs[i], (data) => {
+                if (data.exif) {
+                    options.orientation = data.exif.get('Orientation');
+                } else {
+                    options.orientation = null;
+                }
 
-            const image = new Image();
-            image.onload = () => {
-                // When image loads, call the library scale method with dimensions.
-                // formatData wants an input array of File, so call toBlob on the canvas
-                // to get a File-like output.
-                const canvas = loadImage.scale(image, { maxWidth, maxHeight, orientation: true });
-                canvas.toBlob((blob) => {
-                    outputs.push(blob);
-                    if (outputs.length === inputs.length) {
-                        self.formatData(outputs, 'local');
-                    }
-                });
-            };
-
-            // For each input, use a FileReader to async read as url encoded data url.
-            reader.readAsDataURL(inputs[i]);
+                loadImage(inputs[i], (canvas) => {
+                    canvas.toBlob((blob) => {
+                        outputs.push(blob);
+                        if (outputs.length === inputs.length) {
+                            self.formatData(outputs, 'local');
+                        }
+                    });
+                }, options);
+            });
         }
 
     },

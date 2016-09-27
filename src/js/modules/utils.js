@@ -640,25 +640,7 @@ var UTILS = {
        if (bytes == 0) return '0 Byte';
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-    },
-
-    getScaledWidthAndHeight(givenWidth, givenHeight) {
-        const targetWidth = UTILS.IMAGE_TARGET_WIDTH;
-        const targetHeight = UTILS.IMAGE_TARGET_HEIGHT;
-        let ratio;
-        if (givenWidth > givenHeight) {
-            if (givenWidth > targetWidth) {
-                ratio = givenWidth / targetWidth;
-                return [targetWidth, Math.round(givenHeight / ratio)];
-            }
-            return [givenWidth, givenHeight];
-        }
-        if (givenHeight > targetHeight) {
-            ratio = givenHeight / targetHeight;
-            return [Math.round(givenWidth / ratio), targetHeight];
-        }
-        return [givenWidth, givenHeight];
-    },
+    }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
