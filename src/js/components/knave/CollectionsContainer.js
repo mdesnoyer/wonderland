@@ -409,9 +409,10 @@ const CollectionsContainer = React.createClass({
 
         const thumbArrays = this.getLeftRightRest(tagId, gender, age);
 
-        if (thumbArrays.length == 0)
-        // we can't find any thumbnails this thing is likely failed
-            return this.buildVideoFailedComponent(tagId);
+        if (thumbArrays.length == 0){
+            // we can't find any thumbnails this thing is likely failed
+                return this.buildVideoFailedComponent(tagId);            
+        };
 
         const left = thumbArrays[0];
         const right = thumbArrays[1];
