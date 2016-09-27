@@ -428,7 +428,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 newThumbnailMap[t.thumbnail_id] = t;
             });
             thumbnailStore.set(gender, age, newThumbnailMap);
-            return LoadActions.loadLifts([tagId], gender, age);
+            return LoadActions.fetchLifts([tagId], gender, age);
         })
         .then(tagLiftMap => {
             // Set, dispatch and callback.
@@ -847,7 +847,7 @@ export const Search = {
     pending: 0,
 
     getLargeCount(count) {
-        return count + UTILS.RESULTS_PAGE_SIZE + 1;
+        return count + UTILS.RESULTS_PAGE_SIZE + 2;
     },
 
     load(count, onlyThisMany = false, callback = Function.prototype) {
@@ -934,10 +934,11 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
+        const tagId = videoStore.get(videoId).tagId;
 
         SendActions.post('videos', { data })
             .then(() => {
-                LoadActions.fetchVideos([videoId], enumGender, enumAge, callback);
+                LoadActions.loadTags([tagId], enumGender, enumAge, callback);
             });
     },
 

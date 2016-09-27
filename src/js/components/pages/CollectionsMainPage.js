@@ -56,10 +56,10 @@ const CollectionsMainPage = React.createClass({
         // Load initial results: first 2 quickly and a whole page or more.
         const callback = () => {
             // Route to onboarding if they've got no tags already.
-            if (!_.size(this.state.tags)) {
+            if (_.isEmpty(this.state.tags)) {
                 return this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
             }
-            Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
+            Search.load(UTILS.RESULTS_PAGE_SIZE);
         };
         Search.load(2, true, callback.bind(this));
         this.setIntervalId = setInterval(Search.reload.bind(null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
@@ -95,7 +95,7 @@ const CollectionsMainPage = React.createClass({
     loadMoreFromSearch(useCurrentPage=true) {
         const self = this;
         const count = useCurrentPage ?
-            self.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
+            (1 + self.state.currentPage) * UTILS.RESULTS_PAGE_SIZE :
             filteredTagStore.count();
 
         if(self.state.searchQuery) {

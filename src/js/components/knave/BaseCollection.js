@@ -209,11 +209,36 @@ class BaseCollection extends React.Component {
         />);
     }
 
-    render() {
-        // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
+    getClipComponent() {
+        return (
+            <div className="xxCollectionImages">
+                <GifClip
+                    url={this.props.clip.renditions[2].url}
+                    score={this.props.clip.neon_score}
+                    poster={this.props.clipPoster}
+                />
+                {
+                    this.props.clipsIds.length > 1 ? (
+                        <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                            <div 
+                                className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                onClick={this.props.onGifClickPrev}>
+                            </div>
+                            <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                            </div>
+                            <div 
+                                className="xxPagingControls-next xxPagingControls-prev--GifClip" 
+                                onClick={this.props.onGifClickNext}>
+                            </div>
+                        </nav>
+                    ) : null
+                }
+            </div>
+        );
+    }
 
+    getThumbComponent() {
         // The main left and right feature thumbnails
         const left = (
             <FeatureThumbnail
@@ -239,47 +264,29 @@ class BaseCollection extends React.Component {
                 isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
             />
         );
-        const renderedMedia = !this.props.clip ? (
-                <div className="xxCollectionImages">
-                    {left}
-                    {right}
-                    {this.getThumbnailList()}
-                </div>
-            ) : ( 
-                <div className="xxCollectionImages">
-                    <GifClip
-                        url={this.props.clip.renditions[2].url}
-                        score={this.props.clip.neon_score}
-                        poster={this.props.clipPoster}
-                    />
-                    {
-                        this.props.clipsIds.length > 1 ? (
-                            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                                <div 
-                                    className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
-                                    onClick={this.props.onGifClickPrev}>
-                                </div>
-                                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                                    {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
-                                </div>
-                                <div 
-                                    className="xxPagingControls-next xxPagingControls-prev--GifClip" 
-                                    onClick={this.props.onGifClickNext}>
-                                </div>
-                            </nav>
-                        ) : null
-                    }
-                </div>
-            );
+        return (
+            <div className="xxCollectionImages">
+                {left}
+                {right}
+                {this.getThumbnailList()}
+            </div>
+        );
+    }
+
+    render() {
+        // Let mapped labels be overriden.
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.translationOverrideMap);
+
         const result = (
             <div className={this.props.wrapperClassName}>
-                {renderedMedia}
+                {this.props.clip ? this.getClipComponent() : this.getThumbComponent()}
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
-                        clips={this.props.clips} 
+                        clips={this.props.clips}
                     />
                 </div>
             </div>
