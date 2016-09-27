@@ -9,7 +9,6 @@ import {
     cancelActions,
     LoadActions,
     Search,
-    Store
 } from '../../../src/js/stores/CollectionStores';
 
 describe('Function Store.resetStores', () => {
@@ -31,10 +30,10 @@ describe('Function Store.resetStores', () => {
             b: {thumbnail_id: 'b'},
         });
         Store.resetStores();
-        expect(ThumbnailStore.get(0, 0, 'a')).toEqual(undefined);
-        expect(ThumbnailStore.get(0, 0, 'b')).toEqual(undefined);
-        expect(ThumbnailStore.get(1, 0, 'a')).toEqual(undefined);
-        expect(ThumbnailStore.get(1, 0, 'b')).toEqual(undefined);
+        expect(thumbnailStore.get(0, 0, 'a')).toEqual(undefined);
+        expect(thumbnailStore.get(0, 0, 'b')).toEqual(undefined);
+        expect(thumbnailStore.get(1, 0, 'a')).toEqual(undefined);
+        expect(thumbnailStore.get(1, 0, 'b')).toEqual(undefined);
     });
 
     it('Cancels a pending ajax request', () => {
