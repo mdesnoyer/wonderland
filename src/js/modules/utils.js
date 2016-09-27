@@ -198,9 +198,6 @@ var UTILS = {
         TERMS: {
             URL: '/terms' // NO NEED for trailing slash
         },
-        ACCOUNT_PENDING: {
-            URL: '/account/pending' // NO NEED for trailing slash
-        },
         ACCOUNT_CONFIRMED: {
             URL: '/account/confirmed' // NO NEED for trailing slash
         },
