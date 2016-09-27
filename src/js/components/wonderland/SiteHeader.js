@@ -15,8 +15,8 @@ var SiteHeader = React.createClass({
         ]),
         setSidebarContent: PropTypes.func,
         query: PropTypes.string,
-        onSearchFormChange: PropTypes.func,
-        onSearchFormSubmit: PropTypes.func,
+        onSearchBarChange: PropTypes.func,
+        onSearchBarSubmit: PropTypes.func,
         killNav: React.PropTypes.bool
     },
     getDefaultProps: function() {
@@ -55,8 +55,8 @@ var SiteHeader = React.createClass({
                     setSidebarContent={this.getContentFunction()}
                     sidebarContent={this.getContent()}
                     query={this.props.searchQuery}
-                    onSearchFormChange={this.props.onSearchFormChange}
-                    onSearchFormSubmit={this.props.onSearchFormSubmit}
+                    onSearchBarChange={this.props.onSearchBarChange}
+                    onSearchBarSubmit={this.props.onSearchBarSubmit}
                     killNav={self.props.killNav}
                 />
                 <Sidebar
