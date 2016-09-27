@@ -106,6 +106,7 @@ render((
         <Route path="/timeline/:timelineId" component={TimelinePage} />
 
         <Route path={UTILS.DRY_NAV.NOT_FOUND.URL} component={NotFoundPage} />
+        
         <Route path="*" component={NotFoundPage} />
 
     </Router>

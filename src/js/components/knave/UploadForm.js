@@ -175,6 +175,7 @@ var UploadForm = React.createClass({
             className.push('has-dialog');
         };
         return (
+            
             <div className={className.join(' ')}>
                 { self.state.overlayCode ? (
                     <OverLayMessage 
@@ -184,7 +185,16 @@ var UploadForm = React.createClass({
                         errorFiles={self.state.errorFiles} 
                     /> ) : null 
                 }
-                { !self.props.isAddPanel  ? <a className="xxUploadButton" title={T.get('action.analyze')} onClick={self.toggleOpen}> {T.get('action.analyze')} </a> : null }
+                { 
+                    !self.props.isAddPanel ? (
+                        <a 
+                            className="xxUploadButton"
+                            title={T.get('action.analyze')}
+                            onClick={self.toggleOpen}
+                            >{T.get('action.analyze')} 
+                        </a>
+                    ) : null 
+                }
                 { !self.state.isOpen ? null : (
                         <UploadActionsContainer 
                             formState={self.state.formState}

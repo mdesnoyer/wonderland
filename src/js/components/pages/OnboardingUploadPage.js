@@ -1,5 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import _ from 'lodash';
 
@@ -49,7 +50,7 @@ const OnboardingUploadPage = React.createClass({
         var content; 
         switch(this.state.onboardingState) {
             case 'initial':
-                content = ( 
+                content = (
                         <div className="xxUpload">
                             <UploadForm
                                 onboardingAction={this.onboardingAction}
@@ -81,7 +82,9 @@ const OnboardingUploadPage = React.createClass({
         }
         return (
             <BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                 {content}
+                </ReactCSSTransitionGroup>
             </BasePage>
         );
     },
