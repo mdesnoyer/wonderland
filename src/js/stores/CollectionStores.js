@@ -93,7 +93,7 @@ export class Store {
 
     reset() {
         this.store = {};
-        this.completelyLoaded = false;
+        this.isCompletelyLoaded = false;
     }
 }
 // Static registry.
@@ -126,7 +126,7 @@ class DemoStore extends Store {
     }
 
     has(gender, age, id) {
-        return undefined !== this.get(gender, age, id);
+        return this.get(gender, age, id) !== undefined;
     }
 
 
@@ -136,6 +136,11 @@ class DemoStore extends Store {
         return this;
     }
 
+    // This function creates a map of gender to a map of age
+    // to a map of thumbnail id to thumbnail. It's the common
+    // base structure of every DemoStore. The enumerated
+    // values are defined in UTILS.FILTER_GENDER_COL_ENUM but
+    // copied here for simplicity.
     genderAgeBaseMap() {
         return {
             0: {
@@ -167,10 +172,18 @@ class DemoStore extends Store {
 }
 
 class FilteredStore {
-    constructor(name, sourceStore) {
+    // Inputs-
+    //   name- string, the unique name to be used in registrations
+    //   sourceStore- instance of Store, the source of values
+    //   fitler- Function that takes item and returns bool,
+    //       to be applied as filter
+    constructor(name, sourceStore, filter = null) {
         this.sourceStore = sourceStore;
         this.reset();
         Store.stores[name] = this;
+        if (filter) {
+            this.setFilter(filter);
+        }
     }
 
     defaultFilter(item) {
@@ -197,7 +210,7 @@ class FilteredStore {
 
     reset() {
         this.filter = this.defaultFilter;
-        this.completelyLoaded = false;
+        this.isCompletelyLoaded = false;
     }
 }
 
@@ -374,6 +387,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     // Load video resource until an estimate is provided
     // or the video status is not processing.
     loadProcessingVideoUntilEstimate(videoId) {
+        const elseTryAgain = LoadActions.loadProcessingVideoUntilEstimate.bind(
+            null, [videoId]);
         const repeat = (videoResponse) => {
             const video = videoResponse.videos[0];
             if (video.state === UTILS.VIDEO_STATE_ENUM.processing) {
@@ -382,8 +397,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return;
                 }
                 // Else try again.
-                setTimeout(LoadActions.loadProcessingVideoUntilEstimate.bind(
-                    null, [videoId]), 3000);
+                setTimeout(elseTryAgain, 3000);
             }
             // After state change from processing, done.
         };
@@ -400,7 +414,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // These are already loaded!
         } else {
             tag.thumbnail_ids.forEach(tid => {
-                if (undefined === thumbnailStore.get(gender, age, tid)) {
+                if (thumbnailStore.get(gender, age, tid) === undefined) {
                     missingThumbIds.push(tid);
                 }
             });
@@ -707,10 +721,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 callback();
                 return LoadActions;
             }
-            if (tagStore.completelyLoaded) {
+            if (tagStore.isCompletelyLoaded) {
                 callback();
                 return LoadActions;
-            } else if (query && filteredTagStore.completelyLoaded) {
+            } else if (query && filteredTagStore.isCompletelyLoaded) {
                 callback();
             }
         }
@@ -741,9 +755,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Mark this store as completely loaded.
             if (searchRes.items.length < limit) {
                 if (query) {
-                    filteredTagStore.completelyLoaded = true;
+                    filteredTagStore.isCompletelyLoaded = true;
                 } else {
-                    tagStore.completelyLoaded = true;
+                    tagStore.isCompletelyLoaded = true;
                 }
             }
             if (searchRes.items.length === 0) {
@@ -767,7 +781,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         LoadActions.get('tags/search', { data })
         .then(searchRes => {
             if (searchRes.items.length < limit) {
-                tagStore.completelyLoaded = true;
+                tagStore.isCompletelyLoaded = true;
             }
             LoadActions.loadFromSearchResult(
                 searchRes, false, videoFilter, thumbnailFilter, callback);

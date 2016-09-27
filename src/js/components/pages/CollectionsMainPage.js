@@ -308,7 +308,7 @@ const CollectionsMainPage = React.createClass({
         const searchQuery = e.target.value.trim();
 
         // Update the stateful filteredtagstore.
-        filteredTagStore.completelyLoaded = false;
+        filteredTagStore.isCompletelyLoaded = false;
         if (!searchQuery) {
             filteredTagStore.reset();
         } else {
