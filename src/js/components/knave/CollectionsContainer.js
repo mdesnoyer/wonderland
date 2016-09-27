@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
@@ -200,7 +200,6 @@ const CollectionsContainer = React.createClass({
     //   rest of thumbnails
     //   [and more thumbnails]
     getLeftRightRest: function(tagId, gender, age) {
-
         const getLeftRightRestVideo = () => {
 
             const tag = this.props.stores.tags[tagId];
@@ -231,7 +230,14 @@ const CollectionsContainer = React.createClass({
                         return t.thumbnail_id;
                 }));
             }
-            if (allThumbnailMap.length === 0) {
+            if (_.isEmpty(allThumbnailMap)) {
+                // Get the thumbnails on the tag for clips.
+                tag.thumbnail_ids.forEach(thumbnail_id => {
+                    allThumbnailMap[thumbnail_id] = this.props.stores.thumbnails[gender][age][thumbnail_id];
+                });
+            }
+            
+            if (_.isEmpty(allThumbnailMap)) {
                 return [];
             }
 
@@ -242,7 +248,6 @@ const CollectionsContainer = React.createClass({
                 {thumbnails: _.values(allThumbnailMap)}
             );
             const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
-
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
@@ -385,25 +390,11 @@ const CollectionsContainer = React.createClass({
         const gender = demo[0];
         const age = demo[1];
         
-        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
-
-        if (thumbArrays.length == 0)
-            // we can't find any thumbnails this thing is likely failed
-            return this.buildVideoFailedComponent(tagId);
-
-        const left = thumbArrays[0];
-        const right = thumbArrays[1];
-        const smallThumbnails = thumbArrays[2];
-        const badThumbnails = thumbArrays[3];
-
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
         const shareUrl = (tagId in this.props.stores.tagShares)?
             this.props.stores.tagShares[tagId].url:
             undefined;
-
-        const emailThumbnails = _.flatten([right, smallThumbnails]);
-        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
 
         const account = this.props.ownerAccountId ?
             this.props.stores.accounts[this.props.ownerAccountId]:
@@ -414,9 +405,22 @@ const CollectionsContainer = React.createClass({
             var clipIds = clipDemo.clip_ids;
             var clips = this.props.stores.clips[gender][age];
             var clipThumbs = this.props.stores.thumbnails[gender][age];
-        } else {
-            var clips = false
         }
+
+        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
+
+        if (thumbArrays.length == 0){
+            // we can't find any thumbnails this thing is likely failed
+                return this.buildVideoFailedComponent(tagId);            
+        };
+
+        const left = thumbArrays[0];
+        const right = thumbArrays[1];
+        const smallThumbnails = thumbArrays[2];
+        const badThumbnails = thumbArrays[3];
+        const emailThumbnails = _.flatten([right, smallThumbnails]);
+        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
+
         return (
             <VideoCollection
                 key={tagId}
