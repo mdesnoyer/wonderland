@@ -236,38 +236,32 @@ class BaseCollection extends React.Component {
                 }
             </div>
         );
+
+    }
+    getFeatureThumbnail(thumbnail, isLeft = true) {
+        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const className = isLeft ? "xxThumbnail--lowLight" : "";
+        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
+        return (
+            <FeatureThumbnail
+                title={title}
+                score={thumbnail.neon_score}
+                enabled={thumbnail.enabled}
+                className={className}
+                src={RENDITIONS.findRendition(thumbnail)}
+                onClick={onClick}
+                isSoloImage={!isLeft && this.props.isSoloImage}
+                onMouseEnter={this.setLiftThumbnailToLeft}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+            />
+        );
     }
 
     getThumbComponent() {
-        // The main left and right feature thumbnails
-        const left = (
-            <FeatureThumbnail
-                title={T.get('copy.worstThumbnail')}
-                score={this.props.leftFeatureThumbnail.neon_score}
-                className="xxThumbnail--lowLight"
-                src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
-                enabled={this.props.leftFeatureThumbnail.enabled}
-                onMouseEnter={this.setLiftThumbnailToLeft}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onLeftThumbnailClick}
-            />
-        );
-        const right = (
-            <FeatureThumbnail
-                title={T.get('copy.bestThumbnail')}
-                score={this.props.rightFeatureThumbnail.neon_score}
-                src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                enabled={this.props.rightFeatureThumbnail.enabled}
-                onMouseEnter={this.setLiftThumbnailToRight}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onRightThumbnailClick}
-                isSoloImage={this.props.isSoloImage}
-            />
-        );
         return (
             <div className="xxCollectionImages">
-                {left}
-                {right}
+                {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
+                {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
                 {this.getThumbnailList()}
             </div>
         );

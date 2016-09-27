@@ -142,11 +142,10 @@ const MobileBaseCollection = React.createClass({
         this.setState({ displayInfo: !this.state.displayInfo });
     },
 
-    getFeatureThumbnail(thumbnail, left = true) {
-        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        const title = left ? T.get('copy.bestThumbnail') : T.get('copy.worstThumbnail');
-        const className = left ? "xxThumbnail--lowLight" : "";
-        const onClick = left ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
+    getFeatureThumbnail(thumbnail, isLeft) {
+        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const className = isLeft ? "xxThumbnail--lowLight" : "";
+        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
         return (
             <FeatureThumbnail
                 title={title}
@@ -155,7 +154,7 @@ const MobileBaseCollection = React.createClass({
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}
                 onClick={onClick}
-                isSoloImage={!left && this.props.isSoloImage}
+                isSoloImage={!isLeft && this.props.isSoloImage}
             />
         );
     },
