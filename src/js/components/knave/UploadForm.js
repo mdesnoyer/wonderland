@@ -1,4 +1,4 @@
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 
@@ -22,6 +22,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cookie from 'react-cookie';
 import accept from 'attr-accept';
 import _ from 'lodash';
+import loadImage from 'blueimp-load-image';
+import toBlob from 'blueimp-canvas-to-blob';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -66,7 +68,7 @@ var UploadForm = React.createClass({
         if (self.props.isAddPanel && self.props.panelType === 'video') {
             self.setState({
                 isOpen: true,
-                formState: 'updateVideoDefault'             
+                formState: 'updateVideoDefault'
             })
         }
     },
@@ -104,9 +106,10 @@ var UploadForm = React.createClass({
         this.setState({ formState: 'addVideo' });
     },
     handleOpenMessageErrorFiles: function(e) {
+        const self = this;
         // if the user wants to see the files with errors throw appriprate overlay message
         e.preventDefault();
-        this.throwUploadError({ code: 'ImgViewErrFiles' });
+        self.throwUploadError({ code: 'ImgViewErrFiles' });
     },
     handleOverlayReset: function(e) {
         e.preventDefault();
@@ -288,16 +291,39 @@ var UploadForm = React.createClass({
         })
         TRACKING.sendEvent(self, arguments, self.props.isOnboarding);
     },
+
     sendLocalPhotos: function(e) {
-         var self = this,
-             files = e.target ? e.target.files : e,
-             fileArray = []
-         ;
-         for (var i = 0, file; file = files[i]; i++) {
-             fileArray.push(file);
-         }
-         self.formatData(fileArray, 'local');
+        const self = this;
+        const inputs = e.target ? e.target.files : e;
+        const baseOptions = {
+            maxWidth: UTILS.IMAGE_TARGET_WIDTH,
+            maxHeight: UTILS.IMAGE_TARGET_HEIGHT,
+            canvas: true,
+        };
+        const outputs = [];
+
+        // Process the files by scaling and orienting them.
+        for (let i = 0; i < inputs.length; ++i) {
+            // Read Orientation tag from exif.
+            loadImage.parseMetaData(inputs[i], (data) => {
+                const options = Object.assign({}, baseOptions);
+                if (data.exif) {
+                    options.orientation = data.exif.get('Orientation');
+                }
+
+                loadImage(inputs[i], (canvas) => {
+                    canvas.toBlob((blob) => {
+                        outputs.push(blob);
+                        if (outputs.length === inputs.length) {
+                            self.formatData(outputs, 'local');
+                        }
+                    });
+                }, options);
+            });
+        }
+
     },
+
     grabDropBox: function() {
         var self = this,
             options = {
@@ -375,7 +401,7 @@ var UploadForm = React.createClass({
                     LoadActions.loadTags([self.state.tagId])
                     setTimeout(function() {
                     self.setState({ uploadState: 'initial' });
-                    }, 4000)   
+                    }, 4000)
                 })
             })
             .catch(function(err) {
@@ -406,13 +432,15 @@ var UploadForm = React.createClass({
         });
     },
     formatData: function(files, type) {
-        var self = this,
-            sizeTypes = type === 'dropbox' ? 'bytes' : 'size',
-            filesToParse = _.partition(files, function(item) {return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE && (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))}),
-            arrayToSend = [],
-            arrayToAdd = [],
-            size = 0
-        ;
+        const self = this;
+        const sizeTypes = type === 'dropbox' ? 'bytes' : 'size';
+        const filesToParse = _.partition(files, function(item) {
+            return item[sizeTypes] <= UTILS.MAX_IMAGE_FILE_SIZE &&
+                (type === 'dropbox' || accept({name: item.name, type: item.type }, 'image/*' ))});
+        let arrayToSend = [];
+        let arrayToAdd = [];
+        let size = 0;
+
         filesToParse[0].forEach(function(item, index) {
             if (arrayToAdd.length + 1 <= UTILS.MAX_IMAGE_UPLOAD_COUNT && size + item[sizeTypes] <= UTILS.MAX_IMAGE_CHUNK_SIZE) {
                 arrayToAdd.push(item);
