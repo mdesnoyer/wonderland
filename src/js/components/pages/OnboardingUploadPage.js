@@ -83,7 +83,6 @@ const OnboardingUploadPage = React.createClass({
         }
         return (
             <BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
-                
                     {
                         this.state.overlayCode ? (
                                 <OverLayMessage  
