@@ -83,14 +83,14 @@ const OnboardingUploadPage = React.createClass({
         }
         return (
             <BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
-                    {
-                        this.state.overlayCode ? (
-                                <OverLayMessage  
-                                    overlayCode={this.state.overlayCode} 
-                                    overlayReset={this.handleOverlayReset}
-                                />
-                        ) : null
-                    }
+                {
+                    this.state.overlayCode ? (
+                            <OverLayMessage  
+                                overlayCode={this.state.overlayCode} 
+                                overlayReset={this.handleOverlayReset}
+                            />
+                    ) : null
+                }
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {content}
                 </ReactCSSTransitionGroup>
