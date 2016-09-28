@@ -4,6 +4,8 @@ import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
+import _ from 'lodash';
+
 import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
 
@@ -194,7 +196,7 @@ const VideoCollection = React.createClass({
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />
         ];
-        if (this.props.clips) {
+        if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
             control_array.push(<DownloadControl href={currentClip.renditions[0].url}/>);
@@ -219,7 +221,7 @@ const VideoCollection = React.createClass({
             'action.showLess': 'copy.thumbnails.high'
         };
 
-        if (this.props.clips) {
+        if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
             var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;   
@@ -253,7 +255,7 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
-        if (this.props.clips) {
+        if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
             var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            

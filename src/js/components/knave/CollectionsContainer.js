@@ -401,13 +401,21 @@ const CollectionsContainer = React.createClass({
             null;
 
         const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        let thumbArrays;
+        let clipIds = [];
+        let clips = [];
+        let clipThumbs = {};
         if (clipDemo && clipDemo.clip_ids.length > 0 ) {
-            var clipIds = clipDemo.clip_ids;
-            var clips = this.props.stores.clips[gender][age];
-            var clipThumbs = this.props.stores.thumbnails[gender][age];
+            clipIds = clipDemo.clip_ids;
+            clips = this.props.stores.clips[gender][age];
+            // The assumption that thumbnails stores are set up
+            // demographically for clip videos is problematic, so
+            // just use the defaults.
+            clipThumbs = this.props.stores.thumbnails[0][0];
+            thumbArrays = this.getLeftRightRest(tagId, 0, 0);
+        } else {
+            thumbArrays = this.getLeftRightRest(tagId, gender, age);
         }
-
-        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
 
         if (thumbArrays.length == 0)
         // we can't find any thumbnails this thing is likely failed
