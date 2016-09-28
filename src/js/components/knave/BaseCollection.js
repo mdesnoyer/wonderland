@@ -216,6 +216,7 @@ class BaseCollection extends React.Component {
                     url={this.props.clip.renditions[2].url}
                     score={this.props.clip.neon_score}
                     poster={this.props.clipPoster}
+                    id={this.props.clip.clip_id}
                 />
                 {
                     this.props.clipsIds.length > 1 ? (
