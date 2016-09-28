@@ -1,11 +1,15 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import T from '../../modules/translation'; 
+import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
+import VisibilitySensor from 'react-visibility-sensor'; 
 
 export default class GifClip extends React.Component {
     constructor(props, context) {
         super(props);
         context.isMobile
+        this.refs
+        this.onChange = this.onChange.bind(this)
     }
 
     static defaultProps = {
@@ -16,42 +20,41 @@ export default class GifClip extends React.Component {
         url: React.PropTypes.string.isRequired
     }
 
-    shouldComponentUpdate(nextProps) {
-        return this.props.url !== nextProps.url 
-    }
-
     componentDidUpdate(_prevProps, _prevState) {
-        ReactDOM.findDOMNode(this.refs.video).load();
+        if (this.props.url !== _prevProps.url ){
+            ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
+        };
     }
 
-    handleMouseEnter = (e) => {
-        !this.context.isMobile  && e.target.play()
-    }
-
-    handleOnMouseLeave = (e) => {
-        !this.context.isMobile && e.target.pause();
+    onChange(isVisible) {
+        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
+        
+        if (video) { 
+            isVisible ? video.play() : video.pause(); 
+        };
     }
 
     render() {
         var url = this.props.url, 
             score = Math.round(this.props.score),
-            context  = this.context.isMobile
-        ; 
+            id = this.props.id
+        ;
         return (
             <div className="xxGifContainer" data-score={score}>
+                <VisibilitySensor onChange={this.onChange}/>
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
                 </h2> 
                 <video
-                    ref="video" 
+                    ref={id} 
                     poster={this.props.poster}
                     className="xxGifVideo" 
                     loop
-                    autoPlay={context}
-                    onMouseEnter={this.handleMouseEnter}
-                    onMouseLeave={this.handleOnMouseLeave}
                 >
-                    <source src={this.props.url} type="video/mp4"/>
+                    <source
+                        src={this.props.url}
+                        type="video/mp4"
+                    />
                 </video>
             </div>
         );
