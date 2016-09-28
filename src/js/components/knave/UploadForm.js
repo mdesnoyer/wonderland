@@ -15,7 +15,7 @@ import AjaxMixin from '../../mixins/Ajax';
 import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
-import OverLayMessage from './OverLayMessage'
+import OverLayMessage from './OverLayMessage';
 import UploadActionsContainer from './UploadActionsContainer';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';

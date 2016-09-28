@@ -556,6 +556,14 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.NoImages': 'No Photos Uploaded',
             'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
 
+            'uploadError.title.VideoLength': 'Video too long!',
+            'uploadError.msg.VideoLength': 'Please upload a video under 15 minutes long.',
+
+            'uploadError.title.GeneralVideo': 'Video Error',
+            'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
+            
+
+
         },
         'en-GB': {
         },
