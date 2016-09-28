@@ -33,11 +33,10 @@ export const InfoDemoLiftPanel = React.createClass({
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
-        isSoloImage: React.PropTypes.bool,
         handleRefiltersPanelClick: React.PropTypes.func,
         isRefiltering: React.PropTypes.bool,
         timeRemaining: PropTypes.number,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
     },
 
     contextTypes: {
@@ -50,15 +49,7 @@ export const InfoDemoLiftPanel = React.createClass({
         };
     },
 
-
     render: function() {
-        
-        const whyThisImage = T.get('copy.whyThisImage');
-        
-        // Let mapped labels be overriden.
-
-        const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
         const result = (
             <div>
             { this.props.clips && this.context.isMobile ? null : (
@@ -75,23 +66,20 @@ export const InfoDemoLiftPanel = React.createClass({
                     handleRefiltersPanelClick={this.props.handleRefiltersPanelClick}
                     isRefiltering={this.props.isRefiltering}
                     timeRemaining={this.props.timeRemaining}
+                    copyOverrideMap={this.props.copyOverrideMap}
                 />
                 {
-                    this.props.clips ? (
-                        <p>{T.get('copy.gif.explanation.default')}</p>
-                    ) : (
-                        <Lift
-                            displayThumbLift={this.props.liftValue}
-                            isSoloImage={this.props.isSoloImage}
-                            translationOverrideMap={this.props.translationOverrideMap}
-                        />    
-                    )
+                    _.isEmpty(this.props.clips) ?
+                        (
+                            <Lift
+                                displayThumbLift={this.props.liftValue}
+                                copyOverrideMap={this.props.copyOverrideMap}
+                            />
+                        ) :
+                        (<p>{T.get('copy.lift.explanation.gifs')}</p>)
                 }
             </div>
         );
-
-        unapplyOverride();
-
         return result;
     }
 });
@@ -101,11 +89,9 @@ export const InfoLiftPanel = React.createClass({
         // User's name of this collection
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
-        isSoloImage: React.PropTypes.bool,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
     },
     render: function() {
-
         const result = (
             <div>
                 <h1 className="xxCollection-title">
@@ -113,8 +99,7 @@ export const InfoLiftPanel = React.createClass({
                 </h1>
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={this.props.isSoloImage}
-                    translationOverrideMap={this.props.translationOverrideMap}
+                    copyOverrideMap={this.props.copyOverrideMap}
                 />
             </div>
         );

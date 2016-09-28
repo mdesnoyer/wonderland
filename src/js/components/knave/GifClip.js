@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import T from '../../modules/translation'; 
+import T from '../../modules/translation';
 
 export default class GifClip extends React.Component {
     constructor(props, context) {
@@ -17,7 +17,7 @@ export default class GifClip extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return this.props.url !== nextProps.url 
+        return this.props.url !== nextProps.url
     }
 
     componentDidUpdate(_prevProps, _prevState) {
@@ -33,19 +33,19 @@ export default class GifClip extends React.Component {
     }
 
     render() {
-        var url = this.props.url, 
+        var url = this.props.url,
             score = Math.round(this.props.score),
             context  = this.context.isMobile
-        ; 
+        ;
         return (
             <div className="xxGifContainer" data-score={score}>
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
-                </h2> 
+                </h2>
                 <video
-                    ref="video" 
+                    ref="video"
                     poster={this.props.poster}
-                    className="xxGifVideo" 
+                    className="xxGifVideo"
                     loop
                     autoPlay={context}
                     onMouseEnter={this.handleMouseEnter}
@@ -61,4 +61,3 @@ export default class GifClip extends React.Component {
 GifClip.contextTypes = {
     isMobile: PropTypes.bool
 }
-

@@ -143,9 +143,9 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-        
+
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
-            return <div key={tagId}/>;   
+            return <div key={tagId}/>;
         }
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
@@ -243,7 +243,7 @@ const CollectionsContainer = React.createClass({
                     allThumbnailMap[thumbnail_id] = this.props.stores.thumbnails[gender][age][thumbnail_id];
                 });
             }
-            
+
             if (_.isEmpty(allThumbnailMap)) {
                 return [];
             }
@@ -254,7 +254,7 @@ const CollectionsContainer = React.createClass({
             const _default = UTILS.findDefaultThumbnail(
                 {thumbnails: _.values(allThumbnailMap)}
             );
-            const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
+            const left = _default || UTILS.worstThumbnail(_.values(allThumbnailMap));
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
@@ -327,7 +327,8 @@ const CollectionsContainer = React.createClass({
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
 
-        const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
+        const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
+            this.props.stores.lifts[gender][age][tagId] : {};
 
         const shareUrl = (tagId in this.props.stores.tagShares)?
             this.props.stores.tagShares[tagId].url:
@@ -364,7 +365,7 @@ const CollectionsContainer = React.createClass({
     buildVideoCollectionComponent(tagId) {
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-        
+
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
             if (video.state == 'submit') {
@@ -395,8 +396,9 @@ const CollectionsContainer = React.createClass({
         const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
-        
-        const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
+
+        const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
+            this.props.stores.lifts[gender][age][tagId] : {};
 
         const shareUrl = (tagId in this.props.stores.tagShares)?
             this.props.stores.tagShares[tagId].url:
@@ -643,9 +645,9 @@ const CollectionsContainer = React.createClass({
             });
         })
 
-        const overrideMap = {};
+        const copyOverrideMap = {};
         if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
-            overrideMap['copy.lift.explanation.default'] = 'copy.lift.explanation.images';
+            copyOverrideMap['copy.lift.explanation'] = 'copy.lift.explanation.images';
         }
 
         return (
@@ -660,7 +662,7 @@ const CollectionsContainer = React.createClass({
                 closeThumbnailOverlay={this.onOverlayClose}
                 openLearnMore={this.props.setSidebarContent.bind(null, 'learnMore')}
                 thumbnailFeatureNameMap={thumbnailFeatureNameMap}
-                translationOverrideMap={overrideMap}
+                copyOverrideMap={copyOverrideMap}
             />
         );
 

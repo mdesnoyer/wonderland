@@ -31,7 +31,7 @@ const MobileBaseCollection = React.createClass({
         // A map of T get key string to T get key
         // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
         // overrides "Show More" with "View Low Scores"
-        translationOverrideMap: PropTypes.object,
+        copyOverrideMap: PropTypes.object,
 
         infoActionPanels: PropTypes.array.isRequired,
         infoActionControls: PropTypes.array.isRequired,
@@ -52,7 +52,6 @@ const MobileBaseCollection = React.createClass({
 
     getDefaultProps() {
         return {
-            translationOverrideMap: {},
             wrapperClassName: 'xxCollection',
             onThumbnailClick: () => {},
             setLiftThumbnailId: () => {},
@@ -161,7 +160,7 @@ const MobileBaseCollection = React.createClass({
 
     render() {
         // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(this.props.translationOverrideMap);
+        const unapplyOverride = UTILS.applyTranslationOverride(this.props.copyOverrideMap);
 
         const displayClassName = this.state.displayInfo ? ' xxPagingControls-next--mobileGifClosed' : ''
         const renderedMedia = !this.props.clip ? (
@@ -178,7 +177,7 @@ const MobileBaseCollection = React.createClass({
                         {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
                         <Lift
                             displayThumbLift={this.props.liftValue}
-                            translationOverrideMap={this.props.translationOverrideMap}
+                            copyOverrideMap={this.props.copyOverrideMap}
                         />
                         {this.getThumbnailList()}
                     </div>

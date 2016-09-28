@@ -28,7 +28,7 @@ const propTypes = {
     // A map of T get key string to T get key
     // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
     // overrides "Show More" with "View Low Scores"
-    translationOverrideMap: PropTypes.object,
+    copyOverrideMap: PropTypes.object,
 
     infoActionPanels: PropTypes.array.isRequired,
     infoActionControls: PropTypes.array.isRequired,
@@ -52,7 +52,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-    translationOverrideMap: {},
     wrapperClassName: 'xxCollection',
     onThumbnailClick: () => {},
     setLiftThumbnailId: () => {},
@@ -220,15 +219,15 @@ class BaseCollection extends React.Component {
                 {
                     this.props.clipsIds.length > 1 ? (
                         <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                            <div 
-                                className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                            <div
+                                className="xxPagingControls-prev xxPagingControls-prev--GifClip"
                                 onClick={this.props.onGifClickPrev}>
                             </div>
                             <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
                                 {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
                             </div>
-                            <div 
-                                className="xxPagingControls-next xxPagingControls-prev--GifClip" 
+                            <div
+                                className="xxPagingControls-next xxPagingControls-prev--GifClip"
                                 onClick={this.props.onGifClickNext}>
                             </div>
                         </nav>
@@ -271,7 +270,7 @@ class BaseCollection extends React.Component {
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
+            this.props.copyOverrideMap);
 
         const result = (
             <div className={this.props.wrapperClassName}>

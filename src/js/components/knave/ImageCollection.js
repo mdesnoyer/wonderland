@@ -87,21 +87,28 @@ export default class ImageCollection extends React.Component {
     getLiftValue() {
         const selectedId = this.state.liftThumbnailId;
         const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
-        const map = this.props.thumbLiftMap || {};
+        const map = this.props.thumbLiftMap;
+        // The lift value for a map of one thumbnail
+        // is undefined to signal that components
+        // will not render the lift score.
+        if (Object.keys(map).length === 1) {
+            return undefined;
+        }
         return map[selectedId || defaultId];
     }
 
     getPanels() {
-        const overrideMap = {
-            'copy.lift.explanation.default': 'copy.lift.explanation.images',
+        const copyOverrideMap = {
+            'copy.lift.explanation': 'copy.lift.explanation.images',
+            'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
         };
+        const liftValue = this.getLiftValue();
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
-                    isSoloImage={this.isSoloImage()}
-                    translationOverrideMap={overrideMap}
+                    copyOverrideMap={copyOverrideMap}
                 />,
             ];
         }
@@ -113,8 +120,7 @@ export default class ImageCollection extends React.Component {
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
-                isSoloImage={this.isSoloImage()}
-                translationOverrideMap={overrideMap}
+                copyOverrideMap={copyOverrideMap}
             />,
             <SharePanel
                 cancelClickHandler={this.onCancelClick}
@@ -159,8 +165,9 @@ export default class ImageCollection extends React.Component {
     }
 
     getMobileComponent() {
-        const overrideMap = {
-            'copy.lift.explanation.default': 'copy.lift.explanation.images',
+        const copyOverrideMap = {
+            'copy.lift.explanation': 'copy.lift.explanation.images',
+            'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
         };
         const onRightThumbnailClick = this.isSoloImage()?
             this.onAddControlClick :
@@ -173,7 +180,7 @@ export default class ImageCollection extends React.Component {
                 selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
-                translationOverrideMap={overrideMap}
+                copyOverrideMap={copyOverrideMap}
                 isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
             />

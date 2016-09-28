@@ -13,17 +13,12 @@ var Lift = React.createClass({
     _animationTime: 400, // ms
     propTypes: {
         displayThumbLift: React.PropTypes.number,
-        isSoloImage: React.PropTypes.bool
-    },
-    getDefaultProps: function() {
-        return {
-            isSoloImage: false
-        }
+        copyOverrideMap: React.PropTypes.object,
     },
     render: function() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
+            this.props.copyOverrideMap);
 
         var self = this,
             rawLift = isNaN(self.props.displayThumbLift) ? 0 : self.props.displayThumbLift,
@@ -50,8 +45,12 @@ var Lift = React.createClass({
         displayLiftPercent = UTILS.makePercentage(rawLift, 0, true);
         defaultThumbnailLiftPercent = UTILS.makePercentage(defaultThumbnailLift, 2, true);
         neonThumbnailLiftPercent = UTILS.makePercentage(neonThumbnailLift, 2, true);
-        liftMark = self.props.isSoloImage ? T.get('copy.lift.lift') : T.get('copy.lift.units', {'@lift': displayLiftPercent}),
-        liftExplanation = self.props.isSoloImage ? T.get('copy.lift.explanation.soloImage') : T.get('copy.lift.explanation.default');
+        liftMark = self.props.displayThumbLift === undefined ?
+            T.get('copy.lift.lift') :
+            T.get('copy.lift.units', {'@lift': displayLiftPercent});
+        liftExplanation = self.props.displayThumbLift === undefined ?
+            T.get('copy.lift.explanation.solo') :
+            T.get('copy.lift.explanation');
         const result = (
             <div className="xxLift">
                 <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={self._animationTime} transitionLeaveTimeout={self._animationTime}>
