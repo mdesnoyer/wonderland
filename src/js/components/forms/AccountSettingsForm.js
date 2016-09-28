@@ -1,33 +1,30 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
-import WonderTabs from '../core/WonderTabs';
 import AccountSettingsTab1 from '../tabs/AccountSettingsTab1';
 import AccountSettingsTab2 from '../tabs/AccountSettingsTab2';
 import AccountSettingsTab3 from '../tabs/AccountSettingsTab3';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var AccountSettingsForm = React.createClass({
+const AccountSettingsForm = React.createClass({
     render: function() {
-        var self = this,
-            tabs = [
-                {
-                    label: 'Basic',
-                    body: <AccountSettingsTab1 />
-                },
-                {
-                    label: 'IDs',
-                    body: <AccountSettingsTab2 />
-                },
-                {
-                    label: 'Account',
-                    body: <AccountSettingsTab3 />
-                }
-            ]
-        ;
+        const self = this;
         return (
-            <WonderTabs tabs={tabs} />
+            <div className="xxMainForm --short">
+                <section className="xxSection">
+                    <h2 className="xxTitle">Basic</h2>
+                    <AccountSettingsTab1 />
+                </section>
+                <section className="xxSection">
+                    <h2 className="xxTitle">IDs</h2>
+                    <AccountSettingsTab2 />
+                </section>
+                <section className="xxSection">
+                    <h2 className="xxTitle">Account</h2>
+                    <AccountSettingsTab3 />
+                </section>
+            </div>
         );
     }
 });

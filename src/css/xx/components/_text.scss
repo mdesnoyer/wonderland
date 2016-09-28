@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.xxSection {
-    border-top: 1px solid #e0e0e0;
+.xxSection + .xxSection {
+    border-top: 1px solid $alto;
     margin-top: 38px;
     padding-top: $default-vertical-rhythm;
 }
