@@ -360,11 +360,10 @@ const CollectionsContainer = React.createClass({
         
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
-
             if (video.state == 'submit') {
                 return this.buildVideoProcessingComponent(tagId);
             }
-            if (video.state == 'failed' && video.demographic_clip_ids.length > 1 ) {
+            if (video.state == 'failed' && !video.demographic_clip_ids.length) {
                 return this.buildVideoFailedComponent(tagId);
             }
 
