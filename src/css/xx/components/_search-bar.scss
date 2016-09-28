@@ -1,0 +1,59 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$searchBarQueryInputPadding: 0.3333em;
+$searchBarQueryInputVerticalPadding: $searchBarQueryInputPadding * 0.5;
+$searchBarQueryInputHorizontalPadding: $searchBarQueryInputPadding * 2;
+
+$searchBarSpacing: 1.875em;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.search-bar,
+.search-bar--query-label,
+.search-bar--query-input {
+    box-sizing: border-box;
+}
+
+.search-bar {
+    font-size: 0.8889em; // 18px -> 16px
+    margin-left: $searchBarSpacing;
+    flex-grow: 1; // makes our search bar be greedy with the space
+    @include breakpoint-mobile {
+        display: none;
+    }
+}
+
+.search-bar--query-label {
+    position: relative;
+    &:before {
+        @include font-awesome('f002');
+        position: absolute;
+        /* vertical-align the icon in the input */
+        top: 50%;
+        transform: translateY(-50%);
+        /* vertical-align the icon in the input */
+        left: $searchBarQueryInputPadding * 2;
+        color: mix($bg-color, $mine-shaft);
+        font-size: 1em;
+    }
+}
+
+.search-bar--query-input {
+    background: mix($quaternary-color, $bg-color, 37.5%);
+    color: $mine-shaft;
+    width: 100%;
+    outline: none;
+    border: 0;
+    font-weight: bold;
+    border-radius: $searchBarQueryInputPadding;
+    padding-top: $searchBarQueryInputVerticalPadding;
+    padding-right: $searchBarQueryInputHorizontalPadding;
+    padding-bottom: $searchBarQueryInputVerticalPadding;
+    // Regular space + size of magnifying glass + extra space before text
+    padding-left: $searchBarQueryInputHorizontalPadding + 1.5em + $searchBarQueryInputPadding;
+    &::placeholder {
+        color: $dove-gray;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

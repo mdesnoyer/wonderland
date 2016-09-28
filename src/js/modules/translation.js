@@ -51,7 +51,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.gettingFeatures': 'Getting Features',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
-            'copy.searchBar.placeholder': 'Search by collection name ',
+            'copy.searchBar.placeholder': 'Search',
 
             'action.loadMore': 'Load More',
             'action.loading': 'Loading',
