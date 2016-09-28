@@ -17,7 +17,7 @@ var DemoPage = React.createClass({
     componentWillMount: function() {
         var self = this;
         if (SESSION.active()) {
-            self.context.router.replace(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
+            self.context.router.replace(UTILS.DRY_NAV.COLLECTIONS.URL);
         } else {
             self.POST('accounts', {
                 host: CONFIG.AUTH_HOST

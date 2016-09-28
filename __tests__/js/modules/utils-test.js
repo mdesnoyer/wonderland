@@ -1,8 +1,5 @@
 jest.unmock('../../../src/js/modules/utils');
 
-// This module being mocked breaks Jest, so use the real thing
-jest.unmock('fnv-plus');
-
 import UTILS from '../../../src/js/modules/utils';
 
 describe('UTILS.makePercentage', () => {

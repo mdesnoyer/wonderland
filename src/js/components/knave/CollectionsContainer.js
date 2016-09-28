@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
@@ -6,6 +6,7 @@ import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
+import RENDITIONS from '../../modules/renditions';
 import TRACKING from '../../modules/tracking';
 
 import VideoProcessing from './VideoProcessing';
@@ -53,7 +54,7 @@ const CollectionsContainer = React.createClass({
         setSidebarContent: PropTypes.func.isRequired,
 
         // the accountid that owns these containers
-        ownerAccountId: PropTypes.string.isRequired
+        ownerAccountId: PropTypes.string
     },
 
     getInitialState: function() {
@@ -82,15 +83,17 @@ const CollectionsContainer = React.createClass({
         const selectedDemographic = this.state.selectedDemographic;
         _.map(selectedDemographic, (selDemo, tagId) => {
             if (selDemo.length === 4) {
+                console.log(selDemo);
                 const nextGender = selDemo[2];
                 const nextAge = selDemo[3];
                 const tag = nextProps.stores.tags[tagId];
                 const video = nextProps.stores.videos[tag.video_id];
-                const demos = video.demographic_thumbnails;
-                const foundDemo = UTILS.findDemographicThumbnailObject(
-                     demos,
-                     nextGender,
-                     nextAge);
+                const demos = video.demographic_clip_ids.length ?
+                    video.demographic_clip_ids :
+                    video.demographic_thumbnails;
+
+                const foundDemo = UTILS.findDemographicThumbnailObject(demos, nextGender, nextAge);
+                debugger
                 if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }
@@ -113,12 +116,15 @@ const CollectionsContainer = React.createClass({
             );
         case UTILS.TAG_TYPE_VIDEO_COL:
             const video = this.props.stores.videos[tag.video_id];
-            return video.demographic_thumbnails.map(demo => {
+            const demos = video.demographic_clip_ids.length ?
+                video.demographic_clip_ids :
+                video.demographic_thumbnails;
+            return demos.map(demo => {
                 return [
                     UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
                     UTILS.FILTER_AGE_COL_ENUM[demo.age]
                 ];
-            });
+            }).sort();
         }
         return [[0,0]];
     },
@@ -137,11 +143,10 @@ const CollectionsContainer = React.createClass({
     getCollectionComponent: function(tagId) {
 
         const collection = this.props.stores.tags[tagId];
-
+        
         if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
             return <div key={tagId}/>;   
         }
-
         switch(collection.tag_type) {
             case UTILS.TAG_TYPE_IMAGE_COL:
                 return this.buildImageCollectionComponent(tagId);
@@ -176,7 +181,9 @@ const CollectionsContainer = React.createClass({
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const video = this.props.stores.videos[tag.video_id];
-            const demos = video.demographic_thumbnails;
+            const demos = video.demographic_clip_ids.length ?
+                video.demographic_clip_ids :
+                video.video.demographic_thumbnails;
             if (!UTILS.findDemographicThumbnailObject(demos, gender, age)) {
                 const prevDemo = this.getSelectedDemographic(tagId);
                 newDemographic = prevDemo.slice(0, 2);
@@ -200,7 +207,6 @@ const CollectionsContainer = React.createClass({
     //   rest of thumbnails
     //   [and more thumbnails]
     getLeftRightRest: function(tagId, gender, age) {
-
         const getLeftRightRestVideo = () => {
 
             const tag = this.props.stores.tags[tagId];
@@ -231,7 +237,14 @@ const CollectionsContainer = React.createClass({
                         return t.thumbnail_id;
                 }));
             }
-            if (allThumbnailMap.length === 0) {
+            if (_.isEmpty(allThumbnailMap)) {
+                // Get the thumbnails on the tag for clips.
+                tag.thumbnail_ids.forEach(thumbnail_id => {
+                    allThumbnailMap[thumbnail_id] = this.props.stores.thumbnails[gender][age][thumbnail_id];
+                });
+            }
+            
+            if (_.isEmpty(allThumbnailMap)) {
                 return [];
             }
 
@@ -242,7 +255,6 @@ const CollectionsContainer = React.createClass({
                 {thumbnails: _.values(allThumbnailMap)}
             );
             const left = _default? _default: UTILS.worstThumbnail(_.values(allThumbnailMap));
-
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
@@ -350,17 +362,15 @@ const CollectionsContainer = React.createClass({
     },
 
     buildVideoCollectionComponent(tagId) {
-
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
-
+        
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
-
             if (video.state == 'submit') {
                 return this.buildVideoProcessingComponent(tagId);
             }
-            if (video.state == 'failed') {
+            if (video.state == 'failed' && !video.demographic_clip_ids.length) {
                 return this.buildVideoFailedComponent(tagId);
             }
 
@@ -385,28 +395,44 @@ const CollectionsContainer = React.createClass({
         const demo = this.getSelectedDemographic(tagId);
         const gender = demo[0];
         const age = demo[1];
-
-        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
-
-        if (thumbArrays.length == 0)
-            // we can't find any thumbnails this thing is likely failed
-            return this.buildVideoFailedComponent(tagId);
-
-        const left = thumbArrays[0];
-        const right = thumbArrays[1];
-        const smallThumbnails = thumbArrays[2];
-        const badThumbnails = thumbArrays[3];
-
+        
         const thumbLiftMap = this.props.stores.lifts[gender][age][tagId] || {};
 
         const shareUrl = (tagId in this.props.stores.tagShares)?
             this.props.stores.tagShares[tagId].url:
             undefined;
 
+        const account = this.props.ownerAccountId ?
+            this.props.stores.accounts[this.props.ownerAccountId]:
+            null;
+
+        const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        let thumbArrays;
+        let clipIds = [];
+        let clips = [];
+        let clipThumbs = {};
+        if (clipDemo && clipDemo.clip_ids.length > 0 ) {
+            clipIds = clipDemo.clip_ids;
+            clips = this.props.stores.clips[gender][age];
+            // The assumption that thumbnails stores are set up
+            // demographically for clip videos is problematic, so
+            // just use the defaults.
+            clipThumbs = this.props.stores.thumbnails[0][0];
+            thumbArrays = this.getLeftRightRest(tagId, 0, 0);
+        } else {
+            thumbArrays = this.getLeftRightRest(tagId, gender, age);
+        }
+
+        if (thumbArrays.length == 0)
+        // we can't find any thumbnails this thing is likely failed
+            return this.buildVideoFailedComponent(tagId);
+
+        const left = thumbArrays[0];
+        const right = thumbArrays[1];
+        const smallThumbnails = thumbArrays[2];
+        const badThumbnails = thumbArrays[3];
         const emailThumbnails = _.flatten([right, smallThumbnails]);
         const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
-
-        const account = this.props.stores.accounts[this.props.ownerAccountId];
 
         return (
             <VideoCollection
@@ -420,6 +446,10 @@ const CollectionsContainer = React.createClass({
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
                 videoId={video.video_id}
                 tagId={tagId}
+                clips={clips}
+                clipsIds={clipIds}
+                clipThumbs={clipThumbs}
+                getGifClipPosition={this.getGifClipPosition}
                 onDemographicChange={this.onDemographicChange.bind(null, tagId)}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}

@@ -27,7 +27,6 @@ var Session = {
         if (self.state.accountId) {
             ret = AjaxModule.doGet('');
             ret.promise.then(function(res) {
-                console.log(res);
             }).catch(function(err) {
                 console.log(err);
                 self.end();

@@ -49,6 +49,10 @@ var VideoProcessing = React.createClass({
             // This must be the VideoOwner's VideoProcessing.
             return;
         }
+        if (this.props.videoState === UTILS.VIDEO_STATE_ENUM.failed) {
+            // A video in failed state never leaves that state.
+            return;
+        }
         const monitorFunction = LoadActions.loadTags.bind(
             null, 
             [tagId], 

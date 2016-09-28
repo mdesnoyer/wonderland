@@ -15,12 +15,9 @@ import UTILS from './modules/utils';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
-import VideosPage from './components/pages/VideosPage';
-import VideoPageOwner from './components/pages/VideoPageOwner';
 import VideoPageGuest from './components/pages/VideoPageGuest';
 import HomePage from './components/pages/HomePage';
 import TimelinePage from './components/pages/TimelinePage';
-import DashboardPage from './components/pages/DashboardPage';
 import PendingAccountPage from './components/pages/PendingAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import UserResetPage from './components/pages/UserResetPage';
@@ -32,7 +29,6 @@ import IntegrationsBrightcovePage from './components/pages/IntegrationsBrightcov
 import PluginsBrightcoveWizardPage from './components/pages/PluginsBrightcoveWizardPage';
 import AccountSettingsPage from './components/pages/AccountSettingsPage';
 import UserSettingsPage from './components/pages/UserSettingsPage';
-import BillingPage from './components/pages/BillingPage';
 import TelemetryPage from './components/pages/TelemetryPage';
 import SupportPage from './components/pages/SupportPage';
 import URLShortenerPage from './components/pages/URLShortenerPage';
@@ -60,30 +56,24 @@ window.CONFIG = CONFIG;
 render((
         <Router history={browserHistory} onUpdate={TRACKING.logPageView}>
 
-        {/* Routes should (where possible) use the DRY_NAV variable)
-        and END in a trailing slash - EH */}
+        {/* Routes should (where possible) use the DRY_NAV variable */}
 
-        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} />
-
-        {/* matches /signup and /signup/ */}
-        {/* <Redirect from="/signup" to={UTILS.DRY_NAV.HOME.URL} /> */}
+        <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
+        <Redirect from={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
 
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
-        <Route path={UTILS.DRY_NAV.DASHBOARD.URL} component={DashboardPage} />
 
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
 
         <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
-        <Route path="/account/confirm" component={ConfirmAccountPage} />
+        <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRM.URL} component={ConfirmAccountPage} />
 
         <Route path={UTILS.DRY_NAV.USER_FORGOT.URL} component={UserForgotPage} />
-        <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username/'} component={UserResetPage} />
+        <Route path={UTILS.DRY_NAV.USER_RESET.URL + 'token/:token/username/:username'} component={UserResetPage} />
 
-        <Route path={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} component={VideosPage} />
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
-        <Route path="/video/:videoId/" component={VideoPageOwner} />
 
         {/* The direct_* routes are used by the precompiler proxy to get the page from origin */}
         <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
@@ -92,7 +82,6 @@ render((
         <Route path="/share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
 
         <Route path={UTILS.DRY_NAV.TERMS.URL} component={TermsPage} />
-        {/* <Route path={UTILS.DRY_NAV.BILLING.URL} component={BillingPage} /> */}
         <Route path={UTILS.DRY_NAV.TELEMETRY.URL} component={TelemetryPage} />
 
         <Route path={UTILS.DRY_NAV.PLUGINS.URL} component={IntegrationsPage} />
@@ -101,7 +90,7 @@ render((
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL} component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.PLUGINS_BRIGHTCOVE.URL + ':usesGallery'} component={IntegrationsBrightcovePage} />
-        <Route path="/integration/brightcove/:integrationId/" component={IntegrationsBrightcovePage} />
+        <Route path="/integration/brightcove/:integrationId" component={IntegrationsBrightcovePage} />
         <Route path={UTILS.DRY_NAV.SETTINGS_ACCOUNT.URL} component={AccountSettingsPage} />
         <Route path={UTILS.DRY_NAV.SETTINGS_USER.URL} component={UserSettingsPage} />
         <Route path={UTILS.DRY_NAV.SUPPORT.URL} component={SupportPage} />
@@ -112,11 +101,12 @@ render((
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
         
         <Route path={UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL} component={OnboardingUploadPage} />
-        <Route path={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL} component={CollectionsMainPage} />
+        <Route path={UTILS.DRY_NAV.COLLECTIONS.URL} component={CollectionsMainPage} />
 
-        <Route path="/timeline/:timelineId/" component={TimelinePage} />
+        <Route path="/timeline/:timelineId" component={TimelinePage} />
 
         <Route path={UTILS.DRY_NAV.NOT_FOUND.URL} component={NotFoundPage} />
+        
         <Route path="*" component={NotFoundPage} />
 
     </Router>

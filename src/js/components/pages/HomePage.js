@@ -21,12 +21,6 @@ var HomePage = React.createClass({
             sidebarContent: null
         };
     },
-    componentWillMount: function() {
-        var self = this;
-        if (SESSION.active()) {
-            self.context.router.push(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
-        }
-    },
     openSignUp: function(e) {
         var self = this;
         e.persist()

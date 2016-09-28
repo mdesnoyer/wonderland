@@ -44,6 +44,11 @@ const _DEFAULT_LOCALE = 'en-US',
             tryItOut: 'Try it Out',
             gotIt: 'Got it!',
             none: 'None',
+            gifs: 'GIFs',
+            thumbnails: 'Thumbnails',
+            download: 'Download',
+
+            'copy.gettingFeatures': 'Getting Features',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
             'copy.searchBar.placeholder': 'Search by collection name ',
@@ -53,6 +58,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.signIn': 'Sign In',
             'action.signUp': 'Sign Up',
             'action.signOut': 'Sign Out',
+            'action.submitName': 'Submit Name',
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
@@ -133,6 +139,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
             'copy.analyzeVideo.lets': 'Let\'s analyze a video',
             'copy.analyzeVideo.upload': 'Upload Video',
+            'copy.analyzeVideo.giveMe': 'GIVE ME',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
@@ -150,7 +157,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.lift.explanation.soloImage': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
             'copy.lift.units': '@lift Lift',
             'copy.lift.lift': 'Lift',
-            'copy.gif.explanation.default':  'What goes into a NeonScore? We analyze your GIF for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your GIF',
+            'copy.gif.explanation.default':  'How did we choose your GIFs? We analyze your video for over 1,000 valence features that shape human visual preference. We select GIFs that contain the most engaging and high valence sequences in your video.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             
@@ -315,6 +322,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
+            'label.location.myPhone': 'My Phone',
+            'label.location.desktop': 'Desktop',
             'label.sortBy' : 'Sort By',
             'label.defaultImage' : 'Default Image',
             'label.username' : 'Username',
@@ -356,6 +365,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.worstThumbnail': 'Lowest-scoring Image',
             'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
+            'copy.topNeonGif': 'Top Neon GIF',
             'copy.valenceFeatures': 'Valence Features',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -545,6 +555,14 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'uploadError.title.NoImages': 'No Photos Uploaded',
             'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
+
+            'uploadError.title.VideoLength': 'Video too long!',
+            'uploadError.msg.VideoLength': 'Please upload a video under 15 minutes long.',
+
+            'uploadError.title.GeneralVideo': 'Video Error',
+            'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
+            
+
 
         },
         'en-GB': {

@@ -1,62 +1,69 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import AJAXModule from '../modules/ajax';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-var AjaxMixin = {
+const AjaxMixin = {
     apiCalls: [],
-    __batch: [],
-    GET: function (url, options) {
-        var ret = AJAXModule.doGet(url, options);
+    batches: [],
+    GET(url = '', options = {}) {
+        const ret = AJAXModule.doGet(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
-    POST: function (url, options) {
-        var ret = AJAXModule.doPost(url, options);
+    POST(url = '', options = {}) {
+        const ret = AJAXModule.doPost(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
-    PUT: function (url, options) {
-        var ret = AJAXModule.doPut(url, options);
+    PUT(url = '', options = {}) {
+        const ret = AJAXModule.doPut(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
-    API: function (url, options) {
-        var ret = AJAXModule.doApiCall(url, options);
+    API(url = '', options = {}) {
+        const ret = AJAXModule.doApiCall(url, options);
         this.apiCalls.push(ret);
         return ret.promise;
     },
-    cancelApiCall: function(target) {
+    cancelApiCall(target) {
         this.apiCalls.map(function(apiCall) {
             if (target === apiCall.promise) {
                 apiCall.cancel();
+                return true;
             }
         });
+        return false;
     },
-    componentWillUnmount: function() {
-        this.apiCalls.map(function(apiCall) {
-            apiCall.cancel();
-        });
+    cancelAll() {
+        this.apiCalls.map(apiCall => apiCall.cancel());
+        this.batches = [];
     },
-    sendBatch: function(options) {
+
+    componentWillUnmount() {
+        this.cancelAll();
+    },
+
+    sendBatch(options) {
         options = options || {};
-        const ret = AJAXModule.sendBatch(this.__batch, options);
+        const ret = AJAXModule.sendBatch(this.batches, options);
         // Clear the queue.
-        this.__batch = [];
+        this.batches = [];
         // Make cancel possible on unmount.
         this.apiCalls.push(ret);
         return ret.promise;
     },
     batch: function(method, path, data) {
         data = data || {};
-        this.__batch.push({method, path, data});
-        return this.__batch.length;
-    }
+        this.batches.push({method, path, data});
+        return this.batches.length;
+    },
+    get(url = '', options = {}) {
+        return this.GET(url, options);
+    },
+    put(url = '', options = {}) {
+        return this.PUT(url, options);
+    },
+    post(url = '', options = {}) {
+        return this.POST(url, options);
+    },
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default AjaxMixin;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
