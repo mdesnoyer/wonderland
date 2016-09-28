@@ -37,6 +37,7 @@ export const InfoDemoLiftPanel = React.createClass({
         isRefiltering: React.PropTypes.bool,
         timeRemaining: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
+        onWhyClick: React.PropTypes.func,
     },
 
     contextTypes: {
@@ -74,6 +75,7 @@ export const InfoDemoLiftPanel = React.createClass({
                             <Lift
                                 displayThumbLift={this.props.liftValue}
                                 copyOverrideMap={this.props.copyOverrideMap}
+                                onWhyClick={this.props.onWhyClick}
                             />
                         ) :
                         (<p>{T.get('copy.lift.explanation.gifs')}</p>)
@@ -90,6 +92,7 @@ export const InfoLiftPanel = React.createClass({
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
+        onWhyClick: React.PropTypes.func,
     },
     render: function() {
         const result = (
@@ -100,6 +103,7 @@ export const InfoLiftPanel = React.createClass({
                 <Lift
                     displayThumbLift={this.props.liftValue}
                     copyOverrideMap={this.props.copyOverrideMap}
+                    onWhyClick={this.props.onWhyClick}
                 />
             </div>
         );

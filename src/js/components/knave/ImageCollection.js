@@ -59,7 +59,8 @@ export default class ImageCollection extends React.Component {
         this.onCancelClick = this.onCancelClick.bind(this);
         this.onThumbnailMouseover = this.onThumbnailMouseover.bind(this);
         this.onSharePanelLoad = this.onSharePanelLoad.bind(this);
-
+        this.onWhyClick = this.props.onThumbnailClick.bind(this,
+            props.rightFeatureThumbnail.thumbnail_id);
         this.onShareControlClick = this.onControlClick.bind(this, 1);
         this.onEmailControlClick = this.onControlClick.bind(this, 2);
         this.onDeleteControlClick = this.onControlClick.bind(this, 3);
@@ -109,6 +110,7 @@ export default class ImageCollection extends React.Component {
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
                     copyOverrideMap={copyOverrideMap}
+                    onWhyClick={this.onWhyClick}
                 />,
             ];
         }
@@ -121,6 +123,7 @@ export default class ImageCollection extends React.Component {
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
                 copyOverrideMap={copyOverrideMap}
+                onWhyClick={this.onWhyClick}
             />,
             <SharePanel
                 cancelClickHandler={this.onCancelClick}

@@ -629,8 +629,10 @@ var UTILS = {
             return Function.prototype;
         }
         const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key, ...rest) => {
-            return get(key in mapped ? mapped[key] : key, ...rest)});
+        T.get = _.wrap(T.get, (get, key, ...rest) => (
+            get(key in mapped && mapped[key] ?
+                mapped[key] :
+                key, ...rest)));
 
         return () => { T.get = originalTGet; };
     },

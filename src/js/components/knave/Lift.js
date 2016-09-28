@@ -14,8 +14,16 @@ var Lift = React.createClass({
     propTypes: {
         displayThumbLift: React.PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
+        onWhyClick: React.PropTypes.func,
     },
-    render: function() {
+
+    onWhyClick(e) {
+        const self = this;
+        e.preventDefault();
+        self.props.onWhyClick();
+    },
+
+    render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.copyOverrideMap);
@@ -51,6 +59,9 @@ var Lift = React.createClass({
         liftExplanation = self.props.displayThumbLift === undefined ?
             T.get('copy.lift.explanation.solo') :
             T.get('copy.lift.explanation');
+        const whyLink = this.props.onWhyClick ?
+            (<a onClick={self.onWhyClick}>{T.get('copy.lift.link')}</a>) :
+            null;
         const result = (
             <div className="xxLift">
                 <ReactCSSTransitionGroup transitionName="xxFadeInOutSequential" transitionEnterTimeout={self._animationTime} transitionLeaveTimeout={self._animationTime}>
@@ -62,7 +73,7 @@ var Lift = React.createClass({
                         </div>
                     </div>
                 </ReactCSSTransitionGroup>
-                <p className="xxLift-text">{liftExplanation}</p>
+                <p className="xxLift-text">{liftExplanation} {whyLink}</p>
             </div>
         );
         unapplyOverride();

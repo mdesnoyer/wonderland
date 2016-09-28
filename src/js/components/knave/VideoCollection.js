@@ -127,6 +127,12 @@ const VideoCollection = React.createClass({
         return map[selectedId || defaultId];
     },
 
+    onWhyClick() {
+        const self = this;
+        self.props.onThumbnailClick(
+            self.props.rightFeatureThumbnail.thumbnail_id);
+    },
+
     getPanels() {
         const copyOverrideMap = _.isEmpty(this.props.clips) ?
         {
@@ -137,12 +143,17 @@ const VideoCollection = React.createClass({
             'copy.lift.explanation': 'copy.lift.explanation.gifs',
             'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
         };
+        const onWhyClick = _.isEmpty(this.props.clips) ?
+            this.onWhyClick :
+            null;
+
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
                     copyOverrideMap={copyOverrideMap}
+                    onWhyClick={onWhyClick}
                 />
             ];
         }
@@ -160,6 +171,7 @@ const VideoCollection = React.createClass({
                 clips={this.props.clips}
                 tagId={this.props.tagId}
                 copyOverrideMap={copyOverrideMap}
+                onWhyClick={onWhyClick}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
