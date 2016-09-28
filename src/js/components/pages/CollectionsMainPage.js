@@ -16,63 +16,16 @@ import PagingControls from '../core/PagingControls';
 import UploadForm from '../knave/UploadForm';
 
 import {
-    AccountStore,
-    TagStore,
-    FilteredTagStore,
-    VideoStore,
-    ThumbnailStore,
-    LiftStore,
-    FeatureStore,
-    ThumbnailFeatureStore,
-    TagShareStore,
+    tagStore,
+    filteredTagStore,
+    Store,
+    cancelActions,
     LoadActions,
     SendActions,
     ServingStatusActions,
     Dispatcher,
-    Search,
-    ClipsStore,
-    resetStores } from '../../stores/CollectionStores';
+    Search } from '../../stores/CollectionStores';
 
-const getStateFromStores = () => {
-
-    return {
-        // These are stores of tag, video, thumbnail resources.
-
-        // Map of tag id to tag.
-        tags: TagStore.getAll(),
-
-        // A submap of tags, of those results that are showable
-        selectedTags: FilteredTagStore.getAll(),
-
-        clips: ClipsStore.getAll(),
-        // Map of video id to video.
-        videos: VideoStore.getAll(),
-
-        // Map of gender, age, thumbnail id to thumbnail.
-        thumbnails: ThumbnailStore.getAll(),
-
-        // Map of gender, age, tag id to map of thumb id to lift float
-
-        // Note: This assumes the tag has only one base thumbnail
-        // for comparisons: for a video with a default thumbnail,
-        // it is the default thumbnail. In all other cases, it's
-        // the worst thumbnail.
-        lifts: LiftStore.getAll(),
-
-        // Map of feature key to feature name
-        features: FeatureStore.getAll(),
-
-        // Map of gender, age, thumbnail id to array of feature key
-        // sorted by value descending.
-        thumbnailFeatures: ThumbnailFeatureStore.getAll(),
-
-        // Map of tag id to {token: <share token>, url: <share url>}
-        tagShares: TagShareStore.getAll(),
-
-        // the accounts we have currently
-        accounts: AccountStore.getAll(),
-    };
-};
 
 const CollectionsMainPage = React.createClass({
 
@@ -82,13 +35,13 @@ const CollectionsMainPage = React.createClass({
 
     getInitialState: function() {
         return Object.assign(
-            getStateFromStores(),
+            Store.getState(),
             {
                 currentPage: 0,
                 searchQuery: '',
                 tooltipText: undefined,
                 searchPending: false
-            }
+            },
         );
     },
 
@@ -101,8 +54,14 @@ const CollectionsMainPage = React.createClass({
         Dispatcher.register(this.updateState);
 
         // Load initial results: first 2 quickly and a whole page or more.
-        const callback = Search.load.bind(null, UTILS.RESULTS_PAGE_SIZE);
-        Search.load(2, true, callback);
+        const callback = () => {
+            // Route to onboarding if they've got no tags already.
+            if (_.isEmpty(this.state.tags)) {
+                return this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
+            }
+            Search.load(UTILS.RESULTS_PAGE_SIZE);
+        };
+        Search.load(2, true, callback.bind(this));
         this.setIntervalId = setInterval(Search.reload.bind(null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
     },
 
@@ -111,11 +70,12 @@ const CollectionsMainPage = React.createClass({
             clearInterval(this.setIntervalId);
         }
         Dispatcher.unregister(this.updateState);
-        resetStores();
+        Store.resetStores();
+        cancelActions();
     },
 
     updateState: function() {
-        const state = getStateFromStores();
+        const state = Store.getState();
         state.searchPending = Search.pending > 0;
         this.setState(state);
     },
@@ -135,8 +95,8 @@ const CollectionsMainPage = React.createClass({
     loadMoreFromSearch(useCurrentPage=true) {
         const self = this;
         const count = useCurrentPage ?
-            self.state.currentPage * UTILS.RESULTS_PAGE_SIZE :
-            FilteredTagStore.count();
+            (1 + self.state.currentPage) * UTILS.RESULTS_PAGE_SIZE :
+            filteredTagStore.count();
 
         if(self.state.searchQuery) {
             Search.loadWithQuery(count, self.state.searchQuery);
@@ -276,7 +236,7 @@ const CollectionsMainPage = React.createClass({
             return;
         }
         TRACKING.sendEvent(self, arguments, tagId);
-        SendActions.sendEmail(data, callback); 
+        SendActions.sendEmail(data, callback);
     },
 
     setTooltipText: function(tooltipText) {
@@ -307,9 +267,9 @@ const CollectionsMainPage = React.createClass({
     // Get the name of a tag, else the title of
     // the tag's video, else the empty string.
     getTagName(tag) {
-        if (tag.name == null) { 
-            return ''; 
-        } 
+        if (tag.name == null) {
+            return '';
+        }
         if (tag.name) {
             return tag.name;
         }
@@ -348,12 +308,12 @@ const CollectionsMainPage = React.createClass({
         const searchQuery = e.target.value.trim();
 
         // Update the stateful filteredtagstore.
-        FilteredTagStore.completelyLoaded = false;
+        filteredTagStore.isCompletelyLoaded = false;
         if (!searchQuery) {
-            FilteredTagStore.reset();
+            filteredTagStore.reset();
         } else {
             // Apply a non-empty search to our data provider.
-            FilteredTagStore.setFilter(
+            filteredTagStore.setFilter(
                 tag => {
                     return tag.hidden !== true && self.filterOnName(searchQuery, tag)
                 }
@@ -372,7 +332,7 @@ const CollectionsMainPage = React.createClass({
                 searchQuery,
                 searchPending: Search.pending > 0,
                 currentPage: 0,
-                selectedTags: FilteredTagStore.getAll(),
+                selectedTags: filteredTagStore.getAll(),
             });
             return;
         }
@@ -393,7 +353,7 @@ const CollectionsMainPage = React.createClass({
         self.setState({
             searchQuery,
             currentPage: 0,
-            selectedTags: FilteredTagStore.getAll(),
+            selectedTags: filteredTagStore.getAll(),
         }, self.searchFunction);
 
     },
@@ -421,12 +381,11 @@ const CollectionsMainPage = React.createClass({
                         lifts: this.state.lifts,
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
-                        tagShares: this.state.tagShares, 
-                        accounts: this.state.accounts, 
+                        tagShares: this.state.tagShares,
+                        accounts: this.state.accounts,
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
-                    loadThumbnails={LoadActions.loadThumbnails}
                     socialClickHandler={this.socialClickHandler}
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
@@ -454,9 +413,7 @@ const CollectionsMainPage = React.createClass({
     },
 
     isLoading() {
-        return _.isEmpty(this.state.tags) &&
-            Search.pending > 0 &&
-            Search.emptySearch == false;
+        return _.isEmpty(this.state.tags) && Search.pending > 0
     },
 
     render: function() {

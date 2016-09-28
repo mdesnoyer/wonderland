@@ -22,8 +22,6 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
-import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
-
 import VideoUploadOverlay from './VideoUploadOverlay';
 import OverLayMessage from './OverLayMessage'
 

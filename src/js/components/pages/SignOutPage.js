@@ -9,14 +9,18 @@ import SignInForm from '../forms/SignInForm';
 import SESSION from '../../modules/session';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-import { resetStores } from '../../stores/CollectionStores.js';
+import {
+    cancelActions,
+    Store
+} from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var SignOutPage = React.createClass({
     componentWillMount: function() {
         SESSION.end();
-        resetStores();
+        Store.resetStores();
+        cancelActions();
     },
     render: function() {
         var self = this;

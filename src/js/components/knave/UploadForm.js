@@ -12,7 +12,7 @@ import SESSION from '../../modules/session';
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
 
-import {AddActions, LoadActions, TagStore} from '../../stores/CollectionStores.js';
+import {AddActions, LoadActions, tagStore} from '../../stores/CollectionStores.js';
 
 import VideoUploadOverlay from './VideoUploadOverlay';
 import OverLayMessage from './OverLayMessage';
@@ -59,7 +59,7 @@ var UploadForm = React.createClass({
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
             self.setState({ 
-                uploadedTotal: TagStore.get(self.props.tagId).thumbnail_ids.length || 0,
+               uploadedTotal: tagStore.get(self.props.tagId).thumbnail_ids.length || 0,
                 tagId: self.props.tagId,
                 isOpen: true,
                 formState: 'updateCollection'
@@ -136,7 +136,7 @@ var UploadForm = React.createClass({
             this.props.onboardingAction('col');
         }
         else {
-            LoadActions.loadFromSearchResult({ items: [{tag_id: this.state.tagId}] }, false, null, null, null);
+            LoadActions.loadFromSearchResult({ items: [{tag_id: this.state.tagId}] }, false, null, null);
             this.setState(this.getInitialState());
         }
     },
@@ -374,7 +374,7 @@ var UploadForm = React.createClass({
                             LoadActions.loadTags([self.state.tagId])
                             setTimeout(function() {
                             self.setState({ uploadState: 'initial' });
-                            }, 4000)                           
+                            }, 4000)
                         })
                     })
                     .catch(function(err) {

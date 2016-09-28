@@ -8,7 +8,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import _ from 'lodash';
 import AjaxMixin from '../../mixins/Ajax';
-import {LoadActions, Dispatcher, ThumbnailStore} from '../../stores/CollectionStores.js';
+import {LoadActions, Dispatcher, thumbnailStore} from '../../stores/CollectionStores.js';
 import Timeline from '../knave/Timeline';
 import SESSION from '../../modules/session';
 
@@ -23,7 +23,7 @@ var timelinePage = React.createClass({
         router: React.PropTypes.object.isRequired
     },
     getStateFromStores: function() {
-        const allThumbnails = ThumbnailStore.getAll();
+        const allThumbnails = thumbnailStore.getAll();
         let thumbnails = {};
         if (allThumbnails && allThumbnails[0] && allThumbnails[0][0]) {
             thumbnails = allThumbnails[0][0];

@@ -174,7 +174,7 @@ export default class ImageCollection extends React.Component {
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 translationOverrideMap={overrideMap}
-                isSoloImage={this.isSoloImage.bind(this)}
+                isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
         );
@@ -187,7 +187,7 @@ export default class ImageCollection extends React.Component {
         const onRightThumbnailClick = this.isSoloImage()?
             this.onAddControlClick :
             this.props.onThumbnailClick.bind(
-                null, 
+                null,
                 this.props.rightFeatureThumbnail.thumbnail_id);
 
         return (
@@ -198,17 +198,17 @@ export default class ImageCollection extends React.Component {
                 selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 setLiftThumbnailId={this.onThumbnailMouseover}
-                isSoloImage={this.isSoloImage.bind(this)}
+                isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
         );
     }
 
     isSoloImage() {
-        if (this.props) {  
+        if (this.props) {
             return (this.props.thumbnailLength <= 1)
         }
-        return false; 
+        return false;
     }
 
     render() {

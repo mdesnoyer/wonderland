@@ -13,7 +13,7 @@ import Icon from '../core/Icon';
 import {Link} from 'react-router';
 import ModalParent from '../core/ModalParent';
 import AccountMasqueradeModal from '../wonderland/AccountMasqueradeModal';
-import { resetStores } from '../../stores/CollectionStores.js';
+import { Store } from '../../stores/CollectionStores.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -116,7 +116,7 @@ var SignInForm = React.createClass({
                 })
                 .then(function (res) {
                     SESSION.set(res.access_token, res.refresh_token, res.account_ids[0], res.user_info);
-                    resetStores();
+                    Store.resetStores();
                     self._isSubmitted = false;
                     if (typeof(res.account_ids[0]) === 'undefined') {
                         self.setState({
@@ -133,6 +133,7 @@ var SignInForm = React.createClass({
                     }
                 })
                 .catch(function (err) {
+                    debugger
                     E.checkForError(T.get('error.unableToSignIn'), false);
                     self._isSubmitted = false;
                     self.setState({
