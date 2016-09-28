@@ -83,15 +83,17 @@ const CollectionsContainer = React.createClass({
         const selectedDemographic = this.state.selectedDemographic;
         _.map(selectedDemographic, (selDemo, tagId) => {
             if (selDemo.length === 4) {
+                console.log(selDemo);
                 const nextGender = selDemo[2];
                 const nextAge = selDemo[3];
                 const tag = nextProps.stores.tags[tagId];
                 const video = nextProps.stores.videos[tag.video_id];
-                const demos = video.demographic_thumbnails;
-                const foundDemo = UTILS.findDemographicThumbnailObject(
-                     demos,
-                     nextGender,
-                     nextAge);
+                const demos = video.demographic_clip_ids.length ?
+                    video.demographic_clip_ids :
+                    video.demographic_thumbnails;
+
+                const foundDemo = UTILS.findDemographicThumbnailObject(demos, nextGender, nextAge);
+                debugger
                 if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }
@@ -114,12 +116,15 @@ const CollectionsContainer = React.createClass({
             );
         case UTILS.TAG_TYPE_VIDEO_COL:
             const video = this.props.stores.videos[tag.video_id];
-            return video.demographic_thumbnails.map(demo => {
+            const demos = video.demographic_clip_ids.length ?
+                video.demographic_clip_ids :
+                video.demographic_thumbnails;
+            return demos.map(demo => {
                 return [
                     UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
                     UTILS.FILTER_AGE_COL_ENUM[demo.age]
                 ];
-            });
+            }).sort();
         }
         return [[0,0]];
     },
@@ -176,7 +181,9 @@ const CollectionsContainer = React.createClass({
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const video = this.props.stores.videos[tag.video_id];
-            const demos = video.demographic_thumbnails;
+            const demos = video.demographic_clip_ids.length ?
+                video.demographic_clip_ids :
+                video.video.demographic_thumbnails;
             if (!UTILS.findDemographicThumbnailObject(demos, gender, age)) {
                 const prevDemo = this.getSelectedDemographic(tagId);
                 newDemographic = prevDemo.slice(0, 2);
@@ -360,11 +367,10 @@ const CollectionsContainer = React.createClass({
         
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
-
             if (video.state == 'submit') {
                 return this.buildVideoProcessingComponent(tagId);
             }
-            if (video.state == 'failed' && video.demographic_clip_ids.length > 1 ) {
+            if (video.state == 'failed' && !video.demographic_clip_ids.length) {
                 return this.buildVideoFailedComponent(tagId);
             }
 
@@ -401,13 +407,21 @@ const CollectionsContainer = React.createClass({
             null;
 
         const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        let thumbArrays;
+        let clipIds = [];
+        let clips = [];
+        let clipThumbs = {};
         if (clipDemo && clipDemo.clip_ids.length > 0 ) {
-            var clipIds = clipDemo.clip_ids;
-            var clips = this.props.stores.clips[gender][age];
-            var clipThumbs = this.props.stores.thumbnails[gender][age];
+            clipIds = clipDemo.clip_ids;
+            clips = this.props.stores.clips[gender][age];
+            // The assumption that thumbnails stores are set up
+            // demographically for clip videos is problematic, so
+            // just use the defaults.
+            clipThumbs = this.props.stores.thumbnails[0][0];
+            thumbArrays = this.getLeftRightRest(tagId, 0, 0);
+        } else {
+            thumbArrays = this.getLeftRightRest(tagId, gender, age);
         }
-
-        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
 
         if (thumbArrays.length == 0)
         // we can't find any thumbnails this thing is likely failed
