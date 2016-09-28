@@ -1,29 +1,36 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import T from '../../modules/translation';
-import UTILS from '../../modules/utils';
+
 import VisibilitySensor from 'react-visibility-sensor'; 
 
+import T from '../../modules/translation';
+
 export default class GifClip extends React.Component {
-    constructor(props, context) {
+    constructor(props) {
         super(props);
-        context.isMobile
-        this.refs
         this.onChange = this.onChange.bind(this)
     }
 
     static defaultProps = {
-        url: ''
+        url: '',
+        score: 0,
+        id: ''
     }
 
     static propTypes = {
-        url: React.PropTypes.string.isRequired
+        url: React.PropTypes.string.isRequired,
+        score: React.PropTypes.number.isRequired,
+        id: React.PropTypes.string.isRequired
     }
 
     componentDidUpdate(_prevProps, _prevState) {
-        if (this.props.url !== _prevProps.url ){
-            ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
+        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
+        if (video) {
+            if (this.props.url !== _prevProps.url ){
+                ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
+            };
         };
+            
     }
 
     onChange(isVisible) {
@@ -60,8 +67,3 @@ export default class GifClip extends React.Component {
         );
     }
 }
-
-GifClip.contextTypes = {
-    isMobile: PropTypes.bool
-}
-
