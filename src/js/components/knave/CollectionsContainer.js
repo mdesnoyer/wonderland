@@ -364,7 +364,7 @@ const CollectionsContainer = React.createClass({
             if (video.state == 'submit') {
                 return this.buildVideoProcessingComponent(tagId);
             }
-            if (video.state == 'failed') {
+            if (video.state == 'failed' && video.demographic_clip_ids.length > 1 ) {
                 return this.buildVideoFailedComponent(tagId);
             }
 
