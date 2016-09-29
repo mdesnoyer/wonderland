@@ -31,7 +31,7 @@ const MobileBaseCollection = React.createClass({
         // A map of T get key string to T get key
         // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
         // overrides "Show More" with "View Low Scores"
-        translationOverrideMap: PropTypes.object,
+        copyOverrideMap: PropTypes.object,
 
         infoActionPanels: PropTypes.array.isRequired,
         infoActionControls: PropTypes.array.isRequired,
@@ -48,15 +48,16 @@ const MobileBaseCollection = React.createClass({
         wrapperClassName: PropTypes.string,
         onRightThumbnailClick: PropTypes.func,
         isSoloImage: PropTypes.bool,
+        isMine: PropTypes.bool,
     },
 
     getDefaultProps() {
         return {
-            translationOverrideMap: {},
             wrapperClassName: 'xxCollection',
             onThumbnailClick: () => {},
             setLiftThumbnailId: () => {},
-            smallBadThumbnails: []
+            smallBadThumbnails: [],
+            isMine: true,
         }
     },
 
@@ -142,18 +143,33 @@ const MobileBaseCollection = React.createClass({
         this.setState({ displayInfo: !this.state.displayInfo });
     },
 
+    getOnClick(isLeft) {
+        if (isLeft) {
+            return this.onLeftThumbnailClick;
+        }
+        if (this.props.isSoloImage) {
+            if (!this.props.isMine) {
+                return null;
+            }
+        }
+        return this.onRightThumbnailClick;
+    },
+
     getFeatureThumbnail(thumbnail, isLeft) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') :
+            '';
         const className = isLeft ? "xxThumbnail--lowLight" : "";
-        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
         return (
             <FeatureThumbnail
                 title={title}
                 score={thumbnail.neon_score}
                 enabled={thumbnail.enabled}
                 className={className}
+                blurText={blurText}
                 src={RENDITIONS.findRendition(thumbnail)}
-                onClick={onClick}
+                onClick={this.getOnClick(isLeft)}
                 isSoloImage={!isLeft && this.props.isSoloImage}
             />
         );
@@ -161,7 +177,7 @@ const MobileBaseCollection = React.createClass({
 
     render() {
         // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(this.props.translationOverrideMap);
+        const unapplyOverride = UTILS.applyTranslationOverride(this.props.copyOverrideMap);
 
         const displayClassName = this.state.displayInfo ? ' xxPagingControls-next--mobileGifClosed' : ''
         const renderedMedia = !this.props.clip ? (
@@ -178,7 +194,7 @@ const MobileBaseCollection = React.createClass({
                         {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
                         <Lift
                             displayThumbLift={this.props.liftValue}
-                            translationOverrideMap={this.props.translationOverrideMap}
+                            copyOverrideMap={this.props.copyOverrideMap}
                         />
                         {this.getThumbnailList()}
                     </div>
@@ -194,6 +210,7 @@ const MobileBaseCollection = React.createClass({
                             url={this.props.clip.renditions[2].url}
                             score={this.props.clip.neon_score}
                             poster={this.props.clipPoster}
+                            id={this.props.clip.clip_id}
                         />
                         {
                             this.props.clipsIds.length > 1 ? (

@@ -378,7 +378,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return Object.assign({}, batchLiftMap, {
                         [tagId]: batch.response.lift.reduce((map, item) => (
                         Object.assign({}, map, { [item.thumbnail_id]: item.lift })
-                    ), {}) });
+                    ), {baseId: 0})});
                 }, tagLiftMap)
             ),
         });
@@ -421,7 +421,6 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         const newThumbnailMap = {};
-        // TODO handle more than 100.
         LoadActions.fetchThumbnails(missingThumbIds, gender, age)
         .then(thumbRes => {
             thumbRes.thumbnails.forEach(t => {

@@ -22,7 +22,7 @@ var ThumbnailOverlay = React.createClass({
         handleClickNext: React.PropTypes.func.isRequired,
         displayThumbLift: React.PropTypes.number.isRequired,
         thumbnailFeatureNameMap: React.PropTypes.object,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
     },
     componentDidMount: function() {
         var self = this;
@@ -61,7 +61,13 @@ var ThumbnailOverlay = React.createClass({
         if (index === 0) {
             return 'xxThumbnail--lowLight';
         }
-        if (thumbnail.type === 'neon') {
+        // We need to handle the case where one of the top thumbnails is the
+        // random or centerframe
+        if (
+            thumbnail.type === 'neon' ||
+            thumbnail.type === 'random' ||
+            thumbnail.type === 'centerframe'
+        ) {
             return 'xxThumbnail--highLight';
         }
         if (this.props.tagType === UTILS.TAG_TYPE_IMAGE_COL &&
@@ -103,7 +109,7 @@ var ThumbnailOverlay = React.createClass({
                                         extraClass={self.getExtraClass(thumbnail, i)}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}
-                                        translationOverrideMap={self.props.translationOverrideMap}
+                                        copyOverrideMap={self.props.copyOverrideMap}
                                     />
                                 );
                             })

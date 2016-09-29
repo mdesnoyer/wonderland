@@ -31,7 +31,7 @@ import {
     DownloadControl
 } from './InfoActionPanels';
 
-import {LoadActions} from '../../stores/CollectionStores';
+import { LoadActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -118,19 +118,46 @@ const VideoCollection = React.createClass({
         const selectedId = this.state.liftThumbnailId;
         const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
         const map = this.props.thumbLiftMap || {};
+        // The lift value for a map of one thumbnail
+        // is undefined to signal that components
+        // will not render the lift score.
+        if (Object.keys(map).length === 1) {
+            return undefined;
+        }
         return map[selectedId || defaultId];
     },
+
+    onWhyClick() {
+        const self = this;
+        self.props.onThumbnailClick(
+            self.props.rightFeatureThumbnail.thumbnail_id);
+    },
+
     getPanels() {
+        const copyOverrideMap = _.isEmpty(this.props.clips) ?
+        {
+            'copy.lift.explanation': 'copy.lift.explanation',
+            'copy.lift.explanation.solo': 'copy.lift.explanation',
+        } :
+        {
+            'copy.lift.explanation': 'copy.lift.explanation.gifs',
+            'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
+        };
+        const onWhyClick = _.isEmpty(this.props.clips) ?
+            this.onWhyClick :
+            null;
+
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
                     title={this.props.title}
                     liftValue={this.getLiftValue()}
+                    copyOverrideMap={copyOverrideMap}
+                    onWhyClick={onWhyClick}
                 />
             ];
         }
         let account = this.props.account;
-        
         let panel_array = [
             <InfoDemoLiftPanel
                 title={this.props.title}
@@ -143,7 +170,8 @@ const VideoCollection = React.createClass({
                 timeRemaining={this.props.timeRemaining}
                 clips={this.props.clips}
                 tagId={this.props.tagId}
-
+                copyOverrideMap={copyOverrideMap}
+                onWhyClick={onWhyClick}
             />,
             <FilterPanel
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
@@ -172,7 +200,7 @@ const VideoCollection = React.createClass({
         ];
         if (account && account.serving_enabled) {
             panel_array.push(<ServingStatusPanel
-                goodThumbnails={this.props.goodThumbnails} 
+                goodThumbnails={this.props.goodThumbnails}
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 enableThumbnail={this.props.enableThumbnail}
                 disableThumbnail={this.props.disableThumbnail}
@@ -182,9 +210,9 @@ const VideoCollection = React.createClass({
                 videoId={this.props.videoId}
                 panelType='video'
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
-            />); 
-        } 
-        return panel_array; 
+            />);
+        }
+        return panel_array;
     },
     getControls() {
         if (this.props.infoPanelOnly) {
@@ -192,7 +220,7 @@ const VideoCollection = React.createClass({
         }
 
         let account = this.props.account;
-        let control_array = [  
+        let control_array = [
             <ShareControl handleClick={()=>{this.setSelectedPanel(2)}} />,
             <EmailControl handleClick={()=>{this.setSelectedPanel(3)}} />
         ];
@@ -203,18 +231,18 @@ const VideoCollection = React.createClass({
         }
 
         control_array.push(<DeleteControl handleClick={()=>{this.setSelectedPanel(4)}} />)
-        
+
         if (account && account.serving_enabled) {
             control_array.push(
                 <ServingStatusControl handleClick={()=>{this.setSelectedPanel(5)}} />,
                 <AddControl handleClick={()=>{this.setSelectedPanel(6)}} panelType='video'/>
-            ); 
-        } 
-        return control_array; 
+            );
+        }
+        return control_array;
     },
 
     getMobile() {
-        const overrideMap = {
+        const copyOverrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
@@ -224,7 +252,7 @@ const VideoCollection = React.createClass({
         if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;   
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
         }
 
         return (
@@ -233,7 +261,7 @@ const VideoCollection = React.createClass({
                 clip={currentClip}
                 clipThumb={clipThumb}
                 clipPoster={clipPoster}
-                translationOverrideMap={overrideMap}
+                copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
@@ -249,7 +277,7 @@ const VideoCollection = React.createClass({
 
     getDesktop() {
         // Apply Video component-specific labels.
-        const overrideMap = {
+        const copyOverrideMap = {
             'copy.worstThumbnail': 'copy.currentThumbnail',
             'copy.bestThumbnail': 'copy.topNeonImage',
             'action.showMore': 'copy.thumbnails.low',
@@ -258,7 +286,7 @@ const VideoCollection = React.createClass({
         if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;            
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
         }
         return (
             <BaseCollection
@@ -266,7 +294,7 @@ const VideoCollection = React.createClass({
                 clip={currentClip}
                 clipThumb={clipThumb}
                 clipPoster={clipPoster}
-                translationOverrideMap={overrideMap}
+                copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanel}
@@ -285,7 +313,7 @@ const VideoCollection = React.createClass({
             this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
             return
         }
-            this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });    
+            this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });
     },
 
     onGifClickNext() {

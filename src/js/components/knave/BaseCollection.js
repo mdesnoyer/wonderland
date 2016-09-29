@@ -28,7 +28,7 @@ const propTypes = {
     // A map of T get key string to T get key
     // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
     // overrides "Show More" with "View Low Scores"
-    translationOverrideMap: PropTypes.object,
+    copyOverrideMap: PropTypes.object,
 
     infoActionPanels: PropTypes.array.isRequired,
     infoActionControls: PropTypes.array.isRequired,
@@ -49,13 +49,14 @@ const propTypes = {
     selectedPanel: PropTypes.number.isRequired,
 
     smallBadThumbnails: PropTypes.array,
+    isMine: PropTypes.bool,
 };
 
 const defaultProps = {
-    translationOverrideMap: {},
     wrapperClassName: 'xxCollection',
     onThumbnailClick: () => {},
     setLiftThumbnailId: () => {},
+    isMine: true,
 };
 
 
@@ -216,19 +217,20 @@ class BaseCollection extends React.Component {
                     url={this.props.clip.renditions[2].url}
                     score={this.props.clip.neon_score}
                     poster={this.props.clipPoster}
+                    id={this.props.clip.clip_id}
                 />
                 {
                     this.props.clipsIds.length > 1 ? (
                         <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                            <div 
-                                className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                            <div
+                                className="xxPagingControls-prev xxPagingControls-prev--GifClip"
                                 onClick={this.props.onGifClickPrev}>
                             </div>
                             <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
                                 {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
                             </div>
-                            <div 
-                                className="xxPagingControls-next xxPagingControls-prev--GifClip" 
+                            <div
+                                className="xxPagingControls-next xxPagingControls-prev--GifClip"
                                 onClick={this.props.onGifClickNext}>
                             </div>
                         </nav>
@@ -238,10 +240,25 @@ class BaseCollection extends React.Component {
         );
 
     }
+
+    getOnClick(isLeft) {
+        if (isLeft) {
+            return this.onLeftThumbnailClick;
+        }
+        if (this.props.isSoloImage) {
+            if (!this.props.isMine) {
+                return null;
+            }
+        }
+        return this.onRightThumbnailClick;
+    }
+
     getFeatureThumbnail(thumbnail, isLeft = true) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') :
+            '';
         const className = isLeft ? "xxThumbnail--lowLight" : "";
-        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
         const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
         return (
             <FeatureThumbnail
@@ -251,7 +268,8 @@ class BaseCollection extends React.Component {
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}
                 isSoloImage={!isLeft && this.props.isSoloImage}
-                onClick={onClick}
+                blurText={blurText}
+                onClick={this.getOnClick(isLeft)}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={this.setDefaultLiftThumbnail}
             />
@@ -271,7 +289,7 @@ class BaseCollection extends React.Component {
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
+            this.props.copyOverrideMap);
 
         const result = (
             <div className={this.props.wrapperClassName}>

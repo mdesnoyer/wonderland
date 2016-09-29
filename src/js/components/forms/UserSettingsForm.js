@@ -122,65 +122,68 @@ var UserSettingsForm = React.createClass({
                 userMessage = <Message message={T.get('copy.loading')} />;
                 break;
             case 'success':
-                userMessage = <div className="xxText"><p>{T.get('copy.contactUs.success')}</p></div>;
+                userMessage = <div className="xxText"><p>{T.get('copy.settingsSaved')}</p></div>;
                 break;
             default:
                 break;
         }
         return (
-            <fieldset className="xxMainForm">
-                <form onSubmit={self.handleSubmit}>
-                    <h2 className="xxTitle">{T.get('copy.userSettings.heading')}</h2>
-                    {userMessage}
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.firstName')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="firstName"
-                            value={self.state.firstName}
-                            minLength="1"
-                            maxLength="256"
-                            onChange={self.updateField}
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('label.lastName')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="lastName"
-                            value={self.state.lastName}
-                            minLength="1"
-                            maxLength="256"
-                            onChange={self.updateField}
-                        />
-                    </div>
-                    <div className="xxFormField">
-                        <label className="xxLabel">{T.get('title')}</label>
-                        <input
-                            className="xxInputText"
-                            type="text"
-                            data-ref="title"
-                            value={self.state.title}
-                            minLength="1"
-                            maxLength="256"
-                            onChange={self.updateField}
-                        />
-                    </div>
-                    <div className="xxFormButtons">
-                        <button
-                            className="xxButton"
-                            type="submit"
-                        >
-                            {T.get('save')}
-                        </button>
-                    </div>
-                </form>
+            <div className="xxMainForm --short">
                 <section className="xxSection">
+                    <h2 className="xxTitle">{T.get('copy.userSettings.heading')}</h2>
+                    <form onSubmit={self.handleSubmit}>
+                        {userMessage}
+                        <div className="xxFormField">
+                            <label className="xxLabel">{T.get('label.firstName')}</label>
+                            <input
+                                className="xxInputText"
+                                type="text"
+                                data-ref="firstName"
+                                value={self.state.firstName}
+                                minLength="1"
+                                maxLength="256"
+                                onChange={self.updateField}
+                            />
+                        </div>
+                        <div className="xxFormField">
+                            <label className="xxLabel">{T.get('label.lastName')}</label>
+                            <input
+                                className="xxInputText"
+                                type="text"
+                                data-ref="lastName"
+                                value={self.state.lastName}
+                                minLength="1"
+                                maxLength="256"
+                                onChange={self.updateField}
+                            />
+                        </div>
+                        <div className="xxFormField">
+                            <label className="xxLabel">{T.get('title')}</label>
+                            <input
+                                className="xxInputText"
+                                type="text"
+                                data-ref="title"
+                                value={self.state.title}
+                                minLength="1"
+                                maxLength="256"
+                                onChange={self.updateField}
+                            />
+                        </div>
+                        <div className="xxFormButtons">
+                            <button
+                                className="xxButton"
+                                type="submit"
+                            >
+                                {T.get('save')}
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <section className="xxSection">
+                    <h2 className="xxTitle">Other</h2>
                     <UserSettingsInfo />
                 </section>
-            </fieldset>
+            </div>
         );
     }
 });

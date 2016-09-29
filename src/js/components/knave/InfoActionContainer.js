@@ -3,15 +3,16 @@
 import React, {PropTypes} from 'react';
 
 import ReactTooltip from 'react-tooltip';
+import T from '../../modules/translation';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const InfoActionContainer = React.createClass({
 
     propTypes: {
-        // a mapping from string to index where 
-        // string is the shortname of the the control 
-        // and the int is the index into the panel array 
+        // a mapping from string to index where
+        // string is the shortname of the the control
+        // and the int is the index into the panel array
         controls: PropTypes.array.isRequired,
 
         // selectedPanel gets from user input on the parent object

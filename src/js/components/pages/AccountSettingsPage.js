@@ -20,19 +20,9 @@ var AccountSettingsPage = React.createClass({
                     title={UTILS.buildPageTitle(T.get('copy.accountSettings.title'))}
                 />
                 <SiteHeader />
-                <section className="wonderland-section section">
-                    <div className="container">
-                        <div className="columns is-desktop">
-                            <div className="column is-half is-offset-one-quarter">
-                                <h1>{T.get('copy.accountSettings.title')}</h1>
-                                <div className="is-hidden content">
-                                    <p><span dangerouslySetInnerHTML={{__html: T.get('copy.accountSettings.body')}} /></p>
-                                </div>
-                                <AccountSettingsForm />
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <div className="xxPage">
+                    <AccountSettingsForm />
+                </div>
                 <SiteFooter />
             </div>
         );

@@ -10,7 +10,7 @@ import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
 import BasePage from './BasePage';
-import SearchForm from '../core/SearchForm';
+import SearchBar from '../core/SearchBar';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControls from '../core/PagingControls';
 import UploadForm from '../knave/UploadForm';
@@ -301,7 +301,7 @@ const CollectionsMainPage = React.createClass({
         return Search.hasMoreThan(itemCount);
     },
 
-    onSearchFormChange: function(e) {
+    onSearchBarChange: function(e) {
         const self = this;
 
         // Use the query to filter display of results.
@@ -358,7 +358,7 @@ const CollectionsMainPage = React.createClass({
 
     },
 
-    onSearchFormSubmit: function(e) {
+    onSearchBarSubmit: function(e) {
         // This is now just a functional stub.
         e.preventDefault();
     },
@@ -372,6 +372,7 @@ const CollectionsMainPage = React.createClass({
         return (
             <div>
                 <CollectionsContainer
+                    isMine={true}
                     shownIds={this.getShownIds()}
                     stores={{
                         tags: this.state.tags,
@@ -430,8 +431,8 @@ const CollectionsMainPage = React.createClass({
                 sidebarContent={this.state.sidebarContent}
                 tooltipText={this.state.tooltipText}
                 query={this.state.searchQuery}
-                onSearchFormChange={this.onSearchFormChange}
-                onSearchFormSubmit={this.onSearchFormSubmit}
+                onSearchBarChange={this.onSearchBarChange}
+                onSearchBarSubmit={this.onSearchBarSubmit}
             >
                 {body}
                 <UploadForm />

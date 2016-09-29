@@ -486,7 +486,9 @@
     width: 50%;
     background: $white;
     padding: 2.5%;
-
+    &.--short {
+        margin-top: 0;
+    }
     @include breakpoint-mobile {
         width: 100%;
         margin-top: 0;

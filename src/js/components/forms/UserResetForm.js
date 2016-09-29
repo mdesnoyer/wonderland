@@ -111,7 +111,7 @@ var UserResetForm = React.createClass({
                 break;
         }
         return (
-            <fieldset className="xxMainForm">
+            <div className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userReset.heading')}</h2>
                     {
@@ -142,7 +142,7 @@ var UserResetForm = React.createClass({
                         )
                     }
                 </form>
-            </fieldset>
+            </div>
         );
     }
 })

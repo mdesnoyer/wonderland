@@ -34,6 +34,9 @@ const DemographicFilters = React.createClass({
         // If video is refiltering
         isRefiltering: PropTypes.bool,
         timeRemaining: PropTypes.number,
+
+        // Allow custom copy for different types
+        copyOverrideMap: PropTypes.object,
     },
 
     getInitialState: function() {
@@ -177,6 +180,7 @@ const DemographicFilters = React.createClass({
     },
 
     render: function() {
+        const unapplyCopy = UTILS.applyTranslationOverride(this.props.copyOverrideMap);
         return (
             <div className="xxCollectionFilters">
                 {this.getRefilterComponent()}
@@ -185,6 +189,7 @@ const DemographicFilters = React.createClass({
                     {this.getFilterSelect()}
                 </div>
             </div>);
+        unapplyCopy();
     }
 });
 
