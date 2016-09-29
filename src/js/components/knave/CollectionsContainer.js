@@ -319,12 +319,12 @@ const CollectionsContainer = React.createClass({
     sendResultsEmail(email, tagId, callback) {
         const self = this;
         const [gender, age] = self.getSelectedDemographic(tagId);
-        const [, bestThumb, goodThumbs] = this.getLeftRightRest(
+        const [, bestThumb, goodThumbs] = self.getLeftRightRest(
             tagId, gender, age);
         const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
         let i = 0;
         while (fourThumbs.length < 4) {
-            // Repeat under the required number are set.
+            // Repeat until the required number is set.
             fourThumbs.push(fourThumbs[i++]);
         }
         self.props.sendResultsEmail(
