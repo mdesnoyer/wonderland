@@ -18,7 +18,6 @@ import NotFoundPage from './components/pages/NotFoundPage';
 import VideoPageGuest from './components/pages/VideoPageGuest';
 import HomePage from './components/pages/HomePage';
 import TimelinePage from './components/pages/TimelinePage';
-import PendingAccountPage from './components/pages/PendingAccountPage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
 import UserResetPage from './components/pages/UserResetPage';
 import UserForgotPage from './components/pages/UserForgotPage';
@@ -66,7 +65,6 @@ render((
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
         <Route path={UTILS.DRY_NAV.SIGNOUT.URL} component={SignOutPage} />
 
-        <Route path={UTILS.DRY_NAV.ACCOUNT_PENDING.URL} component={PendingAccountPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRMED.URL} component={AccountConfirmedPage} />
         <Route path={UTILS.DRY_NAV.ACCOUNT_CONFIRM.URL} component={ConfirmAccountPage} />
 

@@ -48,10 +48,12 @@ const _DEFAULT_LOCALE = 'en-US',
             thumbnails: 'Thumbnails',
             download: 'Download',
 
+            'copy.settingsSaved': 'These settings have been saved.',
+
             'copy.gettingFeatures': 'Getting Features',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
-            'copy.searchBar.placeholder': 'Search by collection name ',
+            'copy.searchBar.placeholder': 'Search',
 
             'action.loadMore': 'Load More',
             'action.loading': 'Loading',
@@ -96,7 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videoContent.add.title': 'Update collection',
             'copy.videoContent.add.tooltip': 'Add To Your Collection',
             'copy.videoContent.addDropbox': 'Add Dropbox',
-            'copy.videoContent.tooltip': 'Change Defualt Thumbnail',
+            'copy.videoContent.tooltip': 'Change Default Thumbnail',
 
             'copy.videoContent.filter.thumbnails': 'Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.',
             'copy.videoContent.filter.GIF': 'Filter your video to see GIFs targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.', 
@@ -230,12 +232,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.heading.changePassword' : 'Change Password',
             'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link.',
 
-            'copy.pendingAccount.title': 'Pending Neon Account',
-            'copy.pendingAccount.heading': 'Pending Neon Account',
-            'copy.pendingAccount.body.1': 'Almost there! Get ready to start creating higher performing video thumbnails.',
-            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
-            'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
-
             'copy.confirmAccount.title': 'Confirm Account',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
@@ -277,7 +273,6 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
-            'copy.pending': 'Pending',
 
             returnSignIn: 'Return to Sign In',
 

@@ -22,8 +22,8 @@ const propTypes = {
     tooltipText: PropTypes.string,
     children: PropTypes.node.isRequired,
     query: PropTypes.string,
-    onSearchFormChange: PropTypes.func,
-    onSearchFormSubmit: PropTypes.func,
+    onSearchBarChange: PropTypes.func,
+    onSearchBarSubmit: PropTypes.func,
     searchQuery: PropTypes.string,
 };
 
@@ -114,8 +114,8 @@ class BasePage extends React.Component {
                     sidebarContent={this.props.sidebarContent}
                     setSidebarContent={this.props.setSidebarContent}
                     query={this.props.searchQuery}
-                    onSearchFormChange={this.props.onSearchFormChange}
-                    onSearchFormSubmit={this.props.onSearchFormSubmit}
+                    onSearchBarChange={this.props.onSearchBarChange}
+                    onSearchBarSubmit={this.props.onSearchBarSubmit}
                 />
                 <Tooltips tooltipText={this.props.tooltipText} />
                 {this.props.children}

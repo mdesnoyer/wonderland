@@ -96,7 +96,6 @@ const CollectionsContainer = React.createClass({
                     video.demographic_thumbnails;
 
                 const foundDemo = UTILS.findDemographicThumbnailObject(demos, nextGender, nextAge);
-                debugger
                 if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }

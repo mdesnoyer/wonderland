@@ -61,7 +61,13 @@ var ThumbnailOverlay = React.createClass({
         if (index === 0) {
             return 'xxThumbnail--lowLight';
         }
-        if (thumbnail.type === 'neon') {
+        // We need to handle the case where one of the top thumbnails is the
+        // random or centerframe
+        if (
+            thumbnail.type === 'neon' ||
+            thumbnail.type === 'random' ||
+            thumbnail.type === 'centerframe'
+        ) {
             return 'xxThumbnail--highLight';
         }
         if (this.props.tagType === UTILS.TAG_TYPE_IMAGE_COL &&
