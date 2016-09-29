@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 
 import _ from 'lodash';
 
-import FeatureThumbnail from './_FeatureThumbnail';
+import FeatureThumbnail from './FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
 import {
     ThumbnailList,
