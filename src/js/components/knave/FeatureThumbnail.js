@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import Thumbnail from './_Thumbnail';
+import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
 
 const propTypes = {

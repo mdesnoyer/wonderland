@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
-import Thumbnail from './_Thumbnail';
+import Thumbnail from './Thumbnail';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
