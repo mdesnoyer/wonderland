@@ -14,7 +14,7 @@ import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
 import UTILS from '../../modules/utils';
 import { ServingStatusThumbnailList } from './ThumbnailList';
-import { SendActions } from '../../stores/CollectionStores';
+import { SendActions, LoadActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -33,11 +33,15 @@ export const InfoDemoLiftPanel = React.createClass({
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
-        isSoloImage: React.PropTypes.bool,
         handleRefiltersPanelClick: React.PropTypes.func,
         isRefiltering: React.PropTypes.bool,
         timeRemaining: PropTypes.number,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
+        onWhyClick: React.PropTypes.func,
+    },
+
+    contextTypes: {
+        isMobile: PropTypes.bool
     },
 
     getDefaultProps: function() {
@@ -47,16 +51,14 @@ export const InfoDemoLiftPanel = React.createClass({
     },
 
     render: function() {
-
-        // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
-
         const result = (
             <div>
+            { this.props.clips && this.context.isMobile ? null : (
                 <h1 className="xxCollection-title">
                     {this.props.title}
                 </h1>
+                )
+            }
                 <DemographicFilters
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
@@ -65,17 +67,15 @@ export const InfoDemoLiftPanel = React.createClass({
                     handleRefiltersPanelClick={this.props.handleRefiltersPanelClick}
                     isRefiltering={this.props.isRefiltering}
                     timeRemaining={this.props.timeRemaining}
+                    copyOverrideMap={this.props.copyOverrideMap}
                 />
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={this.props.isSoloImage}
-                    translationOverrideMap={this.props.translationOverrideMap}
+                    copyOverrideMap={this.props.copyOverrideMap}
+                    onWhyClick={this.props.onWhyClick}
                 />
             </div>
         );
-
-        unapplyOverride();
-
         return result;
     }
 });
@@ -85,11 +85,10 @@ export const InfoLiftPanel = React.createClass({
         // User's name of this collection
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
-        isSoloImage: React.PropTypes.bool,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
+        onWhyClick: React.PropTypes.func,
     },
     render: function() {
-
         const result = (
             <div>
                 <h1 className="xxCollection-title">
@@ -97,8 +96,8 @@ export const InfoLiftPanel = React.createClass({
                 </h1>
                 <Lift
                     displayThumbLift={this.props.liftValue}
-                    isSoloImage={this.props.isSoloImage}
-                    translationOverrideMap={this.props.translationOverrideMap}
+                    copyOverrideMap={this.props.copyOverrideMap}
+                    onWhyClick={this.props.onWhyClick}
                 />
             </div>
         );
@@ -121,6 +120,10 @@ export const FilterPanel = React.createClass({
         const callback = () => {
             self.props.cancelClickHandler();
             self.props.onDemographicChange([enumGender, enumAge]);
+        }
+        if (this.props.clips) {
+            return SendActions.refilterVideoForClip(
+                videoId, gender, age, callback);
         }
         SendActions.refilterVideo(
             videoId, gender, age, callback);
@@ -536,6 +539,24 @@ export const SharePanel = React.createClass({
     }
 });
 
+export const DownloadControl = React.createClass({
+    render: function() {
+        return (
+            <a
+                href={this.props.href}
+                download={this.props.href}
+                data-tip={T.get('download')}
+                data-for="staticTooltip"
+                data-place="bottom"
+                data-action-label="download"
+                className="xxCollectionActions-anchor xxCollectionActions-download">
+                <span>{T.get('download')}</span>
+            </a>
+        )
+    }
+});
+
+
 export const ShareControl = React.createClass({
 
     propTypes: {
@@ -651,7 +672,7 @@ export const AddPanel = React.createClass({
             </div>
         );
     }
-})
+});
 
 export const AddControl = React.createClass({
     render: function() {
@@ -667,6 +688,6 @@ export const AddControl = React.createClass({
             </a>
         );
     }
-})
+});
 
 

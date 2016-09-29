@@ -1,5 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, {PropTypes} from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import _ from 'lodash';
 
@@ -17,6 +18,7 @@ import Countdown from '../wonderland/Countdown';
 import OnboardingSlides from '../knave/OnboardingSlides';
 import OnboardingEmail from '../knave/OnboardingEmail';
 import OnboardingTutorial from '../knave/OnboardingTutorial';
+import OverLayMessage from '../knave/OverLayMessage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -32,7 +34,7 @@ const OnboardingUploadPage = React.createClass({
             onboardingState: 'initial', // intial // processing // done
             estimatedTimeRemaining: null,
             videoId: null,
-            uploadText: T.get('copy.onboarding.uploadHelpText')
+            overlayCode: false
         }
     },
     componentWillMount: function() {
@@ -49,7 +51,7 @@ const OnboardingUploadPage = React.createClass({
         var content; 
         switch(this.state.onboardingState) {
             case 'initial':
-                content = ( 
+                content = (
                         <div className="xxUpload">
                             <UploadForm
                                 onboardingAction={this.onboardingAction}
@@ -61,7 +63,7 @@ const OnboardingUploadPage = React.createClass({
                             >
                                 <span className="xxUploadButton-helpCircle"></span>
                                 <span className="xxUploadButton-helpLine"></span>
-                                <p>{this.state.uploadText}</p>
+                                <p>{ T.get('copy.onboarding.uploadHelpText')}</p>
                             </div>  
                         </div>
                 );
@@ -81,13 +83,26 @@ const OnboardingUploadPage = React.createClass({
         }
         return (
             <BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
-                {content}
+                {
+                    this.state.overlayCode ? (
+                            <OverLayMessage  
+                                overlayCode={this.state.overlayCode} 
+                                overlayReset={this.handleOverlayReset}
+                            />
+                    ) : null
+                }
+                <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+                    {content}
+                </ReactCSSTransitionGroup>
             </BasePage>
         );
     },
+    handleOverlayReset: function() {
+        this.setState({overlayCode: false});
+    },
     onTutorialClose: function(e) {
         e.preventDefault();
-        this.context.router.replace(UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL);
+        this.context.router.replace(UTILS.DRY_NAV.COLLECTIONS.URL);
     },
     onboardingAction: function(type, id) {
         if (type === 'video') {
@@ -106,7 +121,15 @@ const OnboardingUploadPage = React.createClass({
         var self = this;
         self.GET('videos', {data: {video_id: videoId, fields: UTILS.VIDEO_FIELDS}})
             .then(function(res) {
-                if (!self.state.estimatedTimeRemaining) {
+                // if over the max duration throw error because failed state will take longer to generate
+                if (res.videos[0].duration > UTILS.MAX_VIDEO_SIZE) {
+                    self.setState({ 
+                        onboardingState: 'initial',
+                        overlayCode: 'VideoLength'
+                    });
+                    return
+                }
+                if (!self.state.estimatedTimeRemaining & res.videos[0].state === 'processing') {
                     var timeRemaining = res.videos[0].estimated_time_remaining;
                     self.setState({
                         estimatedTimeRemaining: timeRemaining
@@ -120,10 +143,9 @@ const OnboardingUploadPage = React.createClass({
                    self.setState({ onboardingState: 'done' }); 
                 } 
                 else if (res.videos[0].state === 'failed') {
-                    var message = res.videos[0].duration > UTILS.MAX_VIDEO_SIZE ?  T.get('error.longVideo') : T.get('copy.onboarding.uploadErrorText');
-                   self.setState({ 
+                    self.setState({ 
                         onboardingState: 'initial',
-                        uploadText: message
+                        overlayCode: 'GeneralVideo'
                     });
                 } 
                 else {
@@ -135,7 +157,7 @@ const OnboardingUploadPage = React.createClass({
             .catch(function(err) {
                 self.setState({ 
                      onboardingState: 'initial',
-                     uploadText: T.get('copy.onboarding.uploadErrorText')
+                     overlayCode: 'GeneralVideo'
                  });
             });
     }

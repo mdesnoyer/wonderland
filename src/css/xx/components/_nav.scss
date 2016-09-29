@@ -3,19 +3,8 @@
 $nav-font-size: 16px;
 
 .xxNav {
-    // always rendered as its used for positioning
-    position: absolute;
-    right: 0;
-    bottom: -0.125em; /* Align with baseline of logo due to line-height limitations */
-    z-index: $z-index-header;
     font-size: $nav-font-size;
     line-height: 1;
-    @include breakpoint-desktop {
-        right: 0;
-    }
-    @include breakpoint-mobile {
-        right: $gutter-width;
-    }
 }
 
 .xxNav-hamburger {
@@ -34,7 +23,11 @@ $nav-font-size: 16px;
 
 .xxNav-items {
     @include breakpoint-desktop {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        align-items: flex-end;
     }
     @include breakpoint-mobile {
         padding: 0 24px;
@@ -46,10 +39,11 @@ $nav-font-size: 16px;
 }
 
 .xxNav-item {
-    position: relative;
     @include breakpoint-desktop {
-        float: left;
-        padding-left: 1.875em;
+        a {
+            padding-left: 1.875em;
+            display: block;
+        }
     }
     @include breakpoint-mobile {
         line-height: 3;

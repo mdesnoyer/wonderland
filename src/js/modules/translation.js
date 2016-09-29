@@ -44,15 +44,23 @@ const _DEFAULT_LOCALE = 'en-US',
             tryItOut: 'Try it Out',
             gotIt: 'Got it!',
             none: 'None',
+            gifs: 'GIFs',
+            thumbnails: 'Thumbnails',
+            download: 'Download',
+
+            'copy.settingsSaved': 'These settings have been saved.',
+
+            'copy.gettingFeatures': 'Getting Features',
             'copy.loading': 'Loading' + String.fromCharCode(8230),
             'copy.currentThumbnail': 'Current Thumbnail',
-            'copy.searchBar.placeholder': 'Search by collection name ',
+            'copy.searchBar.placeholder': 'Search',
 
             'action.loadMore': 'Load More',
             'action.loading': 'Loading',
             'action.signIn': 'Sign In',
             'action.signUp': 'Sign Up',
             'action.signOut': 'Sign Out',
+            'action.submitName': 'Submit Name',
             'action.previous': 'Previous',
             'action.next': 'Next',
             'action.save': 'Save',
@@ -90,7 +98,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videoContent.add.title': 'Update collection',
             'copy.videoContent.add.tooltip': 'Add To Your Collection',
             'copy.videoContent.addDropbox': 'Add Dropbox',
-            'copy.videoContent.tooltip': 'Change Defualt Thumbnail',
+            'copy.videoContent.tooltip': 'Change Default Thumbnail',
 
             'copy.videoContent.filter.thumbnails': 'Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.',
             'copy.videoContent.filter.GIF': 'Filter your video to see GIFs targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.', 
@@ -133,6 +141,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.analyzeVideo.badRequest': 'Please check your Video URL or your Thumbnail URL as they may be unreachable or badly formed.',
             'copy.analyzeVideo.lets': 'Let\'s analyze a video',
             'copy.analyzeVideo.upload': 'Upload Video',
+            'copy.analyzeVideo.giveMe': 'GIVE ME',
 
             'copy.terms.title': 'Terms of Service',
             'copy.terms.heading': 'Terms of Service',
@@ -143,17 +152,16 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation.default': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
-            'copy.lift.explanation.default.link': 'Why did we pick this image?',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
             'copy.lift.explanation.images': 'Lift is the percentage increase in clicks you would get by using your high-scoring Neon images instead of your low-scoring Neon images.',
-            'copy.lift.explanation.images': 'How did we choose this NeonScore?',
-            'copy.lift.explanation.soloImage': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
+            'copy.lift.explanation.images.solo': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
+            'copy.lift.explanation.gifs':  'Lift is the percentage increase in clicks you would get by using your high-scoring Neon GIFs instead of your low-scoring Neon GIFs.',
+            'copy.lift.link': 'Why did we pick this image?',
             'copy.lift.units': '@lift Lift',
             'copy.lift.lift': 'Lift',
-            'copy.gif.explanation.default':  'What goes into a NeonScore? We analyze your GIF for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your GIF',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            
+
             'copy.passwordPlaceholder': "••••••••••",
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
@@ -224,12 +232,6 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.heading.changePassword' : 'Change Password',
             'copy.account.changePassword' : 'Want to change your password? We’ll send you a secure link.',
 
-            'copy.pendingAccount.title': 'Pending Neon Account',
-            'copy.pendingAccount.heading': 'Pending Neon Account',
-            'copy.pendingAccount.body.1': 'Almost there! Get ready to start creating higher performing video thumbnails.',
-            'copy.pendingAccount.body.2': 'Please check your email for account verification. If you don&rsquo;t see an email, please check your spam folder.',
-            'copy.pendingAccount.body.3': 'Still don&rsquo;t see it?  Please <a href="@link" rel="external">contact us</a>.',
-
             'copy.confirmAccount.title': 'Confirm Account',
             'copy.confirmAccount.heading': 'Confirm Account',
             'copy.confirmAccount.body.1': 'Thank you for signing up for a Neon account. You are one step closer to creating higher performing thumbnails!',
@@ -271,7 +273,6 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'copy.unknown': 'Unknown',
             'copy.na': 'N/A',
-            'copy.pending': 'Pending',
 
             returnSignIn: 'Return to Sign In',
 
@@ -315,6 +316,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
+            'label.location.myPhone': 'My Phone',
+            'label.location.desktop': 'Desktop',
             'label.sortBy' : 'Sort By',
             'label.defaultImage' : 'Default Image',
             'label.username' : 'Username',
@@ -356,6 +359,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.worstThumbnail': 'Lowest-scoring Image',
             'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
+            'copy.topNeonGif': 'Top Neon GIFs',
             'copy.valenceFeatures': 'Valence Features',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -545,6 +549,14 @@ const _DEFAULT_LOCALE = 'en-US',
 
             'uploadError.title.NoImages': 'No Photos Uploaded',
             'uploadError.msg.NoImages': 'Upload photos to find out which are the most clickable.',
+
+            'uploadError.title.VideoLength': 'Video too long!',
+            'uploadError.msg.VideoLength': 'Please upload a video under 15 minutes long.',
+
+            'uploadError.title.GeneralVideo': 'Video Error',
+            'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
+            
+
 
         },
         'en-GB': {

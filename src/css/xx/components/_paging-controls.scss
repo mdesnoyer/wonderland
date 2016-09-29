@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxPagingControls {
-    // empty
+    margin-top: 1.6667em;
 }
 
 .xxPagingControls-navigation {
@@ -10,43 +10,58 @@
     justify-content: center;
     flex-wrap: nowrap;
     align-items: center;
+    &--GifClip {
+    	margin-top: 2.5%;
+    }
 }
 
 .xxPagingControls-navigation-item {
-    width: 10%;
+    width: 20%;
     text-align: center;
-
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .xxPagingControls-prev,
-.xxPagingControls-next  {
-	border: none;
+.xxPagingControls-next {
+	@include arrow(W, 1em, 2px, $quaternary-color);
+    border: none;
 	background-color: transparent;
 	position: relative;
 	width: 50px;
 	height: 29px;
-	margin-top: -3px;
-	margin-left: -8px;
 	text-indent: $indent-off-screen;
 	cursor: pointer;
 	outline: none;
-
-	@include arrow(W, 24px, 2px, $quaternary-color);
-
+	&--GifClip {
+		@include arrow(W, 12px, 2px, $quaternary-color);		
+	}
 	&:hover {
-	    &::before,
-	    &::after {
+	    &:before,
+	    &:after {
 	        background: $secondary-color;
 	    }
 	}
 }
 
-.xxPagingControls-next {
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    margin-right: -8px;
-    &::before,
-    &::after {
+.xxPagingControls-prev {
+    // empty
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.xxPagingControls-next {
+    &:before,
+    &:after {
         transform-origin: 100% 50%;
+    }
+    &--mobileGifClosed {
+    	&:before,
+    	&:after {
+    	    transform-origin: 50% -250%;
+    	}
     }
 }
 

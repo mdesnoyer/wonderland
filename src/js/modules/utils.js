@@ -160,99 +160,83 @@ var UTILS = {
     },
     DRY_NAV: {
         HOME: {
-            URL: '/'
+            URL: '/' // needs to remain /
         },
         DASHBOARD: {
-            URL: '/dashboard/'
+            URL: '/dashboard' // NO NEED for trailing slash
         },
         NOT_FOUND: {
-            URL: '/404/'
+            URL: '/404' // NO NEED for trailing slash
         },
         PLUGINS: {
-            URL: '/plugins/'
+            URL: '/plugins/' // DEAD?
         },
         PLUGINS_NEW: {
-            URL: '/plugins/new/'
+            URL: '/plugins/new/' // DEAD?
         },
         PLUGINS_BRIGHTCOVE: {
-            URL: '/plugins/new/brightcove/'
+            URL: '/plugins/new/brightcove/' // DEAD?
         },
         PLUGINS_BRIGHTCOVE_WIZARD: {
-            URL: '/plugins/new/brightcove/wizard/'
+            URL: '/plugins/new/brightcove/wizard/' // DEAD?
         },
         SIGNIN: {
-            URL: '/signin/'
+            URL: '/signin' // NO NEED for trailing slash
         },
         SIGNOUT: {
-            URL: '/signout/'
+            URL: '/signout' // NO NEED for trailing slash
         },
         SETTINGS_ACCOUNT: {
-            URL: '/settings/account/'
+            URL: '/settings/account' // NO NEED for trailing slash
         },
         SETTINGS_USER: {
-            URL: '/settings/user/'
+            URL: '/settings/user' // NO NEED for trailing slash
         },
         SUPPORT: {
-            URL: '/support/'
+            URL: '/support' // NO NEED for trailing slash
         },
         TERMS: {
-            URL: '/terms/'
-        },
-        ACCOUNT_PENDING: {
-            URL: '/account/pending/'
+            URL: '/terms' // NO NEED for trailing slash
         },
         ACCOUNT_CONFIRMED: {
-            URL: '/account/confirmed/'
+            URL: '/account/confirmed' // NO NEED for trailing slash
         },
         ACCOUNT_CONFIRM: {
-            URL: '/account/confirm' // needs to have no trailing slash
-        },
-        BILLING: {
-            URL: '/billing/'
+            URL: '/account/confirm' // NO NEED for trailing slash
         },
         TELEMETRY: {
-            URL: '/telemetry/'
+            URL: '/telemetry' // NO NEED for trailing slash
         },
         USER_FORGOT: {
-            URL: '/user/forgot/'
+            URL: '/user/forgot' // NO NEED for trailing slash
         },
         USER_RESET: {
-            URL: '/user/reset/'
+            URL: '/user/reset/' // needs to remain with trailing slash
         },
         API: {
-            URL: '/support/#api'
-        },
-        SUPPORT_BRIGHTCOVE_PLUGIN_GUIDE: {
-            URL: '/support/#brightcove-plugin-guide'
-        },
-        SUPPORT_CUSTOM_PLUGIN_GUIDE: {
-            URL: '/support/#custom-plugin-guide'
+            URL: '/support#api' // NO NEED for trailing slash
         },
         VIDEO_LIBRARY: {
-            URL: '/videos/'
-        },
-        VIDEO_ANALYZE: {
-            URL: '/video/analyze/'
+            URL: '/videos' // DEAD but left for redirect, NO NEED for trailing slash
         },
         URL_SHORTENER: {
-            URL: '/shorturl/'
+            URL: '/shorturl' // NO NEED for trailing slash
         },
         DEMO: {
-            URL: '/demo/'
+            URL: '/demo' // NO NEED for trailing slash
         },
         COOKIES: {
-            URL: '/cookies/'
+            URL: '/cookies' // NO NEED for trailing slash
         },
         ONBOARDING_VIDEO_UPLOAD: {
-            URL: '/demo/upload/'
+            URL: '/demo/upload' // NO NEED for trailing slash
         },
         ONBOARDING_UPLOAD: {
-            URL: '/onboarding/'
+            URL: '/onboarding' // NO NEED for trailing slash
         },
-        COLLLECTIONS_MAIN: {
-            URL: '/collections/'
+        COLLECTIONS: {
+            URL: '/collections' // NO NEED for trailing slash
         }
-
     },
     COOKIES_KEY: { // all cookies cleared with session prepended with neonses_
         accessTokenKey: 'neonses_at',
@@ -349,8 +333,12 @@ var UTILS = {
     RESULTS_PAGE_SIZE: 5,
     MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
+    IMAGE_TARGET_WIDTH: 800,
+    IMAGE_TARGET_HEIGHT: 800,
+    CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions', 'thumbnail_id'],
+    CLIP_OPTIONS: {result_type: 'clips', clip_length: 3, n_clips: 5},
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
-    VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
+    VIDEO_FIELDS_MIN: ['video_id', 'title', 'duration', 'state', 'demographic_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data', 'demographic_clip_ids'],
     THUMBNAIL_FIELDS: ['thumbnail_id'],
     VIDEO_STATS_FIELDS: ['experiment_state', 'winner_thumbnail', 'created', 'updated'],
     BITLY_ACCESS_TOKEN: 'c9f66d34107cef477d4d1eaca40b911f6f39377e',
@@ -620,7 +608,6 @@ var UTILS = {
         if (genderLabel === undefined || ageLabel === undefined) {
             return null;
         }
-
         return _.find(demos, demo => {
             return demo.gender == genderLabel && demo.age == ageLabel;
         });
@@ -635,12 +622,14 @@ var UTILS = {
     // Returns function that removes the wrapper.
     applyTranslationOverride(mapped) {
         if (_.isEmpty(mapped)) {
-            // Do nothing.
+            // Apply no map. Plus the returned function is noop.
             return Function.prototype;
         }
         const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key, ...rest) =>
-            get(key in mapped ? mapped[key] : key, ...rest));
+        T.get = _.wrap(T.get, (get, key, ...rest) => (
+            get(key in mapped && mapped[key] ?
+                mapped[key] :
+                key, ...rest)));
 
         return () => { T.get = originalTGet; };
     },
@@ -651,8 +640,6 @@ var UTILS = {
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
-
-
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

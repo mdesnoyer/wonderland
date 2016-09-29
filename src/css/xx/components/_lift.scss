@@ -81,6 +81,12 @@ $mobile-lift-bar-height: 3px;
     @include breakpoint-mobile {
         padding-top: 5px;
     }
+
+    > a {
+        color: $accent-color;
+        cursor: pointer;
+        cursor: hand;
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

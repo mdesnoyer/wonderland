@@ -11,6 +11,7 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
+import GifClip  from './GifClip';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -27,7 +28,7 @@ const propTypes = {
     // A map of T get key string to T get key
     // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
     // overrides "Show More" with "View Low Scores"
-    translationOverrideMap: PropTypes.object,
+    copyOverrideMap: PropTypes.object,
 
     infoActionPanels: PropTypes.array.isRequired,
     infoActionControls: PropTypes.array.isRequired,
@@ -48,13 +49,14 @@ const propTypes = {
     selectedPanel: PropTypes.number.isRequired,
 
     smallBadThumbnails: PropTypes.array,
+    isMine: PropTypes.bool,
 };
 
 const defaultProps = {
-    translationOverrideMap: {},
     wrapperClassName: 'xxCollection',
     onThumbnailClick: () => {},
     setLiftThumbnailId: () => {},
+    isMine: true,
 };
 
 
@@ -208,58 +210,102 @@ class BaseCollection extends React.Component {
         />);
     }
 
+    getClipComponent() {
+        return (
+            <div className="xxCollectionImages">
+                <GifClip
+                    url={this.props.clip.renditions[2].url}
+                    score={this.props.clip.neon_score}
+                    poster={this.props.clipPoster}
+                    id={this.props.clip.clip_id}
+                />
+                {
+                    this.props.clipsIds.length > 1 ? (
+                        <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                            <div
+                                className="xxPagingControls-prev xxPagingControls-prev--GifClip"
+                                onClick={this.props.onGifClickPrev}>
+                            </div>
+                            <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                                {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                            </div>
+                            <div
+                                className="xxPagingControls-next xxPagingControls-prev--GifClip"
+                                onClick={this.props.onGifClickNext}>
+                            </div>
+                        </nav>
+                    ) : null
+                }
+            </div>
+        );
+
+    }
+
+    getOnClick(isLeft) {
+        if (isLeft) {
+            return this.onLeftThumbnailClick;
+        }
+        if (this.props.isSoloImage) {
+            if (!this.props.isMine) {
+                return null;
+            }
+        }
+        return this.onRightThumbnailClick;
+    }
+
+    getFeatureThumbnail(thumbnail, isLeft = true) {
+        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') :
+            '';
+        const className = isLeft ? "xxThumbnail--lowLight" : "";
+        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
+        return (
+            <FeatureThumbnail
+                title={title}
+                score={thumbnail.neon_score}
+                enabled={thumbnail.enabled}
+                className={className}
+                src={RENDITIONS.findRendition(thumbnail)}
+                isSoloImage={!isLeft && this.props.isSoloImage}
+                blurText={blurText}
+                onClick={this.getOnClick(isLeft)}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+            />
+        );
+    }
+
+    getThumbComponent() {
+        return (
+            <div className="xxCollectionImages">
+                {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
+                {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
+                {this.getThumbnailList()}
+            </div>
+        );
+    }
+
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.translationOverrideMap);
-
-        // The main left and right feature thumbnails
-        const left = (
-            <FeatureThumbnail
-                title={T.get('copy.worstThumbnail')}
-                score={this.props.leftFeatureThumbnail.neon_score}
-                className="xxThumbnail--lowLight"
-                src={RENDITIONS.findRendition(this.props.leftFeatureThumbnail)}
-                enabled={this.props.leftFeatureThumbnail.enabled}
-                onMouseEnter={this.setLiftThumbnailToLeft}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onLeftThumbnailClick}
-            />
-        );
-
-        const right = (
-            <FeatureThumbnail
-                title={T.get('copy.bestThumbnail')}
-                score={this.props.rightFeatureThumbnail.neon_score}
-                src={RENDITIONS.findRendition(this.props.rightFeatureThumbnail)}
-                enabled={this.props.rightFeatureThumbnail.enabled}
-                onMouseEnter={this.setLiftThumbnailToRight}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onRightThumbnailClick}
-                isSoloImage={this.props.isSoloImage ? this.props.isSoloImage() : false} 
-            />
-        );
+            this.props.copyOverrideMap);
 
         const result = (
             <div className={this.props.wrapperClassName}>
-                <div className="xxCollectionImages">
-                    {left}
-                    {right}
-                    {this.getThumbnailList()}
-                </div>
+                {this.props.clip ? this.getClipComponent() : this.getThumbComponent()}
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
                         selectedPanel={this.props.selectedPanel}
+                        clips={this.props.clips}
                     />
                 </div>
             </div>
         );
-
         // Remove translation override.
         unapplyOverride();
-
         return result;
     }
 }

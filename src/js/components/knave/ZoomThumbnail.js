@@ -17,27 +17,29 @@ var ZoomThumbnail = React.createClass({
         handleClickNext: React.PropTypes.func.isRequired,
         valence: React.PropTypes.array.isRequired,
         extraClass: React.PropTypes.string,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
     },
     getValenceDisplay: function() {
-        var self = this,
-            valenceDisplay = null,
+        const self = this,
             whyThisImage = T.get('copy.whyThisImage') ,
             whyNotThisImage = T.get('copy.whyNotThisImage'),
             uniqueValence = self.props.valence.filter(function(value, pos) {
                 return self.props.valence.indexOf(value) === pos;
-            })
+            }),
+            learnMoreElement = <a href="#" onClick={self.handleLearnMoreClick}>{T.get('nav.learnMore')}</a>
         ;
-        if (this.props.thumbnail && this.props.thumbnail.type === 'bad_neon') {
-            valenceDisplay = (<div>
-                <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
-                <p>{whyNotThisImage} <a href="#" onClick={self.openLearnMore}>Learn More</a>.</p>
-            </div>)
+        if (self.props.thumbnail && self.props.thumbnail.type === 'bad_neon') {
+            return (
+                <div>
+                    <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.whyNotThisImage.header')}</h2>
+                    <p>{whyNotThisImage} {learnMoreElement}</p>
+                </div>
+            );
         }
-        else if (this.props.valence.length > 0) {
-            valenceDisplay = (
+        else if (self.props.valence.length > 0) {
+            return (
                  <div>
-                 <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
+                    <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.valenceFeatures')}</h2>
                     <ul className="xxTagList">
                         {
                             uniqueValence.map(function(v, i) {
@@ -49,20 +51,21 @@ var ZoomThumbnail = React.createClass({
                             })
                         }
                     </ul>
-                    <p>{whyThisImage} <a href="#" onClick={self.openLearnMore}>{T.get('nav.learnMore')}</a>.</p>
+                    <p>{whyThisImage} {learnMoreElement}</p>
                  </div>
             );
         }
         else {
-            valenceDisplay = (<div>
-                <h2 className="xxSubtitle xxImageZoom-subtitle">Getting Features</h2>
-                <div className="xxValenceloadingSpinner"></div>
-            </div>)
+            return (
+                <div>
+                    <h2 className="xxSubtitle xxImageZoom-subtitle">{T.get('copy.gettingFeatures')}</h2>
+                    <div className="xxValenceloadingSpinner"></div>
+                </div>
+            );
         }
-        return valenceDisplay;
     },
-    openLearnMore: function(e) {
-        var self = this;
+    handleLearnMoreClick: function(e) {
+        const self = this;
         e.preventDefault();
         self.props.handleClose(e);
         self.props.openLearnMore(e);
@@ -108,7 +111,7 @@ var ZoomThumbnail = React.createClass({
                     <Lift
                         displayThumbLift={self.props.displayThumbLift}
                         isSoloImage={self.props.total === 1}
-                        translationOverrideMap={this.props.translationOverrideMap}
+                        copyOverrideMap={self.props.copyOverrideMap}
                     />
                     <nav className="xxImageZoom-nav">
                         <a

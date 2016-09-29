@@ -46,7 +46,7 @@ var SnippetGrabber = React.createClass({
         ;
         return (
                 <div className={"control" + hasSnippetTextArea}>
-                    <label className="label">SnippetGrabber</label>
+                    <label className="xxLabel">SnippetGrabber</label>
                     <textarea className="textarea" value={snippetText}></textarea>
                     <p className={"has-text-centered" + hasSnippetTextArea}>
                         <button className="button is-medium is-primary" ref="copyUrl" data-clipboard-text={snippetText} >

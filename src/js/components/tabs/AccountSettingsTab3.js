@@ -51,26 +51,26 @@ var AccountSettingsTab3 = React.createClass({
         ;
         return (       
             <fieldset>
-                <label className="label">{T.get('label.accountName')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
-                    <input className={'input'} type="text" value={self.state.accountName} disabled />
-                </p>
-                <label className="label">{T.get('label.accountId')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                      <input className={'input'} type="text" value={self.state.accountId} disabled />
-                </p>
-                <label className="label">{T.get('label.created')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={created} disabled />
-                </p>
-                <label className="label">{T.get('label.updated')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={updated} disabled />
-                </p>
-                <label className="label">{T.get('label.accountEmail')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.accountEmail} disabled />
-                </p>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.accountName')}</label>
+                    <input className={'xxInputText'} type="text" value={self.state.accountName} disabled />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.accountId')}</label>
+                    <input className={'xxInputText'} type="text" value={self.state.accountId} disabled />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.created')}</label>
+                    <input className={'xxInputText'} type="text" value={created} disabled />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.updated')}</label>
+                    <input className={'xxInputText'} type="text" value={updated} disabled />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.accountEmail')}</label>
+                    <input className={'xxInputText'} type="text" value={self.state.accountEmail} disabled />
+                </div>
             </fieldset>
         );
     }

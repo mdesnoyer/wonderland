@@ -61,7 +61,7 @@ var PrimaryNavigation = React.createClass({
     render: function() {
         var self = this,
             primaryNavItems = {
-                myCollections: <Link activeClassName="is-current" className="xxNav-anchor is-mobile" to={UTILS.DRY_NAV.COLLLECTIONS_MAIN.URL}>{T.get('nav.myCollections')}</Link>,
+                myCollections: <Link activeClassName="is-current" className="xxNav-anchor is-mobile" to={UTILS.DRY_NAV.COLLECTIONS.URL}>{T.get('nav.myCollections')}</Link>,
                 learnMore: <a className="xxNav-anchor" href="#" name="learnMore" onClick={self.props.handleClick}>{T.get('nav.learnMore')}</a>,
                 contactPage: <a className="xxNav-anchor" href="#" name="contact" onClick={self.props.handleClick}>{T.get('nav.contact')}</a>,
                 signUp: <a className="xxNav-anchor" href="#" name="signUp" onClick={self.props.handleClick}>{T.get('nav.signUp')}</a>,

@@ -41,25 +41,25 @@ var AccountSettingsTab2 = React.createClass({
         var self = this;
         return (
             <fieldset>
-                <label className="label">{T.get('label.trackerAccountId')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.trackerAccountId} disabled />
-                </p>
-                <label className="label">{T.get('label.stagingTrackerAccountId')}</label>
-                <p className={'control' + (self.state.isLoading ? ' is-disabled is-loading' : '')}>
-                    <input className={'input'} type="text" value={self.state.stagingTrackerAccountId} disabled />
-                </p>
-                <label className="is-hidden label">{T.get('label.defaultThumbnailId')}</label>
-                <p className={'is-hidden control' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.trackerAccountId')}</label>
+                    <input className={'xxInputText'} type="text" value={self.state.trackerAccountId} disabled />
+                </div>
+                <div className="xxFormField">
+                    <label className="xxLabel">{T.get('label.stagingTrackerAccountId')}</label>
+                    <input className={'xxInputText'} type="text" value={self.state.stagingTrackerAccountId} disabled />
+                </div>
+                {/*<div className="xxFormField">
+                    <label className="is-hidden label">{T.get('label.defaultThumbnailId')}</label>
                     <input
-                        className={'is-hidden input'}
+                        className={'is-hidden xxInputText'}
                         type="text"
                         minLength="1"
                         maxLength="2048"
                         value={self.state.defaultThumbnailId}
                         disabled
                     />
-                </p>
+                </div>*/}
             </fieldset>
         );
     }

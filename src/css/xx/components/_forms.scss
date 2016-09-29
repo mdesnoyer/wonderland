@@ -427,6 +427,24 @@
             @include font-awesome('f0c1');
         }
     }
+    &--Chooser-Thumbnail {
+        position:relative;
+        &:enabled {
+            color: $accent-color; 
+        }
+        &::before {
+            @include font-awesome('f1c5');
+        }
+    }
+    &--Chooser-GIF {
+        position:relative;
+        &:enabled {
+            color: $accent-color; 
+        }
+        &::before {
+            @include font-awesome('f01d');
+        }
+    }
 
 }
 .xxUploadButtonsChooser {
@@ -468,7 +486,9 @@
     width: 50%;
     background: $white;
     padding: 2.5%;
-
+    &.--short {
+        margin-top: 0;
+    }
     @include breakpoint-mobile {
         width: 100%;
         margin-top: 0;

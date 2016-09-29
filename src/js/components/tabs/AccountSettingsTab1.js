@@ -5,7 +5,6 @@ import Account from '../../mixins/Account';
 import E from '../../modules/errors';
 import AjaxMixin from '../../mixins/Ajax';
 import Message from '../wonderland/Message';
-import SaveButton from '../buttons/SaveButton';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 import SESSION from '../../modules/session';
@@ -121,10 +120,10 @@ var AccountSettingsTab1 = React.createClass({
             <form onSubmit={self.handleSubmit}>
                 <fieldset>
                     {messageNeededComponent}
-                    <label className="label">{T.get('label.defaultSizeWidthXHeight')}</label>
-                    <p className={'control is-grouped' + (self.state.isLoading ? ' is-loading is-disabled' : '')}>
+                    <div className="xxFormField">
+                        <label className="xxLabel">Width</label>
                         <input
-                            className={'input'}
+                            className={'xxInputText'}
                             type="number"
                             step="1"
                             min="1"
@@ -133,8 +132,11 @@ var AccountSettingsTab1 = React.createClass({
                             disabled={self.state.isLoading ? 'disabled' : ''}
                             onChange={self.handleChangeDefaultWidth}
                         />
+                    </div>
+                    <div className="xxFormField">
+                        <label className="xxLabel">Height</label>
                         <input
-                            className={'input'}
+                            className={'xxInputText'}
                             type="number"
                             step="1"
                             min="1"
@@ -143,12 +145,15 @@ var AccountSettingsTab1 = React.createClass({
                             disabled={self.state.isLoading ? 'disabled' : ''}
                             onChange={self.handleChangeDefaultHeight}
                         />
-                    </p>
-                    <p className="has-text-centered">
-                        <SaveButton
-                            isLoading={self.state.isLoading}
-                        />
-                    </p>
+                    </div>
+                    <div className="xxFormField">
+                        <button
+                            className="xxButton"
+                            type="submit"
+                        >
+                            {T.get('save')}
+                        </button>
+                    </div>
                 </fieldset>
             </form>
         )

@@ -96,7 +96,7 @@ var UserForgotForm = React.createClass({
                 break;
         }
         return (
-            <fieldset className="xxMainForm">
+            <div className="xxMainForm">
                 <form onSubmit={self.handleSubmit}>
                     <h2 className="xxTitle">{T.get('copy.userForgot.heading')}</h2>
                     {
@@ -135,7 +135,7 @@ var UserForgotForm = React.createClass({
                         )
                     }
                 </form>
-            </fieldset>
+            </div>
         );
     }
 })
