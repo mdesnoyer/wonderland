@@ -157,8 +157,7 @@ const CollectionsMainPage = React.createClass({
 
     sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
         const self = this;
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(email)) {
+        if (!UTILS.isEmailAddress(email)) {
            callback({
                'status_code' : 400,
                'errorMessage' : T.get('error.invalidEmail')
@@ -185,7 +184,6 @@ const CollectionsMainPage = React.createClass({
 
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             data = {
-                subject: UTILS.RESULTS_EMAIL_SUBJECT,
                 to_email_address: email,
                 template_slug: UTILS.RESULTS_MANDRILL_SLUG,
                 template_args: {
@@ -215,7 +213,6 @@ const CollectionsMainPage = React.createClass({
                 seeMoreString = T.get('copy.email.multipleResultsSeeMoreString');
             }
             data = {
-                subject: UTILS.RESULTS_EMAIL_SUBJECT,
                 to_email_address: email,
                 template_slug: UTILS.IMAGE_RESULTS_MANDRILL_SLUG,
                 template_args: {
@@ -237,6 +234,19 @@ const CollectionsMainPage = React.createClass({
         }
         TRACKING.sendEvent(self, arguments, tagId);
         SendActions.sendEmail(data, callback);
+    },
+
+    sendGifResultsEmail(email, callback = Function.prototype) {
+        if (!UTILS.isEmailAddress(email)) {
+           callback({
+               'status_code' : 400,
+               'errorMessage' : T.get('error.invalidEmail'),
+           });
+        }
+        const data = {
+            to_email_address: email,
+            template_slug: UTILS.RESULTS_MANDRILL_SLUG,
+        };
     },
 
     setTooltipText: function(tooltipText) {
