@@ -48,6 +48,7 @@ const MobileBaseCollection = React.createClass({
         wrapperClassName: PropTypes.string,
         onRightThumbnailClick: PropTypes.func,
         isSoloImage: PropTypes.bool,
+        isMine: PropTypes.bool,
     },
 
     getDefaultProps() {
@@ -55,7 +56,8 @@ const MobileBaseCollection = React.createClass({
             wrapperClassName: 'xxCollection',
             onThumbnailClick: () => {},
             setLiftThumbnailId: () => {},
-            smallBadThumbnails: []
+            smallBadThumbnails: [],
+            isMine: true,
         }
     },
 
@@ -141,18 +143,33 @@ const MobileBaseCollection = React.createClass({
         this.setState({ displayInfo: !this.state.displayInfo });
     },
 
+    getOnClick(isLeft) {
+        if (isLeft) {
+            return this.onLeftThumbnailClick;
+        }
+        if (this.props.isSoloImage) {
+            if (!this.props.isMine) {
+                return null;
+            }
+        }
+        return this.onRightThumbnailClick;
+    },
+
     getFeatureThumbnail(thumbnail, isLeft) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') :
+            '';
         const className = isLeft ? "xxThumbnail--lowLight" : "";
-        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
         return (
             <FeatureThumbnail
                 title={title}
                 score={thumbnail.neon_score}
                 enabled={thumbnail.enabled}
                 className={className}
+                blurText={blurText}
                 src={RENDITIONS.findRendition(thumbnail)}
-                onClick={onClick}
+                onClick={this.getOnClick(isLeft)}
                 isSoloImage={!isLeft && this.props.isSoloImage}
             />
         );

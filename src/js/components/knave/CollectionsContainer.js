@@ -54,7 +54,10 @@ const CollectionsContainer = React.createClass({
         setSidebarContent: PropTypes.func.isRequired,
 
         // the accountid that owns these containers
-        ownerAccountId: PropTypes.string
+        ownerAccountId: PropTypes.string,
+
+        // Flag for viewing a shared collection
+        isMine: PropTypes.bool.isRequired,
     },
 
     getInitialState: function() {
@@ -341,6 +344,7 @@ const CollectionsContainer = React.createClass({
         return (
             <ImageCollection
                 key={tagId}
+                isMine={this.props.isMine}
                 title={collection.name}
                 tagId={tagId}
                 leftFeatureThumbnail={left}

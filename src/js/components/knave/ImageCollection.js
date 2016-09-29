@@ -65,6 +65,8 @@ export default class ImageCollection extends React.Component {
         this.onEmailControlClick = this.onControlClick.bind(this, 2);
         this.onDeleteControlClick = this.onControlClick.bind(this, 3);
         this.onAddControlClick = this.onControlClick.bind(this, 4);
+        this.onRightThumbnailClick = this.props.onThumbnailClick.bind(this,
+            props.rightFeatureThumbnail.thumbnail_id);
     }
 
     onControlClick(selectedPanelIndex) {
@@ -174,7 +176,7 @@ export default class ImageCollection extends React.Component {
         };
         const onRightThumbnailClick = this.isSoloImage()?
             this.onAddControlClick :
-            this.props.onThumbnailClick;
+            this.onRightThumbnailClick;
         return (
             <MobileBaseCollection
                 {...this.props}
@@ -196,10 +198,7 @@ export default class ImageCollection extends React.Component {
         // then clicks on it can select the AddPanel.
         const onRightThumbnailClick = this.isSoloImage()?
             this.onAddControlClick :
-            this.props.onThumbnailClick.bind(
-                null,
-                this.props.rightFeatureThumbnail.thumbnail_id);
-
+            this.onRightThumbnailClick;
         return (
             <BaseCollection
                 {...this.props}

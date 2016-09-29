@@ -110,6 +110,7 @@ const ViewSharedCollectionPage = React.createClass({
                 sidebarContent={this.state.sidebarContent}
             >
                 <CollectionsContainer
+                    isMine={false}
                     shownIds={this.getShownIds()}
                     ownerAccountId={this.props.params.accountId}
                     stores={{

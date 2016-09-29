@@ -12,6 +12,7 @@ const propTypes = {
     thumbnaiId: PropTypes.string,
     onMouseEnter: PropTypes.func,
     onClick: PropTypes.func,
+    blurText: PropTypes.string,
     isSoloImage: PropTypes.bool,
 };
 
@@ -20,7 +21,7 @@ export default function FeatureThumbnail(props) {
         if (props.isSoloImage) {
             return (
                 <div className="xxThumbnailSoloMessage">
-                    {T.get('imageUpload.addMoreBlurText')}
+                    {props.blurText}
                 </div>
             );
         }

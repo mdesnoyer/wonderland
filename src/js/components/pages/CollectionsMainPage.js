@@ -372,6 +372,7 @@ const CollectionsMainPage = React.createClass({
         return (
             <div>
                 <CollectionsContainer
+                    isMine={true}
                     shownIds={this.getShownIds()}
                     stores={{
                         tags: this.state.tags,

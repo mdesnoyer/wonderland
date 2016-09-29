@@ -69,17 +69,11 @@ export const InfoDemoLiftPanel = React.createClass({
                     timeRemaining={this.props.timeRemaining}
                     copyOverrideMap={this.props.copyOverrideMap}
                 />
-                {
-                    _.isEmpty(this.props.clips) ?
-                        (
-                            <Lift
-                                displayThumbLift={this.props.liftValue}
-                                copyOverrideMap={this.props.copyOverrideMap}
-                                onWhyClick={this.props.onWhyClick}
-                            />
-                        ) :
-                        (<p>{T.get('copy.lift.explanation.gifs')}</p>)
-                }
+                <Lift
+                    displayThumbLift={this.props.liftValue}
+                    copyOverrideMap={this.props.copyOverrideMap}
+                    onWhyClick={this.props.onWhyClick}
+                />
             </div>
         );
         return result;

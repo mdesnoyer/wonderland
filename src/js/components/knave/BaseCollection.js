@@ -49,12 +49,14 @@ const propTypes = {
     selectedPanel: PropTypes.number.isRequired,
 
     smallBadThumbnails: PropTypes.array,
+    isMine: PropTypes.bool,
 };
 
 const defaultProps = {
     wrapperClassName: 'xxCollection',
     onThumbnailClick: () => {},
     setLiftThumbnailId: () => {},
+    isMine: true,
 };
 
 
@@ -237,10 +239,25 @@ class BaseCollection extends React.Component {
         );
 
     }
+
+    getOnClick(isLeft) {
+        if (isLeft) {
+            return this.onLeftThumbnailClick;
+        }
+        if (this.props.isSoloImage) {
+            if (!this.props.isMine) {
+                return null;
+            }
+        }
+        return this.onRightThumbnailClick;
+    }
+
     getFeatureThumbnail(thumbnail, isLeft = true) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') :
+            '';
         const className = isLeft ? "xxThumbnail--lowLight" : "";
-        const onClick = isLeft ? this.onLeftThumbnailClick : this.onRightThumbnailClick;
         const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
         return (
             <FeatureThumbnail
@@ -250,7 +267,8 @@ class BaseCollection extends React.Component {
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}
                 isSoloImage={!isLeft && this.props.isSoloImage}
-                onClick={onClick}
+                blurText={blurText}
+                onClick={this.getOnClick(isLeft)}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={this.setDefaultLiftThumbnail}
             />
