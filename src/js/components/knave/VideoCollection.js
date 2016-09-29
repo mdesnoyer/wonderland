@@ -191,7 +191,7 @@ const VideoCollection = React.createClass({
                 cancelClickHandler={()=>{this.setSelectedPanel(0)}}
                 shareUrl={this.props.shareUrl}
                 loadShareUrl={LoadActions.loadShareUrl.bind(null, this.props.tagId)}
-                sendResultsEmail={this.props.sendResultsEmail}
+                sendResultsEmail={this.sendResultsEmail}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
@@ -214,6 +214,12 @@ const VideoCollection = React.createClass({
         }
         return panel_array;
     },
+
+    sendResultsEmail(email, callback) {
+        const self = this;
+        self.props.sendResultsEmail(email, self.props.tagId, callback);
+    },
+
     getControls() {
         if (this.props.infoPanelOnly) {
             return [];

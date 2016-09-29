@@ -1,12 +1,8 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// https://raw.githubusercontent.com/neon-lab/neon-codebase/working/imageservingplatform/neon_isp/scaledImage.cpp?token=ABUJFgg35GdImyaBQOA-4e-IKOg56-0Wks5XkVjXwA%3D%3D
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 var RENDITIONS = {
     FUZZ: 6, // px
 
     // check if a & b approx equal i.e in the range of the fuzz
-    // (tolerance) specified 
+    // (tolerance) specified
     fuzzyEqual: function(a, b, fuzz) {
         return (Math.abs(a - b) <= fuzz);
     },
@@ -29,28 +25,30 @@ var RENDITIONS = {
         // thumbnail - The thumbnail object from the backend
         // width - Requested width
         // height - Requested height
-        // 
+        //
         // Outputs:
         // url to display the thumbnail
         var i = 0;
         if (!thumbnail) {
             return null;
-        } else if (width === 0 || height === 0 || 
+        } else if (width === 0 || height === 0 ||
                    thumbnail.renditions.length === 0) {
             return thumbnail.url;
         }
         var near_match = null;
         var aspect_ratio_match = null;
         var best_diff = Number.MIN_SAFE_INTEGER;
+
+
         for (let r of thumbnail.renditions) {
             // Look for the exact match
             if (this.equal(r.width, r.height, width, height)) {
                 return r.url;
             }
             // Look for the match where the size is almost equals
-            if (this.fuzzyEqual(r.width, width, this.FUZZ) && 
+            if (this.fuzzyEqual(r.width, width, this.FUZZ) &&
                 this.fuzzyEqual(r.height, height, this.FUZZ)) {
-                near_match = r.url 
+                near_match = r.url
             }
             // Look for the same aspect ratio, taking the image that
             // is bigger and closest in size.
