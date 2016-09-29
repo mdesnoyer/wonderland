@@ -186,7 +186,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 @keyframes upload-button-onboarding {
-    0%, 25% {
+    // needs to be 'from' as uglify is incorrectly making this 0 rather than 0% - EH
+    from, 25% { 
         transform: scale(2.25);
     }
 
