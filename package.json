@@ -28,6 +28,7 @@
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2",
+    "flow-bin": "^0.32.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-clean": "^0.3.2",
@@ -82,7 +83,8 @@
     "shortid": "^2.2.6"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "flow": "flow; test $? -eq 0 -o $? -eq 2"
   },
   "jest": {
     "setupFiles": [
