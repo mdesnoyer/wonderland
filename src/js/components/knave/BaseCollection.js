@@ -1,7 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, { PropTypes } from 'react';
-
 import _ from 'lodash';
 
 import FeatureThumbnail from './_FeatureThumbnail';
@@ -12,12 +9,9 @@ import {
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
 import GifClip  from './GifClip';
-
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const propTypes = {
 
@@ -313,8 +307,4 @@ class BaseCollection extends React.Component {
 BaseCollection.propTypes = propTypes;
 BaseCollection.defaultProps = defaultProps;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export default BaseCollection;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
