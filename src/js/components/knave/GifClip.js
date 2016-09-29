@@ -42,7 +42,7 @@ export default class GifClip extends React.Component {
     }
 
     render() {
-        var url = this.props.url, 
+        var url = this.props.url,
             score = Math.round(this.props.score),
             id = this.props.id
         ;
@@ -51,11 +51,11 @@ export default class GifClip extends React.Component {
                 <VisibilitySensor onChange={this.onChange}/>
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
-                </h2> 
+                </h2>
                 <video
                     ref={id} 
                     poster={this.props.poster}
-                    className="xxGifVideo" 
+                    className="xxGifVideo"
                     loop
                 >
                     <source

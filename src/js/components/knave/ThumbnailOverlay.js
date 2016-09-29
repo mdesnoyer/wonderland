@@ -22,7 +22,7 @@ var ThumbnailOverlay = React.createClass({
         handleClickNext: React.PropTypes.func.isRequired,
         displayThumbLift: React.PropTypes.number.isRequired,
         thumbnailFeatureNameMap: React.PropTypes.object,
-        translationOverrideMap: React.PropTypes.object,
+        copyOverrideMap: React.PropTypes.object,
     },
     componentDidMount: function() {
         var self = this;
@@ -109,7 +109,7 @@ var ThumbnailOverlay = React.createClass({
                                         extraClass={self.getExtraClass(thumbnail, i)}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}
-                                        translationOverrideMap={self.props.translationOverrideMap}
+                                        copyOverrideMap={self.props.copyOverrideMap}
                                     />
                                 );
                             })

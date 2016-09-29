@@ -152,17 +152,16 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.notFound.body.2': 'Please <a href="@link">click here</a> to go back to Neon.',
             'copy.notFound.body.3': '(Error 404)',
 
-            'copy.lift.explanation.default': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
-            'copy.lift.explanation.default.link': 'Why did we pick this image?',
+            'copy.lift.explanation': 'Lift is the percentage increase in clicks your video would get by using Neon images instead of your existing image.',
             'copy.lift.explanation.images': 'Lift is the percentage increase in clicks you would get by using your high-scoring Neon images instead of your low-scoring Neon images.',
-            'copy.lift.explanation.images': 'How did we choose this NeonScore?',
-            'copy.lift.explanation.soloImage': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
+            'copy.lift.explanation.images.solo': 'Lift will be calculated against the lowest scoring image in the collection. This functionality requires two images. Upload more images to display the lift calculation.',
+            'copy.lift.explanation.gifs':  'Lift is the percentage increase in clicks you would get by using your high-scoring Neon GIFs instead of your low-scoring Neon GIFs.',
+            'copy.lift.link': 'Why did we pick this image?',
             'copy.lift.units': '@lift Lift',
             'copy.lift.lift': 'Lift',
-            'copy.gif.explanation.default':  'How did we choose your GIFs? We analyze your video for over 1,000 valence features that shape human visual preference. We select GIFs that contain the most engaging and high valence sequences in your video.',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            
+
             'copy.passwordPlaceholder': "••••••••••",
             'copy.passwordInitial': 'Password',
             'copy.passwordConfirm': 'Confirm Password',
@@ -360,7 +359,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.worstThumbnail': 'Lowest-scoring Image',
             'copy.currentImage': 'Current Image',
             'copy.topNeonImage': 'Top Neon Image',
-            'copy.topNeonGif': 'Top Neon GIF',
+            'copy.topNeonGif': 'Top Neon GIFs',
             'copy.valenceFeatures': 'Valence Features',
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

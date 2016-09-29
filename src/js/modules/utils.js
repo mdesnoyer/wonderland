@@ -622,12 +622,14 @@ var UTILS = {
     // Returns function that removes the wrapper.
     applyTranslationOverride(mapped) {
         if (_.isEmpty(mapped)) {
-            // Do nothing.
+            // Apply no map. Plus the returned function is noop.
             return Function.prototype;
         }
         const originalTGet = T.get;
-        T.get = _.wrap(T.get, (get, key, ...rest) =>
-            get(key in mapped ? mapped[key] : key, ...rest));
+        T.get = _.wrap(T.get, (get, key, ...rest) => (
+            get(key in mapped && mapped[key] ?
+                mapped[key] :
+                key, ...rest)));
 
         return () => { T.get = originalTGet; };
     },
