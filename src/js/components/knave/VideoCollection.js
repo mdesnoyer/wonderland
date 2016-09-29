@@ -130,6 +130,7 @@ const VideoCollection = React.createClass({
     onWhyClick() {
         const self = this;
         self.props.onThumbnailClick(
+            self.props.tagId,
             self.props.rightFeatureThumbnail.thumbnail_id);
     },
 

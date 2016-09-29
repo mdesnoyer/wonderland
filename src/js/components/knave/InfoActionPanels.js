@@ -119,7 +119,7 @@ export const FilterPanel = React.createClass({
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
         const callback = () => {
             self.props.cancelClickHandler();
-            self.props.onDemographicChange([enumGender, enumAge]);
+            self.props.onDemographicChange(enumGender, enumAge);
         }
         if (this.props.clips) {
             return SendActions.refilterVideoForClip(
@@ -148,12 +148,12 @@ export const ServingStatusPanel = React.createClass({
         cancelClickHandler: PropTypes.func.isRequired,
 
         // what to do on enable click
-        enableThumbnail: PropTypes.func.isRequired, 
-        
-        // what to do on disable click 
-        disableThumbnail: PropTypes.func.isRequired, 
+        enableThumbnail: PropTypes.func.isRequired,
 
-        // list of goodThumbnails 
+        // what to do on disable click
+        disableThumbnail: PropTypes.func.isRequired,
+
+        // list of goodThumbnails
         goodThumbnails: PropTypes.array
     },
     render: function() {
@@ -168,8 +168,8 @@ export const ServingStatusPanel = React.createClass({
                 </div>
                 <ServingStatusThumbnailList
                     thumbnails={this.props.goodThumbnails}
-                    enableClick={this.props.enableThumbnail} 
-                    disableClick={this.props.disableThumbnail} 
+                    enableClick={this.props.enableThumbnail}
+                    disableClick={this.props.disableThumbnail}
                     className='xxThumbnail--noscore xxThumbnail--fullwidth'
                 />
                 <div className="xxCollectionAction-buttons">
@@ -180,8 +180,8 @@ export const ServingStatusPanel = React.createClass({
                         onClick={this.props.cancelClickHandler}
                         >{T.get('back')}
                     </button>
-                </div> 
-            </div> 
+                </div>
+            </div>
         );
     }
 });
@@ -204,7 +204,7 @@ export const ImageServingEnableControl = React.createClass({
             </a>
         );
     }
-}); 
+});
 
 export const ImageServingDisableControl = React.createClass({
     propTypes: {
@@ -223,7 +223,7 @@ export const ImageServingDisableControl = React.createClass({
             </a>
         );
     }
-}); 
+});
 
 export const ServingStatusControl = React.createClass({
 
@@ -663,8 +663,8 @@ export const AddPanel = React.createClass({
                     ) : null
                 }
                 <UploadForm
-                    panelType={this.props.panelType} 
-                    isAddPanel={true} 
+                    panelType={this.props.panelType}
+                    isAddPanel={true}
                     tagId={this.props.tagId}
                     videoId={this.props.videoId}
                     cancelClickHandler={this.props.cancelClickHandler}

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import VisibilitySensor from 'react-visibility-sensor'; 
+import VisibilitySensor from 'react-visibility-sensor';
 
 import T from '../../modules/translation';
 
@@ -27,17 +27,17 @@ export default class GifClip extends React.Component {
         var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
         if (video) {
             if (this.props.url !== _prevProps.url ){
-                ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
+                ReactDOM.findDOMNode(this.refs[this.props.id]).load();
             };
         };
-            
+
     }
 
     onChange(isVisible) {
-        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
-        
-        if (video) { 
-            isVisible ? video.play() : video.pause(); 
+        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
+
+        if (video) {
+            isVisible ? video.play() : video.pause();
         };
     }
 
@@ -53,7 +53,7 @@ export default class GifClip extends React.Component {
                     {T.get('copy.topNeonGif')}
                 </h2>
                 <video
-                    ref={id} 
+                    ref={id}
                     poster={this.props.poster}
                     className="xxGifVideo"
                     loop

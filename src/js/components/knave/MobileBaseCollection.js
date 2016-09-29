@@ -54,8 +54,8 @@ const MobileBaseCollection = React.createClass({
     getDefaultProps() {
         return {
             wrapperClassName: 'xxCollection',
-            onThumbnailClick: () => {},
-            setLiftThumbnailId: () => {},
+            onThumbnailClick: Function.prototype,
+            setLiftThumbnailId: Function.prototype,
             smallBadThumbnails: [],
             isMine: true,
         }
@@ -130,13 +130,13 @@ const MobileBaseCollection = React.createClass({
             this.props.onRightThumbnailClick();
         } else {
             const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-            this.props.onThumbnailClick(rightThumbnailId);
+            this.props.onThumbnailClick(this.props.tagId, rightThumbnailId);
         }
     },
 
     onLeftThumbnailClick() {
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        this.props.onThumbnailClick(leftThumbnailId);
+        this.props.onThumbnailClick(this.props.tagId, leftThumbnailId);
     },
 
     handleDisplayInfo() {
@@ -216,14 +216,14 @@ const MobileBaseCollection = React.createClass({
                             this.props.clipsIds.length > 1 ? (
                                 <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
                                     <div
-                                        className="xxPagingControls-prev xxPagingControls-prev--GifClip" 
+                                        className="xxPagingControls-prev xxPagingControls-prev--GifClip"
                                         onClick={this.props.onGifClickPrev}>
                                     </div>
                                     <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
                                         {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
                                     </div>
                                     <div
-                                        className="xxPagingControls-next xxPagingControls-next--GifClip" 
+                                        className="xxPagingControls-next xxPagingControls-next--GifClip"
                                         onClick={this.props.onGifClickNext}>
                                     </div>
                                 </nav>

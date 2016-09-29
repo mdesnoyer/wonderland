@@ -30,19 +30,19 @@ var VideoInfo = React.createClass({
         ReactTooltip.rebuild();
     },
     componentWillReceiveProps: function(nextProps) {
-        if (this.props.demographicThumbnails.length !== nextProps.demographicThumbnails.length) { 
-            var dos = this.getDemographicOptions(); 
-            this.setState({ 
-                demographicOptions: dos, 
-                demographicThumbnails: nextProps.demographicThumbnails    
+        if (this.props.demographicThumbnails.length !== nextProps.demographicThumbnails.length) {
+            var dos = this.getDemographicOptions();
+            this.setState({
+                demographicOptions: dos,
+                demographicThumbnails: nextProps.demographicThumbnails
             });
-            // Since we default to not showing the None, we need to 
-            // see if the length is exactly 2 -- after a thumbnail change 
+            // Since we default to not showing the None, we need to
+            // see if the length is exactly 2 -- after a thumbnail change
             // if it is set the selectedDemographic to 1 instead of 0
-            if (nextProps.demographicThumbnails.length === 2) { 
-                this.setState({ 
+            if (nextProps.demographicThumbnails.length === 2) {
+                this.setState({
                     selectedDemographic: 1
-                }); 
+                });
             }
             this.props.showRefilterTutorial();
         }
@@ -52,7 +52,7 @@ var VideoInfo = React.createClass({
             });
         }
     },
-    getDemographicOptions: function() { 
+    getDemographicOptions: function() {
         var self = this,
             demographicOptions = []
         ;
@@ -74,11 +74,11 @@ var VideoInfo = React.createClass({
                 });
             });
         }
-        return demographicOptions; 
+        return demographicOptions;
     },
     onDemographicChange: function(e) {
         var self = this,
-            value = parseInt(e.target.id)
+            value = parseInt(e.target.id, 10)
         ;
         e.preventDefault();
         self.setState({
@@ -154,9 +154,9 @@ var VideoInfo = React.createClass({
                                         <div className="xxCollectionFilterToggle xxCollectionFilterToggle--countdown"></div>
                                         {
                                             (self.props.timeRemaining !== null && self.props.timeRemaining > 0) ? (
-                                                <span><Countdown 
-                                                    seconds={self.props.timeRemaining} 
-                                                    onFinish={self.onTimerFinished} 
+                                                <span><Countdown
+                                                    seconds={self.props.timeRemaining}
+                                                    onFinish={self.onTimerFinished}
                                                     classPrefix="xxCollectionFilterCountdown" />
                                                 </span>
                                             ) : (
@@ -176,12 +176,12 @@ var VideoInfo = React.createClass({
                                 <strong className={dropdownClassName.join(' ')}>{T.get('label.filters')}</strong>
                                 {
                                     (self.state.demographicThumbnails && self.state.demographicThumbnails.length > 1) ? (
-                                       
+
                                             <span className="xxCollectionFilters-value" onClick={self.toggleOpen}>
                                                 {currentFilter}
                                                 {dropdownFilters}
                                             </span>
-                                        
+
                                     ) : null
                                 }
                             </div>

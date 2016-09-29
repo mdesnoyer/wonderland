@@ -913,7 +913,7 @@ export const ServingStatusActions = Object.assign({}, AjaxMixin, {
 });
 
 export const SendActions = Object.assign({}, AjaxMixin, {
-    deleteCollectionByTagId(tagId) {
+    deleteCollection(tagId) {
         const tag = tagStore.get(tagId);
         const data = { tag_id: tagId, hidden: true };
         SendActions.put('tags', { data })

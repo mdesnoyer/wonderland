@@ -78,7 +78,7 @@ class BaseCollection extends React.Component {
 
     onLeftThumbnailClick() {
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        this.props.onThumbnailClick(leftThumbnailId);
+        this.props.onThumbnailClick(this.props.tagId, leftThumbnailId);
     }
 
     onRightThumbnailClick() {
@@ -86,7 +86,7 @@ class BaseCollection extends React.Component {
             this.props.onRightThumbnailClick();
         } else {
             const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-            this.props.onThumbnailClick(rightThumbnailId);
+            this.props.onThumbnailClick(this.props.tagId, rightThumbnailId);
         }
     }
 
