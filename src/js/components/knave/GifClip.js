@@ -44,7 +44,7 @@ export default class GifClip extends React.Component {
     handleClick() {
         var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
         if (video) { 
-            if(video.paused) {
+            if (video.paused) {
                 video.play();
             }
             else {
