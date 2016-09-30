@@ -14,11 +14,83 @@
         @include breakpoint-mobile {
             width: $mobile-thumbnail-score-size;
         }
-    } 
+    }
+
+    .xxClipClick {
+        display: none;
+    }
+
+    &:hover {
+        .xxClipClick {
+            display: block;
+            left: 50%;
+            top: 50%;
+            z-index: 10000;
+            width: 25%;
+            background-color: yellow;
+            position: absolute;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+    }
+
+        .xxClipClick--Start {
+            display: block;
+            left: 50%;
+            top: 50%;
+            z-index: 10000;
+            width: 25%;
+            background-color: blue;
+            position: absolute;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+    }
+
+
 }
+
 .xxGifVideo {
     width:100%;
     display: block;
     margin: 0 auto;
     height: auto;
 }
+
+
+    // .xxClipClick--Playing {
+    //     display: none;
+    // }
+
+    // &:hover {
+    //     .xxClipClick {
+    //         display: block;
+    //         left: 50%;
+    //         top: 50%;
+    //         z-index: 10000;
+    //         width: 25%;
+    //         background-color: yellow;
+    //         position: absolute;
+    //         -webkit-transform: translate(-50%, -50%);
+    //         -moz-transform: translate(-50%, -50%);
+    //         transform: translate(-50%, -50%);
+    //         cursor: pointer;
+    //     }
+    // }
+
+    // .xxClipClick--Start {
+    //         display: block;
+    //         left: 50%;
+    //         top: 50%;
+    //         z-index: 10000;
+    //         width: 25%;
+    //         background-color: ;
+    //         position: absolute;
+    //         -webkit-transform: translate(-50%, -50%);
+    //         -moz-transform: translate(-50%, -50%);
+    //         transform: translate(-50%, -50%);
+    //         cursor: pointer;
+    // }
