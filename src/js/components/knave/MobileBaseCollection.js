@@ -1,147 +1,72 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+import React, { PropTypes } from 'react';
 
-import React, {PropTypes} from 'react';
-
-import _ from 'lodash';
-
+import BaseCollection from './BaseCollection';
 import FeatureThumbnail from './FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
-import {
-    ThumbnailList,
-    ShowMoreThumbnailList,
-    ShowLessThumbnailList,
-    ShowMoreLessThumbnailList } from './ThumbnailList';
-
+import { ThumbnailList } from './ThumbnailList';
 import Lift from '../knave/Lift';
-import GifClip  from './GifClip';
+import GifClip from './GifClip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+const propTypes = {
+    // Left and right large thumbnail
+    leftFeatureThumbnail: PropTypes.object.isRequired,
+    rightFeatureThumbnail: PropTypes.object.isRequired,
 
-const MobileBaseCollection = React.createClass({
+    // A map of T get key string to T get key
+    // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
+    // overrides "Show More" with "View Low Scores"
+    copyOverrideMap: PropTypes.object,
 
-    propTypes: {
+    infoActionPanels: PropTypes.array.isRequired,
+    infoActionControls: PropTypes.array.isRequired,
 
-        // Left and right large thumbnail
-        leftFeatureThumbnail: PropTypes.object.isRequired,
-        rightFeatureThumbnail: PropTypes.object.isRequired,
+    // List of thumbnails to be displayed as small items
+    smallThumbnails: PropTypes.array.isRequired,
 
-        // A map of T get key string to T get key
-        // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
-        // overrides "Show More" with "View Low Scores"
-        copyOverrideMap: PropTypes.object,
+    // Handlers for image events
+    onThumbnailClick: PropTypes.func,
+    setLiftThumbnailId: PropTypes.func,
 
-        infoActionPanels: PropTypes.array.isRequired,
-        infoActionControls: PropTypes.array.isRequired,
+    // class name for the wrapper around the
+    // component defaults to xxCollection
+    wrapperClassName: PropTypes.string,
+    onRightThumbnailClick: PropTypes.func,
+    isSoloImage: PropTypes.bool,
+    isMine: PropTypes.bool,
+};
 
-        // List of thumbnails to be displayed as small items
-        smallThumbnails: PropTypes.array.isRequired,
+const defaultProps = {
+    wrapperClassName: 'xxCollection',
+    onThumbnailClick: Function.prototype,
+    setLiftThumbnailId: Function.prototype,
+    smallBadThumbnails: [],
+    isMine: true,
+};
 
-        // Handlers for image events
-        onThumbnailClick: PropTypes.func,
-        setLiftThumbnailId: PropTypes.func,
+class MobileBaseCollection extends BaseCollection {
 
-        // class name for the wrapper around the
-        // component defaults to xxCollection
-        wrapperClassName: PropTypes.string,
-        onRightThumbnailClick: PropTypes.func,
-        isSoloImage: PropTypes.bool,
-        isMine: PropTypes.bool,
-    },
-
-    getDefaultProps() {
-        return {
-            wrapperClassName: 'xxCollection',
-            onThumbnailClick: Function.prototype,
-            setLiftThumbnailId: Function.prototype,
-            smallBadThumbnails: [],
-            isMine: true,
-        }
-    },
-
-    getInitialState() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             open: false,
-            displayInfo: false
+            displayInfo: false,
         };
-    },
+        this.onDisplayInfoToggle.bind(this);
+        this.onMoreLessToggle.bind(this);
+    }
 
-    getThumbnailList() {
-        if (this.props.smallThumbnails.length == 0) {
-            return null;
-        }
-
-        const self = this;
-        const onMoreLess = (e) => {
-            e.preventDefault();
-            self.setState({
-                open: !this.state.open
-            });
-        };
-
-        const toggleLabel = this.state.open?
-            T.get('action.showLess'):
-            T.get('action.showMore');
-
-        const children = [];
-
-        if (this.state.open) {
-            children.push((
-                <span key="0">
-                    {T.get('copy.videos.topSelects')}
-                </span>
-            ));
-            children.push((
-                <ThumbnailList
-                    key="1"
-                    thumbnails={self.props.smallThumbnails}
-                    onClick={self.props.onThumbnailClick}
-                    classname="xxThumbnail--highLight"
-                />
-            ));
-            if (self.props.smallBadThumbnails.length > 0) {
-                children.push((
-                    <span key="2">
-                        {T.get('copy.videos.lowest')}
-                    </span>
-                ));
-                children.push((
-                    <ThumbnailList
-                        key="3"
-                        thumbnails={self.props.smallBadThumbnails}
-                        onClick={self.props.onThumbnailClick}
-                        classname="xxThumbnail--lowLight"
-                    />
-                ));
-            }
-        }
-        children.push((
-            <div key="4" className="xxShowMore" onClick={onMoreLess}>
-                <a href="#">{toggleLabel}</a>
-            </div>
-        ));
-        return <div>{children}</div>;
-    },
-
-    onRightThumbnailClick() {
-        if (this.props.onRightThumbnailClick) {
-            this.props.onRightThumbnailClick();
-        } else {
-            const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-            this.props.onThumbnailClick(this.props.tagId, rightThumbnailId);
-        }
-    },
-
-    onLeftThumbnailClick() {
-        const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        this.props.onThumbnailClick(this.props.tagId, leftThumbnailId);
-    },
-
-    handleDisplayInfo() {
+    onDisplayInfoToggle(e) {
+        e.preventDefault();
         this.setState({ displayInfo: !this.state.displayInfo });
-    },
+    }
+
+    onMoreLessToggle(e) {
+        e.preventDefault();
+        this.setState({ open: !this.state.open });
+    }
 
     getOnClick(isLeft) {
         if (isLeft) {
@@ -153,14 +78,65 @@ const MobileBaseCollection = React.createClass({
             }
         }
         return this.onRightThumbnailClick;
-    },
+    }
 
-    getFeatureThumbnail(thumbnail, isLeft) {
-        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+    renderThumbnailList() {
+        if (!this.props.smallThumbnails.length) {
+            return null;
+        }
+
+        const toggleLabel = this.state.open ?
+            T.get('action.showLess') :
+            T.get('action.showMore');
+
+        const children = [];
+        if (this.state.open) {
+            children.push((
+                <span key="0">
+                    {T.get('copy.videos.topSelects')}
+                </span>
+            ));
+            children.push((
+                <ThumbnailList
+                    key="1"
+                    thumbnails={this.props.smallThumbnails}
+                    onClick={this.props.onThumbnailClick}
+                    className="xxThumbnail--highLight"
+                />
+            ));
+            if (this.props.smallBadThumbnails.length > 0) {
+                children.push((
+                    <span key="2">
+                        {T.get('copy.videos.lowest')}
+                    </span>
+                ));
+                children.push((
+                    <ThumbnailList
+                        key="3"
+                        thumbnails={this.props.smallBadThumbnails}
+                        onClick={this.props.onThumbnailClick}
+                        classnNme="xxThumbnail--lowLight"
+                    />
+                ));
+            }
+        }
+        children.push((
+            <div key="4" className="xxShowMore" onClick={this.onMoreLessToggle}>
+                <a>{toggleLabel}</a>
+            </div>
+        ));
+
+        return <div>{children}</div>;
+    }
+
+
+    renderFeatureThumbnail(thumbnail, isLeft) {
+        const title = T.get(isLeft ?
+            'copy.worstThumbnail' : 'copy.bestThumbnail');
         const blurText = this.props.isMine ?
             T.get('imageUpload.addMoreBlurText') :
             '';
-        const className = isLeft ? "xxThumbnail--lowLight" : "";
+        const className = isLeft ? 'xxThumbnail--lowLight' : '';
         return (
             <FeatureThumbnail
                 thumbnailId={thumbnail.thumbnail_id}
@@ -174,93 +150,112 @@ const MobileBaseCollection = React.createClass({
                 isSoloImage={!isLeft && this.props.isSoloImage}
             />
         );
-    },
+    }
+
+    renderClip() {
+        const displayClassNames = [
+            'xxPagingControls-next',
+            'xxPagingControls-next--GifClip'];
+        if (this.state.displayInfo) {
+            displayClassNames.push('xxPagingControls-next--mobileGifClosed');
+        }
+        return (
+            <div>
+                <div className="xxCollection-content xxCollection-content--mobileGif">
+                    <h1 className="xxCollection-title xxCollection-title--mobileGif ">
+                        {this.props.title}
+                    </h1>
+                    <div
+                        className={displayClassNames.join(' ')}
+                        onClick={this.onDisplayInfoToggle}
+                    />
+                </div>
+                <div className="xxCollectionImages">
+                    <GifClip
+                        url={this.props.clip.renditions[2].url}
+                        score={this.props.clip.neon_score}
+                        poster={this.props.clipPoster}
+                        id={this.props.clip.clip_id}
+                    />
+                    { this.renderClipPaging() }
+                    {
+                        this.state.displayInfo ? (
+                            <div className="xxCollection-content">
+                                <InfoActionContainer
+                                    children={this.props.infoActionPanels}
+                                    controls={this.props.infoActionControls}
+                                    selectedPanel={this.props.selectedPanel}
+                                />
+                            </div>
+                        ) : null
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    renderClipPaging() {
+        if (this.props.clipIds.length <= 1) {
+            return null;
+        }
+        return (
+            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                <div
+                    className="xxPagingControls-prev xxPagingControls-prev--GifClip"
+                    onClick={this.props.onGifClickPrev}
+                />
+                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
+                    {T.get('copy.xOfY', {
+                        '@x': this.props.selectedGifClip + 1,
+                        '@y': this.props.clipIds.length })}
+                </div>
+                <div
+                    className="xxPagingControls-next xxPagingControls-next--GifClip"
+                    onClick={this.props.onGifClickNext}
+                />
+            </nav>
+        );
+    }
+
+    renderVideo() {
+        return (
+            <div>
+                <div className="xxCollection-content">
+                    <InfoActionContainer
+                        children={this.props.infoActionPanels}
+                        controls={this.props.infoActionControls}
+                        selectedPanel={this.props.selectedPanel}
+                    />
+                </div>
+                <div className="xxCollectionImages">
+                    {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
+                    {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
+                    <Lift
+                        displayThumbLift={this.props.liftValue}
+                        copyOverrideMap={this.props.copyOverrideMap}
+                    />
+                    {this.renderThumbnailList()}
+                </div>
+            </div>
+        );
+    }
 
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(this.props.copyOverrideMap);
 
-        const displayClassName = this.state.displayInfo ? ' xxPagingControls-next--mobileGifClosed' : ''
-        const renderedMedia = !this.props.clip ? (
-                <div>
-                    <div className="xxCollection-content">
-                        <InfoActionContainer
-                            children={this.props.infoActionPanels}
-                            controls={this.props.infoActionControls}
-                            selectedPanel={this.props.selectedPanel}
-                        />
-                    </div>
-                    <div className="xxCollectionImages">
-                        {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
-                        {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
-                        <Lift
-                            displayThumbLift={this.props.liftValue}
-                            copyOverrideMap={this.props.copyOverrideMap}
-                        />
-                        {this.getThumbnailList()}
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <div className="xxCollection-content xxCollection-content--mobileGif">
-                        <h1 className="xxCollection-title xxCollection-title--mobileGif ">{this.props.title}</h1>
-                        <div className={"xxPagingControls-next xxPagingControls-next--GifClip" + displayClassName} onClick={this.handleDisplayInfo}></div>
-                    </div>
-                    <div className="xxCollectionImages">
-                        <GifClip
-                            url={this.props.clip.renditions[2].url}
-                            score={this.props.clip.neon_score}
-                            poster={this.props.clipPoster}
-                            id={this.props.clip.clip_id}
-                        />
-                        {
-                            this.props.clipIds.length > 1 ? (
-                                <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                                    <div
-                                        className="xxPagingControls-prev xxPagingControls-prev--GifClip"
-                                        onClick={this.props.onGifClickPrev}>
-                                    </div>
-                                    <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                                        {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipIds.length}
-                                    </div>
-                                    <div
-                                        className="xxPagingControls-next xxPagingControls-next--GifClip"
-                                        onClick={this.props.onGifClickNext}>
-                                    </div>
-                                </nav>
-                            ) : null
-                        }
-                        {
-                            this.state.displayInfo ? (
-                                <div className="xxCollection-content">
-                                    <InfoActionContainer
-                                        children={this.props.infoActionPanels}
-                                        controls={this.props.infoActionControls}
-                                        selectedPanel={this.props.selectedPanel}
-                                    />
-                                </div>
-                            ) : null
-                        }
-                    </div>
-                </div>
-            )
-
-
         const result = (
             <div className={this.props.wrapperClassName}>
-                {renderedMedia}
+                {this.props.clip ? this.renderClip() : this.renderVideo()}
             </div>
         );
 
         // Remove translation override.
         unapplyOverride();
-
         return result;
     }
-});
+}
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+MobileBaseCollection.propTypes = propTypes;
+MobileBaseCollection.defaultProps = defaultProps;
 export default MobileBaseCollection;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
