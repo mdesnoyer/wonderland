@@ -33,7 +33,7 @@ export default class GifClip extends React.Component {
             
     }
 
-    onChange(isVisible) {
+    onChange(isVisible, active) {
         var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
         
         if (video) { 
@@ -54,9 +54,9 @@ export default class GifClip extends React.Component {
                 </h2>
                 <video
                     ref={id} 
-                    poster={this.props.poster}
                     className="xxGifVideo"
                     loop
+                    preload
                 >
                     <source
                         src={this.props.url}
