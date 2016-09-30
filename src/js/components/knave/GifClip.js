@@ -9,6 +9,7 @@ export default class GifClip extends React.Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this)
+        this.handleClick = this.handleClick.bind(this)
     }
 
     static defaultProps = {
@@ -40,6 +41,19 @@ export default class GifClip extends React.Component {
         };
     }
 
+    handleClick() {
+        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
+        if (video) { 
+            if(video.paused) {
+                video.play();
+            }
+            else {
+                video.pause();
+            }
+        }
+
+    }
+
     render() {
         var url = this.props.url,
             score = Math.round(this.props.score),
@@ -57,6 +71,7 @@ export default class GifClip extends React.Component {
                     className="xxGifVideo"
                     loop
                     preload="auto"
+                    onClick={this.handleClick}
                 >
                     <source
                         src={this.props.url}
