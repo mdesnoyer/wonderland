@@ -99,6 +99,7 @@ var ZoomThumbnail = React.createClass({
                         title={''}
                         uid={self.props.index}
                         score={self.props.thumbnail.neon_score}
+                        dominantColor={self.props.thumbnail.dominant_color}
                         size={'large'}
                         src={self.props.thumbnail.url}
                         thumbnailId={self.props.thumbnail.thumbnail_id}

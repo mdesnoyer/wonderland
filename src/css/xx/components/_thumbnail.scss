@@ -19,19 +19,18 @@
     }
 }
 
-
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxThumbnail {
     display: block;
     position: relative;
     width: 100%;
-    &::before {
+    &:before {
         content: '';
         display: block;
         padding: 0 0 100%;
     }
-    &::after {
+    &:after {
         @extend .x-neonscore;
         content: attr(data-score);
         left: 0;
@@ -42,28 +41,34 @@
     }
 
     &--highLight {
-        &::before,
-        &::after {
+        background-color: rgba($accent-color, 0.9);
+        &:before {
+            // empty
+        }
+        &:after {
             background-color: rgba($accent-color, 0.9);
         }
     }
 
     &--lowLight {
-        &::before,
-        &::after {
+        background-color: $base-color;
+        &:before {
+            // empty
+        }
+        &:after {
             background-color: $base-color;
         }
     }
 
     &--noscore { 
-        &::after {
+        &:after {
             display: none;
         }
     }
 
     &--large {
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             height: $thumbnail-large-score-size;
             font-size: 18px;
             line-height: $thumbnail-large-score-size;
@@ -73,14 +78,14 @@
                 line-height: $mobile-thumbnail-score-size;
             }
         }
-        &::after {
+        &:after {
             left: 0;
             width: $thumbnail-large-score-size;
             @include breakpoint-mobile {
                 width: $mobile-thumbnail-score-size;
             }
         }
-        &::before {
+        &:before {
             left: $thumbnail-large-score-size * 1.05;
             @include breakpoint-mobile {
                 left: $mobile-thumbnail-score-size * 1.05;
@@ -98,7 +103,7 @@
 
     &--zoom {
         cursor: default;
-        &::before {
+        &:before {
             @extend .x-neonscore;
             content: attr(data-score-label);
             padding: 0; // need to reset the greedy 100% declared above
@@ -110,14 +115,14 @@
     }
 
     &--zoom#{&}--highLight {
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             background-color: $accent-color;
         }
     }
 
     &--zoom#{&}--default {
-        &::before {
+        &:before {
             padding-left: 0.618em;
             padding-right: 0.618em;
         }
@@ -153,6 +158,15 @@
     transition: border-color $default-transition;
     // helps with old(er) warped videos - #1408
     object-fit: cover;
+    transition: opacity 0.451s ease-in-out;
+
+    &.-is-loading {
+        opacity: 0;
+    }
+
+    &.-is-loaded {
+        opacity: 1;
+    }
 
     .xxThumbnail--highLight:hover > & {
         border-color: $accent-color;

@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react';
+import UTILS from '../../modules/utils';
 
 const propTypes = {
     // The neon score [0-99]
     score: PropTypes.number,
+
+    dominantColor: PropTypes.array,
 
     // The accessibility title
     alt: PropTypes.string,
@@ -34,10 +37,19 @@ const defaultProps = {
     enabled: true,
 };
 
+function fadeIn(e) {
+    const target = e.target;
+    target.classList.add('-is-loaded');
+}
+
 function Thumbnail(props) {
     const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
-    const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
-        xxThumbnail--highLight xxThumbnail--neon ${props.className} \
+    const dominantColorHex = UTILS.findDominantColor(props.dominantColor);
+    const inlineBackgroundColour = dominantColorHex ? {
+        backgroundColor: dominantColorHex
+    } : null;
+    const className = `xxThumbnail xxThumbnail--neon \
+        xxThumbnail--highLight ${props.className} \
         ${disabledClassName}`;
 
     return (
@@ -46,9 +58,11 @@ function Thumbnail(props) {
                 className={className}
                 data-score={props.score}
                 onClick={props.onClick}
+                style={inlineBackgroundColour}
             >
                 <img
-                    className="xxThumbnail-image"
+                    onLoad={fadeIn}
+                    className="xxThumbnail-image -is-loading"
                     alt={props.alt || props.score}
                     src={props.src}
                     onMouseEnter={props.onMouseEnter}

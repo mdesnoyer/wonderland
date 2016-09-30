@@ -7,6 +7,7 @@ const propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     score: PropTypes.number.isRequired,
+    dominantColor: PropTypes.array,
     src: PropTypes.string.isRequired,
     tagId: PropTypes.string,
     thumbnaiId: PropTypes.string,
