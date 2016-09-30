@@ -342,7 +342,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             let defaultThumb;
             if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
                 const video = videoStore.get(tag.video_id);
-                const demo = UTILS.findDemographicThumbnailObject(
+                const demo = UTILS.findDemographicObject(
                     video.demographic_thumbnails, gender, age);
                 defaultThumb = UTILS.findDefaultThumbnail(demo);
             }

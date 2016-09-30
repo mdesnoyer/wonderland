@@ -321,6 +321,7 @@ var UTILS = {
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
     RESULTS_MANDRILL_SLUG: 'video-results',
     IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
+    GIF_RESULTS_MANDRILL_SLUG: 'gif-results',
     VERSION: '1.9.1',
     DETECT_MOBILE_WIDTH_PX: 768,
     NEON_SCORE_ENABLED: true,
@@ -335,6 +336,7 @@ var UTILS = {
     MAX_VIDEO_SIZE: 900,
     IMAGE_TARGET_WIDTH: 800,
     IMAGE_TARGET_HEIGHT: 800,
+    GIF_EMAIL_DIMENSION: 425,
     CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions', 'thumbnail_id'],
     CLIP_OPTIONS: {result_type: 'clips', clip_length: 3, n_clips: 5},
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
@@ -592,7 +594,7 @@ var UTILS = {
     // Given a demographic_thumbnails array of a video,
     // search for the enum (numeric) gender and age
     // and return the matching object, or null.
-    findDemographicThumbnailObject(demos, gender=0, age=0) {
+    findDemographicObject(demos, gender=0, age=0) {
         let genderLabel,
             ageLabel;
         if (gender == 0) {
@@ -639,6 +641,11 @@ var UTILS = {
        if (bytes == 0) return '0 Byte';
        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    },
+
+    isEmailAddress(input) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(input);
     }
 };
 
