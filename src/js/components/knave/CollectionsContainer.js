@@ -565,7 +565,7 @@ class CollectionsContainer extends React.Component {
             video.demographic_clip_ids, gender, age);
         let thumbArrays;
         let clipIds = [];
-        let clips = [];
+        let clips = {};
         let clipThumbs = {};
         if (clipDemo && clipDemo.clip_ids.length > 0) {
             clipIds = clipDemo.clip_ids;

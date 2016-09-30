@@ -43,7 +43,7 @@ const propTypes = {
 
     smallBadThumbnails: PropTypes.array,
     isMine: PropTypes.bool,
-    clips: PropTypes.array,
+    clips: PropTypes.object,
     clip: PropTypes.object,
     isSoloImage: PropTypes.bool,
     onGifClickNext: PropTypes.func,
@@ -256,7 +256,7 @@ class BaseCollection extends React.Component {
                     onClick={this.props.onGifClickPrev}
                 />
                 <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip">
-                    {T.get('copyXOfY', {
+                    {T.get('copyxOfY', {
                         '@x': this.props.selectedGifClip + 1,
                         '@y': this.props.clipIds.length })}
                 </div>
