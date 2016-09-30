@@ -1,11 +1,7 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, { PropTypes } from 'react';
 
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const propTypes = {
     // Updates parent current page.
@@ -25,29 +21,44 @@ export default class PagingControls extends React.Component {
 
     constructor(props) {
         super(props);
-        const self = this;
-        self.handleKeyEvent = self.handleKeyEvent.bind(this);
-        self.handleNav = self.handleNav.bind(this);
-        self.handleNavPrev = self.handleNav.bind(this, -1);
-        self.handleNavNext = self.handleNav.bind(this, +1);
+        this.handleKeyEvent = this.handleKeyEvent.bind(this);
+        this.handleNav = this.handleNav.bind(this);
+        this.handleNavPrev = this.handleNav.bind(this, -1);
+        this.handleNavNext = this.handleNav.bind(this, +1);
     }
 
     componentDidMount() {
-        const self = this;
-        document.body.onkeydown = self.handleKeyEvent;
+        document.body.onkeydown = this.handleKeyEvent;
     }
 
     componentWillUnmount() {
-        const self = this;
         document.body.onkeydown = undefined;
     }
 
-    getPrevButton() {
-        const self = this;
-        if (self.props.currentPage > 0) {
+    handleKeyEvent(e) {
+        if (e.keyCode === 37) { // left arrow
+            if (this.props.currentPage > 0) {
+                this.handleNavPrev();
+            }
+        } else if (e.keyCode === 39) { // right arrow
+            if (this.props.enableNext) {
+                this.handleNavNext();
+            }
+        }
+    }
+
+    handleNav(change, ...rest) {
+        window.scrollTo(0, 0);
+        TRACKING.sendEvent(this, rest, this.props.currentPage);
+        this.props.changeCurrentPage(change);
+    }
+
+
+    renderPrevButton() {
+        if (this.props.currentPage > 0) {
             return (
                 <button
-                    onClick={self.handleNavPrev}
+                    onClick={this.handleNavPrev}
                     aria-label={T.get('action.previous')}
                     title={T.get('action.previous')}
                     className={"xxPagingControls-prev"}
@@ -59,32 +70,29 @@ export default class PagingControls extends React.Component {
         return null;
     }
 
-    getCurrentPage() {
-        const self = this,
-            hellip = String.fromCharCode(8230)
-        ;
-        if (self.props.enableNext) {
-            return <span>{1 + self.props.currentPage}</span>;
+    renderCurrentPage() {
+        const hellip = String.fromCharCode(8230);
+        if (this.props.enableNext) {
+            return <span>{1 + this.props.currentPage}</span>;
         }
-        if (self.props.currentPage) {
-            if (self.props.searchPending) {
-                return <span>{1 + self.props.currentPage + hellip}</span>;
+        if (this.props.currentPage) {
+            if (this.props.searchPending) {
+                return <span>{1 + this.props.currentPage + hellip}</span>;
             }
-            return <span>{1 + self.props.currentPage}</span>;
+            return <span>{1 + this.props.currentPage}</span>;
         }
-        if (self.props.searchPending) {
+        if (this.props.searchPending) {
             return <span>{hellip}</span>;
         }
         return null;
     }
 
-    getNextButton() {
-        const self = this;
-        if (self.props.enableNext) {
+    renderNextButton() {
+        if (this.props.enableNext) {
             return (
                 <button
-                    disabled={!self.props.enableNext}
-                    onClick={self.handleNavNext}
+                    disabled={!this.props.enableNext}
+                    onClick={this.handleNavNext}
                     className={"xxPagingControls-next"}
                     aria-label={T.get('action.next')}
                 >
@@ -95,39 +103,18 @@ export default class PagingControls extends React.Component {
         return null;
     }
 
-    handleKeyEvent(e) {
-        const self = this;
-        if (e.keyCode === 37) { // left arrow
-            if (self.props.currentPage > 0) {
-                self.handleNavPrev();
-            }
-        } else if (e.keyCode === 39) { // right arrow
-            if (self.props.enableNext) {
-                self.handleNavNext();
-            }
-        }
-    }
-
-    handleNav(change, ...rest) {
-        const self = this;
-        window.scrollTo(0, 0);
-        TRACKING.sendEvent(self, rest, self.props.currentPage);
-        self.props.changeCurrentPage(change);
-    }
-
     render() {
-        const self = this;
         return (
             <div className="xxPagingControls">
                 <nav className="xxPagingControls-navigation">
                     <div className="xxPagingControls-navigation-item">
-                        {self.getPrevButton()}
+                        {this.renderPrevButton()}
                     </div>
                     <div className={"xxPagingControls-navigation-item"}>
-                        {self.getCurrentPage()}
+                        {this.renderCurrentPage()}
                     </div>
                     <div className="xxPagingControls-navigation-item">
-                        {self.getNextButton()}
+                        {this.renderNextButton()}
                     </div>
                 </nav>
             </div>
@@ -135,9 +122,5 @@ export default class PagingControls extends React.Component {
     }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 PagingControls.propTypes = propTypes;
 PagingControls.displayName = 'PagingControls';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

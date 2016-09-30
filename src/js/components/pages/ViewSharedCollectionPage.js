@@ -19,10 +19,7 @@ import {
 const ViewSharedCollectionPage = React.createClass({
 
     getInitialState: function() {
-        return Object.assign(
-            Store.getState(),
-            { metaTags: [] },
-        );
+        return { ...Store.getState(), ...{ metaTags: [] }};
     },
 
     componentWillMount: function() {

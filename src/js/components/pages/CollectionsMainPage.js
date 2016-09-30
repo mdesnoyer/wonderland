@@ -33,15 +33,15 @@ const CollectionsMainPage = React.createClass({
     },
 
     getInitialState() {
-        return Object.assign(
-            Store.getState(),
-            {
+        return {
+            ...Store.getState(),
+            ...{
                 currentPage: 0,
                 searchQuery: '',
                 tooltipText: undefined,
                 searchPending: false
             },
-        );
+        };
     },
 
     componentWillMount() {

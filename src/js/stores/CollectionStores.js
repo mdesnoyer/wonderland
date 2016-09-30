@@ -106,7 +106,7 @@ Store.resetStores = () => {
 };
 Store.getState = () => (
     _.reduce(Store.stores, (result, store, name) => (
-        Object.assign({}, result, { [name]: store.getAll() })
+        { ...result, ...{ [name]: store.getAll() } }
     ), {})
 );
 
@@ -281,17 +281,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const thumbArgs = UTILS.csvFromArray(thumbnailIds);
         const baseParams = getBaseParamsForDemoRequest(gender, age, fields);
 
-        const params = {};
         // Batch only large requests since batch is slower.
         if (thumbArgs) {
             thumbArgs.forEach(arg => {
                 // Build this batch's params by copying base params and adding the tid arg.
-                Object.assign(params, baseParams, { thumbnail_id: arg });
+                const params = { ...baseParams, ...{ thumbnail_id: arg } };
                 LoadActions.batch('GET', 'thumbnails', params);
             });
             return LoadActions.sendBatch();
         }
-        Object.assign(params, baseParams, { thumbnail_id: thumbArgs[0] });
+        const params = { ...baseParams, ...{ thumbnail_id: thumbArgs[0] } };
         return LoadActions.get('thumbnails', { data: params });
     },
 
@@ -362,10 +361,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             // Batch each MAX_CSV_VALUE_COUNT (100) thumbnail ids.
             const csvArray = UTILS.csvFromArray(vsThumbnailIds);
             csvArray.forEach(csvThumbnailIds => {
-                const params = {};
-                Object.assign(params, baseParams, {
+                const extra = {
                     base_id: baseId,
-                    thumbnail_ids: csvThumbnailIds });
+                    thumbnail_ids: csvThumbnailIds,
+                };
+                const params = { ...baseParams, ...extra};
                 LoadActions.batch('GET', 'stats/estimated_lift', params);
             });
         });
@@ -582,14 +582,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Set each by map of id to resource.
             Object.assign(updateVideoMap, videoRes.videos.reduce((map, video) => (
-                Object.assign({}, map, { [video.video_id]: video })
+                { ...map, ...{ [video.video_id]: video } }
             ), {}));
 
             // Set the thumbnails that are inlined in video result.
             videos.forEach((video) => {
                 // For each demo, store its thumbnails by demo keys.
                 video.demographic_thumbnails.forEach((dem) => {
-                    const working = Object.assign({}, dem);
+                    const working = { ...dem };
                     const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
                     if (demAge === undefined || demGender === undefined) {
@@ -656,7 +656,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Mapping the response from the thumbnail promise
             const thumbnailMap = thumbRes.thumbnails.reduce((map, t) => (
-                Object.assign({}, map, { [t.thumbnail_id]: t })
+                { ...map, ...{ [t.thumbnail_id]: t } }
             ), {});
 
             videos.forEach(video => {
@@ -926,14 +926,14 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
 
-    refilterVideo(videoId, gender, age, callback, data = {}) {
-        Object.assign(data, {
+    refilterVideo(videoId, gender, age, callback, params = {}) {
+        const withParams = {
             gender,
             age,
             external_video_ref: videoId,
             reprocess: true,
-        });
-
+        };
+        const data = { ...params, ...withParams};
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
         const tagId = videoStore.get(videoId).tagId;

@@ -246,7 +246,7 @@ class BaseCollection extends React.Component {
     }
 
     getClipPaging() {
-        if (!this.props.clipIds.length) {
+        if (this.props.clipIds.length <= 1) {
             return null;
         }
         return (
@@ -256,7 +256,7 @@ class BaseCollection extends React.Component {
                     onClick={this.props.onGifClickPrev}
                 />
                 <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip">
-                    {T.get('copyxOfY', {
+                    {T.get('copy.xOfY', {
                         '@x': this.props.selectedGifClip + 1,
                         '@y': this.props.clipIds.length })}
                 </div>

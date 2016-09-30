@@ -1,6 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import React, { PropTypes } from 'react';
-
 import Helmet from 'react-helmet';
 
 import SiteHeader from '../wonderland/SiteHeader';
@@ -8,8 +6,6 @@ import Tooltips from '../knave/Tooltips';
 import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 const propTypes = {
     // Window title.
@@ -60,6 +56,20 @@ class BasePage extends React.Component {
         window.removeEventListener('resize', this.onWindowResize);
     }
 
+    onWindowResize() {
+        const windowWidth = window.outerWidth;
+
+        if (this.state.windowWidth !== windowWidth) {
+            this.setState({ windowWidth });
+        }
+
+        if (windowWidth < UTILS.DETECT_MOBILE_WIDTH_PX) {
+            document.documentElement.classList.add('is-mobile');
+        } else {
+            document.documentElement.classList.remove('is-mobile');
+        }
+    }
+
     getMeta() {
         return this.props.meta.concat([{
             name: 'viewport',
@@ -78,34 +88,18 @@ class BasePage extends React.Component {
         return <SiteFooter />;
     }
 
-    onWindowResize() {
-        const windowWidth = window.outerWidth;
-
-        if (this.state.windowWidth !== windowWidth) {
-            this.setState({ windowWidth });
+    getPageStyle() {
+        if (this.props.onboardingState === 'processing') {
+            return 'xxPage is-processing';
+        } else if (this.props.onboardingState === 'initial') {
+            return 'xxPage is-onboarding';
         }
-
-        if (windowWidth < UTILS.DETECT_MOBILE_WIDTH_PX) {
-            document.documentElement.classList.add('is-mobile');
-        } else {
-            document.documentElement.classList.remove('is-mobile');
-        }
+        return 'xxPage';
     }
 
     render() {
-        let pageStyle 
-        switch(this.props.onboardingState) {
-            case 'processing' :
-                pageStyle = 'xxPage is-processing' 
-                break; 
-            case  'initial': 
-                pageStyle = 'xxPage is-onboarding'
-                break;
-            default: 
-                pageStyle = 'xxPage';
-        };
         return (
-            <main className={pageStyle}>
+            <main className={this.getPageStyle()}>
                 <Helmet
                     meta={this.getMeta()}
                     title={this.getTitle()}

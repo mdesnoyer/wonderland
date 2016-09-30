@@ -84,11 +84,7 @@ var ZoomThumbnail = React.createClass({
         if (self.props.extraClass) {
             extraClass.push(self.props.extraClass);
         }
-        const a = T.get('copy.xOfY', {'@x': 'a', '@y': 'b'});
-        console.log(a);
-
         return (
-
             <div className={'xxImageZoom-inner' + activeClass}>
                 <div
                     className={'xxImageZoom-image xxImageZoom-image--' + orientation}
