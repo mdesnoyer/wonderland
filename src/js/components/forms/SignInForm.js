@@ -133,7 +133,6 @@ var SignInForm = React.createClass({
                     }
                 })
                 .catch(function (err) {
-                    debugger
                     E.checkForError(T.get('error.unableToSignIn'), false);
                     self._isSubmitted = false;
                     self.setState({

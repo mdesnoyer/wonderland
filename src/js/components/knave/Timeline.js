@@ -60,7 +60,8 @@ const Timeline = React.createClass({
                     timestamp: t.updated,
                     lowSrc: RENDITIONS.findRendition(t, 160 * 2.5, 90 * 2.5),
                     highSrc: t.url,
-                    neonScore: t.neon_score
+                    neonScore: t.neon_score,
+                    dominantColor: t.dominant_color
                 });
             });
             // We now got snapshots in the state we want, lets order them
@@ -121,6 +122,10 @@ const Timeline = React.createClass({
                                 fuzzyTimestamp = moment.utc(snapshot.timestamp).fromNow(),
                                 uniqueKey = snapshot.videoId + snapshot.thumbnailId
                             ;
+                            const dominantColorHex = UTILS.findDominantColor(snapshot.dominantColor);
+                            const inlineBackgroundColour = dominantColorHex ? {
+                                backgroundColor: dominantColorHex
+                            } : null;
                             return (
                                 <li
                                     className="timeline__moment"
@@ -136,7 +141,10 @@ const Timeline = React.createClass({
                                         href={snapshot.highSrc}
                                         className="timeline__download"
                                     >
-                                        <figure>
+                                        <figure
+                                            className="timeline__frame"
+                                            style={inlineBackgroundColour}
+                                        >
                                             <img
                                                 className="timeline__snapshot"
                                                 src={snapshot.lowSrc}
