@@ -8,6 +8,7 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
+import tl from './ThumbnailList';
 import GifClip from './GifClip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
