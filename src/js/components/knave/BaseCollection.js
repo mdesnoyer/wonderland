@@ -8,7 +8,7 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
-import GifClip  from './GifClip';
+import GifClip from './GifClip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -34,7 +34,6 @@ const propTypes = {
     onThumbnailClick: PropTypes.func,
     // Override the onThumbnailClick for right.
     onRightThumbnailClick: PropTypes.func,
-    setLiftThumbnailId: PropTypes.func,
 
     // class name for the wrapper around the
     // component defaults to xxCollection
@@ -44,15 +43,23 @@ const propTypes = {
 
     smallBadThumbnails: PropTypes.array,
     isMine: PropTypes.bool,
+    clips: PropTypes.array,
+    clip: PropTypes.object,
+    isSoloImage: PropTypes.bool,
+    onGifClickNext: PropTypes.func,
+    onGifClickPrev: PropTypes.func,
+    clipIds: PropTypes.array,
+    tagId: PropTypes.string,
+    onDeleteCollection: PropTypes.func,
+    selectedGifClip: PropTypes.number,
+    clipPoster: PropTypes.string,
+    onDemographicChange: PropTypes.func,
 };
 
 const defaultProps = {
     wrapperClassName: 'xxCollection',
-    onThumbnailClick: () => {},
-    setLiftThumbnailId: () => {},
     isMine: true,
 };
-
 
 class BaseCollection extends React.Component {
 
@@ -60,14 +67,30 @@ class BaseCollection extends React.Component {
         super(props);
         this.state = { smallThumbnailRows: 1 };
 
+        this.onThumbnailClick = this.onThumbnailClick.bind(this);
         this.onLeftThumbnailClick = this.onLeftThumbnailClick.bind(this);
         this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
         this.onMore = this.onMore.bind(this);
         this.onLess = this.onLess.bind(this);
+        this.onDeleteCollection = this.onDeleteCollection.bind(this);
+        this.onDemographicChange = this.onDemographicChange.bind(this);
 
+        this.setLiftThumbnailId = this.setLiftThumbnailId.bind(this);
         this.setDefaultLiftThumbnail = this.setDefaultLiftThumbnail.bind(this);
         this.setLiftThumbnailToLeft = this.setLiftThumbnailToLeft.bind(this);
         this.setLiftThumbnailToRight = this.setLiftThumbnailToRight.bind(this);
+    }
+
+    onDeleteCollection() {
+        this.props.onDeleteCollection(this.props.tagId);
+    }
+
+    onDemographicChange(gender, age) {
+        this.props.onDemographicChange(this.props.tagId, gender, age);
+    }
+
+    onThumbnailClick(thumbnailId) {
+        this.props.onThumbnailClick(this.props.tagId, thumbnailId);
     }
 
     onLeftThumbnailClick() {
@@ -100,18 +123,22 @@ class BaseCollection extends React.Component {
         });
     }
 
+    setLiftThumbnailId(liftThumbnailId) {
+        this.setState({ liftThumbnailId });
+    }
+
     setDefaultLiftThumbnail() {
-        this.props.setLiftThumbnailId(null);
+        this.setLiftThumbnailId(null);
     }
 
     setLiftThumbnailToLeft() {
         const leftThumbnailId = this.props.leftFeatureThumbnail.thumbnail_id;
-        this.props.setLiftThumbnailId(leftThumbnailId);
+        this.setLiftThumbnailId(leftThumbnailId);
     }
 
     setLiftThumbnailToRight() {
         const rightThumbnailId = this.props.rightFeatureThumbnail.thumbnail_id;
-        this.props.setLiftThumbnailId(rightThumbnailId);
+        this.setLiftThumbnailId(rightThumbnailId);
     }
 
     getThumbnailList() {
@@ -136,9 +163,9 @@ class BaseCollection extends React.Component {
                     // TODO would like to remove the need for the T.get
                     lessLabel={T.get('action.showLess')}
                     onLess={this.onLess}
-                    onMouseEnter={this.props.setLiftThumbnailId}
+                    onMouseEnter={this.setLiftThumbnailId}
                     onMouseLeave={this.setDefaultLiftThumbnail}
-                    onClick={this.props.onThumbnailClick}
+                    onClick={this.onThumbnailClick}
                     firstClassName="xxThumbnail--highLight"
                     secondClassName="xxThumbnail--lowLight"
                 />);
@@ -148,9 +175,9 @@ class BaseCollection extends React.Component {
                 numberToDisplay={5}
                 moreLabel={T.get('action.showMore')}
                 onMore={this.onMore}
-                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseEnter={this.setLiftThumbnailId}
                 onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.props.onThumbnailClick}
+                onClick={this.onThumbnailClick}
             />);
         }
 
@@ -166,9 +193,9 @@ class BaseCollection extends React.Component {
         if (this.props.smallThumbnails.length <= 6) {
             return (<ThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseEnter={this.setLiftThumbnailId}
                 onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.props.onThumbnailClick}
+                onClick={this.onThumbnailClick}
             />);
         // There's fewer than the number of display rows: put ShowLess in slot 6.
         // (Add one to length for the ShowLess button.)
@@ -176,9 +203,9 @@ class BaseCollection extends React.Component {
             return (<ShowLessThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onLess={this.onLess}
-                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseEnter={this.setLiftThumbnailId}
                 onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.props.onThumbnailClick}
+                onClick={this.onThumbnailClick}
             />);
         // There's more than 6 and they haven't shown more at all.
         } else if (rows === 1) {
@@ -186,9 +213,9 @@ class BaseCollection extends React.Component {
                 thumbnails={this.props.smallThumbnails}
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
                 onMore={this.onMore}
-                onMouseEnter={this.props.setLiftThumbnailId}
+                onMouseEnter={this.setLiftThumbnailId}
                 onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.props.onThumbnailClick}
+                onClick={this.onThumbnailClick}
             />);
         // There's more thumbs than space to display them and they've expanded
         // once or more: put ShowMore and ShowLess.
@@ -198,9 +225,9 @@ class BaseCollection extends React.Component {
             numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
             onMore={this.onMore}
             onLess={this.onLess}
-            onMouseEnter={this.props.setLiftThumbnailId}
+            onMouseEnter={this.setLiftThumbnailId}
             onMouseLeave={this.setDefaultLiftThumbnail}
-            onClick={this.props.onThumbnailClick}
+            onClick={this.onThumbnailClick}
         />);
     }
 
@@ -213,26 +240,32 @@ class BaseCollection extends React.Component {
                     poster={this.props.clipPoster}
                     id={this.props.clip.clip_id}
                 />
-                {
-                    this.props.clipsIds.length > 1 ? (
-                        <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                            <div
-                                className="xxPagingControls-prev xxPagingControls-prev--GifClip"
-                                onClick={this.props.onGifClickPrev}>
-                            </div>
-                            <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                                {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
-                            </div>
-                            <div
-                                className="xxPagingControls-next xxPagingControls-prev--GifClip"
-                                onClick={this.props.onGifClickNext}>
-                            </div>
-                        </nav>
-                    ) : null
-                }
+                {this.getClipPaging()}
             </div>
         );
+    }
 
+    getClipPaging() {
+        if (!this.props.clipIds.length) {
+            return null;
+        }
+        return (
+            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
+                <div
+                    className="xxPagingControls-prev xxPagingControls-prev--GifClip"
+                    onClick={this.props.onGifClickPrev}
+                />
+                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip">
+                    {T.get('copyXOfY', {
+                        '@x': this.props.selectedGifClip + 1,
+                        '@y': this.props.clipIds.length })}
+                </div>
+                <div
+                    className="xxPagingControls-next xxPagingControls-prev--GifClip"
+                    onClick={this.props.onGifClickNext}
+                />
+            </nav>
+        );
     }
 
     getOnClick(isLeft) {
@@ -250,12 +283,12 @@ class BaseCollection extends React.Component {
     getFeatureThumbnail(thumbnail, isLeft = true) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
         const blurText = this.props.isMine ?
-            T.get('imageUpload.addMoreBlurText') :
-            '';
-        const className = isLeft ? "xxThumbnail--lowLight" : "";
-        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
+            T.get('imageUpload.addMoreBlurText') : '';
+        const className = isLeft ? 'xxThumbnail--lowLight' : '';
+        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft : this.setLiftThumbnailToRight;
         return (
             <FeatureThumbnail
+                thumbnailId={thumbnail.thumbnail_id}
                 title={title}
                 score={thumbnail.neon_score}
                 enabled={thumbnail.enabled}

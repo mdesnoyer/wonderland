@@ -4,6 +4,8 @@ const propTypes = {
     // The neon score [0-99]
     score: PropTypes.number,
 
+    thumbnailId: PropTypes.string.isRequired,
+
     // The accessibility title
     alt: PropTypes.string,
 
@@ -26,38 +28,60 @@ const propTypes = {
 const defaultProps = {
     className: '',
     wrapperClassName: '',
-    onClick: (e) => e.preventDefault(),
-    // I.e., do nothing.
+    onClick: (e) => e.preventDefault(), // i.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
     children: (<div />),
     enabled: true,
 };
 
-function Thumbnail(props) {
-    const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
-    const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
-        xxThumbnail--highLight xxThumbnail--neon ${props.className} \
-        ${disabledClassName}`;
+class Thumbnail extends React.Component {
 
-    return (
-        <div className={props.wrapperClassName}>
-            <span
-                className={className}
-                data-score={props.score}
-                onClick={props.onClick}
-            >
-                <img
-                    className="xxThumbnail-image"
-                    alt={props.alt || props.score}
-                    src={props.src}
-                    onMouseEnter={props.onMouseEnter}
-                    onMouseLeave={props.onMouseLeave}
-                />
-            </span>
-            {props.children}
-        </div>
-    );
+    constructor(props) {
+        super(props);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onMouseEnter() {
+        this.props.onMouseEnter(this.props.thumbnailId);
+    }
+
+    onMouseLeave() {
+        this.props.onMouseLeave(this.props.thumbnailId);
+    }
+
+    onClick(e) {
+        e.preventDefault();
+        this.props.onClick(this.props.thumbnailId);
+    }
+
+    render() {
+        const disabledClassName = this.props.enabled ? '' : 'xxThumbnail--disabled';
+        const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
+            xxThumbnail--highLight xxThumbnail--neon ${this.props.className} \
+            ${disabledClassName}`;
+
+        return (
+            <div className={this.props.wrapperClassName}>
+                <span
+                    className={className}
+                    data-score={this.props.score}
+                    onClick={this.onClick}
+                >
+                    <img
+                        className="xxThumbnail-image"
+                        alt={this.props.alt || this.props.score}
+                        src={this.props.src}
+                        onMouseEnter={this.onMouseEnter}
+                        onMouseLeave={this.onMouseLeave}
+                    />
+                </span>
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
 Thumbnail.propTypes = propTypes;

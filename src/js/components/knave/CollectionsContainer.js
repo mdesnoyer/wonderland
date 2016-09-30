@@ -7,7 +7,6 @@ import VideoProcessing from './VideoProcessing';
 import ImageCollection from './ImageCollection';
 import VideoCollection from './VideoCollection';
 import ThumbnailOverlay from '../knave/ThumbnailOverlay';
-import { SendActions } from '../../stores/CollectionStores';
 
 const propTypes = {
 
@@ -37,11 +36,11 @@ const propTypes = {
     isMine: PropTypes.bool.isRequired,
 
     // Enables custom tooltip
-    setTooltipText: PropTypes.func.isRequired,
+    setTooltipText: PropTypes.func,
 
     // Defaults to Function to delete/hide a collection from
     // both the backend and frontend display
-    deleteCollection: PropTypes.func,
+    onDeleteCollection: PropTypes.func,
 
     // ClickHandler for social sharing buttons
     socialClickHandler: PropTypes.func,
@@ -56,9 +55,6 @@ const propTypes = {
 
     // Minimal UI for share.
     infoPanelOnly: PropTypes.bool,
-
-    // Flag for viewing a shared collection
-    isMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -91,7 +87,6 @@ class CollectionsContainer extends React.Component {
         this.onDemographicChange = this.onDemographicChange.bind(this);
         this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
         this.onSendGifResultsEmail = this.onSendGifResultsEmail.bind(this);
-        this.onDeleteCollection = this.onDeleteCollection.bind(this);
         this.onThumbnailClick = this.onThumbnailClick.bind(this);
         this.onOverlayThumbnailNext = this.onOverlayThumbnailNext.bind(this);
         this.onOverlayThumbnailPrev = this.onOverlayThumbnailPrev.bind(this);
@@ -180,10 +175,6 @@ class CollectionsContainer extends React.Component {
     onSendGifResultsEmail(email, tagId, callback) {
         const [gender, age] = this.getSelectedDemographic(tagId);
         this.props.sendGifResultsEmail(email, tagId, gender, age, callback);
-    }
-
-    onDeleteCollection(tagId) {
-        SendActions.deleteCollection(tagId);
     }
 
     onThumbnailClick(overlayTagId, overlayThumbnailId, ...rest) {
@@ -393,7 +384,7 @@ class CollectionsContainer extends React.Component {
     getOverlayThumbnailId(change) {
         const thumbnails = this.getSortedThumbnails();
         const oldIndex = this.getOverlayThumbnailIndex();
-        const newIndex = (oldIndex + change) % thumbnails.length;
+        const newIndex = (oldIndex + change + thumbnails.length) % thumbnails.length;
         return thumbnails[newIndex].thumbnail_id;
     }
 
@@ -430,7 +421,8 @@ class CollectionsContainer extends React.Component {
         const thumbnailIndex = this.getOverlayThumbnailIndex();
 
         // Find lift for the shown thumbnail.
-        const lift = this.props.stores.lifts[gender][age][tagId][this.state.overlayThumbnailId];
+        const lifts = this.props.stores.lifts[gender][age][tagId];
+        const lift = lifts[this.state.overlayThumbnailId] || 0;
 
         // Build a map of thumbnail id to array of feature names.
         const thumbnailMap = this.getThumbnailMap(tagId);
@@ -515,7 +507,7 @@ class CollectionsContainer extends React.Component {
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={this.onDeleteCollection}
+                onDeleteCollection={this.props.onDeleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={this.onSendResultsEmail}
@@ -615,14 +607,14 @@ class CollectionsContainer extends React.Component {
                 videoId={video.video_id}
                 tagId={tagId}
                 clips={clips}
-                clipsIds={clipIds}
+                clipIds={clipIds}
                 clipThumbs={clipThumbs}
                 getGifClipPosition={this.getGifClipPosition}
                 onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={demo}
                 infoPanelOnly={this.props.infoPanelOnly}
-                deleteCollection={this.onDeleteCollection}
+                onDeleteCollection={this.props.onDeleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
                 sendResultsEmail={sendResultsEmail}
@@ -650,7 +642,7 @@ class CollectionsContainer extends React.Component {
                 tagId={tagId}
                 videoId={video.video_id}
                 selectedDemographic={this.getSelectedDemographic(tagId)}
-                deleteVideo={this.onDeleteCollection}
+                deleteVideo={this.props.onDeleteCollection}
             />
         );
     }
@@ -667,7 +659,7 @@ class CollectionsContainer extends React.Component {
                 estimatedTimeRemaining={video.estimated_time_remaining}
                 duration={video.duration}
                 videoId={video.video_id}
-                deleteVideo={this.onDeleteCollection}
+                deleteVideo={this.props.onDeleteCollection}
             />
         );
     }

@@ -378,7 +378,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return Object.assign({}, batchLiftMap, {
                         [tagId]: batch.response.lift.reduce((map, item) => (
                         Object.assign({}, map, { [item.thumbnail_id]: item.lift })
-                    ), {baseId: 0})});
+                    ), { baseId: 0 }) });
                 }, tagLiftMap)
             ),
         });

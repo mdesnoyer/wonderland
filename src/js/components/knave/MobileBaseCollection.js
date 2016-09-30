@@ -163,6 +163,7 @@ const MobileBaseCollection = React.createClass({
         const className = isLeft ? "xxThumbnail--lowLight" : "";
         return (
             <FeatureThumbnail
+                thumbnailId={thumbnail.thumbnail_id}
                 title={title}
                 score={thumbnail.neon_score}
                 enabled={thumbnail.enabled}
@@ -213,14 +214,14 @@ const MobileBaseCollection = React.createClass({
                             id={this.props.clip.clip_id}
                         />
                         {
-                            this.props.clipsIds.length > 1 ? (
+                            this.props.clipIds.length > 1 ? (
                                 <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
                                     <div
                                         className="xxPagingControls-prev xxPagingControls-prev--GifClip"
                                         onClick={this.props.onGifClickPrev}>
                                     </div>
                                     <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                                        {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipsIds.length}
+                                        {(this.props.selectedGifClip + 1) + ' of '+ this.props.clipIds.length}
                                     </div>
                                     <div
                                         className="xxPagingControls-next xxPagingControls-next--GifClip"

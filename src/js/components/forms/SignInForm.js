@@ -74,8 +74,8 @@ var SignInForm = React.createClass({
                         >
                             {T.get('action.signIn')}
                         </button>
-                        <Link 
-                            className="xxFormButtons-anchor u-inheritColor xxFormButtons-anchor--nobutton" 
+                        <Link
+                            className="xxFormButtons-anchor u-inheritColor xxFormButtons-anchor--nobutton"
                             to={UTILS.DRY_NAV.USER_FORGOT.URL}
                         >{T.get('nav.forgotUser')}
                         </Link>
@@ -133,7 +133,6 @@ var SignInForm = React.createClass({
                     }
                 })
                 .catch(function (err) {
-                    debugger
                     E.checkForError(T.get('error.unableToSignIn'), false);
                     self._isSubmitted = false;
                     self.setState({

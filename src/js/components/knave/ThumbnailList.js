@@ -35,11 +35,6 @@ export const ThumbnailList = React.createClass({
             return null;
         }
 
-        // Make optional prop funcs safe.
-        const noop = () => {};
-        const onMouseEnter = (this.props.onMouseEnter || noop);
-        const onMouseLeave = (this.props.onMouseLeave || noop);
-        const onClick = (this.props.onClick || noop);
         // const showHref = this.props.showHref
         const thumbnails = this.props.thumbnails
             .slice(0, this.props.numberToDisplay)
@@ -49,12 +44,13 @@ export const ThumbnailList = React.createClass({
                         showHref={true}
                         className={this.props.className||''}
                         key={t.thumbnail_id}
+                        thumbnailId={t.thumbnail_id}
                         score={t.neon_score}
                         enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
-                        onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
-                        onMouseLeave={onMouseLeave}
-                        onClick={onClick.bind(null, t.thumbnail_id)}
+                        onMouseEnter={this.props.onMouseEnter}
+                        onMouseLeave={this.props.onMouseLeave}
+                        onClick={this.props.onClick}
                     />
                 );
             });

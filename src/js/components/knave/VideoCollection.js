@@ -31,8 +31,6 @@ const contextTypes = {
     isMobile: PropTypes.bool,
 };
 
-const defaultProps = {};
-
 class VideoCollection extends BaseCollection {
     constructor(props) {
         super(props);
@@ -43,13 +41,13 @@ class VideoCollection extends BaseCollection {
             liftThumbnailId: null,
             selectedGifClip: 0,
         };
-        this.onSetPanel = this.onSetPanel.bind(this);
-        this.onSetLiftThumbnail = this.onSetLiftThumbnail.bind(this);
-        this.onWhyClick = this.onWhyClick.bind(this);
-        this.onGifClickPrev = this.onGifClickPrev.bind(this);
         this.onGifClickNext = this.onGifClickNext.bind(this);
+        this.onGifClickPrev = this.onGifClickPrev.bind(this);
         this.onLoadShareUrl = this.onLoadShareUrl.bind(this);
         this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
+        this.onSetLiftThumbnail = this.onSetLiftThumbnail.bind(this);
+        this.onSetPanel = this.onSetPanel.bind(this);
+        this.onWhyClick = this.onWhyClick.bind(this);
     }
 
     componentDidMount() {
@@ -99,14 +97,36 @@ class VideoCollection extends BaseCollection {
         }
     }
 
+    onGifClickNext() {
+        if (this.state.selectedGifClip === this.props.clipIds.length - 1) {
+            return this.setState({ selectedGifClip: 0 });
+        }
+        return this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
+    }
+
+    onGifClickPrev() {
+        if (this.state.selectedGifClip === 0) {
+            return this.setState({ selectedGifClip: this.props.clipIds.length - 1 });
+        }
+        return this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });
+    }
+
+    onLoadShareUrl() {
+        LoadActions.loadShareUrl(this.props.tagId);
+    }
+
+    onSetLiftThumbnail(liftThumbnailId) {
+        this.setState({ liftThumbnailId });
+    }
+
     onSetPanel(selectedPanelId) {
         // Clear any open tooltip.
         ReactTooltip.hide();
         this.setState({ selectedPanelId });
     }
 
-    onSetLiftThumbnail(liftThumbnailId) {
-        this.setState({ liftThumbnailId });
+    onSendResultsEmail(email, callback) {
+        this.props.onSendResultsEmail(email, this.props.tagId, callback);
     }
 
     onWhyClick() {
@@ -114,28 +134,6 @@ class VideoCollection extends BaseCollection {
         self.props.onThumbnailClick(
             self.props.tagId,
             self.props.rightFeatureThumbnail.thumbnail_id);
-    }
-
-    onGifClickPrev() {
-        if (this.state.selectedGifClip === 0) {
-            return this.setState({ selectedGifClip: this.props.clipsIds.length - 1 });
-        }
-        return this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });
-    }
-
-    onGifClickNext() {
-        if (this.state.selectedGifClip === this.props.clipsIds.length - 1) {
-            return this.setState({ selectedGifClip: 0 });
-        }
-        return this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
-    }
-
-    onLoadShareUrl() {
-        LoadActions.loadShareUrl(this.props.tagId);
-    }
-
-    onSendResultsEmail(email, callback) {
-        this.props.onSendResultsEmail(email, this.props.tagId, callback);
     }
 
     getLiftValue() {
@@ -184,7 +182,7 @@ class VideoCollection extends BaseCollection {
             <InfoDemoLiftPanel
                 title={this.props.title}
                 liftValue={this.getLiftValue()}
-                onDemographicChange={this.props.onDemographicChange}
+                onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 handleRefiltersPanelClick={() => this.setSelectedPanel(1)}
@@ -197,7 +195,7 @@ class VideoCollection extends BaseCollection {
             />,
             <FilterPanel
                 cancelClickHandler={() => this.setSelectedPanel(0)}
-                onDemographicChange={this.props.onDemographicChange}
+                onDemographicChange={this.onDemographicChange}
                 clips={this.props.clips}
                 videoId={this.props.videoId}
             />,
@@ -216,7 +214,7 @@ class VideoCollection extends BaseCollection {
                 sendResultsEmail={this.onSendResultsEmail}
             />,
             <DeletePanel
-                deleteCollection={this.props.deleteCollection}
+                onDeleteCollection={this.onDeleteCollection}
                 cancelClickHandler={() => this.setSelectedPanel(0)}
             />,
         ];
@@ -239,7 +237,7 @@ class VideoCollection extends BaseCollection {
         return panels;
     }
 
-    getControls() {
+    renderControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
@@ -249,7 +247,7 @@ class VideoCollection extends BaseCollection {
             <EmailControl handleClick={() => this.setSelectedPanel(3)} />,
         ];
         if (!_.isEmpty(this.props.clips)) {
-            const currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]];
+            const currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
             controls.push(<DownloadControl href={currentClip.renditions[0].url} />);
         }
 
@@ -277,7 +275,7 @@ class VideoCollection extends BaseCollection {
         let clipThumb;
         let clipPoster;
         if (!_.isEmpty(this.props.clips)) {
-            currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]];
+            currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
             clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
             clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720) : null;
         }
@@ -298,6 +296,7 @@ class VideoCollection extends BaseCollection {
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
                 selectedGifClip={this.state.selectedGifClip}
+                setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
     }
@@ -314,7 +313,7 @@ class VideoCollection extends BaseCollection {
         let clipThumb;
         let clipPoster;
         if (!_.isEmpty(this.props.clips)) {
-            currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]];
+            currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
             clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
             clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720) : null;
         }
@@ -330,7 +329,6 @@ class VideoCollection extends BaseCollection {
                 selectedPanel={this.state.selectedPanel}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage()}
-                setLiftThumbnailId={this.setLiftThumbnailId}
                 onGifClickPrev={this.onGifClickPrev}
                 onGifClickNext={this.onGifClickNext}
                 selectedGifClip={this.state.selectedGifClip}
@@ -344,7 +342,6 @@ class VideoCollection extends BaseCollection {
 }
 
 VideoCollection.propTypes = propTypes;
-VideoCollection.defaultProps = defaultProps;
 VideoCollection.contextTypes = contextTypes;
 
 export default VideoCollection;

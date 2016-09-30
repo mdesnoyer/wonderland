@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 
 import Thumbnail from './Thumbnail';
-import T from '../../modules/translation';
 
 const propTypes = {
+    thumbnailId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     score: PropTypes.number.isRequired,

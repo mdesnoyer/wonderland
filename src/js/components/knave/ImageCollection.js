@@ -39,10 +39,10 @@ const propTypes = {
     socialClickHandler: PropTypes.func,
     setTooltipText: PropTypes.func,
     sendResultsEmail: PropTypes.func.isRequired,
-    deleteCollection: PropTypes.func.isRequired,
+    onDeleteCollection: PropTypes.func,
 };
 
-export default class ImageCollection extends React.Component {
+export default class ImageCollection extends BaseCollection {
 
     constructor(props) {
         super(props);
@@ -57,7 +57,6 @@ export default class ImageCollection extends React.Component {
 
         this.onControlClick = this.onControlClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
-        this.onThumbnailMouseover = this.onThumbnailMouseover.bind(this);
         this.onSharePanelLoad = this.onSharePanelLoad.bind(this);
         this.onWhyClick = this.props.onThumbnailClick.bind(this,
             props.tagId, props.rightFeatureThumbnail.thumbnail_id);
@@ -76,20 +75,12 @@ export default class ImageCollection extends React.Component {
         this.setState({ selectedPanelIndex });
     }
 
-    onThumbnailMouseover(liftThumbnailId) {
-        this.setState({ liftThumbnailId });
-    }
-
     onCancelClick() {
         this.onControlClick(0);
     }
 
     onSharePanelLoad() {
         LoadActions.loadShareUrl(this.props.tagId);
-    }
-
-    onDemographicChange(gender, age) {
-        this.props.onDemographicChange(this.props.tagId, gender, age);
     }
 
     getLiftValue() {
@@ -110,7 +101,6 @@ export default class ImageCollection extends React.Component {
             'copy.lift.explanation': 'copy.lift.explanation.images',
             'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
         };
-        const liftValue = this.getLiftValue();
         if (this.props.infoPanelOnly) {
             return [
                 <InfoLiftPanel
@@ -125,7 +115,7 @@ export default class ImageCollection extends React.Component {
             <InfoDemoLiftPanel
                 title={this.props.title}
                 liftValue={this.getLiftValue()}
-                onDemographicChange={this.props.onDemographicChange}
+                onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
                 displayRefilterButton={false}
@@ -147,12 +137,11 @@ export default class ImageCollection extends React.Component {
                 sendResultsEmail={this.onSendResultsEmail}
             />,
             <DeletePanel
-                deleteCollection={this.props.deleteCollection}
+                onDeleteCollection={this.onDeleteCollection}
                 cancelClickHandler={this.onCancelClick}
             />,
             <AddPanel
                 tagId={this.props.tagId}
-                deleteCollection={this.props.deleteCollection}
                 cancelClickHandler={this.onCancelClick}
                 panelType="photo"
             />,
@@ -183,7 +172,7 @@ export default class ImageCollection extends React.Component {
             'copy.lift.explanation': 'copy.lift.explanation.images',
             'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
         };
-        const onRightThumbnailClick = this.isSoloImage()?
+        const onRightThumbnailClick = this.isSoloImage() ?
             this.onAddControlClick :
             this.onRightThumbnailClick;
         return (
@@ -197,15 +186,15 @@ export default class ImageCollection extends React.Component {
                 copyOverrideMap={copyOverrideMap}
                 isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
+                setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
     }
 
     getDesktopComponent() {
-
         // If the "Add More" overlay is going to be shown,
         // then clicks on it can select the AddPanel.
-        const onRightThumbnailClick = this.isSoloImage()?
+        const onRightThumbnailClick = this.isSoloImage() ?
             this.onAddControlClick :
             this.onRightThumbnailClick;
         return (
@@ -215,7 +204,6 @@ export default class ImageCollection extends React.Component {
                 infoActionControls={this.getControls()}
                 selectedPanel={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
-                setLiftThumbnailId={this.onThumbnailMouseover}
                 isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
             />
@@ -224,7 +212,7 @@ export default class ImageCollection extends React.Component {
 
     isSoloImage() {
         if (this.props) {
-            return (this.props.thumbnailLength <= 1)
+            return (this.props.thumbnailLength <= 1);
         }
         return false;
     }

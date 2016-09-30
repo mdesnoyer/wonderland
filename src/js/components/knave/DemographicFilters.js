@@ -138,6 +138,12 @@ const DemographicFilters = React.createClass({
         }
     },
 
+    onChange(gender, age, e) {
+        const self = this;
+        e.preventDefault();
+        self.props.onChange(gender, age);
+    },
+
     getFilterSelect: function() {
         const self = this;
 
@@ -150,15 +156,17 @@ const DemographicFilters = React.createClass({
         if (self.state.isOpen) {
             const options = self.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
+                const [gender, age] = option;
                 const className = (option === self.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
                 const label = self.getLabelFromId(option);
+                // TODO rewrite without bind.
                 return (
                     <li
                         key={key}
                         className={className}
-                        onClick={() => {self.props.onChange(option)}}
+                        onClick={self.onChange.bind(null, gender, age)}
                     >
                         <span className="xxCollectionFilters-versionTitle">{T.get('label.filters')}</span>
                         <span>{label}</span>

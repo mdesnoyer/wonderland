@@ -579,9 +579,8 @@ export const ShareControl = React.createClass({
 export const DeletePanel = React.createClass({
     propTypes: {
 
-        // function used to remove a video from the
-        // UI display
-        deleteCollection: PropTypes.func.isRequired,
+        // When user deletes a collection of any kind.
+        onDeleteCollection: PropTypes.func.isRequired,
 
         // what to do when the cancel button is clicked
         cancelClickHandler: PropTypes.func.isRequired
@@ -614,7 +613,7 @@ export const DeletePanel = React.createClass({
                     <button
                         className="xxButton xxButton--highlight"
                         type="button"
-                        onClick={this.props.deleteCollection}
+                        onClick={this.props.onDeleteCollection}
                     >{T.get('delete')}</button>
                 </div>
             </div>

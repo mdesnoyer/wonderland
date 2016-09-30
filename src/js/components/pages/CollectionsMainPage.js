@@ -106,6 +106,11 @@ const CollectionsMainPage = React.createClass({
         self.setState({ searchPending });
     },
 
+    onDeleteCollection(tagId) {
+        const self = this;
+        SendActions.deleteCollection(tagId);
+    },
+
     socialClickHandler(service, shareUrl) {
         switch(service) {
             case 'facebook':
@@ -431,6 +436,7 @@ const CollectionsMainPage = React.createClass({
                     enableThumbnail={this.enableThumbnail}
                     disableThumbnail={this.disableThumbnail}
                     ownerAccountId={SESSION.state.accountId}
+                    onDeleteCollection={this.onDeleteCollection}
                 />
                 <PagingControls
                     currentPage={this.state.currentPage}
