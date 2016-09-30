@@ -350,9 +350,12 @@ const CollectionsMainPage = React.createClass({
         } else {
             // Apply a non-empty search to our data provider.
             filteredTagStore.setFilter(
-                tag => {
-                    return tag.hidden !== true && self.filterOnName(searchQuery, tag)
-                }
+                tag => (
+                    // TODO factor this and the default filter.
+                    tag.hidden !== true &&
+                        (tag.thumbnail_ids.length > 0  || tag.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+                        self.filterOnName(searchQuery, tag)
+                )
             );
         }
 
