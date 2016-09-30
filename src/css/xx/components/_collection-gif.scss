@@ -4,7 +4,7 @@
     width: 100%;
     height: auto;
     
-    &::after {
+    &:after {
         @extend .x-neonscore;
         content: attr(data-score);
         left: 0;
@@ -17,7 +17,7 @@
     } 
 }
 .xxGifVideo {
-    width:100%;
+    width: 100%;
     display: block;
     margin: 0 auto;
     height: auto;

@@ -14,7 +14,7 @@
         margin-right: 6px;
     }
 
-    &::after {
+    &:after {
         @include font-awesome('f021');
 
         display: block;
@@ -44,7 +44,7 @@
             color: $base-color;
         }
 
-        &::after {
+        &:after {
             background: $accent-color;
             color: $white;
             transform: rotate(0deg);
@@ -60,7 +60,7 @@
             width: 90px;
         }
 
-        &::after {
+        &:after {
             z-index: 2;
             background: $accent-color;
             color: $white;
@@ -169,8 +169,8 @@
     cursor: pointer;
     @include arrow(S, 1px, 11px, $secondary-color);
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         top: -4px;
         right: 18px;
         left: auto;
@@ -189,8 +189,8 @@
     &.has-dropdown {
         @include arrow(S, 1px, 11px, $bg-tertiary-color);
 
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             top: -4px;
             right: 18px;
             left: auto;
@@ -216,7 +216,7 @@
     }
 
     .Select-control {
-        border: none;
+        border: 0;
         height: inherit;
 
         .Select-value {
@@ -238,7 +238,7 @@
     top: -4px;
     left: -78px;
     z-index: $z-index-above-everything - 1;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.22);
     background: $white;
 
     @include breakpoint-mobile {
@@ -248,8 +248,8 @@
 
     @include arrow(S, 1px, 11px, $bg-tertiary-color);
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         top: 16px;
         right: 30px;
         left: auto;
@@ -323,7 +323,7 @@
     color: $secondary-color;
     text-align: center;
 
-    &::before {
+    &:before {
         content: '';
         position: absolute;
         top: 0;

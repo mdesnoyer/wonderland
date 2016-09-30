@@ -25,7 +25,7 @@
 .xxPagingControls-prev,
 .xxPagingControls-next {
 	@include arrow(W, 1em, 2px, $quaternary-color);
-    border: none;
+    border: 0;
 	background-color: transparent;
 	position: relative;
 	width: 50px;
