@@ -1,6 +1,4 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Thumbnail from './Thumbnail';
 
 import RENDITIONS from '../../modules/renditions';
@@ -8,7 +6,6 @@ import T from '../../modules/translation';
 import {
     ImageServingEnableControl,
     ImageServingDisableControl} from './InfoActionPanels';
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const ThumbnailList = React.createClass({
 
