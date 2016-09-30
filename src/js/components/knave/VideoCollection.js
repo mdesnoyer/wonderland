@@ -49,6 +49,7 @@ class VideoCollection extends BaseCollection {
         this.onGifClickPrev = this.onGifClickPrev.bind(this);
         this.onGifClickNext = this.onGifClickNext.bind(this);
         this.onLoadShareUrl = this.onLoadShareUrl.bind(this);
+        this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
     }
 
     componentDidMount() {
@@ -133,6 +134,10 @@ class VideoCollection extends BaseCollection {
         LoadActions.loadShareUrl(this.props.tagId);
     }
 
+    onSendResultsEmail(email, callback) {
+        this.props.onSendResultsEmail(email, this.props.tagId, callback);
+    }
+
     getLiftValue() {
         const selectedId = this.state.liftThumbnailId;
         const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
@@ -208,7 +213,7 @@ class VideoCollection extends BaseCollection {
                 cancelClickHandler={() => this.setSelectedPanel(0)}
                 shareUrl={this.props.shareUrl}
                 loadShareUrl={this.onLoadShareUrl}
-                sendResultsEmail={this.props.sendResultsEmail}
+                sendResultsEmail={this.onSendResultsEmail}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
@@ -234,7 +239,7 @@ class VideoCollection extends BaseCollection {
         return panels;
     }
 
-    renderControls() {
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }

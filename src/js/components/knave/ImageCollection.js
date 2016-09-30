@@ -67,6 +67,7 @@ export default class ImageCollection extends React.Component {
         this.onAddControlClick = this.onControlClick.bind(this, 4);
         this.onRightThumbnailClick = this.props.onThumbnailClick.bind(this,
             props.tagId, props.rightFeatureThumbnail.thumbnail_id);
+        this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
     }
 
     onControlClick(selectedPanelIndex) {
@@ -143,7 +144,7 @@ export default class ImageCollection extends React.Component {
                 cancelClickHandler={this.onCancelClick}
                 shareUrl={this.props.shareUrl}
                 loadShareUrl={this.onSharePanelLoad}
-                sendResultsEmail={this.props.sendResultsEmail}
+                sendResultsEmail={this.onSendResultsEmail}
             />,
             <DeletePanel
                 deleteCollection={this.props.deleteCollection}
@@ -156,6 +157,10 @@ export default class ImageCollection extends React.Component {
                 panelType="photo"
             />,
         ];
+    }
+
+    onSendResultsEmail(email, callback) {
+        this.props.sendResultsEmail(email, this.props.tagId, callback);
     }
 
     getControls() {

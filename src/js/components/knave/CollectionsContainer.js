@@ -10,38 +10,55 @@ import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 import { SendActions } from '../../stores/CollectionStores';
 
 const propTypes = {
+
     // Map of store identifying key to the store,
     // which is a map of object id to object.
     stores: PropTypes.object.isRequired,
+
     // Sorted list of collection ids to show
     shownIds: PropTypes.array.isRequired,
+
     // Ask the store to load resources for a tag's thumbnails
     // for a given demographic.
     loadTagForDemographic: PropTypes.func.isRequired,
+
     // Ask the store to load thumbnailFeatures and features
     // for a given tag and demographic.
     loadFeaturesForTag: PropTypes.func.isRequired,
+
     // Pops the side bar module given a recognized string
     setSidebarContent: PropTypes.func.isRequired,
+
     // the accountid that owns these containers
     // @TODO verify this is needed.
     ownerAccountId: PropTypes.string.isRequired,
+
     // Flag for viewing a shared collection
     isMine: PropTypes.bool.isRequired,
+
     // Enables custom tooltip
     setTooltipText: PropTypes.func.isRequired,
+
     // Defaults to Function to delete/hide a collection from
     // both the backend and frontend display
     deleteCollection: PropTypes.func,
+
     // ClickHandler for social sharing buttons
     socialClickHandler: PropTypes.func,
+
     // Allows a collection to send results email
     sendResultsEmail: PropTypes.func,
+    sendGifResultsEmail: PropTypes.func,
+
     // Functions to enable disable serving of thumbnail
     enableThumbnail: PropTypes.func,
     disableThumbnail: PropTypes.func,
+
     // Minimal UI for share.
     infoPanelOnly: PropTypes.bool,
+
+    // Flag for viewing a shared collection
+    isMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -73,6 +90,7 @@ class CollectionsContainer extends React.Component {
 
         this.onDemographicChange = this.onDemographicChange.bind(this);
         this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
+        this.onSendGifResultsEmail = this.onSendGifResultsEmail.bind(this);
         this.onDeleteCollection = this.onDeleteCollection.bind(this);
         this.onThumbnailClick = this.onThumbnailClick.bind(this);
         this.onOverlayThumbnailNext = this.onOverlayThumbnailNext.bind(this);
@@ -98,7 +116,7 @@ class CollectionsContainer extends React.Component {
                     video.demographic_clip_ids :
                     video.demographic_thumbnails;
 
-                const foundDemo = UTILS.findDemographicThumbnailObject(demos, nextGender, nextAge);
+                const foundDemo = UTILS.findDemographicObject(demos, nextGender, nextAge);
                 if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }
@@ -128,7 +146,7 @@ class CollectionsContainer extends React.Component {
             const demos = video.demographic_clip_ids.length ?
                 video.demographic_clip_ids :
                 video.video.demographic_thumbnails;
-            if (!UTILS.findDemographicThumbnailObject(demos, gender, age)) {
+            if (!UTILS.findDemographicObject(demos, gender, age)) {
                 const prevDemo = this.getSelectedDemographic(tagId);
                 newDemographic = prevDemo.slice(0, 2);
                 newDemographic.push(gender, age);
@@ -145,17 +163,23 @@ class CollectionsContainer extends React.Component {
         this.props.loadTagForDemographic(tagId, gender, age, callback);
     }
 
-    onSendResultsEmail(tagId) {
+    onSendResultsEmail(email, tagId, callback) {
         const [gender, age] = this.getSelectedDemographic(tagId);
         // Skip the left, or worse thumb.
-        const [, right, rest] = this.getLeftRightRest(tagId, gender, age);
-        const thumbnails = _.flatten([right, rest]);
-        const fourThumbnails = thumbnails.slice(0, 4);
-        while (fourThumbnails.length < 4) {
-            // Filling in with something guaranteed.
-            fourThumbnails.push(thumbnails[0]);
+        const [, bestThumb, goodThumbs] = this.getLeftRightRest(tagId, gender, age);
+        const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
+        let i = 0;
+        while (fourThumbs.length < 4) {
+            // Repeat until the required number is set.
+            fourThumbs.push(fourThumbs[i++]);
         }
-        this.props.sendResultsEmail(gender, age, tagId, fourThumbnails);
+        this.props.sendResultsEmail(
+            email, tagId, gender, age, fourThumbs, callback);
+    }
+
+    onSendGifResultsEmail(email, tagId, callback) {
+        const [gender, age] = this.getSelectedDemographic(tagId);
+        this.props.sendGifResultsEmail(email, tagId, gender, age, callback);
     }
 
     onDeleteCollection(tagId) {
@@ -341,7 +365,7 @@ class CollectionsContainer extends React.Component {
         let associatedThumbnailIds;
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const video = this.props.stores.videos[tag.video_id];
-            const demo = UTILS.findDemographicThumbnailObject(
+            const demo = UTILS.findDemographicObject(
                 video.demographic_thumbnails,
                 gender,
                 age);
@@ -545,7 +569,7 @@ class CollectionsContainer extends React.Component {
         const account = this.props.ownerAccountId ?
             this.props.stores.accounts[this.props.ownerAccountId] : null;
 
-        const clipDemo = UTILS.findDemographicThumbnailObject(
+        const clipDemo = UTILS.findDemographicObject(
             video.demographic_clip_ids, gender, age);
         let thumbArrays;
         let clipIds = [];
@@ -574,6 +598,10 @@ class CollectionsContainer extends React.Component {
         const badThumbnails = thumbArrays[3];
         const goodThumbnails = _.flatten([right, smallThumbnails]);
 
+        const sendResultsEmail = _.isEmpty(clips) ?
+            this.sendResultsEmail :
+            this.sendGifResultsEmail;
+
         return (
             <VideoCollection
                 key={tagId}
@@ -597,7 +625,7 @@ class CollectionsContainer extends React.Component {
                 deleteCollection={this.onDeleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
-                sendResultsEmail={this.onSendResultsEmail}
+                sendResultsEmail={sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
                 isRefiltering={isRefiltering}

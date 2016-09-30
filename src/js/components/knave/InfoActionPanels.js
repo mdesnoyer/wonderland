@@ -268,9 +268,7 @@ export const EmailPanel = React.createClass({
 
     _startEmailSend: function(email) {
         this.setState({ mode: 'loading'}, function() {
-            this.props.sendResultsEmail(
-                email,
-                this._sendEmailCallback);
+            this.props.sendResultsEmail(email, this._sendEmailCallback);
         });
     },
     _sendEmailCallback: function(r) {
