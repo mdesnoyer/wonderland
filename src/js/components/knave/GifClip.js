@@ -51,7 +51,6 @@ export default class GifClip extends React.Component {
                 video.pause();
             }
         }
-
     }
 
     render() {
