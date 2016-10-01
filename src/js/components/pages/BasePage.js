@@ -17,7 +17,6 @@ const propTypes = {
     // For dynamic tooltips
     tooltipText: PropTypes.string,
     children: PropTypes.node.isRequired,
-    query: PropTypes.string,
     onSearchBarChange: PropTypes.func,
     onSearchBarSubmit: PropTypes.func,
     searchQuery: PropTypes.string,
@@ -35,16 +34,16 @@ const defaultProps = {
 
 class BasePage extends React.Component {
 
+    static getChildContext() {
+        return {
+            isMobile: UTILS.isMobile(),
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = { windowWidth: window.outerWidth };
         this.onWindowResize = this.onWindowResize.bind(this);
-    }
-
-    getChildContext() {
-        return {
-            isMobile: UTILS.isMobile(),
-        };
     }
 
     componentDidMount() {

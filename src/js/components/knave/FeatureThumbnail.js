@@ -3,37 +3,24 @@ import React, { PropTypes } from 'react';
 import Thumbnail from './Thumbnail';
 
 const propTypes = {
-    thumbnailId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    className: PropTypes.string,
-    score: PropTypes.number.isRequired,
-    src: PropTypes.string.isRequired,
-    tagId: PropTypes.string,
-    thumbnaiId: PropTypes.string,
-    onMouseEnter: PropTypes.func,
-    onClick: PropTypes.func,
-    blurText: PropTypes.string,
     isSoloImage: PropTypes.bool,
+    blurText: PropTypes.string,
 };
 
 export default function FeatureThumbnail(props) {
-    const getSoloMessage = () => {
-        if (props.isSoloImage) {
-            return (
-                <div className="xxThumbnailSoloMessage">
-                    {props.blurText}
-                </div>
-            );
-        }
-        return null;
-    };
+    const blurText = props.isSoloImage ? (
+        <div className="xxThumbnailSoloMessage">
+            {props.blurText}
+        </div>) : null;
     const wrapperClass = props.isSoloImage ? 'xxThumbnailSoloBlurWrapper' : '';
+
     return (
         <div className="xxCollectionImages-featured">
             <h2 className="xxCollection-subtitle">
                 {props.title}
             </h2>
-                {getSoloMessage()}
+            {blurText}
             <div className={wrapperClass}>
                 <Thumbnail
                     {...props}
@@ -42,5 +29,4 @@ export default function FeatureThumbnail(props) {
         </div>
     );
 }
-
 FeatureThumbnail.propTypes = propTypes;

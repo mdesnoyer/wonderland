@@ -37,7 +37,7 @@ class VideoCollection extends BaseCollection {
         this.state = {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
-            selectedPanel: 0,
+            selectedPanelIndex: 0,
             liftThumbnailId: null,
             selectedGifClip: 0,
         };
@@ -97,14 +97,16 @@ class VideoCollection extends BaseCollection {
         }
     }
 
-    onGifClickNext() {
+    onGifClickNext(e) {
+        e.preventDefault();
         if (this.state.selectedGifClip === this.props.clipIds.length - 1) {
             return this.setState({ selectedGifClip: 0 });
         }
         return this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
     }
 
-    onGifClickPrev() {
+    onGifClickPrev(e) {
+        e.preventDefault();
         if (this.state.selectedGifClip === 0) {
             return this.setState({ selectedGifClip: this.props.clipIds.length - 1 });
         }
@@ -119,10 +121,10 @@ class VideoCollection extends BaseCollection {
         this.setState({ liftThumbnailId });
     }
 
-    onSetPanel(selectedPanelId) {
+    onSetPanel(selectedPanelIndex) {
         // Clear any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanelId });
+        this.setState({ selectedPanelIndex });
     }
 
     onSendResultsEmail(email, callback) {
@@ -153,7 +155,7 @@ class VideoCollection extends BaseCollection {
         return this.props.thumbnailLength <= 1;
     }
 
-    renderPanels() {
+    getPanels() {
         const copyOverrideMap = _.isEmpty(this.props.clips) ?
         {
             'copy.lift.explanation': 'copy.lift.explanation',
@@ -237,7 +239,7 @@ class VideoCollection extends BaseCollection {
         return panels;
     }
 
-    renderControls() {
+    getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
@@ -287,9 +289,9 @@ class VideoCollection extends BaseCollection {
                 clipThumb={clipThumb}
                 clipPoster={clipPoster}
                 copyOverrideMap={copyOverrideMap}
-                infoActionPanels={this.renderPanels()}
-                infoActionControls={this.renderControls()}
-                selectedPanel={this.state.selectedPanel}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage()}
                 liftValue={this.getLiftValue()}
@@ -324,9 +326,9 @@ class VideoCollection extends BaseCollection {
                 clipThumb={clipThumb}
                 clipPoster={clipPoster}
                 copyOverrideMap={copyOverrideMap}
-                infoActionPanels={this.renderPanels()}
-                infoActionControls={this.renderControls()}
-                selectedPanel={this.state.selectedPanel}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage()}
                 onGifClickPrev={this.onGifClickPrev}

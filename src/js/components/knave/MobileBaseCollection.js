@@ -121,9 +121,9 @@ class MobileBaseCollection extends BaseCollection {
             }
         }
         children.push((
-            <div key="4" className="xxShowMore" onClick={this.onMoreLessToggle}>
+            <button key="4" className="xxShowMore" onClick={this.onMoreLessToggle}>
                 <a>{toggleLabel}</a>
-            </div>
+            </button>
         ));
 
         return <div>{children}</div>;
@@ -165,7 +165,7 @@ class MobileBaseCollection extends BaseCollection {
                     <h1 className="xxCollection-title xxCollection-title--mobileGif ">
                         {this.props.title}
                     </h1>
-                    <div
+                    <button
                         className={displayClassNames.join(' ')}
                         onClick={this.onDisplayInfoToggle}
                     />
@@ -177,14 +177,13 @@ class MobileBaseCollection extends BaseCollection {
                         poster={this.props.clipPoster}
                         id={this.props.clip.clip_id}
                     />
-                    { this.renderClipPaging() }
                     {
                         this.state.displayInfo ? (
                             <div className="xxCollection-content">
                                 <InfoActionContainer
-                                    children={this.props.infoActionPanels}
+                                    panels={this.props.infoActionPanels}
                                     controls={this.props.infoActionControls}
-                                    selectedPanel={this.props.selectedPanel}
+                                    selectedPanelIndex={this.props.selectedPanelIndex}
                                 />
                             </div>
                         ) : null
@@ -194,38 +193,16 @@ class MobileBaseCollection extends BaseCollection {
         );
     }
 
-    renderClipPaging() {
-        if (this.props.clipIds.length <= 1) {
-            return null;
-        }
-        return (
-            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                <div
-                    className="xxPagingControls-prev xxPagingControls-prev--GifClip"
-                    onClick={this.props.onGifClickPrev}
-                />
-                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip" >
-                    {T.get('copy.xOfY', {
-                        '@x': this.props.selectedGifClip + 1,
-                        '@y': this.props.clipIds.length })}
-                </div>
-                <div
-                    className="xxPagingControls-next xxPagingControls-next--GifClip"
-                    onClick={this.props.onGifClickNext}
-                />
-            </nav>
-        );
-    }
-
     renderVideo() {
         return (
             <div>
                 <div className="xxCollection-content">
                     <InfoActionContainer
-                        children={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
-                        selectedPanel={this.props.selectedPanel}
-                    />
+                        selectedPanelIndex={this.props.selectedPanelIndex}
+                    >
+                        {this.props.infoActionPanels}
+                    </InfoActionContainer>
                 </div>
                 <div className="xxCollectionImages">
                     {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}

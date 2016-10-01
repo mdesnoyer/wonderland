@@ -61,7 +61,7 @@ export default class PagingControls extends React.Component {
                     onClick={this.handleNavPrev}
                     aria-label={T.get('action.previous')}
                     title={T.get('action.previous')}
-                    className={"xxPagingControls-prev"}
+                    className="xxPagingControls-prev"
                 >
                     {T.get('action.previous')}
                 </button>
@@ -93,7 +93,7 @@ export default class PagingControls extends React.Component {
                 <button
                     disabled={!this.props.enableNext}
                     onClick={this.handleNavNext}
-                    className={"xxPagingControls-next"}
+                    className="xxPagingControls-next"
                     aria-label={T.get('action.next')}
                 >
                     {T.get('action.next')}
@@ -110,7 +110,7 @@ export default class PagingControls extends React.Component {
                     <div className="xxPagingControls-navigation-item">
                         {this.renderPrevButton()}
                     </div>
-                    <div className={"xxPagingControls-navigation-item"}>
+                    <div className="xxPagingControls-navigation-item">
                         {this.renderCurrentPage()}
                     </div>
                     <div className="xxPagingControls-navigation-item">

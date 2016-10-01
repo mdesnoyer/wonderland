@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
+import ImageCollection from './ImageCollection';
+import ThumbnailOverlay from '../knave/ThumbnailOverlay';
+import VideoCollection from './VideoCollection';
+import VideoProcessing from './VideoProcessing';
+
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
-import VideoProcessing from './VideoProcessing';
-import ImageCollection from './ImageCollection';
-import VideoCollection from './VideoCollection';
-import ThumbnailOverlay from '../knave/ThumbnailOverlay';
 
 const propTypes = {
 
@@ -81,6 +82,7 @@ class CollectionsContainer extends React.Component {
             nextSelectedDemographic: {},
             // Setting a tag will render the modal overlay thumbnail zoom.
             overlayTagId: null,
+            // The overlay's current thumbnail id.
             overlayThumbnailId: null,
         };
 
@@ -91,7 +93,6 @@ class CollectionsContainer extends React.Component {
         this.onOverlayThumbnailNext = this.onOverlayThumbnailNext.bind(this);
         this.onOverlayThumbnailPrev = this.onOverlayThumbnailPrev.bind(this);
         this.onOverlayClose = this.onOverlayClose.bind(this);
-        // This is synthesized from the props-provided function.
         this.onOpenLearnMore = props.setSidebarContent.bind(null, 'learnMore');
     }
 
@@ -102,34 +103,28 @@ class CollectionsContainer extends React.Component {
         // to the selected one.
         const selectedDemographic = this.state.selectedDemographic;
         _.map(selectedDemographic, (selDemo, tagId) => {
-            if (selDemo.length === 4) {
-                const nextGender = selDemo[2];
-                const nextAge = selDemo[3];
+            if (_.size(selDemo.length) === 4) {
+                // Look for the next one.
+                const { nextGender, nextAge } = selDemo;
                 const tag = nextProps.stores.tags[tagId];
                 const video = nextProps.stores.videos[tag.video_id];
                 const demos = video.demographic_clip_ids.length ?
                     video.demographic_clip_ids :
                     video.demographic_thumbnails;
-
                 const foundDemo = UTILS.findDemographicObject(demos, nextGender, nextAge);
                 if (foundDemo) {
-                    selectedDemographic[tagId] = [nextGender, nextAge];
+                    // If we find this demo stored, then use it.
+                    selectedDemographic[tagId] = { gender: nextGender, age: nextAge };
                 }
             }
         });
         this.setState({ selectedDemographic });
     }
 
-    // Given a tag id, build a valid Collection
-    // component instance and return it.
-    //
-    // Else return an error component.
-
     // On demographic selector change, fill in stores.
     onDemographicChange(tagId, gender, age) {
-        const selectedDemographic = this.state.selectedDemographic;
-
-        let newDemographic = [gender, age];
+        const selectedDemo = this.state.selectedDemographic;
+        const newDemo = { gender, age };
 
         // If this is a video and the demographic isn't in the
         // video store, then put the gender and age in the "next"
@@ -142,39 +137,44 @@ class CollectionsContainer extends React.Component {
                 video.demographic_clip_ids :
                 video.video.demographic_thumbnails;
             if (!UTILS.findDemographicObject(demos, gender, age)) {
+                // Use the previous demo until the selected one
+                // is loaded by pushing the selected one into
+                // the nextGender and nextAge slots;
                 const prevDemo = this.getSelectedDemographic(tagId);
-                newDemographic = prevDemo.slice(0, 2);
-                newDemographic.push(gender, age);
+                newDemo.gender = prevDemo.gender;
+                newDemo.age = prevDemo.age;
+                newDemo.nextGender = gender;
+                newDemo.nextAge = age;
             }
         }
-
-        selectedDemographic[tagId] = newDemographic;
+        selectedDemographic[tagId] = newDemo;
 
         // Ask stores to load missing values.
         // And change our state when done.
-        const callback = () => {
-            this.setState({ selectedDemographic });
-        };
+        const callback = () => (
+            this.setState({ selectedDemographic })
+        );
         this.props.loadTagForDemographic(tagId, gender, age, callback);
     }
 
     onSendResultsEmail(email, tagId, callback) {
         const [gender, age] = this.getSelectedDemographic(tagId);
-        // Skip the left, or worse thumb.
+        // Skip the left, or worst, thumb.
         const [, bestThumb, goodThumbs] = this.getLeftRightRest(tagId, gender, age);
         const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
         let i = 0;
         while (fourThumbs.length < 4) {
             // Repeat until the required number is set.
-            fourThumbs.push(fourThumbs[i++]);
+            fourThumbs.push(fourThumbs[i]);
+            i += 1;
         }
         this.props.sendResultsEmail(
             email, tagId, gender, age, fourThumbs, callback);
     }
 
-    onSendGifResultsEmail(email, tagId, callback) {
+    onSendClipResultsEmail(email, tagId, callback) {
         const [gender, age] = this.getSelectedDemographic(tagId);
-        this.props.sendGifResultsEmail(email, tagId, gender, age, callback);
+        this.props.sendClipResultsEmail(email, tagId, gender, age, callback);
     }
 
     onThumbnailClick(overlayTagId, overlayThumbnailId, ...rest) {
@@ -182,12 +182,14 @@ class CollectionsContainer extends React.Component {
         TRACKING.sendEvent(this, rest, !!this.state.overlayTagId);
     }
 
-    onOverlayThumbnailNext() {
+    onOverlayThumbnailNext(e) {
+        e.preventDefault();
         const overlayThumbnailId = this.getOverlayThumbnailId(+1);
         this.setState({ overlayThumbnailId });
     }
 
-    onOverlayThumbnailPrev() {
+    onOverlayThumbnailPrev(e) {
+        e.preventDefault();
         const overlayThumbnailId = this.getOverlayThumbnailId(-1);
         this.setState({ overlayThumbnailId });
     }
@@ -226,7 +228,7 @@ class CollectionsContainer extends React.Component {
         }
         if (_.isEmpty(allThumbnailMap)) {
             // Get the thumbnails on the tag for clips.
-            tag.thumbnail_ids.forEach(thumbnailId => {
+            tag.thumbnail_ids.forEach((thumbnailId) => {
                 allThumbnailMap[thumbnailId] =
                     this.props.stores.thumbnails[gender][age][thumbnailId];
             });
@@ -263,7 +265,7 @@ class CollectionsContainer extends React.Component {
             .values()
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
-        return [left, right, rest, more];
+        return { left, right, rest, more };
     }
 
     getLeftRightRestImage(tagId, gender, age) {
@@ -283,57 +285,40 @@ class CollectionsContainer extends React.Component {
             // Order by score, best to worst, then created time for stability.
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
-        return [left, right, rest, []];
+        return { left, right, rest, more: [] };
     }
 
-    // Given tag id and demo, gives array of
-    //   left feature thumbnail
-    //   right feature thumbnail
-    //   rest of thumbnails
-    //   [and more thumbnails]
-    getLeftRightRest(tagId, gender, age) {
-        const tag = this.props.stores.tags[tagId];
-        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
-            return this.getLeftRightRestImage(tagId, gender, age);
-        }
-        return this.getLeftRightRestVideo(tagId, gender, age);
-    }
-
-    // Return array of gender,age enum array based
-    // on state of collection.
+    // Return array of gender, age enum array based
+    // on state of collection for a demo dropdown.
     getDemoOptionArray(tagId) {
         const tag = this.props.stores.tags[tagId];
-        switch (tag.tag_type) {
-        case UTILS.TAG_TYPE_IMAGE_COL:
-            // All factor posibilities are available.
-            // TODO? do statically as class behavior.
+        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+            // All factor posibilities are available for an image coll.
             return UTILS.productOfArrays(
                 _.values(UTILS.FILTER_GENDER_COL_ENUM),
                 _.values(UTILS.FILTER_AGE_COL_ENUM)
-            );
-        case UTILS.TAG_TYPE_VIDEO_COL:
-            {
-                const video = this.props.stores.videos[tag.video_id];
-                const demos = video.demographic_clip_ids.length ?
-                    video.demographic_clip_ids :
-                    video.demographic_thumbnails;
-                return demos.map(demo => (
-                    [
-                        UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
-                        UTILS.FILTER_AGE_COL_ENUM[demo.age],
-                    ]
-                )).sort();
-            }
-        default:
-            return [[0, 0]];
+            ).sort();
         }
+        const video = this.props.stores.videos[tag.video_id];
+        const demos = this.hasClips(tagId) ?
+            video.demographic_clip_ids :
+            video_demographic_thumbnails;
+        if (demos.length) {
+            return (demo => (
+                [
+                    UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
+                    UTILS.FILTER_AGE_COL_ENUM[demo.age],
+                ]
+            )).sort();
+        }
+        return [[0, 0]];
     }
 
     getSelectedDemographic(tagId) {
         if (this.state.selectedDemographic[tagId]) {
             return this.state.selectedDemographic[tagId];
         }
-        return [0, 0];
+        return { gender:0, age: 0 };
     }
 
     // Gets the Thumbnail resource for the
@@ -344,36 +329,16 @@ class CollectionsContainer extends React.Component {
 
     // Get all the Thumbnail resources for the
     // current demographic for a collection as map of id to thumbnail.
-    //
-    // (If a video, this is the union of good and bad thumbs.)
     getThumbnailMap(tagId) {
-        let gender = 0;
-        let age = 0;
-        if (this.state.selectedDemographic[tagId] !== undefined) {
-            [gender, age] = this.state.selectedDemographic[tagId];
-        }
+        const { gender, age } = this.state.selectedDemographic[tagId];
         const tag = this.props.stores.tags[tagId];
-        let associatedThumbnailIds;
-        if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
-            const video = this.props.stores.videos[tag.video_id];
-            const demo = UTILS.findDemographicObject(
-                video.demographic_thumbnails,
-                gender,
-                age);
-            associatedThumbnailIds = _.union(
-                demo.thumbnails.map(t => t.thumbnail_id),
-                demo.bad_thumbnails.map(t => t.thumbnail_id));
-        } else {
-            associatedThumbnailIds = tag.thumbnail_ids;
-        }
-        return _.pick(
-            this.props.stores.thumbnails[gender][age],
-            associatedThumbnailIds);
+        const thumbnails = this.props.stores.thumbnails[gender][age];
+        return _.pick(thumbnails, tag.thumbnail_ids);
     }
 
     // Get the current thumbnail index or 0 if no id is set.
     getOverlayThumbnailIndex() {
-        const thumbnails = this.getSortedThumbnails();
+        const { thumbnails } = this.getSortedContents();
         if (!this.state.overlayThumbnailId) {
             return 0;
         }
@@ -381,16 +346,18 @@ class CollectionsContainer extends React.Component {
             t.thumbnail_id === this.state.overlayThumbnailId));
     }
 
+    // Get the thumbnail with +/- change from the current.
     getOverlayThumbnailId(change) {
-        const thumbnails = this.getSortedThumbnails();
+        const { thumbnails } = this.getSortedContents();
         const oldIndex = this.getOverlayThumbnailIndex();
         const newIndex = (oldIndex + change + thumbnails.length) % thumbnails.length;
         return thumbnails[newIndex].thumbnail_id;
     }
 
-    getSortedThumbnails() {
+    // Get lists of thumbnails and clips sorted by score descending.
+    getSortedContents() {
         const tagId = this.state.overlayTagId;
-        const [gender, age] = this.getSelectedDemographic(tagId);
+        const { gender, age } = this.getSelectedDemographic(tagId);
         const thumbnails = _(this.getLeftRightRest(tagId, gender, age))
             .flatten()
             .sortedUniqBy('thumbnail_id')
@@ -399,25 +366,35 @@ class CollectionsContainer extends React.Component {
         if (thumbnails[0] === thumbnails[1]) {
             thumbnails.shift();
         }
-        return thumbnails;
+        const clips = [];
+        return { thumbnails, clips };
+    }
+
+    hasClip(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        if (tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL) {
+            return false;
+        }
+        const video = this.prors.stores.videos[tag.video_id];
+        return !!video.demographic_clip_ids.length;
     }
 
     renderOverlayComponent() {
         // If no tag, the overlay hasn't been opened.
-        const tagId = this.state.overlayTagId;
-        if (!tagId) {
+        if (!this.state.overlayTagId) {
             return null;
         }
+        const tagId = this.state.overlayTagId;
         const tag = this.props.stores.tags[tagId];
 
         // Get score sorted thumbnails for collection.
-        const [gender, age] = this.getSelectedDemographic(tagId);
+        const { gender, age } = this.getSelectedDemographic(tagId);
 
-        // Begin async loading features.
+        // Begin loading features.
         this.props.loadFeaturesForTag(tagId, gender, age);
 
         // Get the same sort of thumbnails that the collections uses.
-        const sortedThumbnails = this.getSortedThumbnails();
+        const { thumbnails } = this.getSortedContents();
         const thumbnailIndex = this.getOverlayThumbnailIndex();
 
         // Find lift for the shown thumbnail.
@@ -429,7 +406,6 @@ class CollectionsContainer extends React.Component {
         const thumbnailFeatures = _(this.props.stores.thumbnailFeatures[gender][age])
             .pick(_.keys(thumbnailMap))
             .value();
-
         const thumbnailFeatureNameMap = {};
         _.map(thumbnailFeatures, (featureIds, thumbnailId) => {
             thumbnailFeatureNameMap[thumbnailId] = featureIds.map(id => (
@@ -443,7 +419,7 @@ class CollectionsContainer extends React.Component {
 
         return (
             <ThumbnailOverlay
-                thumbnails={sortedThumbnails}
+                thumbnails={thumbnails}
                 selectedItem={thumbnailIndex}
                 displayThumbLift={lift}
                 tagType={tag.tag_type}
@@ -458,51 +434,82 @@ class CollectionsContainer extends React.Component {
     }
 
     renderCollectionComponent(tagId) {
-        const collection = this.props.stores.tags[tagId];
-
-        if (collection.thumbnail_ids.length < 1 && collection.tag_type !== 'video') {
-            return <div key={tagId} />;
-        }
-        switch (collection.tag_type) {
-        case UTILS.TAG_TYPE_IMAGE_COL:
+        const tag = this.props.stores.tags[tagId];
+        if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
             return this.renderImageCollectionComponent(tagId);
-        case UTILS.TAG_TYPE_VIDEO_COL:
-        default:
-            return this.renderVideoCollectionComponent(tagId);
+        }
+
+        const alt = this.renderAlternateVideoComponent(tagId);
+        if (alt) {
+            return alt;
+        }
+
+        if (this.hasClip(tagId)) {
+            return this.renderClipCollectionComponent(tagId);
+        }
+        return this.renderVideoCollectionComponent(tagId);
+    }
+
+    renderAlternateVideoComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
+
+        if (!['submit', 'processing', 'failed'].includes(video.state)) {
+            return false;
+        }
+        if (video.state === 'submit') {
+            return this.renderVideoProcessingComponent(tagId);
+        }
+        if (video.state === 'failed' && !video.demographic_clip_ids.length) {
+            return this.renderVideoFailedComponent(tagId);
+        }
+        if (tag.thumbnail_ids.length === 1) {
+            // if it's just the default thumbnail, we have a video
+            // that's still processing.
+            const tid = tag.thumbnail_ids[0];
+            const thumbnail = this.props.stores.thumbnails[0][0][tid];
+            // we can't find the thumbnail in our stores, meaning it's
+            // older or the default just hasn't showed up yet.
+            if (!thumbnail || thumbnail.type === 'default') {
+                return this.renderVideoProcessingComponent(tagId);
+            }
+        }
+        if (tag.thumbnail_ids.length === 0) {
+            return this.renderVideoProcessingComponent(tagId);
         }
     }
 
-    renderImageCollectionComponent(tagId) {
-        const collection = this.props.stores.tags[tagId];
+    renderClipCollectionComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+        const video = this.props.stores.videos[tag.video_id];
 
-        const demo = this.getSelectedDemographic(tagId);
-        const gender = demo[0];
-        const age = demo[1];
-
-        const thumbArrays = this.getLeftRightRest(tagId, gender, age);
-        const left = thumbArrays[0];
-        const right = thumbArrays[1];
-        const smallThumbnails = thumbArrays[2];
-
-        const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
-            this.props.stores.lifts[gender][age][tagId] : {};
+        const isRefiltering = video.state === 'processing';
+        const [gender, age] = this.getSelectedDemographic(tagId);
 
         const shareUrl = (tagId in this.props.stores.tagShares) ?
             this.props.stores.tagShares[tagId].url : undefined;
 
-        const thumbsLength = collection.thumbnail_ids.length;
+        const clipDemo = UTILS.findDemographicObject(
+            video.demographic_clip_ids, gender, age);
+        const clipIds = clipDemo.clip_ids;
+        const clips = _.pick(this.props.stores.clips[gender][age], clipIds)
+        // TODO sort
+        const sortedClips = clips;
+
+        // The assumption that thumbnails stores are set up
+        // demographically for clip videos is problematic, so
+        // just use the defaults.
+        // TODO revisit the way we map clip thumbs.
+        const thumbnails = this.props.stores.thumbnails[0][0];
 
         return (
-            <ImageCollection
+            <ClipCollection
                 key={tagId}
-                isMine={this.props.isMine}
-                title={collection.name}
+                title={tag.name}
+                videoId={video.video_id}
                 tagId={tagId}
-                leftFeatureThumbnail={left}
-                rightFeatureThumbnail={right}
-                smallThumbnails={smallThumbnails}
-                thumbnailLength={thumbsLength}
-                onThumbnailClick={this.onThumbnailClick}
+                clip={sortedClips}
+                clipThumbs={clipThumbMap}
                 onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={[gender, age]}
@@ -510,16 +517,55 @@ class CollectionsContainer extends React.Component {
                 onDeleteCollection={this.props.onDeleteCollection}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
-                sendResultsEmail={this.onSendResultsEmail}
-                thumbLiftMap={thumbLiftMap}
+                sendResultsEmail={sendClipResultEmail}
+                clipLiftMap={clipLiftMap}
                 setTooltipText={this.props.setTooltipText}
+                isRefiltering={isRefiltering}
+                timeRemaining={video.estimated_time_remaining}
+            />
+       );
+    }
+
+    renderImageCollectionComponent(tagId) {
+        const tag = this.props.stores.tags[tagId];
+
+        const { gender, age } = this.getSelectedDemographic(tagId);
+        const { left, right, more } = this.getLeftRightRest(tagId, gender, age);
+
+        const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
+            this.props.stores.lifts[gender][age][tagId] : {};
+
+        const shareUrl = (tagId in this.props.stores.tagShares) ?
+            this.props.stores.tagShares[tagId].url : undefined;
+
+        const thumbnailsLength = tag.thumbnail_ids.length;
+
+        return (
+            <ImageCollection
+                key={tagId}
+                tagId={tagId}
+                demographicOptions={this.getDemoOptionArray(tagId)}
+                infoPanelOnly={this.props.infoPanelOnly}
+                isMine={this.props.isMine}
+                leftFeatureThumbnail={left}
+                rightFeatureThumbnail={right}
+                selectedDemographic={[gender, age]}
+                shareUrl={shareUrl}
+                smallThumbnails={smallThumbnails}
+                thumbnailsLength={thumbnailsLength}
+                thumbLiftMap={thumbLiftMap}
+                title={tag.name}
+                onThumbnailClick={this.onThumbnailClick}
+                onDemographicChange={this.onDemographicChange}
+                onDeleteCollection={this.props.onDeleteCollection}
+                onSocialClick={this.props.onSocialClick}
+                onSendResultsEmail={this.onSendResultsEmail}
+                onSetTooltipText={this.props.setTooltipText}
             />
         );
     }
 
     renderVideoCollectionComponent(tagId) {
-        const tag = this.props.stores.tags[tagId];
-        const video = this.props.stores.videos[tag.video_id];
 
         let isRefiltering = false;
         if (['submit', 'processing', 'failed'].includes(video.state)) {
@@ -669,10 +715,10 @@ class CollectionsContainer extends React.Component {
             <div>
                 {this.renderOverlayComponent()}
                 <ul>
-                {
+                    {
                     this.props.shownIds.map(tagId => (
                         this.renderCollectionComponent(tagId)))
-                }
+                    }
                 </ul>
             </div>
         );

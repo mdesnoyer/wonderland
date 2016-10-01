@@ -8,7 +8,6 @@ import {
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
-import tl from './ThumbnailList';
 import GifClip from './GifClip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -40,19 +39,14 @@ const propTypes = {
     // component defaults to xxCollection
     wrapperClassName: PropTypes.string,
 
-    selectedPanel: PropTypes.number.isRequired,
+    selectedPanelIndex: PropTypes.number.isRequired,
 
     smallBadThumbnails: PropTypes.array,
     isMine: PropTypes.bool,
-    clips: PropTypes.object,
     clip: PropTypes.object,
     isSoloImage: PropTypes.bool,
-    onGifClickNext: PropTypes.func,
-    onGifClickPrev: PropTypes.func,
-    clipIds: PropTypes.array,
     tagId: PropTypes.string,
     onDeleteCollection: PropTypes.func,
-    selectedGifClip: PropTypes.number,
     clipPoster: PropTypes.string,
     onDemographicChange: PropTypes.func,
 };
@@ -241,31 +235,7 @@ class BaseCollection extends React.Component {
                     poster={this.props.clipPoster}
                     id={this.props.clip.clip_id}
                 />
-                {this.getClipPaging()}
             </div>
-        );
-    }
-
-    getClipPaging() {
-        if (this.props.clipIds.length <= 1) {
-            return null;
-        }
-        return (
-            <nav className="xxPagingControls-navigation xxPagingControls-navigation--GifClip">
-                <div
-                    className="xxPagingControls-prev xxPagingControls-prev--GifClip"
-                    onClick={this.props.onGifClickPrev}
-                />
-                <div className="xxPagingControls-navigation-item xxPagingControls-item--GifClip">
-                    {T.get('copy.xOfY', {
-                        '@x': this.props.selectedGifClip + 1,
-                        '@y': this.props.clipIds.length })}
-                </div>
-                <div
-                    className="xxPagingControls-next xxPagingControls-prev--GifClip"
-                    onClick={this.props.onGifClickNext}
-                />
-            </nav>
         );
     }
 
@@ -324,10 +294,9 @@ class BaseCollection extends React.Component {
                 {this.props.clip ? this.getClipComponent() : this.getThumbComponent()}
                 <div className="xxCollection-content">
                     <InfoActionContainer
-                        children={this.props.infoActionPanels}
+                        panels={this.props.infoActionPanels}
                         controls={this.props.infoActionControls}
-                        selectedPanel={this.props.selectedPanel}
-                        clips={this.props.clips}
+                        selectedPanelIndex={this.props.selectedPanelIndex}
                     />
                 </div>
             </div>

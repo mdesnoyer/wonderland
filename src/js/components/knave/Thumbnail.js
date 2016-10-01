@@ -28,10 +28,9 @@ const propTypes = {
 const defaultProps = {
     className: '',
     wrapperClassName: '',
-    onClick: (e) => e.preventDefault(), // i.e., do nothing.
+    onClick: e => e.preventDefault(), // i.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
-    children: (<div />),
     enabled: true,
 };
 
@@ -65,7 +64,7 @@ class Thumbnail extends React.Component {
 
         return (
             <div className={this.props.wrapperClassName}>
-                <span
+                <button
                     className={className}
                     data-score={this.props.score}
                     onClick={this.onClick}
@@ -77,7 +76,7 @@ class Thumbnail extends React.Component {
                         onMouseEnter={this.onMouseEnter}
                         onMouseLeave={this.onMouseLeave}
                     />
-                </span>
+                </button>
                 {this.props.children}
             </div>
         );

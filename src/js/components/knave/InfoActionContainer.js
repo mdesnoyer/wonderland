@@ -1,62 +1,48 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-import React, {PropTypes} from 'react';
-
+import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
+
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-const InfoActionContainer = React.createClass({
-
-    propTypes: {
-        // a mapping from string to index where
-        // string is the shortname of the the control
-        // and the int is the index into the panel array
-        controls: PropTypes.array.isRequired,
-
-        // selectedPanel gets from user input on the parent object
-        selectedPanel: PropTypes.number
-    },
+const propTypes = {
+    panels: PropTypes.arrayOf(PropTypes.node).isRequired,
+    controls: PropTypes.arrayOf(PropTypes.node).isRequired,
+    selectedPanelIndex: PropTypes.number.isRequired,
+};
+class InfoActionContainer extends React.Component {
 
     componentDidUpdate() {
         // Needed to display the static tooltips that are bound
         // to newly mounted UI elements.
         ReactTooltip.rebuild();
-    },
+    }
 
-    render: function() {
-        // Convert single child children to array.
-        const children = React.Children.toArray(this.props.children);
+    renderSelectedPanel() {
+        if (this.props.selectedPanelIndex === null) {
+            return null;
+        }
+        return this.props.panels[this.props.selectedPanelIndex];
+    }
 
-        // Null indicates a collapsed view.
-        const selected = selected !== null?
-            children[this.props.selectedPanel]:
-            null;
-        var control_array = this.props.controls;
-        const controls = control_array.map(control => {
-            return (
-                <li
-                    key={control.type.displayName}
-                    className="xxCollectionActions-item"
-                >
-                    {control}
-                </li>
-            );
-        });
+    render() {
+        const controls = this.props.controls.map(control => (
+            <li
+                key={control.type.displayName}
+                className="xxCollectionActions-item"
+            >
+                {control}
+            </li>
+        ));
+
         return (
             <div>
-                {selected}
+                {this.renderSelectedPanel()}
                 <ul className="xxCollectionActions">
                     {controls}
                 </ul>
             </div>
         );
     }
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+};
+InfoActionContainer.propTypes = propTypes;
 
 export default InfoActionContainer;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

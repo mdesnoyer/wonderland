@@ -11,9 +11,7 @@ const registerCallbacks = [];
 // A class to bind store updates to subscribed components.
 export const Dispatcher = {
     dispatch() {
-        registerCallbacks.forEach(callback => {
-            callback();
-        });
+        registerCallbacks.forEach(callback => callback());
         return Dispatcher;
     },
 
@@ -113,7 +111,7 @@ Store.getState = () => (
 class DemoStore extends Store {
     constructor(name) {
         super(name);
-        this.store = this.genderAgeBaseMap();
+        this.store = DemoStore.genderAgeBaseMap();
     }
 
     get(gender, age, id) {
@@ -132,44 +130,43 @@ class DemoStore extends Store {
 
     reset() {
         super.reset();
-        this.store = this.genderAgeBaseMap();
+        this.store = DemoStore.genderAgeBaseMap();
         return this;
     }
-
+}
+DemoStore.genderAgeBaseMap = () => (
     // This function creates a map of gender to a map of age
     // to a map of thumbnail id to thumbnail. It's the common
     // base structure of every DemoStore. The enumerated
     // values are defined in UTILS.FILTER_GENDER_COL_ENUM but
     // copied here for simplicity.
-    genderAgeBaseMap() {
-        return {
-            0: {
-                0: {},
-                1: {},
-                2: {},
-                3: {},
-                4: {},
-                5: {},
-            },
-            1: {
-                0: {},
-                1: {},
-                2: {},
-                3: {},
-                4: {},
-                5: {},
-            },
-            2: {
-                0: {},
-                1: {},
-                2: {},
-                3: {},
-                4: {},
-                5: {},
-            },
-        };
+    {
+        0: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {},
+        },
+        1: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {},
+        },
+        2: {
+            0: {},
+            1: {},
+            2: {},
+            3: {},
+            4: {},
+            5: {},
+        },
     }
-}
+);
 
 class FilteredStore {
     // Inputs-
@@ -184,12 +181,6 @@ class FilteredStore {
         if (filter) {
             this.setFilter(filter);
         }
-    }
-
-    // TODO make this type agnostic again.
-    defaultFilter(item) {
-        return (item.thumbnail_ids.length > 0 || item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
-            item.hidden !== true;
     }
 
     setFilter(filter) {
@@ -215,6 +206,11 @@ class FilteredStore {
         this.isCompletelyLoaded = false;
     }
 }
+FilteredStore.defaultFilter = item => (
+    // TODO make this type agnostic again.
+    (item.thumbnail_ids.length > 0 || item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+        item.hidden !== true
+);
 
 export const accountStore = new Store('accounts');
 export const clipStore = new DemoStore('clips');
@@ -283,7 +279,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         // Batch only large requests since batch is slower.
         if (thumbArgs) {
-            thumbArgs.forEach(arg => {
+            thumbArgs.forEach((arg) => {
                 // Build this batch's params by copying base params and adding the tid arg.
                 const params = { ...baseParams, ...{ thumbnail_id: arg } };
                 LoadActions.batch('GET', 'thumbnails', params);
@@ -360,7 +356,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             // Batch each MAX_CSV_VALUE_COUNT (100) thumbnail ids.
             const csvArray = UTILS.csvFromArray(vsThumbnailIds);
-            csvArray.forEach(csvThumbnailIds => {
+            csvArray.forEach((csvThumbnailIds) => {
                 const extra = {
                     base_id: baseId,
                     thumbnail_ids: csvThumbnailIds,
@@ -403,7 +399,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             }
             // After state change from processing, done.
         };
-        LoadActions.fetchVideos([videoId]).then(videoResponse => repeat.bind(null, videoResponse));
+        LoadActions.fetchVideos([videoId]).then(videoResponse =>
+            repeat.bind(null, videoResponse));
         return LoadActions;
     },
 
@@ -415,7 +412,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             // These are already loaded!
         } else {
-            tag.thumbnail_ids.forEach(tid => {
+            tag.thumbnail_ids.forEach((tid) => {
                 if (thumbnailStore.get(gender, age, tid) === undefined) {
                     missingThumbIds.push(tid);
                 }
@@ -424,14 +421,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
         const newThumbnailMap = {};
         LoadActions.fetchThumbnails(missingThumbIds, gender, age)
-        .then(thumbRes => {
-            thumbRes.thumbnails.forEach(t => {
+        .then((thumbRes) => {
+            thumbRes.thumbnails.forEach((t) => {
                 newThumbnailMap[t.thumbnail_id] = t;
             });
             thumbnailStore.set(gender, age, newThumbnailMap);
             return LoadActions.fetchLifts([tagId], gender, age);
         })
-        .then(tagLiftMap => {
+        .then((tagLiftMap) => {
             // Set, dispatch and callback.
             liftStore.set(gender, age, tagLiftMap);
             Dispatcher.dispatch();
@@ -459,7 +456,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         LoadActions.fetchThumbnails(thumbnailIds, gender, age, ['thumbnail_id', 'feature_ids'])
-        .then(thumbRes => {
+        .then((thumbRes) => {
             // Configure the reduce/filter.
             const ignoreIds = UTILS.VALENCE_IGNORE_INDEXES;
             const numToKeep = UTILS.VALENCE_NUM_TO_KEEP;
@@ -469,7 +466,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
             const newThumbnailFeatureMap = {};
 
-            thumbRes.thumbnails.forEach(t => {
+            thumbRes.thumbnails.forEach((t) => {
                 const featureIdValues = t.feature_ids ? t.feature_ids.reduce((array, idValue) => {
                     const featureId = idValue[0];
                     if (ignoreIds.indexOf(parseInt(featureId.split('_')[1], 10)) === -1) {
@@ -510,9 +507,9 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             };
             return LoadActions.get('feature', featureData);
         })
-        .then(featureRes => {
+        .then((featureRes) => {
             const newFeatureMap = {};
-            featureRes.features.forEach(feature => {
+            featureRes.features.forEach((feature) => {
                 // Remove "feature_" prefix.
                 const featureKey = feature.key.split('feature_').pop();
                 newFeatureMap[featureKey] = feature.name;
@@ -555,14 +552,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         let tagIds = [];
         let videos = [];
         LoadActions.fetchTags(fetchTagIdSet)
-        .then(tagRes => {
+        .then((tagRes) => {
             Object.assign(updateTagMap, tagRes);
 
             // Decide which video ids to search for.
             const fetchVideoIds = [];
             tags = _.values(tagRes);
             tagIds = _.keys(tagRes);
-            tags.forEach(tag => {
+            tags.forEach((tag) => {
                 if (tag.video_id) {
                     if (reload || !videoStore.get(tag.video_id)) {
                         fetchVideoIds.push(tag.video_id);
@@ -572,7 +569,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const fetchVideoIdSet = _.uniq(fetchVideoIds);
             return LoadActions.fetchVideos(fetchVideoIdSet);
         })
-        .then(videoRes => {
+        .then((videoRes) => {
             videos = videoRes.videos;
             // Filter
             // TODO re-implement using a FilteredStore
@@ -605,11 +602,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
 
                     // Build partial update map.
                     const thumbnailMap = {};
-                    dem.thumbnails.forEach(t => {
+                    dem.thumbnails.forEach((t) => {
                         thumbnailMap[t.thumbnail_id] = t;
                     });
                     if (dem.bad_thumbnails) {
-                        dem.bad_thumbnails.forEach(t => {
+                        dem.bad_thumbnails.forEach((t) => {
                             thumbnailMap[t.thumbnail_id] = t;
                         });
                     }
@@ -622,7 +619,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const fetchThumbnailIds = _
                 .chain(tags)
                 // Skip video tags if they don't have clips.
-                .filter(tag => {
+                .filter((tag) => {
                     if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
                         const video = updateVideoMap[tag.video_id];
                         return video.demographic_clip_ids.length > 0;
@@ -650,7 +647,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const clipsPromise = LoadActions.fetchClips(fetchClipIds);
             return Promise.all([thumbnailsPromise, clipsPromise]);
         })
-        .then(combinedRes => {
+        .then((combinedRes) => {
             const thumbRes = combinedRes[0] || { thumbnails: [] };
             const clipRes = combinedRes[1] || { clips: [] };
 
@@ -659,15 +656,15 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 { ...map, ...{ [t.thumbnail_id]: t } }
             ), {});
 
-            videos.forEach(video => {
-                video.demographic_clip_ids.forEach(dem => {
+            videos.forEach((video) => {
+                video.demographic_clip_ids.forEach((dem) => {
                     const demGender = UTILS.FILTER_GENDER_COL_ENUM[dem.gender];
                     const demAge = UTILS.FILTER_AGE_COL_ENUM[dem.age];
                     if (demAge === undefined || demGender === undefined) {
                         return;
                     }
                     const clipMap = {};
-                    dem.clip_ids.forEach(clipId => {
+                    dem.clip_ids.forEach((clipId) => {
                         clipMap[clipId] = clipRes.clips.find(clip => clip.clip_id === clipId);
                     });
                     clipStore.set(demGender, demAge, clipMap);
@@ -684,10 +681,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             Dispatcher.dispatch();
             return LoadActions.fetchLifts(tagIds, gender, age);
         })
-        .then(liftRes => {
+        .then((liftRes) => {
             // Map of tag id to lift map.
             const tagLiftMap = {};
-            _.toPairs(liftRes).forEach(pair => {
+            _.toPairs(liftRes).forEach((pair) => {
                 const tagId = pair[0];
                 const liftMap = pair[1];
                 tagLiftMap[tagId] = liftMap;
@@ -753,7 +750,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         }
 
         LoadActions.get('tags/search', { data })
-        .then(searchRes => {
+        .then((searchRes) => {
             // Mark this store as completely loaded.
             if (searchRes.items.length < limit) {
                 if (query) {
@@ -781,7 +778,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             data.tag_type = type;
         }
         LoadActions.get('tags/search', { data })
-        .then(searchRes => {
+        .then((searchRes) => {
             if (searchRes.items.length < limit) {
                 tagStore.isCompletelyLoaded = true;
             }
@@ -800,7 +797,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const updateMap = {};
         const data = { tag_id: tagId };
         LoadActions.get('tags/share', { data })
-        .then(shareRes => {
+        .then((shareRes) => {
             updateMap.token = shareRes.share_token;
 
             const base = window.location.origin;
@@ -808,7 +805,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             const t = updateMap.token;
             const longUrl = `${base}/share/collection/${tagId}/account/${accountId}/token/${t}/`;
 
-            UTILS.shortenUrl(longUrl, shortenRes => {
+            UTILS.shortenUrl(longUrl, (shortenRes) => {
                 if (shortenRes.status_code === 200) {
                     updateMap.url = shortenRes.data.url;
                 } else {
@@ -830,7 +827,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             return LoadActions;
         }
         LoadActions.get()
-        .then(res => {
+        .then((res) => {
             if (res.account_id) {
                 accountStore.set({ [res.account_id]: res });
                 Dispatcher.dispatch();
@@ -919,7 +916,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
         const tag = tagStore.get(tagId);
         const data = { tag_id: tagId, hidden: true };
         SendActions.put('tags', { data })
-            .then(res => {
+            .then((res) => {
                 tag.hidden = true;
                 tagStore.set({ [res.tag_id]: tag });
                 Dispatcher.dispatch();

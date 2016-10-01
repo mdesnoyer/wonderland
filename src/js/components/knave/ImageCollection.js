@@ -180,7 +180,7 @@ export default class ImageCollection extends BaseCollection {
                 {...this.props}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
-                selectedPanel={this.state.selectedPanelIndex}
+                selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 liftValue={this.getLiftValue()}
                 copyOverrideMap={copyOverrideMap}
@@ -202,7 +202,7 @@ export default class ImageCollection extends BaseCollection {
                 {...this.props}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
-                selectedPanel={this.state.selectedPanelIndex}
+                selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
                 isSoloImage={this.isSoloImage()}
                 onRightThumbnailClick={onRightThumbnailClick}
