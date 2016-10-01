@@ -178,9 +178,7 @@ class FilteredStore {
         this.sourceStore = sourceStore;
         this.reset();
         Store.stores[name] = this;
-        if (filter) {
-            this.setFilter(filter);
-        }
+        this.setFilter(filter || this.defaultFilter);
     }
 
     setFilter(filter) {
@@ -205,12 +203,14 @@ class FilteredStore {
         this.filter = this.defaultFilter;
         this.isCompletelyLoaded = false;
     }
+
+    defaultFilter(item) {
+        // TODO make this type agnostic again.
+        return (item.thumbnail_ids.length > 0 ||
+                item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+            item.hidden !== true;
+    }
 }
-FilteredStore.defaultFilter = item => (
-    // TODO make this type agnostic again.
-    (item.thumbnail_ids.length > 0 || item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
-        item.hidden !== true
-);
 
 export const accountStore = new Store('accounts');
 export const clipStore = new DemoStore('clips');

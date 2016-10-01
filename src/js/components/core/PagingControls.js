@@ -5,16 +5,16 @@ import TRACKING from '../../modules/tracking';
 
 const propTypes = {
     // Updates parent current page.
-    changeCurrentPage: PropTypes.func.isRequired,
+    onChangeCurrentPage: PropTypes.func.isRequired,
 
     // Current page, 0-indexed.
     currentPage: React.PropTypes.number.isRequired,
 
     // Whether the next control is enabled
-    enableNext: React.PropTypes.bool.isRequired,
+    isNextEnabled: React.PropTypes.bool.isRequired,
 
     // Whether a search is pending
-    searchPending: React.PropTypes.bool.isRequired,
+    isSearchPending: React.PropTypes.bool.isRequired,
 };
 
 export default class PagingControls extends React.Component {
@@ -41,7 +41,7 @@ export default class PagingControls extends React.Component {
                 this.handleNavPrev();
             }
         } else if (e.keyCode === 39) { // right arrow
-            if (this.props.enableNext) {
+            if (this.props.isNextEnabled) {
                 this.handleNavNext();
             }
         }
@@ -50,7 +50,7 @@ export default class PagingControls extends React.Component {
     handleNav(change, ...rest) {
         window.scrollTo(0, 0);
         TRACKING.sendEvent(this, rest, this.props.currentPage);
-        this.props.changeCurrentPage(change);
+        this.props.onChangeCurrentPage(change);
     }
 
 
@@ -72,26 +72,26 @@ export default class PagingControls extends React.Component {
 
     renderCurrentPage() {
         const hellip = String.fromCharCode(8230);
-        if (this.props.enableNext) {
+        if (this.props.isNextEnabled) {
             return <span>{1 + this.props.currentPage}</span>;
         }
         if (this.props.currentPage) {
-            if (this.props.searchPending) {
+            if (this.props.isSearchPending) {
                 return <span>{1 + this.props.currentPage + hellip}</span>;
             }
             return <span>{1 + this.props.currentPage}</span>;
         }
-        if (this.props.searchPending) {
+        if (this.props.isSearchPending) {
             return <span>{hellip}</span>;
         }
         return null;
     }
 
     renderNextButton() {
-        if (this.props.enableNext) {
+        if (this.props.isNextEnabled) {
             return (
                 <button
-                    disabled={!this.props.enableNext}
+                    disabled={!this.props.isNextEnabled}
                     onClick={this.handleNavNext}
                     className="xxPagingControls-next"
                     aria-label={T.get('action.next')}

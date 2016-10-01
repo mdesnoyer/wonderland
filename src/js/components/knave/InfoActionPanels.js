@@ -82,7 +82,7 @@ export const InfoDemoLiftPanel = React.createClass({
 
 export const InfoLiftPanel = React.createClass({
     propTypes: {
-        // User's name of this collection
+       // User's name of this collection
         title: PropTypes.string.isRequired,
         lift: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
@@ -109,7 +109,7 @@ export const InfoLiftPanel = React.createClass({
 
 export const FilterPanel = React.createClass({
     propTypes: {
-        cancelClickHandler: React.PropTypes.func,
+        onCancelClick: React.PropTypes.func,
         videoId: React.PropTypes.string,
     },
 
@@ -118,7 +118,7 @@ export const FilterPanel = React.createClass({
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
         const callback = () => {
-            self.props.cancelClickHandler();
+            self.props.onCancelClick();
             self.props.onDemographicChange(enumGender, enumAge);
         }
         if (this.props.clips) {
@@ -133,7 +133,7 @@ export const FilterPanel = React.createClass({
     render: function() {
         return (
             <VideoFilters
-                handleBackClick={this.props.cancelClickHandler}
+                handleBackClick={this.props.onCancelClick}
                 handleSendRefilter={this.refilterVideoThenNavBack}
                 videoId={this.props.videoId}
             />
@@ -145,7 +145,7 @@ export const ServingStatusPanel = React.createClass({
     propTypes: {
 
         // what to do when the cancel button is clicked
-        cancelClickHandler: PropTypes.func.isRequired,
+        onCancelClick: PropTypes.func.isRequired,
 
         // what to do on enable click
         enableThumbnail: PropTypes.func.isRequired,
@@ -177,7 +177,7 @@ export const ServingStatusPanel = React.createClass({
                         className="xxButton xxButton--fullwidth xxButton--extra-margin-top"
                         type="button"
                         data-action-label="info"
-                        onClick={this.props.cancelClickHandler}
+                        onClick={this.props.onCancelClick}
                         >{T.get('back')}
                     </button>
                 </div>
@@ -189,7 +189,7 @@ export const ServingStatusPanel = React.createClass({
 
 export const ImageServingEnableControl = React.createClass({
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
     render: function() {
         return (
@@ -198,7 +198,7 @@ export const ImageServingEnableControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="left"
                 data-action-label="delete"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-enableserving">
                 <span>{T.get('delete')}</span>
             </a>
@@ -208,7 +208,7 @@ export const ImageServingEnableControl = React.createClass({
 
 export const ImageServingDisableControl = React.createClass({
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
     render: function() {
         return (
@@ -217,7 +217,7 @@ export const ImageServingDisableControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="left"
                 data-action-label="disable serving"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-disableserving">
                 <span>{T.get('delete')}</span>
             </a>
@@ -228,7 +228,7 @@ export const ImageServingDisableControl = React.createClass({
 export const ServingStatusControl = React.createClass({
 
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
 
     render: function() {
@@ -238,7 +238,7 @@ export const ServingStatusControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="delete"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-disable">
                 <span>{T.get('delete')}</span>
             </a>
@@ -249,11 +249,11 @@ export const ServingStatusControl = React.createClass({
 export const EmailPanel = React.createClass({
     propTypes: {
         // generates a shareUrl to use
-        loadShareUrl: PropTypes.func.isRequired,
+        onLoadShareUrl: PropTypes.func.isRequired,
         // Value to push into the email
         shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        sendResultsEmail: PropTypes.func.isRequired
+        onSendResultEmail: PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -263,15 +263,15 @@ export const EmailPanel = React.createClass({
         }
     },
     componentWillMount: function() {
-        this.props.loadShareUrl();
+        this.props.onLoadShareUrl();
     },
 
-    _startEmailSend: function(email) {
+    startEmailSend: function(email) {
         this.setState({ mode: 'loading'}, function() {
-            this.props.sendResultsEmail(email, this._sendEmailCallback);
+            this.props.onSendResultEmail(email, this.sendEmailCallback);
         });
     },
-    _sendEmailCallback: function(r) {
+    sendEmailCallback: function(r) {
         const self = this;
         if (r.status_code === 200) {
             return self.setState({mode: 'success'});
@@ -321,7 +321,7 @@ export const EmailPanel = React.createClass({
                                     className="xxButton"
                                     type="button"
                                     data-action-label="info"
-                                    onClick={this.props.cancelClickHandler}
+                                    onClick={this.props.onCancelClick}
                                 >{T.get('back')}</button>
                             </div>
                         </div>
@@ -350,7 +350,7 @@ export const EmailPanel = React.createClass({
                                     className="xxButton"
                                     type="button"
                                     data-action-label="info"
-                                    onClick={this.props.cancelClickHandler}
+                                    onClick={this.props.onCancelClick}
                                 >{T.get('back')}</button>
                                 <button
                                     className="xxButton xxButton--highlight"
@@ -371,7 +371,7 @@ export const EmailPanel = React.createClass({
 export const EmailControl = React.createClass({
 
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
 
     render: function() {
@@ -381,7 +381,7 @@ export const EmailControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="email"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-email">
                 <span>{T.get('email')}</span>
             </a>
@@ -395,15 +395,15 @@ export const SharePanel = React.createClass({
         // Tag of element
         tagId: PropTypes.string.isRequired,
         // handles the clicks on facebook/twitter/linkedin buttons
-        socialClickHandler: PropTypes.func.isRequired,
+        onSocialShare: PropTypes.func.isRequired,
         // Value to push into the form
         shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        loadShareUrl: PropTypes.func.isRequired
+        onLoadShareUrl: PropTypes.func.isRequired
     },
 
     componentWillMount: function() {
-        this.props.loadShareUrl();
+        this.props.onLoadShareUrl();
     },
 
     componentDidMount: function() {
@@ -455,7 +455,7 @@ export const SharePanel = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={this.props.cancelClickHandler}
+                        onClick={this.props.onCancelClick}
                     >{T.get('back')}</button>
                     <button
                         disabled={!this.props.shareUrl}
@@ -484,7 +484,7 @@ export const SharePanel = React.createClass({
                         <div
                             className="xxOverlay-close"
                             data-action-label="info"
-                            onClick={this.props.cancelClickHandler}>
+                            onClick={this.props.onCancelClick}>
                         </div>
                     ) : null
                 }
@@ -497,7 +497,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="facebook"
-                            onClick={() => {this.props.socialClickHandler('facebook')}}
+                            onClick={() => {this.props.onSocialShare('facebook')}}
                             className="xxCollectionShare-anchor xxCollectionShare-fb"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.facebook')}
@@ -558,7 +558,7 @@ export const DownloadControl = React.createClass({
 export const ShareControl = React.createClass({
 
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
 
     render: function() {
@@ -568,7 +568,7 @@ export const ShareControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="share"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-share">
                 <span>{T.get('share')}</span>
             </a>
@@ -583,7 +583,7 @@ export const DeletePanel = React.createClass({
         onDeleteCollection: PropTypes.func.isRequired,
 
         // what to do when the cancel button is clicked
-        cancelClickHandler: PropTypes.func.isRequired
+        onCancelClick: PropTypes.func.isRequired
     },
     render: function() {
         var collectionClassName = this.props.isMobile ?
@@ -608,7 +608,7 @@ export const DeletePanel = React.createClass({
                         className="xxButton"
                         type="button"
                         data-action-label="info"
-                        onClick={this.props.cancelClickHandler}
+                        onClick={this.props.onCancelClick}
                         >{T.get('cancel')}</button>
                     <button
                         className="xxButton xxButton--highlight"
@@ -624,7 +624,7 @@ export const DeletePanel = React.createClass({
 export const DeleteControl = React.createClass({
 
     propTypes: {
-        handleClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     },
 
     render: function() {
@@ -634,7 +634,7 @@ export const DeleteControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="delete"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-delete">
                 <span>{T.get('delete')}</span>
             </a>
@@ -664,7 +664,7 @@ export const AddPanel = React.createClass({
                     isAddPanel={true}
                     tagId={this.props.tagId}
                     videoId={this.props.videoId}
-                    cancelClickHandler={this.props.cancelClickHandler}
+                    onCancelClick={this.props.onCancelClick}
                 />
             </div>
         );
@@ -679,7 +679,7 @@ export const AddControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="add"
-                onClick={this.props.handleClick}
+                onClick={this.props.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-add">
                 <span>{T.get('copy.videoContent.add.tooltip')}</span>
             </a>
@@ -687,4 +687,26 @@ export const AddControl = React.createClass({
     }
 });
 
+export const SetDefaultControl = React.createClass({
+    render() {
+        return null;
+    },
+});
 
+export const SetDefaultPanel = React.createClass({
+    render() {
+        return null;
+    },
+});
+
+export const EnableControl = React.createClass({
+    render() {
+        return null;
+    },
+});
+
+export const EnablePanel = React.createClass({
+    render() {
+        return null;
+    },
+});

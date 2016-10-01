@@ -5,7 +5,7 @@ import VisibilitySensor from 'react-visibility-sensor';
 
 import T from '../../modules/translation';
 
-export default class GifClip extends React.Component {
+class Clip extends React.Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this)

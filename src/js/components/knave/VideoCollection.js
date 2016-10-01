@@ -1,51 +1,46 @@
 import React, { PropTypes } from 'react';
-import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 
 import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
-import RENDITIONS from '../../modules/renditions';
-// TODO put these inside the default export.
+import T from '../../modules/translation';
 import {
-    InfoDemoLiftPanel,
-    InfoLiftPanel,
-    FilterPanel,
-    EmailPanel,
-    EmailControl,
-    SharePanel,
-    ShareControl,
-    DeletePanel,
-    DeleteControl,
-    ServingStatusPanel,
-    ServingStatusControl,
-    AddPanel,
-    AddControl,
-    DownloadControl } from './InfoActionPanels';
+    ThumbnailList,
+    ShowMoreThumbnailList,
+    ShowLessThumbnailList,
+    ShowMoreLessThumbnailList } from './ThumbnailList';
+import {
+    SetDefaultControl,
+    SetDefaultPanel,
+    EnableControl,
+    EnablePanel } from './InfoActionPanels';
 import { LoadActions } from '../../stores/CollectionStores';
 
-const propTypes = {
-    isRefiltering: PropTypes.bool,
-};
-
-const contextTypes = {
-    isMobile: PropTypes.bool,
-};
-
 class VideoCollection extends BaseCollection {
+
+    static propTypes = {
+        // Left and right large thumbnail
+        leftFeatureThumbnail: PropTypes.shape({
+            thumbnail_id: PropTypes.string.isRequired,
+        }).isRequired,
+        rightFeatureThumbnail: PropTypes.shape({
+            thumbnail_id: PropTypes.string.isRequired,
+        }).isRequired,
+        smallBadThumbnails: PropTypes.arrayOf(PropTypes.object),
+        timeRemaining: PropTypes.number,
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
-            liftThumbnailId: null,
-            selectedGifClip: 0,
+            liftObjectId: null,
         };
-        this.onGifClickNext = this.onGifClickNext.bind(this);
-        this.onGifClickPrev = this.onGifClickPrev.bind(this);
         this.onLoadShareUrl = this.onLoadShareUrl.bind(this);
-        this.onSendResultsEmail = this.onSendResultsEmail.bind(this);
-        this.onSetLiftThumbnail = this.onSetLiftThumbnail.bind(this);
+        this.onSendResultEmail = this.onSendResultEmail.bind(this);
+        this.onSetLiftObjectId = this.onSetLiftObjectId.bind(this);
         this.onSetPanel = this.onSetPanel.bind(this);
         this.onWhyClick = this.onWhyClick.bind(this);
     }
@@ -97,142 +92,31 @@ class VideoCollection extends BaseCollection {
         }
     }
 
-    onGifClickNext(e) {
-        e.preventDefault();
-        if (this.state.selectedGifClip === this.props.clipIds.length - 1) {
-            return this.setState({ selectedGifClip: 0 });
-        }
-        return this.setState({ selectedGifClip: this.state.selectedGifClip + 1 });
-    }
-
-    onGifClickPrev(e) {
-        e.preventDefault();
-        if (this.state.selectedGifClip === 0) {
-            return this.setState({ selectedGifClip: this.props.clipIds.length - 1 });
-        }
-        return this.setState({ selectedGifClip: this.state.selectedGifClip - 1 });
-    }
-
-    onLoadShareUrl() {
-        LoadActions.loadShareUrl(this.props.tagId);
-    }
-
-    onSetLiftThumbnail(liftThumbnailId) {
-        this.setState({ liftThumbnailId });
-    }
-
-    onSetPanel(selectedPanelIndex) {
-        // Clear any open tooltip.
-        ReactTooltip.hide();
-        this.setState({ selectedPanelIndex });
-    }
-
-    onSendResultsEmail(email, callback) {
-        this.props.onSendResultsEmail(email, this.props.tagId, callback);
-    }
-
     onWhyClick() {
-        const self = this;
-        self.props.onThumbnailClick(
-            self.props.tagId,
-            self.props.rightFeatureThumbnail.thumbnail_id);
-    }
-
-    getLiftValue() {
-        const selectedId = this.state.liftThumbnailId;
-        const defaultId = this.props.rightFeatureThumbnail.thumbnail_id;
-        const map = this.props.thumbLiftMap || {};
-        // The lift value for a map of one thumbnail
-        // is undefined to signal that components
-        // will not render the lift score.
-        if (Object.keys(map).length === 1) {
-            return undefined;
-        }
-        return map[selectedId || defaultId];
-    }
-
-    isSoloImage() {
-        return this.props.thumbnailLength <= 1;
+        this.props.onThumbnailClick(
+            this.props.tagId,
+            this.props.rightFeatureThumbnail.thumbnail_id);
     }
 
     getPanels() {
-        const copyOverrideMap = _.isEmpty(this.props.clips) ?
-        {
+        const copyOverrideMap = {
             'copy.lift.explanation': 'copy.lift.explanation',
-            'copy.lift.explanation.solo': 'copy.lift.explanation',
-        } :
-        {
-            'copy.lift.explanation': 'copy.lift.explanation.gifs',
-            'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
-        };
-        const onWhyClick = _.isEmpty(this.props.clips) ?
-            this.onWhyClick :
-            null;
+            'copy.lift.explanation.solo': 'copy.lift.explanation' };
 
-        if (this.props.infoPanelOnly) {
-            return [
-                <InfoLiftPanel
-                    title={this.props.title}
-                    liftValue={this.getLiftValue()}
-                    copyOverrideMap={copyOverrideMap}
-                    onWhyClick={onWhyClick}
-                />,
-            ];
+        const panels = super.getPanels(copyOverrideMap);
+        if (this.props.isViewOnly) {
+            return panels;
         }
-        const account = this.props.account;
-        const panels = [
-            <InfoDemoLiftPanel
-                title={this.props.title}
-                liftValue={this.getLiftValue()}
-                onDemographicChange={this.onDemographicChange}
-                demographicOptions={this.props.demographicOptions}
-                selectedDemographic={this.props.selectedDemographic}
-                handleRefiltersPanelClick={() => this.setSelectedPanel(1)}
-                isRefiltering={this.props.isRefiltering}
-                timeRemaining={this.props.timeRemaining}
-                clips={this.props.clips}
-                tagId={this.props.tagId}
-                copyOverrideMap={copyOverrideMap}
-                onWhyClick={onWhyClick}
-            />,
-            <FilterPanel
-                cancelClickHandler={() => this.setSelectedPanel(0)}
-                onDemographicChange={this.onDemographicChange}
-                clips={this.props.clips}
-                videoId={this.props.videoId}
-            />,
-            <SharePanel
-                cancelClickHandler={() => this.setSelectedPanel(0)}
-                socialClickHandler={this.props.socialClickHandler}
-                tagId={this.props.tagId}
-                shareUrl={this.props.shareUrl}
-                loadShareUrl={this.onLoadShareUrl}
-                setTooltipText={this.props.setTooltipText}
-            />,
-            <EmailPanel
-                cancelClickHandler={() => this.setSelectedPanel(0)}
-                shareUrl={this.props.shareUrl}
-                loadShareUrl={this.onLoadShareUrl}
-                sendResultsEmail={this.onSendResultsEmail}
-            />,
-            <DeletePanel
-                onDeleteCollection={this.onDeleteCollection}
-                cancelClickHandler={() => this.setSelectedPanel(0)}
-            />,
-        ];
-        if (account && account.serving_enabled) {
+        if (this.props.isServingEnabled) {
             panels.push(
-                <ServingStatusPanel
+                <EnablePanel
                     goodThumbnails={this.props.goodThumbnails}
-                    cancelClickHandler={() => this.setSelectedPanel(0)}
-                    enableThumbnail={this.props.enableThumbnail}
-                    disableThumbnail={this.props.disableThumbnail}
+                    onToggleThumbnailEnabled={this.props.onToggleThumbnailEnabled}
+                    onCancelClick={this.onControlCancelClick}
                 />,
-                <AddPanel
-                    tagId={this.props.tagId}
-                    videoId={this.props.videoId}
-                    panelType="video"
-                    cancelClickHandler={() => this.setSelectedPanel(0)}
+                <SetDefaultPanel
+                    onSetDefaultThumbnail={this.onSetDefaultThumbnail}
+                    onCancelClick={this.onControlCancelClick}
                 />
             );
         }
@@ -243,24 +127,19 @@ class VideoCollection extends BaseCollection {
         if (this.props.infoPanelOnly) {
             return [];
         }
-
-        const controls = [
-            <ShareControl handleClick={() => this.setSelectedPanel(2)} />,
-            <EmailControl handleClick={() => this.setSelectedPanel(3)} />,
-        ];
-        if (!_.isEmpty(this.props.clips)) {
-            const currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
-            controls.push(<DownloadControl href={currentClip.renditions[0].url} />);
-        }
-
-        controls.push(<DeleteControl handleClick={() => this.setSelectedPanel(4)} />);
-
-        if (this.props.account && this.props.account.serving_enabled) {
+        const controls = super.getControls();
+        const nextIndex = controls.length + 1;
+        if (this.props.servingEnabled) {
             controls.push(
-                // TODO Remove fat arrow in render path
-                <ServingStatusControl handleClick={() => this.setSelectedPanel(5)} />,
-                <AddControl handleClick={() => this.setSelectedPanel(6)} panelType="video" />
-            );
+                <EnableControl
+                    index={nextIndex}
+                    onClick={this.onControlClick}
+                />);
+            controls.push(
+                <SetDefaultControl
+                    index={nextIndex + 1}
+                    onClick={this.onControlClick}
+                />);
         }
         return controls;
     }
@@ -273,31 +152,15 @@ class VideoCollection extends BaseCollection {
             'action.showLess': 'copy.thumbnails.high',
         };
 
-        let currentClip;
-        let clipThumb;
-        let clipPoster;
-        if (!_.isEmpty(this.props.clips)) {
-            currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
-            clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
-            clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720) : null;
-        }
-
         return (
             <MobileBaseCollection
                 {...this.props}
-                clip={currentClip}
-                clipThumb={clipThumb}
-                clipPoster={clipPoster}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
-                isSoloImage={this.isSoloImage()}
                 liftValue={this.getLiftValue()}
-                onGifClickPrev={this.onGifClickPrev}
-                onGifClickNext={this.onGifClickNext}
-                selectedGifClip={this.state.selectedGifClip}
                 setLiftThumbnailId={this.setLiftThumbnailId}
             />
         );
@@ -311,39 +174,119 @@ class VideoCollection extends BaseCollection {
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high',
         };
-        let currentClip;
-        let clipThumb;
-        let clipPoster;
-        if (!_.isEmpty(this.props.clips)) {
-            currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
-            clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
-            clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720) : null;
-        }
         return (
             <BaseCollection
                 {...this.props}
-                clip={currentClip}
-                clipThumb={clipThumb}
-                clipPoster={clipPoster}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 isSoloImage={this.isSoloImage()}
-                onGifClickPrev={this.onGifClickPrev}
-                onGifClickNext={this.onGifClickNext}
-                selectedGifClip={this.state.selectedGifClip}
             />
         );
     }
 
+    getThumbnailList() {
+        // Number of rows of item to display.
+        const rows = this.state.smallThumbnailRows;
+
+        // 2 cases for video:
+        // Expanded: ShowLess with more than one row
+        // Initial: ShowMore with one row
+        if (!_.isEmpty(this.props.smallBadThumbnails)) {
+            if (rows > 1) {
+                // Constrain good thumbnails to 5.
+                const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
+                const thumbnails = _.flatten([
+                    truncatedSmallThumbnails,
+                    this.props.smallBadThumbnails.slice(0, 6),
+                ]);
+                const numberToDisplay = truncatedSmallThumbnails.length;
+                return (<ShowLessThumbnailList
+                    thumbnails={thumbnails}
+                    numberToDisplay={numberToDisplay}
+                    // TODO would like to remove the need for the T.get
+                    lessLabel={T.get('action.showLess')}
+                    onLess={this.onLess}
+                    onMouseEnter={this.setLiftThumbnailId}
+                    onMouseLeave={this.setDefaultLiftThumbnail}
+                    onClick={this.onThumbnailClick}
+                    firstClassName="xxThumbnail--highLight"
+                    secondClassName="xxThumbnail--lowLight"
+                />);
+            }
+            return (<ShowMoreThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={5}
+                moreLabel={T.get('action.showMore')}
+                onMore={this.onMore}
+                onMouseEnter={this.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onThumbnailClick}
+            />);
+        }
+
+        // 4 cases:
+        // There's fewer than one row of thumbs
+        // There's fewer than the rows displayed -> show less in spot 6.
+        // There's more than the rows displayed -> show more in last spot
+        // There's more than the rows displayed, and they've
+        //   clicked show more once -> show less in spot 6, and show more
+        //   in right-hand spot in last row
+
+        // There's fewer than or exactly one row of thumbs: no button.
+        if (this.props.smallThumbnails.length <= 6) {
+            return (<ThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                onMouseEnter={this.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onThumbnailClick}
+            />);
+        // There's fewer than the number of display rows: put ShowLess in slot 6.
+        // (Add one to length for the ShowLess button.)
+        } else if (this.props.smallThumbnails.length + 1 <= rows * 6) {
+            return (<ShowLessThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                onLess={this.onLess}
+                onMouseEnter={this.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onThumbnailClick}
+            />);
+        // There's more than 6 and they haven't shown more at all.
+        } else if (rows === 1) {
+            return (<ShowMoreThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
+                onMore={this.onMore}
+                onMouseEnter={this.setLiftThumbnailId}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+                onClick={this.onThumbnailClick}
+            />);
+        // There's more thumbs than space to display them and they've expanded
+        // once or more: put ShowMore and ShowLess.
+        }
+        return (<ShowMoreLessThumbnailList
+            thumbnails={this.props.smallThumbnails}
+            numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
+            onMore={this.onMore}
+            onLess={this.onLess}
+            onMouseEnter={this.setLiftThumbnailId}
+            onMouseLeave={this.setDefaultLiftThumbnail}
+            onClick={this.onThumbnailClick}
+        />);
+    }
+
+    getDefaultLiftObjectId() {
+        return this.props.rightFeatureThumbnail.thumbnail_id;
+    }
+
     render() {
-        return this.context.isMobile ? this.renderMobile() : this.renderDesktop();
+        if (this.context.isMobile) {
+            return this.renderMobile();
+        }
+        return this.renderDesktop();
     }
 }
-
-VideoCollection.propTypes = propTypes;
-VideoCollection.contextTypes = contextTypes;
 
 export default VideoCollection;
