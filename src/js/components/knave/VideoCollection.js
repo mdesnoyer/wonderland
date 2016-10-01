@@ -292,7 +292,7 @@ const VideoCollection = React.createClass({
         if (!_.isEmpty(this.props.clips)) {
             var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
             var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 875, 500): null;
+            var clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 875, 500): null;
         }
         return (
             <BaseCollection

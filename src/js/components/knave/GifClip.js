@@ -24,6 +24,17 @@ export default class GifClip extends React.Component {
         id: React.PropTypes.string.isRequired
     }
 
+    componentDidMount() {
+        var container = document.getElementById(this.props.id);
+
+        if(this.props.width < 700) {
+            container.style.width = `${this.props.width}px`;
+        }
+        if (this.props.width < 450) {
+            container.style.height = `${this.props.height}px`;
+        }
+    }
+
     componentDidUpdate(_prevProps, _prevState) {
         var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
         if (video) {
@@ -59,7 +70,7 @@ export default class GifClip extends React.Component {
             id = this.props.id
         ;
         return (
-            <div className="xxGifContainer" data-score={score}>
+            <div className="xxGifContainer" id={this.props.id} data-score={score}>
                 <VisibilitySensor onChange={this.onChange}/>
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
