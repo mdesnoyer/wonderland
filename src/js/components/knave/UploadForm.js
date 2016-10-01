@@ -1,29 +1,23 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import reqwest from 'reqwest';
+import _ from 'lodash';
+import cookie from 'react-cookie';
+import accept from 'attr-accept';
+import loadImage from 'blueimp-load-image';
+import toBlob from 'blueimp-canvas-to-blob';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-
-import reqwest from 'reqwest';
 import SESSION from '../../modules/session';
 
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
-
-import {AddActions, LoadActions, tagStore} from '../../stores/CollectionStores.js';
-
-import VideoUploadOverlay from './VideoUploadOverlay';
+import { LoadActions, tagStore } from '../../stores/CollectionStores';
 import OverLayMessage from './OverLayMessage';
 import UploadActionsContainer from './UploadActionsContainer';
-
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import cookie from 'react-cookie';
-import accept from 'attr-accept';
-import _ from 'lodash';
-import loadImage from 'blueimp-load-image';
-import toBlob from 'blueimp-canvas-to-blob';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,6 +49,10 @@ var UploadForm = React.createClass({
             showUrlUploader: false
         };
     },
+
+    // Keep track of all the setTimeouts functions that call setState.
+    timeouts: [],
+
     componentWillMount: function() {
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
@@ -77,6 +75,8 @@ var UploadForm = React.createClass({
     },
     componentWillUnmount() {
         window.removeEventListener('keydown', this.handleKeyEvent);
+        this.timeouts.forEach(timeout => clearTimeout(timeout));
+        this.timeouts = [];
     },
     handleKeyEvent(e) {
         // Escape closes.
@@ -278,7 +278,7 @@ var UploadForm = React.createClass({
                         self.setState({urlInput: ''});
                     }
                     else {
-                        LoadActions.loadTags([json.video.tag_id]);
+                        LoadActions.loadTags([json.video.tag_id], 0, 0, true);
                         self.setState({urlInput: ''});
                     }
                 })
@@ -371,10 +371,10 @@ var UploadForm = React.createClass({
                         self.setState({
                             uploadState: 'success'
                         },  function() {
-                            LoadActions.loadTags([self.state.tagId])
-                            setTimeout(function() {
-                            self.setState({ uploadState: 'initial' });
-                            }, 4000)
+                            LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                            self.timeouts.push(setTimeout(function() {
+                                self.setState({ uploadState: 'initial' });
+                            }, 4000));
                         })
                     })
                     .catch(function(err) {
@@ -398,10 +398,10 @@ var UploadForm = React.createClass({
                 self.setState({
                     uploadState: 'success'
                 },  function() {
-                    LoadActions.loadTags([self.state.tagId])
-                    setTimeout(function() {
-                    self.setState({ uploadState: 'initial' });
-                    }, 4000)
+                    LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                    self.timeouts.push(setTimeout(function() {
+                        self.setState({ uploadState: 'initial' });
+                    }, 4000));
                 })
             })
             .catch(function(err) {
@@ -510,16 +510,19 @@ var UploadForm = React.createClass({
                                 uploadState:'success',
                                 // errorFiles: []
                                 }, function() {
-                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId]);
-                                    setTimeout(function() {
-                                    self.setState({ uploadState: 'initial' });
-                                    }, 3000)
-                            });
+                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId], 0, 0, true);
+                                    self.timeouts.push(setTimeout(function() {
+                                        self.setState({ uploadState: 'initial' });
+                                    }, 3000));
+                                }
+                            );
+                        }
                     }
-                });
+                );
             })
             .catch(function(err) {
                 console.log(err)
+                LoadActions.loadTags([self.state.tagId], 0, 0, true);
                 self.throwUploadError(err);
             });
     },
