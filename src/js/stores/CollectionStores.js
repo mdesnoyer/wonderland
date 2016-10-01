@@ -187,7 +187,8 @@ class FilteredStore {
     }
 
     defaultFilter(item) {
-        return item.hidden !== true;
+        return (item.thumbnail_ids.length > 0 || item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+            item.hidden !== true;
     }
 
     setFilter(filter) {
