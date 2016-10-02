@@ -26,6 +26,7 @@ class Clip extends React.Component {
             return;
         }
         if (isVisible) {
+            console.log('oncplay');
             this.video.play();
         } else {
             this.video.pause();

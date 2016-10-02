@@ -16,11 +16,6 @@ import UTILS from '../../modules/utils';
 import { ServingStatusThumbnailList } from './ThumbnailList';
 import { SendActions } from '../../stores/CollectionStores';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// TODO candidate for HoC refactor
-// TODO make *Control a prop of its panel
-
 export const InfoDemoLiftPanel = React.createClass({
     propTypes: {
         // User's name of this collection
@@ -564,6 +559,11 @@ export const ShareControl = React.createClass({
         onClick: PropTypes.func.isRequired,
     },
 
+    onClick(e) {
+        e.preventDefault();
+        this.props.onClick(parseInt(this.props.index, 10));
+    },
+
     render() {
         return (
             <a
@@ -571,7 +571,7 @@ export const ShareControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="share"
-                onClick={this.props.onClick}
+                onClick={this.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-share"
             >
                 <span>{T.get('share')}</span>
