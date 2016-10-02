@@ -383,7 +383,9 @@ class CollectionsContainer extends React.Component {
             return false;
         }
         const video = this.props.stores.videos[tag.video_id];
-        return video.demographic_clip_ids.length > 0;
+        const demo = video.demographic_clip_ids;
+        return demo.length > 0 &&
+            demo.find(d => d.clip_ids.length) !== undefined;
     }
 
     renderOverlay() {
@@ -526,7 +528,7 @@ class CollectionsContainer extends React.Component {
                 thumbnailMap={thumbnailMap}
                 onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={{gender, age}}
+                selectedDemographic={{ gender, age }}
                 onDeleteCollection={this.props.onDeleteCollection}
                 onSocialShare={this.props.onSocialShare}
                 shareUrl={shareUrl}

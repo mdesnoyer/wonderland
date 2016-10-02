@@ -897,7 +897,7 @@ export const Search = {
     },
 };
 
-export const ServingStatusActions = Object.assign({}, AjaxMixin, {
+export const SendActions = Object.assign({}, AjaxMixin, {
     toggleThumbnailEnabled(thumbnail) {
         const thumbnailId = thumbnail.thumbnail_id;
         const videoId = thumbnail.video_id;
@@ -906,12 +906,10 @@ export const ServingStatusActions = Object.assign({}, AjaxMixin, {
             data: {
                 thumbnail_id: thumbnailId,
                 enabled: !thumbnail.enabled } };
-        ServingStatusActions.put('thumbnails', options)
+        SendActions.put('thumbnails', options)
             .then(() => LoadActions.loadTags([video.tag_id]));
     },
-});
 
-export const SendActions = Object.assign({}, AjaxMixin, {
     deleteCollection(tagId) {
         const tag = tagStore.get(tagId);
         const data = { tag_id: tagId, hidden: true };
@@ -923,7 +921,8 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             });
     },
 
-    refilterVideo(videoId, gender, age, callback, params = {}) {
+    refilterVideo(tagId, gender, age, callback, params = {}) {
+        const videoId = tagStore[tagId].video_id;
         const withParams = {
             gender,
             age,
@@ -933,7 +932,6 @@ export const SendActions = Object.assign({}, AjaxMixin, {
         const data = { ...params, ...withParams };
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
-        const tagId = videoStore.get(videoId).tagId;
 
         SendActions.post('videos', { data })
             .then(() => {
@@ -963,6 +961,5 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 export const cancelActions = () => {
     LoadActions.cancelAll();
     SendActions.cancelAll();
-    ServingStatusActions.cancelAll();
     Search.reset();
 };

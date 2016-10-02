@@ -14,7 +14,9 @@ import {
     SetDefaultPanel,
     EnableControl,
     EnablePanel } from './InfoActionPanels';
-import { LoadActions } from '../../stores/CollectionStores';
+import RENDITIONS from '../../modules/renditions';
+import FeatureThumbnail from './FeatureThumbnail';
+import { SendActions, LoadActions } from '../../stores/CollectionStores';
 
 class VideoCollection extends BaseCollection {
 
@@ -55,6 +57,44 @@ class VideoCollection extends BaseCollection {
 
     componentWillUnmount() {
         this.clearProcessingMonitor();
+    }
+
+    renderFeatureThumbnail(thumbnail, isLeft = true) {
+        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
+        const blurText = this.props.isMine ?
+            T.get('imageUpload.addMoreBlurText') : '';
+        const className = isLeft ? 'xxThumbnail--lowLight' : '';
+        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft : this.setLiftThumbnailToRight;
+        const onClick = isLeft ?
+            this.onLeftThumbnailClick :
+            this.onRightThumbnailClick;
+        return (
+            <FeatureThumbnail
+                thumbnailId={thumbnail.thumbnail_id}
+                title={title}
+                score={thumbnail.neon_score}
+                enabled={thumbnail.enabled}
+                className={className}
+                src={RENDITIONS.findRendition(thumbnail)}
+                isSoloImage={!isLeft && this.props.isSoloImage}
+                blurText={blurText}
+                onClick={onClick}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={this.setDefaultLiftThumbnail}
+            />
+        );
+    }
+
+    renderFeatureContent() {
+        const left = this.props.leftFeatureThumbnail;
+        return (
+            <div>
+                {this.renderFeatureThumbnail(
+                    this.props.leftFeatureThumbnail, true)}
+                {this.renderFeatureThumbnail(
+                    this.props.rightFeatureThumbnail)}
+            </div>
+        );
     }
 
     setProcessingMonitor() {
@@ -103,10 +143,11 @@ class VideoCollection extends BaseCollection {
             'copy.lift.explanation': 'copy.lift.explanation',
             'copy.lift.explanation.solo': 'copy.lift.explanation' };
 
-        const panels = super.getPanels(copyOverrideMap);
+        const panels = super.getBasePanels(copyOverrideMap);
         if (this.props.isViewOnly) {
             return panels;
         }
+
         if (this.props.isServingEnabled) {
             panels.push(
                 <EnablePanel
@@ -123,11 +164,16 @@ class VideoCollection extends BaseCollection {
         return panels;
     }
 
+    onRefilterVideo(gender, age, callback) {
+        return SendActions.refilterVideo(
+            this.props.tagId, gender, age, callback.bind(null, gender, age));
+    }
+
     getControls() {
         if (this.props.infoPanelOnly) {
             return [];
         }
-        const controls = super.getControls();
+        const controls = super.getBaseControls();
         const nextIndex = controls.length + 1;
         if (this.props.servingEnabled) {
             controls.push(
@@ -156,7 +202,7 @@ class VideoCollection extends BaseCollection {
             <MobileBaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
-                subContent={this.renderSubContent()}
+                subContent={this.renderThumbnailList()}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -180,18 +226,17 @@ class VideoCollection extends BaseCollection {
             <BaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
-                subContent={this.renderSubContent()}
+                subContent={this.renderThumbnailList()}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
-                isSoloImage={this.isSoloImage()}
             />
         );
     }
 
-    getThumbnailList() {
+    renderThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
 

@@ -26,7 +26,6 @@ class Clip extends React.Component {
             return;
         }
         if (isVisible) {
-            console.log('oncplay');
             this.video.play();
         } else {
             this.video.pause();
@@ -37,21 +36,22 @@ class Clip extends React.Component {
         const score = Math.round(this.props.score);
         return (
             <div className="xxGifContainer" data-score={score}>
-                <VisibilitySensor onChange={this.onChange} />
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
                 </h2>
-                <video
-                    ref={(video) => { this.video = video; }}
-                    poster={this.props.posterUrl}
-                    className="xxGifVideo"
-                    loop
-                >
-                    <source
-                        src={this.props.url}
-                        type="video/mp4"
-                    />
-                </video>
+                <VisibilitySensor onChange={this.onChange}>
+                    <video
+                        ref={(video) => { this.video = video; }}
+                        poster={this.props.posterUrl}
+                        className="xxGifVideo"
+                        loop
+                    >
+                        <source
+                            src={this.props.url}
+                            type="video/mp4"
+                        />
+                    </video>
+                </VisibilitySensor>
             </div>
         );
     }

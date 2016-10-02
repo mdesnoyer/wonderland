@@ -84,6 +84,22 @@ const RENDITIONS = {
             }
         });
         return result;
+    },
+
+    findSmallestUrl(renditions, fileType = null) {
+        let minProduct = Number.MAX_SAFE_INTEGER;
+        let result;
+        renditions.forEach((r) => {
+            if (fileType && !_.endsWith(r.url, fileType)) {
+                return;
+            }
+            let product = r.width * r.height;
+            if (product < minProduct) {
+                minProduct = product;
+                result = r.url;
+            }
+        });
+        return result;
     }
 }
 

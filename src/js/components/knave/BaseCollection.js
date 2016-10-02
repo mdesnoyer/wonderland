@@ -21,7 +21,7 @@ class BaseCollection extends React.Component {
         tagId: PropTypes.string.isRequired,
 
         featureContent: PropTypes.node.isRequired,
-        subContent: PropTypes.node.isRequired,
+        subContent: PropTypes.node,
 
         infoActionPanels: PropTypes.arrayOf(PropTypes.node).isRequired,
         selectedPanelIndex: PropTypes.number.isRequired,
@@ -151,19 +151,29 @@ class BaseCollection extends React.Component {
         return map[selectedId || defaultId];
     }
 
-    getPanels(copyOverrideMap = {}) {
-        return [
+    onControlRefilterClick() {
+        this.onControlClick(1);
+    }
+
+    getBasePanels(copyOverrideMap = {}) {
+        const unapply = UTILS.applyTranslationOverride(copyOverrideMap);
+        const panels = [
             <InfoDemoLiftPanel
                 title={this.props.title}
                 liftValue={this.getLiftValue()}
                 onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.props.demographicOptions}
                 selectedDemographic={this.props.selectedDemographic}
-                onRefilterControlClick={this.onRefilterControlClick}
+                onControlRefilterClick={this.onControlRefilterClick}
                 isRefiltering={this.props.isRefiltering}
                 timeRemaining={this.props.timeRemaining}
                 copyOverrideMap={copyOverrideMap}
                 onWhyClick={this.onWhyClick}
+            />,
+            <FilterPanel
+                onDemographicChange={this.onDemographicChange}
+                onCancelClick={this.onControlCancelClick}
+                onRefilterVideo={this.onRefilterVideo}
             />,
             <SharePanel
                 tagId={this.props.tagId}
@@ -183,11 +193,9 @@ class BaseCollection extends React.Component {
                 onDeleteCollection={this.onDeleteCollection}
                 onCancelClick={this.onControlCancelClick}
             />,
-            <FilterPanel
-                onDemographicChange={this.onDemographicChange}
-                onCancelClick={this.onControlCancelClick}
-            />,
         ];
+        unapply();
+        return panels;
     }
 
     onControlCancelClick() {
@@ -195,16 +203,16 @@ class BaseCollection extends React.Component {
     }
 
     // Get the common set of controls.
-    getControls() {
+    getBaseControls() {
         if (this.props.isViewOnly) {
             return [];
         }
         return [
             // Index=0 is the info panel.
             // Index=1 is the refilter panel.
-            <ShareControl index="2" onClick={this.onControlClick} />,
-            <EmailControl index="3" onClick={this.onControlClick} />,
-            <DeleteControl index="4" onClick={this.onControlClick} />,
+            <ShareControl index={2} onClick={this.onControlClick} />,
+            <EmailControl index={3} onClick={this.onControlClick} />,
+            <DeleteControl index={4} onClick={this.onControlClick} />,
         ];
     }
 
@@ -215,8 +223,10 @@ class BaseCollection extends React.Component {
 
         const result = (
             <div className={this.props.wrapperClassName}>
-                {this.props.featureContent}
-                {this.props.subContent}
+                <div className="xxCollectionImages">
+                    {this.props.featureContent}
+                    {this.props.subContent}
+                </div>
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         panels={this.props.infoActionPanels}

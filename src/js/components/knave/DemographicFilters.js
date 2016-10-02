@@ -24,12 +24,8 @@ const DemographicFilters = React.createClass({
         // Handle demographic selector change
         onChange: PropTypes.func.isRequired,
 
-        // Whether or not to show the refilter button
-        // (Default to false)
-        showRefilterButton: PropTypes.bool,
-
         // Handler to open the refitler panel
-        handleRefiltersPanelClick: React.PropTypes.func,
+        onControlRefilterClick: React.PropTypes.func,
 
         // If video is refiltering
         isRefiltering: PropTypes.bool,
@@ -54,12 +50,14 @@ const DemographicFilters = React.createClass({
             displayRefilterButton: true
         }
     },
+
     toggleOpen: function() {
         const self = this;
         self.setState({
             isOpen: !self.state.isOpen
         });
     },
+
     getLabel(input) {
         const { gender, age } = input;
         let genderLabel;
@@ -83,16 +81,19 @@ const DemographicFilters = React.createClass({
         return genderLabel + '/' + ageLabel;
     },
 
-    handleRefiltersPanelClick: function(e) {
+    onControlRefilterClick: function(e) {
+        e.preventDefault();
         const self = this;
         if (self.props.isRefiltering) {
             return;
         }
-        self.props.handleRefiltersPanelClick(e);
+        if (self.props.onControlRefilterClick) {
+            self.props.onControlRefilterClick();
+        }
     },
 
     getRefilterComponent: function() {
-        if (!this.props.displayRefilterButton) {
+        if (!this.props.onControlRefilterClick) {
             return null;
         }
         if (this.props.isRefiltering) {
@@ -132,7 +133,7 @@ const DemographicFilters = React.createClass({
                         data-for="staticTooltip"
                         data-tip={T.get('tooltip.refilter.button')}
                         className="xxCollectionFilterToggle"
-                        onClick={this.handleRefiltersPanelClick}
+                        onClick={this.onControlRefilterClick}
                     />
                 </div>
             );

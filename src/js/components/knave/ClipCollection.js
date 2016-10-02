@@ -6,6 +6,9 @@ import VideoCollection from './VideoCollection';
 import Clip from './Clip';
 import MobileBaseCollection from './MobileBaseCollection';
 import RENDITIONS from '../../modules/renditions';
+import { DownloadControl } from './InfoActionPanels';
+import { ThumbnailList } from './ThumbnailList';
+import { SendActions } from '../../stores/CollectionStores';
 
 class ClipCollection extends VideoCollection {
 
@@ -20,6 +23,17 @@ class ClipCollection extends VideoCollection {
             selectedClipIndex: 0,
             selectedPanelIndex: 0,
         };
+        this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
+        // No inline "Why" in the lift panel copy.
+        this.onWhyClick = null;
+    }
+
+    onSetSelectedClipIndex(clipId) {
+        const selectedClipIndex = _.findIndex(this.props.clips,
+            clip => clip.clip_id == clipId);
+        if (selectedClipIndex !== -1) {
+            this.setState({ selectedClipIndex });
+        }
     }
 
     getLiftValue() {
@@ -38,16 +52,24 @@ class ClipCollection extends VideoCollection {
             'copy.lift.explanation': 'copy.lift.explanation.gifs',
             'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
         };
-        return super.getPanels(copyOverrideMap);
+        return super.getBasePanels(copyOverrideMap);
+    }
+
+    onRefilterVideo(gender, age, callback) {
+        return SendActions.refilterVideoForClip(
+            this.props.tagId, gender, age, callback);
     }
 
     getControls() {
-        return super.getControls();
-        // if (!_.isEmpty(this.props.clips)) {
-        //    const currentClip = this.props.clips[this.props.clipIds[this.state.selectedGifClip]];
-        //    controls.push(<DownloadControl href={currentClip.renditions[0].url} />);
-        // }
-        // controls.push(<DeleteControl handleClick={() => this.setSelectedPanel(4)} />);
+        const controls = super.getBaseControls();
+        if (this.props.isViewOnly) {
+            return controls;
+        }
+        const clip = this.props.clips[this.state.selectedClipIndex];
+        const url = RENDITIONS.findLargestUrl(clip.renditions, 'gif');
+        // Put the Download before the last control.
+        controls.splice(-1, 0, <DownloadControl href={url} />);
+        return controls;
     }
 
     renderMobile() {
@@ -73,6 +95,43 @@ class ClipCollection extends VideoCollection {
         );
     }
 
+    renderClipList() {
+        if (this.props.clips.length <= 1) {
+            return null;
+        }
+        const thumbnails = this.props.clips.map(clip => (
+            {
+                thumbnail_id: clip.clip_id,
+                neon_score: clip.neon_score,
+                renditions: clip.renditions,
+            }
+        ));
+        return (
+            <ThumbnailList
+                className={this.getWidthClassName(thumbnails)}
+                thumbnails={thumbnails}
+                onClick={this.onSetSelectedClipIndex}
+            />
+        );
+    }
+
+    getWidthClassName(thumbnails) {
+        switch(thumbnails.length) {
+        case 2:
+            return 'xxThumbnail--twowidth';
+        case 3:
+            return 'xxThumbnail--threewidth';
+        case 4:
+            return 'xxThumbnail--mediumwidth';
+        case 5:
+            return 'xxThumbnail--fivewidth';
+        case 6:
+            return 'xxThumbnail--smallwidth';
+        default:
+            return 'xxThumbnail--mediumwidth';
+        }
+    }
+
     renderClip() {
         const clip = this.props.clips[this.state.selectedClipIndex];
         const thumbnail = this.props.thumbnailMap[clip.thumbnail_id];
@@ -93,7 +152,7 @@ class ClipCollection extends VideoCollection {
                 {...this.props}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 featureContent={this.renderClip()}
-                subContent={<div />}
+                subContent={this.renderClipList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
@@ -102,8 +161,10 @@ class ClipCollection extends VideoCollection {
     }
 
     render() {
-        console.log(this.props, this.state);
-        return this.context.isMobile ? this.renderMobile() : this.renderDesktop();
+        if (this.context.isMobile) {
+            this.renderMobile();
+        }
+        return this.renderDesktop();
     }
 }
 

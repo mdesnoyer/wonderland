@@ -28,7 +28,7 @@ export const InfoDemoLiftPanel = React.createClass({
         displayRefilterButton: PropTypes.bool,
         // The value to show in the Lift component
         liftValue: PropTypes.number,
-        handleRefiltersPanelClick: React.PropTypes.func,
+        onControlRefilterClick: React.PropTypes.func,
         isRefiltering: React.PropTypes.bool,
         timeRemaining: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
@@ -58,8 +58,7 @@ export const InfoDemoLiftPanel = React.createClass({
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
                     selectedDemographic={this.props.selectedDemographic}
-                    displayRefilterButton={this.props.displayRefilterButton}
-                    handleRefiltersPanelClick={this.props.handleRefiltersPanelClick}
+                    onControlRefilterClick={this.props.onControlRefilterClick}
                     isRefiltering={this.props.isRefiltering}
                     timeRemaining={this.props.timeRemaining}
                     copyOverrideMap={this.props.copyOverrideMap}
@@ -104,24 +103,25 @@ export const InfoLiftPanel = React.createClass({
 
 export const FilterPanel = React.createClass({
     propTypes: {
-        onCancelClick: React.PropTypes.func,
-        videoId: React.PropTypes.string,
+        onDemographicChange: React.PropTypes.func.isRequired,
+        onCancelClick: React.PropTypes.func.isRequired,
+        onRefilterVideo: React.PropTypes.func,
     },
 
-    refilterVideoThenNavBack(videoId, gender, age) {
+    onNavBack(gender, age) {
         const self = this;
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
-        const callback = () => {
-            self.props.onCancelClick();
-            self.props.onDemographicChange(enumGender, enumAge);
-        };
-        if (this.props.clips) {
-            return SendActions.refilterVideoForClip(
-                videoId, gender, age, callback);
+        self.props.onCancelClick();
+        self.props.onDemographicChange(enumGender, enumAge);
+    },
+
+    refilterVideoThenNavBack(gender, age) {
+        const self = this;
+        if (self.props.onRefilterVideo) {
+            return self.props.onRefilterVideo(gender, age, self.onNavBack);
         }
-        SendActions.refilterVideo(
-            videoId, gender, age, callback);
+        return self.onNavBack(gender, age);
     },
 
     render() {
@@ -259,8 +259,14 @@ export const EmailPanel = React.createClass({
             errorMessage: undefined,
         };
     },
+
     componentWillMount() {
         this.props.onLoadShareUrl();
+    },
+
+    onSendResultEmail(email) {
+        const self = this;
+        this.startEmailSend(self.refs.email.value.trim());
     },
 
     startEmailSend(email) {
@@ -268,6 +274,7 @@ export const EmailPanel = React.createClass({
             this.props.onSendResultEmail(email, this.sendEmailCallback);
         });
     },
+
     sendEmailCallback(r) {
         const self = this;
         if (r.status_code === 200) {
@@ -278,6 +285,7 @@ export const EmailPanel = React.createClass({
             errorMessage: r.errorMessage,
         });
     },
+
     render() {
         let self = this,
             collectionClassName = self.props.isMobile ?
@@ -353,7 +361,7 @@ export const EmailPanel = React.createClass({
                                     className="xxButton xxButton--highlight"
                                     type="button"
                                     disabled={!this.props.shareUrl}
-                                    onClick={() => { this._startEmailSend(
+                                    onClick={() => { this.startEmailSend(
                                         self.refs.email.value.trim()); }}
                                 >{T.get('send')}</button>
                             </div>
@@ -368,7 +376,13 @@ export const EmailPanel = React.createClass({
 export const EmailControl = React.createClass({
 
     propTypes: {
+        index: PropTypes.number.isRequired,
         onClick: PropTypes.func.isRequired,
+    },
+
+    onClick(e) {
+        e.preventDefault();
+        this.props.onClick(this.props.index);
     },
 
     render() {
@@ -378,7 +392,7 @@ export const EmailControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="email"
-                onClick={this.props.onClick}
+                onClick={this.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-email"
             >
                 <span>{T.get('email')}</span>
@@ -539,7 +553,7 @@ export const DownloadControl = React.createClass({
         return (
             <a
                 href={this.props.href}
-                download={this.props.href}
+                download
                 data-tip={T.get('download')}
                 data-for="staticTooltip"
                 data-place="bottom"
@@ -561,7 +575,7 @@ export const ShareControl = React.createClass({
 
     onClick(e) {
         e.preventDefault();
-        this.props.onClick(parseInt(this.props.index, 10));
+        this.props.onClick(this.props.index);
     },
 
     render() {
@@ -628,7 +642,13 @@ export const DeletePanel = React.createClass({
 export const DeleteControl = React.createClass({
 
     propTypes: {
+        index: PropTypes.number.isRequired,
         onClick: PropTypes.func.isRequired,
+    },
+
+    onClick(e) {
+        e.preventDefault();
+        this.props.onClick(this.props.index);
     },
 
     render() {
@@ -638,7 +658,7 @@ export const DeleteControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="delete"
-                onClick={this.props.onClick}
+                onClick={this.onClick}
                 className="xxCollectionActions-anchor xxCollectionActions-delete"
             >
                 <span>{T.get('delete')}</span>

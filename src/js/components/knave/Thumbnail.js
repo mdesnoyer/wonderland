@@ -28,7 +28,7 @@ const propTypes = {
 const defaultProps = {
     className: '',
     wrapperClassName: '',
-    onClick: e => e.preventDefault(), // i.e., do nothing.
+    onClick: Function.prototype, // i.e., do nothing.
     onMouseEnter: Function.prototype,
     onMouseLeave: Function.prototype,
     enabled: true,

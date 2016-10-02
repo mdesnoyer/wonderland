@@ -20,7 +20,6 @@ import {
     cancelActions,
     LoadActions,
     SendActions,
-    ServingStatusActions,
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
@@ -62,7 +61,7 @@ class CollectionsMainPage extends React.Component {
         // TODO needed?
         LoadActions.loadAccount(SESSION.state.accountId);
 
-        Search.load(3, true);
+        Search.load(20, true);
         // // Load initial results: first 2 quickly and a whole page or more.
         // const callback = () => {
         //    // Route to onboarding if they've got no tags already.
@@ -90,7 +89,7 @@ class CollectionsMainPage extends React.Component {
     }
 
     onToggleThumbnailEnabled(thumbnail) {
-        ServingStatusActions.toggleThumbnailEnabled(thumbnail);
+        SendActions.toggleThumbnailEnabled(thumbnail);
     }
 
     onChangeCurrentPage(change) {
@@ -309,13 +308,13 @@ class CollectionsMainPage extends React.Component {
 
     onUpdateState() {
         const state = Store.getState();
-        state.isSearchPending = Search.pending > 0;
+        state.isSearchPending = Search.pending > 1;
         this.setState(state);
     }
 
     getShownIds() {
         // The size and offset into the list.
-        const pageSize = UTILS.RESULTS_PAGE_SIZE;
+        const pageSize = 20; //UTILS.RESULTS_PAGE_SIZE;
         const offset = pageSize * this.state.currentPage;
 
         // Get the ordered array of selectable tag ids

@@ -51,8 +51,6 @@ export default class ImageCollection extends BaseCollection {
             liftThumbnailId: null,
         };
 
-        this.onControlClick = this.onControlClick.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
         this.onSharePanelLoad = this.onSharePanelLoad.bind(this);
         this.onWhyClick = this.props.onThumbnailClick.bind(this,
             props.tagId, props.rightFeatureThumbnail.thumbnail_id);
@@ -63,8 +61,11 @@ export default class ImageCollection extends BaseCollection {
         this.onRightThumbnailClick = this.props.onThumbnailClick.bind(this,
             props.tagId, props.rightFeatureThumbnail.thumbnail_id);
         this.onSendResultEmail = this.onSendResultEmail.bind(this);
-        this.setLiftThumbnailToLeft = this.setLiftThumbnailToLeft.bind(this);
-        this.setLiftThumbnailToRight = this.setLiftThumbnailToRight.bind(this);
+        this.setLiftThumbnailToLeft = this.onSetLiftObjectId.bind(
+            this, props.leftFeatureThumbnail.thumbnail_id);
+        this.setLiftThumbnailToRight = this.onSetLiftObjectId.bind(
+            this, props.rightFeatureThumbnail.thumbnail_id);
+        this.onControlRefilterClick = undefined;
     }
 
     onSharePanelLoad() {
@@ -80,7 +81,7 @@ export default class ImageCollection extends BaseCollection {
             'copy.lift.explanation': 'copy.lift.explanation.images',
             'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
         };
-        const panels = super.getPanels(copyOverrideMap);
+        const panels = super.getBasePanels(copyOverrideMap);
         if (this.props.isViewOnly) {
             return panels;
         }
@@ -92,10 +93,22 @@ export default class ImageCollection extends BaseCollection {
         if (this.props.isViewOnly) {
             return [];
         }
-        const controls = super.getControls();
+        const controls = super.getBaseControls();
         const nextIndex = controls.length + 1;
         controls.push(<AddControl index={nextIndex} handleClick={this.onAddControlClick} />);
         return controls;
+    }
+
+    renderFeatureContent() {
+        const left = this.props.leftFeatureThumbnail;
+        return (
+            <div>
+                {this.renderFeatureThumbnail(
+                    this.props.leftFeatureThumbnail, true)}
+                {this.renderFeatureThumbnail(
+                    this.props.rightFeatureThumbnail)}
+            </div>
+        );
     }
 
     renderMobile() {
@@ -107,7 +120,7 @@ export default class ImageCollection extends BaseCollection {
             <MobileBaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
-                subContent={this.renderSubContent()}
+                subContent={this.renderThumbnailList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
@@ -122,7 +135,7 @@ export default class ImageCollection extends BaseCollection {
             <BaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
-                subContent={this.renderSubContent()}
+                subContent={this.renderThumbnailList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
@@ -131,12 +144,15 @@ export default class ImageCollection extends BaseCollection {
         );
     }
 
-    getFeatureThumbnail(thumbnail, isLeft = true) {
+    renderFeatureThumbnail(thumbnail, isLeft = true) {
         const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
         const blurText = this.props.isMine ?
             T.get('imageUpload.addMoreBlurText') : '';
         const className = isLeft ? 'xxThumbnail--lowLight' : '';
         const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft : this.setLiftThumbnailToRight;
+        const onClick = isLeft ?
+            this.onLeftThumbnailClick :
+            this.onRightThumbnailClick;
         return (
             <FeatureThumbnail
                 thumbnailId={thumbnail.thumbnail_id}
@@ -145,26 +161,25 @@ export default class ImageCollection extends BaseCollection {
                 enabled={thumbnail.enabled}
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}
-                isSoloImage={!isLeft && this.props.isSoloImage}
+                isSoloImage={false}
                 blurText={blurText}
-                onClick={this.getOnClick(isLeft)}
+                onClick={onClick}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={this.setDefaultLiftThumbnail}
             />
         );
     }
 
-    getThumbComponent() {
+    renderThumbComponent() {
         return (
             <div className="xxCollectionImages">
                 {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
                 {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
-                {this.getThumbnailList()}
             </div>
         );
     }
 
-    getThumbnailList() {
+    renderThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
 

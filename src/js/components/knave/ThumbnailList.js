@@ -8,28 +8,29 @@ import {
     ImageServingDisableControl } from './InfoActionPanels';
 
 
-export function ThumbnaillList(props) {
+export function ThumbnailList(props) {
     // Empty list renders the null component.
     if (!props.thumbnails.length) {
         return null;
     }
-
     const thumbnails = props.thumbnails
         .slice(0, props.numberToDisplay)
-        .map(t => (
-            <Thumbnail
-                showHref={true}
+        .map(t => {
+            const src = RENDITIONS.findRendition(t) ||
+                RENDITIONS.findSmallestUrl(t.renditions, 'gif');
+            return (<Thumbnail
+                showHref
                 className={props.className || ''}
                 key={t.thumbnail_id}
                 thumbnailId={t.thumbnail_id}
                 score={t.neon_score}
                 enabled={t.enabled}
-                src={RENDITIONS.findRendition(t)}
+                src={src}
                 onMouseEnter={props.onMouseEnter}
                 onMouseLeave={props.onMouseLeave}
                 onClick={props.onClick}
-            />
-        ));
+            />);
+        });
 
     return (
         <div className="xxCollectionImages-all">
@@ -38,7 +39,7 @@ export function ThumbnaillList(props) {
         </div>
     );
 }
-ThumbnaillList.propTypes = {
+ThumbnailList.propTypes = {
     // An array of thumbnail resource
     thumbnails: PropTypes.arrayOf(PropTypes.object).isRequired,
 
