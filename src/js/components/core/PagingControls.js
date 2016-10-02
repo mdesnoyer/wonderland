@@ -3,21 +3,22 @@ import React, { PropTypes } from 'react';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
 
-const propTypes = {
-    // Updates parent current page.
-    onChangeCurrentPage: PropTypes.func.isRequired,
+class PagingControls extends React.Component {
+    static displayName = 'PagingControls';
 
-    // Current page, 0-indexed.
-    currentPage: React.PropTypes.number.isRequired,
+    static propTypes = {
+        // Updates parent current page.
+        onChangeCurrentPage: PropTypes.func.isRequired,
 
-    // Whether the next control is enabled
-    isNextEnabled: React.PropTypes.bool.isRequired,
+        // Current page, 0-indexed.
+        currentPage: React.PropTypes.number.isRequired,
 
-    // Whether a search is pending
-    isSearchPending: React.PropTypes.bool.isRequired,
-};
+        // Whether the next control is enabled
+        isNextEnabled: React.PropTypes.bool.isRequired,
 
-export default class PagingControls extends React.Component {
+        // Whether a search is pending
+        isSearchPending: React.PropTypes.bool.isRequired,
+    }
 
     constructor(props) {
         super(props);
@@ -121,6 +122,4 @@ export default class PagingControls extends React.Component {
         );
     }
 }
-
-PagingControls.propTypes = propTypes;
-PagingControls.displayName = 'PagingControls';
+export default PagingControls;

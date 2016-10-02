@@ -30,7 +30,7 @@ class ClipCollection extends VideoCollection {
 
     onSetSelectedClipIndex(clipId) {
         const selectedClipIndex = _.findIndex(this.props.clips,
-            clip => clip.clip_id == clipId);
+            clip => clip.clip_id === clipId);
         if (selectedClipIndex !== -1) {
             this.setState({ selectedClipIndex });
         }
@@ -116,7 +116,7 @@ class ClipCollection extends VideoCollection {
     }
 
     getWidthClassName(thumbnails) {
-        switch(thumbnails.length) {
+        switch (thumbnails.length) {
         case 2:
             return 'xxThumbnail--twowidth';
         case 3:

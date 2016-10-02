@@ -157,8 +157,8 @@ const DemographicFilters = React.createClass({
         let optionList;
         if (self.state.isOpen) {
             const options = self.props.demographicOptions.map(function(option) {
-                const key = option.join(',');
                 const { gender, age } = option;
+                const key = [gender,age].join();
                 const className = (option === self.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';

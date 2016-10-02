@@ -94,7 +94,7 @@ class CollectionsContainer extends React.Component {
         // If the next props have a queued selected
         // demographic (in indexes 2-3), then move the queued selected
         // to the selected one.
-        const selectedDemographic = this.state.selectedDemographic;
+        const selectedDemographic = this.getSelectedDemographic();
         _.map(selectedDemographic, (selDemo, tagId) => {
             if (_.size(selDemo.length) === 4) {
                 // Look for the next one.
@@ -151,7 +151,7 @@ class CollectionsContainer extends React.Component {
     }
 
     onSendResultEmail(email, tagId, callback) {
-        const [gender, age] = this.getSelectedDemographic(tagId);
+        const { gender, age } = this.getSelectedDemographic(tagId);
         // Skip the left, or worst, thumb.
         const [, bestThumb, goodThumbs] = this.getLeftRightRest(tagId, gender, age);
         const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
@@ -166,13 +166,13 @@ class CollectionsContainer extends React.Component {
     }
 
     onSendClipResultEmail(email, tagId, callback) {
-        const [gender, age] = this.getSelectedDemographic(tagId);
+        const { gender, age } = this.getSelectedDemographic(tagId);
         this.props.onSendClipResultEmail(email, tagId, gender, age, callback);
     }
 
-    onThumbnailClick(overlayTagId, overlayThumbnailId, ...rest) {
+    onThumbnailClick(overlayTagId, overlayThumbnailId) {
         this.setState({ overlayTagId, overlayThumbnailId });
-        TRACKING.sendEvent(this, rest, !!this.state.overlayTagId);
+        TRACKING.sendEvent(this, arguments, !!this.state.overlayTagId);
     }
 
     onOverlayThumbnailNext(e) {
@@ -306,7 +306,7 @@ class CollectionsContainer extends React.Component {
             return UTILS.productOfArrays(
                 _.values(UTILS.FILTER_GENDER_COL_ENUM),
                 _.values(UTILS.FILTER_AGE_COL_ENUM)
-            ).sort();
+            ).sort().map(i => ({ gender: i[0], age: i[1] }));
         }
         const video = this.props.stores.videos[tag.video_id];
         const demos = this.hasClip(tagId) ?
@@ -316,9 +316,9 @@ class CollectionsContainer extends React.Component {
             return demos.map(demo => ([
                 UTILS.FILTER_GENDER_COL_ENUM[demo.gender],
                 UTILS.FILTER_AGE_COL_ENUM[demo.age],
-            ])).sort();
+            ])).sort().map(i => ({ gender: i[0], age: i[1] }));
         }
-        return [[0, 0]];
+        return [{ gender: 0, age: 0 }];
     }
 
     getSelectedDemographic(tagId) {
@@ -337,7 +337,7 @@ class CollectionsContainer extends React.Component {
     // Get all the Thumbnail resources for the
     // current demographic for a collection as map of id to thumbnail.
     getThumbnailMap(tagId) {
-        const { gender, age } = this.state.selectedDemographic[tagId];
+        const { gender, age } = this.getSelectedDemographic(tagId);
         const tag = this.props.stores.tags[tagId];
         const thumbnails = this.props.stores.thumbnails[gender][age];
         return _.pick(thumbnails, tag.thumbnail_ids);
@@ -366,8 +366,10 @@ class CollectionsContainer extends React.Component {
         const tagId = this.state.overlayTagId;
         const { gender, age } = this.getSelectedDemographic(tagId);
         const thumbnails = _(this.getLeftRightRest(tagId, gender, age))
+            .values()
+            .concat()
             .flatten()
-            .sortedUniqBy('thumbnail_id')
+            .uniqBy('thumbnail_id')
             .value();
         // Deal with when the best and worst is the same.
         if (thumbnails[0] === thumbnails[1]) {
@@ -547,7 +549,7 @@ class CollectionsContainer extends React.Component {
 
         const { gender, age } = this.getSelectedDemographic(tagId);
 
-        const { left, right, more } = this.getLeftRightRest(tagId, gender, age);
+        const { left, right, rest } = this.getLeftRightRest(tagId, gender, age);
         const thumbnailsLength = tag.thumbnail_ids.length;
         const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
             this.props.stores.lifts[gender][age][tagId] : {};
@@ -562,7 +564,7 @@ class CollectionsContainer extends React.Component {
                 title={tag.name}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
-                smallThumbnails={more}
+                smallThumbnails={rest}
                 thumbnailsLength={thumbnailsLength}
                 objectLiftMap={thumbLiftMap}
                 demographicOptions={this.getDemoOptionArray(tagId)}

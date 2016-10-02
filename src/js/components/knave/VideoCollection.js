@@ -86,7 +86,6 @@ class VideoCollection extends BaseCollection {
     }
 
     renderFeatureContent() {
-        const left = this.props.leftFeatureThumbnail;
         return (
             <div>
                 {this.renderFeatureThumbnail(

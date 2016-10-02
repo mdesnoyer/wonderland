@@ -51,7 +51,7 @@ class BaseCollection extends React.Component {
         isViewOnly: PropTypes.bool.isRequired,
         shareUrl: PropTypes.string,
         title: PropTypes.string.isRequired,
-        demographicOptions: PropTypes.arrayOf(PropTypes.array).isRequired,
+        demographicOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
         selectedDemographic: PropTypes.objectOf(PropTypes.number).isRequired,
         isRefiltering: PropTypes.bool,
         timeRemaining: PropTypes.number,

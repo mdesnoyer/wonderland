@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import _ from 'lodash';
 
 import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
@@ -13,7 +12,6 @@ import {
     AddControl } from './InfoActionPanels';
 import FeatureThumbnail from './FeatureThumbnail';
 import RENDITIONS from '../../modules/renditions';
-import { LoadActions } from '../../stores/CollectionStores';
 import T from '../../modules/translation';
 
 export default class ImageCollection extends BaseCollection {
@@ -31,13 +29,7 @@ export default class ImageCollection extends BaseCollection {
 
 
         isShareView: PropTypes.bool,
-
-        onDemographicChange: PropTypes.func.isRequired,
-
         shareUrl: PropTypes.string,
-
-        onSendResultEmail: PropTypes.func.isRequired,
-        onDeleteCollection: PropTypes.func,
     }
 
     constructor(props) {
@@ -51,25 +43,20 @@ export default class ImageCollection extends BaseCollection {
             liftThumbnailId: null,
         };
 
-        this.onSharePanelLoad = this.onSharePanelLoad.bind(this);
         this.onWhyClick = this.props.onThumbnailClick.bind(this,
             props.tagId, props.rightFeatureThumbnail.thumbnail_id);
         this.onShareControlClick = this.onControlClick.bind(this, 1);
         this.onEmailControlClick = this.onControlClick.bind(this, 2);
         this.onDeleteControlClick = this.onControlClick.bind(this, 3);
         this.onAddControlClick = this.onControlClick.bind(this, 4);
-        this.onRightThumbnailClick = this.props.onThumbnailClick.bind(this,
-            props.tagId, props.rightFeatureThumbnail.thumbnail_id);
-        this.onSendResultEmail = this.onSendResultEmail.bind(this);
-        this.setLiftThumbnailToLeft = this.onSetLiftObjectId.bind(
+        this.onLeftThumbnailClick = this.props.onThumbnailClick.bind(
+            this, this.props.leftFeatureThumbnail.thumbnail_id);
+        this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
+        this.onSetLiftThumbnailId = this.onSetLiftThumbnailId.bind(this);
+        this.onSetLiftThumbnailToLeft = this.onSetLiftObjectId.bind(
             this, props.leftFeatureThumbnail.thumbnail_id);
-        this.setLiftThumbnailToRight = this.onSetLiftObjectId.bind(
-            this, props.rightFeatureThumbnail.thumbnail_id);
+        this.onSetLiftThumbnailToDefault = this.onSetLiftObjectId;
         this.onControlRefilterClick = undefined;
-    }
-
-    onSharePanelLoad() {
-        LoadActions.loadShareUrl(this.props.tagId);
     }
 
     getDefaultLiftObjectId() {
@@ -99,16 +86,8 @@ export default class ImageCollection extends BaseCollection {
         return controls;
     }
 
-    renderFeatureContent() {
-        const left = this.props.leftFeatureThumbnail;
-        return (
-            <div>
-                {this.renderFeatureThumbnail(
-                    this.props.leftFeatureThumbnail, true)}
-                {this.renderFeatureThumbnail(
-                    this.props.rightFeatureThumbnail)}
-            </div>
-        );
+    onSetLiftThumbnailId(thumbnailId) {
+        this.setLiftObjectId(thumbnailId);
     }
 
     renderMobile() {
@@ -119,7 +98,7 @@ export default class ImageCollection extends BaseCollection {
         return (
             <MobileBaseCollection
                 {...this.props}
-                featureContent={this.renderFeatureContent()}
+                featureContent={this.renderFeatureThumbnails()}
                 subContent={this.renderThumbnailList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -134,7 +113,7 @@ export default class ImageCollection extends BaseCollection {
         return (
             <BaseCollection
                 {...this.props}
-                featureContent={this.renderFeatureContent()}
+                featureContent={this.renderFeatureThumbnails()}
                 subContent={this.renderThumbnailList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -144,37 +123,35 @@ export default class ImageCollection extends BaseCollection {
         );
     }
 
-    renderFeatureThumbnail(thumbnail, isLeft = true) {
-        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
-        const blurText = this.props.isMine ?
-            T.get('imageUpload.addMoreBlurText') : '';
-        const className = isLeft ? 'xxThumbnail--lowLight' : '';
-        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft : this.setLiftThumbnailToRight;
-        const onClick = isLeft ?
-            this.onLeftThumbnailClick :
-            this.onRightThumbnailClick;
+    renderFeatureThumbnails() {
+        const left = this.props.leftFeatureThumbnail;
+        const right = this.props.rightFeatureThumbnail;
+        const blurText = T.get('imageUpload.addMoreBlurText');
         return (
-            <FeatureThumbnail
-                thumbnailId={thumbnail.thumbnail_id}
-                title={title}
-                score={thumbnail.neon_score}
-                enabled={thumbnail.enabled}
-                className={className}
-                src={RENDITIONS.findRendition(thumbnail)}
-                isSoloImage={false}
-                blurText={blurText}
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-            />
-        );
-    }
-
-    renderThumbComponent() {
-        return (
-            <div className="xxCollectionImages">
-                {this.getFeatureThumbnail(this.props.leftFeatureThumbnail, true)}
-                {this.getFeatureThumbnail(this.props.rightFeatureThumbnail, false)}
+            <div>
+                <FeatureThumbnail
+                    thumbnailId={left.thumbnail_id}
+                    title={T.get('copy.worstThumbnail')}
+                    score={left.neon_score}
+                    enabled={left.enabled}
+                    className={'xxThumbnail--lowLight'}
+                    src={RENDITIONS.findRendition(left)}
+                    onClick={this.onLeftThumbnailClick}
+                    onMouseEnter={this.setLiftThumbnailToLeft}
+                    onMouseLeave={this.onSetLiftThumbnailToDefault}
+                />
+                <FeatureThumbnail
+                    thumbnailId={right.thumbnail_id}
+                    title={T.get('copy.bestThumbnail')}
+                    score={right.neon_score}
+                    enabled={right.enabled}
+                    src={RENDITIONS.findRendition(right)}
+                    isSoloImage={!right}
+                    blurText={!this.props.isShareView ? blurText : ''}
+                    onClick={this.onRightThumbnailClick}
+                    onMouseEnter={this.onSetLiftThumbnailToDefault}
+                    onMouseLeave={this.onSetLiftThumbnailToDefault}
+                />
             </div>
         );
     }
@@ -182,42 +159,6 @@ export default class ImageCollection extends BaseCollection {
     renderThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
-
-        // 2 cases for video:
-        // Expanded: ShowLess with more than one row
-        // Initial: ShowMore with one row
-        if (!_.isEmpty(this.props.smallBadThumbnails)) {
-            if (rows > 1) {
-                // Constrain good thumbnails to 5.
-                const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
-                const thumbnails = _.flatten([
-                    truncatedSmallThumbnails,
-                    this.props.smallBadThumbnails.slice(0, 6),
-                ]);
-                const numberToDisplay = truncatedSmallThumbnails.length;
-                return (<ShowLessThumbnailList
-                    thumbnails={thumbnails}
-                    numberToDisplay={numberToDisplay}
-                    // TODO would like to remove the need for the T.get
-                    lessLabel={T.get('action.showLess')}
-                    onLess={this.onLess}
-                    onMouseEnter={this.setLiftThumbnailId}
-                    onMouseLeave={this.setDefaultLiftThumbnail}
-                    onClick={this.onThumbnailClick}
-                    firstClassName="xxThumbnail--highLight"
-                    secondClassName="xxThumbnail--lowLight"
-                />);
-            }
-            return (<ShowMoreThumbnailList
-                thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5}
-                moreLabel={T.get('action.showMore')}
-                onMore={this.onMore}
-                onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onThumbnailClick}
-            />);
-        }
 
         // 4 cases:
         // There's fewer than one row of thumbs
@@ -232,7 +173,7 @@ export default class ImageCollection extends BaseCollection {
             return (<ThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
+                onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
         // There's fewer than the number of display rows: put ShowLess in slot 6.
@@ -242,7 +183,7 @@ export default class ImageCollection extends BaseCollection {
                 thumbnails={this.props.smallThumbnails}
                 onLess={this.onLess}
                 onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
+                onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
         // There's more than 6 and they haven't shown more at all.
@@ -252,7 +193,7 @@ export default class ImageCollection extends BaseCollection {
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
                 onMore={this.onMore}
                 onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
+                onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
         // There's more thumbs than space to display them and they've expanded
@@ -264,13 +205,16 @@ export default class ImageCollection extends BaseCollection {
             onMore={this.onMore}
             onLess={this.onLess}
             onMouseEnter={this.setLiftThumbnailId}
-            onMouseLeave={this.setDefaultLiftThumbnail}
+            onMouseLeave={this.onSetLiftThumbnailToDefault}
             onClick={this.onThumbnailClick}
         />);
     }
 
     onRightThumbnailClick() {
-        // TODO add panel wire.
+        const right = this.props.rightFeatureThumbnail;
+        if (!right) {
+            this.onAddControlClick();
+        }
         this.onThumbnailClick(this.props.rightFeatureThumbnail.thumbnail_id);
     }
 

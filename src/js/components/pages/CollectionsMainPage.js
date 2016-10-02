@@ -314,7 +314,7 @@ class CollectionsMainPage extends React.Component {
 
     getShownIds() {
         // The size and offset into the list.
-        const pageSize = 20; //UTILS.RESULTS_PAGE_SIZE;
+        const pageSize = 10;
         const offset = pageSize * this.state.currentPage;
 
         // Get the ordered array of selectable tag ids
