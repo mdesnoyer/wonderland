@@ -436,8 +436,8 @@ export const SharePanel = React.createClass({
     },
 
     setTooltipCode(code) {
-        if (this.props.setTooltipText) {
-            this.props.setTooltipText(T.get(code));
+        if (this.props.onSetTooltipText) {
+            this.props.onSetTooltipText(T.get(code));
         }
     },
 
