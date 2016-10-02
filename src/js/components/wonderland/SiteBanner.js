@@ -13,7 +13,7 @@ const propTypes = {
 
 export default function SiteBanner(props) {
     const getSearchBar = () => {
-        if (props.onSearchBarChange && props.onSearchBarSubmit) {
+        if (props.onSearchBarChange) {
             return (
                 <SearchBar
                     query={props.query}

@@ -139,7 +139,7 @@ class BaseCollection extends React.Component {
     }
 
     getLiftValue() {
-        const selectedId = this.state.liftThumbnailId;
+        const selectedId = this.state.liftObjectId;
         const defaultId = this.getDefaultLiftObjectId();
         const map = this.props.objectLiftMap;
         // The lift value for a map of one thumbnail
@@ -148,6 +148,7 @@ class BaseCollection extends React.Component {
         if (Object.keys(map).length <= 1) {
             return undefined;
         }
+        console.log(map);
         return map[selectedId || defaultId];
     }
 

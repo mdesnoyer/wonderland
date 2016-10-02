@@ -75,7 +75,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.textSelected': 'Press ⌘-C to copy',
             'action.saveMyImages': 'Save Images',
             'action.showMore': 'Show More Images',
-            'action.showLess': 'Show Less Images',
+            'action.showLess': 'Show Fewer Images',
 
             rememberMe: 'Remember',
 

@@ -64,7 +64,7 @@ class Thumbnail extends React.Component {
 
         return (
             <div className={this.props.wrapperClassName}>
-                <button
+                <span
                     className={className}
                     data-score={this.props.score}
                     onClick={this.onClick}
@@ -76,7 +76,7 @@ class Thumbnail extends React.Component {
                         onMouseEnter={this.onMouseEnter}
                         onMouseLeave={this.onMouseLeave}
                     />
-                </button>
+                </span>
                 {this.props.children}
             </div>
         );

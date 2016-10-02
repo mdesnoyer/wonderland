@@ -36,11 +36,12 @@ export default class ImageCollection extends BaseCollection {
         super(props);
 
         this.state = {
+            ...this.state,
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
             // Which thumbnail's lift to show
-            liftThumbnailId: null,
+            liftObjectId: null,
         };
 
         this.onWhyClick = this.props.onThumbnailClick.bind(this,
@@ -49,13 +50,14 @@ export default class ImageCollection extends BaseCollection {
         this.onEmailControlClick = this.onControlClick.bind(this, 2);
         this.onDeleteControlClick = this.onControlClick.bind(this, 3);
         this.onAddControlClick = this.onControlClick.bind(this, 4);
-        this.onLeftThumbnailClick = this.props.onThumbnailClick.bind(
-            this, this.props.leftFeatureThumbnail.thumbnail_id);
+        this.onLeftThumbnailClick = this.onThumbnailClick.bind(
+            this, props.leftFeatureThumbnail.thumbnail_id);
         this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
         this.onSetLiftThumbnailId = this.onSetLiftThumbnailId.bind(this);
-        this.onSetLiftThumbnailToLeft = this.onSetLiftObjectId.bind(
-            this, props.leftFeatureThumbnail.thumbnail_id);
-        this.onSetLiftThumbnailToDefault = this.onSetLiftObjectId;
+        this.onSetLiftThumbnailToLeft = this.onSetLiftThumbnailId.bind(
+            null, props.leftFeatureThumbnail.thumbnail_id);
+        this.onSetLiftThumbnailToDefault = this.onSetLiftObjectId.bind(
+            null, null);
         this.onControlRefilterClick = undefined;
     }
 
@@ -87,7 +89,7 @@ export default class ImageCollection extends BaseCollection {
     }
 
     onSetLiftThumbnailId(thumbnailId) {
-        this.setLiftObjectId(thumbnailId);
+        this.onSetLiftObjectId(thumbnailId);
     }
 
     renderMobile() {
@@ -137,7 +139,7 @@ export default class ImageCollection extends BaseCollection {
                     className={'xxThumbnail--lowLight'}
                     src={RENDITIONS.findRendition(left)}
                     onClick={this.onLeftThumbnailClick}
-                    onMouseEnter={this.setLiftThumbnailToLeft}
+                    onMouseEnter={this.onSetLiftThumbnailToLeft}
                     onMouseLeave={this.onSetLiftThumbnailToDefault}
                 />
                 <FeatureThumbnail
@@ -172,7 +174,7 @@ export default class ImageCollection extends BaseCollection {
         if (this.props.smallThumbnails.length <= 6) {
             return (<ThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                onMouseEnter={this.setLiftThumbnailId}
+                onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
@@ -182,7 +184,7 @@ export default class ImageCollection extends BaseCollection {
             return (<ShowLessThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onLess={this.onLess}
-                onMouseEnter={this.setLiftThumbnailId}
+                onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
@@ -192,7 +194,7 @@ export default class ImageCollection extends BaseCollection {
                 thumbnails={this.props.smallThumbnails}
                 numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
                 onMore={this.onMore}
-                onMouseEnter={this.setLiftThumbnailId}
+                onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
@@ -204,7 +206,7 @@ export default class ImageCollection extends BaseCollection {
             numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
             onMore={this.onMore}
             onLess={this.onLess}
-            onMouseEnter={this.setLiftThumbnailId}
+            onMouseEnter={this.onSetLiftThumbnailId}
             onMouseLeave={this.onSetLiftThumbnailToDefault}
             onClick={this.onThumbnailClick}
         />);

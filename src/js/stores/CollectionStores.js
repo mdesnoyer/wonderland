@@ -328,6 +328,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 tagLiftMap[tagId] = {};
                 return;
             }
+            // Set base id map to itself.
             if (thumbnailIds.length === 1) {
                 tagLiftMap[tagId] = { [thumbnailIds[0]]: 0 };
                 return;
@@ -376,7 +377,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                     return Object.assign({}, batchLiftMap, {
                         [tagId]: batch.response.lift.reduce((map, item) => (
                         Object.assign({}, map, { [item.thumbnail_id]: item.lift })
-                    ), { baseId: 0 }) });
+                    ), { [baseId]: 0 }) });
                 }, tagLiftMap)
             ),
         });

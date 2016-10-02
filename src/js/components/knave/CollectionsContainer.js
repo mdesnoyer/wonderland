@@ -268,9 +268,6 @@ class CollectionsContainer extends React.Component {
             tag.thumbnail_ids);
         const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
         const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
-        if (!left) {
-            debugger;
-        }
 
         // Build the list of thumbnails to display below.
         const rest = _

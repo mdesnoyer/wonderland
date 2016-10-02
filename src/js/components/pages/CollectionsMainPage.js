@@ -48,6 +48,7 @@ class CollectionsMainPage extends React.Component {
         this.onSetSidebarContent = this.onSetSidebarContent.bind(this);
         this.onSetTooltipText = this.onSetTooltipText.bind(this);
         this.onSearchBarChange = this.onSearchBarChange.bind(this);
+        this.onNameFilter = this.onNameFilter.bind(this);
     }
 
     componentWillMount() {
@@ -61,18 +62,15 @@ class CollectionsMainPage extends React.Component {
         // TODO needed?
         LoadActions.loadAccount(SESSION.state.accountId);
 
-        Search.load(20, true);
         // // Load initial results: first 2 quickly and a whole page or more.
-        // const callback = () => {
-        //    // Route to onboarding if they've got no tags already.
-        //    if (_.isEmpty(this.state.tags)) {
-        //        this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
-        //    }
-        //    Search.load(UTILS.RESULTS_PAGE_SIZE);
-        // };
-        // Search.load(2, true, callback.bind(this));
-        // this.setIntervalId = setInterval(Search.reload.bind(
-        //    null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
+        const callback = () => {
+            // Route to onboarding if they've got no tags already.
+            if (_.isEmpty(this.state.tags)) {
+                this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
+            }
+            Search.load(UTILS.RESULTS_PAGE_SIZE);
+        };
+        Search.load(2, true, callback.bind(this));
     }
 
     componentWillUnmount() {
@@ -257,6 +255,8 @@ class CollectionsMainPage extends React.Component {
     }
 
     onSearchBarChange(e) {
+        e.preventDefault();
+
         // Use the query to filter display of results.
         const searchQuery = e.target.value.trim();
 
@@ -264,7 +264,7 @@ class CollectionsMainPage extends React.Component {
         filteredTagStore.isCompletelyLoaded = false;
         if (searchQuery) {
             // Apply a non-empty search to our data provider.
-            filteredTagStore.setFilter(this.nameFilter.bind(null, searchQuery));
+            filteredTagStore.setFilter(this.onNameFilter.bind(null, searchQuery));
         } else {
             filteredTagStore.reset();
         }
@@ -272,12 +272,12 @@ class CollectionsMainPage extends React.Component {
         // If query is nothing, then don't use backend.
         if (!searchQuery) {
             // If query is running, cancel.
-            if (self.searchFunction) {
-                self.searchFunction.cancel();
+            if (this.searchFunction) {
+                this.searchFunction.cancel();
                 Search.pending -= 1;
-                self.searchFunction = null;
+                this.searchFunction = null;
             }
-            self.setState({
+            this.setState({
                 searchQuery,
                 isSearchPending: Search.pending > 0,
                 currentPage: 0,
@@ -288,10 +288,10 @@ class CollectionsMainPage extends React.Component {
 
         // If we have a query:
         // We debounce a function, store it and use it to throttle requests.
-        if (!self.searchFunction) {
-            self.searchFunction = _.debounce(
+        if (!this.searchFunction) {
+            this.searchFunction = _.debounce(
                 // Run a stateful search.
-                self.loadMoreFromSearch.bind(self, false),
+                this.loadMoreFromSearch.bind(this, false),
                 // Millis between requests after first one.
                 1000,
                 { leading: true, trailing: true }
@@ -299,11 +299,11 @@ class CollectionsMainPage extends React.Component {
         }
 
         // Resolve state change then search.
-        self.setState({
+        this.setState({
             searchQuery,
             currentPage: 0,
             selectedTags: filteredTagStore.getAll(),
-        }, self.searchFunction);
+        }, this.searchFunction);
     }
 
     onUpdateState() {
@@ -360,11 +360,11 @@ class CollectionsMainPage extends React.Component {
         if (!name) {
             return false;
         }
-        return name.search(query.toLowerCase() !== -1);
+        return name.search(query.toLowerCase()) !== -1;
     }
 
     // TODO factor this and the default filter.
-    nameFilter(searchQuery, tag) {
+    onNameFilter(searchQuery, tag) {
         return tag.hidden !== true &&
             (tag.thumbnail_ids.length > 0 || tag.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
             this.filterOnName(searchQuery, tag);

@@ -1,38 +1,37 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+import React, { PropTypes } from 'react';
 
-import React from 'react';
 import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+const propTypes = {
+    query: PropTypes.string,
+    onSubmit: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
+};
 
-const SearchBar = React.createClass({
-    propTypes: {
-        query: React.PropTypes.string,
-        onChange: React.PropTypes.func.isRequired,
-        onSubmit: React.PropTypes.func.isRequired
-    },
-    render: function() {
-        const self = this;
-        return (
-            <form className="search-bar" onSubmit={self.props.onSubmit}>
-                <label
-                    className="search-bar--query-label"
-                >
-                    <input
-                        className="search-bar--query-input"
-                        type="text"
-                        onChange={self.props.onChange}
-                        placeholder={T.get('copy.searchBar.placeholder')}
-                        value={self.props.query}
-                    />
-                </label>
-            </form>
-        );
-    }
-});
+const defaultProps = {
+    onSubmit: (e) => { e.preventDefault(); },
+};
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function SearchBar(props) {
+    return (
+        <form className="search-bar" onSubmit={props.onSubmit}>
+            <label
+                className="search-bar--query-label"
+                htmlFor="searchInput"
+            >
+                <input
+                    className="search-bar--query-input"
+                    id="searchInput"
+                    type="text"
+                    onChange={props.onChange}
+                    placeholder={T.get('copy.searchBar.placeholder')}
+                    value={props.query}
+                />
+            </label>
+        </form>
+    );
+}
+SearchBar.propTypes = propTypes;
+SearchBar.defaultProps = defaultProps;
 
 export default SearchBar;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
