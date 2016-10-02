@@ -24,8 +24,6 @@ class ClipCollection extends VideoCollection {
             selectedPanelIndex: 0,
         };
         this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
-        // No inline "Why" in the lift panel copy.
-        this.onWhyClick = null;
     }
 
     onSetSelectedClipIndex(clipId) {
@@ -34,6 +32,10 @@ class ClipCollection extends VideoCollection {
         if (selectedClipIndex !== -1) {
             this.setState({ selectedClipIndex });
         }
+    }
+
+    bindMore() {
+        // Stub out optional instance binds.
     }
 
     getLiftValue() {

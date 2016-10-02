@@ -44,20 +44,21 @@ export default class ImageCollection extends BaseCollection {
             liftObjectId: null,
         };
 
-        this.onWhyClick = this.props.onThumbnailClick.bind(this,
-            props.tagId, props.rightFeatureThumbnail.thumbnail_id);
-        this.onShareControlClick = this.onControlClick.bind(this, 1);
-        this.onEmailControlClick = this.onControlClick.bind(this, 2);
-        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
         this.onAddControlClick = this.onControlClick.bind(this, 4);
+        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
+        this.onEmailControlClick = this.onControlClick.bind(this, 2);
         this.onLeftThumbnailClick = this.onThumbnailClick.bind(
             this, props.leftFeatureThumbnail.thumbnail_id);
         this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
-        this.onSetLiftThumbnailId = this.onSetLiftThumbnailId.bind(this);
-        this.onSetLiftThumbnailToLeft = this.onSetLiftThumbnailId.bind(
-            null, props.leftFeatureThumbnail.thumbnail_id);
+        this.onSetLiftThumbnailId = this.onSetLiftObjectId.bind(this);
         this.onSetLiftThumbnailToDefault = this.onSetLiftObjectId.bind(
             null, null);
+        this.onSetLiftThumbnailToLeft = this.onSetLiftThumbnailId.bind(
+            null, props.leftFeatureThumbnail.thumbnail_id);
+        this.onShareControlClick = this.onControlClick.bind(this, 1);
+        this.onWhyClick = this.props.onThumbnailClick.bind(
+            this, props.tagId, props.rightFeatureThumbnail.thumbnail_id);
+
         this.onControlRefilterClick = undefined;
     }
 
@@ -88,15 +89,7 @@ export default class ImageCollection extends BaseCollection {
         return controls;
     }
 
-    onSetLiftThumbnailId(thumbnailId) {
-        this.onSetLiftObjectId(thumbnailId);
-    }
-
     renderMobile() {
-        const copyOverrideMap = {
-            'copy.lift.explanation': 'copy.lift.explanation.images',
-            'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
-        };
         return (
             <MobileBaseCollection
                 {...this.props}
@@ -106,7 +99,6 @@ export default class ImageCollection extends BaseCollection {
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--photo'}
-                copyOverrideMap={copyOverrideMap}
             />
         );
     }

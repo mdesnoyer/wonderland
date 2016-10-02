@@ -523,11 +523,16 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
     },
 
     loadTagByShareToken(accountId, tagId, shareToken, callback = Function.prototype) {
+        const beforeBaseOptions = AJAXModule.baseOptions;
+        const wrappedCallback = () => {
+            callback();
+            AJAXModule.baseOptions = beforeBaseOptions;
+        };
         AJAXModule.baseOptions = {
             overrideAccountId: accountId,
             data: { share_token: shareToken },
         };
-        return LoadActions.loadTags([tagId], 0, 0, callback);
+        return LoadActions.loadTags([tagId], 0, 0, wrappedCallback);
     },
 
     loadTags(loadTagIds, gender = 0, age = 0, reload = false,

@@ -71,17 +71,18 @@ class BaseCollection extends React.Component {
         super(props);
         this.state = { smallThumbnailRows: 1 };
 
+        this.onControlCancelClick = this.onControlClick.bind(this, 0);
+        this.onControlClick = this.onControlClick.bind(this);
+        this.onControlRefilterClick = this.onControlClick.bind(this, 1);
         this.onDeleteCollection = this.onDeleteCollection.bind(this);
         this.onDemographicChange = this.onDemographicChange.bind(this);
         this.onLess = this.onLess.bind(this);
         this.onLoadShareUrl = this.onLoadShareUrl.bind(this);
         this.onMore = this.onMore.bind(this);
-        this.onSetLiftObjectId = this.onSetLiftObjectId.bind(this);
+        this.onSendResultEmail = this.onSendResultEmail.bind(this);
         this.onSetDefaultLiftObject = this.onSetLiftObjectId.bind(this, null);
+        this.onSetLiftObjectId = this.onSetLiftObjectId.bind(this);
         this.onThumbnailClick = this.onThumbnailClick.bind(this);
-        this.onControlClick = this.onControlClick.bind(this);
-        this.onControlCancelClick = this.onControlClick.bind(this, 0);
-        this.onControlRefilterClick = this.onControlClick.bind(this, 1);
     }
 
     onControlClick(selectedPanelIndex) {
@@ -148,7 +149,6 @@ class BaseCollection extends React.Component {
         if (Object.keys(map).length <= 1) {
             return undefined;
         }
-        console.log(map);
         return map[selectedId || defaultId];
     }
 

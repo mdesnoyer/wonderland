@@ -35,15 +35,31 @@ class VideoCollection extends BaseCollection {
     constructor(props) {
         super(props);
         this.state = {
+            ...this.state,
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
             liftObjectId: null,
         };
-        this.onLoadShareUrl = this.onLoadShareUrl.bind(this);
-        this.onSendResultEmail = this.onSendResultEmail.bind(this);
-        this.onSetLiftObjectId = this.onSetLiftObjectId.bind(this);
-        this.onSetPanel = this.onSetPanel.bind(this);
+        this.onAddControlClick = this.onControlClick.bind(this, 4);
+        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
+        this.onEmailControlClick = this.onControlClick.bind(this, 2);
+        this.onShareControlClick = this.onControlClick.bind(this, 1);
+
+        this.bindMore(props);
+    }
+
+    // Overriden in child.
+    bindMore(props) {
+        this.onLeftThumbnailClick = this.onThumbnailClick.bind(
+            this, props.leftFeatureThumbnail.thumbnail_id);
+        this.onRightThumbnailClick = this.onThumbnailClick.bind(
+            this, props.rightFeatureThumbnail.thumbnail_id);
+        this.onSetLiftThumbnailId = this.onSetLiftObjectId.bind(this);
+        this.onSetLiftThumbnailToDefault = this.onSetLiftObjectId.bind(
+            null, null);
+        this.onSetLiftThumbnailToLeft = this.onSetLiftThumbnailId.bind(
+            null, props.leftFeatureThumbnail.thumbnail_id);
         this.onWhyClick = this.onWhyClick.bind(this);
     }
 
@@ -59,39 +75,33 @@ class VideoCollection extends BaseCollection {
         this.clearProcessingMonitor();
     }
 
-    renderFeatureThumbnail(thumbnail, isLeft = true) {
-        const title = isLeft ? T.get('copy.worstThumbnail') : T.get('copy.bestThumbnail');
-        const blurText = this.props.isMine ?
-            T.get('imageUpload.addMoreBlurText') : '';
-        const className = isLeft ? 'xxThumbnail--lowLight' : '';
-        const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft : this.setLiftThumbnailToRight;
-        const onClick = isLeft ?
-            this.onLeftThumbnailClick :
-            this.onRightThumbnailClick;
-        return (
-            <FeatureThumbnail
-                thumbnailId={thumbnail.thumbnail_id}
-                title={title}
-                score={thumbnail.neon_score}
-                enabled={thumbnail.enabled}
-                className={className}
-                src={RENDITIONS.findRendition(thumbnail)}
-                isSoloImage={!isLeft && this.props.isSoloImage}
-                blurText={blurText}
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-            />
-        );
-    }
-
     renderFeatureContent() {
+        const left = this.props.leftFeatureThumbnail;
+        const right = this.props.rightFeatureThumbnail;
         return (
             <div>
-                {this.renderFeatureThumbnail(
-                    this.props.leftFeatureThumbnail, true)}
-                {this.renderFeatureThumbnail(
-                    this.props.rightFeatureThumbnail)}
+                <FeatureThumbnail
+                    thumbnailId={left.thumbnail_id}
+                    title={T.get('copy.currentThumbnail')}
+                    score={left.neon_score}
+                    enabled={left.enabled}
+                    className={'xxThumbnail--lowLight'}
+                    src={RENDITIONS.findRendition(left)}
+                    onClick={this.onLeftThumbnailClick}
+                    onMouseEnter={this.onSetLiftThumbnailToLeft}
+                    onMouseLeave={this.onSetLiftThumbnailToDefault}
+                />
+                <FeatureThumbnail
+                    thumbnailId={right.thumbnail_id}
+                    title={T.get('copy.topNeonImage')}
+                    score={right.neon_score}
+                    enabled={right.enabled}
+                    src={RENDITIONS.findRendition(right)}
+                    isSoloImage={!right}
+                    onClick={this.onRightThumbnailClick}
+                    onMouseEnter={this.onSetLiftThumbnailToDefault}
+                    onMouseLeave={this.onSetLiftThumbnailToDefault}
+                />
             </div>
         );
     }
@@ -190,43 +200,27 @@ class VideoCollection extends BaseCollection {
     }
 
     renderMobile() {
-        const copyOverrideMap = {
-            'copy.worstThumbnail': 'copy.currentThumbnail',
-            'copy.bestThumbnail': 'copy.topNeonImage',
-            'action.showMore': 'copy.thumbnails.low',
-            'action.showLess': 'copy.thumbnails.high',
-        };
-
         return (
             <MobileBaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
                 subContent={this.renderThumbnailList()}
-                copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
                 wrapperClassName={'xxCollection xxCollection--video'}
                 liftValue={this.getLiftValue()}
-                setLiftThumbnailId={this.setLiftThumbnailId}
+                onSetLiftThumbnailId={this.onSetLiftThumbnailId}
             />
         );
     }
 
     renderDesktop() {
-        // Apply Video component-specific labels.
-        const copyOverrideMap = {
-            'copy.worstThumbnail': 'copy.currentThumbnail',
-            'copy.bestThumbnail': 'copy.topNeonImage',
-            'action.showMore': 'copy.thumbnails.low',
-            'action.showLess': 'copy.thumbnails.high',
-        };
         return (
             <BaseCollection
                 {...this.props}
                 featureContent={this.renderFeatureContent()}
                 subContent={this.renderThumbnailList()}
-                copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
@@ -242,84 +236,31 @@ class VideoCollection extends BaseCollection {
         // 2 cases for video:
         // Expanded: ShowLess with more than one row
         // Initial: ShowMore with one row
-        if (!_.isEmpty(this.props.smallBadThumbnails)) {
-            if (rows > 1) {
-                // Constrain good thumbnails to 5.
-                const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
-                const thumbnails = _.flatten([
-                    truncatedSmallThumbnails,
-                    this.props.smallBadThumbnails.slice(0, 6),
-                ]);
-                const numberToDisplay = truncatedSmallThumbnails.length;
-                return (<ShowLessThumbnailList
-                    thumbnails={thumbnails}
-                    numberToDisplay={numberToDisplay}
-                    // TODO would like to remove the need for the T.get
-                    lessLabel={T.get('action.showLess')}
-                    onLess={this.onLess}
-                    onMouseEnter={this.setLiftThumbnailId}
-                    onMouseLeave={this.setDefaultLiftThumbnail}
-                    onClick={this.onThumbnailClick}
-                    firstClassName="xxThumbnail--highLight"
-                    secondClassName="xxThumbnail--lowLight"
-                />);
-            }
-            return (<ShowMoreThumbnailList
-                thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5}
-                moreLabel={T.get('action.showMore')}
-                onMore={this.onMore}
-                onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onThumbnailClick}
-            />);
-        }
-
-        // 4 cases:
-        // There's fewer than one row of thumbs
-        // There's fewer than the rows displayed -> show less in spot 6.
-        // There's more than the rows displayed -> show more in last spot
-        // There's more than the rows displayed, and they've
-        //   clicked show more once -> show less in spot 6, and show more
-        //   in right-hand spot in last row
-
-        // There's fewer than or exactly one row of thumbs: no button.
-        if (this.props.smallThumbnails.length <= 6) {
-            return (<ThumbnailList
-                thumbnails={this.props.smallThumbnails}
-                onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onThumbnailClick}
-            />);
-        // There's fewer than the number of display rows: put ShowLess in slot 6.
-        // (Add one to length for the ShowLess button.)
-        } else if (this.props.smallThumbnails.length + 1 <= rows * 6) {
+        if (rows > 1) {
+            // Constrain good thumbnails to 5.
+            const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
+            const thumbnails = _.flatten([
+                truncatedSmallThumbnails,
+                this.props.smallBadThumbnails.slice(0, 6),
+            ]);
+            const numberToDisplay = truncatedSmallThumbnails.length;
             return (<ShowLessThumbnailList
-                thumbnails={this.props.smallThumbnails}
+                thumbnails={thumbnails}
+                lessLabel={T.get('copy.thumbnails.high')}
                 onLess={this.onLess}
-                onMouseEnter={this.setLiftThumbnailId}
+                onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.setDefaultLiftThumbnail}
                 onClick={this.onThumbnailClick}
+                firstClassName="xxThumbnail--highLight"
+                secondClassName="xxThumbnail--lowLight"
             />);
-        // There's more than 6 and they haven't shown more at all.
-        } else if (rows === 1) {
-            return (<ShowMoreThumbnailList
-                thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
-                onMore={this.onMore}
-                onMouseEnter={this.setLiftThumbnailId}
-                onMouseLeave={this.setDefaultLiftThumbnail}
-                onClick={this.onThumbnailClick}
-            />);
-        // There's more thumbs than space to display them and they've expanded
-        // once or more: put ShowMore and ShowLess.
         }
-        return (<ShowMoreLessThumbnailList
+        return (<ShowMoreThumbnailList
             thumbnails={this.props.smallThumbnails}
-            numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
+            numberToDisplay={5}
+            moreLabel={T.get('copy.thumbnails.low')}
             onMore={this.onMore}
-            onLess={this.onLess}
-            onMouseEnter={this.setLiftThumbnailId}
+            onMouseEnter={this.onSetLiftThumbnailId}
             onMouseLeave={this.setDefaultLiftThumbnail}
             onClick={this.onThumbnailClick}
         />);
