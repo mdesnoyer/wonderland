@@ -1,113 +1,100 @@
-'use strict';
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-import React, {PropTypes} from 'react';
-
+/* global CONFIG:false */
+import React from 'react';
 import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
-
 import BasePage from './BasePage';
+import CollectionsMainPage from './CollectionsMainPage';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import {
     LoadActions,
     Dispatcher,
     Store,
-    cancelActions
-} from '../../stores/CollectionStores.js';
+} from '../../stores/CollectionStores';
 
-const ViewSharedCollectionPage = React.createClass({
+class ViewSharedCollectionPage extends CollectionsMainPage {
 
-    getInitialState: function() {
-        return { ...Store.getState(), ...{ metaTags: [] }};
-    },
+    static baseMetaTags = [
+        { property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: T.get('copy.share.contentTitle') },
+        { property: 'og:description', content: T.get('copy.share.facebook') },
+        { property: 'twitter:card', content: 'summary_large_image' },
+        { property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE },
+        { property: 'twitter:description', content: T.get('copy.share.twitter') },
+        { content: 'width=device-width, initial-scale=1.0', name: 'viewport' },
+    ]
 
-    componentWillMount: function() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...Store.getState(),
+            metaTags: [],
+        };
+        this.onUpdateState = this.onUpdateState.bind(this);
+    }
+
+    componentWillMount() {
         // Register our update function with the store dispatcher.
-        Dispatcher.register(this.updateState);
+        Dispatcher.register(this.onUpdateState);
         LoadActions.loadTagByShareToken(
             this.props.params.accountId,
             this.props.params.tagId,
             this.props.params.shareToken
         );
-    },
+    }
 
-    componentWillUnmount: function() {
-        Dispatcher.unregister(this.updateState);
-        Store.resetStores();
-        cancelActions();
-    },
-
-    baseMetaTags: [
-        {property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID},
-        {property: 'og:type', content: 'article'},
-        {property: 'og:title', content: T.get('copy.share.contentTitle')},
-        {property: 'og:description', content: T.get('copy.share.facebook')},
-        {property: 'twitter:card', content: 'summary_large_image'},
-        {property: 'twitter:site', content: UTILS.NEON_TWITTER_HANDLE},
-        {property: 'twitter:description', content: T.get('copy.share.twitter')},
-        {content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
-    ],
-
-    // TODO factor this from here and VideoPageGuest.
     // Build urls for the share image service endpoints.
-    getMetaTagsFromProps: function() {
-        var _url = CONFIG.API_HOST +
-            this.props.params.accountId +
-            '/social/image/'
+    getMetaTagsFromProps() {
+        let url = `${CONFIG.API_HOST +
+            this.props.params.accountId
+            }/social/image/`;
         // Config is missing the protocol. @TODO
-        UTILS.stripProtocol(_url)
-        _url = 'https:' + _url;
+        UTILS.stripProtocol(url);
+        url = `https:${url}`;
 
-        const twitter_image_url = _url + 'twitter/' +
-            '?share_token=' +
-            this.props.params.shareToken;
-        const image_url = _url +
-            '?share_token=' +
-            this.props.params.shareToken;
+        const twitterImageUrl = `${url}twitter/` +
+            `?share_token=${
+            this.props.params.shareToken}`;
+        const imageUrl = `${url
+            }?share_token=${
+            this.props.params.shareToken}`;
 
         return this.baseMetaTags.concat([
-            {property: 'og:image', content: image_url},
-            {property: 'og:image:width', content: 800},
-            {property: 'og:image:height', content: 800},
-            {property: 'twitter:image', content: twitter_image_url}
+            { property: 'og:image', content: imageUrl },
+            { property: 'og:image:width', content: 800 },
+            { property: 'og:image:height', content: 800 },
+            { property: 'twitter:image', content: twitterImageUrl },
         ]);
-    },
+    }
 
-    updateState: function() {
-        const self = this;
-        self.setState(Store.getState(),
+    onUpdateState() {
+        this.setState(Store.getState(),
             () => {
-                self.setState({metaTags: self.getMetaTagsFromProps()});
+                this.setState({ metaTags: this.getMetaTagsFromProps() });
             }
         );
-    },
+    }
 
-    // Takes a string in [
-    // learnMore, contact, signUp, account ] or null
-    setSidebarContent: function(sidebarContent) {
-        const self = this;
-        self.setState({sidebarContent});
-    },
-
-    getShownIds: function() {
+    getShownIds() {
         const tagIds = _.keys(this.state.tags);
         if (tagIds.length > 0) {
             return [tagIds[0]];
         }
         return [];
-    },
+    }
 
-    render: function() {
+    render() {
         return (
             <BasePage
                 meta={this.state.metaTags}
                 title={T.get('copy.myCollections.title')}
-                setSidebarContent={this.setSidebarContent}
+                onSetSidebarContent={this.onSetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
             >
                 <CollectionsContainer
-                    isMine={false}
+                    isViewOnly
                     shownIds={this.getShownIds()}
                     ownerAccountId={this.props.params.accountId}
                     stores={{
@@ -119,17 +106,14 @@ const ViewSharedCollectionPage = React.createClass({
                         thumbnailFeatures: this.state.thumbnailFeatures,
                         features: this.state.features,
                         tagShares: this.state.tagShares,
-                        accounts: this.state.accounts,
                     }}
                     loadTagForDemographic={LoadActions.loadTagForDemographic}
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
-                    setSidebarContent={this.setSidebarContent}
-                    getVideoStatus={this.getVideoStatus}
-                    infoPanelOnly={true}
+                    onSetSidebarContent={this.onSetSidebarContent}
                 />
             </BasePage>
         );
     }
-});
+}
 
 export default ViewSharedCollectionPage;
