@@ -111,9 +111,9 @@ class VideoCollection extends BaseCollection {
     setProcessingMonitor() {
         if (this.props.isRefiltering) {
             const tagId = this.props.tagId;
+            const { gender, age } = this.props.selectedDemographic;
             const monitorFunction = LoadActions.loadTags.bind(
-                null, [tagId], this.props.selectedDemographic[0],
-                this.props.selectedDemographic[1]);
+                null, [tagId], gender, age, true);
             if (this.props.timeRemaining > 10) {
                 this.clearProcessingMonitor();
                 const timeout = 1000 * this.props.timeRemaining;
