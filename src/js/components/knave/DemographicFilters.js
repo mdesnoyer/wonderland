@@ -14,9 +14,9 @@ const DemographicFilters = React.createClass({
 
     propTypes: {
 
-        // Array [<gender>, <age>] where each is a number key of its enum
+        // { gender, age } where value is a number key of its enum
         // e.g., [1, 1] male, 18-19
-        selectedDemographicId: PropTypes.array,
+        selectedDemographic: PropTypes.objectOf(PropTypes.number),
 
         // Array of array with enum keys age, gender
         demographicOptions: PropTypes.array,
@@ -60,23 +60,24 @@ const DemographicFilters = React.createClass({
             isOpen: !self.state.isOpen
         });
     },
-    getLabelFromId(id) {
-        let genderLabel,
-            ageLabel;
-        if(id[0] === 0) {
+    getLabel(input) {
+        const { gender, age } = input;
+        let genderLabel;
+        let ageLabel;
+        if(gender === 0) {
             genderLabel = T.get('none');
         } else {
-            let gender = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[id[0]];
+            let genderId = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
             genderLabel = _.find(UTILS.FILTERS_GENDER, i => {
-                return i.value == gender;
+                return i.value == genderId;
             }).label;
         }
-        if(id[1] === 0) {
+        if(age === 0) {
             ageLabel = T.get('none');
         } else {
-            let age = _.invert(UTILS.FILTER_AGE_COL_ENUM)[id[1]];
+            let ageId = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
             ageLabel = _.find(UTILS.FILTERS_AGE, i => {
-                return i.value == age;
+                return i.value == ageId;
             }).label;
         }
         return genderLabel + '/' + ageLabel;
@@ -151,16 +152,16 @@ const DemographicFilters = React.createClass({
             return null;
         }
 
-        const selectedDemoLabel = self.getLabelFromId(self.props.selectedDemographic);
+        const selectedDemoLabel = self.getLabel(self.props.selectedDemographic);
         let optionList;
         if (self.state.isOpen) {
             const options = self.props.demographicOptions.map(function(option) {
                 const key = option.join(',');
-                const [gender, age] = option;
+                const { gender, age } = option;
                 const className = (option === self.props.selectedDemographic)?
                     'xxCollectionFilters-version is-selected':
                     'xxCollectionFilters-version';
-                const label = self.getLabelFromId(option);
+                const label = self.getLabel(option);
                 // TODO rewrite without bind.
                 return (
                     <li

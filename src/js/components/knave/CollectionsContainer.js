@@ -31,7 +31,7 @@ const propTypes = {
     onSetSidebarContent: PropTypes.func.isRequired,
 
     // Is this a share view?
-    isSharedView: PropTypes.bool.isRequired,
+    isViewOnly: PropTypes.bool.isRequired,
 
     // Enables custom tooltip
     onSetTooltipText: PropTypes.func,
@@ -443,7 +443,6 @@ class CollectionsContainer extends React.Component {
     renderCollection(tagId) {
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
-            console.log('IC', tagId);
             return this.renderImageCollection(tagId);
         }
 
@@ -452,10 +451,8 @@ class CollectionsContainer extends React.Component {
             return alt;
         }
         if (this.hasClip(tagId)) {
-            console.log('CC', tagId);
             return this.renderClipCollection(tagId);
         }
-        console.log('VC', tagId);
         return this.renderVideoCollection(tagId);
     }
 
@@ -490,7 +487,6 @@ class CollectionsContainer extends React.Component {
     }
 
     renderClipCollection(tagId) {
-        console.log('renderC', tagId);
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
 
@@ -503,17 +499,20 @@ class CollectionsContainer extends React.Component {
         const clipDemo = UTILS.findDemographicObject(
             video.demographic_clip_ids, gender, age);
         const clipIds = clipDemo.clip_ids;
-        const clips = _.pick(this.props.stores.clips[gender][age], clipIds);
-        const sortedClips = _.orderBy(clips, ['neon_score'], ['desc']);
+        const clipMap = _.pick(this.props.stores.clips[gender][age], clipIds);
+        const sortedClips = _(clipMap)
+            .orderBy(['neon_score'], ['desc'])
+            .values()
+            .value();
 
         // The assumption that thumbnails stores are set up
         // demographically for clip videos is problematic, so
         // just use the defaults.
         // TODO revisit the way we map clip thumbs.
-        const thumbnailIds = _.map(clips, 'thumbnail_id');
+        const thumbnailIds = _.map(clipMap, 'thumbnail_id');
         const thumbnailMap = _.pick(this.props.stores.thumbnails[0][0], thumbnailIds);
         const bestScore = sortedClips[0].neon_score;
-        const objectLiftMap = _.map(clips, clip => (
+        const objectLiftMap = _.mapValues(clipMap, clip => (
             clip.neon_score / bestScore) - 1
         );
 
@@ -527,9 +526,8 @@ class CollectionsContainer extends React.Component {
                 thumbnailMap={thumbnailMap}
                 onDemographicChange={this.onDemographicChange}
                 demographicOptions={this.getDemoOptionArray(tagId)}
-                selectedDemographic={[gender, age]}
+                selectedDemographic={{gender, age}}
                 onDeleteCollection={this.props.onDeleteCollection}
-                isSharedView={this.props.isSharedView}
                 onSocialShare={this.props.onSocialShare}
                 shareUrl={shareUrl}
                 onSendResultEmail={this.onSendClipResultEmail}
@@ -537,6 +535,7 @@ class CollectionsContainer extends React.Component {
                 onSetTooltipText={this.props.onSetTooltipText}
                 isRefiltering={isRefiltering}
                 timeRemaining={video.estimated_time_remaining}
+                isViewOnly={this.props.isViewOnly}
             />
        );
     }
@@ -563,23 +562,22 @@ class CollectionsContainer extends React.Component {
                 rightFeatureThumbnail={right}
                 smallThumbnails={more}
                 thumbnailsLength={thumbnailsLength}
-                thumbLiftMap={thumbLiftMap}
+                objectLiftMap={thumbLiftMap}
                 demographicOptions={this.getDemoOptionArray(tagId)}
                 selectedDemographic={{ gender, age }}
                 shareUrl={shareUrl}
-                isSharedView={this.props.isSharedView}
                 onThumbnailClick={this.onThumbnailClick}
                 onDemographicChange={this.onDemographicChange}
                 onDeleteCollection={this.props.onDeleteCollection}
                 onSocialShare={this.props.onSocialShare}
                 onSendResultEmail={this.onSendResultEmail}
                 onSetTooltipText={this.props.onSetTooltipText}
+                isViewOnly={this.props.isViewOnly}
             />
         );
     }
 
     renderVideoCollection(tagId) {
-        console.log('renderV', tagId);
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
 
@@ -610,10 +608,9 @@ class CollectionsContainer extends React.Component {
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
                 demographicOptions={this.getDemoOptionArray(tagId)}
-                thumbLiftMap={thumbLiftMap}
+                objectLiftMap={thumbLiftMap}
                 selectedDemographic={{ gender, age }}
                 shareUrl={shareUrl}
-                isSharedView={this.props.isSharedView}
                 isRefiltering={isRefiltering}
                 timeRemaining={video.estimated_time_remaining}
                 onDeleteCollection={this.props.onDeleteCollection}
@@ -623,6 +620,7 @@ class CollectionsContainer extends React.Component {
                 onSocialShare={this.props.onSocialShare}
                 onThumbnailClick={this.onThumbnailClick}
                 onToggleThumbnailEnabled={this.props.onToggleThumbnailEnabled}
+                isViewOnly={this.props.isViewOnly}
             />
        );
     }

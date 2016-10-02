@@ -155,6 +155,8 @@ class VideoCollection extends BaseCollection {
         return (
             <MobileBaseCollection
                 {...this.props}
+                featureContent={this.renderFeatureContent()}
+                subContent={this.renderSubContent()}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -177,6 +179,8 @@ class VideoCollection extends BaseCollection {
         return (
             <BaseCollection
                 {...this.props}
+                featureContent={this.renderFeatureContent()}
+                subContent={this.renderSubContent()}
                 copyOverrideMap={copyOverrideMap}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}

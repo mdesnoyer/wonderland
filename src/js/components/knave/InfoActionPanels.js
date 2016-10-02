@@ -1,6 +1,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
@@ -14,7 +14,7 @@ import T from '../../modules/translation';
 import UploadForm from '../knave/UploadForm';
 import UTILS from '../../modules/utils';
 import { ServingStatusThumbnailList } from './ThumbnailList';
-import { SendActions, LoadActions } from '../../stores/CollectionStores';
+import { SendActions } from '../../stores/CollectionStores';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -27,7 +27,7 @@ export const InfoDemoLiftPanel = React.createClass({
         title: PropTypes.string.isRequired,
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
-        selectedDemographic: PropTypes.array.isRequired,
+        selectedDemographic: PropTypes.objectOf(PropTypes.number).isRequired,
         // whether or not the panel should display the refilter
         // button, defaults to true
         displayRefilterButton: PropTypes.bool,
@@ -41,16 +41,16 @@ export const InfoDemoLiftPanel = React.createClass({
     },
 
     contextTypes: {
-        isMobile: PropTypes.bool
+        isMobile: PropTypes.bool,
     },
 
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
-            displayRefilterButton: true
+            displayRefilterButton: true,
         };
     },
 
-    render: function() {
+    render() {
         const result = (
             <div>
             { this.props.clips && this.context.isMobile ? null : (
@@ -77,18 +77,18 @@ export const InfoDemoLiftPanel = React.createClass({
             </div>
         );
         return result;
-    }
+    },
 });
 
 export const InfoLiftPanel = React.createClass({
     propTypes: {
        // User's name of this collection
         title: PropTypes.string.isRequired,
-        lift: PropTypes.number,
+        liftValue: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
         onWhyClick: React.PropTypes.func,
     },
-    render: function() {
+    render() {
         const result = (
             <div>
                 <h1 className="xxCollection-title">
@@ -102,7 +102,7 @@ export const InfoLiftPanel = React.createClass({
             </div>
         );
         return result;
-    }
+    },
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -120,17 +120,16 @@ export const FilterPanel = React.createClass({
         const callback = () => {
             self.props.onCancelClick();
             self.props.onDemographicChange(enumGender, enumAge);
-        }
+        };
         if (this.props.clips) {
             return SendActions.refilterVideoForClip(
                 videoId, gender, age, callback);
         }
         SendActions.refilterVideo(
             videoId, gender, age, callback);
-
     },
 
-    render: function() {
+    render() {
         return (
             <VideoFilters
                 handleBackClick={this.props.onCancelClick}
@@ -138,7 +137,7 @@ export const FilterPanel = React.createClass({
                 videoId={this.props.videoId}
             />
         );
-    }
+    },
 });
 
 export const ServingStatusPanel = React.createClass({
@@ -154,10 +153,10 @@ export const ServingStatusPanel = React.createClass({
         disableThumbnail: PropTypes.func.isRequired,
 
         // list of goodThumbnails
-        goodThumbnails: PropTypes.array
+        goodThumbnails: PropTypes.array,
     },
-    render: function() {
-        var collectionClassName = this.props.isMobile ?
+    render() {
+        const collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction xxCollectionAction--no-bottom-margin';
         return (
@@ -170,7 +169,7 @@ export const ServingStatusPanel = React.createClass({
                     thumbnails={this.props.goodThumbnails}
                     enableClick={this.props.enableThumbnail}
                     disableClick={this.props.disableThumbnail}
-                    className='xxThumbnail--noscore xxThumbnail--fullwidth'
+                    className="xxThumbnail--noscore xxThumbnail--fullwidth"
                 />
                 <div className="xxCollectionAction-buttons">
                     <button
@@ -178,20 +177,20 @@ export const ServingStatusPanel = React.createClass({
                         type="button"
                         data-action-label="info"
                         onClick={this.props.onCancelClick}
-                        >{T.get('back')}
+                    >{T.get('back')}
                     </button>
                 </div>
             </div>
         );
-    }
+    },
 });
 
 
 export const ImageServingEnableControl = React.createClass({
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('copy.thumbnailServing.enable.title')}
@@ -199,18 +198,19 @@ export const ImageServingEnableControl = React.createClass({
                 data-place="left"
                 data-action-label="delete"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-enableserving">
+                className="xxCollectionActions-anchor xxCollectionActions-enableserving"
+            >
                 <span>{T.get('delete')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const ImageServingDisableControl = React.createClass({
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('copy.thumbnailServing.disable.title')}
@@ -218,20 +218,21 @@ export const ImageServingDisableControl = React.createClass({
                 data-place="left"
                 data-action-label="disable serving"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-disableserving">
+                className="xxCollectionActions-anchor xxCollectionActions-disableserving"
+            >
                 <span>{T.get('delete')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const ServingStatusControl = React.createClass({
 
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
 
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('copy.videoContent.disable.title')}
@@ -239,11 +240,12 @@ export const ServingStatusControl = React.createClass({
                 data-place="bottom"
                 data-action-label="delete"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-disable">
+                className="xxCollectionActions-anchor xxCollectionActions-disable"
+            >
                 <span>{T.get('delete')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const EmailPanel = React.createClass({
@@ -253,50 +255,50 @@ export const EmailPanel = React.createClass({
         // Value to push into the email
         shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        onSendResultEmail: PropTypes.func.isRequired
+        onSendResultEmail: PropTypes.func.isRequired,
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return {
             mode: undefined,
             errorMessage: undefined,
-        }
+        };
     },
-    componentWillMount: function() {
+    componentWillMount() {
         this.props.onLoadShareUrl();
     },
 
-    startEmailSend: function(email) {
-        this.setState({ mode: 'loading'}, function() {
+    startEmailSend(email) {
+        this.setState({ mode: 'loading' }, function () {
             this.props.onSendResultEmail(email, this.sendEmailCallback);
         });
     },
-    sendEmailCallback: function(r) {
+    sendEmailCallback(r) {
         const self = this;
         if (r.status_code === 200) {
-            return self.setState({mode: 'success'});
+            return self.setState({ mode: 'success' });
         }
         this.setState({
             mode: 'error',
-            errorMessage: r.errorMessage
+            errorMessage: r.errorMessage,
         });
     },
-    render: function() {
-        var self = this,
+    render() {
+        let self = this,
             collectionClassName = self.props.isMobile ?
                 'xxOverlay xxOverlay--light xxOverlay--spaced' :
                 'xxCollectionAction',
             userMessage = false
-        ;
+                ;
         switch (self.state.mode) {
-            case 'error':
-                userMessage = <Message message={self.state.errorMessage} type="formError" />;
-                break;
-            case 'loading':
-                userMessage = <Message message={T.get('copy.loading')} />;
-                break;
-            default:
-                break;
+        case 'error':
+            userMessage = <Message message={self.state.errorMessage} type="formError" />;
+            break;
+        case 'loading':
+            userMessage = <Message message={T.get('copy.loading')} />;
+            break;
+        default:
+            break;
         }
         return (
             <div className={collectionClassName}>
@@ -306,8 +308,8 @@ export const EmailPanel = React.createClass({
                         <div
                             className="xxOverlay-close"
                             data-action-label="info"
-                            onClick={self.props.handleBackClick}>
-                        </div>
+                            onClick={self.props.handleBackClick}
+                        />
                     ) : null
                 }
                 {
@@ -356,8 +358,8 @@ export const EmailPanel = React.createClass({
                                     className="xxButton xxButton--highlight"
                                     type="button"
                                     disabled={!this.props.shareUrl}
-                                    onClick={() => {this._startEmailSend(
-                                        self.refs.email.value.trim())}}
+                                    onClick={() => { this._startEmailSend(
+                                        self.refs.email.value.trim()); }}
                                 >{T.get('send')}</button>
                             </div>
                         </div>
@@ -365,16 +367,16 @@ export const EmailPanel = React.createClass({
                 }
             </div>
         );
-    }
+    },
 });
 
 export const EmailControl = React.createClass({
 
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
 
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('label.emailMe')}
@@ -382,11 +384,12 @@ export const EmailControl = React.createClass({
                 data-place="bottom"
                 data-action-label="email"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-email">
+                className="xxCollectionActions-anchor xxCollectionActions-email"
+            >
                 <span>{T.get('email')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const SharePanel = React.createClass({
@@ -399,22 +402,22 @@ export const SharePanel = React.createClass({
         // Value to push into the form
         shareUrl: PropTypes.string,
         // generates a shareUrl to use
-        onLoadShareUrl: PropTypes.func.isRequired
+        onLoadShareUrl: PropTypes.func.isRequired,
     },
 
-    componentWillMount: function() {
+    componentWillMount() {
         this.props.onLoadShareUrl();
     },
 
-    componentDidMount: function() {
+    componentDidMount() {
         const clipboard = new Clipboard(this.refs.copyButton);
-        clipboard.on('success', e => {
+        clipboard.on('success', (e) => {
             e.clearSelection();
         });
         // If the copy API is available on this device,
         // set the tooltip to show that text was copied
         // instead of just selected.
-        if(_.isFunction(document.execCommand)) {
+        if (_.isFunction(document.execCommand)) {
             this.setTooltipCode('action.textCopied');
         } else {
             this.setTooltipCode('action.textSelected');
@@ -430,7 +433,7 @@ export const SharePanel = React.createClass({
     },
 
     getShareForm() {
-        const shareElement = this.props.shareUrl?
+        const shareElement = this.props.shareUrl ?
             (
                 <div className="xxFormField">
                     <label
@@ -439,13 +442,13 @@ export const SharePanel = React.createClass({
                     >{T.get('copy.share.label')}</label>
                     <input
                         className="xxInputText"
-                        id={"xx-share-link" + this.props.tagId}
+                        id={`xx-share-link${this.props.tagId}`}
                         type="text"
                         value={this.props.shareUrl}
                         readOnly
                     />
                 </div>
-            ): <CollectionLoadingText />;
+            ) : <CollectionLoadingText />;
 
         return (
             <div>
@@ -460,7 +463,7 @@ export const SharePanel = React.createClass({
                     <button
                         disabled={!this.props.shareUrl}
                         className="xxButton xxButton--highlight"
-                        data-clipboard-target={"#xx-share-link" + this.props.tagId}
+                        data-clipboard-target={`#xx-share-link${this.props.tagId}`}
                         value={this.props.shareUrl}
                         ref="copyButton"
                         type="button"
@@ -472,9 +475,8 @@ export const SharePanel = React.createClass({
         );
     },
 
-    render: function() {
-
-        const collectionClassName = this.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction'
+    render() {
+        const collectionClassName = this.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction';
 
         return (
             <div className={collectionClassName}>
@@ -484,8 +486,8 @@ export const SharePanel = React.createClass({
                         <div
                             className="xxOverlay-close"
                             data-action-label="info"
-                            onClick={this.props.onCancelClick}>
-                        </div>
+                            onClick={this.props.onCancelClick}
+                        />
                     ) : null
                 }
                 <ul className="xxCollectionShare">
@@ -497,7 +499,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="facebook"
-                            onClick={() => {this.props.onSocialShare('facebook')}}
+                            onClick={() => { this.props.onSocialShare('facebook'); }}
                             className="xxCollectionShare-anchor xxCollectionShare-fb"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.facebook')}
@@ -508,7 +510,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="twitter"
-                            onClick={() => {this.props.socialClickHandler('twitter')}}
+                            onClick={() => { this.props.socialClickHandler('twitter'); }}
                             className="xxCollectionShare-anchor xxCollectionShare-twitter"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.twitter')}
@@ -519,7 +521,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="linkedin"
-                            onClick={() => {this.props.socialClickHandler('linkedin')}}
+                            onClick={() => { this.props.socialClickHandler('linkedin'); }}
                             className="xxCollectionShare-anchor xxCollectionShare-linkedin"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.linkedin')}
@@ -534,11 +536,11 @@ export const SharePanel = React.createClass({
                 {this.getShareForm()}
             </div>
         );
-    }
+    },
 });
 
 export const DownloadControl = React.createClass({
-    render: function() {
+    render() {
         return (
             <a
                 href={this.props.href}
@@ -547,21 +549,22 @@ export const DownloadControl = React.createClass({
                 data-for="staticTooltip"
                 data-place="bottom"
                 data-action-label="download"
-                className="xxCollectionActions-anchor xxCollectionActions-download">
+                className="xxCollectionActions-anchor xxCollectionActions-download"
+            >
                 <span>{T.get('download')}</span>
             </a>
-        )
-    }
+        );
+    },
 });
 
 
 export const ShareControl = React.createClass({
 
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
 
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('copy.share.main')}
@@ -569,11 +572,12 @@ export const ShareControl = React.createClass({
                 data-place="bottom"
                 data-action-label="share"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-share">
+                className="xxCollectionActions-anchor xxCollectionActions-share"
+            >
                 <span>{T.get('share')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const DeletePanel = React.createClass({
@@ -583,10 +587,10 @@ export const DeletePanel = React.createClass({
         onDeleteCollection: PropTypes.func.isRequired,
 
         // what to do when the cancel button is clicked
-        onCancelClick: PropTypes.func.isRequired
+        onCancelClick: PropTypes.func.isRequired,
     },
-    render: function() {
-        var collectionClassName = this.props.isMobile ?
+    render() {
+        const collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction';
         return (
@@ -596,8 +600,8 @@ export const DeletePanel = React.createClass({
                     this.props.isMobile ? (
                         <div
                             className="xxOverlay-close"
-                            data-action-label="info">
-                        </div>
+                            data-action-label="info"
+                        />
                     ) : null
                 }
                 <div className="xxText">
@@ -609,7 +613,7 @@ export const DeletePanel = React.createClass({
                         type="button"
                         data-action-label="info"
                         onClick={this.props.onCancelClick}
-                        >{T.get('cancel')}</button>
+                    >{T.get('cancel')}</button>
                     <button
                         className="xxButton xxButton--highlight"
                         type="button"
@@ -618,16 +622,16 @@ export const DeletePanel = React.createClass({
                 </div>
             </div>
         );
-    }
+    },
 });
 
 export const DeleteControl = React.createClass({
 
     propTypes: {
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
     },
 
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={T.get('copy.videoContent.delete.title')}
@@ -635,19 +639,20 @@ export const DeleteControl = React.createClass({
                 data-place="bottom"
                 data-action-label="delete"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-delete">
+                className="xxCollectionActions-anchor xxCollectionActions-delete"
+            >
                 <span>{T.get('delete')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const AddPanel = React.createClass({
-    render: function() {
-        var collectionClassName = this.props.isMobile ?
+    render() {
+        const collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction';
-        var title = this.props.panelType === 'video' ? 'Default Thumbnail' : T.get('copy.videoContent.add.title');
+        const title = this.props.panelType === 'video' ? 'Default Thumbnail' : T.get('copy.videoContent.add.title');
         return (
             <div className={collectionClassName}>
             <h2 className="xxTitle">{title}</h2>
@@ -655,24 +660,24 @@ export const AddPanel = React.createClass({
                     this.props.isMobile ? (
                         <div
                             className="xxOverlay-close"
-                            data-action-label="info">
-                        </div>
+                            data-action-label="info"
+                        />
                     ) : null
                 }
                 <UploadForm
                     panelType={this.props.panelType}
-                    isAddPanel={true}
+                    isAddPanel
                     tagId={this.props.tagId}
                     videoId={this.props.videoId}
                     onCancelClick={this.props.onCancelClick}
                 />
             </div>
         );
-    }
+    },
 });
 
 export const AddControl = React.createClass({
-    render: function() {
+    render() {
         return (
             <a
                 data-tip={this.props.panelType === 'video' ? T.get('copy.videoContent.tooltip') : T.get('copy.videoContent.add.tooltip')}
@@ -680,11 +685,12 @@ export const AddControl = React.createClass({
                 data-place="bottom"
                 data-action-label="add"
                 onClick={this.props.onClick}
-                className="xxCollectionActions-anchor xxCollectionActions-add">
+                className="xxCollectionActions-anchor xxCollectionActions-add"
+            >
                 <span>{T.get('copy.videoContent.add.tooltip')}</span>
             </a>
         );
-    }
+    },
 });
 
 export const SetDefaultControl = React.createClass({
@@ -699,14 +705,14 @@ export const SetDefaultPanel = React.createClass({
     },
 });
 
-export const EnableControl = React.createClass({
+export class EnableControl extends React.Component {
     render() {
         return null;
-    },
-});
+    }
+}
 
-export const EnablePanel = React.createClass({
+export class EnablePanel extends React.Component {
     render() {
         return null;
-    },
-});
+    }
+}

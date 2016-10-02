@@ -52,7 +52,7 @@ class BaseCollection extends React.Component {
         shareUrl: PropTypes.string,
         title: PropTypes.string.isRequired,
         demographicOptions: PropTypes.arrayOf(PropTypes.array).isRequired,
-        selectedDemographic: PropTypes.arrayOf(PropTypes.array).isRequired,
+        selectedDemographic: PropTypes.objectOf(PropTypes.number).isRequired,
         isRefiltering: PropTypes.bool,
         timeRemaining: PropTypes.number,
 
@@ -166,6 +166,7 @@ class BaseCollection extends React.Component {
                 onWhyClick={this.onWhyClick}
             />,
             <SharePanel
+                tagId={this.props.tagId}
                 shareUrl={this.props.shareUrl}
                 onCancelClick={this.onControlCancelClick}
                 onLoadShareUrl={this.onLoadShareUrl}

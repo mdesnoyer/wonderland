@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import T from '../../modules/translation';
-
 const propTypes = {
     panels: PropTypes.arrayOf(PropTypes.node).isRequired,
     controls: PropTypes.arrayOf(PropTypes.node).isRequired,
@@ -42,7 +40,7 @@ class InfoActionContainer extends React.Component {
             </div>
         );
     }
-};
+}
 InfoActionContainer.propTypes = propTypes;
 
 export default InfoActionContainer;

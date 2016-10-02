@@ -105,6 +105,7 @@ export default class ImageCollection extends BaseCollection {
         };
         return (
             <MobileBaseCollection
+                {...this.props}
                 featureContent={this.renderFeatureContent()}
                 subContent={this.renderSubContent()}
                 infoActionPanels={this.getPanels()}
@@ -119,6 +120,7 @@ export default class ImageCollection extends BaseCollection {
     renderDesktop() {
         return (
             <BaseCollection
+                {...this.props}
                 featureContent={this.renderFeatureContent()}
                 subContent={this.renderSubContent()}
                 infoActionPanels={this.getPanels()}
@@ -259,8 +261,8 @@ export default class ImageCollection extends BaseCollection {
 
     render() {
         if (this.context.isMobile) {
-            return this.getMobileComponent();
+            return this.renderMobile();
         }
-        return this.getDesktopComponent();
+        return this.renderDesktop();
     }
 }

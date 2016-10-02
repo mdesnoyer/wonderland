@@ -62,17 +62,18 @@ class CollectionsMainPage extends React.Component {
         // TODO needed?
         LoadActions.loadAccount(SESSION.state.accountId);
 
-        // Load initial results: first 2 quickly and a whole page or more.
-        const callback = () => {
-            // Route to onboarding if they've got no tags already.
-            if (_.isEmpty(this.state.tags)) {
-                this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
-            }
-            Search.load(UTILS.RESULTS_PAGE_SIZE);
-        };
-        Search.load(2, true, callback.bind(this));
-        this.setIntervalId = setInterval(Search.reload.bind(
-            null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
+        Search.load(3, true);
+        // // Load initial results: first 2 quickly and a whole page or more.
+        // const callback = () => {
+        //    // Route to onboarding if they've got no tags already.
+        //    if (_.isEmpty(this.state.tags)) {
+        //        this.context.router.push(UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL);
+        //    }
+        //    Search.load(UTILS.RESULTS_PAGE_SIZE);
+        // };
+        // Search.load(2, true, callback.bind(this));
+        // this.setIntervalId = setInterval(Search.reload.bind(
+        //    null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
     }
 
     componentWillUnmount() {
@@ -408,7 +409,7 @@ class CollectionsMainPage extends React.Component {
         return (
             <div>
                 <CollectionsContainer
-                    isSharedView={false}
+                    isViewOnly={false}
                     shownIds={this.getShownIds()}
                     stores={{
                         tags: this.state.tags,

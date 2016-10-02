@@ -1,4 +1,6 @@
-var RENDITIONS = {
+const _ = require('lodash');
+
+const RENDITIONS = {
     FUZZ: 6, // px
 
     // check if a & b approx equal i.e in the range of the fuzz
@@ -66,6 +68,22 @@ var RENDITIONS = {
             }
         }
         return near_match || aspect_ratio_match || thumbnail.url;
+    },
+
+    findLargestUrl(renditions, fileType = null) {
+        let maxProduct = 0;
+        let result;
+        renditions.forEach((r) => {
+            if (fileType && !_.endsWith(r.url, fileType)) {
+                return;
+            }
+            let product = r.width * r.height;
+            if (product > maxProduct) {
+                maxProduct = product;
+                result = r.url;
+            }
+        });
+        return result;
     }
 }
 
