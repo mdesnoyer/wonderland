@@ -83,6 +83,7 @@ var UploadForm = React.createClass({
         const self = this;
         if (e.keyCode === 27) {
             self.setState(self.getInitialState());
+            e.stopPropagation();
         }
     },
     toggleOpen: function(e) {

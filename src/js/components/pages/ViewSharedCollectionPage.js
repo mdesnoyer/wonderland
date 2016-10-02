@@ -61,7 +61,7 @@ class ViewSharedCollectionPage extends CollectionsMainPage {
             }?share_token=${
             this.props.params.shareToken}`;
 
-        return this.baseMetaTags.concat([
+        return ViewSharedCollectionPage.baseMetaTags.concat([
             { property: 'og:image', content: imageUrl },
             { property: 'og:image:width', content: 800 },
             { property: 'og:image:height', content: 800 },

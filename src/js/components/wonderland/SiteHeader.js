@@ -1,75 +1,60 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import SiteBanner from './SiteBanner';
 import AccountMasqueradeBar from './AccountMasqueradeBar';
-import T from '../../modules/translation';
 import Sidebar from './Sidebar';
 
-var SiteHeader = React.createClass({
-    propTypes: {
+class SiteHeader extends React.Component {
+
+    static propTypes = {
         sidebarContent: PropTypes.oneOf([
-            'learnMore',
-            'contact',
-            'signUp',
-            'account',
-            'primaryNavigation'
-        ]),
-        setSidebarContent: PropTypes.func,
+            'learnMore', 'contact', 'signUp', 'account', 'primaryNavigation']),
+        onSetSidebarContent: PropTypes.func,
         query: PropTypes.string,
         onSearchBarChange: PropTypes.func,
         onSearchBarSubmit: PropTypes.func,
-        killNav: React.PropTypes.bool
-    },
-    getDefaultProps: function() {
-        return {
-            killNav: false
-        }
-    },
-    getInitialState() {
-        return {sidebarContent: null};
-    },
+        killNav: React.PropTypes.bool,
+    }
 
-    getContent() {
+    constructor(props) {
+        super(props);
+        this.onSetSidebarContent = this.onSetSidebarContent.bind(this);
+        this.state = { sidebarContent: null };
+    }
+
+    getSidebarContent() {
         // Prefer the parent's sidebarContent.
         if (this.props.sidebarContent) {
             return this.props.sidebarContent;
         }
         return this.state.sidebarContent;
-    },
+    }
 
-    getContentFunction() {
-        if (this.props.setSidebarContent) {
-            return this.props.setSidebarContent;
+    onSetSidebarContent(sidebarContent) {
+        if (this.props.onSetSidebarContent) {
+            this.props.onSetSidebarContent(sidebarContent);
         }
-        const self = this;
-        return (sidebarContent) => {
-            self.setState({sidebarContent})
-        }
-    },
+        this.setState({ sidebarContent });
+    }
 
-    render: function() {
-        const self = this;
+    render() {
         return (
             <div>
                 <AccountMasqueradeBar />
                 <SiteBanner
-                    setSidebarContent={this.getContentFunction()}
-                    sidebarContent={this.getContent()}
-                    query={this.props.searchQuery}
+                    setSidebarContent={this.onSetSidebarContent}
+                    sidebarContent={this.getSidebarContent()}
+                    query={this.props.query}
                     onSearchBarChange={this.props.onSearchBarChange}
                     onSearchBarSubmit={this.props.onSearchBarSubmit}
-                    killNav={self.props.killNav}
+                    killNav={this.props.killNav}
                 />
                 <Sidebar
-                    content={this.getContent()}
-                    setContent={this.getContentFunction()}
+                    content={this.getSidebarContent()}
+                    onSetContent={this.onSetSidebarContent}
                 />
             </div>
         );
     }
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+}
 
 export default SiteHeader;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

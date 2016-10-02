@@ -457,7 +457,7 @@ class CollectionsMainPage extends React.Component {
         return (
             <BasePage
                 title={T.get('copy.myCollections.title')}
-                setSidebarContent={this.setSidebarContent}
+                onSetSidebarContent={this.onSetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
                 tooltipText={this.state.tooltipText}
                 query={this.state.searchQuery}

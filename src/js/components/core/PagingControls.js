@@ -29,21 +29,23 @@ class PagingControls extends React.Component {
     }
 
     componentDidMount() {
-        document.body.onkeydown = this.handleKeyEvent;
+        window.addEventListener('keydown', this.handleKeyEvent);
     }
 
     componentWillUnmount() {
-        document.body.onkeydown = undefined;
+        window.removeEventListener('keydown', this.handleKeyEvent);
     }
 
     handleKeyEvent(e) {
         if (e.keyCode === 37) { // left arrow
             if (this.props.currentPage > 0) {
                 this.handleNavPrev();
+                e.stopPropagation();
             }
         } else if (e.keyCode === 39) { // right arrow
             if (this.props.isNextEnabled) {
                 this.handleNavNext();
+                e.stopPropagation();
             }
         }
     }

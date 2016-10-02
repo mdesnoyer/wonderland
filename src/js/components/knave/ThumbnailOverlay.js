@@ -26,33 +26,31 @@ var ThumbnailOverlay = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
-        if (document.body.onkeydown) {
-            self._prevKeyDown = document.body.onkeydown;
-        }
-        document.body.onkeydown = self.handleKeyEvent;
-        ReactDOM.findDOMNode(this).scrollTop = 0;
+        window.addEventListener('keydown', self.handleKeyEvent);
+        ReactDOM.findDOMNode(self).scrollTop = 0;
         document.body.classList.add('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = `${scrollbarWidth}px`;
     },
     componentWillUnmount: function() {
         var self = this;
-        if (self._prevKeyDown) {
-            document.body.onkeydown = self._prevKeyDown;
-        }
+        window.removeEventListener('keydown', this.handleKeyEvent);
         document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = 0;
     },
     getValenceFeatures: function(thumbnail) {
-        return (thumbnail.final_valence_features ? thumbnail.final_valence_features : []) 
+        return (thumbnail.final_valence_features ? thumbnail.final_valence_features : [])
     },
     handleKeyEvent: function(e) {
         var self = this;
         switch (e.keyCode) {
             case 27: // Escape
+                e.stopPropagation();
                 return self.props.closeThumbnailOverlay(e);
             case 37: // Left Arrow
+                e.stopPropagation();
                 return self.props.handleClickPrevious(e);
             case 39: // Right Arrow
+                e.stopPropagation();
                 return self.props.handleClickNext(e);
         }
     },

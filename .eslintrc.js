@@ -19,6 +19,8 @@ module.exports = {
         "prefer-rest-params": ["off"],
         // Without static on function, makes harder to read class.
         "class-methods-use-this": ["off"],
+        // Semantic use of tag is not urgent. Re-enable later.
+        "jsx-a11y/no-static-element-interactions": ["off"],
         "react/jsx-indent-props": ["error", 4],
         "react/jsx-indent": ["error", 4],
         "react/jsx-filename-extension": ["off"],

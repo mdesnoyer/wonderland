@@ -8,7 +8,7 @@ const propTypes = {
     query: PropTypes.string,
     onSearchBarChange: PropTypes.func,
     onSearchBarSubmit: PropTypes.func,
-    killNav: React.PropTypes.bool.isRequired
+    killNav: React.PropTypes.bool,
 };
 
 export default function SiteBanner(props) {

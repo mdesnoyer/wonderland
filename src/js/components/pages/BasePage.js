@@ -7,37 +7,37 @@ import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-const propTypes = {
-    // Window title.
-    title: PropTypes.string,
-    meta: PropTypes.array,
-    sidebarContent: PropTypes.string,
-    setSidebarContent: PropTypes.func,
-    onboardingState: PropTypes.string,
-    // For dynamic tooltips
-    tooltipText: PropTypes.string,
-    children: PropTypes.node.isRequired,
-    onSearchBarChange: PropTypes.func,
-    onSearchBarSubmit: PropTypes.func,
-    searchQuery: PropTypes.string,
-};
-
-const childContextTypes = {
-    isMobile: PropTypes.bool,
-};
-
-const defaultProps = {
-    title: UTILS.buildPageTitle(T.get('neonScore')),
-    meta: [],
-    sidebarContent: null,
-};
-
 class BasePage extends React.Component {
 
     static getChildContext() {
         return {
             isMobile: UTILS.isMobile(),
         };
+    }
+
+    static propTypes = {
+        // Window title.
+        title: PropTypes.string,
+        meta: PropTypes.arrayOf(PropTypes.object),
+        sidebarContent: PropTypes.string,
+        onSetSidebarContent: PropTypes.func,
+        onboardingState: PropTypes.string,
+        // For dynamic tooltips
+        tooltipText: PropTypes.string,
+        children: PropTypes.node.isRequired,
+        onSearchBarChange: PropTypes.func,
+        onSearchBarSubmit: PropTypes.func,
+        searchQuery: PropTypes.string,
+    }
+
+    static defaultProps = {
+        title: UTILS.buildPageTitle(T.get('neonScore')),
+        meta: [],
+        sidebarContent: null,
+    }
+
+    static childContextTypes = {
+        isMobile: PropTypes.bool,
     }
 
     constructor(props) {
@@ -105,7 +105,7 @@ class BasePage extends React.Component {
                 />
                 <SiteHeader
                     sidebarContent={this.props.sidebarContent}
-                    setSidebarContent={this.props.setSidebarContent}
+                    onSetSidebarContent={this.props.onSetSidebarContent}
                     query={this.props.searchQuery}
                     onSearchBarChange={this.props.onSearchBarChange}
                     onSearchBarSubmit={this.props.onSearchBarSubmit}
@@ -117,9 +117,5 @@ class BasePage extends React.Component {
         );
     }
 }
-
-BasePage.propTypes = propTypes;
-BasePage.defaultProps = defaultProps;
-BasePage.childContextTypes = childContextTypes;
 
 export default BasePage;
