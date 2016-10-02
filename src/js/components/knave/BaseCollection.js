@@ -85,10 +85,10 @@ class BaseCollection extends React.Component {
         this.onThumbnailClick = this.onThumbnailClick.bind(this);
     }
 
-    onControlClick(selectedPanelIndex) {
+    onControlClick(index) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanelIndex });
+        this.setState({ selectedPanelIndex: index || 0 });
     }
 
     onDeleteCollection() {

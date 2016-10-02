@@ -44,9 +44,9 @@ export default class ImageCollection extends BaseCollection {
             liftObjectId: null,
         };
 
-        this.onAddControlClick = this.onControlClick.bind(this, 4);
-        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
-        this.onEmailControlClick = this.onControlClick.bind(this, 2);
+        this.onAddControlClick = this.onControlClick.bind(this, 5);
+        this.onDeleteControlClick = this.onControlClick.bind(this, 4);
+        this.onEmailControlClick = this.onControlClick.bind(this, 3);
         this.onLeftThumbnailClick = this.onThumbnailClick.bind(
             this, props.leftFeatureThumbnail.thumbnail_id);
         this.onRightThumbnailClick = this.onRightThumbnailClick.bind(this);
@@ -75,7 +75,13 @@ export default class ImageCollection extends BaseCollection {
         if (this.props.isViewOnly) {
             return panels;
         }
-        panels.push(<AddPanel cancelClickHandler={this.onCancelClick} />);
+        panels.push(
+            <AddPanel
+                isMobile={this.context.isMobile}
+                panelType={'photo'}
+                tagId={this.props.tagId}
+                onCancelClick={this.onControlClick}
+            />);
         return panels;
     }
 
@@ -85,7 +91,7 @@ export default class ImageCollection extends BaseCollection {
         }
         const controls = super.getBaseControls();
         const nextIndex = controls.length + 1;
-        controls.push(<AddControl index={nextIndex} handleClick={this.onAddControlClick} />);
+        controls.push(<AddControl index={nextIndex} onClick={this.onAddControlClick} />);
         return controls;
     }
 
@@ -120,6 +126,7 @@ export default class ImageCollection extends BaseCollection {
     renderFeatureThumbnails() {
         const left = this.props.leftFeatureThumbnail;
         const right = this.props.rightFeatureThumbnail;
+        const isSoloImage = left.thumbnail_id === right.thumbnail_id;
         const blurText = T.get('imageUpload.addMoreBlurText');
         return (
             <div>
@@ -140,7 +147,7 @@ export default class ImageCollection extends BaseCollection {
                     score={right.neon_score}
                     enabled={right.enabled}
                     src={RENDITIONS.findRendition(right)}
-                    isSoloImage={!right}
+                    isSoloImage={isSoloImage}
                     blurText={!this.props.isShareView ? blurText : ''}
                     onClick={this.onRightThumbnailClick}
                     onMouseEnter={this.onSetLiftThumbnailToDefault}
@@ -206,8 +213,10 @@ export default class ImageCollection extends BaseCollection {
 
     onRightThumbnailClick() {
         const right = this.props.rightFeatureThumbnail;
-        if (!right) {
+        const left = this.props.leftFeatureThumbnail;
+        if (left.thumbnail_id === right.thumbnail_id) {
             this.onAddControlClick();
+            return;
         }
         this.onThumbnailClick(this.props.rightFeatureThumbnail.thumbnail_id);
     }

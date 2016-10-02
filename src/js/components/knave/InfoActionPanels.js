@@ -672,7 +672,9 @@ export const AddPanel = React.createClass({
         const collectionClassName = this.props.isMobile ?
             'xxOverlay xxOverlay--light xxOverlay--spaced' :
             'xxCollectionAction';
-        const title = this.props.panelType === 'video' ? 'Default Thumbnail' : T.get('copy.videoContent.add.title');
+        const title = this.props.panelType === 'video' ?
+            T.get('copy.videoContent.defaultThumbnail') :
+            T.get('copy.videoContent.add.title');
         return (
             <div className={collectionClassName}>
             <h2 className="xxTitle">{title}</h2>
@@ -689,7 +691,7 @@ export const AddPanel = React.createClass({
                     isAddPanel
                     tagId={this.props.tagId}
                     videoId={this.props.videoId}
-                    onCancelClick={this.props.onCancelClick}
+                    cancelClickHandler={this.props.onCancelClick}
                 />
             </div>
         );
@@ -712,27 +714,3 @@ export const AddControl = React.createClass({
         );
     },
 });
-
-export const SetDefaultControl = React.createClass({
-    render() {
-        return null;
-    },
-});
-
-export const SetDefaultPanel = React.createClass({
-    render() {
-        return null;
-    },
-});
-
-export class EnableControl extends React.Component {
-    render() {
-        return null;
-    }
-}
-
-export class EnablePanel extends React.Component {
-    render() {
-        return null;
-    }
-}

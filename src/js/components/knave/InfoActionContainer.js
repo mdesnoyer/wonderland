@@ -6,6 +6,7 @@ const propTypes = {
     controls: PropTypes.arrayOf(PropTypes.node).isRequired,
     selectedPanelIndex: PropTypes.number.isRequired,
 };
+
 class InfoActionContainer extends React.Component {
 
     componentDidUpdate() {

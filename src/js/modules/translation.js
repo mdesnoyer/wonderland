@@ -99,6 +99,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.videoContent.add.title': 'Update collection',
             'copy.videoContent.add.tooltip': 'Add To Your Collection',
             'copy.videoContent.addDropbox': 'Add Dropbox',
+            'copy.videoContent.defaultThumbnail': 'Default Thumbnail',
             'copy.videoContent.tooltip': 'Change Default Thumbnail',
 
             'copy.videoContent.filter.thumbnails': 'Filter your video to see images targeted for a specific demographic audience. We’ll need to reprocess the video, so this may take a few minutes.',

@@ -24,6 +24,8 @@ class ClipCollection extends VideoCollection {
             selectedPanelIndex: 0,
         };
         this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
+        // No inline "Why" in the lift panel copy.
+        this.onWhyClick = null;
     }
 
     onSetSelectedClipIndex(clipId) {
@@ -120,7 +122,8 @@ class ClipCollection extends VideoCollection {
     getWidthClassName(thumbnails) {
         switch (thumbnails.length) {
         case 2:
-            return 'xxThumbnail--twowidth';
+            // Use three minimum.
+            return 'xxThumbnail--threewidth';
         case 3:
             return 'xxThumbnail--threewidth';
         case 4:

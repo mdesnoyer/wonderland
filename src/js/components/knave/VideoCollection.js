@@ -5,15 +5,13 @@ import BaseCollection from './BaseCollection';
 import MobileBaseCollection from './MobileBaseCollection';
 import T from '../../modules/translation';
 import {
-    ThumbnailList,
     ShowMoreThumbnailList,
-    ShowLessThumbnailList,
-    ShowMoreLessThumbnailList } from './ThumbnailList';
+    ShowLessThumbnailList } from './ThumbnailList';
 import {
-    SetDefaultControl,
-    SetDefaultPanel,
-    EnableControl,
-    EnablePanel } from './InfoActionPanels';
+    AddControl,
+    AddPanel,
+    ServingStatusControl,
+    ServingStatusPanel } from './InfoActionPanels';
 import RENDITIONS from '../../modules/renditions';
 import FeatureThumbnail from './FeatureThumbnail';
 import { SendActions, LoadActions } from '../../stores/CollectionStores';
@@ -30,6 +28,7 @@ class VideoCollection extends BaseCollection {
         }).isRequired,
         smallBadThumbnails: PropTypes.arrayOf(PropTypes.object),
         timeRemaining: PropTypes.number,
+        videoId: PropTypes.string,
     }
 
     constructor(props) {
@@ -41,9 +40,10 @@ class VideoCollection extends BaseCollection {
             selectedPanelIndex: 0,
             liftObjectId: null,
         };
-        this.onAddControlClick = this.onControlClick.bind(this, 4);
+        this.onAddControlClick = this.onControlClick.bind(this, 5);
         this.onDeleteControlClick = this.onControlClick.bind(this, 3);
         this.onEmailControlClick = this.onControlClick.bind(this, 2);
+        this.onServingControlClick = this.onControlClick.bind(this, 4);
         this.onShareControlClick = this.onControlClick.bind(this, 1);
 
         this.bindMore(props);
@@ -159,15 +159,18 @@ class VideoCollection extends BaseCollection {
 
         if (this.props.isServingEnabled) {
             panels.push(
-                <EnablePanel
+                <ServingStatusPanel
                     goodThumbnails={this.props.goodThumbnails}
                     onToggleThumbnailEnabled={this.props.onToggleThumbnailEnabled}
                     onCancelClick={this.onControlCancelClick}
                 />,
-                <SetDefaultPanel
-                    onSetDefaultThumbnail={this.onSetDefaultThumbnail}
+                <AddPanel
+                    isMobile={this.context.isMobile}
+                    panelType={'video'}
+                    tagId={this.props.tagId}
+                    videoId={this.props.videoId}
                     onCancelClick={this.onControlCancelClick}
-                />
+                />,
             );
         }
         return panels;
@@ -186,14 +189,15 @@ class VideoCollection extends BaseCollection {
         const nextIndex = controls.length + 1;
         if (this.props.servingEnabled) {
             controls.push(
-                <EnableControl
+                <ServingStatusControl
                     index={nextIndex}
-                    onClick={this.onControlClick}
+                    onClick={this.onServingControlClick}
                 />);
             controls.push(
-                <SetDefaultControl
+                <AddControl
+                    panelType={'video'}
                     index={nextIndex + 1}
-                    onClick={this.onControlClick}
+                    onClick={this.onAddControlClick}
                 />);
         }
         return controls;
@@ -243,7 +247,6 @@ class VideoCollection extends BaseCollection {
                 truncatedSmallThumbnails,
                 this.props.smallBadThumbnails.slice(0, 6),
             ]);
-            const numberToDisplay = truncatedSmallThumbnails.length;
             return (<ShowLessThumbnailList
                 thumbnails={thumbnails}
                 lessLabel={T.get('copy.thumbnails.high')}
