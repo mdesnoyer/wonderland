@@ -484,6 +484,18 @@ export const SharePanel = React.createClass({
         );
     },
 
+    onFacebookShare() {
+        this.props.onSocialShare('facebook');
+    },
+
+    onTwitterShare() {
+        this.props.onSocialShare('twitter');
+    },
+
+    onLinkedInShare() {
+        this.props.onSocialShare('linkedin');
+    },
+
     render() {
         const collectionClassName = this.props.isMobile ? 'xxOverlay xxOverlay--light xxOverlay--spaced' : 'xxCollectionAction';
 
@@ -508,7 +520,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="facebook"
-                            onClick={() => { this.props.onSocialShare('facebook'); }}
+                            onClick={this.onFacebookShare}
                             className="xxCollectionShare-anchor xxCollectionShare-fb"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.facebook')}
@@ -519,7 +531,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="twitter"
-                            onClick={() => { this.props.socialClickHandler('twitter'); }}
+                            onClick={this.onTwitterShare}
                             className="xxCollectionShare-anchor xxCollectionShare-twitter"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.twitter')}
@@ -530,7 +542,7 @@ export const SharePanel = React.createClass({
                     <li className="xxCollectionShare-item">
                         <a
                             data-social-action-label="linkedin"
-                            onClick={() => { this.props.socialClickHandler('linkedin'); }}
+                            onClick={this.onLinkedInShare}
                             className="xxCollectionShare-anchor xxCollectionShare-linkedin"
                             data-for="staticTooltip"
                             data-tip={T.get('tooltip.share.linkedin')}
