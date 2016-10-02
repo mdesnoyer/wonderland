@@ -9,6 +9,8 @@ import UTILS from '../../modules/utils';
 
 class BasePage extends React.Component {
 
+    static displayName = 'BasePage';
+
     static getChildContext() {
         return {
             isMobile: UTILS.isMobile(),

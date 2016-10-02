@@ -4,6 +4,9 @@ import VisibilitySensor from 'react-visibility-sensor';
 import T from '../../modules/translation';
 
 class Clip extends React.Component {
+
+    static displayName = 'Clip';
+
     static propTypes = {
         url: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
@@ -56,4 +59,5 @@ class Clip extends React.Component {
         );
     }
 }
+
 export default Clip;

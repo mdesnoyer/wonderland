@@ -6,6 +6,7 @@ import VisibilitySensor from 'react-visibility-sensor';
 import T from '../../modules/translation';
 
 class Clip extends React.Component {
+
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this)

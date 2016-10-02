@@ -10,43 +10,49 @@ import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-const propTypes = {
-    // Left and right large thumbnail
-    leftFeatureThumbnail: PropTypes.object.isRequired,
-    rightFeatureThumbnail: PropTypes.object.isRequired,
-
-    // A map of T get key string to T get key
-    // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
-    // overrides "Show More" with "View Low Scores"
-    copyOverrideMap: PropTypes.object,
-
-    infoActionPanels: PropTypes.array.isRequired,
-    infoActionControls: PropTypes.array.isRequired,
-
-    // List of thumbnails to be displayed as small items
-    smallThumbnails: PropTypes.array.isRequired,
-
-    // Handlers for image events
-    onThumbnailClick: PropTypes.func,
-    setLiftThumbnailId: PropTypes.func,
-
-    // class name for the wrapper around the
-    // component defaults to xxCollection
-    wrapperClassName: PropTypes.string,
-    onRightThumbnailClick: PropTypes.func,
-    isSoloImage: PropTypes.bool,
-    isMine: PropTypes.bool,
-};
-
-const defaultProps = {
-    wrapperClassName: 'xxCollection',
-    onThumbnailClick: Function.prototype,
-    setLiftThumbnailId: Function.prototype,
-    smallBadThumbnails: [],
-    isMine: true,
-};
-
 class MobileBaseCollection extends BaseCollection {
+
+    static displayName = 'MobileBaseCollection';
+
+    static propTypes = {
+        // Left and right large thumbnail
+        leftFeatureThumbnail: PropTypes.shape({
+            thumbnail_id: PropTypes.string.isRequired,
+        }).isRequired,
+        rightFeatureThumbnail: PropTypes.shape({
+            thumbnail_id: PropTypes.string.isRequired,
+        }).isRequired,
+
+        // A map of T get key string to T get key
+        // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
+        // overrides "Show More" with "View Low Scores"
+        copyOverrideMap: PropTypes.objectOf(PropTypes.string),
+
+        infoActionPanels: PropTypes.arrayOf(PropTypes.node).isRequired,
+        infoActionControls: PropTypes.arrayOf(PropTypes.node).isRequired,
+
+        // List of thumbnails to be displayed as small items
+        smallThumbnails: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+        // Handlers for image events
+        onThumbnailClick: PropTypes.func,
+        setLiftThumbnailId: PropTypes.func,
+
+        // class name for the wrapper around the
+        // component defaults to xxCollection
+        wrapperClassName: PropTypes.string,
+        onRightThumbnailClick: PropTypes.func,
+        isSoloImage: PropTypes.bool,
+        isMine: PropTypes.bool,
+    }
+
+    static defaultProps = {
+        wrapperClassName: 'xxCollection',
+        onThumbnailClick: Function.prototype,
+        setLiftThumbnailId: Function.prototype,
+        smallBadThumbnails: [],
+        isMine: true,
+    }
 
     constructor(props) {
         super(props);
@@ -233,6 +239,4 @@ class MobileBaseCollection extends BaseCollection {
     }
 }
 
-MobileBaseCollection.propTypes = propTypes;
-MobileBaseCollection.defaultProps = defaultProps;
 export default MobileBaseCollection;

@@ -25,6 +25,8 @@ import {
 
 class CollectionsMainPage extends React.Component {
 
+    static displayName = 'CollectionsMainPage';
+
     static contextTypes = {
         router: PropTypes.object.isRequired,
     }
@@ -217,12 +219,9 @@ class CollectionsMainPage extends React.Component {
             .values()
             .value();
 
+        // Get the best clip.
         const sortedClips = _.orderBy(clips, 'neon_score', ['desc']);
         const best = sortedClips[0];
-        const worst = sortedClips.pop();
-        // Get lift string: the percentage improvement: e.g., "35%".
-        const lift = UTILS.makePercentage(
-            (best.neon_score / worst.neon_score) - 1, 0, true);
 
         // Find the gif with the width we need, or just any gif.
         const bestRendition = best.renditions.find(r => (
@@ -235,7 +234,7 @@ class CollectionsMainPage extends React.Component {
             to_email_address: email,
             template_slug: UTILS.GIF_RESULTS_MANDRILL_SLUG,
             template_args: {
-                lift,
+                lift: best.neon_score,
                 top_gif: bestUrl,
                 collection_url: collectionUrl,
             },

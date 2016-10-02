@@ -14,7 +14,9 @@ import FeatureThumbnail from './FeatureThumbnail';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 
-export default class ImageCollection extends BaseCollection {
+class ImageCollection extends BaseCollection {
+
+    static displayName = 'ImageCollection';
 
     static propTypes = {
         tagId: PropTypes.string.isRequired,
@@ -26,7 +28,6 @@ export default class ImageCollection extends BaseCollection {
         rightFeatureThumbnail: PropTypes.shape({
             thumbnail_id: PropTypes.string.isRequired,
         }).isRequired,
-
 
         isShareView: PropTypes.bool,
         shareUrl: PropTypes.string,
@@ -228,3 +229,5 @@ export default class ImageCollection extends BaseCollection {
         return this.renderDesktop();
     }
 }
+
+export default ImageCollection;

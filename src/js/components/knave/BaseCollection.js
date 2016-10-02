@@ -16,6 +16,8 @@ import {
 
 class BaseCollection extends React.Component {
 
+    static displayName = 'BaseCollection';
+
     static propTypes = {
 
         tagId: PropTypes.string.isRequired,

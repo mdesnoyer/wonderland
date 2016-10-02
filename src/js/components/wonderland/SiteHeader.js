@@ -5,6 +5,8 @@ import Sidebar from './Sidebar';
 
 class SiteHeader extends React.Component {
 
+    static displayName = 'SiteHeader';
+
     static propTypes = {
         sidebarContent: PropTypes.oneOf([
             'learnMore', 'contact', 'signUp', 'account', 'primaryNavigation']),

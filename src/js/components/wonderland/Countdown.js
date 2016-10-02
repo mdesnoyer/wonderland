@@ -1,20 +1,18 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 import React from 'react';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import CountdownClock from './CountdownClock';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+class Countdown extends React.Component {
 
-export default class Countdown extends React.Component {
+    static displayName = 'Countdown';
 
     constructor(props) {
         super(props);
         const self = this;
         self.state = {
             seconds: parseInt(props.seconds || 1),
-            classPrefix: props.classPrefix || 'xxOnboardingCountdown', 
+            classPrefix: props.classPrefix || 'xxOnboardingCountdown',
             displayLoading: props.displayLoading || false
         };
     }
@@ -78,9 +76,9 @@ export default class Countdown extends React.Component {
             );
         }
         else if (self.state.displayLoading) {
-            if (self.state.seconds && self.state.seconds > 1) {  
+            if (self.state.seconds && self.state.seconds > 1) {
                 self.state.displayLoading = false;
-            } 
+            }
             return (
                 <CountdownClock
                     outerClass={classPrefix}
@@ -88,7 +86,7 @@ export default class Countdown extends React.Component {
                     displayValue={T.get('timer.loading')}
                 />
             );
-        } 
+        }
         else {
             return (
                 <CountdownClock
@@ -101,5 +99,4 @@ export default class Countdown extends React.Component {
     }
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
+export default Countdown;

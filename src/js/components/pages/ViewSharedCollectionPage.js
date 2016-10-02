@@ -15,6 +15,8 @@ import {
 
 class ViewSharedCollectionPage extends CollectionsMainPage {
 
+    static displayName = 'ViewSharedCollectionPage';
+
     static baseMetaTags = [
         { property: 'fb:app_id', content: UTILS.FACEBOOK_APP_ID },
         { property: 'og:type', content: 'article' },

@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-const propTypes = {
-    panels: PropTypes.arrayOf(PropTypes.node).isRequired,
-    controls: PropTypes.arrayOf(PropTypes.node).isRequired,
-    selectedPanelIndex: PropTypes.number.isRequired,
-};
-
 class InfoActionContainer extends React.Component {
+
+    static displayName = 'InfoActionContainer';
+
+    static propTypes = {
+        panels: PropTypes.arrayOf(PropTypes.node).isRequired,
+        controls: PropTypes.arrayOf(PropTypes.node).isRequired,
+        selectedPanelIndex: PropTypes.number.isRequired,
+    }
 
     componentDidUpdate() {
         // Needed to display the static tooltips that are bound
@@ -42,6 +44,5 @@ class InfoActionContainer extends React.Component {
         );
     }
 }
-InfoActionContainer.propTypes = propTypes;
 
 export default InfoActionContainer;

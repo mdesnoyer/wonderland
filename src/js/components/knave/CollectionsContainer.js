@@ -10,57 +10,58 @@ import VideoProcessing from './VideoProcessing';
 import UTILS from '../../modules/utils';
 import TRACKING from '../../modules/tracking';
 
-const propTypes = {
-
-    // Map of store identifying key to the store,
-    // which is a map of object id to object.
-    stores: PropTypes.object.isRequired,
-
-    // Sorted list of collection ids to show
-    shownIds: PropTypes.array.isRequired,
-
-    // Ask the store to load resources for a tag's thumbnails
-    // for a given demographic.
-    loadTagForDemographic: PropTypes.func.isRequired,
-
-    // Ask the store to load thumbnailFeatures and features
-    // for a given tag and demographic.
-    loadFeaturesForTag: PropTypes.func.isRequired,
-
-    // Pops the side bar module given a recognized string
-    onSetSidebarContent: PropTypes.func.isRequired,
-
-    // Is this a share view?
-    isViewOnly: PropTypes.bool.isRequired,
-
-    // Enables custom tooltip
-    onSetTooltipText: PropTypes.func,
-
-    // Defaults to Function to delete/hide a collection from
-    // both the backend and frontend display
-    onDeleteCollection: PropTypes.func,
-
-    // ClickHandler for social sharing buttons
-    onSocialShare: PropTypes.func,
-
-    // Allows a collection to send results email
-    onSendResultEmail: PropTypes.func,
-    onSendClipResultEmail: PropTypes.func,
-
-    // Functions to enable disable serving of thumbnail
-    onToggleThumbnailEnabled: PropTypes.func,
-};
-
-const defaultProps = {
-    onDeleteCollection: Function.protoype,
-    onSendClipResultEmail: Function.protoype,
-    onSendResultEmail: Function.prototype,
-    onSetTooltipText: Function.prototype,
-    onSocialShare: Function.prototype,
-    onToggleThumbnailEnabled: Function.prototype,
-};
-
 class CollectionsContainer extends React.Component {
+
+    static displayName = 'CollectionsContainer'
+
+    static propTypes = {
+        // Map of store identifying key to the store,
+        // which is a map of object id to object.
+        stores: PropTypes.objectOf(PropTypes.object).isRequired,
+
+        // Sorted list of collection ids to show
+        shownIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+        // Ask the store to load resources for a tag's thumbnails
+        // for a given demographic.
+        loadTagForDemographic: PropTypes.func.isRequired,
+
+        // Ask the store to load thumbnailFeatures and features
+        // for a given tag and demographic.
+        loadFeaturesForTag: PropTypes.func.isRequired,
+
+        // Pops the side bar module given a recognized string
+        onSetSidebarContent: PropTypes.func.isRequired,
+
+        // Is this a share view?
+        isViewOnly: PropTypes.bool.isRequired,
+
+        // Enables custom tooltip
+        onSetTooltipText: PropTypes.func,
+
+        // Defaults to Function to delete/hide a collection from
+        // both the backend and frontend display
+        onDeleteCollection: PropTypes.func,
+
+        // ClickHandler for social sharing buttons
+        onSocialShare: PropTypes.func,
+
+        // Allows a collection to send results email
+        onSendResultEmail: PropTypes.func,
+        onSendClipResultEmail: PropTypes.func,
+
+        // Functions to enable disable serving of thumbnail
+        onToggleThumbnailEnabled: PropTypes.func,
+    }
+
+    static defaultProps = {
+        onDeleteCollection: Function.protoype,
+        onSendClipResultEmail: Function.protoype,
+        onSendResultEmail: Function.prototype,
+        onSetTooltipText: Function.prototype,
+        onSocialShare: Function.prototype,
+        onToggleThumbnailEnabled: Function.prototype,
+    }
 
     constructor(props) {
         super(props);
@@ -152,9 +153,9 @@ class CollectionsContainer extends React.Component {
 
     onSendResultEmail(email, tagId, callback) {
         const { gender, age } = this.getSelectedDemographic(tagId);
-        // Skip the left, or worst, thumb.
-        const [, bestThumb, goodThumbs] = this.getLeftRightRest(tagId, gender, age);
-        const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
+        // Skip the worst and take the first four of the others.
+        const { best, good } = this.getBestWorstGoodBad(tagId, gender, age);
+        const fourThumbs = _.flatten([best, good]).slice(0, 4);
         let i = 0;
         while (fourThumbs.length < 4) {
             // Repeat until the required number is set.
@@ -195,7 +196,7 @@ class CollectionsContainer extends React.Component {
         });
     }
 
-    getLeftRightRestVideo(tagId, gender, age) {
+    getBestWorstGoodBadVideo(tagId, gender, age) {
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
 
@@ -231,16 +232,15 @@ class CollectionsContainer extends React.Component {
             return [];
         }
 
-        // For the right, use the best scoring.
-        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-        // For the left, find a default thumbnail or use the worst.
+        // Find the best and worst (or default) thumbnails.
+        const best = UTILS.bestThumbnail(_.values(allThumbnailMap));
         const defaultThumb = UTILS.findDefaultThumbnail(
             { thumbnails: _.values(allThumbnailMap) });
-        const left = defaultThumb || UTILS.worstThumbnail(_.values(allThumbnailMap));
-        const rest = _
+        const worst = defaultThumb || UTILS.worstThumbnail(_.values(allThumbnailMap));
+        const good = _
             .chain(allThumbnailMap)
             // Remove the feature thumbnails from the small list.
-            .omit([right.thumbnail_id, left.thumbnail_id])
+            .omit([best.thumbnail_id, worst.thumbnail_id])
             .values()
             // Order by score, best to worst, then created time for stability.
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
@@ -253,45 +253,45 @@ class CollectionsContainer extends React.Component {
                 this.props.stores.thumbnails[gender][age],
                 videoDemo.bad_thumbnails.map(t => t.thumbnail_id));
         }
-        const more = _
+        const bad = _
             .chain(allBadThumbnailMap)
             .values()
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
-        return { left, right, rest, more };
+        return { worst, best, good, bad };
     }
 
-    getLeftRightRestImage(tagId, gender, age) {
+    getBestWorstGoodBadImage(tagId, gender, age) {
         const tag = this.props.stores.tags[tagId];
         const allThumbnailMap = _.pick(
             this.props.stores.thumbnails[gender][age],
             tag.thumbnail_ids);
-        const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-        const left = UTILS.worstThumbnail(_.values(allThumbnailMap));
+        const best = UTILS.bestThumbnail(_.values(allThumbnailMap));
+        const worst = UTILS.worstThumbnail(_.values(allThumbnailMap));
 
         // Build the list of thumbnails to display below.
-        const rest = _
+        const good = _
             .chain(allThumbnailMap)
             // Remove the feature thumbnails from the small list.
-            .omit([right.thumbnail_id, left.thumbnail_id])
+            .omit([best.thumbnail_id, worst.thumbnail_id])
             .values()
             // Order by score, best to worst, then created time for stability.
             .orderBy(['neon_score', 'created'], ['desc', 'asc'])
             .value();
-        return { left, right, rest, more: [] };
+        return { worst, best, good, bad: [] };
     }
 
-    // Given tag id and demo, gives array of
-    //   left feature thumbnail
-    //   right feature thumbnail
-    //   rest of thumbnails
-    //   [and more thumbnails]
-    getLeftRightRest(tagId, gender, age) {
+    // Given tag id and demo, gives object of
+    //   worst or default thumbnail
+    //   best thumbnail
+    //   rest of good thumbnails
+    //   rest of bad thumbnails
+    getBestWorstGoodBad(tagId, gender, age) {
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
-            return this.getLeftRightRestImage(tagId, gender, age);
+            return this.getBestWorstGoodBadImage(tagId, gender, age);
         }
-        return this.getLeftRightRestVideo(tagId, gender, age);
+        return this.getBestWorstGoodBadVideo(tagId, gender, age);
     }
 
     // Return array of gender, age enum array based
@@ -362,7 +362,7 @@ class CollectionsContainer extends React.Component {
     getSortedContents() {
         const tagId = this.state.overlayTagId;
         const { gender, age } = this.getSelectedDemographic(tagId);
-        const thumbnails = _(this.getLeftRightRest(tagId, gender, age))
+        const thumbnails = _(this.getBestWorstGoodBad(tagId, gender, age))
             .values()
             .concat()
             .flatten()
@@ -546,7 +546,8 @@ class CollectionsContainer extends React.Component {
 
         const { gender, age } = this.getSelectedDemographic(tagId);
 
-        const { left, right, rest } = this.getLeftRightRest(tagId, gender, age);
+        const { best, worst, good } = this.getBestWorstGoodBad(tagId, gender, age);
+        const goodThumbnails = good;
         const thumbnailsLength = tag.thumbnail_ids.length;
         const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
             this.props.stores.lifts[gender][age][tagId] : {};
@@ -559,9 +560,9 @@ class CollectionsContainer extends React.Component {
                 key={tagId}
                 tagId={tagId}
                 title={tag.name}
-                leftFeatureThumbnail={left}
-                rightFeatureThumbnail={right}
-                smallThumbnails={rest}
+                leftFeatureThumbnail={worst}
+                rightFeatureThumbnail={best}
+                smallThumbnails={goodThumbnails}
                 thumbnailsLength={thumbnailsLength}
                 objectLiftMap={thumbLiftMap}
                 demographicOptions={this.getDemoOptionArray(tagId)}
@@ -586,10 +587,10 @@ class CollectionsContainer extends React.Component {
 
         const { gender, age } = this.getSelectedDemographic(tagId);
 
-        const { left, right, rest, more } = this.getLeftRightRest(tagId, gender, age);
-        const smallThumbnails = rest;
-        const badThumbnails = more;
-        const goodThumbnails = _.flatten([right, smallThumbnails]);
+        const { best, worst, good, bad } = this.getBestWorstGoodBad(tagId, gender, age);
+        const smallThumbnails = good;
+        const badThumbnails = bad;
+        const goodThumbnails = _.flatten([best, smallThumbnails]);
         const thumbLiftMap = !_.isEmpty(this.props.stores.lifts[gender][age][tagId]) ?
             this.props.stores.lifts[gender][age][tagId] : {};
 
@@ -603,8 +604,8 @@ class CollectionsContainer extends React.Component {
                 tagId={tagId}
                 videoId={video.video_id}
                 title={tag.name}
-                leftFeatureThumbnail={left}
-                rightFeatureThumbnail={right}
+                leftFeatureThumbnail={worst}
+                rightFeatureThumbnail={best}
                 goodThumbnails={goodThumbnails}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
@@ -675,8 +676,5 @@ class CollectionsContainer extends React.Component {
         );
     }
 }
-
-CollectionsContainer.propTypes = propTypes;
-CollectionsContainer.defaultProps = defaultProps;
 
 export default CollectionsContainer;

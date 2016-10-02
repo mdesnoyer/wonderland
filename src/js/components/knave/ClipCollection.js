@@ -12,6 +12,8 @@ import { SendActions } from '../../stores/CollectionStores';
 
 class ClipCollection extends VideoCollection {
 
+    static displayName = 'ClipCollection';
+
     static propTypes = {
         clips: PropTypes.arrayOf(PropTypes.object).isRequired,
         thumbnailMap: PropTypes.objectOf(PropTypes.object).isRequired,

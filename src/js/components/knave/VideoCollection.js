@@ -18,6 +18,8 @@ import { SendActions, LoadActions } from '../../stores/CollectionStores';
 
 class VideoCollection extends BaseCollection {
 
+    static displayName = 'VideoCollection';
+
     static propTypes = {
         // Left and right large thumbnail
         leftFeatureThumbnail: PropTypes.shape({

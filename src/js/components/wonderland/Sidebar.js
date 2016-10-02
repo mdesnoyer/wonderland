@@ -9,6 +9,8 @@ import T from '../../modules/translation';
 
 class Sidebar extends React.Component {
 
+    static displayName = 'Sidebar';
+
     static propTypes = {
         onSetContent: PropTypes.func.isRequired,
         content: PropTypes.oneOf(
