@@ -33,7 +33,7 @@ var ThumbnailOverlay = React.createClass({
     },
     componentWillUnmount: function() {
         var self = this;
-        window.removeEventListener('keydown', this.handleKeyEvent);
+        window.removeEventListener('keydown', self.handleKeyEvent);
         document.body.classList.remove('has-overlayWithScroll', 'has-overlayDark');
         document.body.style.marginRight = 0;
     },

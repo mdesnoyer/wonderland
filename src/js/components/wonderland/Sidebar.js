@@ -45,7 +45,7 @@ class Sidebar extends React.Component {
 
     handleKeyEvent(e) {
         if (e.keyCode === 27) {
-            this.props.onSetContent(e.target.name);
+            this.props.onSetContent();
             e.stopPropagation();
         }
     }

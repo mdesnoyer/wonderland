@@ -36,6 +36,18 @@ class SiteHeader extends React.Component {
         this.setState({ sidebarContent });
     }
 
+    renderSidebar() {
+        if (this.getSidebarContent()) {
+            return (
+                <Sidebar
+                    content={this.getSidebarContent()}
+                    onSetContent={this.onSetSidebarContent}
+                />
+            );
+        }
+        return null;
+    }
+
     render() {
         return (
             <div>
@@ -48,10 +60,7 @@ class SiteHeader extends React.Component {
                     onSearchBarSubmit={this.props.onSearchBarSubmit}
                     killNav={this.props.killNav}
                 />
-                <Sidebar
-                    content={this.getSidebarContent()}
-                    onSetContent={this.onSetSidebarContent}
-                />
+                {this.renderSidebar()}
             </div>
         );
     }
