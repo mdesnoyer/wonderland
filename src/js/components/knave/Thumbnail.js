@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import UTILS from '../../modules/utils';
 
 class Thumbnail extends React.Component {
 
@@ -9,6 +10,8 @@ class Thumbnail extends React.Component {
         score: PropTypes.number,
 
         thumbnailId: PropTypes.string.isRequired,
+
+        dominantColor: PropTypes.array,
 
         // The accessibility title
         alt: PropTypes.string,
@@ -58,8 +61,18 @@ class Thumbnail extends React.Component {
         this.props.onClick(this.props.thumbnailId);
     }
 
+    fadeIn(e) {
+        const target = e.target;
+        target.classList.add('-is-loaded');
+    }
+
+
     render() {
         const disabledClassName = this.props.enabled ? '' : 'xxThumbnail--disabled';
+        const dominantColorHex = UTILS.findDominantColor(this.props.dominantColor);
+        const inlineBackgroundColour = dominantColorHex ? {
+            backgroundColor: dominantColorHex
+        } : null;
         const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
             xxThumbnail--highLight xxThumbnail--neon ${this.props.className} \
             ${disabledClassName}`;
@@ -70,8 +83,10 @@ class Thumbnail extends React.Component {
                     className={className}
                     data-score={this.props.score}
                     onClick={this.onClick}
+                    style={inlineBackgroundColour}
                 >
                     <img
+                        onLoad={this.fadeIn}
                         className="xxThumbnail-image"
                         alt={this.props.alt || this.props.score}
                         src={this.props.src}

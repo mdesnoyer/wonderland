@@ -148,6 +148,7 @@ class MobileBaseCollection extends BaseCollection {
                 thumbnailId={thumbnail.thumbnail_id}
                 title={title}
                 score={thumbnail.neon_score}
+                dominantColor={thumbnail.dominant_color}
                 enabled={thumbnail.enabled}
                 className={className}
                 blurText={blurText}

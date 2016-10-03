@@ -25,6 +25,7 @@ export function ThumbnailList(props) {
                 thumbnailId={t.thumbnail_id}
                 score={t.neon_score}
                 enabled={t.enabled}
+                dominantColor={t.dominant_color}
                 src={src}
                 onMouseEnter={props.onMouseEnter}
                 onMouseLeave={props.onMouseLeave}
@@ -168,6 +169,7 @@ export const ServingStatusThumbnailList = React.createClass({
                         key={t.thumbnail_id}
                         thumbnailId={t.thumbnail_id}
                         score={t.neon_score}
+                        dominantColor={t.dominant_color}
                         enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
                         children={this.getControl(t)}

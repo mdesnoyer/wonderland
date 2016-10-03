@@ -82,17 +82,16 @@ var ThumbnailOverlay = React.createClass({
                     <div className="xxImageZoom">
                         {
                             self.props.thumbnails.map(function(thumbnail, i) {
-
                                 const thumbnailId = thumbnail.thumbnail_id;
-
                                 let valence;
                                 const featureMap = self.props.thumbnailFeatureNameMap;
                                 if (!_.isEmpty(featureMap) && thumbnailId in featureMap) {
                                     valence = featureMap[thumbnailId];
-                                } else {
+                                }
+                                else {
                                     valence = self.getValenceFeatures(thumbnail);
                                 }
-
+                                const extraClass = self.getExtraClass(thumbnail, i);
                                 return (
                                     <ZoomThumbnail
                                         key={i}
@@ -104,7 +103,7 @@ var ThumbnailOverlay = React.createClass({
                                         handleClickNext={self.props.handleClickNext}
                                         displayThumbLift={self.props.displayThumbLift}
                                         valence={valence}
-                                        extraClass={self.getExtraClass(thumbnail, i)}
+                                        extraClass={extraClass}
                                         handleClose={self.props.closeThumbnailOverlay}
                                         openLearnMore={self.props.openLearnMore}
                                         copyOverrideMap={self.props.copyOverrideMap}

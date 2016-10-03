@@ -54,6 +54,10 @@
     display: block;
 }
 
+.timeline__frame {
+    background-color: $accent-color;
+}
+
 .timeline__snapshot {
     width: 100%;
     height: auto;

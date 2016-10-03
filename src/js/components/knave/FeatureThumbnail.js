@@ -4,6 +4,7 @@ import Thumbnail from './Thumbnail';
 
 const propTypes = {
     title: PropTypes.string.isRequired,
+    dominantColor: PropTypes.array,
     isSoloImage: PropTypes.bool,
     blurText: PropTypes.string,
 };

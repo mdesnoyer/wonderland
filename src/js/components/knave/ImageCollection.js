@@ -138,6 +138,7 @@ class ImageCollection extends BaseCollection {
                     enabled={left.enabled}
                     className={'xxThumbnail--lowLight'}
                     src={RENDITIONS.findRendition(left)}
+                    dominantColor={left.dominant_color}
                     onClick={this.onLeftThumbnailClick}
                     onMouseEnter={this.onSetLiftThumbnailToLeft}
                     onMouseLeave={this.onSetLiftThumbnailToDefault}
@@ -148,6 +149,7 @@ class ImageCollection extends BaseCollection {
                     score={right.neon_score}
                     enabled={right.enabled}
                     src={RENDITIONS.findRendition(right)}
+                    dominantColor={right.dominant_color}
                     isSoloImage={isSoloImage}
                     blurText={!this.props.isShareView ? blurText : ''}
                     onClick={this.onRightThumbnailClick}

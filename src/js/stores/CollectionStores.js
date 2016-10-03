@@ -178,7 +178,9 @@ class FilteredStore {
         this.sourceStore = sourceStore;
         this.reset();
         Store.stores[name] = this;
-        this.setFilter(filter || this.defaultFilter);
+        if (filter) {
+            this.setFilter(filter);
+        }
     }
 
     setFilter(filter) {
