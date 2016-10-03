@@ -2,6 +2,7 @@
 .xxGifContainer {
     position: relative;
     margin: 0 auto;
+    padding: 0;
     max-height: 450px;
     
     &::after {
@@ -17,8 +18,8 @@
     } 
 }
 .xxGifVideo {
-    width:100%;
+    width: 100%;
     display: block;
-    margin: 0 auto;
-    height: 95%;
+    max-height: 420px;
+    object-fit: fill;
 }

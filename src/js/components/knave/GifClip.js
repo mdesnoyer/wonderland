@@ -27,10 +27,10 @@ export default class GifClip extends React.Component {
     componentDidMount() {
         var container = document.getElementById(this.props.id);
 
-        if(this.props.width < 700) {
+        if(this.props.width < 670) {
             container.style.width = `${this.props.width}px`;
         }
-        if (this.props.width < 450) {
+        if (this.props.height < 420) {
             container.style.height = `${this.props.height}px`;
         }
     }
