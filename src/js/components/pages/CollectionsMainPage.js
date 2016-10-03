@@ -61,7 +61,6 @@ class CollectionsMainPage extends React.Component {
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.onUpdateState);
 
-        // TODO needed?
         LoadActions.loadAccount(SESSION.state.accountId);
 
         // // Load initial results: first 2 quickly and a whole page or more.

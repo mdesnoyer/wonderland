@@ -141,11 +141,7 @@ export const ServingStatusPanel = React.createClass({
         // what to do when the cancel button is clicked
         onCancelClick: PropTypes.func.isRequired,
 
-        // what to do on enable click
-        enableThumbnail: PropTypes.func.isRequired,
-
-        // what to do on disable click
-        disableThumbnail: PropTypes.func.isRequired,
+        onToggleThumbnailEnabled: PropTypes.func.isRequired,
 
         // list of goodThumbnails
         goodThumbnails: PropTypes.array,
@@ -162,8 +158,8 @@ export const ServingStatusPanel = React.createClass({
                 </div>
                 <ServingStatusThumbnailList
                     thumbnails={this.props.goodThumbnails}
-                    enableClick={this.props.enableThumbnail}
-                    disableClick={this.props.disableThumbnail}
+                    onClick={this.props.onToggleThumbnailEnabled}
+                    onClick={this.props.onToggleThumbnailEnabled}
                     className="xxThumbnail--noscore xxThumbnail--fullwidth"
                 />
                 <div className="xxCollectionAction-buttons">

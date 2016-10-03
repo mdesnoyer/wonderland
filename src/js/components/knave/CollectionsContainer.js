@@ -597,6 +597,10 @@ class CollectionsContainer extends React.Component {
         const shareUrl = (tagId in this.props.stores.tagShares) ?
             this.props.stores.tagShares[tagId].url : undefined;
 
+        const account = _(this.props.stores.accounts)
+            .values()
+            .head();
+        const isServingEnabled = account && account.serving_enabled;
 
         return (
             <VideoCollection
@@ -623,6 +627,7 @@ class CollectionsContainer extends React.Component {
                 onThumbnailClick={this.onThumbnailClick}
                 onToggleThumbnailEnabled={this.props.onToggleThumbnailEnabled}
                 isViewOnly={this.props.isViewOnly}
+                isServingEnabled={isServingEnabled}
             />
        );
     }

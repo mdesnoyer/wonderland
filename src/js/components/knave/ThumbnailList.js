@@ -139,10 +139,8 @@ export const ServingStatusThumbnailList = React.createClass({
 
     propTypes: {
         thumbnails: PropTypes.array.isRequired,
-        // control to enable a thumbnail
-        enableClick: PropTypes.func.isRequired,
-        // control to disable a thumbnail
-        disableClick: PropTypes.func.isRequired
+        // control to enable/disable a thumbnail
+        onClick: PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
@@ -153,12 +151,11 @@ export const ServingStatusThumbnailList = React.createClass({
     },
 
     getControl: function(t) {
+        // TODO implement without binds in render.
         if (t.enabled) {
-            return (<ImageServingDisableControl handleClick={()=>{this.props.disableClick(t)}} />)
+            return (<ImageServingDisableControl onClick={() => this.props.onClick(t)} />)
         }
-        else {
-            return (<ImageServingEnableControl handleClick={()=>{this.props.enableClick(t)}} />)
-        }
+        return (<ImageServingEnableControl onClick={() => this.props.onClick(t)} />)
     },
     render: function() {
         const thumbnailSetOne = this.props.thumbnails
@@ -169,6 +166,7 @@ export const ServingStatusThumbnailList = React.createClass({
                         wrapperClassName={'xxThumbnail-wrapper'}
                         className={this.props.className}
                         key={t.thumbnail_id}
+                        thumbnailId={t.thumbnail_id}
                         score={t.neon_score}
                         enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}

@@ -279,7 +279,7 @@ var UploadForm = React.createClass({
                         self.setState({urlInput: ''});
                     }
                     else {
-                        LoadActions.loadTags([json.video.tag_id], 0, 0, true);
+                        LoadActions.loadTags([json.video.tag_id]);
                         self.setState({urlInput: ''});
                     }
                 })
@@ -372,7 +372,7 @@ var UploadForm = React.createClass({
                         self.setState({
                             uploadState: 'success'
                         },  function() {
-                            LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                            LoadActions.loadTags([self.state.tagId])
                             self.timeouts.push(setTimeout(function() {
                                 self.setState({ uploadState: 'initial' });
                             }, 4000));
@@ -399,7 +399,7 @@ var UploadForm = React.createClass({
                 self.setState({
                     uploadState: 'success'
                 },  function() {
-                    LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                    LoadActions.loadTags([self.state.tagId])
                     self.timeouts.push(setTimeout(function() {
                         self.setState({ uploadState: 'initial' });
                     }, 4000));
@@ -511,7 +511,7 @@ var UploadForm = React.createClass({
                                 uploadState:'success',
                                 // errorFiles: []
                                 }, function() {
-                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId], 0, 0, true);
+                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId]);
                                     self.timeouts.push(setTimeout(function() {
                                         self.setState({ uploadState: 'initial' });
                                     }, 3000));
@@ -523,7 +523,7 @@ var UploadForm = React.createClass({
             })
             .catch(function(err) {
                 console.log(err)
-                LoadActions.loadTags([self.state.tagId], 0, 0, true);
+                LoadActions.loadTags([self.state.tagId]);
                 self.throwUploadError(err);
             });
     },

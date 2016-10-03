@@ -31,6 +31,7 @@ class VideoCollection extends BaseCollection {
         smallBadThumbnails: PropTypes.arrayOf(PropTypes.object),
         timeRemaining: PropTypes.number,
         videoId: PropTypes.string,
+        isServingEnabled: PropTypes.bool,
     }
 
     constructor(props) {
@@ -42,11 +43,11 @@ class VideoCollection extends BaseCollection {
             selectedPanelIndex: 0,
             liftObjectId: null,
         };
-        this.onAddControlClick = this.onControlClick.bind(this, 5);
-        this.onDeleteControlClick = this.onControlClick.bind(this, 3);
-        this.onEmailControlClick = this.onControlClick.bind(this, 2);
-        this.onServingControlClick = this.onControlClick.bind(this, 4);
-        this.onShareControlClick = this.onControlClick.bind(this, 1);
+        this.onAddControlClick = this.onControlClick.bind(this, 6);
+        this.onDeleteControlClick = this.onControlClick.bind(this, 4);
+        this.onEmailControlClick = this.onControlClick.bind(this, 3);
+        this.onServingControlClick = this.onControlClick.bind(this, 5);
+        this.onShareControlClick = this.onControlClick.bind(this, 2);
 
         this.bindMore(props);
     }
@@ -113,7 +114,7 @@ class VideoCollection extends BaseCollection {
             const tagId = this.props.tagId;
             const { gender, age } = this.props.selectedDemographic;
             const monitorFunction = LoadActions.loadTags.bind(
-                null, [tagId], gender, age, true);
+                null, [tagId], gender, age);
             if (this.props.timeRemaining > 10) {
                 this.clearProcessingMonitor();
                 const timeout = 1000 * this.props.timeRemaining;
@@ -189,7 +190,7 @@ class VideoCollection extends BaseCollection {
         }
         const controls = super.getBaseControls();
         const nextIndex = controls.length + 1;
-        if (this.props.servingEnabled) {
+        if (this.props.isServingEnabled) {
             controls.push(
                 <ServingStatusControl
                     index={nextIndex}

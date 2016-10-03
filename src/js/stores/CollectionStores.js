@@ -532,10 +532,10 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             overrideAccountId: accountId,
             data: { share_token: shareToken },
         };
-        return LoadActions.loadTags([tagId], 0, 0, wrappedCallback);
+        return LoadActions.loadTags([tagId], 0, 0, true, null, null, wrappedCallback);
     },
 
-    loadTags(loadTagIds, gender = 0, age = 0, reload = false,
+    loadTags(loadTagIds, gender = 0, age = 0, reload = true,
             videoFilter = null, thumbnailFilter = null, callback = Function.prototype) {
         // Short circuit empty input.
         if (loadTagIds.length === 0) {
@@ -913,7 +913,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
                 thumbnail_id: thumbnailId,
                 enabled: !thumbnail.enabled } };
         SendActions.put('thumbnails', options)
-            .then(() => LoadActions.loadTags([video.tag_id]));
+            .then(() => LoadActions.loadTags([video.tag_id], 0, 0, true));
     },
 
     deleteCollection(tagId) {

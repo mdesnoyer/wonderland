@@ -50,7 +50,7 @@ var VideoProcessing = React.createClass({
             return;
         }
         const monitorFunction = LoadActions.loadTags.bind(
-            null, [tagId], gender, age, true);
+            null, [tagId], gender, age);
 
         if (this.props.estimatedTimeRemaining > 10) {
             this.clearProcessingMonitor();
