@@ -96,7 +96,9 @@ class Sidebar extends React.Component {
                 hidden={!this.props.content}
                 ref={((node) => { this.node = node; })}
             >
-                <a className="xxOverlay-close" onClick={this.handleClose}>{T.get('action.close')}</a>
+                <a className="xxOverlay-close" onClick={this.handleClose}>
+                    {T.get('action.close')}
+                </a>
                 <div className="xxPageOverlay" onClick={this.handleSidebarClick}>
                     {this.renderBody()}
                 </div>

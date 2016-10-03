@@ -71,7 +71,7 @@ class Thumbnail extends React.Component {
         const disabledClassName = this.props.enabled ? '' : 'xxThumbnail--disabled';
         const dominantColorHex = UTILS.findDominantColor(this.props.dominantColor);
         const inlineBackgroundColour = dominantColorHex ? {
-            backgroundColor: dominantColorHex
+            backgroundColor: dominantColorHex,
         } : null;
         const className = `xxThumbnail xxThumbnail--regular xxThumbnail--small \
             xxThumbnail--highLight xxThumbnail--neon ${this.props.className} \
