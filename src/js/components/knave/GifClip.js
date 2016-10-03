@@ -8,8 +8,9 @@ import T from '../../modules/translation';
 export default class GifClip extends React.Component {
     constructor(props) {
         super(props);
-        this.onChange = this.onChange.bind(this)
-        this.handleClick = this.handleClick.bind(this)
+        this.onChange = this.onChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.videoCheck = this.videoCheck.bind(this);
     }
 
     static defaultProps = {
@@ -27,33 +28,35 @@ export default class GifClip extends React.Component {
     componentDidMount() {
         var container = document.getElementById(this.props.id);
 
-        if(this.props.width < 670) {
+        if (this.props.width < 670) {
             container.style.width = `${this.props.width}px`;
-        }
+        };
+
         if (this.props.height < 420) {
             container.style.height = `${this.props.height}px`;
-        }
+        };
     }
 
     componentDidUpdate(_prevProps, _prevState) {
-        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
+        var video = this.videoCheck();
         if (video) {
-            if (this.props.url !== _prevProps.url ){
+            if (this.props.url !== _prevProps.url ) {
                 ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
             };
         };
-            
     }
 
     onChange(isVisible) {
-        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
+        var video = this.videoCheck();
+
         if (video) { 
             isVisible ? video.play() : video.pause(); 
         };
     }
 
     handleClick() {
-        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null; 
+        var video = this.videoCheck();
+
         if (video) { 
             if (video.paused) {
                 video.play();
@@ -61,6 +64,17 @@ export default class GifClip extends React.Component {
             else {
                 video.pause();
             }
+        }
+    }
+
+    videoCheck() {
+        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
+
+        if (video) {
+            return video;
+        } 
+        else {
+            return false;
         }
     }
 
@@ -76,17 +90,14 @@ export default class GifClip extends React.Component {
                     {T.get('copy.topNeonGif')}
                 </h2>
                 <video
-                    ref={id} 
-                    poster={this.props.poster}
                     className="xxGifVideo"
-                    loop
-                    preload="auto"
+                    poster={this.props.poster}
                     onClick={this.handleClick}
+                    ref={id}
+                    preload="auto"
+                    loop
                 >
-                    <source
-                        src={this.props.url}
-                        type="video/mp4"
-                    />
+                    <source src={this.props.url} type="video/mp4" />
                 </video>
             </div>
         );

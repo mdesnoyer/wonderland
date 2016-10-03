@@ -4,6 +4,7 @@
     margin: 0 auto;
     padding: 0;
     max-height: 450px;
+
     
     &::after {
         @extend .x-neonscore;
@@ -22,4 +23,5 @@
     display: block;
     max-height: 420px;
     object-fit: fill;
+    font-family: 'object-fit: fill;';
 }
