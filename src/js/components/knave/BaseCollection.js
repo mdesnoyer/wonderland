@@ -215,6 +215,8 @@ class BaseCollection extends React.Component {
             <div className="xxCollectionImages">
                 <GifClip
                     url={this.props.clip.renditions[2].url}
+                    height={this.props.clip.renditions[2].height}
+                    width={this.props.clip.renditions[2].width}
                     score={this.props.clip.neon_score}
                     poster={this.props.clipPoster}
                     id={this.props.clip.clip_id}

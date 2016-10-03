@@ -1,8 +1,10 @@
 
 .xxGifContainer {
     position: relative;
-    width: 100%;
-    height: auto;
+    margin: 0 auto;
+    padding: 0;
+    max-height: 450px;
+
     
     &:after {
         @extend .x-neonscore;
@@ -19,6 +21,7 @@
 .xxGifVideo {
     width: 100%;
     display: block;
-    margin: 0 auto;
-    height: auto;
+    max-height: 420px;
+    object-fit: fill;
+    font-family: 'object-fit: fill;';
 }

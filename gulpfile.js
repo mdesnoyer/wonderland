@@ -120,6 +120,16 @@ gulp.task('clipboardJs', function() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+gulp.task('objectFitPoly', function() {
+    return gulp.src('./node_modules/object-fit-videos/dist/object-fit-videos.min.js')
+        .pipe(gulp.dest('./build/js/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 gulp.task('timelineConfig', ['clean:timelineConfig'], function() {
     return gulp.src(timelineConfigSrc)
         .pipe(envify())
@@ -407,7 +417,7 @@ gulp.task('sass-lint', function () {
     .pipe(sassLint.failOnError())
 });
 
-gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -418,7 +428,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);

@@ -256,9 +256,9 @@ const VideoCollection = React.createClass({
         };
 
         if (!_.isEmpty(this.props.clips)) {
-            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
-            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]];
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
+            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 875, 500): null;
         }
 
         return (
@@ -289,11 +289,13 @@ const VideoCollection = React.createClass({
             'action.showMore': 'copy.thumbnails.low',
             'action.showLess': 'copy.thumbnails.high'
         };
+        
         if (!_.isEmpty(this.props.clips)) {
-            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]]
-            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id]
-            var clipPoster =  clipThumb ? RENDITIONS.findRendition(clipThumb, 1280, 720): null;
+            var currentClip = this.props.clips[this.props.clipsIds[this.state.selectedGifClip]];
+            var clipThumb = this.props.clipThumbs[currentClip.thumbnail_id];
+            var clipPoster = clipThumb ? RENDITIONS.findRendition(clipThumb, 875, 500): null;
         }
+
         return (
             <BaseCollection
                 {...this.props}
