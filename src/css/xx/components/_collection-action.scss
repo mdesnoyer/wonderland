@@ -20,19 +20,17 @@
 
 .xxCollectionAction-buttons {
     @include clearfix;
-
     .xxButton {
         float: left;
         width: calc((99.9% + #{$gutter-width}) * 1/2 - #{$gutter-width});
-
         + .xxButton {
             float: right;
         }
         &--fullwidth { 
-           width: 100%;  
+            width: 100%;  
         } 
         &--extra-margin-top { 
-           margin-top: 20px;  
+            margin-top: 20px;  
         } 
     }
 

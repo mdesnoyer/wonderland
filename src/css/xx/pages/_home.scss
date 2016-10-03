@@ -29,9 +29,9 @@
     @include breakpoint-mobile {
         height: 100vh;
 
-        &:after {
-            content: '';
-            background: url('../img/xx/temporary/thumbnail-3.jpg');
+        &::after {
+            content: "";
+            background: url("../img/xx/temporary/thumbnail-3.jpg");
             background-size: auto 100%;
             opacity: 0.2;
             top: 0;
@@ -65,9 +65,9 @@
         display: none;
     }
 
-    &:before,
-    &:after {
-        content: '';
+    &::before,
+    &::after {
+        content: "";
         position: fixed;
         top: 0;
         right: 0;
@@ -82,7 +82,7 @@
         );
     }
 
-    &:after {
+    &::after {
         top: auto;
         bottom: 0;
         transform: rotate(180deg);
@@ -187,7 +187,8 @@
 
 @keyframes upload-button-onboarding {
     // needs to be 'from' as uglify is incorrectly making this 0 rather than 0% - EH
-    from, 25% { 
+    from,
+    25% { 
         transform: scale(2.25);
     }
 
@@ -236,8 +237,8 @@
     }
 
     &.xxPage {
-        &:before {
-            content: '';
+        &::before {
+            content: "";
             position: fixed;
             top: 0;
             right: 0;
