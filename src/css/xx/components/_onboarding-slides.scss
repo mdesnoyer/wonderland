@@ -36,8 +36,8 @@
     @include arrow(W, 12px, 1px, $secondary-color);
 
     &:hover {
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             background: $accent-color;
         }
     }
@@ -54,8 +54,8 @@
         margin-right: 0;
     }
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         transform-origin: 100% 50%;
     }
 
@@ -77,12 +77,12 @@
     margin: 0 auto;
     opacity: 0;
     transform: translateY(-50%);
-    transition: opacity .25s ease-in-out, visibility 0s .25s;
+    transition: opacity 0.25s ease-in-out, visibility 0s 0.25s;
 
     &.is-active {
         visibility: visible;
         opacity: 1;
-        transition: opacity .25s ease-in-out .25s, visibility 0s .25s;
+        transition: opacity 0.25s ease-in-out 0.25s, visibility 0s 0.25s;
     }
 
     & .xxSubtitle {

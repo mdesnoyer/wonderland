@@ -8,11 +8,17 @@ $onboarding-text-padding: 18px;
 .xxVideoloadingSpinner {
     @include all-caps-title;
 
-	@keyframes flickerAnimation {
-	  0%   { opacity: 1; }
-	  50%  { opacity: 0.7; }
-	  100% { opacity: 1; }
-	}
+    @keyframes flickerAnimation {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 
     position: absolute;
     top: 50vh;
@@ -33,7 +39,7 @@ $onboarding-text-padding: 18px;
     animation: rotate 2s infinite linear;
     display: inline-block;
     position: relative;
-    &::after {
+    &:after {
         @include font-awesome('f021');
         display: block;
         box-sizing: border-box;
@@ -56,18 +62,18 @@ $onboarding-text-padding: 18px;
     z-index: 1;
     bottom: 40px;
     cursor: pointer;
-    margin-left: .5em;
+    margin-left: 0.5em;
     @include breakpoint-mobile {
         display: none;
     }
-    &::after {
+    &:after {
         transition: transform $default-transition, color $default-transition;
     }
     &:hover {
         .xxCollectionFilterToggle-label {
             color: $base-color;
         }
-        &::after {
+        &:after {
             background: $accent-color;
             color: $white;
             transform: rotate(0deg);

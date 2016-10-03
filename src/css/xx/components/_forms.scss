@@ -18,7 +18,6 @@
 .xxFormField {
     @include clearfix;
     margin: 0 0 14px;
-
     &--has-urlDrop {
         display: inline;
     }
@@ -26,7 +25,6 @@
 
 .xxLabel {
     @include all-caps-title;
-
     display: block;
     width: 100%;
     color: $tertiary-color;
@@ -62,7 +60,7 @@
         color: $tertiary-color;
     }
 
-    &[type=password] {
+    &[type="password"] {
         letter-spacing: 2px;
     }
 
@@ -154,8 +152,8 @@
 
     @include arrow(S, 1px, 11px, $bg-tertiary-color);
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         top: 0;
         right: 18px;
         left: auto;
@@ -165,8 +163,8 @@
     &.is-open {
         z-index: $z-index-above-everything;
 
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             top: 1px; // push a little down to keep visual balance
             transform-origin: 50% 0;
         }
@@ -196,7 +194,7 @@
     background: $white;
 
     .is-open > & {
-        box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.22);
     }
 
     .xxSelect--reversed > & {
@@ -344,7 +342,7 @@
             color: $accent-color;
             position: absolute;
             top: 30px;
-            right: 0px;
+            right: 0;
             width: 10%;
             font: normal 25px/32px $sans-serif-family;
             font-weight: 100;
@@ -356,7 +354,7 @@
             color: $base-color;
             position: absolute;
             top: 30px;
-            right: 0px;
+            right: 0;
             width: 10%;
             font: normal 25px/32px $sans-serif-family;
             font-weight: 100;
@@ -399,49 +397,49 @@
     &--Chooser-Dropbox {
         // width: 25%;
         // background:blue;
-        position:relative;
-        &::before {
+        position: relative;
+        &:before {
             @include font-awesome('f16b');
         }
     }
     &--Chooser-Computer {
-        position:relative;
+        position: relative;
         input {
             display: none;
         }
-        &::before {
+        &:before {
             width: 100%;
             height: 99%;
-            background: white;
+            background: $white;
             @include font-awesome('f108');
         }  
         @include breakpoint-mobile {
-            &::before {
+            &:before {
                 @include font-awesome('f10b');
             }            
         }
     }
     &--Chooser-URL {
-        position:relative;
-        &::before {
+        position: relative;
+        &:before {
             @include font-awesome('f0c1');
         }
     }
     &--Chooser-Thumbnail {
-        position:relative;
+        position: relative;
         &:enabled {
             color: $accent-color; 
         }
-        &::before {
+        &:before {
             @include font-awesome('f1c5');
         }
     }
     &--Chooser-GIF {
-        position:relative;
+        position: relative;
         &:enabled {
             color: $accent-color; 
         }
-        &::before {
+        &:before {
             @include font-awesome('f01d');
         }
     }

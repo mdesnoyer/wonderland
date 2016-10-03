@@ -187,7 +187,8 @@ class FilteredStore {
     }
 
     defaultFilter(item) {
-        return item.hidden !== true;
+        return (item.thumbnail_ids.length > 0 || item.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+            item.hidden !== true;
     }
 
     setFilter(filter) {
@@ -243,7 +244,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 return _tagIds;
             }, [])
             .value();
-        return LoadActions.loadTags(tagIds, 0, 0, callback, reload, videoFilter, thumbnailFilter);
+        return LoadActions.loadTags(tagIds, 0, 0, reload, videoFilter, thumbnailFilter, callback);
     },
 
     // Fetch functions take an array of resource id and return a promise.
@@ -530,8 +531,8 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         return LoadActions.loadTags([tagId], 0, 0, callback);
     },
 
-    loadTags(loadTagIds, gender = 0, age = 0, callback = Function.prototype,
-             reload = false, videoFilter = null, thumbnailFilter = null) {
+    loadTags(loadTagIds, gender = 0, age = 0, reload = false,
+            videoFilter = null, thumbnailFilter = null, callback = Function.prototype) {
         // Short circuit empty input.
         if (loadTagIds.length === 0) {
             callback(0);
@@ -938,7 +939,7 @@ export const SendActions = Object.assign({}, AjaxMixin, {
 
         SendActions.post('videos', { data })
             .then(() => {
-                LoadActions.loadTags([tagId], enumGender, enumAge, callback);
+                LoadActions.loadTags([tagId], enumGender, enumAge, true, null, null, callback);
             });
     },
 

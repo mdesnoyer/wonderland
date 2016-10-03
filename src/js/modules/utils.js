@@ -377,6 +377,13 @@ var UTILS = {
         ;
         return bScore - aScore;
     },
+    findDominantColor(rgb) {
+        if (rgb && rgb.length === 3) {
+            const [r, g, b] = rgb;
+            return ('#' + r.toString(16) + g.toString(16) + b.toString(16));
+        }
+        return null;
+    },
     // TODO? re-write this so it takes an array.
     findDefaultThumbnail: function(thumbSet) {
         defaultThumbnail = null;

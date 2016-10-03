@@ -6,7 +6,7 @@
     max-height: 450px;
 
     
-    &::after {
+    &:after {
         @extend .x-neonscore;
         content: attr(data-score);
         left: 0;

@@ -1,6 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var gulp = require('gulp');
+var sassLint = require('gulp-sass-lint');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -265,6 +266,155 @@ function buildScript(file, watch) {
 gulp.task('default', null, function() {
     gutil.log('Gulp is running - default');
     gutil.log('Please use debug OR live.');
+});
+
+gulp.task('sass-lint', function () {
+  return gulp.src('./src/css/**/*.scss')
+    .pipe(sassLint({
+        options: {
+            'merge-default-rules': false
+        },
+        rules: {
+            // https://github.com/sasstools/sass-lint/tree/master/docs/rules
+            'attribute-quotes': 1,
+            'bem-depth': [
+                2, // error
+                {
+                    'max-depth': 3
+                }
+            ],
+            'border-zero': [
+                2, // error
+                {
+                    convention: '0'
+                }
+            ],
+            'brace-style': [
+                2, // error
+                {
+                    style: 'stroustrup',
+                    'allow-single-line': false
+                }
+            ],
+            // TODO 'class-name-format'
+            // TODO 'clean-import-paths'
+            // TODO 'empty-args'
+            // TODO 'empty-line-between-blocks'
+            // TODO 'extends-before-declarations'
+            // TODO 'extends-before-mixins'
+            'final-newline': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            // TODO 'force-attribute-nesting'
+            // TODO 'force-element-nesting'
+            // TODO 'force-pseudo-nesting'
+            // TODO 'function-name-format'
+            // TODO 'hex-length'
+            'hex-notation': [
+                2, // error
+                {
+                    'style': 'lowercase'
+                }
+            ],
+            // TODO 'id-name-format'
+            // TODO 'indentation'
+            'leading-zero': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            // TODO 'mixin-name-format'
+            // TODO 'mixins-before-declarations'
+            // TODO 'nesting-depth'
+            // TODO 'no-attribute-selectors'
+            // TODO 'no-color-hex'
+            'no-color-keywords': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            // TODO 'no-color-literals'
+            // TODO 'no-combinators'
+            'no-css-comments': 1,
+            // TODO 'no-debug'
+            // TODO 'no-disallowed-properties'
+            // TODO 'no-duplicate-properties'
+            'no-empty-rulesets': 1,
+            // TODO 'no-extends'
+            // TODO 'no-ids'
+            // TODO 'no-important'
+            // TODO 'no-invalid-hex'
+            // TODO 'no-mergeable-selectors'
+            'no-misspelled-properties': 1,
+            // TODO 'no-qualifying-elements'
+            // TODO 'no-trailing-whitespace'
+            'no-trailing-zero': 1,
+            // TODO 'no-transition-all'
+            // TODO 'no-universal-selectors'
+            // TODO 'no-url-protocols'
+            // TODO 'no-vendor-prefixes'
+            // TODO 'no-warn'
+            // TODO 'one-declaration-per-line'
+            // TODO 'placeholder-in-extend'
+            // TODO 'placeholder-name-format'
+            // TODO 'property-sort-order'
+            // TODO 'property-units'
+            // TODO 'pseudo-element'
+            // TODO 'quotes'
+            'shorthand-values': 1,
+            // TODO 'single-line-per-selector'
+            // TODO 'space-after-bang''
+            'space-after-colon': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            'space-after-comma': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            // TODO 'space-around-operator'
+            // TODO 'space-before-bang'
+            'space-before-brace': [
+                2, // error
+                {
+                    include: true
+                }
+            ],
+            'space-before-colon': [
+                2, // error
+                {
+                    include: false
+                }
+            ],
+            'space-between-parens': [
+                2, // error
+                {
+                    include: false
+                }
+            ],
+            // TODO 'trailing-semicolon'
+            // TODO 'url-quotes'
+            // TODO 'variable-for-property'
+            // TODO 'variable-name-format'
+            'zero-unit': [
+                2, // error
+                {
+                    include: false
+                }
+            ]
+        }
+    }))
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
 });
 
 gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {

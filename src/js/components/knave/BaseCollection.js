@@ -266,6 +266,7 @@ class BaseCollection extends React.Component {
             <FeatureThumbnail
                 title={title}
                 score={thumbnail.neon_score}
+                dominantColor={thumbnail.dominant_color}
                 enabled={thumbnail.enabled}
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}

@@ -46,12 +46,16 @@
 
 .timeline__moment {
     @extend .x-timeline-smart-layout;
-    margin: 0 0 1vw 0; // needs to be vw NOT % or Firefox no likey
+    margin: 0 0 1vw; // needs to be vw NOT % or Firefox no likey
     position: relative;
 }
 
-/*a*/.timeline__download {
+.timeline__download {
     display: block;
+}
+
+.timeline__frame {
+    background-color: $accent-color;
 }
 
 .timeline__snapshot {
