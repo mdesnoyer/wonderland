@@ -51,7 +51,7 @@ describe('Function Store.resetStores', () => {
         expect(LoadActions.apiCalls.length).toEqual(1);
         cancelActions();
         expect(Search.pending).toEqual(0);
-        // There are 3 doGets in a load.
-        expect(cancel.mock.calls.length).toBe(3);
+        // There are 2 or 3, if reloading, doGets in a load.
+        expect(cancel.mock.calls.length).toMatch(/[2-3]/);
     });
 });
