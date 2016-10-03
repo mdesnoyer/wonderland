@@ -25,8 +25,5 @@ module.exports = {
         "react/jsx-indent": ["error", 4],
         "react/jsx-filename-extension": ["off"],
         // Temp disable for dev.
-        "no-console": ["off"],
-        "no-debugger": ["off"],
-        "react/sort-comp": ["off"],
     },
 };

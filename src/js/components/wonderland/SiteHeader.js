@@ -23,19 +23,19 @@ class SiteHeader extends React.Component {
         this.state = { sidebarContent: null };
     }
 
+    onSetSidebarContent(sidebarContent) {
+        if (this.props.onSetSidebarContent) {
+            this.props.onSetSidebarContent(sidebarContent);
+        }
+        this.setState({ sidebarContent });
+    }
+
     getSidebarContent() {
         // Prefer the parent's sidebarContent.
         if (this.props.sidebarContent) {
             return this.props.sidebarContent;
         }
         return this.state.sidebarContent;
-    }
-
-    onSetSidebarContent(sidebarContent) {
-        if (this.props.onSetSidebarContent) {
-            this.props.onSetSidebarContent(sidebarContent);
-        }
-        this.setState({ sidebarContent });
     }
 
     renderSidebar() {

@@ -141,6 +141,14 @@ class BaseCollection extends React.Component {
         this.onSetLiftObjectId(null);
     }
 
+    onControlCancelClick() {
+        return this.onControlClick();
+    }
+
+    onControlRefilterClick() {
+        this.onControlClick(1);
+    }
+
     getLiftValue() {
         const selectedId = this.state.liftObjectId;
         const defaultId = this.getDefaultLiftObjectId();
@@ -152,10 +160,6 @@ class BaseCollection extends React.Component {
             return undefined;
         }
         return map[selectedId || defaultId];
-    }
-
-    onControlRefilterClick() {
-        this.onControlClick(1);
     }
 
     getBasePanels(copyOverrideMap = {}) {
@@ -199,10 +203,6 @@ class BaseCollection extends React.Component {
         ];
         unapply();
         return panels;
-    }
-
-    onControlCancelClick() {
-        return this.onControlClick();
     }
 
     // Get the common set of controls.

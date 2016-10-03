@@ -5,7 +5,9 @@ import VisibilitySensor from 'react-visibility-sensor';
 
 import T from '../../modules/translation';
 
-class Clip extends React.Component {
+class GifClip extends React.Component {
+
+    static displayName = 'GifClip';
 
     constructor(props) {
         super(props);
@@ -68,3 +70,5 @@ class Clip extends React.Component {
         );
     }
 }
+
+export default GifClip;

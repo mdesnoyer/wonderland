@@ -310,9 +310,16 @@ class CollectionsMainPage extends React.Component {
         this.setState(state);
     }
 
+    // TODO factor this and the default filter.
+    onNameFilter(searchQuery, tag) {
+        return tag.hidden !== true &&
+            (tag.thumbnail_ids.length > 0 || tag.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+            this.filterOnName(searchQuery, tag);
+    }
+
     getShownIds() {
         // The size and offset into the list.
-        const pageSize = 10;
+        const pageSize = UTILS.RESULTS_PAGE_SIZE;
         const offset = pageSize * this.state.currentPage;
 
         // Get the ordered array of selectable tag ids
@@ -360,14 +367,6 @@ class CollectionsMainPage extends React.Component {
         }
         return name.search(query.toLowerCase()) !== -1;
     }
-
-    // TODO factor this and the default filter.
-    onNameFilter(searchQuery, tag) {
-        return tag.hidden !== true &&
-            (tag.thumbnail_ids.length > 0 || tag.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
-            this.filterOnName(searchQuery, tag);
-    }
-
 
     isLoading() {
         return _.isEmpty(this.state.tags) && Search.pending > 0;

@@ -5,7 +5,7 @@ import FeatureThumbnail from './FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
 import { ThumbnailList } from './ThumbnailList';
 import Lift from '../knave/Lift';
-import GifClip from './GifClip';
+import Clip from './Clip';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -177,7 +177,7 @@ class MobileBaseCollection extends BaseCollection {
                     />
                 </div>
                 <div className="xxCollectionImages">
-                    <GifClip
+                    <Clip
                         url={this.props.clip.renditions[2].url}
                         score={this.props.clip.neon_score}
                         poster={this.props.clipPoster}
