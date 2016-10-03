@@ -41,7 +41,7 @@ export default class GifClip extends React.Component {
         var video = this.videoCheck();
         if (video) {
             if (this.props.url !== _prevProps.url ) {
-                ReactDOM.findDOMNode(this.refs[this.props.id]).load();    
+                video.load();    
             };
         };
     }
@@ -68,8 +68,8 @@ export default class GifClip extends React.Component {
     }
 
     videoCheck() {
-        var video = ReactDOM.findDOMNode(this.refs[this.props.id]) ? ReactDOM.findDOMNode(this.refs[this.props.id]) : null;
-
+        var video = this[this.props.id] ? this[this.props.id] : null;
+        
         if (video) {
             return video;
         } 
@@ -93,7 +93,7 @@ export default class GifClip extends React.Component {
                     className="xxGifVideo"
                     poster={this.props.poster}
                     onClick={this.handleClick}
-                    ref={id}
+                    ref={(ref) => this[id] = ref}
                     preload="auto"
                     loop
                 >
