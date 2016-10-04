@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import InfoActionContainer from './InfoActionContainer';
 import UTILS from '../../modules/utils';
 import { LoadActions } from '../../stores/CollectionStores';
 import {
@@ -71,7 +70,6 @@ class BaseCollection extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { smallThumbnailRows: 1 };
 
         this.onControlCancelClick = this.onControlClick.bind(this, 0);
         this.onControlClick = this.onControlClick.bind(this);
@@ -220,28 +218,10 @@ class BaseCollection extends React.Component {
     }
 
     render() {
-        // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.copyOverrideMap);
-
-        const result = (
-            <div className={this.props.wrapperClassName}>
-                <div className="xxCollectionImages">
-                    {this.props.featureContent}
-                    {this.props.subContent}
-                </div>
-                <div className="xxCollection-content">
-                    <InfoActionContainer
-                        panels={this.props.infoActionPanels}
-                        controls={this.props.infoActionControls}
-                        selectedPanelIndex={this.props.selectedPanelIndex}
-                    />
-                </div>
-            </div>
-        );
-        // Remove translation override.
-        unapplyOverride();
-        return result;
+        if (this.context.isMobile) {
+            return this.renderMobile();
+        }
+        return this.renderDesktop();
     }
 }
 

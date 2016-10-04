@@ -2,19 +2,22 @@ import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
 import BaseCollection from './BaseCollection';
+import FeatureThumbnail from './FeatureThumbnail';
 import MobileBaseCollection from './MobileBaseCollection';
+import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
-import {
-    ShowMoreThumbnailList,
-    ShowLessThumbnailList } from './ThumbnailList';
+import UTILS from '../../modules/utils';
 import {
     AddControl,
     AddPanel,
     ServingStatusControl,
     ServingStatusPanel } from './InfoActionPanels';
-import RENDITIONS from '../../modules/renditions';
-import FeatureThumbnail from './FeatureThumbnail';
-import { SendActions, LoadActions } from '../../stores/CollectionStores';
+import {
+    SendActions,
+    LoadActions } from '../../stores/CollectionStores';
+import {
+    ShowMoreThumbnailList,
+    ShowLessThumbnailList } from './ThumbnailList';
 
 class VideoCollection extends BaseCollection {
 
@@ -276,13 +279,6 @@ class VideoCollection extends BaseCollection {
 
     getDefaultLiftObjectId() {
         return this.props.rightFeatureThumbnail.thumbnail_id;
-    }
-
-    render() {
-        if (this.context.isMobile) {
-            return this.renderMobile();
-        }
-        return this.renderDesktop();
     }
 }
 

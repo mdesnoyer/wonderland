@@ -23,6 +23,7 @@ class ClipCollection extends VideoCollection {
     constructor(props) {
         super(props);
         this.state = {
+            smallThumbnailRows: 1,
             selectedClipIndex: 0,
             selectedPanelIndex: 0,
         };
@@ -37,6 +38,11 @@ class ClipCollection extends VideoCollection {
         if (selectedClipIndex !== -1) {
             this.setState({ selectedClipIndex });
         }
+    }
+
+    onRefilterVideo(gender, age, callback) {
+        return SendActions.refilterVideoForClip(
+            this.props.tagId, gender, age, callback);
     }
 
     bindMore() {
@@ -62,9 +68,19 @@ class ClipCollection extends VideoCollection {
         return super.getBasePanels(copyOverrideMap);
     }
 
-    onRefilterVideo(gender, age, callback) {
-        return SendActions.refilterVideoForClip(
-            this.props.tagId, gender, age, callback);
+    getWidthClassName(thumbnails) {
+        switch (thumbnails.length) {
+        case 2:
+            /* falls through */
+        case 3:
+            return 'xxThumbnail--threewidth'; // FIXME use descriptive class names.
+        case 5:
+            return 'xxThumbnail--fivewidth';
+        case 6:
+            return 'xxThumbnail--smallwidth';
+        default:
+            return 'xxThumbnail--mediumwidth';
+        }
     }
 
     getControls() {
@@ -73,7 +89,7 @@ class ClipCollection extends VideoCollection {
             return controls;
         }
         const clip = this.props.clips[this.state.selectedClipIndex];
-        const url = RENDITIONS.findLargestUrl(clip.renditions, 'gif');
+        const url = RENDITIONS.findLargestRenditionUrl(clip.renditions, 'gif');
         // Put the Download before the last control.
         controls.splice(-1, 0, <DownloadControl href={url} />);
         return controls;
@@ -122,27 +138,12 @@ class ClipCollection extends VideoCollection {
         );
     }
 
-    getWidthClassName(thumbnails) {
-        switch (thumbnails.length) {
-        case 2:
-            /* falls through */
-        case 3:
-            return 'xxThumbnail--threewidth'; // FIXME use descriptive class names.
-        case 5:
-            return 'xxThumbnail--fivewidth';
-        case 6:
-            return 'xxThumbnail--smallwidth';
-        default:
-            return 'xxThumbnail--mediumwidth';
-        }
-    }
-
     renderClip() {
         const clip = this.props.clips[this.state.selectedClipIndex];
         const thumbnail = this.props.thumbnailMap[clip.thumbnail_id];
         const posterUrl = thumbnail ? RENDITIONS.findRendition(
             thumbnail, UTILS.CLIP_LARGE_WIDTH, UTILS.CLIP_LARGE_HEIGHT) : null;
-        const url = RENDITIONS.findLargestUrl(clip.renditions, 'mp4');
+        const url = RENDITIONS.findLargestRenditionUrl(clip.renditions, 'mp4');
         return (
             <Clip
                 url={url}
@@ -164,13 +165,6 @@ class ClipCollection extends VideoCollection {
                 selectedPanelIndex={this.state.selectedPanelIndex}
             />
         );
-    }
-
-    render() {
-        if (this.context.isMobile) {
-            this.renderMobile();
-        }
-        return this.renderDesktop();
     }
 }
 

@@ -80,20 +80,12 @@ const RENDITIONS = {
     //   e.g., 'gif'
     // -output string or null
     findLargestRenditionUrl(renditions, fileType = null) {
-        let maxProduct = 0;
-        let result = null;
-        renditions.forEach((r) => {
-            if (fileType && !_.endsWith(r.url, fileType)) {
-                return;
-            }
-            let product = r.width * r.height;
-            if (product > maxProduct) {
-                maxProduct = product;
-                result = r.url;
-            }
-        });
-        return result;
+        const r = _(renditions)
+            .filter(r => !fileType || _.endsWith(r.url, fileType))
+            .maxBy(r => r.width * r.height);
+        return r ? r.url : null;
     },
+
 
     // Given renditions of a clip or thumb, get the smallest's url.
     // Size here is just the number of pixels in the rendition.
@@ -105,19 +97,10 @@ const RENDITIONS = {
     //   e.g., 'gif'
     // -output string or null
     findSmallestRenditionUrl(renditions, fileType = null) {
-        let minProduct = Number.MAX_SAFE_INTEGER;
-        let result = null;
-        renditions.forEach((r) => {
-            if (fileType && !_.endsWith(r.url, fileType)) {
-                return;
-            }
-            let product = r.width * r.height;
-            if (product < minProduct) {
-                minProduct = product;
-                result = r.url;
-            }
-        });
-        return result;
+        const r = _(renditions)
+            .filter(r => !fileType || _.endsWith(r.url, fileType))
+            .minBy(r => r.width * r.height);
+        return r ? r.url : null;
     }
 }
 

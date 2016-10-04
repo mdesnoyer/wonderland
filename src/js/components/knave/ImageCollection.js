@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 
 import BaseCollection from './BaseCollection';
+import FeatureThumbnail from './FeatureThumbnail';
 import MobileBaseCollection from './MobileBaseCollection';
+import {
+    AddPanel,
+    AddControl } from './InfoActionPanels';
 import {
     ThumbnailList,
     ShowMoreThumbnailList,
     ShowLessThumbnailList,
     ShowMoreLessThumbnailList } from './ThumbnailList';
-import {
-    AddPanel,
-    AddControl } from './InfoActionPanels';
-import FeatureThumbnail from './FeatureThumbnail';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -62,6 +62,16 @@ class ImageCollection extends BaseCollection {
             this, props.tagId, props.rightFeatureThumbnail.thumbnail_id);
 
         this.onControlRefilterClick = undefined;
+    }
+
+    onRightThumbnailClick() {
+        const right = this.props.rightFeatureThumbnail;
+        const left = this.props.leftFeatureThumbnail;
+        if (left.thumbnail_id === right.thumbnail_id) {
+            this.onAddControlClick();
+            return;
+        }
+        this.onThumbnailClick(this.props.rightFeatureThumbnail.thumbnail_id);
     }
 
     getDefaultLiftObjectId() {
@@ -219,23 +229,6 @@ class ImageCollection extends BaseCollection {
             onMouseLeave={this.onSetLiftThumbnailToDefault}
             onClick={this.onThumbnailClick}
         />);
-    }
-
-    onRightThumbnailClick() {
-        const right = this.props.rightFeatureThumbnail;
-        const left = this.props.leftFeatureThumbnail;
-        if (left.thumbnail_id === right.thumbnail_id) {
-            this.onAddControlClick();
-            return;
-        }
-        this.onThumbnailClick(this.props.rightFeatureThumbnail.thumbnail_id);
-    }
-
-    render() {
-        if (this.context.isMobile) {
-            return this.renderMobile();
-        }
-        return this.renderDesktop();
     }
 }
 
