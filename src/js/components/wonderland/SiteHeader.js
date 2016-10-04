@@ -1,15 +1,16 @@
 import React, { PropTypes } from 'react';
-import SiteBanner from './SiteBanner';
+
 import AccountMasqueradeBar from './AccountMasqueradeBar';
 import Sidebar from './Sidebar';
+import SiteBanner from './SiteBanner';
+import UTILS from '../../modules/utils';
 
 class SiteHeader extends React.Component {
 
     static displayName = 'SiteHeader';
 
     static propTypes = {
-        sidebarContent: PropTypes.oneOf([
-            'learnMore', 'contact', 'signUp', 'account', 'primaryNavigation']),
+        sidebarContent: PropTypes.oneOf(UTILS.SIDEBAR_CONTENT_TYPES),
         onSetSidebarContent: PropTypes.func,
         query: PropTypes.string,
         onSearchBarChange: PropTypes.func,

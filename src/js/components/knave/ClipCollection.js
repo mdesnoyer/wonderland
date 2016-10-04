@@ -6,6 +6,7 @@ import VideoCollection from './VideoCollection';
 import Clip from './Clip';
 import MobileBaseCollection from './MobileBaseCollection';
 import RENDITIONS from '../../modules/renditions';
+import UTILS from '../../modules/utils';
 import { DownloadControl } from './InfoActionPanels';
 import { ThumbnailList } from './ThumbnailList';
 import { SendActions } from '../../stores/CollectionStores';
@@ -124,12 +125,9 @@ class ClipCollection extends VideoCollection {
     getWidthClassName(thumbnails) {
         switch (thumbnails.length) {
         case 2:
-            // Use three minimum.
-            return 'xxThumbnail--threewidth';
+            /* falls through */
         case 3:
-            return 'xxThumbnail--threewidth';
-        case 4:
-            return 'xxThumbnail--mediumwidth';
+            return 'xxThumbnail--threewidth'; // FIXME use descriptive class names.
         case 5:
             return 'xxThumbnail--fivewidth';
         case 6:
@@ -142,7 +140,8 @@ class ClipCollection extends VideoCollection {
     renderClip() {
         const clip = this.props.clips[this.state.selectedClipIndex];
         const thumbnail = this.props.thumbnailMap[clip.thumbnail_id];
-        const posterUrl = thumbnail ? RENDITIONS.findRendition(thumbnail, 1280, 720) : null;
+        const posterUrl = thumbnail ? RENDITIONS.findRendition(
+            thumbnail, UTILS.CLIP_LARGE_WIDTH, UTILS.CLIP_LARGE_HEIGHT) : null;
         const url = RENDITIONS.findLargestUrl(clip.renditions, 'mp4');
         return (
             <Clip
@@ -157,7 +156,7 @@ class ClipCollection extends VideoCollection {
         return (
             <BaseCollection
                 {...this.props}
-                wrapperClassName={'xxCollection xxCollection--video'}
+                wrapperClassName="xxCollection xxCollection--video"
                 featureContent={this.renderClip()}
                 subContent={this.renderClipList()}
                 infoActionPanels={this.getPanels()}

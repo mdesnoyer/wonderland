@@ -6,6 +6,7 @@ import Account from './Account';
 import PrimaryNavigation from './PrimaryNavigation';
 import SignUp from './SignUp';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 class Sidebar extends React.Component {
 
@@ -13,9 +14,7 @@ class Sidebar extends React.Component {
 
     static propTypes = {
         onSetContent: PropTypes.func.isRequired,
-        content: PropTypes.oneOf(
-            ['learnMore', 'contact', 'signUp', 'account', 'primaryNavigation']),
-
+        content: PropTypes.oneOf(UTILS.SIDEBAR_CONTENT_TYPES),
     }
 
     constructor() {

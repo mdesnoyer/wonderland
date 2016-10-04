@@ -97,9 +97,11 @@ class CollectionsContainer extends React.Component {
         // to the selected one.
         const selectedDemographic = this.getSelectedDemographic();
         _.map(selectedDemographic, (selDemo, tagId) => {
-            if (_.size(selDemo.length) === 4) {
+            const { nextGender, nextAge } = selDemo;
+            // Check if the next gender and age are set, and if they're
+            // then ready to display.
+            if (nextGender && nextAge) {
                 // Look for the next one.
-                const { nextGender, nextAge } = selDemo;
                 const tag = nextProps.stores.tags[tagId];
                 const video = nextProps.stores.videos[tag.video_id];
                 const demos = video.demographic_clip_ids.length ?
@@ -153,17 +155,19 @@ class CollectionsContainer extends React.Component {
 
     onSendResultEmail(email, tagId, callback) {
         const { gender, age } = this.getSelectedDemographic(tagId);
-        // Skip the worst and take the first four of the others.
+        // The email template uses a fixed number of good thumbnails, so always
+        // call the sendEmail function with that number even if some are dupes.
         const { best, good } = this.getBestWorstGoodBad(tagId, gender, age);
-        const fourThumbs = _.flatten([best, good]).slice(0, 4);
+        const thumbCount = UTILS.RESULT_EMAIL_THUMB_COUNT;
+        const emailThumbs = _.flatten([best, good]).slice(0, thumbCount);
         let i = 0;
-        while (fourThumbs.length < 4) {
+        while (emailThumbs.length < thumbCount) {
             // Repeat until the required number is set.
-            fourThumbs.push(fourThumbs[i]);
+            emailThumbs.push(emailThumbs[i]);
             i += 1;
         }
         this.props.onSendResultEmail(
-            email, tagId, gender, age, fourThumbs, callback);
+            email, tagId, gender, age, emailThumbs, callback);
     }
 
     onSendClipResultEmail(email, tagId, callback) {
@@ -200,14 +204,8 @@ class CollectionsContainer extends React.Component {
         const tag = this.props.stores.tags[tagId];
         const video = this.props.stores.videos[tag.video_id];
 
-        let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[gender];
-        if (genderLabel === 'null') {
-            genderLabel = null;
-        }
-        let ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[age];
-        if (ageLabel === 'null') {
-            ageLabel = null;
-        }
+        const genderLabel = UTILS.getGenderLabel(gender);
+        const ageLabel = UTILS.getAgeLabel(age);
         const videoDemo = _.find(
             video.demographic_thumbnails,
             t => t.gender === genderLabel && t.age === ageLabel);

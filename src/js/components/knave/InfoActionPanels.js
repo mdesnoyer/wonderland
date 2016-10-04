@@ -41,7 +41,7 @@ export const InfoDemoLiftPanel = React.createClass({
 
     getDefaultProps() {
         return {
-            displayRefilterButton: true,
+            displayRefilterButton: true
         };
     },
 
@@ -158,7 +158,6 @@ export const ServingStatusPanel = React.createClass({
                 </div>
                 <ServingStatusThumbnailList
                     thumbnails={this.props.goodThumbnails}
-                    onClick={this.props.onToggleThumbnailEnabled}
                     onClick={this.props.onToggleThumbnailEnabled}
                     className="xxThumbnail--noscore xxThumbnail--fullwidth"
                 />

@@ -13,6 +13,7 @@ import {
 import FeatureThumbnail from './FeatureThumbnail';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
 class ImageCollection extends BaseCollection {
 
@@ -105,7 +106,7 @@ class ImageCollection extends BaseCollection {
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName={'xxCollection xxCollection--photo'}
+                wrapperClassName="xxCollection xxCollection--photo"
             />
         );
     }
@@ -119,7 +120,7 @@ class ImageCollection extends BaseCollection {
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName={'xxCollection xxCollection--photo'}
+                wrapperClassName="xxCollection xxCollection--photo"
             />
         );
     }
@@ -164,25 +165,31 @@ class ImageCollection extends BaseCollection {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
 
+        // Number of thumbnails per row.
+        const perRow = UTILS.THUMBNAILS_PER_ROW;
+
         // 4 cases:
+        //
+        // Given X thumbnails per row (e.g., 6).
+        //
         // There's fewer than one row of thumbs
-        // There's fewer than the rows displayed -> show less in spot 6.
+        // There's fewer than the rows displayed -> show less in spot X.
         // There's more than the rows displayed -> show more in last spot
         // There's more than the rows displayed, and they've
-        //   clicked show more once -> show less in spot 6, and show more
+        //   clicked show more once -> show less in spot X, and show more
         //   in right-hand spot in last row
 
         // There's fewer than or exactly one row of thumbs: no button.
-        if (this.props.smallThumbnails.length <= 6) {
+        if (this.props.smallThumbnails.length <= perRow) {
             return (<ThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
-        // There's fewer than the number of display rows: put ShowLess in slot 6.
+        // There's fewer than the number of display rows: put ShowLess in slot X.
         // (Add one to length for the ShowLess button.)
-        } else if (this.props.smallThumbnails.length + 1 <= rows * 6) {
+        } else if (this.props.smallThumbnails.length + 1 <= rows * perRow) {
             return (<ShowLessThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onLess={this.onLess}
@@ -190,11 +197,11 @@ class ImageCollection extends BaseCollection {
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
                 onClick={this.onThumbnailClick}
             />);
-        // There's more than 6 and they haven't shown more at all.
+        // There's more than X and they haven't shown more at all.
         } else if (rows === 1) {
             return (<ShowMoreThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                numberToDisplay={5} // Show exactly one row of 5 and ShowMore.
+                numberToDisplay={perRow} // Show exactly one row of X-1 and ShowMore.
                 onMore={this.onMore}
                 onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}
@@ -205,7 +212,7 @@ class ImageCollection extends BaseCollection {
         }
         return (<ShowMoreLessThumbnailList
             thumbnails={this.props.smallThumbnails}
-            numberToDisplay={(rows * 6) - 2} // N rows of 6, minus one for each button.
+            numberToDisplay={(rows * perRow) - 2} // N rows of X, minus one for each button.
             onMore={this.onMore}
             onLess={this.onLess}
             onMouseEnter={this.onSetLiftThumbnailId}

@@ -88,7 +88,7 @@ class VideoCollection extends BaseCollection {
                     title={T.get('copy.currentThumbnail')}
                     score={left.neon_score}
                     enabled={left.enabled}
-                    className={'xxThumbnail--lowLight'}
+                    className="xxThumbnail--lowLight"
                     src={RENDITIONS.findRendition(left)}
                     onClick={this.onLeftThumbnailClick}
                     onMouseEnter={this.onSetLiftThumbnailToLeft}
@@ -215,7 +215,7 @@ class VideoCollection extends BaseCollection {
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName={'xxCollection xxCollection--video'}
+                wrapperClassName="xxCollection xxCollection--video"
                 liftValue={this.getLiftValue()}
                 onSetLiftThumbnailId={this.onSetLiftThumbnailId}
             />
@@ -231,7 +231,7 @@ class VideoCollection extends BaseCollection {
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
                 selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName={'xxCollection xxCollection--video'}
+                wrapperClassName="xxCollection xxCollection--video"
             />
         );
     }
@@ -239,16 +239,18 @@ class VideoCollection extends BaseCollection {
     renderThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
+        // Number of thumbnails per row.
+        const perRow = UTILS.THUMBNAILS_PER_ROW;
 
         // 2 cases for video:
         // Expanded: ShowLess with more than one row
         // Initial: ShowMore with one row
         if (rows > 1) {
-            // Constrain good thumbnails to 5.
-            const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, 5);
+            // Constrain good thumbnails to perRow.
+            const truncatedSmallThumbnails = this.props.smallThumbnails.slice(0, perRow - 1);
             const thumbnails = _.flatten([
                 truncatedSmallThumbnails,
-                this.props.smallBadThumbnails.slice(0, 6),
+                this.props.smallBadThumbnails.slice(0, perRow),
             ]);
             return (<ShowLessThumbnailList
                 thumbnails={thumbnails}
@@ -263,7 +265,7 @@ class VideoCollection extends BaseCollection {
         }
         return (<ShowMoreThumbnailList
             thumbnails={this.props.smallThumbnails}
-            numberToDisplay={5}
+            numberToDisplay={perRow - 1}
             moreLabel={T.get('copy.thumbnails.low')}
             onMore={this.onMore}
             onMouseEnter={this.onSetLiftThumbnailId}

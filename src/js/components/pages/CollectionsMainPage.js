@@ -224,7 +224,7 @@ class CollectionsMainPage extends React.Component {
 
         // Find the gif with the width we need, or just any gif.
         const bestRendition = best.renditions.find(r => (
-            r.width === UTILS.GIF_EMAIL_DIMENSION && _.endsWith(r.url, '.gif')
+            r.width === UTILS.CLIP_EMAIL_DIMENSION && _.endsWith(r.url, '.gif')
         )) || best.renditions.find(r => _.endsWith(r.url, '.gif'));
         const bestUrl = bestRendition.url;
 

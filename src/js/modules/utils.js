@@ -319,6 +319,7 @@ var UTILS = {
     SUPPORT_MANDRILL_SLUG: 'support-email-admin',
     CONFIRM_MANDRILL_SLUG: 'support-email',
     RESULTS_EMAIL_SUBJECT: 'Your Neon Images Are Here!',
+    RESULT_EMAIL_THUMB_COUNT: 4,
     RESULTS_MANDRILL_SLUG: 'video-results',
     IMAGE_RESULTS_MANDRILL_SLUG: 'image-results',
     GIF_RESULTS_MANDRILL_SLUG: 'gif-results',
@@ -328,15 +329,19 @@ var UTILS = {
     CONTACT_EXTERNAL_URL: 'https://neon-lab.com/contact-us/',
     CORP_EXTERNAL_URL: 'https://neon-lab.com/',
     PRICING_EXTERNAL_URL: 'https://neon-lab.com/pricing/',
+    SIDEBAR_CONTENT_TYPES: ['learnMore', 'contact', 'signUp', 'account', 'primaryNavigation'],
     POLL_INTERVAL_SECONDS: 20,
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
-    RESULTS_PAGE_SIZE: 10,
+    RESULTS_PAGE_SIZE: 5,
     MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
     IMAGE_TARGET_WIDTH: 800,
     IMAGE_TARGET_HEIGHT: 800,
-    GIF_EMAIL_DIMENSION: 425,
+    THUMBNAILS_PER_ROW: 6,
+    CLIP_LARGE_WIDTH: 1280,
+    CLIP_LARGE_HEIGHT: 720,
+    CLIP_EMAIL_DIMENSION: 425,
     CLIP_FIELDS: ['video_id', 'clip_id', 'rank', 'enabled', 'url', 'type', 'created', 'updated', 'neon_score', 'renditions', 'thumbnail_id'],
     CLIP_OPTIONS: {result_type: 'clips', clip_length: 3, n_clips: 5},
     VIDEO_FIELDS: ['video_id', 'title', 'publish_date', 'created', 'updated', 'duration', 'state', 'url', 'thumbnails', 'demographic_thumbnails', 'bad_thumbnails', 'estimated_time_remaining', 'tag_id', 'custom_data'],
@@ -653,7 +658,24 @@ var UTILS = {
     isEmailAddress(input) {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(input);
+    },
+
+    getGenderLabel(genderNumber) {
+        let genderLabel = _.invert(UTILS.FILTER_GENDER_COL_ENUM)[genderNumber];
+        if (genderLabel === 'null') {
+            genderLabel = null;
+        }
+        return genderLabel;
+    },
+
+    getAgeLabel(ageNumber) {
+        let ageLabel = _.invert(UTILS.FILTER_AGE_COL_ENUM)[ageNumber];
+        if (ageLabel === 'null') {
+            ageLabel = null;
+        }
+        return ageLabel;
     }
+
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

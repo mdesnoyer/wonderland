@@ -42,15 +42,13 @@ var ThumbnailOverlay = React.createClass({
     },
     handleKeyEvent: function(e) {
         var self = this;
+        e.stopPropagation();
         switch (e.keyCode) {
             case 27: // Escape
-                e.stopPropagation();
                 return self.props.closeThumbnailOverlay(e);
             case 37: // Left Arrow
-                e.stopPropagation();
                 return self.props.handleClickPrevious(e);
             case 39: // Right Arrow
-                e.stopPropagation();
                 return self.props.handleClickNext(e);
         }
     },

@@ -70,9 +70,18 @@ const RENDITIONS = {
         return near_match || aspect_ratio_match || thumbnail.url;
     },
 
-    findLargestUrl(renditions, fileType = null) {
+    // Given renditions of a clip or thumb, get the largest's url.
+    // Large here is just the number of pixels in the rendition.
+    // With optional fileType, only get a url if its file extension
+    // is fileType.
+    //
+    // -input renditions array of object { url, width, height }
+    // -input fileType string - constrain to urls that end with this
+    //   e.g., 'gif'
+    // -output string or null
+    findLargestRenditionUrl(renditions, fileType = null) {
         let maxProduct = 0;
-        let result;
+        let result = null;
         renditions.forEach((r) => {
             if (fileType && !_.endsWith(r.url, fileType)) {
                 return;
@@ -86,9 +95,18 @@ const RENDITIONS = {
         return result;
     },
 
-    findSmallestUrl(renditions, fileType = null) {
+    // Given renditions of a clip or thumb, get the smallest's url.
+    // Size here is just the number of pixels in the rendition.
+    // With optional fileType, only get a url if its file extension
+    // is fileType.
+    //
+    // -input renditions array of object { url, width, height }
+    // -input fileType string - constrain to urls that end with this
+    //   e.g., 'gif'
+    // -output string or null
+    findSmallestRenditionUrl(renditions, fileType = null) {
         let minProduct = Number.MAX_SAFE_INTEGER;
-        let result;
+        let result = null;
         renditions.forEach((r) => {
             if (fileType && !_.endsWith(r.url, fileType)) {
                 return;
