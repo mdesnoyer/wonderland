@@ -289,7 +289,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
             });
             return LoadActions.sendBatch();
         }
-        Object.assign(params, baseParams, { thumbnail_id: thumbArgs[0] });
+        const params = {...baseParams, ...{ thumbnail_id: thumbArgs[0] }};
         return LoadActions.get('thumbnails', { data: params });
     },
 
