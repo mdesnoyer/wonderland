@@ -18,7 +18,7 @@ var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
-var jest = require('gulp-jest');
+var jest = require('gulp-jest').default;
 var envify = require('gulp-envify');
 
 var browserSync = require('browser-sync');
@@ -436,23 +436,21 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'font
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/* TODO: Get this to work. For now, runnings tests can be done by: npm test
-
-gulp.task('jest', function() {
+gulp.task('test', function() {
     return gulp.src('__tests__').pipe(jest({
-        unmockedModulePathPatterns: [
-            "node_modules/react"
-        ],
-        testDirectoryName: "spec",
-        testPathIgnorePatterns: [
-            "node_modules"
-        ],
-        moduleFileExtensions: [
-            "js",
-            "json",
-            "react"
-        ]
+        config: {
+            rootDir: ".",
+            setupFiles: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            testPathIgnorePatterns: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            moduleFileExtensions: [
+                "js",
+                "json",
+                "react",
+            ],
+        }
     }));
 });
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
