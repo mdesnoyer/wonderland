@@ -555,8 +555,8 @@ var UTILS = {
 
         const count = array.length;
         const res = [];
-        let working = [];
 
+        let working = [];
         for (let i = 0; i < count; ++i) {
             working.push(array[i]);
             // Store a batch once we've reached the batch maximum.
@@ -566,8 +566,9 @@ var UTILS = {
             }
         }
         // Store the remainder.
-        if (working.length > 0)
+        if (working.length > 0) {
             res.push(working);
+        }
 
         // Convert lists to CSV strings and return.
         return res.map(list => {

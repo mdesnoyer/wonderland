@@ -280,12 +280,11 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const thumbArgs = UTILS.csvFromArray(thumbnailIds);
         const baseParams = getBaseParamsForDemoRequest(gender, age, fields);
 
-        const params = {};
         // Batch only large requests since batch is slower.
-        if (thumbArgs) {
+        if (thumbArgs.length > 1) {
             thumbArgs.forEach(arg => {
                 // Build this batch's params by copying base params and adding the tid arg.
-                Object.assign(params, baseParams, { thumbnail_id: arg });
+                const params = {...baseParams, ...{ thumbnail_id: arg }};
                 LoadActions.batch('GET', 'thumbnails', params);
             });
             return LoadActions.sendBatch();
@@ -531,7 +530,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         return LoadActions.loadTags([tagId], 0, 0, callback);
     },
 
-    loadTags(loadTagIds, gender = 0, age = 0, reload = false,
+    loadTags(loadTagIds, gender = 0, age = 0, reload = true,
             videoFilter = null, thumbnailFilter = null, callback = Function.prototype) {
         // Short circuit empty input.
         if (loadTagIds.length === 0) {
