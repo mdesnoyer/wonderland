@@ -31,6 +31,10 @@ class CollectionsMainPage extends React.Component {
         router: PropTypes.object.isRequired,
     }
 
+    static childContextTypes = {
+        isMobile: PropTypes.bool,
+    }
+
     constructor() {
         super();
         this.state = {
@@ -51,6 +55,12 @@ class CollectionsMainPage extends React.Component {
         this.onSetTooltipText = this.onSetTooltipText.bind(this);
         this.onSearchBarChange = this.onSearchBarChange.bind(this);
         this.onNameFilter = this.onNameFilter.bind(this);
+    }
+
+    getChildContext() {
+        return {
+            isMobile: UTILS.isMobile(),
+        };
     }
 
     componentWillMount() {

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import UTILS from '../../modules/utils';
 import { LoadActions } from '../../stores/CollectionStores';
+import InfoActionContainer from './InfoActionContainer';
 import {
     InfoDemoLiftPanel,
     EmailControl,
@@ -12,7 +12,7 @@ import {
     DeletePanel,
     ShareControl,
     DeleteControl } from './InfoActionPanels';
-import InfoActionContainer from './InfoActionContainer';
+import UTILS from '../../modules/utils';
 
 class BaseCollection extends React.Component {
 
@@ -68,9 +68,8 @@ class BaseCollection extends React.Component {
         isMobile: PropTypes.bool,
     }
 
-
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.onControlCancelClick = this.onControlClick.bind(this, 0);
         this.onControlClick = this.onControlClick.bind(this);
@@ -218,27 +217,25 @@ class BaseCollection extends React.Component {
         ];
     }
 
-    renderDesktop(componentMap) {
-        return (
-            <BaseCollection
-                {...this.props}
-                {...componentMap}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-            />
-        );
-    }
-
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.copyOverrideMap);
 
-        const result = (
-            <div className={this.props.wrapperClassName}>
-                <div className="xxCollectionImages">
+        const content = this.context.isMobile ?
+                (<div className="xxCollectionImages">
+                    {this.props.subContent}
+                    {this.props.featureContent}
+                </div>) :
+                (<div className="xxCollectionImages">
                     {this.props.featureContent}
                     {this.props.subContent}
-                </div>
+                </div>);
+
+
+        const result = (
+            <div className={this.props.wrapperClassName}>
+                {content}
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         panels={this.props.panels}

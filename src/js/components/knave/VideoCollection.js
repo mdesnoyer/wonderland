@@ -3,7 +3,6 @@ import _ from 'lodash';
 
 import BaseCollection from './BaseCollection';
 import FeatureThumbnail from './FeatureThumbnail';
-import MobileBaseCollection from './MobileBaseCollection';
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -37,8 +36,8 @@ class VideoCollection extends BaseCollection {
         isServingEnabled: PropTypes.bool,
     }
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             // What panel to display, based on user input by
@@ -47,7 +46,7 @@ class VideoCollection extends BaseCollection {
             // Which thumbnail's lift to show
             liftObjectId: null,
             // How many rows to display in the sub content.
-            smallContentRows: 1,
+            smallContentRows: context.isMobile ? 0 : 1,
         };
 
         this.onAddControlClick = this.onControlClick.bind(this, 6);
@@ -255,34 +254,16 @@ class VideoCollection extends BaseCollection {
         return this.props.rightFeatureThumbnail.thumbnail_id;
     }
 
-    renderMobile() {
-        return (
-            <MobileBaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureThumbnails()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--video"
-                liftValue={this.getLiftValue()}
-                onSetLiftThumbnailId={this.onSetLiftThumbnailId}
-            />
-        );
-    }
-
     render() {
-        if (this.context.isMobile) {
-            return this.renderMobile();
-        }
-        return this.renderDesktop({
+        const content = {
             featureContent: this.renderFeatureThumbnails(),
             subContent: this.renderThumbnailList(),
             panels: this.getPanels(),
             controls: this.getControls(),
             wrapperClassName: 'xxCollection xxCollection--video',
             selectedPanelIndex: this.state.selectedPanelIndex,
-        });
+        };
+        return <BaseCollection {...this.props} {...content} />;
     }
 }
 

@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 
 import BaseCollection from './BaseCollection';
 import FeatureThumbnail from './FeatureThumbnail';
-import MobileBaseCollection from './MobileBaseCollection';
 import {
     AddPanel,
     AddControl } from './InfoActionPanels';
@@ -34,8 +33,8 @@ class ImageCollection extends BaseCollection {
         shareUrl: PropTypes.string,
     }
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             // What panel to display, based on user input by
@@ -44,7 +43,7 @@ class ImageCollection extends BaseCollection {
             // Which thumbnail's lift to show
             liftObjectId: null,
             // How many rows to display in the sub content.
-            smallContentRows: 1,
+            smallContentRows: context.isMobile ? 0 : 1,
         };
 
         this.onAddControlClick = this.onControlClick.bind(this, 5);
@@ -204,32 +203,16 @@ class ImageCollection extends BaseCollection {
         />);
     }
 
-    renderMobile() {
-        return (
-            <MobileBaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureThumbnails()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--photo"
-            />
-        );
-    }
-
     render() {
-        if (this.context.isMobile) {
-            return this.renderMobile();
-        }
-        return this.renderDesktop({
+        const content = {
             featureContent: this.renderFeatureThumbnails(),
             subContent: this.renderThumbnailList(),
             panels: this.getPanels(),
             controls: this.getControls(),
             wrapperClassName: 'xxCollection xxCollection--photo',
             selectedPanelIndex: this.state.selectedPanelIndex,
-        });
+        };
+        return <BaseCollection {...this.props} {...content} />;
     }
 }
 
