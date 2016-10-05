@@ -42,7 +42,7 @@ import TRACKING from './modules/tracking';
 import CollectionsMainPage from './components/pages/CollectionsMainPage';
 import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
 import OnboardingUploadPage from './components/pages/OnboardingUploadPage';
-
+import LookingGlassPage from './components/pages/LookingGlassPage';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -101,6 +101,7 @@ render((
         <Route path={UTILS.DRY_NAV.COLLECTIONS.URL} component={CollectionsMainPage} />
 
         <Route path="/timeline/:timelineId" component={TimelinePage} />
+        <Route path="/lookingglass/" component={LookingGlassPage} />
 
         <Route path={UTILS.DRY_NAV.NOT_FOUND.URL} component={NotFoundPage} />
         

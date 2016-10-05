@@ -25,3 +25,23 @@
     object-fit: fill;
     font-family: 'object-fit: fill;';
 }
+
+.testflex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: 'strecth';
+    justify-content: flex-start; 
+    align-items: strecth;
+}
+
+.testflexvideo{
+    object-fit: fill;
+}
+
+.testfleximage {
+    object-fit: fill;
+    flex-grow: 2;
+    align-items: strecth;
+}
