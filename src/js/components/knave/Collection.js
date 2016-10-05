@@ -222,20 +222,29 @@ class Collection extends React.Component {
         const unapplyOverride = UTILS.applyTranslationOverride(
             this.props.copyOverrideMap);
 
-        const content = this.context.isMobile ?
-                (<div className="xxCollectionImages">
-                    {this.props.subContent}
-                    {this.props.featureContent}
-                </div>) :
-                (<div className="xxCollectionImages">
-                    {this.props.featureContent}
-                    {this.props.subContent}
-                </div>);
-
-
-        const result = (
+        if (this.context.isMobile) {
+            return (
+                <div className={this.props.wrapperClassName}>
+                    <div className="xxCollection-content">
+                        <InfoActionContainer
+                            panels={this.props.panels}
+                            controls={this.props.controls}
+                            selectedPanelIndex={this.props.selectedPanelIndex}
+                        />
+                    </div>
+                    <div className="xxCollectionImages">
+                        {this.props.featureContent}
+                        {this.props.subContent}
+                    </div>
+                </div>
+            );
+        }
+        return (
             <div className={this.props.wrapperClassName}>
-                {content}
+                <div className="xxCollectionImages">
+                    {this.props.featureContent}
+                    {this.props.subContent}
+                </div>
                 <div className="xxCollection-content">
                     <InfoActionContainer
                         panels={this.props.panels}
@@ -245,9 +254,6 @@ class Collection extends React.Component {
                 </div>
             </div>
         );
-        // Remove translation override.
-        unapplyOverride();
-        return result;
     }
 }
 
