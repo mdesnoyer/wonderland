@@ -120,7 +120,9 @@ class Collection extends React.Component {
 
     onLess(e) {
         e.preventDefault();
-        const smallContentRows = this.state.smallContentRows - 3;
+        // If the small content has been expanded from 1 row, then
+        // reset it to 1 else reset it to 0 (fully collapsed).
+        const smallContentRows = this.state.smallContentRows > 3 ? 1 : 0;
         this.setState({ smallContentRows });
     }
 
