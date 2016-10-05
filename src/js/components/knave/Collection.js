@@ -14,9 +14,9 @@ import {
     DeleteControl } from './InfoActionPanels';
 import UTILS from '../../modules/utils';
 
-class BaseCollection extends React.Component {
+class Collection extends React.Component {
 
-    static displayName = 'BaseCollection';
+    static displayName = 'Collection';
 
     static propTypes = {
 
@@ -251,4 +251,4 @@ class BaseCollection extends React.Component {
     }
 }
 
-export default BaseCollection;
+export default Collection;

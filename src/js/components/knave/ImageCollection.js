@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import BaseCollection from './BaseCollection';
+import Collection from './Collection';
 import FeatureThumbnail from './FeatureThumbnail';
 import {
     AddPanel,
@@ -14,7 +14,7 @@ import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-class ImageCollection extends BaseCollection {
+class ImageCollection extends Collection {
 
     static displayName = 'ImageCollection';
 
@@ -212,7 +212,7 @@ class ImageCollection extends BaseCollection {
             wrapperClassName: 'xxCollection xxCollection--photo',
             selectedPanelIndex: this.state.selectedPanelIndex,
         };
-        return <BaseCollection {...this.props} {...content} />;
+        return <Collection {...this.props} {...content} />;
     }
 }
 

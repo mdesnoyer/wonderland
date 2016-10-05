@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
 import Clip from './Clip';
-import BaseCollection from './BaseCollection';
+import Collection from './Collection';
 import VideoCollection from './VideoCollection';
 import RENDITIONS from '../../modules/renditions';
 import UTILS from '../../modules/utils';
@@ -22,13 +22,9 @@ class ClipCollection extends VideoCollection {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            // What panel to display, based on user input by
-            // clicking on the buttons (email/del/share) in the right panel
-            selectedPanelIndex: 0,
+            ...this.state,
             // Which clip is selected.
             selectedClipIndex: 0,
-            // How many rows to display in the sub content.
-            smallContentRows: context.isMobile ? 0 : 1,
         };
 
         this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
@@ -143,7 +139,7 @@ class ClipCollection extends VideoCollection {
             wrapperClassName: 'xxCollection xxCollection--video',
             selectedPanelIndex: this.state.selectedPanelIndex,
         };
-        return <BaseCollection {...this.props} {...content} />;
+        return <Collection {...this.props} {...content} />;
     }
 }
 
