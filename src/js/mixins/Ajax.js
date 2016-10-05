@@ -50,8 +50,7 @@ const AjaxMixin = {
         this.apiCalls.push(ret);
         return ret.promise;
     },
-    batch: function(method, path, data) {
-        data = data || {};
+    batch: function(method, path, data = {}) {
         this.batches.push({method, path, data});
         return this.batches.length;
     },

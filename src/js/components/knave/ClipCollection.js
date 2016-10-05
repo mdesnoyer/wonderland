@@ -166,6 +166,13 @@ class ClipCollection extends VideoCollection {
             />
         );
     }
+
+    render() {
+        if (this.context.isMobile) {
+            return this.renderMobile();
+        }
+        return this.renderDesktop();
+    }
 }
 
 export default ClipCollection;

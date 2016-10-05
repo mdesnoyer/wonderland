@@ -333,7 +333,7 @@ var UTILS = {
     POLL_INTERVAL_SECONDS: 20,
     VIDEO_CHECK_INTERVAL_BASE: 10000, // 10s
     MAX_VIDEO_POLL_INTERVAL_MS: 600000, // 10 minutes
-    RESULTS_PAGE_SIZE: 1,
+    RESULTS_PAGE_SIZE: 5,
     MAX_SEARCH_SIZE: 25,
     MAX_VIDEO_SIZE: 900,
     IMAGE_TARGET_WIDTH: 800,
@@ -560,8 +560,8 @@ var UTILS = {
 
         const count = array.length;
         const res = [];
-        let working = [];
 
+        let working = [];
         for (let i = 0; i < count; ++i) {
             working.push(array[i]);
             // Store a batch once we've reached the batch maximum.
@@ -571,8 +571,9 @@ var UTILS = {
             }
         }
         // Store the remainder.
-        if (working.length > 0)
+        if (working.length > 0) {
             res.push(working);
+        }
 
         // Convert lists to CSV strings and return.
         return res.map(list => {

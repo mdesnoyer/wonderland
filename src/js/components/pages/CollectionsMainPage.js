@@ -402,6 +402,7 @@ class CollectionsMainPage extends React.Component {
     }
 
     renderCollections() {
+        console.log(this.getShownIds());
         return (
             <div>
                 <CollectionsContainer

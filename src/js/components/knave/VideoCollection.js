@@ -209,36 +209,6 @@ class VideoCollection extends BaseCollection {
         return controls;
     }
 
-    renderMobile() {
-        return (
-            <MobileBaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureContent()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--video"
-                liftValue={this.getLiftValue()}
-                onSetLiftThumbnailId={this.onSetLiftThumbnailId}
-            />
-        );
-    }
-
-    renderDesktop() {
-        return (
-            <BaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureContent()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--video"
-            />
-        );
-    }
-
     renderThumbnailList() {
         // Number of rows of item to display.
         const rows = this.state.smallThumbnailRows;
@@ -279,6 +249,43 @@ class VideoCollection extends BaseCollection {
 
     getDefaultLiftObjectId() {
         return this.props.rightFeatureThumbnail.thumbnail_id;
+    }
+
+    renderMobile() {
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                featureContent={this.renderFeatureContent()}
+                subContent={this.renderThumbnailList()}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
+                wrapperClassName="xxCollection xxCollection--video"
+                liftValue={this.getLiftValue()}
+                onSetLiftThumbnailId={this.onSetLiftThumbnailId}
+            />
+        );
+    }
+
+    renderDesktop() {
+        return (
+            <VideoCollection
+                {...this.props}
+                featureContent={this.renderFeatureContent()}
+                subContent={this.renderThumbnailList()}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
+                wrapperClassName="xxCollection xxCollection--video"
+            />
+        );
+    }
+
+    render() {
+        if (this.context.isMobile) {
+            return this.renderMobile();
+        }
+        return this.renderDesktop();
     }
 }
 

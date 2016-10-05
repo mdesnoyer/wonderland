@@ -280,7 +280,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         const baseParams = getBaseParamsForDemoRequest(gender, age, fields);
 
         // Batch only large requests since batch is slower.
-        if (thumbArgs) {
+        if (thumbArgs.length > 1) {
             thumbArgs.forEach((arg) => {
                 // Build this batch's params by copying base params and adding the tid arg.
                 const params = { ...baseParams, ...{ thumbnail_id: arg } };

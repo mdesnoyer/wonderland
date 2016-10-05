@@ -29,7 +29,7 @@
     @include breakpoint-mobile {
         height: 100vh;
 
-        &::after {
+        &:after {
             content: '';
             background: url('../img/xx/temporary/thumbnail-3.jpg');
             background-size: auto 100%;
@@ -65,8 +65,8 @@
         display: none;
     }
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         content: '';
         position: fixed;
         top: 0;
@@ -77,14 +77,14 @@
         background: linear-gradient(
             to bottom,
             rgba($bg-color, 1) 5%,
-            rgba($bg-color, .6) 55%,
+            rgba($bg-color, 0.6) 55%,
             rgba($bg-color, 0) 100%
         );
     }
 
-    &::after {
+    &:after {
         top: auto;
-        bottom:0;
+        bottom: 0;
         transform: rotate(180deg);
     }
 }
@@ -214,17 +214,17 @@
     .xxNav {
         visibility: hidden;
         opacity: 0;
-        transition: opacity .4s ease-out, visibility 0s .4s;
+        transition: opacity 0.4s ease-out, visibility 0s 0.4s;
     }
 
     .xxUploadButton {
-        animation: upload-button-onboarding .8s ease-in-out;
+        animation: upload-button-onboarding 0.8s ease-in-out;
         transform-origin: 50% 50%;
     }
 
     .xxUploadButton-help {
         opacity: 0;
-        animation: upload-button-help-onboarding .8s ease-in-out .4s forwards;
+        animation: upload-button-help-onboarding 0.8s ease-in-out 0.4s forwards;
     }
 }
 
@@ -236,14 +236,14 @@
     }
 
     &.xxPage {
-        &::before {
+        &:before {
             content: '';
             position: fixed;
             top: 0;
             right: 0;
             left: 0;
             height: $processing-ribbon-height;
-            background: rgba($accent-color, .2) linear-gradient(
+            background: rgba($accent-color, 0.2) linear-gradient(
                 to right,
                 rgba($accent-color, 0) 0%,
                 rgba($accent-color, 0.85) 30%,
@@ -251,14 +251,14 @@
                 rgba($accent-color, 0.85) 70%,
                 rgba($accent-color, 0) 100%
             ) -17% 0 / 34% 100% no-repeat;
-            animation: ribbon 5s infinite alternate ease-in-out, fade-in .4s ease-in;
+            animation: ribbon 5s infinite alternate ease-in-out, fade-i 0.4s ease-in;
         }
     }
 
     .xxNav {
         visibility: visible;
         opacity: 1;
-        transition: opacity .4s ease-in, visibility 0s;
+        transition: opacity 0.4s ease-in, visibility 0s;
     }
 }
 

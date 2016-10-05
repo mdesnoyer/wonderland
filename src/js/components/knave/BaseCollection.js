@@ -12,6 +12,7 @@ import {
     DeletePanel,
     ShareControl,
     DeleteControl } from './InfoActionPanels';
+import InfoActionContainer from './InfoActionContainer';
 
 class BaseCollection extends React.Component {
 
@@ -218,10 +219,28 @@ class BaseCollection extends React.Component {
     }
 
     render() {
-        if (this.context.isMobile) {
-            return this.renderMobile();
-        }
-        return this.renderDesktop();
+        // Let mapped labels be overriden.
+        const unapplyOverride = UTILS.applyTranslationOverride(
+            this.props.copyOverrideMap);
+
+        const result = (
+            <div className={this.props.wrapperClassName}>
+                <div className="xxCollectionImages">
+                    {this.props.featureContent}
+                    {this.props.subContent}
+                </div>
+                <div className="xxCollection-content">
+                    <InfoActionContainer
+                        panels={this.props.infoActionPanels}
+                        controls={this.props.infoActionControls}
+                        selectedPanelIndex={this.props.selectedPanelIndex}
+                    />
+                </div>
+            </div>
+        );
+        // Remove translation override.
+        unapplyOverride();
+        return result;
     }
 }
 

@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 @mixin clearfix {
-  &::after {
+  &:after {
     clear: both;
     content: '';
     display: table;
@@ -50,8 +50,8 @@
 // generates arrow
 // $direction: N, S, E, W
 @mixin arrow($direction, $width, $height, $color) {
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         content: '';
         position: absolute;
         top: 0;
@@ -88,7 +88,7 @@
         }
     }
 
-    &::after {
+    &:after {
         transform: rotate(-45deg);
     }
 }

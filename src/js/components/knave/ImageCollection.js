@@ -107,34 +107,6 @@ class ImageCollection extends BaseCollection {
         return controls;
     }
 
-    renderMobile() {
-        return (
-            <MobileBaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureThumbnails()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--photo"
-            />
-        );
-    }
-
-    renderDesktop() {
-        return (
-            <BaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureThumbnails()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--photo"
-            />
-        );
-    }
-
     renderFeatureThumbnails() {
         const left = this.props.leftFeatureThumbnail;
         const right = this.props.rightFeatureThumbnail;
@@ -229,6 +201,41 @@ class ImageCollection extends BaseCollection {
             onMouseLeave={this.onSetLiftThumbnailToDefault}
             onClick={this.onThumbnailClick}
         />);
+    }
+
+    renderMobile() {
+        return (
+            <MobileBaseCollection
+                {...this.props}
+                featureContent={this.renderFeatureThumbnails()}
+                subContent={this.renderThumbnailList()}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
+                wrapperClassName="xxCollection xxCollection--photo"
+            />
+        );
+    }
+
+    renderDesktop() {
+        return (
+            <BaseCollection
+                {...this.props}
+                featureContent={this.renderFeatureThumbnails()}
+                subContent={this.renderThumbnailList()}
+                infoActionPanels={this.getPanels()}
+                infoActionControls={this.getControls()}
+                selectedPanelIndex={this.state.selectedPanelIndex}
+                wrapperClassName="xxCollection xxCollection--photo"
+            />
+        );
+    }
+
+    render() {
+        if (this.context.isMobile) {
+            return this.renderMobile();
+        }
+        return this.renderDesktop();
     }
 }
 
