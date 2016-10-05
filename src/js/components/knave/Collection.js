@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import { LoadActions } from '../../stores/CollectionStores';
 import InfoActionContainer from './InfoActionContainer';
+import Lift from './Lift';
 import {
     InfoDemoLiftPanel,
     EmailControl,
@@ -12,6 +12,7 @@ import {
     DeletePanel,
     ShareControl,
     DeleteControl } from './InfoActionPanels';
+import { LoadActions } from '../../stores/CollectionStores';
 import UTILS from '../../modules/utils';
 
 class Collection extends React.Component {
@@ -27,7 +28,7 @@ class Collection extends React.Component {
 
         controls: PropTypes.arrayOf(PropTypes.node).isRequired,
         panels: PropTypes.arrayOf(PropTypes.node).isRequired,
-        selectedPanelIndex: PropTypes.number.isRequired,
+        selectedPanelIndex: PropTypes.number,
 
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
@@ -38,11 +39,6 @@ class Collection extends React.Component {
         // class name for the wrapper around the
         // component defaults to xxCollection
         wrapperClassName: PropTypes.string,
-
-        // A map of T get key string to T get key
-        // e.g., {'action.showMore': 'copy.thumbnails.low', ...}
-        // overrides "Show More" with "View Low Scores"
-        copyOverrideMap: PropTypes.objectOf(PropTypes.string),
 
         onSetTooltipText: PropTypes.func,
         onDeleteCollection: PropTypes.func,
@@ -85,10 +81,10 @@ class Collection extends React.Component {
         this.onThumbnailClick = this.onThumbnailClick.bind(this);
     }
 
-    onControlClick(index) {
+    onControlClick(selectedPanelIndex) {
         // Hide any open tooltip.
         ReactTooltip.hide();
-        this.setState({ selectedPanelIndex: index || 0 });
+        this.setState({ selectedPanelIndex });
     }
 
     onDeleteCollection() {
@@ -115,12 +111,6 @@ class Collection extends React.Component {
         this.setState({ liftObjectId });
     }
 
-    onSetPanel(selectedPanelIndex) {
-        // Clear any open tooltip.
-        ReactTooltip.hide();
-        this.setState({ selectedPanelIndex });
-    }
-
     onMore(e) {
         e.preventDefault();
         this.setState({
@@ -130,9 +120,8 @@ class Collection extends React.Component {
 
     onLess(e) {
         e.preventDefault();
-        this.setState({
-            smallContentRows: 1,
-        });
+        const smallContentRows = this.state.smallContentRows - 3;
+        this.setState({ smallContentRows });
     }
 
     onSetDefaultLift() {
@@ -160,10 +149,11 @@ class Collection extends React.Component {
         return map[selectedId || defaultId];
     }
 
-    getBasePanels(copyOverrideMap = {}) {
+    getBasePanels(copyOverrideMap) {
         const unapply = UTILS.applyTranslationOverride(copyOverrideMap);
         const panels = [
             <InfoDemoLiftPanel
+                key="info"
                 title={this.props.title}
                 liftValue={this.getLiftValue()}
                 onDemographicChange={this.onDemographicChange}
@@ -176,11 +166,13 @@ class Collection extends React.Component {
                 onWhyClick={this.onWhyClick}
             />,
             <FilterPanel
+                key="filter"
                 onDemographicChange={this.onDemographicChange}
                 onCancelClick={this.onControlCancelClick}
                 onRefilterVideo={this.onRefilterVideo}
             />,
             <SharePanel
+                key="share"
                 tagId={this.props.tagId}
                 shareUrl={this.props.shareUrl}
                 onCancelClick={this.onControlCancelClick}
@@ -189,12 +181,14 @@ class Collection extends React.Component {
                 onSocialShare={this.props.onSocialShare}
             />,
             <EmailPanel
+                key="email"
                 shareUrl={this.props.shareUrl}
                 onLoadShareUrl={this.onLoadShareUrl}
                 onSendResultEmail={this.onSendResultEmail}
                 onCancelClick={this.onControlCancelClick}
             />,
             <DeletePanel
+                key="delete"
                 onDeleteCollection={this.onDeleteCollection}
                 onCancelClick={this.onControlCancelClick}
             />,
@@ -217,40 +211,36 @@ class Collection extends React.Component {
         ];
     }
 
-    render() {
-        // Let mapped labels be overriden.
-        const unapplyOverride = UTILS.applyTranslationOverride(
-            this.props.copyOverrideMap);
-
+    renderAsMobile(subcontent, copyOverrideMap) {
         if (this.context.isMobile) {
             return (
-                <div className={this.props.wrapperClassName}>
-                    <div className="xxCollection-content">
-                        <InfoActionContainer
-                            panels={this.props.panels}
-                            controls={this.props.controls}
-                            selectedPanelIndex={this.props.selectedPanelIndex}
-                        />
-                    </div>
-                    <div className="xxCollectionImages">
-                        {this.props.featureContent}
-                        {this.props.subContent}
-                    </div>
+                <div>
+                    <Lift
+                        displayThumbLift={this.getLiftValue()}
+                        copyOverrideMap={copyOverrideMap}
+                        onWhyClick={this.onWhyClick}
+                    />
+                    {subcontent}
                 </div>
             );
         }
+        return subcontent;
+    }
+
+    render() {
         return (
             <div className={this.props.wrapperClassName}>
-                <div className="xxCollectionImages">
-                    {this.props.featureContent}
-                    {this.props.subContent}
-                </div>
-                <div className="xxCollection-content">
+                <div key="panel" className="xxCollection-content">
                     <InfoActionContainer
+                        title={this.props.title}
                         panels={this.props.panels}
                         controls={this.props.controls}
                         selectedPanelIndex={this.props.selectedPanelIndex}
                     />
+                </div>
+                <div key="content" className="xxCollectionImages">
+                    {this.props.featureContent}
+                    {this.props.subContent}
                 </div>
             </div>
         );

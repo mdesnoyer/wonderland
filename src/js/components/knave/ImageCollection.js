@@ -33,6 +33,11 @@ class ImageCollection extends Collection {
         shareUrl: PropTypes.string,
     }
 
+    static copyOverrideMap = {
+        'copy.lift.explanation': 'copy.lift.explanation.images',
+        'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
+    }
+
     constructor(props, context) {
         super(props, context);
 
@@ -79,16 +84,13 @@ class ImageCollection extends Collection {
     }
 
     getPanels() {
-        const copyOverrideMap = {
-            'copy.lift.explanation': 'copy.lift.explanation.images',
-            'copy.lift.explanation.solo': 'copy.lift.explanation.images.solo',
-        };
-        const panels = super.getBasePanels(copyOverrideMap);
+        const panels = super.getBasePanels();
         if (this.props.isViewOnly) {
             return panels;
         }
         panels.push(
             <AddPanel
+                key="add"
                 isMobile={this.context.isMobile}
                 panelType={'photo'}
                 tagId={this.props.tagId}
@@ -150,10 +152,11 @@ class ImageCollection extends Collection {
         // Number of thumbnails per row.
         const perRow = UTILS.THUMBNAILS_PER_ROW;
 
-        // 4 cases:
+        // 5 cases:
         //
         // Given X thumbnails per row (e.g., 6).
         //
+        // There's no row shown but more thumbnails.
         // There's fewer than one row of thumbs
         // There's fewer than the rows displayed -> show less in spot X.
         // There's more than the rows displayed -> show more in last spot
@@ -161,8 +164,21 @@ class ImageCollection extends Collection {
         //   clicked show more once -> show less in spot X, and show more
         //   in right-hand spot in last row
 
+        // If there's no rows but there is a thumbnail.
+        if (!rows && this.props.smallThumbnails.length) {
+            const showMoreClassName = this.context.isMobile ?
+                'xxShowMore' : null;
+            return (<ShowMoreThumbnailList
+                thumbnails={this.props.smallThumbnails}
+                numberToDisplay={0} // Show exactly one row of X-1 and ShowMore.
+                showMoreClassName={showMoreClassName}
+                onMore={this.onMore}
+                onMouseEnter={this.onSetLiftThumbnailId}
+                onMouseLeave={this.onSetLiftThumbnailToDefault}
+                onClick={this.onThumbnailClick}
+            />);
         // There's fewer than or exactly one row of thumbs: no button.
-        if (this.props.smallThumbnails.length <= perRow) {
+        } else if (this.props.smallThumbnails.length <= perRow) {
             return (<ThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 onMouseEnter={this.onSetLiftThumbnailId}
@@ -206,7 +222,9 @@ class ImageCollection extends Collection {
     render() {
         const content = {
             featureContent: this.renderFeatureThumbnails(),
-            subContent: this.renderThumbnailList(),
+            subContent: this.renderAsMobile(
+                this.renderThumbnailList(),
+                ImageCollection.copyOverrideMap),
             panels: this.getPanels(),
             controls: this.getControls(),
             wrapperClassName: 'xxCollection xxCollection--photo',

@@ -62,8 +62,10 @@ export const ShowLessThumbnailList = React.createClass({
         thumbnails: PropTypes.array.isRequired,
         onLess: PropTypes.func.isRequired,
         numberToDisplay: PropTypes.number,
-        // Label for ShowMore button
+        // Label for ShowLess button
         lessLabel: PropTypes.string,
+        // Classname for the button.
+        showLessClassName: PropTypes.string,
         // Classname for the part before the showless
         firstClassName: PropTypes.string,
         // And for the part after the showless
@@ -82,6 +84,11 @@ export const ShowLessThumbnailList = React.createClass({
         // Split the list into before the ShowLess and after.
         const firstPartThumbs = this.props.thumbnails.slice(0, number);
         const secondPartThumbs = this.props.thumbnails.slice(number);
+
+        const showLessClassNames = ['xxCollectionImages-allAnchor'];
+        if (this.props.showLessClassName) {
+            showLessClassNames.push(this.props.showLessClassName);
+        }
         return (
             <div>
                 <ThumbnailList
@@ -89,9 +96,9 @@ export const ShowLessThumbnailList = React.createClass({
                     thumbnails={firstPartThumbs}
                     className={this.props.firstClassName}
                 >
-                    <strong className="xxCollectionImages-allAnchor" onClick={this.props.onLess}>
+                    <a className={showLessClassNames.join(' ')} onClick={this.props.onLess}>
                         <span>{this.props.lessLabel}</span>
-                    </strong>
+                    </a>
                 </ThumbnailList>
                 <ThumbnailList
                     {...this.props}
@@ -112,7 +119,9 @@ export const ShowMoreThumbnailList = React.createClass({
         // Control how many images are shown before the ShowMore.
         numberToDisplay: PropTypes.number.isRequired,
         // Label for ShowMore button
-        moreLabel: PropTypes.string
+        moreLabel: PropTypes.string,
+        // Class for ShowMore button.
+        showMoreClassName: PropTypes.string,
     },
 
     getDefaultProps: function() {
@@ -121,16 +130,17 @@ export const ShowMoreThumbnailList = React.createClass({
         }
     },
 
-
     render: function() {
-
-        // TODO extract constant.
+        const showMoreClassNames = ['xxCollectionImages-allAnchor'];
+        if (this.props.showMoreClassName) {
+            showMoreClassNames.push(this.props.showMoreClassName);
+        }
         return (
             <ThumbnailList {...this.props}
             >
-                <strong className="xxCollectionImages-allAnchor" onClick={this.props.onMore}>
+                <button className={showMoreClassNames.join(' ')} onClick={this.props.onMore}>
                     <span>{this.props.moreLabel}</span>
-                </strong>
+                </button>
             </ThumbnailList>
         );
     }

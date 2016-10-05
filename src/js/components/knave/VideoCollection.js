@@ -36,13 +36,18 @@ class VideoCollection extends Collection {
         isServingEnabled: PropTypes.bool,
     }
 
+    static copyOverrideMap = {
+        'copy.lift.explanation': 'copy.lift.explanation',
+        'copy.lift.explanation.solo': 'copy.lift.explanation',
+    }
+
     constructor(props, context) {
         super(props, context);
 
         this.state = {
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
-            selectedPanelIndex: 0,
+            selectedPanelIndex: context.isMobile ? null : 0,
             // Which thumbnail's lift to show
             liftObjectId: null,
             // How many rows to display in the sub content.
@@ -162,11 +167,8 @@ class VideoCollection extends Collection {
     }
 
     getPanels() {
-        const copyOverrideMap = {
-            'copy.lift.explanation': 'copy.lift.explanation',
-            'copy.lift.explanation.solo': 'copy.lift.explanation' };
-
-        const panels = super.getBasePanels(copyOverrideMap);
+        const panels = super.getBasePanels(
+            VideoCollection.copyOverrideMap);
         if (this.props.isViewOnly) {
             return panels;
         }
@@ -174,11 +176,13 @@ class VideoCollection extends Collection {
         if (this.props.isServingEnabled) {
             panels.push(
                 <ServingStatusPanel
+                    key="serving"
                     goodThumbnails={this.props.goodThumbnails}
                     onToggleThumbnailEnabled={this.props.onToggleThumbnailEnabled}
                     onCancelClick={this.onControlCancelClick}
                 />,
                 <AddPanel
+                    key="add"
                     isMobile={this.context.isMobile}
                     panelType={'video'}
                     tagId={this.props.tagId}
@@ -239,9 +243,10 @@ class VideoCollection extends Collection {
                 secondClassName="xxThumbnail--lowLight"
             />);
         }
+        // Else rows is 1 or 0.
         return (<ShowMoreThumbnailList
             thumbnails={this.props.smallThumbnails}
-            numberToDisplay={perRow - 1}
+            numberToDisplay={rows * (perRow - 1)}
             moreLabel={T.get('copy.thumbnails.low')}
             onMore={this.onMore}
             onMouseEnter={this.onSetLiftThumbnailId}
@@ -257,7 +262,9 @@ class VideoCollection extends Collection {
     render() {
         const content = {
             featureContent: this.renderFeatureThumbnails(),
-            subContent: this.renderThumbnailList(),
+            subContent: this.renderAsMobile(
+                this.renderThumbnailList(),
+                VideoCollection.copyOverrideMap),
             panels: this.getPanels(),
             controls: this.getControls(),
             wrapperClassName: 'xxCollection xxCollection--video',

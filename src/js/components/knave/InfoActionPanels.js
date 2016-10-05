@@ -18,8 +18,6 @@ import { SendActions } from '../../stores/CollectionStores';
 
 export const InfoDemoLiftPanel = React.createClass({
     propTypes: {
-        // User's name of this collection
-        title: PropTypes.string.isRequired,
         onDemographicChange: PropTypes.func.isRequired,
         demographicOptions: PropTypes.array.isRequired,
         selectedDemographic: PropTypes.objectOf(PropTypes.number).isRequired,
@@ -46,14 +44,8 @@ export const InfoDemoLiftPanel = React.createClass({
     },
 
     render() {
-        const result = (
+        return (
             <div>
-            { this.props.clips && this.context.isMobile ? null : (
-                <h1 className="xxCollection-title">
-                    {this.props.title}
-                </h1>
-                )
-            }
                 <DemographicFilters
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
@@ -70,32 +62,23 @@ export const InfoDemoLiftPanel = React.createClass({
                 />
             </div>
         );
-        return result;
     },
 });
 
 export const InfoLiftPanel = React.createClass({
     propTypes: {
-       // User's name of this collection
-        title: PropTypes.string.isRequired,
         liftValue: PropTypes.number,
         copyOverrideMap: React.PropTypes.object,
         onWhyClick: React.PropTypes.func,
     },
     render() {
-        const result = (
-            <div>
-                <h1 className="xxCollection-title">
-                    {this.props.title}
-                </h1>
-                <Lift
-                    displayThumbLift={this.props.liftValue}
-                    copyOverrideMap={this.props.copyOverrideMap}
-                    onWhyClick={this.props.onWhyClick}
-                />
-            </div>
+        return (
+            <Lift
+                displayThumbLift={this.props.liftValue}
+                copyOverrideMap={this.props.copyOverrideMap}
+                onWhyClick={this.props.onWhyClick}
+            />
         );
-        return result;
     },
 });
 

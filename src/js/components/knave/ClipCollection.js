@@ -7,7 +7,10 @@ import VideoCollection from './VideoCollection';
 import RENDITIONS from '../../modules/renditions';
 import UTILS from '../../modules/utils';
 import { DownloadControl } from './InfoActionPanels';
-import { ThumbnailList } from './ThumbnailList';
+import {
+    ShowLessThumbnailList,
+    ShowMoreThumbnailList,
+    ThumbnailList } from './ThumbnailList';
 import { SendActions } from '../../stores/CollectionStores';
 
 class ClipCollection extends VideoCollection {
@@ -17,6 +20,11 @@ class ClipCollection extends VideoCollection {
     static propTypes = {
         clips: PropTypes.arrayOf(PropTypes.object).isRequired,
         thumbnailMap: PropTypes.objectOf(PropTypes.object).isRequired,
+    }
+
+    static copyOverrideMap = {
+        'copy.lift.explanation': 'copy.lift.explanation.gifs',
+        'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
     }
 
     constructor(props, context) {
@@ -76,11 +84,7 @@ class ClipCollection extends VideoCollection {
     }
 
     renderPanels() {
-        const copyOverrideMap = {
-            'copy.lift.explanation': 'copy.lift.explanation.gifs',
-            'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
-        };
-        return super.getBasePanels(copyOverrideMap);
+        return super.getBasePanels(ClipCollection.copyOverrideMap);
     }
 
     renderControls() {
@@ -107,6 +111,33 @@ class ClipCollection extends VideoCollection {
                 renditions: clip.renditions,
             }
         ));
+        // Show a collapsed view if no rows.
+        if (!this.state.smallContentRows) {
+            const showMoreClassName = this.context.isMobile ?
+                'xxShowMore' : null;
+            return (
+                <ShowMoreThumbnailList
+                    className={this.getWidthClassName(thumbnails)}
+                    numberToDisplay={0}
+                    thumbnails={thumbnails}
+                    showMoreClassName={showMoreClassName}
+                    onMore={this.onMore}
+                    onClick={this.onSetSelectedClipIndex}
+                />
+            );
+        } else if (this.state.smallContentRows > 1) {
+            const showLessClassName = this.context.isMobile ?
+                'xxShowMore' : null;
+            return (
+                <ShowLessThumbnailList
+                    className={this.getWidthClassName(thumbnails)}
+                    thumbnails={thumbnails}
+                    showLessClassName={showLessClassName}
+                    onLess={this.onLess}
+                    onClick={this.onSetSelectedClipIndex}
+                />
+            );
+        }
         return (
             <ThumbnailList
                 className={this.getWidthClassName(thumbnails)}
@@ -136,7 +167,9 @@ class ClipCollection extends VideoCollection {
     render() {
         const content = {
             featureContent: this.renderClip(),
-            subContent: this.renderClipList(),
+            subContent: this.renderAsMobile(
+                this.renderClipList(),
+                ClipCollection.copyOverrideMap),
             panels: this.renderPanels(),
             controls: this.renderControls(),
             wrapperClassName: 'xxCollection xxCollection--video',

@@ -24,11 +24,10 @@ class Clip extends React.Component {
     componentDidMount() {
         if (this.props.width < 670) {
             this.container.style.width = `${this.props.width}px`;
-        };
-
+        }
         if (this.props.height < 420) {
             this.container.style.height = `${this.props.height}px`;
-        };
+        }
     }
 
     componentDidUpdate(prevProps) {
