@@ -1,83 +1,80 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-import React from 'react';
+import React, { PropTypes } from 'react';
 import UTILS from '../../modules/utils';
-import T from '../../modules/translation';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+const propTypes = {
+    // The neon score [0-99]
+    score: PropTypes.number,
 
- var Thumbnail = React.createClass({
-    propTypes: {
-        extraClass: React.PropTypes.string,
-        handleClick: React.PropTypes.func,
-        handleMouseEnter: React.PropTypes.func,
-        type: React.PropTypes.string.isRequired,
-        title: React.PropTypes.string.isRequired,
-        uid: React.PropTypes.number.isRequired,
-        score: React.PropTypes.number,
-        size: React.PropTypes.string.isRequired,
-        src: React.PropTypes.string.isRequired,
-        thumbnailId: React.PropTypes.string,
-        showHref: React.PropTypes.bool,
-        style: React.PropTypes.object,
-        isMobile: React.PropTypes.bool
-    },
-    getDefaultProps: function() {
-        return {
-            showHref: true
-        }
-    },
-    render: function() {
-        var self = this,
-            className = ['xxThumbnail'],
-            opts = !self.props.isMobile && self.props.showHref ? {href: '#'} : {}
-        ; 
-        let dataScoreLabel = (self.props.type === 'default') ? T.get('label.defaultImage') : '';
-        if (self.props.extraClass) {
-            className.push(self.props.extraClass);
-        }
-        if (self.props.size) {
-            className.push('xxThumbnail--'+ self.props.size);
-        }
-        if (self.props.type) {
-            className.push('xxThumbnail--'+ self.props.type);
-        }
-        return (
-            <a
-                {...opts}
-                className={className.join(' ')}
-                data-score-label={dataScoreLabel}
-                data-score={self.props.score}
-                data-uid={self.props.uid}
-                onClick={self.handleThumbnailClick}
-                style={self.props.style}
+    dominantColor: PropTypes.array,
+
+    // The accessibility title
+    alt: PropTypes.string,
+
+    // Image url with appropriate dimensions
+    src: PropTypes.string.isRequired,
+
+    // User action handlers
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onClick: PropTypes.func,
+
+    // Style
+    className: PropTypes.string,
+    wrapperClassName: PropTypes.string,
+
+    enabled: PropTypes.bool,
+    children: PropTypes.node,
+};
+
+const defaultProps = {
+    className: '',
+    wrapperClassName: '',
+    onClick: (e) => e.preventDefault(),
+    // I.e., do nothing.
+    onMouseEnter: Function.prototype,
+    onMouseLeave: Function.prototype,
+    children: (<div />),
+    enabled: true,
+};
+
+function fadeIn(e) {
+    const target = e.target;
+    target.classList.add('-is-loaded');
+}
+
+function Thumbnail(props) {
+    const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
+    const dominantColorHex = UTILS.findDominantColor(props.dominantColor);
+    const inlineBackgroundColour = dominantColorHex ? {
+        backgroundColor: dominantColorHex
+    } : null;
+    const className = `xxThumbnail xxThumbnail--neon \
+        xxThumbnail--highLight ${props.className} \
+        ${disabledClassName}`;
+
+    return (
+        <div className={props.wrapperClassName}>
+            <span
+                className={className}
+                data-score={props.score}
+                onClick={props.onClick}
+                style={inlineBackgroundColour}
             >
                 <img
-                    className="xxThumbnail-image"
-                    src={self.props.src}
-                    onMouseEnter={self.handleMouseEnter}
-                    alt={self.props.title}
-                    title={self.props.title}
+                    onLoad={fadeIn}
+                    className="xxThumbnail-image -is-loading"
+                    alt={props.alt || props.score}
+                    src={props.src}
+                    onMouseEnter={props.onMouseEnter}
+                    onMouseLeave={props.onMouseLeave}
                 />
-            </a>
-        );
-    },
-    handleThumbnailClick: function(e) {
-        var self = this;
-        if (self.props.handleClick) {
-            self.props.handleClick(e, self.props.uid);
-        }
-    },
-    handleMouseEnter: function() {
-        var self = this;
-        if (self.props.handleChildOnMouseEnter) {
-            self.props.handleChildOnMouseEnter(self.props.thumbnailId);
-        }
-    }
- });
+            </span>
+            {props.children}
+        </div>
+    );
+}
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Thumbnail.propTypes = propTypes;
+Thumbnail.defaultProps = defaultProps;
 
-export default Thumbnail
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export default Thumbnail;

@@ -26,14 +26,13 @@ import {
     Dispatcher,
     Search } from '../../stores/CollectionStores';
 
-
 const CollectionsMainPage = React.createClass({
 
     contextTypes: {
         router: PropTypes.object.isRequired
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return Object.assign(
             Store.getState(),
             {
@@ -45,7 +44,7 @@ const CollectionsMainPage = React.createClass({
         );
     },
 
-    componentWillMount: function() {
+    componentWillMount() {
         if (!SESSION.active() || !SESSION.state.accountId) {
             return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
         }
@@ -65,7 +64,7 @@ const CollectionsMainPage = React.createClass({
         this.setIntervalId = setInterval(Search.reload.bind(null, UTILS.RESULTS_PAGE_SIZE), UTILS.POLL_INTERVAL_SECONDS * 1000);
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         if (this.setIntervalId) {
             clearInterval(this.setIntervalId);
         }
@@ -74,7 +73,7 @@ const CollectionsMainPage = React.createClass({
         cancelActions();
     },
 
-    updateState: function() {
+    updateState() {
         const state = Store.getState();
         state.searchPending = Search.pending > 0;
         this.setState(state);
@@ -107,7 +106,7 @@ const CollectionsMainPage = React.createClass({
         self.setState({ searchPending });
     },
 
-    socialClickHandler: function(service, shareUrl) {
+    socialClickHandler(service, shareUrl) {
         switch(service) {
             case 'facebook':
                 this._sendShare(
@@ -136,7 +135,7 @@ const CollectionsMainPage = React.createClass({
         }
     },
 
-    _sendShare: function(baseUrl, shareUrl, title, quote, service) {
+    _sendShare(baseUrl, shareUrl, title, quote, service) {
         var url = baseUrl + objectToGetParams({
                 u: shareUrl,
                 title: title,
@@ -147,18 +146,17 @@ const CollectionsMainPage = React.createClass({
         TRACKING.sendEvent(this, arguments, service);
     },
 
-    enableThumbnail: function(thumbnail) {
+    enableThumbnail(thumbnail) {
         ServingStatusActions.toggleThumbnailEnabled(thumbnail);
     },
 
-    disableThumbnail: function(thumbnail) {
+    disableThumbnail(thumbnail) {
         ServingStatusActions.toggleThumbnailEnabled(thumbnail);
     },
 
-    sendResultsEmail: function(gender, age, tagId, fourThumbnails, email, callback) {
+    sendResultsEmail(email, tagId, gender, age, fourThumbnails, callback) {
         const self = this;
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(email)) {
+        if (!UTILS.isEmailAddress(email)) {
            callback({
                'status_code' : 400,
                'errorMessage' : T.get('error.invalidEmail')
@@ -166,11 +164,7 @@ const CollectionsMainPage = React.createClass({
            return;
         }
 
-        const best = fourThumbnails[0];
-        const first = fourThumbnails[1];
-        const second = fourThumbnails[2];
-        const third = fourThumbnails[3];
-
+        const [best, first, second, third] = fourThumbnails;
         // TODO add wait for share load.
         const shareUrl = self.state.tagShares[tagId].url;
 
@@ -185,7 +179,6 @@ const CollectionsMainPage = React.createClass({
 
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             data = {
-                subject: UTILS.RESULTS_EMAIL_SUBJECT,
                 to_email_address: email,
                 template_slug: UTILS.RESULTS_MANDRILL_SLUG,
                 template_args: {
@@ -197,8 +190,7 @@ const CollectionsMainPage = React.createClass({
                     'collection_url': shareUrl
                 }
             };
-        }
-        else if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
+        } else if (tag.tag_type === UTILS.TAG_TYPE_IMAGE_COL) {
             let liftString = '';
             let buttonString = '';
             let seeMoreString = '';
@@ -215,7 +207,6 @@ const CollectionsMainPage = React.createClass({
                 seeMoreString = T.get('copy.email.multipleResultsSeeMoreString');
             }
             data = {
-                subject: UTILS.RESULTS_EMAIL_SUBJECT,
                 to_email_address: email,
                 template_slug: UTILS.IMAGE_RESULTS_MANDRILL_SLUG,
                 template_args: {
@@ -227,8 +218,7 @@ const CollectionsMainPage = React.createClass({
                     'neon_score': neonScore
                 }
             };
-        }
-        else {
+        } else {
             callback({
                 'status_code' : 400,
                 'errorMessage' : 'unknown tag type unable to send email'
@@ -239,18 +229,61 @@ const CollectionsMainPage = React.createClass({
         SendActions.sendEmail(data, callback);
     },
 
-    setTooltipText: function(tooltipText) {
+    sendGifResultsEmail(email, tagId, gender, age, callback) {
+        if (!UTILS.isEmailAddress(email)) {
+           callback({
+               'status_code' : 400,
+               'errorMessage' : T.get('error.invalidEmail'),
+           });
+        }
+
+        const self = this;
+        const tag = self.state.tags[tagId];
+        const video = self.state.videos[tag.video_id];
+        const demo = UTILS.findDemographicObject(video.demographic_clip_ids, gender, age);
+
+        // Pick the matching clips.
+        const clips = _(self.state.clips[gender][age])
+            .pick(demo.clip_ids)
+            .values()
+            .value();
+
+        // Get the best clip.
+        const sortedClips = _.orderBy(clips, 'neon_score', ['desc']);
+        const best = sortedClips[0];
+
+        // Find the gif with the width we need, or just any gif.
+        const bestRendition = best.renditions.find(r => (
+            r.width === UTILS.GIF_EMAIL_DIMENSION && _.endsWith(r.url, '.gif')
+        )) || best.renditions.find(r => _.endsWith(r.url, '.gif'));
+        const bestUrl = bestRendition.url;
+
+        const collectionUrl = self.state.tagShares[tagId].url;
+        const data = {
+            to_email_address: email,
+            template_slug: UTILS.GIF_RESULTS_MANDRILL_SLUG,
+            template_args: {
+                lift: best.neon_score,
+                top_gif: bestUrl,
+                collection_url: collectionUrl,
+            },
+        };
+        TRACKING.sendEvent(self, arguments, tagId);
+        SendActions.sendEmail(data, callback);
+    },
+
+    setTooltipText(tooltipText) {
         this.setState({tooltipText});
     },
 
     // Takes a string in [
     // learnMore, contact, signUp, account ] or null
-    setSidebarContent: function(sidebarContent) {
+    setSidebarContent(sidebarContent) {
         const self = this;
         self.setState({sidebarContent});
     },
 
-    getShownIds: function() {
+    getShownIds() {
         // The size and offset into the list.
         const pageSize = UTILS.RESULTS_PAGE_SIZE;
         const offset = pageSize * this.state.currentPage;
@@ -281,7 +314,7 @@ const CollectionsMainPage = React.createClass({
 
     // Given a tag, return true if its name
     // contains search query.
-    filterOnName: function(query, tag) {
+    filterOnName(query, tag) {
         if (!query) {
             return true;
         }
@@ -292,16 +325,16 @@ const CollectionsMainPage = React.createClass({
         return -1 !== name.search(query.toLowerCase());
     },
 
-    getTitle: function() {
+    getTitle() {
         return UTILS.buildPageTitle(T.get('copy.myCollections.title'));
     },
 
-    getPagingEnableNext: function() {
+    getPagingEnableNext() {
         const itemCount = (1 + this.state.currentPage) * UTILS.RESULTS_PAGE_SIZE;
         return Search.hasMoreThan(itemCount);
     },
 
-    onSearchBarChange: function(e) {
+    onSearchBarChange(e) {
         const self = this;
 
         // Use the query to filter display of results.
@@ -314,9 +347,12 @@ const CollectionsMainPage = React.createClass({
         } else {
             // Apply a non-empty search to our data provider.
             filteredTagStore.setFilter(
-                tag => {
-                    return tag.hidden !== true && self.filterOnName(searchQuery, tag)
-                }
+                tag => (
+                    // TODO factor this and the default filter.
+                    tag.hidden !== true &&
+                        (tag.thumbnail_ids.length > 0  || tag.tag_type !== UTILS.TAG_TYPE_IMAGE_COL) &&
+                        self.filterOnName(searchQuery, tag)
+                )
             );
         }
 
@@ -358,16 +394,16 @@ const CollectionsMainPage = React.createClass({
 
     },
 
-    onSearchBarSubmit: function(e) {
+    onSearchBarSubmit(e) {
         // This is now just a functional stub.
         e.preventDefault();
     },
 
-    loadAccount: function() {
+    loadAccount() {
         LoadActions.loadAccount(SESSION.state.accountId);
     },
 
-    getResults: function() {
+    getResults() {
         this.loadAccount()
         return (
             <div>
@@ -390,6 +426,7 @@ const CollectionsMainPage = React.createClass({
                     socialClickHandler={this.socialClickHandler}
                     setSidebarContent={this.setSidebarContent}
                     sendResultsEmail={this.sendResultsEmail}
+                    sendGifResultsEmail={this.sendGifResultsEmail}
                     setTooltipText={this.setTooltipText}
                     enableThumbnail={this.enableThumbnail}
                     disableThumbnail={this.disableThumbnail}
@@ -417,7 +454,7 @@ const CollectionsMainPage = React.createClass({
         return _.isEmpty(this.state.tags) && Search.pending > 0
     },
 
-    render: function() {
+    render() {
         const body = this.isLoading() ?
             this.getLoading() :
             this.getResults();

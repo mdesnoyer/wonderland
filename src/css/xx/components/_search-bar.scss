@@ -28,10 +28,9 @@ $searchBarSpacing: 1.875em;
     &:before {
         @include font-awesome('f002');
         position: absolute;
-        /* vertical-align the icon in the input */
+        // vertical-align the icon in the input
         top: 50%;
         transform: translateY(-50%);
-        /* vertical-align the icon in the input */
         left: $searchBarQueryInputPadding * 2;
         color: mix($bg-color, $mine-shaft);
         font-size: 1em;

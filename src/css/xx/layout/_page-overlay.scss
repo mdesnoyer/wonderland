@@ -35,7 +35,7 @@ $page-overlay-padding-bottom: 60px;
         margin-top: 50px;
     }
 
-    &::before {
+    &:before {
         content: '';
         position: fixed;
         top: 0;
@@ -78,7 +78,7 @@ $page-overlay-padding-bottom: 60px;
         }
 
         .xxPageOverlay,
-        .xxPageOverlay-content::before {
+        .xxPageOverlay-content:before {
             right: -50%;
         }
     }
@@ -95,7 +95,7 @@ $page-overlay-padding-bottom: 60px;
         }
 
         .xxPageOverlay,
-        .xxPageOverlay-content::before {
+        .xxPageOverlay-content:before {
             right: 0;
             transition: right $default-transition-speed * 2 $default-transition-easing;
         }
@@ -111,7 +111,7 @@ $page-overlay-padding-bottom: 60px;
         }
 
         .xxPageOverlay,
-        .xxPageOverlay-content::before {
+        .xxPageOverlay-content:before {
             right: 0;
         }
     }
@@ -128,7 +128,7 @@ $page-overlay-padding-bottom: 60px;
         }
 
         .xxPageOverlay,
-        .xxPageOverlay-content::before {
+        .xxPageOverlay-content:before {
             right: -50%;
             transition: right $default-transition-speed * 2 $default-transition-easing;
         }
