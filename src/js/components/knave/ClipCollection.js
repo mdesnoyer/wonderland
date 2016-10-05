@@ -89,7 +89,8 @@ class ClipCollection extends VideoCollection {
             return controls;
         }
         const clip = this.props.clips[this.state.selectedClipIndex];
-        const url = RENDITIONS.findLargestRenditionUrl(clip.renditions, 'gif');
+        const rend = RENDITIONS.findLargestRendition(clip.renditions, 'gif');
+        const url = rend.url;
         // Put the Download before the last control.
         controls.splice(-1, 0, <DownloadControl href={url} />);
         return controls;
@@ -120,10 +121,12 @@ class ClipCollection extends VideoCollection {
         const thumbnail = this.props.thumbnailMap[clip.thumbnail_id];
         const posterUrl = thumbnail ? RENDITIONS.findRendition(
             thumbnail, UTILS.CLIP_LARGE_WIDTH, UTILS.CLIP_LARGE_HEIGHT) : null;
-        const url = RENDITIONS.findLargestRenditionUrl(clip.renditions, 'mp4');
+        const rend = RENDITIONS.findLargestRendition(clip.renditions, 'mp4');
         return (
             <Clip
-                url={url}
+                url={rend.url}
+                width={rend.width}
+                height={rend.height}
                 posterUrl={posterUrl}
                 score={clip.neon_score}
             />

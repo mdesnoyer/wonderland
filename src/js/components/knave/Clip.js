@@ -10,12 +10,25 @@ class Clip extends React.Component {
     static propTypes = {
         url: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
         posterUrl: PropTypes.string,
     }
 
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.width < 670) {
+            this.container.style.width = `${this.props.width}px`;
+        };
+
+        if (this.props.height < 420) {
+            this.container.style.height = `${this.props.height}px`;
+        };
     }
 
     componentDidUpdate(prevProps) {
@@ -35,10 +48,22 @@ class Clip extends React.Component {
         }
     }
 
+    onClick() {
+        if (this.video.paused) {
+            this.video.play();
+            return;
+        }
+        this.video.pause();
+    }
+
     render() {
         const score = Math.round(this.props.score);
         return (
-            <div className="xxGifContainer" data-score={score}>
+            <div
+                className="xxGifContainer"
+                data-score={score}
+                ref={(container) => { this.container = container; }}
+            >
                 <h2 className="xxCollection-subtitle">
                     {T.get('copy.topNeonGif')}
                 </h2>

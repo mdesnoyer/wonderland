@@ -11,7 +11,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
-import BasePage from './BasePage';
+import Page from './Page';
 import UploadForm from '../knave/UploadForm';
 import Countdown from '../wonderland/Countdown';
 
@@ -48,7 +48,7 @@ const OnboardingUploadPage = React.createClass({
     },
 
     render: function() {
-        var content; 
+        var content;
         switch(this.state.onboardingState) {
             case 'initial':
                 content = (
@@ -64,10 +64,10 @@ const OnboardingUploadPage = React.createClass({
                                 <span className="xxUploadButton-helpCircle"></span>
                                 <span className="xxUploadButton-helpLine"></span>
                                 <p>{ T.get('copy.onboarding.uploadHelpText')}</p>
-                            </div>  
+                            </div>
                         </div>
                 );
-                break; 
+                break;
             case 'processing':
                 content = (
                         <div>
@@ -76,17 +76,17 @@ const OnboardingUploadPage = React.createClass({
                             <Countdown seconds={this.state.estimatedTimeRemaining}/>
                         </div>
                 );
-                break; 
+                break;
             case 'done':
                 content = <OnboardingTutorial onClose={this.onTutorialClose} isGuest={false} />;
-                break; 
+                break;
         }
         return (
-            <BasePage title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
+            <Page title={T.get('copy.myCollections.title')} onboardingState={this.state.onboardingState}>
                 {
                     this.state.overlayCode ? (
-                            <OverLayMessage  
-                                overlayCode={this.state.overlayCode} 
+                            <OverLayMessage
+                                overlayCode={this.state.overlayCode}
                                 overlayReset={this.handleOverlayReset}
                             />
                     ) : null
@@ -94,7 +94,7 @@ const OnboardingUploadPage = React.createClass({
                 <ReactCSSTransitionGroup transitionName="xxFadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
                     {content}
                 </ReactCSSTransitionGroup>
-            </BasePage>
+            </Page>
         );
     },
     handleOverlayReset: function() {
@@ -123,7 +123,7 @@ const OnboardingUploadPage = React.createClass({
             .then(function(res) {
                 // if over the max duration throw error because failed state will take longer to generate
                 if (res.videos[0].duration > UTILS.MAX_VIDEO_SIZE) {
-                    self.setState({ 
+                    self.setState({
                         onboardingState: 'initial',
                         overlayCode: 'VideoLength'
                     });
@@ -140,22 +140,22 @@ const OnboardingUploadPage = React.createClass({
                     });
                 }
                 else if (res.videos[0].state === 'processed') {
-                   self.setState({ onboardingState: 'done' }); 
-                } 
+                   self.setState({ onboardingState: 'done' });
+                }
                 else if (res.videos[0].state === 'failed') {
-                    self.setState({ 
+                    self.setState({
                         onboardingState: 'initial',
                         overlayCode: 'GeneralVideo'
                     });
-                } 
+                }
                 else {
-                    setTimeout(function() { 
+                    setTimeout(function() {
                         self.getVideoStatus(videoId);
                     }, 30000);
-                }    
+                }
             })
             .catch(function(err) {
-                self.setState({ 
+                self.setState({
                      onboardingState: 'initial',
                      overlayCode: 'GeneralVideo'
                  });

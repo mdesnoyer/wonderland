@@ -7,9 +7,9 @@ import SiteFooter from '../wonderland/SiteFooter';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 
-class BasePage extends React.Component {
+class Page extends React.Component {
 
-    static displayName = 'BasePage';
+    static displayName = 'Page';
 
     static getChildContext() {
         return {
@@ -120,4 +120,4 @@ class BasePage extends React.Component {
     }
 }
 
-export default BasePage;
+export default Page;

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
-import BasePage from './BasePage';
+import Page from './Page';
 import CollectionsMainPage from './CollectionsMainPage';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import {
@@ -89,7 +89,7 @@ class ViewSharedCollectionPage extends CollectionsMainPage {
 
     render() {
         return (
-            <BasePage
+            <Page
                 meta={this.state.metaTags}
                 title={T.get('copy.myCollections.title')}
                 onSetSidebarContent={this.onSetSidebarContent}
@@ -113,7 +113,7 @@ class ViewSharedCollectionPage extends CollectionsMainPage {
                     loadFeaturesForTag={LoadActions.loadFeaturesForTag}
                     onSetSidebarContent={this.onSetSidebarContent}
                 />
-            </BasePage>
+            </Page>
         );
     }
 }

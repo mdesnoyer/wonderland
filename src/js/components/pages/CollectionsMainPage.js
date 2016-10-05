@@ -9,7 +9,7 @@ import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import { windowOpen, objectToGetParams } from '../../modules/sharing';
 
-import BasePage from './BasePage';
+import Page from './Page';
 import CollectionsContainer from '../knave/CollectionsContainer';
 import PagingControls from '../core/PagingControls';
 import UploadForm from '../knave/UploadForm';
@@ -462,7 +462,7 @@ class CollectionsMainPage extends React.Component {
             this.renderCollections();
 
         return (
-            <BasePage
+            <Page
                 title={T.get('copy.myCollections.title')}
                 onSetSidebarContent={this.onSetSidebarContent}
                 sidebarContent={this.state.sidebarContent}
@@ -473,7 +473,7 @@ class CollectionsMainPage extends React.Component {
             >
                 {body}
                 <UploadForm />
-            </BasePage>
+            </Page>
         );
     }
 }

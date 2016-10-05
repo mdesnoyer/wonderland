@@ -70,37 +70,35 @@ const RENDITIONS = {
         return near_match || aspect_ratio_match || thumbnail.url;
     },
 
-    // Given renditions of a clip or thumb, get the largest's url.
+    // Given renditions of a clip or thumb, get the largest rendition.
     // Large here is just the number of pixels in the rendition.
-    // With optional fileType, only get a url if its file extension
+    // With optional fileType, only get a rend. if its file extension
     // is fileType.
     //
     // -input renditions array of object { url, width, height }
     // -input fileType string - constrain to urls that end with this
     //   e.g., 'gif'
-    // -output string or null
-    findLargestRenditionUrl(renditions, fileType = null) {
-        const r = _(renditions)
+    // -output { width, height, url } or null
+    findLargestRendition(renditions, fileType = null) {
+        return _(renditions)
             .filter(r => !fileType || _.endsWith(r.url, fileType))
-            .maxBy(r => r.width * r.height);
-        return r ? r.url : null;
+            .maxBy(r => r.width * r.height) || null;
     },
 
 
-    // Given renditions of a clip or thumb, get the smallest's url.
+    // Given renditions of a clip or thumb, get the smallest rendition.
     // Size here is just the number of pixels in the rendition.
-    // With optional fileType, only get a url if its file extension
+    // With optional fileType, only get a rend. if its file extension
     // is fileType.
     //
     // -input renditions array of object { url, width, height }
     // -input fileType string - constrain to urls that end with this
     //   e.g., 'gif'
-    // -output string or null
-    findSmallestRenditionUrl(renditions, fileType = null) {
-        const r = _(renditions)
+    // -output { width, height, url } or null
+    findSmallestRendition(renditions, fileType = null) {
+        return _(renditions)
             .filter(r => !fileType || _.endsWith(r.url, fileType))
-            .minBy(r => r.width * r.height);
-        return r ? r.url : null;
+            .minBy(r => r.width * r.height) || null;
     }
 }
 

@@ -17,7 +17,7 @@ export function ThumbnailList(props) {
         .slice(0, props.numberToDisplay)
         .map(t => {
             const src = RENDITIONS.findRendition(t) ||
-                RENDITIONS.findSmallestRenditionUrl(t.renditions, 'gif');
+                RENDITIONS.findSmallestRendition(t.renditions, 'gif').url;
             return (<Thumbnail
                 showHref
                 className={props.className || ''}
