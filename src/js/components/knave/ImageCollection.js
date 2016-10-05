@@ -44,8 +44,8 @@ class ImageCollection extends BaseCollection {
             // Which thumbnail's lift to show
             liftObjectId: null,
             // How many rows to display in the sub content.
-            smallRows: 1,
-        }
+            smallContentRows: 1,
+        };
 
         this.onAddControlClick = this.onControlClick.bind(this, 5);
         this.onDeleteControlClick = this.onControlClick.bind(this, 4);
@@ -184,7 +184,7 @@ class ImageCollection extends BaseCollection {
         } else if (rows === 1) {
             return (<ShowMoreThumbnailList
                 thumbnails={this.props.smallThumbnails}
-                numberToDisplay={perRow} // Show exactly one row of X-1 and ShowMore.
+                numberToDisplay={perRow - 1} // Show exactly one row of X-1 and ShowMore.
                 onMore={this.onMore}
                 onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}

@@ -28,8 +28,8 @@ class ClipCollection extends VideoCollection {
             // Which clip is selected.
             selectedClipIndex: 0,
             // How many rows to display in the sub content.
-            smallRows: 1,
-        }
+            smallContentRows: 1,
+        };
 
         this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
         // No inline "Why" in the lift panel copy.

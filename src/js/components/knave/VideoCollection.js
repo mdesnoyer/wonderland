@@ -47,8 +47,8 @@ class VideoCollection extends BaseCollection {
             // Which thumbnail's lift to show
             liftObjectId: null,
             // How many rows to display in the sub content.
-            smallRows: 1,
-        }
+            smallContentRows: 1,
+        };
 
         this.onAddControlClick = this.onControlClick.bind(this, 6);
         this.onDeleteControlClick = this.onControlClick.bind(this, 4);
@@ -157,6 +157,11 @@ class VideoCollection extends BaseCollection {
             this.props.rightFeatureThumbnail.thumbnail_id);
     }
 
+    onRefilterVideo(gender, age, callback) {
+        return SendActions.refilterVideo(
+            this.props.tagId, gender, age, callback.bind(null, gender, age));
+    }
+
     getPanels() {
         const copyOverrideMap = {
             'copy.lift.explanation': 'copy.lift.explanation',
@@ -184,11 +189,6 @@ class VideoCollection extends BaseCollection {
             );
         }
         return panels;
-    }
-
-    onRefilterVideo(gender, age, callback) {
-        return SendActions.refilterVideo(
-            this.props.tagId, gender, age, callback.bind(null, gender, age));
     }
 
     getControls() {
