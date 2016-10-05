@@ -25,9 +25,9 @@ class BaseCollection extends React.Component {
         featureContent: PropTypes.node.isRequired,
         subContent: PropTypes.node,
 
-        infoActionPanels: PropTypes.arrayOf(PropTypes.node).isRequired,
+        controls: PropTypes.arrayOf(PropTypes.node).isRequired,
+        panels: PropTypes.arrayOf(PropTypes.node).isRequired,
         selectedPanelIndex: PropTypes.number.isRequired,
-        infoActionControls: PropTypes.arrayOf(PropTypes.node).isRequired,
 
         // Handlers for image events
         onThumbnailClick: PropTypes.func,
@@ -125,14 +125,14 @@ class BaseCollection extends React.Component {
     onMore(e) {
         e.preventDefault();
         this.setState({
-            smallThumbnailRows: this.state.smallThumbnailRows + 3,
+            smallContentRows: this.state.smallContentRows + 3,
         });
     }
 
     onLess(e) {
         e.preventDefault();
         this.setState({
-            smallThumbnailRows: 1,
+            smallContentRows: 1,
         });
     }
 
@@ -218,6 +218,16 @@ class BaseCollection extends React.Component {
         ];
     }
 
+    renderDesktop(componentMap) {
+        return (
+            <BaseCollection
+                {...this.props}
+                {...componentMap}
+                selectedPanelIndex={this.state.selectedPanelIndex}
+            />
+        );
+    }
+
     render() {
         // Let mapped labels be overriden.
         const unapplyOverride = UTILS.applyTranslationOverride(
@@ -231,8 +241,8 @@ class BaseCollection extends React.Component {
                 </div>
                 <div className="xxCollection-content">
                     <InfoActionContainer
-                        panels={this.props.infoActionPanels}
-                        controls={this.props.infoActionControls}
+                        panels={this.props.panels}
+                        controls={this.props.controls}
                         selectedPanelIndex={this.props.selectedPanelIndex}
                     />
                 </div>

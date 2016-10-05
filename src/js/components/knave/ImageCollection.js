@@ -38,13 +38,14 @@ class ImageCollection extends BaseCollection {
         super(props);
 
         this.state = {
-            ...this.state,
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
             // Which thumbnail's lift to show
             liftObjectId: null,
-        };
+            // How many rows to display in the sub content.
+            smallRows: 1,
+        }
 
         this.onAddControlClick = this.onControlClick.bind(this, 5);
         this.onDeleteControlClick = this.onControlClick.bind(this, 4);
@@ -145,7 +146,7 @@ class ImageCollection extends BaseCollection {
 
     renderThumbnailList() {
         // Number of rows of item to display.
-        const rows = this.state.smallThumbnailRows;
+        const rows = this.state.smallContentRows;
 
         // Number of thumbnails per row.
         const perRow = UTILS.THUMBNAILS_PER_ROW;
@@ -217,25 +218,18 @@ class ImageCollection extends BaseCollection {
         );
     }
 
-    renderDesktop() {
-        return (
-            <BaseCollection
-                {...this.props}
-                featureContent={this.renderFeatureThumbnails()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--photo"
-            />
-        );
-    }
-
     render() {
         if (this.context.isMobile) {
             return this.renderMobile();
         }
-        return this.renderDesktop();
+        return this.renderDesktop({
+            featureContent: this.renderFeatureThumbnails(),
+            subContent: this.renderThumbnailList(),
+            panels: this.getPanels(),
+            controls: this.getControls(),
+            wrapperClassName: 'xxCollection xxCollection--photo',
+            selectedPanelIndex: this.state.selectedPanelIndex,
+        });
     }
 }
 

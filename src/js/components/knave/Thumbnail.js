@@ -11,7 +11,7 @@ class Thumbnail extends React.Component {
 
         thumbnailId: PropTypes.string.isRequired,
 
-        dominantColor: PropTypes.array,
+        dominantColor: PropTypes.arrayOf(PropTypes.number),
 
         // The accessibility title
         alt: PropTypes.string,

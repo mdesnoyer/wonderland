@@ -39,13 +39,17 @@ class VideoCollection extends BaseCollection {
 
     constructor(props) {
         super(props);
+
         this.state = {
-            ...this.state,
             // What panel to display, based on user input by
             // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
+            // Which thumbnail's lift to show
             liftObjectId: null,
-        };
+            // How many rows to display in the sub content.
+            smallRows: 1,
+        }
+
         this.onAddControlClick = this.onControlClick.bind(this, 6);
         this.onDeleteControlClick = this.onControlClick.bind(this, 4);
         this.onEmailControlClick = this.onControlClick.bind(this, 3);
@@ -81,7 +85,7 @@ class VideoCollection extends BaseCollection {
         this.clearProcessingMonitor();
     }
 
-    renderFeatureContent() {
+    renderFeatureThumbnails() {
         const left = this.props.leftFeatureThumbnail;
         const right = this.props.rightFeatureThumbnail;
         return (
@@ -211,7 +215,7 @@ class VideoCollection extends BaseCollection {
 
     renderThumbnailList() {
         // Number of rows of item to display.
-        const rows = this.state.smallThumbnailRows;
+        const rows = this.state.smallContentRows;
         // Number of thumbnails per row.
         const perRow = UTILS.THUMBNAILS_PER_ROW;
 
@@ -255,7 +259,7 @@ class VideoCollection extends BaseCollection {
         return (
             <MobileBaseCollection
                 {...this.props}
-                featureContent={this.renderFeatureContent()}
+                featureContent={this.renderFeatureThumbnails()}
                 subContent={this.renderThumbnailList()}
                 infoActionPanels={this.getPanels()}
                 infoActionControls={this.getControls()}
@@ -267,25 +271,18 @@ class VideoCollection extends BaseCollection {
         );
     }
 
-    renderDesktop() {
-        return (
-            <VideoCollection
-                {...this.props}
-                featureContent={this.renderFeatureContent()}
-                subContent={this.renderThumbnailList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-                wrapperClassName="xxCollection xxCollection--video"
-            />
-        );
-    }
-
     render() {
         if (this.context.isMobile) {
             return this.renderMobile();
         }
-        return this.renderDesktop();
+        return this.renderDesktop({
+            featureContent: this.renderFeatureThumbnails(),
+            subContent: this.renderThumbnailList(),
+            panels: this.getPanels(),
+            controls: this.getControls(),
+            wrapperClassName: 'xxCollection xxCollection--video',
+            selectedPanelIndex: this.state.selectedPanelIndex,
+        });
     }
 }
 

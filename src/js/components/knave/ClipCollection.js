@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
-import BaseCollection from './BaseCollection';
 import VideoCollection from './VideoCollection';
 import Clip from './Clip';
 import MobileBaseCollection from './MobileBaseCollection';
@@ -23,10 +22,15 @@ class ClipCollection extends VideoCollection {
     constructor(props) {
         super(props);
         this.state = {
-            smallThumbnailRows: 1,
-            selectedClipIndex: 0,
+            // What panel to display, based on user input by
+            // clicking on the buttons (email/del/share) in the right panel
             selectedPanelIndex: 0,
-        };
+            // Which clip is selected.
+            selectedClipIndex: 0,
+            // How many rows to display in the sub content.
+            smallRows: 1,
+        }
+
         this.onSetSelectedClipIndex = this.onSetSelectedClipIndex.bind(this);
         // No inline "Why" in the lift panel copy.
         this.onWhyClick = null;
@@ -46,7 +50,7 @@ class ClipCollection extends VideoCollection {
     }
 
     bindMore() {
-        // Stub out optional instance binds.
+        // Block VideoCollection's binds.
     }
 
     getLiftValue() {
@@ -58,14 +62,6 @@ class ClipCollection extends VideoCollection {
             return undefined;
         }
         return map[this.state.liftObjectId];
-    }
-
-    getPanels() {
-        const copyOverrideMap = {
-            'copy.lift.explanation': 'copy.lift.explanation.gifs',
-            'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
-        };
-        return super.getBasePanels(copyOverrideMap);
     }
 
     getWidthClassName(thumbnails) {
@@ -83,7 +79,15 @@ class ClipCollection extends VideoCollection {
         }
     }
 
-    getControls() {
+    renderPanels() {
+        const copyOverrideMap = {
+            'copy.lift.explanation': 'copy.lift.explanation.gifs',
+            'copy.lift.explanation.solo': 'copy.lift.explanation.gifs',
+        };
+        return super.getBasePanels(copyOverrideMap);
+    }
+
+    renderControls() {
         const controls = super.getBaseControls();
         if (this.props.isViewOnly) {
             return controls;
@@ -153,25 +157,18 @@ class ClipCollection extends VideoCollection {
         );
     }
 
-    renderDesktop() {
-        return (
-            <BaseCollection
-                {...this.props}
-                wrapperClassName="xxCollection xxCollection--video"
-                featureContent={this.renderClip()}
-                subContent={this.renderClipList()}
-                infoActionPanels={this.getPanels()}
-                infoActionControls={this.getControls()}
-                selectedPanelIndex={this.state.selectedPanelIndex}
-            />
-        );
-    }
-
     render() {
         if (this.context.isMobile) {
             return this.renderMobile();
         }
-        return this.renderDesktop();
+        return this.renderDesktop({
+            featureContent: this.renderClip(),
+            subContent: this.renderClipList(),
+            panels: this.renderPanels(),
+            controls: this.renderControls(),
+            wrapperClassName: 'xxCollection xxCollection--video',
+            selectedPanelIndex: this.state.selectedPanelIndex,
+        });
     }
 }
 
