@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react';
 
 import _ from 'lodash';
 
-import FeatureThumbnail from './_FeatureThumbnail';
+import FeatureThumbnail from './FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
 import {
     ThumbnailList,
@@ -165,6 +165,7 @@ const MobileBaseCollection = React.createClass({
             <FeatureThumbnail
                 title={title}
                 score={thumbnail.neon_score}
+                dominantColor={thumbnail.dominant_color}
                 enabled={thumbnail.enabled}
                 className={className}
                 blurText={blurText}

@@ -96,7 +96,7 @@ $mobile-all-images-gutter-width: 3px;
     filter: url(blur.svg#blur);
     -webkit-filter: blur(3px);
     filter: blur(3px);
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
 }
 
 
@@ -149,7 +149,7 @@ $mobile-all-images-gutter-width: 3px;
 
 .xxCollectionImages-allAnchor {
     float: left;
-    position:relative;
+    position: relative;
     width: $small-thumbnail-width;
     border: 1px solid rgba($base-color, 0.5);
     margin: $gutter-width 0 0;
@@ -159,7 +159,7 @@ $mobile-all-images-gutter-width: 3px;
     transition: border-color $default-transition, color $default-transition;
     user-select: none;
 
-    &::before {
+    &:before {
         content: '';
         display: block;
         padding: 0 0 100%;

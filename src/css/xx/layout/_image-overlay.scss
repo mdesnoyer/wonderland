@@ -58,7 +58,7 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
         min-width: $square-zoom-image-min-width;
     }
     &--portrait {
-        min-width: $vertical-zoom-image-min-width;
+        // min-width: $vertical-zoom-image-min-width;
     }
     &--landscape {
         // empty
@@ -163,8 +163,8 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
     @include arrow(W, 12px, 1px, $quaternary-color);
 
     &:hover {
-        &::before,
-        &::after {
+        &:before,
+        &:after {
             background: $white;
         }
     }
@@ -174,8 +174,8 @@ $vertical-zoom-image-min-width: ($page-min-width + $gutter-width) * 1/3 - $gutte
     float: right;
     margin-right: -8px;
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         transform-origin: 100% 50%;
     }
 }

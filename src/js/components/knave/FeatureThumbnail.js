@@ -1,72 +1,47 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+import React, { PropTypes } from 'react';
 
-import React from 'react';
 import Thumbnail from './Thumbnail';
 import T from '../../modules/translation';
-import RENDITIONS from '../../modules/renditions';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+const propTypes = {
+    title: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    score: PropTypes.number.isRequired,
+    dominantColor: PropTypes.array,
+    src: PropTypes.string.isRequired,
+    tagId: PropTypes.string,
+    thumbnaiId: PropTypes.string,
+    onMouseEnter: PropTypes.func,
+    onClick: PropTypes.func,
+    blurText: PropTypes.string,
+    isSoloImage: PropTypes.bool,
+};
 
-var FeatureThumbnail = React.createClass({
-    propTypes: {
-        type: React.PropTypes.string.isRequired,
-        handleClick: React.PropTypes.func
-    },
-    render: function() {
-        var self = this,
-            title,
-            thumbnailId,
-            uid,
-            handleChildOnMouseEnter,
-            showHref,
-            src,
-            extraClass
-        ;
-        switch(self.props.type) {
-            case 'default':
-                uid = 0;
-                title= T.get('copy.currentImage');
-                thumbnailId = self.props.thumbnails[uid].thumbnail_id;
-                handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
-                showHref = true;
-                extraClass = 'xxThumbnail--lowLight';
-                break;
-            case 'neon':
-                uid = 1;
-                title = T.get('copy.topNeonImage');
-                thumbnailId = self.props.thumbnails[uid].thumbnail_id;
-                handleChildOnMouseEnter = self.props.handleChildOnMouseEnter;
-                showHref = true;
-                extraClass = 'xxThumbnail--highLight';
-                break;
+export default function FeatureThumbnail(props) {
+    const getSoloMessage = () => {
+        if (props.isSoloImage) {
+            return (
+                <div className="xxThumbnailSoloMessage">
+                    {props.blurText}
+                </div>
+            );
         }
-        src = (RENDITIONS.findRendition(self.props.thumbnails[uid], 350, 350));
-        return (
-            <div className="xxCollectionImages-featured">
-                <h2 className="xxCollection-subtitle">
-                    {title}
-                </h2>
+        return null;
+    };
+    const wrapperClass = props.isSoloImage ? 'xxThumbnailSoloBlurWrapper' : '';
+    return (
+        <div className="xxCollectionImages-featured">
+            <h2 className="xxCollection-subtitle">
+                {props.title}
+            </h2>
+                {getSoloMessage()}
+            <div className={wrapperClass}>
                 <Thumbnail
-                    score={self.props.thumbnails[uid].neon_score}
-                    uid={uid}
-                    title={title}
-                    size="large"
-                    handleClick={self.props.handleClick}
-                    src={src}
-                    thumbnailId={thumbnailId}
-                    handleChildOnMouseEnter={handleChildOnMouseEnter}
-                    type={self.props.type}
-                    isMobile={self.props.isMobile}
-                    showHref={showHref}
-                    extraClass={extraClass}
+                    {...props}
                 />
             </div>
-        );
-    }
-});
+        </div>
+    );
+}
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export default FeatureThumbnail;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+FeatureThumbnail.propTypes = propTypes;

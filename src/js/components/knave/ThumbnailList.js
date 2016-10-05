@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React, {PropTypes} from 'react';
-import Thumbnail from './_Thumbnail';
+import Thumbnail from './Thumbnail';
 
 import RENDITIONS from '../../modules/renditions';
 import T from '../../modules/translation';
@@ -47,9 +47,10 @@ export const ThumbnailList = React.createClass({
                 return (
                     <Thumbnail
                         showHref={true}
-                        className={this.props.className||''}
+                        className={this.props.className || ''}
                         key={t.thumbnail_id}
                         score={t.neon_score}
+                        dominantColor={t.dominant_color}
                         enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
                         onMouseEnter={onMouseEnter.bind(null, t.thumbnail_id)}
@@ -191,6 +192,7 @@ export const ServingStatusThumbnailList = React.createClass({
                         className={this.props.className}
                         key={t.thumbnail_id}
                         score={t.neon_score}
+                        dominantColor={t.dominant_color}
                         enabled={t.enabled}
                         src={RENDITIONS.findRendition(t)}
                         children={this.getControl(t)}

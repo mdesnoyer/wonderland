@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 
 import _ from 'lodash';
 
-import FeatureThumbnail from './_FeatureThumbnail';
+import FeatureThumbnail from './FeatureThumbnail';
 import InfoActionContainer from './InfoActionContainer';
 import {
     ThumbnailList,
@@ -215,6 +215,8 @@ class BaseCollection extends React.Component {
             <div className="xxCollectionImages">
                 <GifClip
                     url={this.props.clip.renditions[2].url}
+                    height={this.props.clip.renditions[2].height}
+                    width={this.props.clip.renditions[2].width}
                     score={this.props.clip.neon_score}
                     poster={this.props.clipPoster}
                     id={this.props.clip.clip_id}
@@ -264,6 +266,7 @@ class BaseCollection extends React.Component {
             <FeatureThumbnail
                 title={title}
                 score={thumbnail.neon_score}
+                dominantColor={thumbnail.dominant_color}
                 enabled={thumbnail.enabled}
                 className={className}
                 src={RENDITIONS.findRendition(thumbnail)}

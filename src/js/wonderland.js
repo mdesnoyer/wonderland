@@ -15,7 +15,6 @@ import UTILS from './modules/utils';
 import SignInPage from './components/pages/SignInPage';
 import SignOutPage from './components/pages/SignOutPage';
 import NotFoundPage from './components/pages/NotFoundPage';
-import VideoPageGuest from './components/pages/VideoPageGuest';
 import HomePage from './components/pages/HomePage';
 import TimelinePage from './components/pages/TimelinePage';
 import AccountConfirmedPage from './components/pages/AccountConfirmedPage';
@@ -74,8 +73,8 @@ render((
         <Route path={UTILS.DRY_NAV.ONBOARDING_VIDEO_UPLOAD.URL} component={DemoUploadPage} />
 
         {/* The direct_* routes are used by the precompiler proxy to get the page from origin */}
-        <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
-        <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={VideoPageGuest} />
+        <Route path="/direct_share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
+        <Route path="/share/video/:videoId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
         <Route path="/direct_share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
         <Route path="/share/collection/:tagId/account/:accountId/token/:shareToken/(index.html)" component={ViewSharedCollectionPage} />
 

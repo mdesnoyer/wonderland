@@ -62,7 +62,7 @@ var UploadActionsContainer = React.createClass({
                 >
                     <VideoUploadOverlay {...props} />;
                 </div>
-            )           
+            )
         };
 
         if (this.props.formState === 'updateVideoDefault') {
@@ -112,7 +112,7 @@ var UploadActionsContainer = React.createClass({
                                     <div className="xxUploadDialog-block">
                                         <label className="xxLabel">{this.props.uploadedTotal + " of 100 files uploaded" }</label>
                                     </div>
-                                        <DragAndDrop {...props} /> 
+                                        <DragAndDrop {...props} />
                                             <div className="xxUploadButtonsChooser">
                                                 <DropBoxUploadButton {...props} />
                                                 <DesktopUploadButton {...props} />
@@ -130,14 +130,15 @@ var UploadActionsContainer = React.createClass({
                 </div>
             );
         };
-
         if (this.props.formState === 'updateCollection') {
+            const buttonLabel = T.get(this.props.uploadingTotal === null ?
+                'back' : 'done');
             return (
                 <div className="xxUploadDialog-drag-drop-panel">
                     <div className="xxUploadDialog-block">
                         <label className="xxLabel">{this.props.uploadedTotal + " of 100 files uploaded" }</label>
                     </div>
-                    <DragAndDrop {...props} /> 
+                    <DragAndDrop {...props} />
                     <div className="xxUploadButtonsChooser">
                         <DropBoxUploadButton {...props} />
                         <DesktopUploadButton {...props} />
@@ -152,13 +153,13 @@ var UploadActionsContainer = React.createClass({
                             type="button"
                             data-action-label="info"
                             onClick={this.props.handleCancelClick}
-                            >{T.get('back')}
+                            >{buttonLabel}
                         </button>
                     </div>
                 </div>
-            )   
+            )
         };
     }
 });
 
-export default UploadActionsContainer; 
+export default UploadActionsContainer;
