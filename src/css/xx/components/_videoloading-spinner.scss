@@ -39,8 +39,8 @@ $onboarding-text-padding: 18px;
     animation: rotate 2s infinite linear;
     display: inline-block;
     position: relative;
-    &:after {
-        @include font-awesome('f021');
+    &::after {
+        @include font-awesome("f021");
         display: block;
         box-sizing: border-box;
         width: 27px;
@@ -66,14 +66,14 @@ $onboarding-text-padding: 18px;
     @include breakpoint-mobile {
         display: none;
     }
-    &:after {
+    &::after {
         transition: transform $default-transition, color $default-transition;
     }
     &:hover {
         .xxCollectionFilterToggle-label {
             color: $base-color;
         }
-        &:after {
+        &::after {
             background: $accent-color;
             color: $white;
             transform: rotate(0deg);
