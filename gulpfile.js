@@ -20,8 +20,6 @@ var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
 var jest = require('gulp-jest').default;
 var envify = require('gulp-envify');
-var jasmine = require('jasmine');
-var jasmineReporters = require('jasmine-reporters');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
