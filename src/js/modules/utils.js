@@ -250,17 +250,6 @@ var UTILS = {
         analyzeVideoKey: 'footprintCookieAnalyzeVideo',
         processingKey: 'pv'
     },
-    FILTERS_GENDER_AGE: [
-        {
-            value: 'Female / 35-44',
-        },
-        {
-            value: 'Male / 25 - 34',
-        },
-        {
-            value: 'None',
-        }
-    ],
     FILTERS_GENDER: [
         {
             value: 'F',
@@ -293,10 +282,6 @@ var UTILS = {
             label: '50+'
         }
     ],
-    FILTERS_GENDER_ENUM: {
-            M: 'Male',
-            F: 'Female'
-    },
     FILTER_GENDER_COL_ENUM: {
         null  : 0,
         'M'   : 1,

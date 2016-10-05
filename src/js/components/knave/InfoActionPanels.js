@@ -6,7 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 
 import CollectionLoadingText from '../core/CollectionLoadingText';
-import VideoFilters from './_VideoFilters';
+import VideoFilters from './VideoFilters';
 import DemographicFilters from './DemographicFilters';
 import Message from '../wonderland/Message';
 import Lift from './Lift';
