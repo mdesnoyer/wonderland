@@ -20,6 +20,8 @@ var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
 var jest = require('gulp-jest').default;
 var envify = require('gulp-envify');
+var jasmine = require('jasmine');
+var jasmineReporters = require('jasmine-reporters');
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -302,6 +304,7 @@ gulp.task('test', function() {
     return gulp.src('__tests__').pipe(jest({
         config: {
             rootDir: ".",
+            setupTestFrameworkScriptFile: "<rootDir>/setup-jasmine-env.js",
             setupFiles: [
                 "<rootDir>/__tests__/before.js",
             ],
