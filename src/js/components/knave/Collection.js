@@ -236,6 +236,7 @@ class Collection extends React.Component {
                         panels={this.props.panels}
                         controls={this.props.controls}
                         selectedPanelIndex={this.props.selectedPanelIndex}
+                        isViewOnly={this.props.isViewOnly}
                     />
                 </div>
                 <div key="content" className="xxCollectionImages">

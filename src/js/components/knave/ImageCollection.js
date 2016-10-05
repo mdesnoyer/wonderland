@@ -166,12 +166,9 @@ class ImageCollection extends Collection {
 
         // If there's no rows but there is a thumbnail.
         if (!rows && this.props.smallThumbnails.length) {
-            const showMoreClassName = this.context.isMobile ?
-                'xxShowMore' : null;
             return (<ShowMoreThumbnailList
                 thumbnails={this.props.smallThumbnails}
                 numberToDisplay={0} // Show exactly one row of X-1 and ShowMore.
-                showMoreClassName={showMoreClassName}
                 onMore={this.onMore}
                 onMouseEnter={this.onSetLiftThumbnailId}
                 onMouseLeave={this.onSetLiftThumbnailToDefault}

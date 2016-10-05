@@ -76,6 +76,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'action.saveMyImages': 'Save Images',
             'action.showMore': 'Show More Images',
             'action.showLess': 'Show Fewer Images',
+            'action.showMore.gifs': 'Show More Gifs',
+            'action.showLess.gifs': 'Show Fewer Gifs',
 
             rememberMe: 'Remember',
 

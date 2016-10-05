@@ -5,6 +5,7 @@ import Clip from './Clip';
 import Collection from './Collection';
 import VideoCollection from './VideoCollection';
 import RENDITIONS from '../../modules/renditions';
+import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
 import { DownloadControl } from './InfoActionPanels';
 import {
@@ -113,26 +114,22 @@ class ClipCollection extends VideoCollection {
         ));
         // Show a collapsed view if no rows.
         if (!this.state.smallContentRows) {
-            const showMoreClassName = this.context.isMobile ?
-                'xxShowMore' : null;
             return (
                 <ShowMoreThumbnailList
                     className={this.getWidthClassName(thumbnails)}
                     numberToDisplay={0}
                     thumbnails={thumbnails}
-                    showMoreClassName={showMoreClassName}
+                    moreLabel={T.get('action.showMore.gifs')}
                     onMore={this.onMore}
                     onClick={this.onSetSelectedClipIndex}
                 />
             );
         } else if (this.state.smallContentRows > 1) {
-            const showLessClassName = this.context.isMobile ?
-                'xxShowMore' : null;
             return (
                 <ShowLessThumbnailList
                     className={this.getWidthClassName(thumbnails)}
                     thumbnails={thumbnails}
-                    showLessClassName={showLessClassName}
+                    lessLabel={T.get('action.showLess.gifs')}
                     onLess={this.onLess}
                     onClick={this.onSetSelectedClipIndex}
                 />

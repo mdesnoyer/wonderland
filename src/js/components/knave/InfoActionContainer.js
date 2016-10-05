@@ -10,6 +10,7 @@ class InfoActionContainer extends React.Component {
         title: PropTypes.string.isRequired,
         panels: PropTypes.arrayOf(PropTypes.node).isRequired,
         controls: PropTypes.arrayOf(PropTypes.node).isRequired,
+        isViewOnly: PropTypes.bool.isRequired,
         // If null, collapse the content; else this
         // a number index into the panels array.
         selectedPanelIndex: PropTypes.number,
@@ -65,6 +66,9 @@ class InfoActionContainer extends React.Component {
     }
 
     renderControlToggle() {
+        if (this.props.isViewOnly) {
+            return null;
+        }
         if (this.state.isControlOpen !== null || this.props.selectedPanelIndex === null) {
             const classNames = ['xxPagingControls-next', 'xxPagingControls-next--GifClip'];
             if (this.state.isControlOpen) {
