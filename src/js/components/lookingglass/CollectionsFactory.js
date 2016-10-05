@@ -10,6 +10,16 @@ import RENDITIONS from '../../modules/renditions';
 import TRACKING from '../../modules/tracking';
 
 import { SendActions } from '../../stores/CollectionStores';
+// import { SpringGrid } from 'react-stonecutter';
+// import { CSSGrid, SpringGrid, measureItems, makeResponsive } from 'react-stonecutter';
+import { CSSGrid, layout } from 'react-stonecutter';
+
+// const Grid = measureItems(SpringGrid);
+
+// const Grid = makeResponsive(measureItems(CSSGrid), {
+//   maxWidth: 1080,
+//   minPadding: 100
+// });
 
 
 const CollectionsFactory = React.createClass({
@@ -56,16 +66,19 @@ const CollectionsFactory = React.createClass({
 		const clip = video.demographic_clip_ids[0].clip_ids[0]; 
 		const clipURL = this.props.stores.clips[0][0][clip].url;
 			return (
-				<video className="testflexvideo" key={tagId} height="420" width="420" autolay preload="auto">
+				<li>
+				<video  key={tagId} autolay preload="auto">
 				  <source src={clipURL} type="video/mp4" />
 				</video>
+				</li>
 			);
 	},
 
 	getImageComponent: function(tagId) {
 		const tag = this.props.stores.tags[tagId];
 		const testThumb = this.props.stores.tags[tagId].thumbnail_ids[0];
-		return <img className="testfleximage" key={tagId} src={this.props.stores.thumbnails[0][0][testThumb]} alt="Smiley face"  />;
+		// debugger
+		return <li><img key={tagId} src={this.props.stores.thumbnails[0][0][testThumb].renditions[3].url} alt="Smiley face"  /></li>;
 	},
 
     render: function() {
@@ -73,11 +86,46 @@ const CollectionsFactory = React.createClass({
             return this.getMediaComponent(tagId);
         });
 
-        return (
-            <div>
-                <ul className="testflex" >{collections}</ul>
-            </div>
-        );
+        // return (
+        //     <SpringGrid
+        //       component="ul"
+        //       columns={4}
+        //       columnWidth={420}
+        //       gutterWidth={5}
+        //       gutterHeight={5}
+        //       itemHeight={200}
+        //       springConfig={{ stiffness: 170, damping: 26 }}
+        //     >
+        //     	{collections}
+        //     </SpringGrid>
+        // );
+     //    return (
+     //        <Grid
+		   //    component="ul"
+		   //    columns={4}
+		   //    columnWidth={420}
+		   //    gutterWidth={5}
+		   //    gutterHeight={5}
+		   //    itemHeight={200}
+     //        >
+     // 			{collections}
+     //        </Grid>
+    	// );
+    	return (
+    		<CSSGrid
+    		  component="ul"
+    		  columns={5}
+    		  columnWidth={150}
+    		  gutterWidth={5}
+    		  gutterHeight={5}
+    		  layout={layout.pinterest}
+    		  duration={800}
+    		  easing="ease-out"
+    		>
+    		{collections}
+    		</CSSGrid>
+		)
+
     },
 })
 
