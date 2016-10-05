@@ -1,16 +1,14 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import {shallow} from 'enzyme';
 
-jest.dontMock('../../src/js/components/knave/Timeline');
-
 const Timeline = require('../../src/js/components/knave/Timeline').default;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 describe('Component: Timeline', function() {
-        
+
     const minProps = {
         snapshots: {},
         showNeonScore: true,
@@ -27,4 +25,4 @@ describe('Component: Timeline', function() {
 
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
