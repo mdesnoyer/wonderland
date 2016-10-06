@@ -6,5 +6,5 @@ build/
 
 env/config.json
 *~
-junitresults.xml
+test_output/
 env/timeline.config.json
