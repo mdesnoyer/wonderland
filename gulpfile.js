@@ -315,5 +315,22 @@ gulp.task('test', function() {
                 "react",
             ],
         }
-    }));
+    }))
+    .pipe(mergeJunitResult());
 });
+
+function mergeJunitResult() {
+    var fs = require('fs');
+    var path = require('path');
+    var async = require('async');
+
+    var reportMerger = require('junit-report-merger');
+
+    var results = fs.readdirSync('test_output');
+
+    let output = path.join('test_output', test-results.xml');
+    let files = results.map(x => path.join('test_output', x));
+    reportMerger.mergeFiles(output, files, {}, function() {
+        async.each(files, fs.unlink);
+    });
+}
