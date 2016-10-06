@@ -4,30 +4,27 @@
     margin-bottom: $collection-margin-bottom;
     display: block;
     border-bottom: 1px solid $bg-tertiary-color;
-}
-
-.xxTabs li {
-    display: inline-block;
-    vertical-align: top;
-    padding: 8px 20px;
-    margin-right: 10px;
-    border: 1px solid $bg-color;
-}
-
-.xxTabs li:hover {
-    background-color: $bg-secondary-color;
-    border: 1px solid $bg-tertiary-color;
-    border-bottom: 1px solid $bg-secondary-color;
-    border-top-right-radius: $processing-ribbon-height;
-    border-top-left-radius: $processing-ribbon-height;
-}
-
-.xxTabs li.is-active {
-    background-color: $white;
-    border: 1px solid $bg-tertiary-color;
-    border-bottom: 1px solid $white;
-    border-top-right-radius: $processing-ribbon-height;
-    border-top-left-radius: $processing-ribbon-height;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        padding: 8px 20px;
+        margin-right: 10px;
+        border: 1px solid $bg-color;
+        &:hover {
+            background-color: $bg-secondary-color;
+            border: 1px solid $bg-tertiary-color;
+            border-bottom: 1px solid $bg-secondary-color;
+            border-top-right-radius: $processing-ribbon-height;
+            border-top-left-radius: $processing-ribbon-height;
+        }
+        .is-active {
+            background-color: $white;
+            border: 1px solid $bg-tertiary-color;
+            border-bottom: 1px solid $white;
+            border-top-right-radius: $processing-ribbon-height;
+            border-top-left-radius: $processing-ribbon-height;
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,5 +1,3 @@
-jest.unmock('../../../src/js/modules/utils');
-
 import UTILS from '../../../src/js/modules/utils';
 
 describe('UTILS.sortThumbnails', () => {

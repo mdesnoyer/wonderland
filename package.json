@@ -15,7 +15,9 @@
     "babel": "^6.5.2",
     "babel-cli": "^6.11.4",
     "babel-eslint": "^7.0.0",
-    "babel-jest": "^13.2.2",
+    "babel-jest": "^16.0.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.16.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
@@ -35,7 +37,7 @@
     "gulp-concat-css": "^2.3.0",
     "gulp-envify": "^1.0.0",
     "gulp-if": "^2.0.1",
-    "gulp-jest": "^0.4.0",
+    "gulp-jest": "^0.5.2",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
@@ -43,8 +45,10 @@
     "gulp-uglify": "^1.5.3",
     "gulp-uglifycss": "^1.0.6",
     "gulp-util": "^3.0.7",
-    "jest": "^14.1.0",
-    "jest-cli": "^13.2.3",
+    "jasmine-reporters": "^2.2.0",
+    "jest": "^15.1.1",
+    "jest-cli": "^15.1.1",
+    "junit-report-merger": "0.0.4",
     "merge-stream": "^1.0.0",
     "react-addons-test-utils": "^15.3.2",
     "vinyl-buffer": "^1.0.0",
@@ -94,12 +98,6 @@
     "testPathIgnorePatterns": [
       "__tests__/before.js"
     ],
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "unmockedModulePathPatterns": [
-      "react",
-      "enzyme",
-      "fnv-plus",
-      "lodash"
-    ]
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   }
 }

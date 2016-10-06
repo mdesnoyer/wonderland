@@ -2,74 +2,65 @@
 // Based on http://sass-guidelin.es/#the-7-1-pattern
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-@charset 'UTF-8';
+@charset "UTF-8";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // 1. Configuration and helpers
-@import
-    'abstracts/variables',
-    'abstracts/mixins'
-;
+@import "abstracts/variables";
+@import "abstracts/mixins";
 
 // 2. Vendors
-@import
-    '../../../node_modules/normalize.css/normalize.css',
-    '../../../node_modules/react-select/dist/react-select.css'
+@import "../../../node_modules/normalize.css/normalize.css";
+@import "../../../node_modules/react-select/dist/react-select.css";
 ;
 
 // 3. Base stuff
-@import
-    'base/reset',
-    'base/animations',
-    'base/fonts',
-    'base/typography',
-    'base/global'
-;
+@import "base/reset";
+@import "base/animations";
+@import "base/fonts";
+@import "base/typography";
+@import "base/global";
 
 // 4. Layout-related sections
-@import
-    'layout/page',
-    'layout/page-overlay',
-    'layout/header',
-    'layout/image-overlay',
-    'layout/footer',
-    'layout/responsive'
+@import "layout/page";
+@import "layout/page-overlay";
+@import "layout/header";
+@import "layout/image-overlay";
+@import "layout/footer";
+@import "layout/responsive";
 ;
 
 // 5. Components
-@import
-    'components/feature-content',
-    'components/forms',
-    'components/lift',
-    'components/timeline',
-    'components/overlay',
-    'components/tabs',
-    'components/tag-list',
-    'components/text',
-    'components/thumbnail',
-    'components/search-bar',
-    'components/collection',
-    'components/collection-action',
-    'components/collection-actions',
-    'components/nav',
-    'components/collection-filters',
-    'components/collection-images',
-    'components/collection-share',
-    'components/collection-mobile-notification',
-    'components/paging-controls',
-    'components/onboarding-countdown',
-    'components/onboarding-email',
-    'components/onboarding-slides',
-    'components/onboarding-tutorial',
-    'components/upload',
-    'components/videoloading-spinner',
-    'components/tooltip',
-    'components/collection-gif'
+@import "components/feature-content";
+@import "components/forms";
+@import "components/lift";
+@import "components/timeline";
+@import "components/overlay";
+@import "components/tabs";
+@import "components/tag-list";
+@import "components/text";
+@import "components/thumbnail";
+@import "components/search-bar";
+@import "components/collection";
+@import "components/collection-action";
+@import "components/collection-actions";
+@import "components/nav";
+@import "components/collection-filters";
+@import "components/collection-images";
+@import "components/collection-share";
+@import "components/collection-mobile-notification";
+@import "components/paging-controls";
+@import "components/onboarding-countdown";
+@import "components/onboarding-email";
+@import "components/onboarding-slides";
+@import "components/onboarding-tutorial";
+@import "components/upload";
+@import "components/videoloading-spinner";
+@import "components/tooltip";
+@import "components/collection-gif";
 ;
 
 // 6. Page-specific styles
-@import
-    'pages/home',
-    'pages/timeline'
-;
+@import "pages/home";
+@import "pages/timeline";

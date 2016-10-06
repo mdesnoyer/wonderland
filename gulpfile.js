@@ -18,7 +18,7 @@ var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
-var jest = require('gulp-jest');
+var jest = require('gulp-jest').default;
 var envify = require('gulp-envify');
 
 var browserSync = require('browser-sync');
@@ -43,6 +43,9 @@ if (env == 'prod') {
 }
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+
+var test_output_dir = 'test_output';
+var test_output_filename = 'test_results.xml';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -272,145 +275,7 @@ gulp.task('sass-lint', function () {
   return gulp.src('./src/css/**/*.scss')
     .pipe(sassLint({
         options: {
-            'merge-default-rules': false
-        },
-        rules: {
-            // https://github.com/sasstools/sass-lint/tree/master/docs/rules
-            'attribute-quotes': 1,
-            'bem-depth': [
-                2, // error
-                {
-                    'max-depth': 3
-                }
-            ],
-            'border-zero': [
-                2, // error
-                {
-                    convention: '0'
-                }
-            ],
-            'brace-style': [
-                2, // error
-                {
-                    style: 'stroustrup',
-                    'allow-single-line': false
-                }
-            ],
-            // TODO 'class-name-format'
-            // TODO 'clean-import-paths'
-            // TODO 'empty-args'
-            // TODO 'empty-line-between-blocks'
-            // TODO 'extends-before-declarations'
-            // TODO 'extends-before-mixins'
-            'final-newline': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            // TODO 'force-attribute-nesting'
-            // TODO 'force-element-nesting'
-            // TODO 'force-pseudo-nesting'
-            // TODO 'function-name-format'
-            // TODO 'hex-length'
-            'hex-notation': [
-                2, // error
-                {
-                    'style': 'lowercase'
-                }
-            ],
-            // TODO 'id-name-format'
-            // TODO 'indentation'
-            'leading-zero': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            // TODO 'mixin-name-format'
-            // TODO 'mixins-before-declarations'
-            // TODO 'nesting-depth'
-            // TODO 'no-attribute-selectors'
-            // TODO 'no-color-hex'
-            'no-color-keywords': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            // TODO 'no-color-literals'
-            // TODO 'no-combinators'
-            'no-css-comments': 1,
-            // TODO 'no-debug'
-            // TODO 'no-disallowed-properties'
-            // TODO 'no-duplicate-properties'
-            'no-empty-rulesets': 1,
-            // TODO 'no-extends'
-            // TODO 'no-ids'
-            // TODO 'no-important'
-            // TODO 'no-invalid-hex'
-            // TODO 'no-mergeable-selectors'
-            'no-misspelled-properties': 1,
-            // TODO 'no-qualifying-elements'
-            // TODO 'no-trailing-whitespace'
-            'no-trailing-zero': 1,
-            // TODO 'no-transition-all'
-            // TODO 'no-universal-selectors'
-            // TODO 'no-url-protocols'
-            // TODO 'no-vendor-prefixes'
-            // TODO 'no-warn'
-            // TODO 'one-declaration-per-line'
-            // TODO 'placeholder-in-extend'
-            // TODO 'placeholder-name-format'
-            // TODO 'property-sort-order'
-            // TODO 'property-units'
-            // TODO 'pseudo-element'
-            // TODO 'quotes'
-            'shorthand-values': 1,
-            // TODO 'single-line-per-selector'
-            // TODO 'space-after-bang''
-            'space-after-colon': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            'space-after-comma': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            // TODO 'space-around-operator'
-            // TODO 'space-before-bang'
-            'space-before-brace': [
-                2, // error
-                {
-                    include: true
-                }
-            ],
-            'space-before-colon': [
-                2, // error
-                {
-                    include: false
-                }
-            ],
-            'space-between-parens': [
-                2, // error
-                {
-                    include: false
-                }
-            ],
-            // TODO 'trailing-semicolon'
-            // TODO 'url-quotes'
-            // TODO 'variable-for-property'
-            // TODO 'variable-name-format'
-            'zero-unit': [
-                2, // error
-                {
-                    include: false
-                }
-            ]
+            'config-file': '.sass-lint.yml'
         }
     }))
     .pipe(sassLint.format())
@@ -436,23 +301,37 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'font
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/* TODO: Get this to work. For now, runnings tests can be done by: npm test
-
-gulp.task('jest', function() {
+gulp.task('run-tests', function() {
     return gulp.src('__tests__').pipe(jest({
-        unmockedModulePathPatterns: [
-            "node_modules/react"
-        ],
-        testDirectoryName: "spec",
-        testPathIgnorePatterns: [
-            "node_modules"
-        ],
-        moduleFileExtensions: [
-            "js",
-            "json",
-            "react"
-        ]
+        config: {
+            rootDir: ".",
+            setupTestFrameworkScriptFile: "<rootDir>/setup-jasmine-env.js",
+            setupFiles: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            testPathIgnorePatterns: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            moduleFileExtensions: [
+                "js",
+                "json",
+                "react",
+            ],
+        }
     }));
 });
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+gulp.task('test', ['run-tests'], function() {
+    var fs = require('fs');
+    var path = require('path');
+    var async = require('async');
+    var reportMerger = require('junit-report-merger');
+
+    var results = fs.readdirSync(test_output_dir);
+
+    let output = path.join(test_output_dir, test_output_filename);
+    let files = results.map(x => path.join(test_output_dir, x));
+    reportMerger.mergeFiles(output, files, {}, function() {
+        async.each(files, fs.unlink);
+    });
+});

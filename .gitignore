@@ -6,5 +6,5 @@ build/
 
 env/config.json
 *~
-
+test_output/
 env/timeline.config.json

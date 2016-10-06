@@ -3,7 +3,7 @@
 .xxCollectionActions {
     @include clearfix;
 
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid $alto;
     margin: 22px 0 0;
     padding: 20px 0 0;
 
@@ -40,8 +40,8 @@
 .xxCollectionActions-email {
     line-height: 16px;
 
-    &:after {
-        @include font-awesome('f0e0');
+    &::after {
+        @include font-awesome("f0e0");
         font-size: 16px;
     }
 }
@@ -49,8 +49,8 @@
 .xxCollectionActions-download {
     line-height: 16px;
 
-    &:after {
-        @include font-awesome('f0ab');
+    &::after {
+        @include font-awesome("f0ab");
         font-size: 16px;
     }
 }
@@ -58,56 +58,54 @@
 .xxCollectionActions-share {
     line-height: 16px;
 
-    &:after {
-        @include font-awesome('f064');
+    &::after {
+        @include font-awesome("f064");
         font-size: 16px;
     }
 }
 
 .xxCollectionActions-save {
-    &:after {
-        @include font-awesome('f0c7');
+    &::after {
+        @include font-awesome("f0c7");
     }
 }
 
 .xxCollectionActions-delete {
-    &:after {
-        @include font-awesome('f1f8');
+    &::after {
+        @include font-awesome("f1f8");
     }
 }
 
 .xxCollectionActions-disable {
-    &:after {
-        @include font-awesome('f12d');
+    &::after {
+        @include font-awesome("f12d");
     }
 }
 
 .xxCollectionActions-add {
     line-height: 16px;
 
-    &:after {
-        @include font-awesome('f055');
+    &::after {
+        @include font-awesome("f055");
         font-size: 16px;
     }
 }
 
 .xxCollectionActions-enableserving {
-    color: #008000;
+    color: $japanese-laurel;
     float: right; 
-
-    &:after {
-        @include font-awesome('f00c');
+    &::after {
+        @include font-awesome("f00c");
         font-size: 20px;
         
     }
 }
 
 .xxCollectionActions-disableserving {
-    color: #f00;
+    color: $red;
     float: right; 
-
-    &:after {
-        @include font-awesome('f00d');
+    &::after {
+        @include font-awesome("f00d");
         font-size: 20px;
     }
 }
