@@ -89,8 +89,8 @@ class CollectionsContainer extends React.Component {
 
     // This enables queueing of the demographic selector.
     componentWillReceiveProps(nextProps) {
-        // If the next props have a queued selected
-        // demographic (in indexes 2-3), then move the queued selected
+        // If the next props have a queued selected  demographic
+        // (in nextGender, nextAge), then move the queued selected
         // to the selected one.
         const selectedDemographic = this.getSelectedDemographic();
         _.map(selectedDemographic, (selDemo, tagId) => {
@@ -120,7 +120,7 @@ class CollectionsContainer extends React.Component {
 
         // If this is a video and the demographic isn't in the
         // video store, then put the gender and age in the "next"
-        // bucket indexes at 2, 3. In the videocollection willReceiveProps,
+        // bucket slots. In the videocollection willReceiveProps,
         // we check if the next demos are ready and switch to them.
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
@@ -142,8 +142,7 @@ class CollectionsContainer extends React.Component {
         const selectedDemographic = this.state.selectedDemographic;
         selectedDemographic[tagId] = newDemo;
 
-        // Ask stores to load missing values.
-        // And change our state when done.
+        // Ask stores to load missing values. Change our state when done.
         const callback = () => (
             this.setState({ selectedDemographic })
         );
@@ -345,7 +344,7 @@ class CollectionsContainer extends React.Component {
             t.thumbnail_id === this.state.overlayThumbnailId));
     }
 
-    // Get the thumbnail with +/- change from the current.
+    // Get the thumbnail id with +/- change from the current.
     getOverlayThumbnailId(change) {
         const { thumbnails } = this.getSortedContents();
         const oldIndex = this.getOverlayThumbnailIndex();
@@ -371,6 +370,7 @@ class CollectionsContainer extends React.Component {
         return { thumbnails, clips };
     }
 
+    // True if tag has a clip associated.
     hasClip(tagId) {
         const tag = this.props.stores.tags[tagId];
         if (tag.tag_type !== UTILS.TAG_TYPE_VIDEO_COL) {
