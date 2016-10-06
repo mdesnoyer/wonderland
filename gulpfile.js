@@ -44,6 +44,9 @@ if (env == 'prod') {
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
+var test_output_dir = 'test_output';
+var test_output_filename = 'test_results.xml';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function handleErrors() {
@@ -298,10 +301,11 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'font
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-gulp.task('test', function() {
+gulp.task('run-tests', function() {
     return gulp.src('__tests__').pipe(jest({
         config: {
             rootDir: ".",
+            setupTestFrameworkScriptFile: "<rootDir>/setup-jasmine-env.js",
             setupFiles: [
                 "<rootDir>/__tests__/before.js",
             ],
@@ -315,4 +319,19 @@ gulp.task('test', function() {
             ],
         }
     }));
+});
+
+gulp.task('test', ['run-tests'], function() {
+    var fs = require('fs');
+    var path = require('path');
+    var async = require('async');
+    var reportMerger = require('junit-report-merger');
+
+    var results = fs.readdirSync(test_output_dir);
+
+    let output = path.join(test_output_dir, test_output_filename);
+    let files = results.map(x => path.join(test_output_dir, x));
+    reportMerger.mergeFiles(output, files, {}, function() {
+        async.each(files, fs.unlink);
+    });
 });
