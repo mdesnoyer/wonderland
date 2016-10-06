@@ -68,12 +68,9 @@ class CollectionsContainer extends React.Component {
         this.state = {
             // Map of tag id to integer index of gender, then age.
             // Uses FILTER_GENDER_COL_ENUM, FILTER_AGE_COL_ENUM.
-            // By default, the demographic is [0,0] meaning gender=none, age=none.
+            // By default, the demographic is {gender:0, age:0}
+            // meaning gender=none, age=none.
             selectedDemographic: {},
-            // If a demographic was selected but it isn't available yet, and a
-            // request has been made to load it, then this will set it
-            // if it becomes loaded.
-            nextSelectedDemographic: {},
             // Setting a tag will render the modal overlay thumbnail zoom.
             overlayTagId: null,
             // The overlay's current thumbnail id.
