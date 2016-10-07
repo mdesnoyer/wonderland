@@ -329,9 +329,8 @@ gulp.task('test', ['run-tests'], function() {
 
     var results = fs.readdirSync(test_output_dir);
 
-    var output = path.join(test_output_dir, test_output_filename);
     var files = results.map(x => path.join(test_output_dir, x));
-    reportMerger.mergeFiles(output, files, {}, function() {
+    reportMerger.mergeFiles(test_output_filename, files, {}, function() {
         async.each(files, fs.unlink);
     });
 });
