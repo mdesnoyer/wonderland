@@ -40,7 +40,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
-    "gulp-sass-lint": "^1.2.0",
+    "gulp-sass-lint": "https://github.com/nkresge/gulp-sass-lint",
     "gulp-uglify": "^1.5.3",
     "gulp-uglifycss": "^1.0.6",
     "gulp-util": "^3.0.7",
