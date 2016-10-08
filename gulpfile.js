@@ -294,14 +294,14 @@ gulp.task('sass-lint-checkstyle', function () {
 });
 
 gulp.task('eslint', function() {
-    return gulp.src(['src/js/**/*.js'])
+    return gulp.src(['src/js/**/*.js', '__tests__/**/*.js'])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
 });
 
 gulp.task('eslint-checkstyle', function() {
-    return gulp.src(['src/js/**/*.js'])
+    return gulp.src(['src/js/**/*.js', '__tests__/**/*.js'])
         .pipe(eslint())
         .pipe(eslint.format('checkstyle', process.stdout));
 });
