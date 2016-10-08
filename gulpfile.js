@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var sassLint = require('gulp-sass-lint');
+var eslint = require('gulp-eslint');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -46,7 +47,6 @@ var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
 var test_output_dir = 'test_output';
 var test_output_filename = 'test_results.xml';
-var sass_lint_output_filename = 'sass_lint_report.xml';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -289,9 +289,21 @@ gulp.task('sass-lint-checkstyle', function () {
     .pipe(sassLint({options: {
         configFile: '.sass-lint.yml',
         formatter: 'checkstyle',
-        'output-file': sass_lint_output_filename,
     }}))
     .pipe(sassLint.format())
+});
+
+gulp.task('eslint', function() {
+    return gulp.src(['src/js/**/*.js'])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('eslint-checkstyle', function() {
+    return gulp.src(['src/js/**/*.js'])
+        .pipe(eslint())
+        .pipe(eslint.format('checkstyle', process.stdout));
 });
 
 gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
