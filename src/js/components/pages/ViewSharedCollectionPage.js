@@ -2,6 +2,7 @@
 import React from 'react';
 import _ from 'lodash';
 
+import AJAXModule from '../../modules/ajax';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Page from './Page';
@@ -40,6 +41,10 @@ class ViewSharedCollectionPage extends CollectionsMainPage {
     componentWillMount() {
         // Register our update function with the store dispatcher.
         Dispatcher.register(this.onUpdateState);
+        AJAXModule.baseOptions = {
+            overrideAccountId: this.props.params.accountId,
+            data: { share_token: this.props.params.shareToken },
+        };
         LoadActions.loadTagByShareToken(
             this.props.params.accountId,
             this.props.params.tagId,
