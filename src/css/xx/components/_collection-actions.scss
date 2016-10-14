@@ -3,7 +3,7 @@
 .xxCollectionActions {
     @include clearfix;
 
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid $alto;
     margin: 22px 0 0;
     padding: 20px 0 0;
 
@@ -41,7 +41,7 @@
     line-height: 16px;
 
     &::after {
-        @include font-awesome('f0e0');
+        @include font-awesome("f0e0");
         font-size: 16px;
     }
 }
@@ -50,7 +50,7 @@
     line-height: 16px;
 
     &::after {
-        @include font-awesome('f0ab');
+        @include font-awesome("f0ab");
         font-size: 16px;
     }
 }
@@ -59,26 +59,26 @@
     line-height: 16px;
 
     &::after {
-        @include font-awesome('f064');
+        @include font-awesome("f064");
         font-size: 16px;
     }
 }
 
 .xxCollectionActions-save {
     &::after {
-        @include font-awesome('f0c7');
+        @include font-awesome("f0c7");
     }
 }
 
 .xxCollectionActions-delete {
     &::after {
-        @include font-awesome('f1f8');
+        @include font-awesome("f1f8");
     }
 }
 
 .xxCollectionActions-disable {
     &::after {
-        @include font-awesome('f12d');
+        @include font-awesome("f12d");
     }
 }
 
@@ -86,28 +86,26 @@
     line-height: 16px;
 
     &::after {
-        @include font-awesome('f055');
+        @include font-awesome("f055");
         font-size: 16px;
     }
 }
 
 .xxCollectionActions-enableserving {
-    color: green;
+    color: $japanese-laurel;
     float: right; 
-
     &::after {
-        @include font-awesome('f00c');
+        @include font-awesome("f00c");
         font-size: 20px;
         
     }
 }
 
 .xxCollectionActions-disableserving {
-    color: red;
+    color: $red;
     float: right; 
-
     &::after {
-        @include font-awesome('f00d');
+        @include font-awesome("f00d");
         font-size: 20px;
     }
 }

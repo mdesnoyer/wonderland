@@ -15,7 +15,7 @@
     }
 
     &::after {
-        @include font-awesome('f021');
+        @include font-awesome("f021");
 
         display: block;
         box-sizing: border-box;
@@ -151,7 +151,8 @@
     display: inline-block;
 }
 
-.xxCollectionFilters-title, .xxCollectionFilters-versionTitle {
+.xxCollectionFilters-title,
+.xxCollectionFilters-versionTitle {
     padding: 4px 10px 4px 0;
     color: $secondary-color;
 
@@ -216,7 +217,7 @@
     }
 
     .Select-control {
-        border: none;
+        border: 0;
         height: inherit;
 
         .Select-value {
@@ -238,7 +239,7 @@
     top: -4px;
     left: -78px;
     z-index: $z-index-above-everything - 1;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+    box-shadow: 0 0 5px rgba($mine-shaft, 0.22);
     background: $white;
 
     @include breakpoint-mobile {
@@ -324,7 +325,7 @@
     text-align: center;
 
     &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         right: 0;

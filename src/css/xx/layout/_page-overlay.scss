@@ -10,7 +10,7 @@ $page-overlay-padding-bottom: 60px;
     top: 0;
     right: 0;
     min-height: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 10px rgba($mine-shaft, 0.05);
     background: $white;
     @include breakpoint-desktop {
         width: 50%;
@@ -36,7 +36,7 @@ $page-overlay-padding-bottom: 60px;
     }
 
     &::before {
-        content: '';
+        content: "";
         position: fixed;
         top: 0;
         right: 0;

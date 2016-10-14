@@ -1,11 +1,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 @mixin clearfix {
-  &::after {
-    clear: both;
-    content: '';
-    display: table;
-  }
+    &::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
 }
 
 @mixin font-awesome($character) {
@@ -13,7 +13,7 @@
     font-family: FontAwesome;
     line-height: 1;
     text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
 }
 
 // When the site is made fully responsive, this rule can be turned to be more
@@ -52,7 +52,7 @@
 @mixin arrow($direction, $width, $height, $color) {
     &::before,
     &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         right: 0;

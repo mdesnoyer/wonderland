@@ -46,6 +46,7 @@ const CollectionsContainer = React.createClass({
 
         // Allows a collection to send results email
         sendResultsEmail: PropTypes.func,
+        sendGifResultsEmail: PropTypes.func,
 
         // Minimal UI for share.
         infoPanelOnly: PropTypes.bool,
@@ -95,7 +96,7 @@ const CollectionsContainer = React.createClass({
                     video.demographic_clip_ids :
                     video.demographic_thumbnails;
 
-                const foundDemo = UTILS.findDemographicThumbnailObject(demos, nextGender, nextAge);
+                const foundDemo = UTILS.findDemographicObject(demos, nextGender, nextAge);
                 if (foundDemo) {
                     selectedDemographic[tagId] = [nextGender, nextAge];
                 }
@@ -186,7 +187,7 @@ const CollectionsContainer = React.createClass({
             const demos = video.demographic_clip_ids.length ?
                 video.demographic_clip_ids :
                 video.video.demographic_thumbnails;
-            if (!UTILS.findDemographicThumbnailObject(demos, gender, age)) {
+            if (!UTILS.findDemographicObject(demos, gender, age)) {
                 const prevDemo = this.getSelectedDemographic(tagId);
                 newDemographic = prevDemo.slice(0, 2);
                 newDemographic.push(gender, age);
@@ -315,9 +316,28 @@ const CollectionsContainer = React.createClass({
 
     },
 
+    sendResultsEmail(email, tagId, callback) {
+        const self = this;
+        const [gender, age] = self.getSelectedDemographic(tagId);
+        const [, bestThumb, goodThumbs] = self.getLeftRightRest(
+            tagId, gender, age);
+        const fourThumbs = _.flatten([bestThumb, goodThumbs]).slice(0, 4);
+        let i = 0;
+        while (fourThumbs.length < 4) {
+            // Repeat until the required number is set.
+            fourThumbs.push(fourThumbs[i++]);
+        }
+        self.props.sendResultsEmail(
+            email, tagId, gender, age, fourThumbs, callback);
+    },
+
+    sendGifResultsEmail(email, tagId, callback) {
+        const self = this;
+        const [gender, age] = self.getSelectedDemographic(tagId);
+        self.props.sendGifResultsEmail(email, tagId, gender, age, callback);
+    },
 
     buildImageCollectionComponent: function(tagId) {
-
         const collection = this.props.stores.tags[tagId];
 
         const demo = this.getSelectedDemographic(tagId);
@@ -337,7 +357,6 @@ const CollectionsContainer = React.createClass({
             undefined;
 
         const emailThumbnails = _.flatten([right, smallThumbnails]);
-        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
         const thumbsLength = collection.thumbnail_ids.length;
 
         return (
@@ -358,7 +377,7 @@ const CollectionsContainer = React.createClass({
                 deleteCollection={SendActions.deleteCollectionByTagId.bind(null, tagId)}
                 socialClickHandler={this.props.socialClickHandler}
                 shareUrl={shareUrl}
-                sendResultsEmail={sendResultsEmail}
+                sendResultsEmail={this.sendResultsEmail}
                 thumbLiftMap={thumbLiftMap}
                 setTooltipText={this.props.setTooltipText}
             />
@@ -411,7 +430,7 @@ const CollectionsContainer = React.createClass({
             this.props.stores.accounts[this.props.ownerAccountId]:
             null;
 
-        const clipDemo = UTILS.findDemographicThumbnailObject(video.demographic_clip_ids, gender, age);
+        const clipDemo = UTILS.findDemographicObject(video.demographic_clip_ids, gender, age);
         let thumbArrays;
         let clipIds = [];
         let clips = [];
@@ -436,8 +455,11 @@ const CollectionsContainer = React.createClass({
         const right = thumbArrays[1];
         const smallThumbnails = thumbArrays[2];
         const badThumbnails = thumbArrays[3];
-        const emailThumbnails = _.flatten([right, smallThumbnails]);
-        const sendResultsEmail = this.bindSendResultsEmail(gender, age, tagId, emailThumbnails);
+        const goodThumbnails = _.flatten([right, smallThumbnails]);
+
+        const sendResultsEmail = _.isEmpty(clips) ?
+            this.sendResultsEmail :
+            this.sendGifResultsEmail;
 
         return (
             <VideoCollection
@@ -445,7 +467,7 @@ const CollectionsContainer = React.createClass({
                 title={tag.name}
                 leftFeatureThumbnail={left}
                 rightFeatureThumbnail={right}
-                goodThumbnails={emailThumbnails}
+                goodThumbnails={goodThumbnails}
                 smallThumbnails={smallThumbnails}
                 smallBadThumbnails={badThumbnails}
                 onThumbnailClick={this.onThumbnailClick.bind(null, tagId)}
@@ -472,22 +494,6 @@ const CollectionsContainer = React.createClass({
                 account={account}
             />
        );
-    },
-
-    bindSendResultsEmail: function(gender, age, tagId, thumbnails) {
-
-        // Bind array of the top four thumbnails for emails.
-        const fourThumbnails = thumbnails.slice(0, 4)
-        // TODO deal with fewer than four thumbnails.
-        while (fourThumbnails.length < 4) {
-            // Filling in with something guaranteed.
-            fourThumbnails.push(thumbnails[0]);
-        }
-
-        return this.props.sendResultsEmail?
-            this.props.sendResultsEmail.bind(
-                null, gender, age, tagId, fourThumbnails):
-            () => {};
     },
 
     buildVideoProcessingComponent(tagId) {
@@ -543,7 +549,7 @@ const CollectionsContainer = React.createClass({
         let associatedThumbnailIds;
         if(tag.tag_type === UTILS.TAG_TYPE_VIDEO_COL) {
             const video = this.props.stores.videos[tag.video_id];
-            const demo = UTILS.findDemographicThumbnailObject(
+            const demo = UTILS.findDemographicObject(
                 video.demographic_thumbnails,
                 gender,
                 age);

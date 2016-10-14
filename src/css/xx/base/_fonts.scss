@@ -2,29 +2,26 @@
 
 // Balto Web Book
 @font-face {
-  font-family: 'Balto Web';
-  font-style: normal;
-  font-weight: 400;
-  src: local('☺'),
-       url(/fonts/baltoweb-book.woff) format('woff');
+    font-family: "Balto Web";
+    font-style: normal;
+    font-weight: 400;
+    src: local("☺"), url("/fonts/baltoweb-book.woff") format("woff");
 }
 
 // Balto Web Light
 @font-face {
-  font-family: 'Balto Web';
-  font-style: normal;
-  font-weight: 100;
-  src: local('☺'),
-       url(/fonts/baltoweb-light.woff) format('woff');
+    font-family: "Balto Web";
+    font-style: normal;
+    font-weight: 100;
+    src: local("☺"), url("/fonts/baltoweb-light.woff") format("woff");
 }
 
 // Balto Web Medium
 @font-face {
-  font-family: 'Balto Web';
-  font-style: normal;
-  font-weight: 700;
-  src: local('☺'),
-       url(/fonts/baltoweb-medium.woff) format('woff');
+    font-family: "Balto Web";
+    font-style: normal;
+    font-weight: 700;
+    src: local("☺"), url("/fonts/baltoweb-medium.woff") format("woff");
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

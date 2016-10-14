@@ -1,29 +1,23 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
+import reqwest from 'reqwest';
+import _ from 'lodash';
+import cookie from 'react-cookie';
+import accept from 'attr-accept';
+import loadImage from 'blueimp-load-image';
+import toBlob from 'blueimp-canvas-to-blob';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
-
-import reqwest from 'reqwest';
 import SESSION from '../../modules/session';
 
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
-
-import {AddActions, LoadActions, tagStore} from '../../stores/CollectionStores.js';
-
-import VideoUploadOverlay from './VideoUploadOverlay';
+import { LoadActions, tagStore } from '../../stores/CollectionStores';
 import OverLayMessage from './OverLayMessage';
 import UploadActionsContainer from './UploadActionsContainer';
-
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import cookie from 'react-cookie';
-import accept from 'attr-accept';
-import _ from 'lodash';
-import loadImage from 'blueimp-load-image';
-import toBlob from 'blueimp-canvas-to-blob';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -44,8 +38,8 @@ var UploadForm = React.createClass({
             isOpen: false,
             tagId: null,
             formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
-            urlInput:'', 
-            collectionName:'', 
+            urlInput:'',
+            collectionName:'',
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
             uploadedTotal: 0,
@@ -55,10 +49,14 @@ var UploadForm = React.createClass({
             showUrlUploader: false
         };
     },
+
+    // Keep track of all the setTimeouts functions that call setState.
+    timeouts: [],
+
     componentWillMount: function() {
         var self = this;
         if (self.props.isAddPanel && self.props.panelType === 'photo') {
-            self.setState({ 
+            self.setState({
                uploadedTotal: tagStore.get(self.props.tagId).thumbnail_ids.length || 0,
                 tagId: self.props.tagId,
                 isOpen: true,
@@ -77,6 +75,8 @@ var UploadForm = React.createClass({
     },
     componentWillUnmount() {
         window.removeEventListener('keydown', this.handleKeyEvent);
+        this.timeouts.forEach(timeout => clearTimeout(timeout));
+        this.timeouts = [];
     },
     handleKeyEvent(e) {
         // Escape closes.
@@ -175,32 +175,32 @@ var UploadForm = React.createClass({
             className.push('has-dialog');
         };
         return (
-            
+
             <div className={className.join(' ')}>
                 { self.state.overlayCode ? (
-                    <OverLayMessage 
-                        handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles} 
-                        overlayCode={self.state.overlayCode} 
-                        overlayReset={self.handleOverlayReset} 
-                        errorFiles={self.state.errorFiles} 
-                    /> ) : null 
+                    <OverLayMessage
+                        handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
+                        overlayCode={self.state.overlayCode}
+                        overlayReset={self.handleOverlayReset}
+                        errorFiles={self.state.errorFiles}
+                    /> ) : null
                 }
-                { 
+                {
                     !self.props.isAddPanel ? (
-                        <a 
+                        <a
                             className="xxUploadButton"
                             title={T.get('action.analyze')}
                             onClick={self.toggleOpen}
-                            >{T.get('action.analyze')} 
+                            >{T.get('action.analyze')}
                         </a>
-                    ) : null 
+                    ) : null
                 }
                 { !self.state.isOpen ? null : (
-                        <UploadActionsContainer 
+                        <UploadActionsContainer
                             formState={self.state.formState}
                             uploadState={self.state.uploadState}
                             showUrlUploader={self.state.showUrlUploader}
-                            urlInput={self.state.urlInput} 
+                            urlInput={self.state.urlInput}
                             tagId={self.state.tagId}
                             collectionName={self.state.collectionName}
                             uploadingTotal={self.state.uploadingTotal}
@@ -233,7 +233,7 @@ var UploadForm = React.createClass({
         switch(err.code) {
             case 0:
                 self.setState({ isOpen: false, overlayCode: 'timeout' });
-                break;  
+                break;
             case 401:
                 self.context.router.replace(UTILS.DRY_NAV.SIGNIN.URL);
                 break;
@@ -258,7 +258,7 @@ var UploadForm = React.createClass({
             }
         ;
 
-        if (sendUrlType === 'gif') { 
+        if (sendUrlType === 'gif') {
             options.data['result_type'] = 'clips';
             options.data['clip_length'] = 3;
             options.data['n_clips'] = 5;
@@ -278,7 +278,7 @@ var UploadForm = React.createClass({
                         self.setState({urlInput: ''});
                     }
                     else {
-                        LoadActions.loadTags([json.video.tag_id]);
+                        LoadActions.loadTags([json.video.tag_id], 0, 0, true);
                         self.setState({urlInput: ''});
                     }
                 })
@@ -334,13 +334,13 @@ var UploadForm = React.createClass({
                 extensions: UTILS.IMAGE_FILE_TYPES_ALLOWED
             }
         ;
-        // when updating the video default thumbnail exit out of url input box if dropbox button clicked 
+        // when updating the video default thumbnail exit out of url input box if dropbox button clicked
         if (self.state.formState === 'updateVideoDefault') { self.setState({ showUrlUploader: false})} ;
         Dropbox.choose(options);
     },
 
     sendCollectionName: function() {
-        var self = this, 
+        var self = this,
             options = { data: { name: self.state.collectionName } }
         ;
         self.POST('tags', options)
@@ -354,7 +354,7 @@ var UploadForm = React.createClass({
     },
     updateDefaultThumbnail: function(url) {
         var self = this,
-        // this logic below is to handle both dropbox objects and url string that come in when updating a thumbnail 
+        // this logic below is to handle both dropbox objects and url string that come in when updating a thumbnail
             url = typeof url === 'object' ? url[0].link : url,
             options = {
                 data: {
@@ -371,10 +371,10 @@ var UploadForm = React.createClass({
                         self.setState({
                             uploadState: 'success'
                         },  function() {
-                            LoadActions.loadTags([self.state.tagId])
-                            setTimeout(function() {
-                            self.setState({ uploadState: 'initial' });
-                            }, 4000)
+                            LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                            self.timeouts.push(setTimeout(function() {
+                                self.setState({ uploadState: 'initial' });
+                            }, 4000));
                         })
                     })
                     .catch(function(err) {
@@ -398,10 +398,10 @@ var UploadForm = React.createClass({
                 self.setState({
                     uploadState: 'success'
                 },  function() {
-                    LoadActions.loadTags([self.state.tagId])
-                    setTimeout(function() {
-                    self.setState({ uploadState: 'initial' });
-                    }, 4000)
+                    LoadActions.loadTags([self.state.tagId], 0, 0, true)
+                    self.timeouts.push(setTimeout(function() {
+                        self.setState({ uploadState: 'initial' });
+                    }, 4000));
                 })
             })
             .catch(function(err) {
@@ -474,7 +474,7 @@ var UploadForm = React.createClass({
                 uploadedTotal: 0,
                 errorFiles: filesToParse[1]
             },  function() {
-                // if the request is a mulitpart form create and array of formdata objects 
+                // if the request is a mulitpart form create and array of formdata objects
                 if (type !== 'dropbox') { arrayToSend = self.createFormDataArray(arrayToSend);};
                 self.grabRefreshToken(
                     arrayToSend.forEach(function(array) {
@@ -510,16 +510,19 @@ var UploadForm = React.createClass({
                                 uploadState:'success',
                                 // errorFiles: []
                                 }, function() {
-                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId]);
-                                    setTimeout(function() {
-                                    self.setState({ uploadState: 'initial' });
-                                    }, 3000)
-                            });
+                                    self.props.isAddPanel && LoadActions.loadTags([self.state.tagId], 0, 0, true);
+                                    self.timeouts.push(setTimeout(function() {
+                                        self.setState({ uploadState: 'initial' });
+                                    }, 3000));
+                                }
+                            );
+                        }
                     }
-                });
+                );
             })
             .catch(function(err) {
                 console.log(err)
+                LoadActions.loadTags([self.state.tagId], 0, 0, true);
                 self.throwUploadError(err);
             });
     },

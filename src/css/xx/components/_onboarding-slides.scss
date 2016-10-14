@@ -77,12 +77,12 @@
     margin: 0 auto;
     opacity: 0;
     transform: translateY(-50%);
-    transition: opacity .25s ease-in-out, visibility 0s .25s;
+    transition: opacity 0.25s ease-in-out, visibility 0s 0.25s;
 
     &.is-active {
         visibility: visible;
         opacity: 1;
-        transition: opacity .25s ease-in-out .25s, visibility 0s .25s;
+        transition: opacity 0.25s ease-in-out 0.25s, visibility 0s 0.25s;
     }
 
     & .xxSubtitle {

@@ -18,14 +18,14 @@ $mobile-all-images-gutter-width: 3px;
     @include breakpoint-mobile {
         float: none;
         width: auto;
-        border-top: 1px solid #e0e0e0;
+        border-top: 1px solid $alto;
         margin-top: 10px;
         padding-top: 18px;
         font-size: 10px;
         line-height: 14px;
 
         > .xxLift { // styling only for lift component directly inside xxCollectionImages
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid $alto;
             padding-bottom: 15px;
             font-size: $default-mobile-font-size;
             line-height: $default-mobile-vertical-rhythm;
@@ -92,24 +92,20 @@ $mobile-all-images-gutter-width: 3px;
 
 .xxThumbnailSoloBlurWrapper {
     opacity: 0.5;
-    filter: alpha(opacity=50);
-    filter: url(blur.svg#blur);
-    -webkit-filter: blur(3px);
     filter: blur(3px);
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
 }
 
 
 .xxCollectionImages-all {
     clear: both;
     width: calc(100% + #{$gutter-width});
-    margin: 0 -1 * $gutter-width 0 0;
+    margin: 0 -$gutter-width 0 0;
 
     @include breakpoint-mobile {
         @include clearfix;
 
         width: calc(100% + #{$mobile-all-images-gutter-width});
-        margin-right: -1 * $mobile-all-images-gutter-width;
+        margin-right: -$mobile-all-images-gutter-width;
 
         &.is-hidden {
             display: none;
@@ -149,7 +145,7 @@ $mobile-all-images-gutter-width: 3px;
 
 .xxCollectionImages-allAnchor {
     float: left;
-    position:relative;
+    position: relative;
     width: $small-thumbnail-width;
     border: 1px solid rgba($base-color, 0.5);
     margin: $gutter-width 0 0;
@@ -160,7 +156,7 @@ $mobile-all-images-gutter-width: 3px;
     user-select: none;
 
     &::before {
-        content: '';
+        content: "";
         display: block;
         padding: 0 0 100%;
     }

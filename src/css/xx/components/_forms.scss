@@ -8,7 +8,7 @@
 
     &:focus {
         &::placeholder {
-            color: #eee;
+            color: $gallery;
         }
     }
 }
@@ -18,7 +18,6 @@
 .xxFormField {
     @include clearfix;
     margin: 0 0 14px;
-
     &--has-urlDrop {
         display: inline;
     }
@@ -26,7 +25,6 @@
 
 .xxLabel {
     @include all-caps-title;
-
     display: block;
     width: 100%;
     color: $tertiary-color;
@@ -41,7 +39,6 @@
 
 .xxInputText {
     @include input-placeholder;
-
     box-sizing: border-box;
     width: 100%;
     height: $form-element-height;
@@ -50,8 +47,7 @@
     outline: 0;
     padding: 0 $form-element-padding-horizontal;
     color: $secondary-color;
-
-    -webkit-appearance: none;
+    appearance: none;
 
     @include breakpoint-mobile {
         height: $mobile-form-element-height;
@@ -62,7 +58,7 @@
         color: $tertiary-color;
     }
 
-    &[type=password] {
+    &[type="password"] {
         letter-spacing: 2px;
     }
 
@@ -90,9 +86,7 @@
     outline: 0;
     padding: 8px $form-element-padding-horizontal;
     color: $secondary-color;
-
-    -webkit-appearance: none;
-
+    appearance: none;
     .has-error > & {
         color: $accent-color;
     }
@@ -196,7 +190,7 @@
     background: $white;
 
     .is-open > & {
-        box-shadow: 0 0 5px rgba(0, 0, 0, .22);
+        box-shadow: 0 0 5px rgba($mine-shaft, 0.22);
     }
 
     .xxSelect--reversed > & {
@@ -221,10 +215,10 @@
 
     &--label {
         height: $form-element-height;
-        border-bottom: $form-element-border solid #e0e0e0;
+        border-bottom: $form-element-border solid $alto;
 
         .xxSelect--reversed & {
-            border-top: $form-element-border solid #e0e0e0;
+            border-top: $form-element-border solid $alto;
             border-bottom: 0;
             padding-top: 0;
         }
@@ -248,7 +242,6 @@
 
     .xxButton {
         float: left;
-
         + .xxButton {
             margin-left: $gutter-width;
 
@@ -280,7 +273,7 @@
     overflow: hidden;
     width: $button-width;
     height: $form-element-height;
-    border: $form-element-border solid #e1e1e1;
+    border: $form-element-border solid $mercury;
     margin: 0;
     outline: 0;
     padding: 0;
@@ -289,20 +282,19 @@
     cursor: pointer;
     line-height: $form-element-height - $form-element-border * 2;
     text-align: center;
-    transition: border-color $default-transition,
-                background $default-transition;
+    transition: border-color $default-transition, background $default-transition;
 
     @include breakpoint-mobile {
+        width: 120px;
         height: $mobile-form-element-height;
         line-height: $mobile-form-element-height - $form-element-border * 2;
-        width: 120px;
     }
 
     &[disabled] {
         cursor: default;
 
         &:hover {
-            border-color: #e1e1e1;
+            border-color: $mercury;
         }
     }
 
@@ -344,7 +336,7 @@
             color: $accent-color;
             position: absolute;
             top: 30px;
-            right: 0px;
+            right: 0;
             width: 10%;
             font: normal 25px/32px $sans-serif-family;
             font-weight: 100;
@@ -356,7 +348,7 @@
             color: $base-color;
             position: absolute;
             top: 30px;
-            right: 0px;
+            right: 0;
             width: 10%;
             font: normal 25px/32px $sans-serif-family;
             font-weight: 100;
@@ -380,7 +372,6 @@
 
     &--transparent {
         background: transparent;
-
         @include breakpoint-mobile {
             border-color: $tertiary-color;
         }
@@ -399,50 +390,50 @@
     &--Chooser-Dropbox {
         // width: 25%;
         // background:blue;
-        position:relative;
+        position: relative;
         &::before {
-            @include font-awesome('f16b');
+            @include font-awesome("f16b");
         }
     }
     &--Chooser-Computer {
-        position:relative;
+        position: relative;
         input {
             display: none;
         }
         &::before {
             width: 100%;
             height: 99%;
-            background: white;
-            @include font-awesome('f108');
+            background: $white;
+            @include font-awesome("f108");
         }  
         @include breakpoint-mobile {
             &::before {
-                @include font-awesome('f10b');
+                @include font-awesome("f10b");
             }            
         }
     }
     &--Chooser-URL {
-        position:relative;
+        position: relative;
         &::before {
-            @include font-awesome('f0c1');
+            @include font-awesome("f0c1");
         }
     }
     &--Chooser-Thumbnail {
-        position:relative;
+        position: relative;
         &:enabled {
             color: $accent-color; 
         }
         &::before {
-            @include font-awesome('f1c5');
+            @include font-awesome("f1c5");
         }
     }
     &--Chooser-GIF {
-        position:relative;
+        position: relative;
         &:enabled {
             color: $accent-color; 
         }
         &::before {
-            @include font-awesome('f01d');
+            @include font-awesome("f01d");
         }
     }
 
@@ -454,12 +445,10 @@
     text-align: center;
     & > .xxLabel {
         position: relative;
-        // overflow: hidden;
-        // width: $button-width;
         @include breakpoint-mobile {
+            width: 120px;
             height: $mobile-form-element-height;
             line-height: $mobile-form-element-height - $form-element-border * 2;
-            width: 120px;
         }
     }
 }
@@ -472,12 +461,7 @@
     height: 100%;
     opacity: 0;
     cursor: pointer;
-
-    -webkit-appearance: none;
-
-    &::-webkit-file-upload-button {
-        cursor: pointer;
-    }
+    appearance: none;
 }
 
 .xxMainForm {
@@ -495,6 +479,5 @@
         padding: 24px;
     }
 }
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

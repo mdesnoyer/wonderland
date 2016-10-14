@@ -19,15 +19,14 @@
     }
 }
 
-
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxThumbnail {
     display: block;
     position: relative;
     width: 100%;
     &::before {
-        content: '';
+        content: "";
         display: block;
         padding: 0 0 100%;
     }
@@ -42,20 +41,27 @@
     }
 
     &--highLight {
-        &::before,
+        background-color: rgba($accent-color, 0.9);
+        &::before {
+            // empty
+        }
         &::after {
             background-color: rgba($accent-color, 0.9);
         }
     }
 
     &--lowLight {
-        &::before,
+        background-color: $base-color;
+        &::before {
+            // empty
+        }
         &::after {
             background-color: $base-color;
         }
     }
 
     &--noscore { 
+        cursor: default;
         &::after {
             display: none;
         }
@@ -105,10 +111,6 @@
         }
     }
 
-    &--noscore {
-        cursor: default;
-    }
-
     &--zoom#{&}--highLight {
         &::before,
         &::after {
@@ -150,9 +152,17 @@
     height: 100%;
     border-radius: 2px;
     border: $thumbnail-hover-size-px solid rgba($accent-color, 0);
-    transition: border-color $default-transition;
+    transition: border-color $default-transition, opacity 0.451s ease-in-out;
     // helps with old(er) warped videos - #1408
     object-fit: cover;
+
+    &.-is-loading {
+        opacity: 0;
+    }
+
+    &.-is-loaded {
+        opacity: 1;
+    }
 
     .xxThumbnail--highLight:hover > & {
         border-color: $accent-color;
@@ -179,7 +189,7 @@
         transition: none; 
     } 
     .xxThumbnail--noscore[href]:hover > & { 
-        border: none;
+        border: 0;
         transition: none;  
         top: 0;
         left: 0;

@@ -23,12 +23,11 @@ $zindex-upload-drag-and-drop: 1;
     height: $upload-button-size;
     border-radius: 50%;
     border: 2px solid $white;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 8px rgba($mine-shaft, 0.2);
     margin-right: -1 * $page-max-width / 2 - floor($upload-button-size / 2);
     background: $accent-color;
     text-indent: $indent-off-screen;
-    transition: $default-button-transitions,
-                z-index 0s $default-transition; // this is needed to avoid button disappearing behind overlay
+    transition: $default-button-transitions, z-index 0s $default-transition; // this is needed to avoid button disappearing behind overlay
 
     @media (max-width: $page-max-width + 2 * ($upload-button-offset + $gutter-width)) {
         right: $upload-button-offset;
@@ -36,13 +35,13 @@ $zindex-upload-drag-and-drop: 1;
     }
 
     &:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+        box-shadow: 0 0 10px rgba($mine-shaft, 0.3);
         transform: rotate(90deg);
     }
 
     &::before,
     &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: ($upload-button-size - 1px) / 2 - 2px;
         left: ($upload-button-size - 19px) / 2 - 2px;
@@ -71,7 +70,7 @@ $zindex-upload-drag-and-drop: 1;
         display: none;
     }
     .has-dialog > & {
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 rgba($mine-shaft, 0);
     }
 }
 
@@ -103,7 +102,7 @@ $zindex-upload-drag-and-drop: 1;
 
     &:hover {
         background: $accent-color;
-        color: #fff;
+        color: $white;
 
         .xxUploadTypes-buttonLabel {
             opacity: 1;
@@ -113,16 +112,16 @@ $zindex-upload-drag-and-drop: 1;
     &::before {
         position: relative;
         right: -0.5px;
-        color: #fff;
+        color: $white;
         font-size: 16px;
     }
 
     &--photo::before {
-        @include font-awesome('f030'); // fa-camera
+        @include font-awesome("f030"); // fa-camera
     }
 
     &--video::before {
-        @include font-awesome('f03d'); // fa-video-camera
+        @include font-awesome("f03d"); // fa-video-camera
     }
 
     @include breakpoint-mobile {
@@ -135,7 +134,7 @@ $zindex-upload-drag-and-drop: 1;
 
         &::before,
         &::after {
-            content: '';
+            content: "";
             position: absolute;
             top: 30px;
             left: 22px;
@@ -154,14 +153,14 @@ $zindex-upload-drag-and-drop: 1;
         }
 
         &--photo::before {
-            @include font-awesome('f030'); // fa-camera
+            @include font-awesome("f030"); // fa-camera
             top: 16px;
             left: 0;
             font-size: 28px;
         }
 
         &--video::before {
-            @include font-awesome('f03d'); // fa-video-camera
+            @include font-awesome("f03d"); // fa-video-camera
             top: 16px;
             left: 0;
             font-size: 28px;
@@ -250,10 +249,10 @@ $zindex-upload-drag-and-drop: 1;
 .xxUploadDialog-inner {
     float: right;
     position: relative;
-    width: calc((99.9% - #{$gutter-width}) * 1/3 + #{$gutter-width});
-    min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
+    width: calc((99.9% - #{$gutter-width}) * 1 / 3 + #{$gutter-width});
+    min-width: ($page-min-width - $gutter-width) * 1 / 3 + $gutter-width;
     z-index: $zindex-upload-drag-and-drop + 1;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    box-shadow: 0 0 10px rgba($mine-shaft, 0.05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
 
@@ -270,10 +269,10 @@ $zindex-upload-drag-and-drop: 1;
 .xxUploadDialog-drag-drop {
     float: right;
     position: relative;
-    width: calc((99.9% - #{$gutter-width}) * 2/5 + #{$gutter-width});
-    min-width: ($page-min-width - $gutter-width) * 1/3 + $gutter-width;
+    width: calc((99.9% - #{$gutter-width}) * 2 / 5 + #{$gutter-width});
+    min-width: ($page-min-width - $gutter-width) * 1 / 3 + $gutter-width;
     z-index: $zindex-upload-drag-and-drop + 1;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    box-shadow: 0 0 10px rgba($mine-shaft, 0.05);
     padding: $gutter-width $gutter-width 42px;
     background: $white;
     @include breakpoint-mobile {
@@ -285,7 +284,7 @@ $zindex-upload-drag-and-drop: 1;
     float: right;
     position: relative;
     width: 100%;
-    min-width: ($page-min-width - $gutter-width) * 1/5 + $gutter-width;
+    min-width: ($page-min-width - $gutter-width) * 1 / 5 + $gutter-width;
     background: $white;
 }
 
@@ -293,7 +292,7 @@ $zindex-upload-drag-and-drop: 1;
     margin: 0 auto;
     width: calc((99.9% - #{$gutter-width}) *  + #{$gutter-width});;
     text-align: center;
-    margin-top: .5em;
+    margin-top: 0.5em;
     & > .xxButton {
         display: inline-block;
         position: relative;
@@ -311,7 +310,7 @@ $zindex-upload-drag-and-drop: 1;
     & + & {
         float: right;
         @include breakpoint-mobile {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+            box-shadow: 0 0 10px rgba($mine-shaft, 0);
             float: none;
             min-width: 100%;
         }
@@ -360,7 +359,7 @@ $zindex-upload-drag-and-drop: 1;
     left: calc(100% + #{$upload-button-help-line-length} - 1px); // 1px to account for floor above
     width: $upload-button-help-circle-size;
     height: $upload-button-help-circle-size;
-    border: 1px solid rgba($base-color, .5);
+    border: 1px solid rgba($base-color, 0.5);
     border-radius: 50%;
 
     @include breakpoint-mobile {
@@ -376,7 +375,7 @@ $zindex-upload-drag-and-drop: 1;
     left: calc(100% - 1px);
     width: $upload-button-help-line-length; // 1px to account for floor above
     height: 1px;
-    background: rgba($base-color, .5);
+    background: rgba($base-color, 0.5);
 
     @include breakpoint-mobile {
         display: none;
@@ -386,52 +385,51 @@ $zindex-upload-drag-and-drop: 1;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .xxDragAndDrop {
     position: relative;
-    width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});;;
-    margin: 0px auto;
+    width: calc((99.9% - #{$gutter-width}) * + #{$gutter-width});
+    margin: 0 auto;
     border: 3px solid $accent-color;
-    padding: calc((99.9% - #{$gutter-width}) * 1/10 + #{$gutter-width});;;
+    padding: calc((99.9% - #{$gutter-width}) * 1/10 + #{$gutter-width});
     transition: background $default-transition;
     border-style: dotted;
     &--has-dragAndDropHover {
-        background: rgba($accent-color, .05);
+        background: rgba($accent-color, 0.05);
         border-style: solid;
     }
 
 }
-.xxDragAndDrop-spinner{
-      position: relative;
+.xxDragAndDrop-spinner {
+    position: relative;
     &::after {
-       @include font-awesome('f021');
-            margin: 50px auto;
-            display: block;
-            box-sizing: border-box;
-            width: 100px;
-            height: 100px;
-            background: $white;
-            color: $accent-color;
-            font-size: 100px;
-            line-height: 1;
-            text-align: center;
-            transform: rotate(-60deg);
-            transform-origin: 50% 50%;
-            transform: rotate(0deg);
-            animation: rotate 2s infinite linear;
+        @include font-awesome("f021");
+        margin: 50px auto;
+        display: block;
+        box-sizing: border-box;
+        width: 100px;
+        height: 100px;
+        background: $white;
+        color: $accent-color;
+        font-size: 100px;
+        line-height: 1;
+        text-align: center;
+        transform-origin: 50% 50%;
+        transform: rotate(0deg);
+        animation: rotate 2s infinite linear;
     }
 }
 .xxDragAndDrop-success {
     position: relative;
     &::after {
-       @include font-awesome('f05d');
-       margin: 50px auto;
-       display: block;
-       box-sizing: border-box;
-       width: 100px;
-       height: 100px;
-       background: $white;
-       color: $accent-color;
-       font-size: 100px;
-       line-height: 1;
-       text-align: center;
+        @include font-awesome("f05d");
+        margin: 50px auto;
+        display: block;
+        box-sizing: border-box;
+        width: 100px;
+        height: 100px;
+        background: $white;
+        color: $accent-color;
+        font-size: 100px;
+        line-height: 1;
+        text-align: center;
     }
 }
 
@@ -442,7 +440,7 @@ $zindex-upload-drag-and-drop: 1;
     left: 0;
     width: 100%;
     margin: 0 auto;
-    color: rgba($secondary-color, .7);
+    color: rgba($secondary-color, 0.7);
     line-height: 16px;
     text-align: center;
     transform: translateY(-50%);
@@ -451,17 +449,17 @@ $zindex-upload-drag-and-drop: 1;
 .xxDragAndDrop-hint,
 .xxDragAndDrop-complete {
     &::before {
-        content: '';
+        content: "";
         display: block;
         width: 68px;
         height: 43px;
         margin: 0 auto;
-        background: url(../img/xx/upload.svg) 0 0 / 100% 100% no-repeat;
+        background: url("../img/xx/upload.svg") 0 0 / 100% 100% no-repeat;
     }
 }
 .xxDragAndDrop-complete {
     &::before {
-        background-image: url(../img/xx/upload-complete.svg) no-repeat;
+        background-image: url("../img/xx/upload-complete.svg") no-repeat;
     }
 }
 .xxDragAndDrop-progressCounter {

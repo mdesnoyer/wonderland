@@ -1,6 +1,3 @@
-jest.unmock('../../../src/js/stores/CollectionStores');
-jest.unmock('../../../src/js/mixins/Ajax')
-
 import AJAXModule from '../../../src/js/modules/ajax';
 import {
     tagStore,

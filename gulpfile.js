@@ -1,6 +1,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var gulp = require('gulp');
+var sassLint = require('gulp-sass-lint');
+var eslint = require('gulp-eslint');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -17,7 +19,7 @@ var clean = require('gulp-clean');
 var concatCss = require('gulp-concat-css');
 var merge = require('merge-stream');
 var autoprefixer = require('gulp-autoprefixer');
-var jest = require('gulp-jest');
+var jest = require('gulp-jest').default;
 var envify = require('gulp-envify');
 
 var browserSync = require('browser-sync');
@@ -42,6 +44,12 @@ if (env == 'prod') {
 }
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+
+var testOutputDir = 'test_output';
+var testOutputFile = 'test_results.xml';
+
+var sassFileSource = './src/css/**/*.scss'
+var jsFileSources = ['src/js/**/*.js', '__tests__/**/*.js'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -111,6 +119,16 @@ gulp.task('statics', function() {
 
 gulp.task('clipboardJs', function() {
     return gulp.src('./node_modules/clipboard/dist/clipboard.min.js')
+        .pipe(gulp.dest('./build/js/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+gulp.task('objectFitPoly', function() {
+    return gulp.src('./node_modules/object-fit-videos/dist/object-fit-videos.min.js')
         .pipe(gulp.dest('./build/js/'))
         .pipe(reload({
             stream: true
@@ -257,7 +275,41 @@ gulp.task('default', null, function() {
     gutil.log('Please use debug OR live.');
 });
 
-gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
+gulp.task('sass-lint', function () {
+  return gulp.src(sassFileSource)
+    .pipe(sassLint({
+        options: {
+            'config-file': '.sass-lint.yml'
+        }
+    }))
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
+});
+
+// Like sass-lint task but output in checksyle xml for CI.
+gulp.task('sass-lint-checkstyle', function () {
+  return gulp.src(sassFileSource)
+    .pipe(sassLint({options: {
+        configFile: '.sass-lint.yml',
+        formatter: 'checkstyle',
+    }}))
+    .pipe(sassLint.format())
+});
+
+gulp.task('eslint', function() {
+    return gulp.src(jsFileSources)
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('eslint-checkstyle', function() {
+    return gulp.src(jsFileSources)
+        .pipe(eslint())
+        .pipe(eslint.format('checkstyle', process.stdout));
+});
+
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -268,7 +320,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'fonts', 'statics', 
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
@@ -276,23 +328,34 @@ gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'fonts', 'statics', 'c
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/* TODO: Get this to work. For now, runnings tests can be done by: npm test
-
-gulp.task('jest', function() {
+gulp.task('run-tests', function() {
     return gulp.src('__tests__').pipe(jest({
-        unmockedModulePathPatterns: [
-            "node_modules/react"
-        ],
-        testDirectoryName: "spec",
-        testPathIgnorePatterns: [
-            "node_modules"
-        ],
-        moduleFileExtensions: [
-            "js",
-            "json",
-            "react"
-        ]
+        config: {
+            rootDir: ".",
+            setupTestFrameworkScriptFile: "<rootDir>/setup-jasmine-env.js",
+            setupFiles: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            testPathIgnorePatterns: [
+                "<rootDir>/__tests__/before.js",
+            ],
+            moduleFileExtensions: [
+                "js",
+                "json",
+                "react",
+            ],
+        }
     }));
 });
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+gulp.task('test', ['run-tests'], function() {
+    var fs = require('fs');
+    var path = require('path');
+    var async = require('async');
+    var reportMerger = require('junit-report-merger');
+    var results = fs.readdirSync(testOutputDir);
+    var files = results.map(x => path.join(testOutputDir, x));
+    reportMerger.mergeFiles(testOutputFile, files, {}, function() {
+        async.each(files, fs.unlink);
+    });
+});
