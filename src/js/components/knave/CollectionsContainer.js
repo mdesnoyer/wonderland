@@ -549,7 +549,8 @@ const CollectionsContainer = React.createClass({
                 age);
             associatedThumbnailIds = _.union(
                 demo.thumbnails.map(t => { return t.thumbnail_id }),
-                demo.bad_thumbnails.map(t => { return t.thumbnail_id })
+                demo.bad_thumbnails ? demo.bad_thumbnails.map(
+                    t => { return t.thumbnail_id }) : []
             );
         } else {
             associatedThumbnailIds = tag.thumbnail_ids;
