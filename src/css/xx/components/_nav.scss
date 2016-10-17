@@ -50,10 +50,10 @@ $nav-font-size: 16px;
     }
 }
 
-@mixin xxNavAnchorStyling {
+@mixin xx-nav-anchor-styling {
     color: $secondary-color;
-    &:after {
-        content: '';
+    &::after {
+        content: "";
         position: absolute;
         height: 1px; // needs to be minimum 1px, any less and the browser doesn't render sometimes
         background: $accent-color;
@@ -66,8 +66,8 @@ $nav-font-size: 16px;
         color: $secondary-color;
     }
     &.is-current {
-        @include xxNavAnchorStyling;
-        &:after {
+        @include xx-nav-anchor-styling;
+        &::after {
             bottom: 0.5em;
             left: 0;
             width: 1em;
@@ -75,8 +75,8 @@ $nav-font-size: 16px;
     }
     @include breakpoint-desktop {
         .is-active > & {
-            @include xxNavAnchorStyling;
-            &:after {
+            @include xx-nav-anchor-styling;
+            &::after {
                 bottom: -0.5625em;
                 left: 1.9375em;
                 width: 0.875em;

@@ -1,11 +1,9 @@
-jest.unmock('../../../src/js/modules/renditions');
-
 import RENDITIONS from '../../../src/js/modules/renditions';
 
 describe('RENDITIONS.findRendition', () => {
     const thumb = {
         url: 'base_url',
-        renditions: [[350, 350], [100, 100], [600, 600], 
+        renditions: [[350, 350], [100, 100], [600, 600],
                      [160, 90], [640, 360], [1920, 1080],
                      [1280, 720], [960, 540], [640, 480]].map(function(sz) {
             return { height : sz[1], width : sz[0], url : sz[0] + 'x' + sz[1] }

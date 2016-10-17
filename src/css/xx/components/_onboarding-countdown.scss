@@ -26,8 +26,8 @@ $onboarding-text-padding: 18px;
         margin-right: 0;
     }
 
-    &:before {
-        @include font-awesome('f021');
+    &::before {
+        @include font-awesome("f021");
         box-sizing: border-box;
         position: absolute;
         top: ($onboarding-countdown-height - $upload-button-size) / 2;

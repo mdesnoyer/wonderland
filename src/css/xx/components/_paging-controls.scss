@@ -11,7 +11,7 @@
     flex-wrap: nowrap;
     align-items: center;
     &--GifClip {
-    	margin-top: 2.5%;
+        margin-top: 2.5%;
     }
 }
 
@@ -24,24 +24,24 @@
 
 .xxPagingControls-prev,
 .xxPagingControls-next {
-	@include arrow(W, 1em, 2px, $quaternary-color);
+    @include arrow(W, 1em, 2px, $quaternary-color);
     border: 0;
-	background-color: transparent;
-	position: relative;
-	width: 50px;
-	height: 29px;
-	text-indent: $indent-off-screen;
-	cursor: pointer;
-	outline: none;
-	&--GifClip {
-		@include arrow(W, 12px, 2px, $quaternary-color);		
-	}
-	&:hover {
-	    &:before,
-	    &:after {
-	        background: $secondary-color;
-	    }
-	}
+    background-color: transparent;
+    position: relative;
+    width: 50px;
+    height: 29px;
+    text-indent: $indent-off-screen;
+    cursor: pointer;
+    outline: none;
+    &--GifClip {
+        @include arrow(W, 12px, 2px, $quaternary-color);        
+    }
+    &:hover {
+        &::before,
+        &::after {
+            background: $secondary-color;
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,15 +53,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 .xxPagingControls-next {
-    &:before,
-    &:after {
+    &::before,
+    &::after {
         transform-origin: 100% 50%;
     }
     &--mobileGifClosed {
-    	&:before,
-    	&:after {
-    	    transform-origin: 50% -250%;
-    	}
+        &::before,
+        &::after {
+            transform-origin: 50% -250%;
+        }
     }
 }
 
