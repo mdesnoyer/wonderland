@@ -494,7 +494,7 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
                 undefined === featureStore.get(featureId)
             ));
 
-            if (!missingFeatureIds) {
+            if (!missingFeatureIds || missingFeatureIds.length == 0) {
                 return Promise.resolve({ features: [] });
             }
 

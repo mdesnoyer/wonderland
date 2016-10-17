@@ -1,0 +1,189 @@
+options:
+  'merge-default-rules': false
+rules:
+  # https://github.com/sasstools/sass-lint/tree/master/docs/rules
+  'attribute-quotes': 1
+  'bem-depth':
+    - 2 # error
+    -
+      'max-depth': 2
+  'border-zero':
+    - 2 # error
+    -
+      'convention': '0'
+  'brace-style':
+    - 2 # error
+    -
+      'style': 'stroustrup'
+      'allow-single-line': false
+  # REVISIT at a later point
+  # 'class-name-format':
+    # - 2 # error
+    # -
+      # 'allow-leading-underscore': false
+      # 'convention': 'hyphenatedlowercase'
+      # 'convention-explanation':
+      # 'ignore':
+  'clean-import-paths':
+    - 2 # error
+    -
+      'leading-underscore': false
+      'filename-extension': false
+  'empty-args':
+    - 2 # error
+    -
+      'include': false
+  # REVISIT at a later point
+  # 'empty-line-between-blocks':
+    # - 2 # error
+    # -
+      # 'include': false
+      # 'allow-single-line-rulesets': false
+  'extends-before-declarations': 0
+  'extends-before-mixins': 0
+  'final-newline':
+    - 2 # error
+    -
+      'include': true
+  'force-attribute-nesting': 0
+  'force-element-nesting': 0
+  'force-pseudo-nesting': 0
+  'function-name-format':
+      - 2 #error
+      -
+        'allow-leading-underscore': false
+        'convention': 'hyphenatedlowercase'
+        'convention-explanation':
+  'hex-length':
+    - 2 # error
+    -
+      'style': 'short'
+  'hex-notation':
+    - 2 # error
+    -
+      'style': 'lowercase'
+  'id-name-format':
+      - 2 #error
+      -
+        'allow-leading-underscore': false
+        'convention': 'hyphenatedlowercase'
+        'convention-explanation':
+        'ignore':
+  'indentation':
+    - 2 # error
+    -
+      'size': 4
+  'leading-zero':
+    - 2 # error
+    -
+      'include': true
+  'mixin-name-format':
+    - 2 # error
+    -
+      'allow-leading-underscore': false
+      'convention': 'hyphenatedlowercase'
+  # REVISIT at a later point
+  # 'mixins-before-declarations': 0
+  'nesting-depth':
+    - 2 # error
+    -
+      'max-depth': 2
+  'no-attribute-selectors': 0
+  'no-color-hex': 0
+  'no-color-keywords':
+    - 2 # error
+    -
+      'include': true
+  'no-color-literals':
+    - 2 # error
+    -
+      'allow-map-identifiers': true
+      'allow-rgba': true
+      'allow-variable-identifiers': true
+  'no-combinators': 0
+  'no-css-comments': 1
+  'no-debug': 1
+  'no-disallowed-properties':
+    - 1 # warning
+    -
+      'properties':
+        - 'bacon'
+  'no-duplicate-properties': 1
+  'no-empty-rulesets': 1
+  'no-extends': 0
+  'no-ids': 1
+  'no-important': 0
+  'no-invalid-hex': 1
+  'no-mergeable-selectors': 1
+  'no-misspelled-properties': 1
+  'no-qualifying-elements':
+    - 2 # error
+    -
+      'allow-element-with-attribute': false
+      'allow-element-with-class': false
+      'allow-element-with-id': false
+  # REVISIT at a later point
+  # 'no-trailing-whitespace': 1
+  'no-trailing-zero': 1
+  'no-transition-all': 1
+  'no-universal-selectors': 1
+  'no-url-protocols': 1
+  'no-vendor-prefixes': 1
+  'no-warn': 1
+  'one-declaration-per-line': 1
+  # NOT NEEDED 'placeholder-in-extend'
+  'placeholder-name-format':
+    - 2 # error
+    -
+      'allow-leading-underscore': false
+      'convention': 'hyphenatedlowercase'
+      'convention-explanation':
+  # NOT NEEDED 'property-sort-order'
+  # NOT NEEDED 'property-units'
+  'pseudo-element': 1
+  'quotes':
+    - 2
+    -
+      'style': double
+  'shorthand-values': 1
+  'single-line-per-selector': 1
+  'space-after-bang': 0
+  'space-after-colon':
+    - 2 # error
+    -
+      'include': true
+  'space-after-comma':
+    - 2 # error
+    -
+      'include': true
+  'space-around-operator': 1
+  'space-before-bang': 1
+  'space-before-brace':
+    - 2 # error
+    -
+      'include': true
+  'space-before-colon':
+    - 2 # error
+    -
+      'include': false
+  'space-between-parens':
+    - 2 # error
+    -
+      'include': false
+  'trailing-semicolon':
+    - 2 # error
+    -
+      'include': true
+  'url-quotes': 1
+  # NOT NEEDED 'variable-for-property'
+  # REVISIT at a later point
+  # 'variable-name-format':
+    # - 2 # error
+    # -
+      # 'allow-leading-underscore': false
+      # 'convention': 'hyphenatedlowercase'
+      # 'convention-explanation':
+  'zero-unit':
+    - 2 # error
+    -
+      'include': false

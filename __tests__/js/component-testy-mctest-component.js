@@ -1,15 +1,14 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 
-jest.dontMock('../../src/js/components/TestyMcTestComponent');
 const TestyMcTestComponent = require('../../src/js/components/TestyMcTestComponent').default;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 describe('Component: TestyMcTestComponent', function() {
-        
+
     const testTitle = 'Testy McTestComponent Title',
         testBody = 'Testy McTestComponent Body',
         minProps = {
@@ -55,4 +54,4 @@ describe('Component: TestyMcTestComponent', function() {
 
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

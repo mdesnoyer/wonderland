@@ -36,8 +36,8 @@
     @include arrow(W, 12px, 1px, $secondary-color);
 
     &:hover {
-        &:before,
-        &:after {
+        &::before,
+        &::after {
             background: $accent-color;
         }
     }
@@ -54,8 +54,8 @@
         margin-right: 0;
     }
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
         transform-origin: 100% 50%;
     }
 

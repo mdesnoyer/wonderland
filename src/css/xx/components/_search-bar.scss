@@ -25,8 +25,8 @@ $searchBarSpacing: 1.875em;
 
 .search-bar--query-label {
     position: relative;
-    &:before {
-        @include font-awesome('f002');
+    &::before {
+        @include font-awesome("f002");
         position: absolute;
         // vertical-align the icon in the input
         top: 50%;

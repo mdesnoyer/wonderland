@@ -19,7 +19,7 @@ $table_body_height: 200px;
 .has-overlayWithNav {
     overflow-x: auto;
     overflow-y: hidden;
-    #wonderland {
+    .wonderland {
         overflow: hidden;
         height: 100vh;
     }
@@ -80,9 +80,9 @@ $table_body_height: 200px;
         top: 20px;
         right: 10px;
     }
-    &:before,
-    &:after {
-        content: '';
+    &::before,
+    &::after {
+        content: "";
         position: absolute;
         top: 27px;
         right: 17px;
@@ -93,17 +93,17 @@ $table_body_height: 200px;
         transform-origin: 50% 50%;
         transition: background $default-transition;
     }
-    &:after {
+    &::after {
         transform: rotate(45deg);
     }
     &:hover {
-        &:before,
-        &:after {
+        &::before,
+        &::after {
             background: $secondary-color;
         }
         .xxOverlay--dark & {
-            &:before,
-            &:after {
+            &::before,
+            &::after {
                 background: $quaternary-color;
             }
         }
@@ -143,11 +143,8 @@ $table_body_height: 200px;
             padding: 5px;
             text-align: left;
             overflow: hidden;
-            white-space: -o-pre-wrap; 
             word-wrap: break-word;
             white-space: pre-wrap; 
-            white-space: -moz-pre-wrap; 
-            white-space: -pre-wrap; 
         }
         td:nth-child(1),
         th:nth-child(1) {
@@ -158,8 +155,8 @@ $table_body_height: 200px;
             }
         }
         td:nth-child(1) {
-            &:before {
-                @include font-awesome('f15b');
+            &::before {
+                @include font-awesome("f15b");
                 padding-right: 5%;
             }
         }
@@ -174,7 +171,7 @@ $table_body_height: 200px;
         th:nth-child(3) {
             width: $table_width * 0.35;
             @include breakpoint-mobile {
-                width: $table_width_mobile * 0.35
+                width: $table_width_mobile * 0.35;
             }
         }
         thead {
