@@ -6,7 +6,7 @@ import T from '../../modules/translation';
 const propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
-    score: PropTypes.number.isRequired,
+    score: PropTypes.number,
     dominantColor: PropTypes.array,
     src: PropTypes.string.isRequired,
     tagId: PropTypes.string,
