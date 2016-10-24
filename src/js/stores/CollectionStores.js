@@ -959,6 +959,25 @@ export const SendActions = Object.assign({}, AjaxMixin, {
     },
 });
 
+export const S3Actions = Object.assign({}, AjaxMixin, {
+    uploadVideo(file, callback) {
+        const accountId = SESSION.state.accountId;
+        const filename = UTILS.generateId();
+        const domain = 'neon-user-video-upload.s3.amazonaws.com';
+        const url= `https://${domain}/${accountId}/${filename}`;
+        const options = {
+            host: url,
+            no_authorization_header: true,
+            data: file,
+            contentType: 'multipart/form-data',
+            processData: false,
+        }
+        S3Actions.put('', options)
+        .then((res) => callback(url, res));
+        return url;
+    },
+});
+
 // Cancel pending requests.
 // TODO invert control for that Actions register themselves.
 export const cancelActions = () => {

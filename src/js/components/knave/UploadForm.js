@@ -7,6 +7,7 @@ import cookie from 'react-cookie';
 import accept from 'attr-accept';
 import loadImage from 'blueimp-load-image';
 import toBlob from 'blueimp-canvas-to-blob';
+import moment from 'moment';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -15,7 +16,7 @@ import SESSION from '../../modules/session';
 
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
-import { LoadActions, tagStore } from '../../stores/CollectionStores';
+import { LoadActions, S3Actions, tagStore } from '../../stores/CollectionStores';
 import OverLayMessage from './OverLayMessage';
 import UploadActionsContainer from './UploadActionsContainer';
 
@@ -39,6 +40,7 @@ var UploadForm = React.createClass({
             tagId: null,
             formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
             urlInput:'',
+            title:'',
             collectionName:'',
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
@@ -140,10 +142,10 @@ var UploadForm = React.createClass({
             this.setState(this.getInitialState());
         }
     },
-    handleUrlSubmit: function(e) {
+    handleUrlSubmit: function(e, title) {
         const self = this;
         e.preventDefault();
-        self.sendVideoUrl(e.target.dataset.sendUrlType);
+        self.sendVideoUrl(e.target.dataset.sendUrlType, title);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -220,6 +222,7 @@ var UploadForm = React.createClass({
                             handleInputClick={self.handleInputClick}
                             handleCancelClick={self.handleCancelClick}
                             handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
+                            handleUploadVideo={self.handleUploadVideo}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -247,11 +250,14 @@ var UploadForm = React.createClass({
                 self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
-    sendVideoUrl: function(sendUrlType) {
+    sendVideoUrl: function(sendUrlType, title) {
+        const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
         var self = this,
             videoId = UTILS.generateId(),
+            title = title || moment().format(datetimeFormat),
             options = {
                 data: {
+                    title,
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput))
                 }
@@ -526,6 +532,19 @@ var UploadForm = React.createClass({
                 self.throwUploadError(err);
             });
     },
+
+    handleUploadVideo: function(e) {
+        const self = this;
+        const file = e.target.files[0];
+        const urlInput = S3Actions.uploadVideo(file, self.handleSentVideo);
+        self.setState({ urlInput, formState: 'uploadingVideo' });
+    },
+
+    handleSentVideo: function(url, res) {
+        const self = this;
+        self.setState({ formState: 'uploadedVideo' });
+    },
+
     createFormDataArray: function(fileArray) {
         var formDataArray = [];
         fileArray.forEach(function(array, i){

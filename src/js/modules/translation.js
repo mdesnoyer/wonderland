@@ -282,6 +282,8 @@ const _DEFAULT_LOCALE = 'en-US',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
+            'upload.uploading': 'Uploading...',
+            'upload.doneUpload': 'Done uploading!',
 
             // image upload page
             'imageUpload.draglocation': 'Drag and Drop your photos here.',
