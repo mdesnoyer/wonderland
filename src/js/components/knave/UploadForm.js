@@ -534,6 +534,7 @@ var UploadForm = React.createClass({
     },
 
     handleUploadVideo: function(e) {
+        e.preventDefault();
         const self = this;
         const file = e.target.files[0];
         const urlInput = S3Actions.uploadVideo(file, self.handleSentVideo);

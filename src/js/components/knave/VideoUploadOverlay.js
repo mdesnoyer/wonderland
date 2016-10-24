@@ -25,6 +25,7 @@ var VideoUploadOverlay = React.createClass({
         ReactDOM.findDOMNode(self.refs.urlInput).focus();
     },
     handleSubmit(e) {
+        e.preventDefault();
         const self = this;
         self.props.toggleOpen(e);
         self.handleUrlSubmit(e);
