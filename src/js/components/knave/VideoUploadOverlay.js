@@ -73,7 +73,6 @@ var VideoUploadOverlay = React.createClass({
                             placeholder={T.get('upload.optionalTitle')}
                         />
                     </div>
-                    <div className="xxDragAndDrop-spinner"></div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
                             {T.get('copy.analyzeVideo.giveMe')}
