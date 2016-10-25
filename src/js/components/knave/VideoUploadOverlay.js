@@ -73,6 +73,7 @@ var VideoUploadOverlay = React.createClass({
                             placeholder={T.get('upload.optionalTitle')}
                         />
                     </div>
+                    <div className="xxDragAndDrop-spinner"></div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
                             {T.get('copy.analyzeVideo.giveMe')}
@@ -105,25 +106,9 @@ var VideoUploadOverlay = React.createClass({
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
-                    <div className="xxFormField">
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload')}
-                        </label>
-                        <input
-                            id="xx-upload-local"
-                            className="xxInputText"
-                            disabled
-                            placeholder={T.get('upload.uploading')}
-                        />
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('label.title')}
-                        </label>
-                        <input
-                            id="xx-upload-title"
-                            className="xxInputText"
-                            ref={(titleInput) => { this.titleInput = titleInput; }}
-                            placeholder={T.get('upload.optionalTitle')}
-                        />
+                    <div className="xxUploadDialog-block">
+                    <div className="xxDragAndDrop-spinner"></div>
+                    <span>{T.get('upload.uploading')}</span>
                     </div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
