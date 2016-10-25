@@ -57,12 +57,10 @@ var VideoUploadOverlay = React.createClass({
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('upload')}
                         </label>
-                        <input
-                            id="xx-upload-local"
-                            className="xxInputText"
-                            disabled
-                            placeholder={T.get('upload.doneUpload')}
-                        />
+                        <div className="xxUploadDialog-block">
+                            <div className="xxDragAndDrop-success"></div>
+                            <span>{T.get('upload.doneUpload')}</span>
+                        </div>
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('label.title')}
                         </label>

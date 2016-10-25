@@ -91,7 +91,7 @@ var UploadForm = React.createClass({
         var self = this;
         e.preventDefault();
         // if clicks out of their upload box then return to the choose upload type state
-        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', showUrlUploader: false });
     },
     updateField: function(field, value) {
         var self = this;
@@ -125,6 +125,7 @@ var UploadForm = React.createClass({
         // when the input is clicked on update default video thumb show the dragdrop again
         if (this.state.formState === 'updateVideoDefault') { this.setState({ showUrlUploader: false})} ;
         // due to css formating this fakes that the user is clicking the input when they are actullay clicking a dummy dom
+        this.setState({showUrlUploader: false});
         document.getElementById("file-input").click();
     },
     handleNameSubmit: function(e) {
@@ -538,7 +539,7 @@ var UploadForm = React.createClass({
         const self = this;
         const file = e.target.files[0];
         S3Actions.uploadVideo(file, self.handleSentVideo);
-        self.setState({ formState: 'uploadingVideo' });
+        self.setState({ formState: 'uploadingVideo'});
     },
 
     handleSentVideo(res, urlInput) {

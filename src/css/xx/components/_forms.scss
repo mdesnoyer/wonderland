@@ -393,6 +393,9 @@
         position: relative;
         &::before {
             @include font-awesome("f16b");
+            @include breakpoint-mobile {
+                font-size: large;
+            }
         }
     }
     &--Chooser-Computer {
