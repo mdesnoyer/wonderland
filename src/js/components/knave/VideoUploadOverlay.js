@@ -1,12 +1,7 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
 import { DesktopUploadButton } from './UploadActions';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 var VideoUploadOverlay = React.createClass({
 
@@ -21,26 +16,30 @@ var VideoUploadOverlay = React.createClass({
         isMobile: PropTypes.bool
     },
     componentDidMount: function() {
-        const self = this;
-        ReactDOM.findDOMNode(self.refs.urlInput).focus();
-    },
-    handleSubmit(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const self = this;
-        self.props.toggleOpen(e);
-        self.handleUrlSubmit(e);
+        this.urlInput.focus();
     },
     handleUrlSubmit(e) {
         e.preventDefault();
         e.stopPropagation();
         const self = this;
-        self.props.handleUrlSubmit(e, self.getTitle());
+        const url = self.getUrl();
+        if (url) {
+            self.props.handleUrlSubmit(e, url, self.getTitle());
+        }
+    },
+    getUrl() {
+        const self = this;
+        if (self.props.urlInput) {
+            return self.props.urlInput;
+        }
+        if (self.urlInput && self.urlInput.value) {
+            return self.urlInput.value;
+        }
+        return null;
     },
     getTitle() {
         const self = this;
-        const input = ReactDOM.findDOMNode(self.refs.titleInput);
-        return input ? input.value : null;
+        return self.titleInput ? self.titleInput.value : null;
     },
     doNothing(e) {
         e.preventDefault();
@@ -70,7 +69,7 @@ var VideoUploadOverlay = React.createClass({
                         <input
                             id="xx-upload-title"
                             className="xxInputText"
-                            ref="titleInput"
+                            ref={(titleInput) => { this.titleInput = titleInput; }}
                             placeholder={T.get('upload.optionalTitle')}
                         />
                     </div>
@@ -122,7 +121,7 @@ var VideoUploadOverlay = React.createClass({
                         <input
                             id="xx-upload-title"
                             className="xxInputText"
-                            ref="titleInput"
+                            ref={(titleInput) => { this.titleInput = titleInput; }}
                             placeholder={T.get('upload.optionalTitle')}
                         />
                     </div>
@@ -162,7 +161,7 @@ var VideoUploadOverlay = React.createClass({
         const { isOnboarding } = this.props,
             self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!self.props.urlInput,
+            isValid = !!(self.urlInput && self.urlInput.value),
             messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
             isMobile = self.context.isMobile
         ;
@@ -171,7 +170,7 @@ var VideoUploadOverlay = React.createClass({
         }
         return (
             <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner" onSubmit={self.handleSubmit}>
+                <form className="xxUploadDialog-inner" onSubmit={self.doNothing}>
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
@@ -192,12 +191,10 @@ var VideoUploadOverlay = React.createClass({
                         </label>
                         <input
                             id="xx-upload-url"
-                            ref="urlInput"
+                            ref={(urlInput) => { this.urlInput = urlInput; }}
                             className="xxInputText"
                             placeholder={T.get('upload.videoUrl')}
                             type="url"
-                            required
-                            onChange={e => self.props.updateField('urlInput', e.target.value)}
                         />
                     </div>
                     <div className="xxFormButtons">
@@ -206,14 +203,12 @@ var VideoUploadOverlay = React.createClass({
                         </label>
                         <div className="xxUploadButtonsChooser">
                             <button
-                                 disabled={!isValid}
                                  className={submitClassName.join(' ')}
                                  type="submit"
                                  data-send-url-type="thumbnails"
                                  onClick={self.handleUrlSubmit}
                              >{T.get('thumbnails')}</button>
                              <button
-                                 disabled={!isValid}
                                  className={submitClassName.join(' ')}
                                  type="submit"
                                  data-send-url-type="gif"

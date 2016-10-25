@@ -142,10 +142,10 @@ var UploadForm = React.createClass({
             this.setState(this.getInitialState());
         }
     },
-    handleUrlSubmit: function(e, title) {
+    handleUrlSubmit: function(e, url, title) {
         const self = this;
         e.preventDefault();
-        self.sendVideoUrl(e.target.dataset.sendUrlType, title);
+        self.sendVideoUrl(e.target.dataset.sendUrlType, url, title);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -250,7 +250,7 @@ var UploadForm = React.createClass({
                 self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
-    sendVideoUrl: function(sendUrlType, title) {
+    sendVideoUrl: function(sendUrlType, url, title) {
         const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
         var self = this,
             videoId = UTILS.generateId(),
@@ -259,7 +259,7 @@ var UploadForm = React.createClass({
                 data: {
                     title,
                     external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput))
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url))
                 }
             }
         ;
@@ -270,7 +270,7 @@ var UploadForm = React.createClass({
             options.data['n_clips'] = 5;
         };
 
-        if (!UTILS.validateUrl(self.state.urlInput)) {
+        if (!UTILS.validateUrl(url)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
