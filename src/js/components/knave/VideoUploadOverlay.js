@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
-import { DesktopUploadButton } from './UploadActions';
+import { DesktopUploadButton, UrlUploadButton } from './UploadActions';
 
 var VideoUploadOverlay = React.createClass({
 
@@ -16,7 +16,7 @@ var VideoUploadOverlay = React.createClass({
         isMobile: PropTypes.bool
     },
     componentDidMount: function() {
-        this.urlInput.focus();
+        // this.urlInput.focus();
     },
     handleUrlSubmit(e) {
         e.preventDefault();
@@ -137,6 +137,7 @@ var VideoUploadOverlay = React.createClass({
     },
 
     render: function() {
+        var props = this.props;
         if (this.props.formState === 'uploadingVideo') {
             return this.renderUploading();
         }
@@ -164,23 +165,35 @@ var VideoUploadOverlay = React.createClass({
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('upload')}
                         </label>
-                         <DesktopUploadButton
-                             id="xx-upload-local"
-                             {...this.props}
-                             accept={"video/*"}
-                             multiple={false}
-                             sendLocalPhotos={self.props.handleUploadVideo}
-                         />
-                        <label className="xxLabel" htmlFor="xx-upload-url">
-                            {T.get('url')}
-                        </label>
-                        <input
-                            id="xx-upload-url"
-                            ref={(urlInput) => { this.urlInput = urlInput; }}
-                            className="xxInputText"
-                            placeholder={T.get('upload.videoUrl')}
-                            type="url"
-                        />
+                        <div className="xxUploadDialog-block">
+                        <div className="xxUploadButtonsChooser">
+                            <DesktopUploadButton
+                                id="xx-upload-local"
+                                {...this.props}
+                                accept={"video/*"}
+                                multiple={false}
+                                sendLocalPhotos={self.props.handleUploadVideo}
+                            />
+                            <UrlUploadButton {...props} />
+                        </div>
+                        </div>
+                        <div className="xxUploadButtonsChooser">
+                            <label className="xxLabel">{isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop')}</label>
+                            <label className="xxLabel">URL</label>
+                        </div>
+                        {
+
+                            !this.props.showUrlUploader ? '' : (
+                                <input
+                                    id="xx-upload-url"
+                                    ref={(urlInput) => { this.urlInput = urlInput; }}
+                                    className="xxInputText"
+                                    placeholder={T.get('upload.videoUrl')}
+                                    type="url"
+                                />
+                            )
+                        }
+
                     </div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
