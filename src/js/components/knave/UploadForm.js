@@ -533,17 +533,17 @@ var UploadForm = React.createClass({
             });
     },
 
-    handleUploadVideo: function(e) {
+    handleUploadVideo(e) {
         e.preventDefault();
         const self = this;
         const file = e.target.files[0];
-        const urlInput = S3Actions.uploadVideo(file, self.handleSentVideo);
-        self.setState({ urlInput, formState: 'uploadingVideo' });
+        S3Actions.uploadVideo(file, self.handleSentVideo);
+        self.setState({ formState: 'uploadingVideo' });
     },
 
-    handleSentVideo: function(url, res) {
+    handleSentVideo(res, urlInput) {
         const self = this;
-        self.setState({ formState: 'uploadedVideo' });
+        self.setState({ urlInput, formState: 'uploadedVideo' });
     },
 
     createFormDataArray: function(fileArray) {
