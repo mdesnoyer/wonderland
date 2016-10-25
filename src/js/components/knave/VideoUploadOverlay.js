@@ -182,7 +182,7 @@ var VideoUploadOverlay = React.createClass({
                          <DesktopUploadButton
                              id="xx-upload-local"
                              {...this.props}
-                             accept={"video/*"}
+                             accept={"video/*;capture=camcorder"}
                              multiple={false}
                              sendLocalPhotos={self.props.handleUploadVideo}
                          />
