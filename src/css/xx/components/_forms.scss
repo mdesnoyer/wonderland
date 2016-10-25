@@ -409,6 +409,7 @@
         @include breakpoint-mobile {
             &::before {
                 @include font-awesome("f10b");
+                    font-size: x-large;
             }            
         }
     }
@@ -416,6 +417,7 @@
         position: relative;
         &::before {
             @include font-awesome("f0c1");
+            font-size: large;
         }
     }
     &--Chooser-Thumbnail {
