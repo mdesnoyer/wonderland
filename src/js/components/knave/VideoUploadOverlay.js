@@ -26,11 +26,14 @@ var VideoUploadOverlay = React.createClass({
     },
     handleSubmit(e) {
         e.preventDefault();
+        e.stopPropagation();
         const self = this;
         self.props.toggleOpen(e);
         self.handleUrlSubmit(e);
     },
     handleUrlSubmit(e) {
+        e.preventDefault();
+        e.stopPropagation();
         const self = this;
         self.props.handleUrlSubmit(e, self.getTitle());
     },
