@@ -125,7 +125,6 @@ var VideoUploadOverlay = React.createClass({
     },
 
     render: function() {
-        var props = this.props;
         if (this.props.formState === 'uploadingVideo') {
             return this.renderUploading();
         }
@@ -163,7 +162,7 @@ var VideoUploadOverlay = React.createClass({
                             />
                         </div>
                         <div className="xxUploadButtonsChooser">
-                            <label className="xxLabel">OR</label>
+                            <label className="xxLabel">{T.get('imageUpload.or')}</label>
                         </div>
                         <input
                             id="xx-upload-url"
