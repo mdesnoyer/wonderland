@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
-import { DesktopUploadButton, UrlUploadButton } from './UploadActions';
+import { DesktopUploadButton } from './UploadActions';
 
 var VideoUploadOverlay = React.createClass({
 
