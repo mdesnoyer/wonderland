@@ -124,7 +124,6 @@ var UploadForm = React.createClass({
         // when the input is clicked on update default video thumb show the dragdrop again
         if (this.state.formState === 'updateVideoDefault') { this.setState({ showUrlUploader: false})} ;
         // due to css formating this fakes that the user is clicking the input when they are actullay clicking a dummy dom
-        this.setState({showUrlUploader: false});
         document.getElementById("file-input").click();
     },
     handleNameSubmit: function(e) {
