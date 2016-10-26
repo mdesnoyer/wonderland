@@ -93,9 +93,15 @@ export const CollectionSubmitButton = React.createClass({
 });
 
 export const DesktopUploadButton = React.createClass({
+
+    getDefaultProps() {
+        return {
+            multiple: true,
+            accept: UTILS.IMAGE_ACCEPT_MASK,
+        }
+    },
+
     render: function() {
-        const multiple = this.props.multiple || true;
-        const accept = this.props.accept || 'image/*';
         return (
             <button
                 onClick={this.props.handleInputClick}
@@ -105,8 +111,8 @@ export const DesktopUploadButton = React.createClass({
                     disabled={this.props.uploadState === 'loading'}
                     id="file-input"
                     type="file"
-                    multiple={multiple}
-                    accept={accept}
+                    multiple={this.props.multiple}
+                    accept={this.props.accept}
                     onChange={this.props.sendLocalPhotos}
                 />
             </button>

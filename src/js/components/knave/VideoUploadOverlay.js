@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import Message from '../wonderland/Message'
 import { DesktopUploadButton } from './UploadActions';
@@ -20,7 +21,6 @@ var VideoUploadOverlay = React.createClass({
     },
     handleUrlSubmit(e) {
         e.preventDefault();
-        e.stopPropagation();
         const self = this;
         const url = self.getUrl();
         if (url) {
@@ -41,15 +41,12 @@ var VideoUploadOverlay = React.createClass({
         const self = this;
         return self.titleInput ? self.titleInput.value : null;
     },
-    doNothing(e) {
-        e.preventDefault();
-    },
     renderUploaded() {
         const isMobile = this.context.isMobile;
         const submitClassName = ['xxButton', 'xxButton--highlight', 'xxButton--important'];
         return (
             <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner" onSubmit={this.doNothing}>
+                <form className="xxUploadDialog-inner">
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
@@ -80,13 +77,11 @@ var VideoUploadOverlay = React.createClass({
                         <div className="xxUploadButtonsChooser">
                             <button
                                 className={submitClassName.join(' ')}
-                                type="submit"
                                 data-send-url-type="thumbnails"
                                 onClick={this.handleUrlSubmit}
                             >{T.get('thumbnails')}</button>
                             <button
                                 className={submitClassName.join(' ')}
-                                type="submit"
                                 data-send-url-type="gif"
                                 onClick={this.handleUrlSubmit}
                             >{T.get('gifs')}</button>
@@ -98,10 +93,10 @@ var VideoUploadOverlay = React.createClass({
     },
     renderUploading() {
         const isMobile = this.context.isMobile;
-        const submitClassName = ['xxButton', 'xxButton--highlight', 'xxButton--important'];
+        const submitClassName = ['xxButton', 'xxButton--highlight'];
         return (
             <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner" onSubmit={this.doNothing}>
+                <form className="xxUploadDialog-inner">
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
@@ -133,16 +128,12 @@ var VideoUploadOverlay = React.createClass({
                             <button
                                 disabled
                                 className={submitClassName.join(' ')}
-                                type="submit"
                                 data-send-url-type="thumbnails"
-                                onClick={this.doNothing}
                             >{T.get('thumbnails')}</button>
                             <button
                                 disabled
                                 className={submitClassName.join(' ')}
-                                type="submit"
                                 data-send-url-type="gif"
-                                onClick={this.doNothing}
                             >{T.get('gifs')}</button>
                         </div>
                     </div>
@@ -159,18 +150,17 @@ var VideoUploadOverlay = React.createClass({
             return this.renderUploaded();
         }
         const { isOnboarding } = this.props,
-            self = this,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!(self.urlInput && self.urlInput.value),
-            messageNeeded = self.props.error ? <Message message={self.props.error} type={'formError'}/> : null,
-            isMobile = self.context.isMobile
+            isValid = !!(this.urlInput && this.urlInput.value),
+            messageNeeded = this.props.error ? <Message message={this.props.error} type={'formError'}/> : null,
+            isMobile = this.context.isMobile
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
         return (
             <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner" onSubmit={self.doNothing}>
+                <form className="xxUploadDialog-inner" onSubmit={this.handleUrlSubmit}>
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
@@ -182,9 +172,9 @@ var VideoUploadOverlay = React.createClass({
                          <DesktopUploadButton
                              id="xx-upload-local"
                              {...this.props}
-                             accept={"video/*;capture=camcorder"}
+                             accept={UTILS.VIDEO_ACCEPT_MASK}
                              multiple={false}
-                             sendLocalPhotos={self.props.handleUploadVideo}
+                             sendLocalPhotos={this.props.handleUploadVideo}
                          />
                         <label className="xxLabel" htmlFor="xx-upload-url">
                             {T.get('url')}
@@ -204,15 +194,13 @@ var VideoUploadOverlay = React.createClass({
                         <div className="xxUploadButtonsChooser">
                             <button
                                  className={submitClassName.join(' ')}
-                                 type="submit"
                                  data-send-url-type="thumbnails"
-                                 onClick={self.handleUrlSubmit}
+                                 onClick={this.handleUrlSubmit}
                              >{T.get('thumbnails')}</button>
                              <button
                                  className={submitClassName.join(' ')}
-                                 type="submit"
                                  data-send-url-type="gif"
-                                 onClick={self.handleUrlSubmit}
+                                 onClick={this.handleUrlSubmit}
                              >{T.get('gifs')}</button>
                         </div>
                     </div>
