@@ -93,22 +93,28 @@ export const CollectionSubmitButton = React.createClass({
 });
 
 export const DesktopUploadButton = React.createClass({
+
+    getDefaultProps() {
+        return {
+            multiple: true,
+            accept: UTILS.IMAGE_ACCEPT_MASK,
+        }
+    },
+
     render: function() {
-        const multiple = this.props.multiple || true;
-        const accept = this.props.accept || 'image/*';
         const text = this.props.isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop');
         return (
             <button
                 onClick={this.props.handleInputClick}
                 className="xxButton xxButton--Chooser-Computer"
             >
-                {accept !== 'image/*' && text}
+                {this.props.accept !== 'image/*' && text}
                 <input
                     disabled={this.props.uploadState === 'loading'}
                     id="file-input"
                     type="file"
-                    multiple={multiple}
-                    accept={accept}
+                    multiple={this.props.multiple}
+                    accept={this.props.accept}
                     onChange={this.props.sendLocalPhotos}
                 />
             </button>

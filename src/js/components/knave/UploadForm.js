@@ -34,21 +34,20 @@ var UploadForm = React.createClass({
         }
     },
     getInitialState: function() {
-        var self = this;
         return {
             isOpen: false,
             tagId: null,
             formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
-            urlInput:'',
-            title:'',
-            collectionName:'',
+            urlInput: '',
+            title: '',
+            collectionName: '',
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
             uploadedTotal: 0,
             uploadThumbnailIds: [],
             errorFiles: [],
             overlayCode: null,
-            showUrlUploader: false
+            showUrlUploader: false,
         };
     },
 
@@ -145,7 +144,6 @@ var UploadForm = React.createClass({
     },
     handleUrlSubmit: function(e, url, title) {
         const self = this;
-        e.preventDefault();
         self.sendVideoUrl(e.target.dataset.sendUrlType, url, title);
     },
     handleUpdateVideoDefault: function(e) {
