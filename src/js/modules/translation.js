@@ -278,7 +278,8 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             // Analyze page
-            'upload.videoUrl': 'Enter a video URL here!',
+            'upload.videoUploadInstruct': 'Upload a Video From\u003A', 
+            'upload.videoUrl': 'Enter a video URL here',
             'upload.submit': 'Submit',
             'upload.optionalTitle': 'Optional Title',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',

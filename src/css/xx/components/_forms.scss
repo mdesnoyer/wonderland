@@ -406,7 +406,7 @@
         }
         span {
             margin-left: .5em;
-            font-size: medium;
+            font-size: large;
         }
         &::before {
             width: 100%;
@@ -422,6 +422,7 @@
                     vertical-align: sub;
             }            
         }
+        
     }
     &--Chooser-URL {
         position: relative;
