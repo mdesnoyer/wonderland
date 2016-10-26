@@ -47,9 +47,6 @@ var VideoUploadOverlay = React.createClass({
         return (
             <section className="xxUploadDialog">
                 <form className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">
-                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
-                    </h2>
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('upload')}
