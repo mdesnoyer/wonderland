@@ -12,6 +12,7 @@ import {
 } from './UploadActions'
 
 
+import { MobileLoadingDisplay } from './UploadDisplays';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
@@ -54,7 +55,7 @@ var UploadActionsContainer = React.createClass({
             );
         };
 
-        if (this.props.formState === 'addVideo') {
+        if (['addVideo', 'uploadingVideo', 'uploadedVideo'].includes(this.props.formState)) {
             return (
                 <div className="xxOverlay"
                     ref={overlay => this._overlay = overlay}
