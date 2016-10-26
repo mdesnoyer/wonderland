@@ -160,37 +160,29 @@ var VideoUploadOverlay = React.createClass({
                     {messageNeeded}
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload')}
+                            Upload a Video From: 
                         </label>
                         <div className="xxUploadDialog-block">
-                        <div className="xxUploadButtonsChooser">
                             <DesktopUploadButton
                                 id="xx-upload-local"
                                 {...this.props}
                                 accept={"video/*"}
                                 multiple={false}
                                 sendLocalPhotos={self.props.handleUploadVideo}
+                                isMobile={isMobile}
                             />
-                            <UrlUploadButton {...props} />
-                        </div>
+                        
                         </div>
                         <div className="xxUploadButtonsChooser">
-                            <label className="xxLabel">{isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop')}</label>
-                            <label className="xxLabel">URL</label>
+                            <label className="xxLabel">OR</label>
                         </div>
-                        {
-
-                            !this.props.showUrlUploader ? '' : (
-                                <input
-                                    id="xx-upload-url"
-                                    ref={(urlInput) => { this.urlInput = urlInput; }}
-                                    className="xxInputText"
-                                    placeholder={T.get('upload.videoUrl')}
-                                    type="url"
-                                />
-                            )
-                        }
-
+                            <input
+                                id="xx-upload-url"
+                                ref={(urlInput) => { this.urlInput = urlInput; }}
+                                className="xxInputText"
+                                placeholder={T.get('upload.videoUrl')}
+                                type="url"
+                            />
                     </div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">

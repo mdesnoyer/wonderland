@@ -319,7 +319,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'tooltip.share.linkedin': 'Share on LinkedIn',
 
             // Labels
-            'label.location.myPhone': 'My Phone',
+            'label.location.myPhone': 'Mobile Device',
             'label.location.desktop': 'Desktop',
             'label.sortBy' : 'Sort By',
             'label.defaultImage' : 'Default Image',
