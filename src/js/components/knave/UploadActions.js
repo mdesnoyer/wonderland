@@ -93,18 +93,28 @@ export const CollectionSubmitButton = React.createClass({
 });
 
 export const DesktopUploadButton = React.createClass({
+
+    getDefaultProps() {
+        return {
+            multiple: true,
+            accept: UTILS.IMAGE_ACCEPT_MASK,
+        }
+    },
+
     render: function() {
+        const text = this.props.isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop');
         return (
             <button
                 onClick={this.props.handleInputClick}
                 className="xxButton xxButton--Chooser-Computer"
             >
+                {this.props.accept !== 'image/*' && <span className="uploadButtonText">{text}</span>}
                 <input
                     disabled={this.props.uploadState === 'loading'}
                     id="file-input"
                     type="file"
-                    multiple
-                    accept="image/*"
+                    multiple={this.props.multiple}
+                    accept={this.props.accept}
                     onChange={this.props.sendLocalPhotos}
                 />
             </button>
@@ -119,7 +129,6 @@ export const DropBoxUploadButton = React.createClass({
                 disabled={this.props.uploadState === 'loading'}
                 className="xxButton xxButton--Chooser-Dropbox"
                 id="dropBoxSDK"
-                disabled={this.props.uploadState === 'loading'}
                 onClick={this.props.grabDropBox}
             ></button>
         );
@@ -130,7 +139,7 @@ export const UrlUploadButton = React.createClass({
     render: function() {
         return (
             <button
-                disabled={this.props.uploadState === 'loading'} 
+                disabled={this.props.uploadState === 'loading'}
                 className="xxButton xxButton--Chooser-URL"
                 onClick={this.props.handleshowUrlUploader}>
             </button>
@@ -151,7 +160,7 @@ export const UrlUploadInput = React.createClass({
                     value={this.props.urlInput}
                     onChange={e => this.props.updateField('urlInput', e.target.value)}
                 />
-                <button 
+                <button
                     className='xxButton xxButton--highlight xxButton--has-urlDrop'
                     disabled={this.props.uploadState === 'loading'}
                 >
@@ -165,7 +174,7 @@ export const UrlUploadInput = React.createClass({
 export const DragAndDrop = React.createClass({
     contextTypes: {
         isMobile: PropTypes.bool
-    },  
+    },
     render: function() {
         var props = this.props,
             isMobile = this.context.isMobile

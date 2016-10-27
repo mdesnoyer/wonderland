@@ -52,9 +52,11 @@ var AJAXModule = {
             if(url !== 'batch') {
                 _options = _.merge({}, self.baseOptions, _options);
             }
-            if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
-                _options.headers = _options.headers || {};
-                _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
+            if (!_options.no_authorization_header) {
+                if (_options.host !== CONFIG.AUTH_HOST && self.Session.state.accessToken) {
+                    _options.headers = _options.headers || {};
+                    _options.headers.Authorization = 'Bearer ' + self.Session.state.accessToken;
+                }
             }
             if (_options.method === 'GET') {
                 _url = url + (url.indexOf('?') > -1 ? '&' : '?' ) + self.getQueryParam(_options.data);
