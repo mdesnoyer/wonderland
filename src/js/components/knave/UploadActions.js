@@ -102,11 +102,13 @@ export const DesktopUploadButton = React.createClass({
     },
 
     render: function() {
+        const text = this.props.isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop');
         return (
             <button
                 onClick={this.props.handleInputClick}
                 className="xxButton xxButton--Chooser-Computer"
             >
+                {this.props.accept !== 'image/*' && <span className="uploadButtonText">{text}</span>}
                 <input
                     disabled={this.props.uploadState === 'loading'}
                     id="file-input"
@@ -127,7 +129,6 @@ export const DropBoxUploadButton = React.createClass({
                 disabled={this.props.uploadState === 'loading'}
                 className="xxButton xxButton--Chooser-Dropbox"
                 id="dropBoxSDK"
-                disabled={this.props.uploadState === 'loading'}
                 onClick={this.props.grabDropBox}
             ></button>
         );

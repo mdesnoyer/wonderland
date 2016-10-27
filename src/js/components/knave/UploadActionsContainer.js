@@ -77,9 +77,9 @@ var UploadActionsContainer = React.createClass({
                         <UrlUploadButton {...props} />
                     </div>
                     <div className="xxUploadButtonsChooser">
-                        <label className="xxLabel">Dropbox</label>
+                        <label className="xxLabel">{T.get('imageUpload.dropBox')}</label>
                         <label className="xxLabel">{isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop')}</label>
-                        <label className="xxLabel">URL</label>
+                        <label className="xxLabel">{T.get('upload.videoUrlLabel')}</label>
                     </div>
                     </div>
                     <div className="xxCollectionAction-buttons">

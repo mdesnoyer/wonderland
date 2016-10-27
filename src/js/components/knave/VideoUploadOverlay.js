@@ -47,19 +47,13 @@ var VideoUploadOverlay = React.createClass({
         return (
             <section className="xxUploadDialog">
                 <form className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">
-                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
-                    </h2>
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('upload')}
                         </label>
-                        <input
-                            id="xx-upload-local"
-                            className="xxInputText"
-                            disabled
-                            placeholder={T.get('upload.doneUpload')}
-                        />
+                        <div className="xxUploadDialog-block">
+                            <div className="xxDragAndDrop-success"></div>
+                        </div>
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('label.title')}
                         </label>
@@ -100,26 +94,9 @@ var VideoUploadOverlay = React.createClass({
                     <h2 className="xxTitle">
                         { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
                     </h2>
-                    <div className="xxFormField">
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload')}
-                        </label>
-                        <input
-                            id="xx-upload-local"
-                            className="xxInputText"
-                            disabled
-                            placeholder={T.get('upload.uploading')}
-                        />
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('label.title')}
-                        </label>
-                        <input
-                            id="xx-upload-title"
-                            className="xxInputText"
-                            ref={(titleInput) => { this.titleInput = titleInput; }}
-                            placeholder={T.get('upload.optionalTitle')}
-                        />
-                    </div>
+                    <div className="xxUploadDialog-block">
+                        <div className="xxDragAndDrop-spinner"></div>
+                        </div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
                             {T.get('copy.analyzeVideo.giveMe')}
@@ -167,18 +144,21 @@ var VideoUploadOverlay = React.createClass({
                     {messageNeeded}
                     <div className="xxFormField">
                         <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload')}
+                            {T.get('upload.videoUploadInstruct')}
                         </label>
-                         <DesktopUploadButton
-                             id="xx-upload-local"
-                             {...this.props}
-                             accept={UTILS.VIDEO_ACCEPT_MASK}
-                             multiple={false}
-                             sendLocalPhotos={this.props.handleUploadVideo}
-                         />
-                        <label className="xxLabel" htmlFor="xx-upload-url">
-                            {T.get('url')}
-                        </label>
+                        <div className="xxUploadDialog-block">
+                            <DesktopUploadButton
+                                 id="xx-upload-local"
+                                 {...this.props}
+                                 accept={UTILS.VIDEO_ACCEPT_MASK}
+                                 multiple={false}
+                                 sendLocalPhotos={this.props.handleUploadVideo}
+                                 isMobile={isMobile}
+                            />
+                        </div>
+                        <div className="xxUploadButtonsChooser">
+                            <label className="xxLabel">{T.get('imageUpload.or')}</label>
+                        </div>
                         <input
                             id="xx-upload-url"
                             ref={(urlInput) => { this.urlInput = urlInput; }}
