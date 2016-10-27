@@ -31,7 +31,7 @@ export const MobileInitialDisplay = React.createClass({
 });
 
 export const LoadingDisplay = React.createClass({
-    
+
     render: function() {
         var message = T.get('imageUpload.currentCount', {'@number': this.props.uploadingTotal }),
             errorMessage = T.get('imageUpload.UploadErrors.message', {'@number': this.props.errorFiles.length })

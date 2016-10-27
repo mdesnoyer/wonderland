@@ -959,6 +959,37 @@ export const SendActions = Object.assign({}, AjaxMixin, {
     },
 });
 
+export const S3Actions = Object.assign({}, AjaxMixin, {
+
+    uploadVideo(file, callback) {
+        const accountId = SESSION.state.accountId;
+        const filename = UTILS.generateId();
+
+        S3Actions.getUploadUrl(filename)
+        .then(res => {
+            const url = res.url;
+            const options = {
+                host: url,
+                no_authorization_header: true,
+                data: file,
+                contentType: 'multipart/form-data',
+                processData: false,
+            }
+            S3Actions.put('', options)
+            .then((res) => callback(res, S3Actions.getBaseUrl(url)));
+        });
+
+    },
+
+    getUploadUrl(filename) {
+        return S3Actions.get('videos/upload', { data: { filename } });
+    },
+
+    getBaseUrl(url) {
+        return url.split('?')[0];
+    }
+});
+
 // Cancel pending requests.
 // TODO invert control for that Actions register themselves.
 export const cancelActions = () => {

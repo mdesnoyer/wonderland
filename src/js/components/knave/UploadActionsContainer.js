@@ -12,6 +12,7 @@ import {
 } from './UploadActions'
 
 
+import { MobileLoadingDisplay } from './UploadDisplays';
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
 import TRACKING from '../../modules/tracking';
@@ -54,7 +55,7 @@ var UploadActionsContainer = React.createClass({
             );
         };
 
-        if (this.props.formState === 'addVideo') {
+        if (['addVideo', 'uploadingVideo', 'uploadedVideo'].includes(this.props.formState)) {
             return (
                 <div className="xxOverlay"
                     ref={overlay => this._overlay = overlay}
@@ -76,9 +77,9 @@ var UploadActionsContainer = React.createClass({
                         <UrlUploadButton {...props} />
                     </div>
                     <div className="xxUploadButtonsChooser">
-                        <label className="xxLabel">Dropbox</label>
+                        <label className="xxLabel">{T.get('imageUpload.dropBox')}</label>
                         <label className="xxLabel">{isMobile ? T.get('label.location.myPhone') : T.get('label.location.desktop')}</label>
-                        <label className="xxLabel">URL</label>
+                        <label className="xxLabel">{T.get('upload.videoUrlLabel')}</label>
                     </div>
                     </div>
                     <div className="xxCollectionAction-buttons">
