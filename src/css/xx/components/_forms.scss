@@ -394,7 +394,7 @@
         &::before {
             @include font-awesome("f16b");
             @include breakpoint-mobile {
-                font-size: large;
+                font-size: $default-font-size;
             }
         }
     }
@@ -404,9 +404,9 @@
         input {
             display: none;
         }
-        span {
-            margin-left: .5em;
-            font-size: large;
+        .uploadButtonText {
+            margin-left: 0.5em;
+            font-size: $default-font-size;
         }
         &::before {
             width: 100%;
@@ -418,7 +418,7 @@
         @include breakpoint-mobile {
             &::before {
                 @include font-awesome("f10b");
-                    font-size: x-large;
+                    font-size: $mobile-thumbnail-score-size;
                     vertical-align: sub;
             }            
         }
@@ -428,7 +428,7 @@
         position: relative;
         &::before {
             @include font-awesome("f0c1");
-            font-size: large;
+            font-size: $default-font-size;
         }
     }
     &--Chooser-Thumbnail {

@@ -278,11 +278,11 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             // Analyze page
-            'upload.videoUploadInstruct': 'Upload a Video From\u003A', 
+            'upload.videoUploadInstruct': 'Upload a video From\u003A', 
             'upload.videoUrl': 'Enter a video URL here',
             'upload.videoUrlLabel': 'Video Url',
             'upload.submit': 'Submit',
-            'upload.optionalTitle': 'Optional Title',
+            'upload.optionalTitle': 'Optional',
             'upload.optionalDefaultThumbnailUrl': 'Optional Default Thumbnail URL',
             'upload.uploading': 'Uploading...',
             'upload.doneUpload': 'Done uploading!',

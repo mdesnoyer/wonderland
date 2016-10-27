@@ -108,7 +108,7 @@ export const DesktopUploadButton = React.createClass({
                 onClick={this.props.handleInputClick}
                 className="xxButton xxButton--Chooser-Computer"
             >
-                {this.props.accept !== 'image/*' && text}
+                {this.props.accept !== 'image/*' && <span className={"uploadButtonText"}>{text}</span>}
                 <input
                     disabled={this.props.uploadState === 'loading'}
                     id="file-input"

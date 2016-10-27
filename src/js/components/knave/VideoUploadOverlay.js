@@ -53,7 +53,6 @@ var VideoUploadOverlay = React.createClass({
                         </label>
                         <div className="xxUploadDialog-block">
                             <div className="xxDragAndDrop-success"></div>
-                            <span>{T.get('upload.doneUpload')}</span>
                         </div>
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('label.title')}
@@ -97,7 +96,6 @@ var VideoUploadOverlay = React.createClass({
                     </h2>
                     <div className="xxUploadDialog-block">
                         <div className="xxDragAndDrop-spinner"></div>
-                            <span>{T.get('upload.uploading')}</span>
                         </div>
                     <div className="xxFormButtons">
                         <label className="xxLabel" htmlFor="xx-upload-url">
