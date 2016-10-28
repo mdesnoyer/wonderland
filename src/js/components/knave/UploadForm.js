@@ -252,7 +252,7 @@ var UploadForm = React.createClass({
 
         var self = this,
             videoId = UTILS.generateId(),
-            title = url.includes(UTILS.NEON_S_THREE_URL) ? self.grabVideoTitle(title) : null,
+            title = url.includes(UTILS.NEON_S3_URL) ? self.grabVideoTitle(title) : null,
             options = {
                 data: {
                     title,
@@ -547,11 +547,7 @@ var UploadForm = React.createClass({
     grabVideoTitle(title) {
         const datetimeFormat = 'MMM Do YYYY, h:mm:ss a';
 
-        if (title) {
-            return title;      
-        } else {
-            return moment().format(datetimeFormat);
-        };
+        return title || moment.format(datetimeFormat);
     },
 
     createFormDataArray: function(fileArray) {

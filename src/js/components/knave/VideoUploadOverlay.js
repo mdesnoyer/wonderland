@@ -51,7 +51,6 @@ var VideoUploadOverlay = React.createClass({
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
-        console.log(this.props.urlInput);
         return (
             <section className="xxUploadDialog">
                 <form className="xxUploadDialog-inner" onSubmit={this.handleUrlSubmit}>

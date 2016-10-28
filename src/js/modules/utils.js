@@ -369,7 +369,7 @@ var UTILS = {
     VIDEO_ACCEPT_MASK: 'video/*',
     MAX_IMAGE_UPLOAD_COUNT: 5,
     NEON_TWITTER_HANDLE: 'neonlab',
-    NEON_S_THREE_URL: 'https://neon-user-video-upload.s3.amazonaws.com',
+    NEON_S3_URL: 'https://neon-user-video-upload.s3.amazonaws.com',
     rando: function(num) {
         return Math.floor(Math.random() * num + 1);
     },
