@@ -90,7 +90,7 @@ var UploadForm = React.createClass({
         var self = this;
         e.preventDefault();
         // if clicks out of their upload box then return to the choose upload type state
-        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', uploadState: 'initial' });
     },
     updateField: function(field, value) {
         var self = this;
@@ -536,12 +536,16 @@ var UploadForm = React.createClass({
         const self = this;
         const file = e.target.files[0];
         S3Actions.uploadVideo(file, self.handleSentVideo);
-        self.setState({ formState: 'uploadingVideo' });
+        // change form state to uploadState
+        // self.setState({ formState: 'uploadingVideo' });
+        self.setState({ uploadState: 'loading' });
     },
 
     handleSentVideo(res, urlInput) {
         const self = this;
-        self.setState({ urlInput, formState: 'uploadedVideo' });
+        // change form state to uploadState
+        // self.setState({ urlInput, formState: 'uploadedVideo' });
+        self.setState({ urlInput, uploadState: 'success' });
     },
 
     createFormDataArray: function(fileArray) {
