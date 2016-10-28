@@ -23,7 +23,6 @@ var VideoUploadOverlay = React.createClass({
         e.preventDefault();
         const self = this;
         const url = self.getUrl();
-        debugger
         if (url) {
             self.props.handleUrlSubmit(e, url, self.getTitle());
         }
@@ -45,13 +44,14 @@ var VideoUploadOverlay = React.createClass({
     render: function() {
         const { isOnboarding } = this.props,
             submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!(this.urlInput && this.urlInput.value),
+            isValid = !!(this.props.urlInput),
             messageNeeded = this.props.error ? <Message message={this.props.error} type={'formError'}/> : null,
             isMobile = this.context.isMobile
         ;
         if (isValid) {
             submitClassName.push('xxButton--important');
         }
+        console.log(this.props.urlInput)
         return (
             <section className="xxUploadDialog">
                 <form className="xxUploadDialog-inner" onSubmit={this.handleUrlSubmit}>
@@ -93,15 +93,18 @@ var VideoUploadOverlay = React.createClass({
                             <div className="xxUploadDialog-block">
                                 <div className="xxDragAndDrop-spinner"></div>
                             </div>
-
                         )
                     }
                     {
                         this.props.uploadState === 'success' && (
+                            <div className="xxUploadDialog-block">
+                                <div className="xxDragAndDrop-success"></div>
+                            </div>
+                        )
+                    }
+                    {
+                        (this.props.uploadState === 'success' || this.props.uploadState === 'loading') && (
                             <div>
-                                <div className="xxUploadDialog-block">
-                                    <div className="xxDragAndDrop-success"></div>
-                                </div>
                                 <label className="xxLabel" htmlFor="xx-upload-local">
                                     {T.get('label.title')}
                                 </label>

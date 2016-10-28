@@ -90,7 +90,7 @@ var UploadForm = React.createClass({
         var self = this;
         e.preventDefault();
         // if clicks out of their upload box then return to the choose upload type state
-        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', uploadState: 'initial' });
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', uploadState: 'initial', urlInput: '' });
     },
     updateField: function(field, value) {
         var self = this;
