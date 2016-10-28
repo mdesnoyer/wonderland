@@ -536,23 +536,19 @@ var UploadForm = React.createClass({
         const self = this;
         const file = e.target.files[0];
         S3Actions.uploadVideo(file, self.handleSentVideo);
-        // change form state to uploadState
-        // self.setState({ formState: 'uploadingVideo' });
         self.setState({ uploadState: 'loading' });
     },
 
     handleSentVideo(res, urlInput) {
         const self = this;
-        // change form state to uploadState
-        // self.setState({ urlInput, formState: 'uploadedVideo' });
         self.setState({ urlInput, uploadState: 'success' });
     },
 
     grabVideoTitle(title) {
-        const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
+        const datetimeFormat = 'MMM Do YYYY, h:mm:ss a';
 
         if (title) {
-          return title;      
+            return title;      
         } else {
             return moment().format(datetimeFormat);
         };
