@@ -251,9 +251,10 @@ var UploadForm = React.createClass({
     sendVideoUrl: function(sendUrlType, url, title) {
 
         const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
+        const newTitle = title ? title : moment().format(datetimeFormat);
         var self = this,
             videoId = UTILS.generateId(),
-            title = url.includes('https://neon-user-video-upload.s3.amazonaws.com') ? moment().format(datetimeFormat) : title,
+            title = url.includes('https://neon-user-video-upload.s3.amazonaws.com') ? newTitle : null,
             options = {
                 data: {
                     title,

@@ -23,6 +23,7 @@ var VideoUploadOverlay = React.createClass({
         e.preventDefault();
         const self = this;
         const url = self.getUrl();
+        debugger
         if (url) {
             self.props.handleUrlSubmit(e, url, self.getTitle());
         }
