@@ -252,7 +252,7 @@ var UploadForm = React.createClass({
 
         var self = this,
             videoId = UTILS.generateId(),
-            title = url.includes('https://neon-user-video-upload.s3.amazonaws.com') ? self.grabVideoTitle(title) : null,
+            title = url.includes(UTILS.NEON_S_THREE_URL) ? self.grabVideoTitle(title) : null,
             options = {
                 data: {
                     title,
