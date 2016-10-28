@@ -250,11 +250,9 @@ var UploadForm = React.createClass({
     },
     sendVideoUrl: function(sendUrlType, url, title) {
 
-        const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
-        const newTitle = title ? title : moment().format(datetimeFormat);
         var self = this,
             videoId = UTILS.generateId(),
-            title = url.includes('https://neon-user-video-upload.s3.amazonaws.com') ? newTitle : null,
+            title = url.includes('https://neon-user-video-upload.s3.amazonaws.com') ? self.grabVideoTitle(title) : null,
             options = {
                 data: {
                     title,
@@ -548,6 +546,16 @@ var UploadForm = React.createClass({
         // change form state to uploadState
         // self.setState({ urlInput, formState: 'uploadedVideo' });
         self.setState({ urlInput, uploadState: 'success' });
+    },
+
+    grabVideoTitle(title) {
+        const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
+
+        if (title) {
+          return title;      
+        } else {
+            return moment().format(datetimeFormat);
+        };
     },
 
     createFormDataArray: function(fileArray) {
