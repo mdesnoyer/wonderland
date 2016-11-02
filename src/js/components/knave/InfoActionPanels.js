@@ -46,9 +46,6 @@ export const InfoDemoLiftPanel = React.createClass({
     render() {
         return (
             <div>
-                <h1 className="xxCollection-title">
-                    {this.props.title}
-                </h1>
                 <DemographicFilters
                     onChange={this.props.onDemographicChange}
                     demographicOptions={this.props.demographicOptions}
