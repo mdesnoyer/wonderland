@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var sassLint = require('gulp-sass-lint');
+var eslint = require('gulp-eslint');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -44,8 +45,11 @@ if (env == 'prod') {
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
 
-var test_output_dir = 'test_output';
-var test_output_filename = 'test_results.xml';
+var testOutputDir = 'test_output';
+var testOutputFile = 'test_results.xml';
+
+var sassFileSource = './src/css/**/*.scss'
+var jsFileSources = ['src/js/**/*.js', '__tests__/**/*.js'];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -272,7 +276,7 @@ gulp.task('default', null, function() {
 });
 
 gulp.task('sass-lint', function () {
-  return gulp.src('./src/css/**/*.scss')
+  return gulp.src(sassFileSource)
     .pipe(sassLint({
         options: {
             'config-file': '.sass-lint.yml'
@@ -280,6 +284,29 @@ gulp.task('sass-lint', function () {
     }))
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError())
+});
+
+// Like sass-lint task but output in checksyle xml for CI.
+gulp.task('sass-lint-checkstyle', function () {
+  return gulp.src(sassFileSource)
+    .pipe(sassLint({options: {
+        configFile: '.sass-lint.yml',
+        formatter: 'checkstyle',
+    }}))
+    .pipe(sassLint.format())
+});
+
+gulp.task('eslint', function() {
+    return gulp.src(jsFileSources)
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('eslint-checkstyle', function() {
+    return gulp.src(jsFileSources)
+        .pipe(eslint())
+        .pipe(eslint.format('checkstyle', process.stdout));
 });
 
 gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
@@ -326,12 +353,18 @@ gulp.task('test', ['run-tests'], function() {
     var path = require('path');
     var async = require('async');
     var reportMerger = require('junit-report-merger');
+<<<<<<< HEAD
 
     var results = fs.readdirSync(test_output_dir);
 
     var output = path.join(test_output_dir, test_output_filename);
     var files = results.map(x => path.join(test_output_dir, x));
     reportMerger.mergeFiles(output, files, {}, function() {
+=======
+    var results = fs.readdirSync(testOutputDir);
+    var files = results.map(x => path.join(testOutputDir, x));
+    reportMerger.mergeFiles(testOutputFile, files, {}, function() {
+>>>>>>> development
         async.each(files, fs.unlink);
     });
 });

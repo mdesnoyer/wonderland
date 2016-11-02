@@ -393,29 +393,42 @@
         position: relative;
         &::before {
             @include font-awesome("f16b");
+            @include breakpoint-mobile {
+                font-size: $default-font-size;
+            }
         }
     }
     &--Chooser-Computer {
+        
         position: relative;
         input {
             display: none;
+        }
+        .uploadButtonText {
+            margin-left: 0.5em;
+            font-size: $default-font-size;
         }
         &::before {
             width: 100%;
             height: 99%;
             background: $white;
             @include font-awesome("f108");
+            vertical-align: middle;
         }  
         @include breakpoint-mobile {
             &::before {
                 @include font-awesome("f10b");
+                    font-size: $mobile-thumbnail-score-size;
+                    vertical-align: sub;
             }            
         }
+        
     }
     &--Chooser-URL {
         position: relative;
         &::before {
             @include font-awesome("f0c1");
+            font-size: $default-font-size;
         }
     }
     &--Chooser-Thumbnail {

@@ -401,7 +401,7 @@ $zindex-upload-drag-and-drop: 1;
     position: relative;
     &::after {
         @include font-awesome("f021");
-        margin: 50px auto;
+        margin: 25px auto;
         display: block;
         box-sizing: border-box;
         width: 100px;
@@ -420,7 +420,7 @@ $zindex-upload-drag-and-drop: 1;
     position: relative;
     &::after {
         @include font-awesome("f05d");
-        margin: 50px auto;
+        margin: 25px auto;
         display: block;
         box-sizing: border-box;
         width: 100px;

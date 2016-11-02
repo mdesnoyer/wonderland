@@ -70,6 +70,10 @@ class ImageCollection extends Collection {
     }
 
     onRightThumbnailClick() {
+        this.props.onThumbnailClick(this.props.rightFeatureThumbnail.thumbnail_id);
+    }
+
+    onRightThumbnailClick() {
         const right = this.props.rightFeatureThumbnail;
         const left = this.props.leftFeatureThumbnail;
         if (left.thumbnail_id === right.thumbnail_id) {

@@ -7,6 +7,7 @@ import cookie from 'react-cookie';
 import accept from 'attr-accept';
 import loadImage from 'blueimp-load-image';
 import toBlob from 'blueimp-canvas-to-blob';
+import moment from 'moment';
 
 import UTILS from '../../modules/utils';
 import T from '../../modules/translation';
@@ -15,7 +16,7 @@ import SESSION from '../../modules/session';
 
 import Account from '../../mixins/Account';
 import AjaxMixin from '../../mixins/Ajax';
-import { LoadActions, tagStore } from '../../stores/CollectionStores';
+import { LoadActions, S3Actions, tagStore } from '../../stores/CollectionStores';
 import OverLayMessage from './OverLayMessage';
 import UploadActionsContainer from './UploadActionsContainer';
 
@@ -33,20 +34,20 @@ var UploadForm = React.createClass({
         }
     },
     getInitialState: function() {
-        var self = this;
         return {
             isOpen: false,
             tagId: null,
             formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
-            urlInput:'',
-            collectionName:'',
+            urlInput: '',
+            title: '',
+            collectionName: '',
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
             uploadedTotal: 0,
             uploadThumbnailIds: [],
             errorFiles: [],
             overlayCode: null,
-            showUrlUploader: false
+            showUrlUploader: false,
         };
     },
 
@@ -90,7 +91,7 @@ var UploadForm = React.createClass({
         var self = this;
         e.preventDefault();
         // if clicks out of their upload box then return to the choose upload type state
-        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', uploadState: 'initial', urlInput: '' });
     },
     updateField: function(field, value) {
         var self = this;
@@ -141,10 +142,9 @@ var UploadForm = React.createClass({
             this.setState(this.getInitialState());
         }
     },
-    handleUrlSubmit: function(e) {
+    handleUrlSubmit: function(e, url, title) {
         const self = this;
-        e.preventDefault();
-        self.sendVideoUrl(e.target.dataset.sendUrlType);
+        self.sendVideoUrl(e.target.dataset.sendUrlType, url, title);
     },
     handleUpdateVideoDefault: function(e) {
         //set state to loading once a user has submitted their new default thumb
@@ -221,6 +221,7 @@ var UploadForm = React.createClass({
                             handleInputClick={self.handleInputClick}
                             handleCancelClick={self.handleCancelClick}
                             handleOpenMessageErrorFiles={self.handleOpenMessageErrorFiles}
+                            handleUploadVideo={self.handleUploadVideo}
                             grabDropBox={self.grabDropBox}
                             sendLocalPhotos={self.sendLocalPhotos}
                         />
@@ -248,13 +249,16 @@ var UploadForm = React.createClass({
                 self.setState({ isOpen: false, overlayCode: err.code });
         }
     },
-    sendVideoUrl: function(sendUrlType) {
+    sendVideoUrl: function(sendUrlType, url, title) {
+
         var self = this,
             videoId = UTILS.generateId(),
+            title = url.includes(UTILS.NEON_S3_URL) ? self.grabVideoTitle(title) : null,
             options = {
                 data: {
+                    title,
                     external_video_ref: videoId,
-                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(self.state.urlInput))
+                    url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url))
                 }
             }
         ;
@@ -265,7 +269,7 @@ var UploadForm = React.createClass({
             options.data['n_clips'] = 5;
         };
 
-        if (!UTILS.validateUrl(self.state.urlInput)) {
+        if (!UTILS.validateUrl(url)) {
             self.throwUploadError({ code: 'VidInvalidUrl' });
             return
         };
@@ -527,6 +531,26 @@ var UploadForm = React.createClass({
                 self.throwUploadError(err);
             });
     },
+
+    handleUploadVideo(e) {
+        e.preventDefault();
+        const self = this;
+        const file = e.target.files[0];
+        S3Actions.uploadVideo(file, self.handleSentVideo);
+        self.setState({ uploadState: 'loading' });
+    },
+
+    handleSentVideo(res, urlInput) {
+        const self = this;
+        self.setState({ urlInput, uploadState: 'success' });
+    },
+
+    grabVideoTitle(title) {
+        const datetimeFormat = 'MMM Do YYYY, h:mm:ss a';
+
+        return title || moment().format(datetimeFormat);
+    },
+
     createFormDataArray: function(fileArray) {
         var formDataArray = [];
         fileArray.forEach(function(array, i){
