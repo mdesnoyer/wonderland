@@ -547,7 +547,7 @@ var UploadForm = React.createClass({
     grabVideoTitle(title) {
         const datetimeFormat = 'MMM Do YYYY, h:mm:ss a';
 
-        return title || moment.format(datetimeFormat);
+        return title || moment().format(datetimeFormat);
     },
 
     createFormDataArray: function(fileArray) {
