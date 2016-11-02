@@ -31,7 +31,12 @@ var VideoUploadOverlay = React.createClass({
         if (parts.length > 1) {
             parts.pop()
         }
-        self.titleInput.value = parts.join('');
+        const joined = parts.join('');
+        // iOS camera gives a long, hash-like filename that
+        // doesn't help as a title.
+        if (joined.length < 40) {
+            self.titleInput.value = joined;
+        }
 
         self.props.handleUploadVideo(file);
     },
