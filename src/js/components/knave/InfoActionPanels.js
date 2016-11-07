@@ -118,7 +118,7 @@ export const FilterPanel = React.createClass({
             self.props.cancelClickHandler();
             self.props.onDemographicChange([enumGender, enumAge]);
         }
-        if (!Array.isArray(this.props.clips) && this.props.clips) {
+        if (this.props.clips && !Array.isArray(this.props.clips)) {
             return SendActions.refilterVideoForClip(
                 videoId, gender, age, callback);
         }
