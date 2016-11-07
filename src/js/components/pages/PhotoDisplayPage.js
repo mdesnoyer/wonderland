@@ -9,8 +9,8 @@ const photos = require('../../../../data/airbnb-scores.json');
 
 class PhotoDisplayPage extends Component {
 
-    getImgs(binIndex, howMany=12) {
-        return _.sampleSize(photos[binIndex], howMany).map(photo => <img src={photo[0]}/>);
+    getImgs(binIndex, howMany=14) {
+        return _.sampleSize(photos[binIndex], howMany).map(photo => <img title={photo[1]} src={photo[0]}/>);
     }
 
     render() {
