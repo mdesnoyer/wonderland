@@ -1,0 +1,14 @@
+.photoSection {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 0 auto;
+
+    > img {
+        flex-basis: 5%;
+        background-color: red;
+        border: solid white 3px;
+    }
+}
+
