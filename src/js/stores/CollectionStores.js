@@ -931,7 +931,6 @@ export const SendActions = Object.assign({}, AjaxMixin, {
             external_video_ref: videoId,
             reprocess: true,
         });
-
         const enumGender = UTILS.FILTER_GENDER_COL_ENUM[gender];
         const enumAge = UTILS.FILTER_AGE_COL_ENUM[age];
         const tagId = videoStore.get(videoId).tagId;
