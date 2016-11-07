@@ -11,7 +11,7 @@ class PhotoDisplayPage extends Component {
 
     getImgs(binIndex, howMany=14) {
         return _.sampleSize(photos[binIndex], howMany).map((photo) => {
-            return <img title={photo[1]} src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
+            return <img src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
         });
     }
 
