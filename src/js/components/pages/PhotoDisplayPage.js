@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import ImageGallery from 'react-image-gallery';
 
+import { PercentileContainer } from './../photo-page-components/PhotoContainers';
+
 import BasePage from './BasePage';
 import T from '../../modules/translation';
 
@@ -214,6 +216,12 @@ class PhotoDisplayPage extends Component {
         });
     }
 
+    handlePercentileClick(e) {
+        e.preventDefault();
+        alert(e.target.dataset.percentile);
+    }
+
+
     render() {
         const imageGalleryOptions = {
             showNav: false,
@@ -221,33 +229,35 @@ class PhotoDisplayPage extends Component {
             showFullscreenButton: false,
         };
 
-            /*
-                <h1>90th Percentile</h1>
-                <ImageGallery {...imageGalleryOptions} items={photos} />
-                <h1>90th Percentile</h1>
-                <ImageGallery {...imageGalleryOptions} items={photos} />
-                <h1>90th Percentile</h1>
-                <ImageGallery {...imageGalleryOptions} items={photos} />
-                <h1>90th Percentile</h1>
-                <ImageGallery {...imageGalleryOptions} items={photos} />
-            */
         return (
             <div>
-                <h1>90th Percentile</h1>
-                <section className="photoSection">
-                    {this.getPhotoUrls()}
-                </section>
-                <h1>80th Percentile</h1>
-                <section className="photoSection">
-                    {this.getPhotoUrls()}
-                </section>
-                <h1>70th Percentile</h1>
-                <section className="photoSection">
-                    {this.getPhotoUrls()}
-                </section>
+                <PercentileContainer handlePercentileClick={this.handlePercentileClick}/>
             </div>
         );
+
     }
 }
 
 export default PhotoDisplayPage;
+
+
+
+
+
+        // return (
+        //     <div>
+        //     <PercentileContainer  />
+        //         <h1>90th Percentile</h1>
+        //         <section className="photoSection">
+        //             {this.getPhotoUrls()}
+        //         </section>
+        //         <h1>80th Percentile</h1>
+        //         <section className="photoSection">
+        //             {this.getPhotoUrls()}
+        //         </section>
+        //         <h1>70th Percentile</h1>
+        //         <section className="photoSection">
+        //             {this.getPhotoUrls()}
+        //         </section>
+        //     </div>
+        // );
