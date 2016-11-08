@@ -24,11 +24,11 @@ class PhotoDisplayPage extends Component {
 
     handlePercentileClick(e) {
         
-        var locale = "percentile" + e.target.dataset.percentile + "0"
+        var locale = "percentile" + e.target.dataset.percentile
         var element = document.getElementById(locale);
         element.scrollIntoView();
     }
-    
+
     getImgs(binIndex, howMany=14) {
         return _.sampleSize(photos[binIndex], howMany).map((photo) => {
             return <img src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
@@ -43,6 +43,8 @@ class PhotoDisplayPage extends Component {
             showPlayButton: false,
             showFullscreenButton: false,
         };
+        var percentiles = [9,8,7,6,5,4,3,2,1]
+        var self = this;
         return (
             <div>
                 <article className="percentileDescriptionContainer">
@@ -54,42 +56,18 @@ class PhotoDisplayPage extends Component {
                     !UTILS.isMobile() ? <PercentileContainer handlePercentileClick={this.handlePercentileClick} /> : ''
                 */
                 }
-                <h1 id="percentile90" className="xxTitle xxTitle--has-photo-page">90th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(9)}
-                </section>
-                <h1 id="percentile80" className="xxTitle xxTitle--has-photo-page">80th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(8)}
-                </section>
-                <h1 id="percentile70" className="xxTitle xxTitle--has-photo-page">70th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(7)}
-                </section>
-                <h1 id="percentile60" className="xxTitle xxTitle--has-photo-page">60th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(6)}
-                </section>
-                <h1 id="percentile50" className="xxTitle xxTitle--has-photo-page">50th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(5)}
-                </section>
-                <h1 id="percentile40" className="xxTitle xxTitle--has-photo-page">40th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(4)}
-                </section>
-                <h1 id="percentile30" className="xxTitle xxTitle--has-photo-page">30th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(3)}
-                </section>
-                <h1 id="percentile20" className="xxTitle xxTitle--has-photo-page">20th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(2)}
-                </section>
-                <h1 id="percentile10" className="xxTitle xxTitle--has-photo-page">10th Percentile</h1>
-                <section className="photoSection">
-                    {this.getImgs(1)}
-                </section>
+                {
+                    percentiles.map(function(percentile){
+                        return (
+                            <div>
+                                <h1 id={"percentile" + percentile } className="xxTitle xxTitle--has-photo-page">{percentile + "0th Percentile"}</h1>
+                                <section className="photoSection">
+                                    {self.getImgs(percentile)}
+                                </section>
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
 
