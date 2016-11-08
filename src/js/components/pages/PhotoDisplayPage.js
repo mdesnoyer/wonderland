@@ -1,76 +1,98 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import _ from 'lodash';
 
-import { PercentileContainer } from './../photo-page-components/PhotoContainers';
-
-import BasePage from './BasePage';
 import T from '../../modules/translation';
-import UTILS from '../../modules/utils';
 
 const photos = require('../../../../data/airbnb-scores.json');
-
+const objectPhotosMap = require('../../../../data/airbnb-object-photos-map.json');
+const photoUrlMap = require('../../../../data/airbnb-photo-url-map.json');
 
 class PhotoDisplayPage extends Component {
 
-
-    constructor(props) {
-        super(props);
-        this.handlePercentileClick = this.handlePercentileClick.bind(this)
+    constructor() {
+        super();
         this.state = {
-            percentileShow: 9
+            selectedObject: null,
         };
+        this.handleObjectSelect = this.handleObjectSelect.bind(this);
+        this.howMany = 14;
     }
 
-    handlePercentileClick(e) {
-        
-        var locale = "percentile" + e.target.dataset.percentile
-        var element = document.getElementById(locale);
-        element.scrollIntoView();
+    getImgsForBin(binIndex) {
+        return _.sampleSize(photos[binIndex], this.howMany).map(photo =>
+            <img
+                key={photo[0]}
+                alt="bnb"
+                src={this.formatSrc(photo[0])}
+                title={photo[1]}
+            />
+        );
     }
 
-    getImgs(binIndex, howMany=14) {
-        return _.sampleSize(photos[binIndex], howMany).map((photo) => {
-            return <img src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
-        });
+    getImgsForObject() {
+        return _.sampleSize(objectPhotosMap[this.state.selectedObject], this.howMany).map(photoId =>
+            <img
+                key={photoUrlMap[photoId]}
+                alt="bnb"
+                src={this.formatSrc(photoUrlMap[photoId])}
+            />
+        );
     }
 
+    formatSrc(key) {
+        return `https://a0.muscache.com/im/pictures/${key}.jpg?aki_policy=x_medium`;
+    }
+
+    handleObjectSelect(e) {
+        this.setState({ selectedObject: e.target.value });
+    }
 
     render() {
-        
-        const imageGalleryOptions = {
-            showNav: false,
-            showPlayButton: false,
-            showFullscreenButton: false,
-        };
-        var percentiles = [9,8,7,6,5,4,3,2,1]
-        var self = this;
+        const percentiles = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+        const objectOptions = [<option key={null}>Look for Objects</option>].concat(
+            _.keys(objectPhotosMap)
+            .sort()
+            .map(object => <option key={object}>{object}</option>));
+        const { selectedObject } = this.state;
+
+        const content = selectedObject ?
+            <div>
+                <h1 className="xxTitle xxTitle--has-photo-page">
+                    {selectedObject}
+                </h1>
+                <section className="photoSection">
+                    {this.getImgsForObject()}
+                </section>
+            </div> :
+            percentiles.map(percentile =>
+                <div key={percentile}>
+                    <h1 className="xxTitle xxTitle--has-photo-page">
+                        {`${percentile}0th Percentile`}
+                    </h1>
+                    <section className="photoSection">
+                        {this.getImgsForBin(percentile)}
+                    </section>
+                </div>
+            );
+
+
         return (
             <div>
+                <select
+                    value={selectedObject}
+                    className="objectSelect"
+                    onChange={this.handleObjectSelect}
+                >
+                    {objectOptions}
+                </select>
                 <article className="percentileDescriptionContainer">
                     <h1 className="xxTitle">{T.get('airBnB.title')}</h1>
-                    <p dangerouslySetInnerHTML={{__html: T.get('airBnB.explanation')}}></p>
+                    <p dangerouslySetInnerHTML={{ __html: T.get('airBnB.explanation') }} />
                 </article>
-                {
-                /* Maybe add later this is a scroll bar
-                    !UTILS.isMobile() ? <PercentileContainer handlePercentileClick={this.handlePercentileClick} /> : ''
-                */
-                }
-                {
-                    percentiles.map(function(percentile){
-                        return (
-                            <div>
-                                <h1 id={"percentile" + percentile } className="xxTitle xxTitle--has-photo-page">{percentile + "0th Percentile"}</h1>
-                                <section className="photoSection">
-                                    {self.getImgs(percentile)}
-                                </section>
-                            </div>
-                        )
-                    })
-                }
+                {content}
             </div>
         );
-
     }
 }
 
