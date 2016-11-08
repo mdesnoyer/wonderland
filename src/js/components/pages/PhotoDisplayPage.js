@@ -13,6 +13,7 @@ const photos = require('../../../../data/airbnb-scores.json');
 
 class PhotoDisplayPage extends Component {
 
+
     constructor(props) {
         super(props);
         this.handlePercentileClick = this.handlePercentileClick.bind(this)
@@ -21,15 +22,16 @@ class PhotoDisplayPage extends Component {
         };
     }
 
-    getImgs(binIndex, howMany=12) {
-        return _.sampleSize(photos[binIndex], howMany).map(photo => <img key={photo[0]} src={photo[0]}/>);
-    }
-
     handlePercentileClick(e) {
         
         var locale = "percentile" + e.target.dataset.percentile + "0"
         var element = document.getElementById(locale);
         element.scrollIntoView();
+
+    getImgs(binIndex, howMany=14) {
+        return _.sampleSize(photos[binIndex], howMany).map((photo) => {
+            return <img src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
+        });
     }
 
 
