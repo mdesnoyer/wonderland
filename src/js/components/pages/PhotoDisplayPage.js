@@ -54,7 +54,7 @@ class PhotoDisplayPage extends Component {
 
     render() {
         const percentiles = [9, 8, 7, 6, 5, 4, 3, 2, 1];
-        const objectOptions = [<option key={null}>Look for Objects</option>].concat(
+        const objectOptions = [<option key="" value="">Look for Objects</option>].concat(
             _.keys(objectPhotosMap)
             .sort()
             .map(object => <option key={object}>{object}</option>));
@@ -84,7 +84,7 @@ class PhotoDisplayPage extends Component {
         return (
             <div>
                 <select
-                    value={selectedObject}
+                    value={selectedObject || ''}
                     className="objectSelect"
                     onChange={this.handleObjectSelect}
                 >
