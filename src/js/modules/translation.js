@@ -562,7 +562,7 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
 
             'airbnb.title': 'Airbnb Photo Analysis',
-            'airbnb.explanation': 'Neon analyzed Airbnb\'s photos using our deep learning models that can predict human visual preference and identify objects. In order to visualize the impact of this analysis, you can explore photos in 2 ways below: see photos ranked according to their engagement score (binned by percentile), or see photos grouped by object. Click “See More Photos” to see more photos that fall into each percentile, or use the dropdown menu to surface photos that contain a particular object.',
+            'airbnb.explanation': 'Neon analyzed listing photos provided by Airbnb using our deep learning models that can predict human visual preference and identify objects. In order to visualize the results of this analysis, you can explore photos in 2 ways below: see photos ranked according to their engagement score (binned by percentile), or see photos grouped by object. Click “See More Photos” at the top left to see more photos that fall into each percentile, or use the dropdown menu at the top right to surface photos that are likely to contain a particular object. Please note that the object detector is highly sensitive—though we’re showing images that we have confidence in, you may notice some “false positives". The sensitivity can be tuned for specific use cases.',
             'airbnb.dropdown.initial': 'Look for Objects',
             'airbnb.button.seeMore':'See More Photos',
             'airbnb.button.backTo':'Back to Photo Ranking View',
