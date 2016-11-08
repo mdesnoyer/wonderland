@@ -10,8 +10,7 @@ import { PercentileButton } from './PhotoComponents';
 
 export const PercentileContainer = React.createClass({
     render: function() {
-
-    	var percentiles = [0,1,2,3,4,5,6,7,8,9]
+        var percentiles = [9,8,7,6,5,4,3,2,1]
         var self = this;
         return (
         	<div className="percentileBar">
@@ -25,33 +24,9 @@ export const PercentileContainer = React.createClass({
                             />
 
                         )
-                        
         			})
         		}
         	</div>
         );
     }
-
-
 });
-
-
-
-        //     <div className="percentileBar">
-        //         <div className="arrow-left"></div>
-        //         {
-        //             percentiles.map(function(item, i){
-        //                 return (
-        //                     <PercentileButton 
-        //                             key={i} 
-        //                             percentile={item} 
-        //                             handlePercentileClick={self.props.handlePercentileClick} 
-        //                     />
-
-        //                 )
-                        
-        //             })
-        //         }
-        //         <div className="arrow-right"></div>
-        //     </div>
-        // );

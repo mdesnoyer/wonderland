@@ -11,7 +11,8 @@ export const PercentileButton = React.createClass({
     render: function() {
         var percentile = this.props.percentile === 0 ? '' : this.props.percentile;
         return (
-            <button 
+            <button
+            className="percentile-button" 
                 data-percentile={this.props.percentile} 
                 onClick={this.props.handlePercentileClick}
             >
