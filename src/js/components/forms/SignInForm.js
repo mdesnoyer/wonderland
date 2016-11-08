@@ -74,8 +74,8 @@ var SignInForm = React.createClass({
                         >
                             {T.get('action.signIn')}
                         </button>
-                        <Link 
-                            className="xxFormButtons-anchor u-inheritColor xxFormButtons-anchor--nobutton" 
+                        <Link
+                            className="xxFormButtons-anchor u-inheritColor xxFormButtons-anchor--nobutton"
                             to={UTILS.DRY_NAV.USER_FORGOT.URL}
                         >{T.get('nav.forgotUser')}
                         </Link>
@@ -129,7 +129,10 @@ var SignInForm = React.createClass({
                             isError: false,
                             isLoading: false
                         });
-                        self.context.router.push(UTILS.DRY_NAV.DASHBOARD.URL);
+                        const nextUrl = CONFIG.AIRBNB_ACCOUNTS.includes(res.account_ids[0]) ?
+                            UTILS.DRY_NAV.AIRBNB_PHOTO_ANALYSIS.URL :
+                            UTILS.DRY_NAV.DASHBOARD.URL;
+                        self.context.router.push(nextUrl);
                     }
                 })
                 .catch(function (err) {

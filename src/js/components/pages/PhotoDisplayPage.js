@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import _ from 'lodash';
 import Helmet from 'react-helmet';
 
+import SESSION from '../../modules/session';
 import T from '../../modules/translation';
+import UTILS from '../../modules/utils';
 
-const photos = require('../../../../data/airbnb-scores.json');
-const objectPhotosMap = require('../../../../data/airbnb-object-photos-map.json');
-const photoUrlMap = require('../../../../data/airbnb-photo-url-map.json');
 
 class PhotoDisplayPage extends Component {
+
+    static displayName = 'PhotoDisplayPage';
+
+    static contextTypes = {
+        router: PropTypes.object.isRequired
+    }
+
+    static howMany = 14;
 
     constructor() {
         super();
@@ -18,11 +25,30 @@ class PhotoDisplayPage extends Component {
         };
         this.handleObjectSelect = this.handleObjectSelect.bind(this);
         this.handlePercentileReset = this.handlePercentileReset.bind(this);
-        this.howMany = 14;
+        this.photos = [];
+        this.objectPhotosMap = {};
+        this.photoUrlMap = {};
+    }
+
+    componentWillMount() {
+        if (!SESSION.active()) {
+            return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+        }
+        const { accountId } = SESSION.state;
+        if (!accountId) {
+            return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+        }
+        if (!CONFIG.AIRBNB_ACCOUNTS.includes(accountId)) {
+            return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
+        }
+
+        this.photos = require('../../../../data/airbnb-scores.json');
+        this.objectPhotosMap = require('../../../../data/airbnb-object-photos-map.json');
+        this.photoUrlMap = require('../../../../data/airbnb-photo-url-map.json');
     }
 
     getImgsForBin(binIndex) {
-        return _.sampleSize(photos[binIndex], this.howMany).map(photo =>
+        return _.sampleSize(this.photos[binIndex], PhotoDisplayPage.howMany).map(photo =>
             <img
                 key={photo[0]}
                 alt="bnb"
@@ -32,11 +58,11 @@ class PhotoDisplayPage extends Component {
     }
 
     getImgsForObject() {
-        return objectPhotosMap[this.state.selectedObject].slice(0, this.howMany).map(photoId =>
+        return this.objectPhotosMap[this.state.selectedObject].slice(0, PhotoDisplayPage.howMany).map(photoId =>
             <img
-                key={photoUrlMap[photoId]}
+                key={this.photoUrlMap[photoId]}
                 alt="bnb"
-                src={this.formatSrc(photoUrlMap[photoId])}
+                src={this.formatSrc(this.photoUrlMap[photoId])}
             />
         );
     }
@@ -58,7 +84,7 @@ class PhotoDisplayPage extends Component {
         const objectOptions =
             [<option key="" value="">{T.get('airbnb.dropdown.initial')}</option>]
             .concat(
-                _.keys(objectPhotosMap)
+                _.keys(this.objectPhotosMap)
                 .sort()
                 .map(object => <option key={object}>{object}</option>));
         const { selectedObject } = this.state;
