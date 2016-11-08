@@ -3,10 +3,12 @@
 import React from 'react';
 import reqwest from 'reqwest';
 import _ from 'lodash';
-import cookie from 'react-cookie';
 import accept from 'attr-accept';
 import loadImage from 'blueimp-load-image';
+
+// toBlob injects itself into the canvas prototype.
 import toBlob from 'blueimp-canvas-to-blob';
+
 import moment from 'moment';
 
 import UTILS from '../../modules/utils';
@@ -39,7 +41,6 @@ var UploadForm = React.createClass({
             tagId: null,
             formState: 'chooseUploadType', // addVideo // addCollection // updateCollection // updateVideoDefault // chooseUplodaType //
             urlInput: '',
-            title: '',
             collectionName: '',
             uploadState: 'initial',  //initial // loading // success
             uploadingTotal: null,
@@ -90,7 +91,7 @@ var UploadForm = React.createClass({
         var self = this;
         e.preventDefault();
         // if clicks out of their upload box then return to the choose upload type state
-        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType' });
+        self.setState({ isOpen: !self.state.isOpen, formState: 'chooseUploadType', uploadState: 'initial', urlInput: '' });
     },
     updateField: function(field, value) {
         var self = this;
@@ -249,13 +250,11 @@ var UploadForm = React.createClass({
         }
     },
     sendVideoUrl: function(sendUrlType, url, title) {
-        const datetimeFormat = 'MMMM Do YYYY, h:mm:ss a';
         var self = this,
             videoId = UTILS.generateId(),
-            title = title || moment().format(datetimeFormat),
             options = {
                 data: {
-                    title,
+                    title: self.getTitle(url, title),
                     external_video_ref: videoId,
                     url: UTILS.properEncodeURI(UTILS.dropboxUrlFilter(url))
                 }
@@ -531,17 +530,31 @@ var UploadForm = React.createClass({
             });
     },
 
-    handleUploadVideo(e) {
-        e.preventDefault();
+    handleUploadVideo(file) {
         const self = this;
-        const file = e.target.files[0];
         S3Actions.uploadVideo(file, self.handleSentVideo);
-        self.setState({ formState: 'uploadingVideo' });
+        self.setState({ uploadState: 'loading' });
     },
 
     handleSentVideo(res, urlInput) {
         const self = this;
-        self.setState({ urlInput, formState: 'uploadedVideo' });
+        self.setState({ urlInput, uploadState: 'success' });
+    },
+
+    getTitle(url, title) {
+        // If event gives a title, then use it.
+        if (title) {
+            return title;
+        }
+        // If this is a video direct upload from the user, that is, it
+        // is uploaded to the video upload s3 bucket, then use a datetime.
+        if (url.includes(UTILS.NEON_S3_URL)) {
+            return moment().format('MMM Do YYYY, h:mm:ss a');
+        }
+
+        // Let the server extract any title from the video metadata
+        // by sending null, e.g., for Youtube video.
+        return null;
     },
 
     createFormDataArray: function(fileArray) {

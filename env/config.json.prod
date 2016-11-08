@@ -4,4 +4,5 @@
     API_HOST: '//services.neon-lab.com/api/v2/',
     STRIPE_KEY: 'pk_live_QwoZYSy5G3pxTTSl5gnL1SUh',
     GOOGLE_ANALYTICS_ID: 'UA-71182736-3',
+    AIRBNB_ACCOUNTS: ['yxaznppcbw3ew7zd7982ydc0'],
 }

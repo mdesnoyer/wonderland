@@ -83,6 +83,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.pageN': 'Page @n',
             'copy.number': '@n',
 
+            'copy.interiorExterior': 'Interior / Exterior Photos',
+            'copy.interior': 'Interior',
+            'copy.exterior': 'Exterior',
+
             'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
             'copy.whyNotThisImage': 'Neon automatically excludes low-scoring images that are dark, blurry, or otherwise unengaging before we identify the valence features present in your images. We surface low-scoring images here so you can get a feel for the range of images present in your video.',
@@ -278,7 +282,7 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             // Analyze page
-            'upload.videoUploadInstruct': 'Upload a video From\u003A', 
+            'upload.videoUploadInstruct': 'Upload a video From\u003A',
             'upload.videoUrl': 'Enter a video URL here',
             'upload.videoUrlLabel': 'Video Url',
             'upload.submit': 'Submit',
@@ -561,8 +565,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.GeneralVideo': 'Video Error',
             'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
 
-
-
+            'airbnb.title': 'Airbnb Photo Analysis',
+            'airbnb.explanation': 'Neon analyzed listing photos provided by Airbnb using our deep learning models that can predict human visual preference and identify objects. In order to visualize the results of this analysis, you can explore photos in 3 ways below: see photos ranked according to their engagement score (binned by percentile); see photos grouped by object; or see photos of interior spaces or exterior spaces. Click “See More Photos” at the top left to see more photos that fall into each percentile, or use the dropdown menus at the top right to surface photos that are likely to contain a particular object or show interior or exterior scenes. Please note that the object detector is highly sensitive, so in some cases you may notice some “false positives". The object detector\'s sensitivity can be tuned for specific use cases. Additionally, though we’re showing general engagement scores and object recognition here, the photos can be further filtered by other factors, including age and gender.',
+            'airbnb.dropdown.initial': 'Look for Objects',
+            'airbnb.button.seeMore':'See More Photos',
+            'airbnb.button.backTo':'Back to Photo Ranking View',
         },
         'en-GB': {
         },

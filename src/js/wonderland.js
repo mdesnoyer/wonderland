@@ -42,6 +42,7 @@ import TRACKING from './modules/tracking';
 import CollectionsMainPage from './components/pages/CollectionsMainPage';
 import ViewSharedCollectionPage from './components/pages/ViewSharedCollectionPage';
 import OnboardingUploadPage from './components/pages/OnboardingUploadPage';
+import PhotoDisplayPage from './components/pages/PhotoDisplayPage';
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,6 +60,7 @@ render((
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
         <Redirect from={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
 
+        <Route path={UTILS.DRY_NAV.AIRBNB_PHOTO_ANALYSIS.URL} component={PhotoDisplayPage} />
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
 
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
@@ -96,14 +98,14 @@ render((
         <Route path={UTILS.DRY_NAV.COOKIES.URL} component={CookiesPage} />
 
         <Route path={UTILS.DRY_NAV.DEMO.URL} component={DemoPage} />
-        
+
         <Route path={UTILS.DRY_NAV.ONBOARDING_UPLOAD.URL} component={OnboardingUploadPage} />
         <Route path={UTILS.DRY_NAV.COLLECTIONS.URL} component={CollectionsMainPage} />
 
         <Route path="/timeline/:timelineId" component={TimelinePage} />
 
         <Route path={UTILS.DRY_NAV.NOT_FOUND.URL} component={NotFoundPage} />
-        
+
         <Route path="*" component={NotFoundPage} />
 
     </Router>

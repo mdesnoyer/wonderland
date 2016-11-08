@@ -87,7 +87,6 @@ const CollectionsContainer = React.createClass({
         const selectedDemographic = this.state.selectedDemographic;
         _.map(selectedDemographic, (selDemo, tagId) => {
             if (selDemo.length === 4) {
-                console.log(selDemo);
                 const nextGender = selDemo[2];
                 const nextAge = selDemo[3];
                 const tag = nextProps.stores.tags[tagId];

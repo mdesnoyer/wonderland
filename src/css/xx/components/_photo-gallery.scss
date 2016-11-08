@@ -1,0 +1,74 @@
+.photoSection {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 0 auto;
+
+    > img {
+        background-color: transparent;
+        border: solid transparent 3px;
+    }
+}
+.objectSelect {
+    float: right;
+}
+.percentileBar {
+    margin: 0 auto;
+    margin-left: 2.5%;
+    position: fixed;
+    width: 25%;
+    text-align: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    @include breakpoint-mobile {
+        display: none;
+    }
+    > button {
+        @include breakpoint-mobile {
+            display: none;
+        }
+        width: 12%;
+        height: 0;
+        padding-bottom: 10%;
+        border-radius: 50%;
+        border: 2px solid #f5f5f5;
+        overflow: hidden;
+        box-shadow: 0 0 3px gray;
+        background-color: $alternate_row_background_color;
+        &:hover {
+            background: $quaternary-color;
+        }
+        &:active {
+            background: $quaternary-color;
+        }
+    }
+
+}
+.percentileTitle {
+    margin: auto;
+    text-align: center;
+    width: 85%; 
+}
+.percentileDescriptionContainer {
+    margin: auto;
+    text-align: center;
+    width: 40%;
+    > p {
+        background-color: $alternate_row_background_color;
+    }   
+}

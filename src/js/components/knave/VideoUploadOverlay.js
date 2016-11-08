@@ -12,12 +12,33 @@ var VideoUploadOverlay = React.createClass({
         updateField: PropTypes.func,
         urlInput: PropTypes.string,
         handleUploadVideo: PropTypes.func,
+        uploadState: PropTypes.oneOf(['initial', 'loading', 'success'])
     },
     contextTypes: {
         isMobile: PropTypes.bool
     },
     componentDidMount: function() {
         this.urlInput.focus();
+    },
+    handleUploadVideo(e) {
+        e.preventDefault();
+
+        const self = this;
+        const file = e.target.files[0];
+
+        // Set the title to filename without extension.
+        const parts = file.name.split('.');
+        if (parts.length > 1) {
+            parts.pop()
+        }
+        const joined = parts.join('');
+        // iOS camera gives a long, hash-like filename that
+        // doesn't help as a title.
+        if (joined.length < 40) {
+            self.titleInput.value = joined;
+        }
+
+        self.props.handleUploadVideo(file);
     },
     handleUrlSubmit(e) {
         e.preventDefault();
@@ -26,6 +47,10 @@ var VideoUploadOverlay = React.createClass({
         if (url) {
             self.props.handleUrlSubmit(e, url, self.getTitle());
         }
+    },
+    handleUrlInput(e) {
+        const self = this;
+        self.props.updateField('urlInput', e.target.field);
     },
     getUrl() {
         const self = this;
@@ -39,21 +64,69 @@ var VideoUploadOverlay = React.createClass({
     },
     getTitle() {
         const self = this;
-        return self.titleInput ? self.titleInput.value : null;
+        return self.titleInput.value || null;
     },
-    renderUploaded() {
-        const isMobile = this.context.isMobile;
-        const submitClassName = ['xxButton', 'xxButton--highlight', 'xxButton--important'];
+    render: function() {
+        const submitClassName = ['xxButton', 'xxButton--highlight'],
+            isValid = !!(this.props.urlInput),
+            messageNeeded = this.props.error ? <Message message={this.props.error} type={'formError'}/> : null,
+            isMobile = this.context.isMobile
+        ;
+        if (isValid) {
+            submitClassName.push('xxButton--important');
+        }
         return (
             <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner">
-                    <div className="xxFormField">
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload')}
-                        </label>
-                        <div className="xxUploadDialog-block">
-                            <div className="xxDragAndDrop-success"></div>
+                <form className="xxUploadDialog-inner" onSubmit={this.handleUrlSubmit}>
+                    <h2 className="xxTitle">
+                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
+                    </h2>
+                    {messageNeeded}
+                    {
+                        this.props.uploadState === 'initial' && (
+                        <div className="xxFormField">
+                            <label className="xxLabel" htmlFor="xx-upload-local">
+                                {T.get('upload.videoUploadInstruct')}
+                            </label>
+                            <div className="xxUploadDialog-block">
+                                <DesktopUploadButton
+                                    id="xx-upload-local"
+                                    {...this.props}
+                                    accept={UTILS.VIDEO_ACCEPT_MASK}
+                                    multiple={false}
+                                    sendLocalPhotos={this.handleUploadVideo}
+                                    isMobile={isMobile}
+                                />
+                            </div>
+                            <div className="xxUploadButtonsChooser">
+                                <label className="xxLabel">{T.get('imageUpload.or')}</label>
+                            </div>
+                                <input
+                                    id="xx-upload-url"
+                                    ref={(urlInput) => { this.urlInput = urlInput; }}
+                                    className="xxInputText"
+                                    placeholder={T.get('upload.videoUrl')}
+                                    type="url"
+                                    onChange={this.updateUrlInput}
+                                />
                         </div>
+                        )
+                    }
+                    {
+                        this.props.uploadState === 'loading' && (
+                            <div className="xxUploadDialog-block">
+                                <div className="xxDragAndDrop-spinner" />
+                            </div>
+                        )
+                    }
+                    {
+                        this.props.uploadState === 'success' && (
+                            <div className="xxUploadDialog-block">
+                                <div className="xxDragAndDrop-success" />
+                            </div>
+                        )
+                    }
+                    <div>
                         <label className="xxLabel" htmlFor="xx-upload-local">
                             {T.get('label.title')}
                         </label>
@@ -73,114 +146,11 @@ var VideoUploadOverlay = React.createClass({
                                 className={submitClassName.join(' ')}
                                 data-send-url-type="thumbnails"
                                 onClick={this.handleUrlSubmit}
-                            >{T.get('thumbnails')}</button>
-                            <button
+                             >{T.get('thumbnails')}</button>
+                             <button
                                 className={submitClassName.join(' ')}
                                 data-send-url-type="gif"
                                 onClick={this.handleUrlSubmit}
-                            >{T.get('gifs')}</button>
-                        </div>
-                    </div>
-                </form>
-            </section>
-        );
-    },
-    renderUploading() {
-        const isMobile = this.context.isMobile;
-        const submitClassName = ['xxButton', 'xxButton--highlight'];
-        return (
-            <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner">
-                    <h2 className="xxTitle">
-                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
-                    </h2>
-                    <div className="xxUploadDialog-block">
-                        <div className="xxDragAndDrop-spinner"></div>
-                        </div>
-                    <div className="xxFormButtons">
-                        <label className="xxLabel" htmlFor="xx-upload-url">
-                            {T.get('copy.analyzeVideo.giveMe')}
-                        </label>
-                        <div className="xxUploadButtonsChooser">
-                            <button
-                                disabled
-                                className={submitClassName.join(' ')}
-                                data-send-url-type="thumbnails"
-                            >{T.get('thumbnails')}</button>
-                            <button
-                                disabled
-                                className={submitClassName.join(' ')}
-                                data-send-url-type="gif"
-                            >{T.get('gifs')}</button>
-                        </div>
-                    </div>
-                </form>
-            </section>
-        );
-    },
-
-    render: function() {
-        if (this.props.formState === 'uploadingVideo') {
-            return this.renderUploading();
-        }
-        if (this.props.formState === 'uploadedVideo') {
-            return this.renderUploaded();
-        }
-        const { isOnboarding } = this.props,
-            submitClassName = ['xxButton', 'xxButton--highlight'],
-            isValid = !!(this.urlInput && this.urlInput.value),
-            messageNeeded = this.props.error ? <Message message={this.props.error} type={'formError'}/> : null,
-            isMobile = this.context.isMobile
-        ;
-        if (isValid) {
-            submitClassName.push('xxButton--important');
-        }
-        return (
-            <section className="xxUploadDialog">
-                <form className="xxUploadDialog-inner" onSubmit={this.handleUrlSubmit}>
-                    <h2 className="xxTitle">
-                        { isMobile ? T.get('copy.analyzeVideo.upload') : T.get('copy.analyzeVideo.lets') }
-                    </h2>
-                    {messageNeeded}
-                    <div className="xxFormField">
-                        <label className="xxLabel" htmlFor="xx-upload-local">
-                            {T.get('upload.videoUploadInstruct')}
-                        </label>
-                        <div className="xxUploadDialog-block">
-                            <DesktopUploadButton
-                                 id="xx-upload-local"
-                                 {...this.props}
-                                 accept={UTILS.VIDEO_ACCEPT_MASK}
-                                 multiple={false}
-                                 sendLocalPhotos={this.props.handleUploadVideo}
-                                 isMobile={isMobile}
-                            />
-                        </div>
-                        <div className="xxUploadButtonsChooser">
-                            <label className="xxLabel">{T.get('imageUpload.or')}</label>
-                        </div>
-                        <input
-                            id="xx-upload-url"
-                            ref={(urlInput) => { this.urlInput = urlInput; }}
-                            className="xxInputText"
-                            placeholder={T.get('upload.videoUrl')}
-                            type="url"
-                        />
-                    </div>
-                    <div className="xxFormButtons">
-                        <label className="xxLabel" htmlFor="xx-upload-url">
-                            {T.get('copy.analyzeVideo.giveMe')}
-                        </label>
-                        <div className="xxUploadButtonsChooser">
-                            <button
-                                 className={submitClassName.join(' ')}
-                                 data-send-url-type="thumbnails"
-                                 onClick={this.handleUrlSubmit}
-                             >{T.get('thumbnails')}</button>
-                             <button
-                                 className={submitClassName.join(' ')}
-                                 data-send-url-type="gif"
-                                 onClick={this.handleUrlSubmit}
                              >{T.get('gifs')}</button>
                         </div>
                     </div>
