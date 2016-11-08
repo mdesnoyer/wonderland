@@ -215,8 +215,8 @@ var UTILS = {
         API: {
             URL: '/support#api' // NO NEED for trailing slash
         },
-        PHOTO_DISPLAY: {
-            URL: '/photos',
+        AIRBNB_PHOTO_ANALYSIS: {
+            URL: '/AirbnbPhotoAnalysis',
         },
         VIDEO_LIBRARY: {
             URL: '/videos' // DEAD but left for redirect, NO NEED for trailing slash

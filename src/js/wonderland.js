@@ -60,7 +60,7 @@ render((
         <Redirect from={UTILS.DRY_NAV.DASHBOARD.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
         <Redirect from={UTILS.DRY_NAV.VIDEO_LIBRARY.URL} to={UTILS.DRY_NAV.COLLECTIONS.URL} />
 
-        <Route path={UTILS.DRY_NAV.PHOTO_DISPLAY.URL} component={PhotoDisplayPage} />
+        <Route path={UTILS.DRY_NAV.AIRBNB_PHOTO_ANALYSIS.URL} component={PhotoDisplayPage} />
         <Route path={UTILS.DRY_NAV.HOME.URL} component={HomePage} />
 
         <Route path={UTILS.DRY_NAV.SIGNIN.URL} component={SignInPage} />
