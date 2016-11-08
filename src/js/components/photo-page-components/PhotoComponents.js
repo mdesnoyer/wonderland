@@ -9,12 +9,13 @@ import T from '../../modules/translation';
 
 export const PercentileButton = React.createClass({
     render: function() {
+        var percentile = this.props.percentile === 0 ? '' : this.props.percentile;
         return (
             <button 
                 data-percentile={this.props.percentile} 
                 onClick={this.props.handlePercentileClick}
             >
-                {this.props.percentile + 'th'}
+                {percentile + '0th'}
             </button>
         );
     }

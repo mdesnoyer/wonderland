@@ -561,6 +561,9 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.GeneralVideo': 'Video Error',
             'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
 
+            'airBnB.title': 'Airbnb Listing Photos Analyzed for Engagingness',
+            'airBnB.explanation': 'Neon analyzed each photo for each listing using our deep learning models that are trained on the world’s largest and most comprehensive dataset of emotional response to photos, which closely mirrors human visual preference. In order to visualize the impact of this analysis, we divided the photos into percentile groups based on their engagement ranking. You can see a subset of Airbnb listing photos that fall into each percentile below, and you can refresh the page to see a new subset of listing photos.'
+
 
 
         },
