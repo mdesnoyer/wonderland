@@ -27,7 +27,8 @@ class PhotoDisplayPage extends Component {
         var locale = "percentile" + e.target.dataset.percentile + "0"
         var element = document.getElementById(locale);
         element.scrollIntoView();
-
+    }
+    
     getImgs(binIndex, howMany=14) {
         return _.sampleSize(photos[binIndex], howMany).map((photo) => {
             return <img src={`https://a0.muscache.com/im/pictures/${photo[0]}?aki_policy=x_medium`}/>
