@@ -31,7 +31,7 @@ class PhotoDisplayPage extends Component {
     }
 
     getImgsForObject() {
-        return _.sampleSize(objectPhotosMap[this.state.selectedObject], this.howMany).map(photoId =>
+        return objectPhotosMap[this.state.selectedObject].slice(0, this.howMany).map(photoId =>
             <img
                 key={photoUrlMap[photoId]}
                 alt="bnb"
