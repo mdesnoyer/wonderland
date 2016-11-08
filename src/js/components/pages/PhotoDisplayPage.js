@@ -76,7 +76,7 @@ class PhotoDisplayPage extends Component {
         const photoIds = isInterior ? this.interiorPhotos : this.exteriorPhotos;
 
         return _.sampleSize(photoIds, PhotoDisplayPage.howMany)
-            .howMany).map(photoId =>
+            .map(photoId =>
             <img
                 key={this.photoUrlMap[photoId]}
                 alt="bnb"
