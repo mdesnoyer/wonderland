@@ -28,6 +28,8 @@ class PhotoDisplayPage extends Component {
         this.photos = [];
         this.objectPhotosMap = {};
         this.photoUrlMap = {};
+        this.interiorPhotos = [];
+        this.exteriorPhotos = [];
     }
 
     componentWillMount() {
@@ -45,6 +47,8 @@ class PhotoDisplayPage extends Component {
         this.photos = require('../../../../data/airbnb-scores.json');
         this.objectPhotosMap = require('../../../../data/airbnb-object-photos-map.json');
         this.photoUrlMap = require('../../../../data/airbnb-photo-url-map.json');
+        this.interiorPhotos = require('../../../../data/airbnb-interior-photos.json');
+        this.exteriorPhotos = require('../../../../data/airbnb-exterior-photos.json');
     }
 
     getImgsForBin(binIndex) {
@@ -59,6 +63,20 @@ class PhotoDisplayPage extends Component {
 
     getImgsForObject() {
         return this.objectPhotosMap[this.state.selectedObject].slice(0, PhotoDisplayPage.howMany).map(photoId =>
+            <img
+                key={this.photoUrlMap[photoId]}
+                alt="bnb"
+                src={this.formatSrc(this.photoUrlMap[photoId])}
+            />
+        );
+    }
+
+    getImgsForIntExt(isInterior = True) {
+
+        const photoIds = isInterior ? this.interiorPhotos : this.exteriorPhotos;
+
+        return _.sampleSize(photoIds, PhotoDisplayPage.howMany)
+            .howMany).map(photoId =>
             <img
                 key={this.photoUrlMap[photoId]}
                 alt="bnb"
@@ -123,6 +141,11 @@ class PhotoDisplayPage extends Component {
                     onChange={this.handleObjectSelect}
                 >
                     {objectOptions}
+                </select>
+                <select>
+                    <option />
+                    <option value="Interior"/>
+                    <option value="Exterior"/>
                 </select>
                 <button onClick={this.handlePercentileReset}>{buttonText}</button>
                 <article className="percentileDescriptionContainer">
