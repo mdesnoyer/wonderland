@@ -15,7 +15,8 @@ class PhotoDisplayPage extends Component {
         this.state = {
             selectedObject: null,
         };
-        this.handleObjectSelect = this.handleObjectSelect.bind(this);
+        this.handleObjectSelect = this.handleObjectSelect.bind(this)
+        this.handlePercentileReset = this.handlePercentileReset.bind(this);
         this.howMany = 14;
     }
 
@@ -48,6 +49,10 @@ class PhotoDisplayPage extends Component {
         this.setState({ selectedObject: e.target.value });
     }
 
+    handlePercentileReset(){
+        this.setState({ selectedObject: null });
+    }
+
     render() {
         const percentiles = [9, 8, 7, 6, 5, 4, 3, 2, 1];
         const objectOptions = [<option key={null}>Look for Objects</option>].concat(
@@ -55,7 +60,7 @@ class PhotoDisplayPage extends Component {
             .sort()
             .map(object => <option key={object}>{object}</option>));
         const { selectedObject } = this.state;
-
+        const buttonText = !this.state.selectedObject ? T.get('airBnB.buttonText') : T.get('airBnB.buttonText2');
         const content = selectedObject ?
             <div>
                 <h1 className="xxTitle xxTitle--has-photo-page">
@@ -86,6 +91,7 @@ class PhotoDisplayPage extends Component {
                 >
                     {objectOptions}
                 </select>
+                <button onClick={this.handlePercentileReset}>{buttonText}</button>
                 <article className="percentileDescriptionContainer">
                     <h1 className="xxTitle">{T.get('airBnB.title')}</h1>
                     <p dangerouslySetInnerHTML={{ __html: T.get('airBnB.explanation') }} />
