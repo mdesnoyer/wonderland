@@ -26,7 +26,6 @@ class PhotoDisplayPage extends Component {
                 key={photo[0]}
                 alt="bnb"
                 src={this.formatSrc(photo[0])}
-                title={photo[1]}
             />
         );
     }
