@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import _ from 'lodash';
+import Helmet from 'react-helmet';
 
 import T from '../../modules/translation';
 
@@ -15,7 +16,7 @@ class PhotoDisplayPage extends Component {
         this.state = {
             selectedObject: null,
         };
-        this.handleObjectSelect = this.handleObjectSelect.bind(this)
+        this.handleObjectSelect = this.handleObjectSelect.bind(this);
         this.handlePercentileReset = this.handlePercentileReset.bind(this);
         this.howMany = 14;
     }
@@ -48,18 +49,22 @@ class PhotoDisplayPage extends Component {
         this.setState({ selectedObject: e.target.value });
     }
 
-    handlePercentileReset(){
+    handlePercentileReset() {
         this.setState({ selectedObject: null });
     }
 
     render() {
         const percentiles = [9, 8, 7, 6, 5, 4, 3, 2, 1];
-        const objectOptions = [<option key="" value="">Look for Objects</option>].concat(
-            _.keys(objectPhotosMap)
-            .sort()
-            .map(object => <option key={object}>{object}</option>));
+        const objectOptions =
+            [<option key="" value="">{T.get('airbnb.dropdown.initial')}</option>]
+            .concat(
+                _.keys(objectPhotosMap)
+                .sort()
+                .map(object => <option key={object}>{object}</option>));
         const { selectedObject } = this.state;
-        const buttonText = !this.state.selectedObject ? T.get('airBnB.buttonText') : T.get('airBnB.buttonText2');
+        const buttonText = selectedObject ?
+            T.get('airbnb.button.backTo') :
+            T.get('airbnb.button.seeMore');
         const content = selectedObject ?
             <div>
                 <h1 className="xxTitle xxTitle--has-photo-page">
@@ -83,6 +88,9 @@ class PhotoDisplayPage extends Component {
 
         return (
             <div>
+                <Helmet
+                    title={T.get('airbnb.title')}
+                />
                 <select
                     value={selectedObject || ''}
                     className="objectSelect"
@@ -92,8 +100,8 @@ class PhotoDisplayPage extends Component {
                 </select>
                 <button onClick={this.handlePercentileReset}>{buttonText}</button>
                 <article className="percentileDescriptionContainer">
-                    <h1 className="xxTitle">{T.get('airBnB.title')}</h1>
-                    <p dangerouslySetInnerHTML={{ __html: T.get('airBnB.explanation') }} />
+                    <h1 className="xxTitle">{T.get('airbnb.title')}</h1>
+                    <p dangerouslySetInnerHTML={{ __html: T.get('airbnb.explanation') }} />
                 </article>
                 {content}
             </div>

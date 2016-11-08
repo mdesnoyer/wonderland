@@ -278,7 +278,7 @@ const _DEFAULT_LOCALE = 'en-US',
             returnSignIn: 'Return to Sign In',
 
             // Analyze page
-            'upload.videoUploadInstruct': 'Upload a video From\u003A', 
+            'upload.videoUploadInstruct': 'Upload a video From\u003A',
             'upload.videoUrl': 'Enter a video URL here',
             'upload.videoUrlLabel': 'Video Url',
             'upload.submit': 'Submit',
@@ -561,13 +561,11 @@ const _DEFAULT_LOCALE = 'en-US',
             'uploadError.title.GeneralVideo': 'Video Error',
             'uploadError.msg.GeneralVideo': 'Oops! We had trouble analyzing that video. Try again, or analyze a different video.',
 
-            'airBnB.title': 'Airbnb Listing Photos Analyzed for Engagingness',
-            'airBnB.explanation': 'Neon analyzed each photo for each listing using our deep learning models that are trained on the world’s largest and most comprehensive dataset of emotional response to photos, which closely mirrors human visual preference. In order to visualize the impact of this analysis, we divided the photos into percentile groups based on their engagement ranking. You can see a subset of Airbnb listing photos that fall into each percentile below, and you can refresh the page to see a new subset of listing photos.',
-            'airBnB.buttonText':'View More Percentiles',
-            'airBnB.buttonText2':'Back to Percentiles View'
-
-
-
+            'airbnb.title': 'Airbnb Photo Analysis',
+            'airbnb.explanation': 'Neon analyzed Airbnb\'s photos using our deep learning models that can predict human visual preference and identify objects. In order to visualize the impact of this analysis, you can explore photos in 2 ways below: see photos ranked according to their engagement score (binned by percentile), or see photos grouped by object. Click “See More Photos” to see more photos that fall into each percentile, or use the dropdown menu to surface photos that contain a particular object.',
+            'airbnb.dropdown.initial': 'Look for Objects',
+            'airbnb.button.seeMore':'See More Photos',
+            'airbnb.button.backTo':'Back to Photo Ranking View',
         },
         'en-GB': {
         },
