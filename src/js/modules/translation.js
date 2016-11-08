@@ -83,6 +83,10 @@ const _DEFAULT_LOCALE = 'en-US',
             'copy.pageN': 'Page @n',
             'copy.number': '@n',
 
+            'copy.interiorExterior': 'Interior / Exterior Photos',
+            'copy.interior': 'Interior',
+            'copy.exterior': 'Exterior',
+
             'copy.whyThisImage': 'What goes into a NeonScore? We analyze your images for over 1,000 valence features that shape human visual preference. Here are a few of the features that stood out in your image.',
 
             'copy.whyNotThisImage': 'Neon automatically excludes low-scoring images that are dark, blurry, or otherwise unengaging before we identify the valence features present in your images. We surface low-scoring images here so you can get a feel for the range of images present in your video.',

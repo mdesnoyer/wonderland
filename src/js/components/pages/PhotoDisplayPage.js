@@ -21,9 +21,11 @@ class PhotoDisplayPage extends Component {
     constructor() {
         super();
         this.state = {
+            selectedInteriorExterior: null,
             selectedObject: null,
         };
         this.handleObjectSelect = this.handleObjectSelect.bind(this);
+        this.handleInteriorExteriorSelect = this.handleInteriorExteriorSelect.bind(this);
         this.handlePercentileReset = this.handlePercentileReset.bind(this);
         this.photos = [];
         this.objectPhotosMap = {};
@@ -74,7 +76,6 @@ class PhotoDisplayPage extends Component {
     getImgsForIntExt(isInterior = True) {
 
         const photoIds = isInterior ? this.interiorPhotos : this.exteriorPhotos;
-
         return _.sampleSize(photoIds, PhotoDisplayPage.howMany)
             .map(photoId =>
             <img
@@ -90,11 +91,24 @@ class PhotoDisplayPage extends Component {
     }
 
     handleObjectSelect(e) {
-        this.setState({ selectedObject: e.target.value });
+        this.setState({
+            selectedInteriorExterior: null,
+            selectedObject: e.target.value,
+        });
+    }
+
+    handleInteriorExteriorSelect(e) {
+        this.setState({
+            selectedInteriorExterior: e.target.value,
+            selectedObject: null,
+        });
     }
 
     handlePercentileReset() {
-        this.setState({ selectedObject: null });
+        this.setState({
+            selectedInteriorExterior: null,
+            selectedObject: null
+        });
     }
 
     render() {
@@ -105,20 +119,36 @@ class PhotoDisplayPage extends Component {
                 _.keys(this.objectPhotosMap)
                 .sort()
                 .map(object => <option key={object}>{object}</option>));
-        const { selectedObject } = this.state;
-        const buttonText = selectedObject ?
+        const { selectedObject, selectedInteriorExterior } = this.state;
+        const buttonText = selectedObject || selectedInteriorExterior ?
             T.get('airbnb.button.backTo') :
             T.get('airbnb.button.seeMore');
-        const content = selectedObject ?
-            <div>
-                <h1 className="xxTitle xxTitle--has-photo-page">
-                    {selectedObject}
-                </h1>
-                <section className="photoSection">
-                    {this.getImgsForObject()}
-                </section>
-            </div> :
-            percentiles.map(percentile =>
+
+        let content;
+        if (selectedObject) {
+            content = (
+                <div>
+                    <h1 className="xxTitle xxTitle--has-photo-page">
+                        {selectedObject}
+                    </h1>
+                    <section className="photoSection">
+                        {this.getImgsForObject()}
+                    </section>
+                </div>
+            );
+        } else if (selectedInteriorExterior) {
+            content = (
+                <div>
+                    <h1 className="xxTitle xxTitle--has-photo-page">
+                        {selectedInteriorExterior}
+                    </h1>
+                    <section className="photoSection">
+                        {this.getImgsForIntExt(selectedInteriorExterior === 'Interior')}
+                    </section>
+                </div>
+            );
+        } else {
+            content = percentiles.map(percentile =>
                 <div key={percentile}>
                     <h1 className="xxTitle xxTitle--has-photo-page">
                         {`${percentile}0th Percentile`}
@@ -128,13 +158,14 @@ class PhotoDisplayPage extends Component {
                     </section>
                 </div>
             );
-
+        }
 
         return (
             <div>
                 <Helmet
                     title={T.get('airbnb.title')}
                 />
+                <button onClick={this.handlePercentileReset}>{buttonText}</button>
                 <select
                     value={selectedObject || ''}
                     className="objectSelect"
@@ -142,12 +173,16 @@ class PhotoDisplayPage extends Component {
                 >
                     {objectOptions}
                 </select>
-                <select>
-                    <option />
-                    <option value="Interior"/>
-                    <option value="Exterior"/>
+                <br />
+                <select
+                    value={selectedInteriorExterior || ''}
+                    className="objectSelect"
+                    onChange={this.handleInteriorExteriorSelect}
+                >
+                    <option key="">{T.get('copy.interiorExterior')}</option>
+                    <option key="interior">{T.get('copy.interior')}</option>
+                    <option key="exterior">{T.get('copy.exterior')}</option>
                 </select>
-                <button onClick={this.handlePercentileReset}>{buttonText}</button>
                 <article className="percentileDescriptionContainer">
                     <h1 className="xxTitle">{T.get('airbnb.title')}</h1>
                     <p dangerouslySetInnerHTML={{ __html: T.get('airbnb.explanation') }} />
