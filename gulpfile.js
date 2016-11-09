@@ -353,18 +353,9 @@ gulp.task('test', ['run-tests'], function() {
     var path = require('path');
     var async = require('async');
     var reportMerger = require('junit-report-merger');
-<<<<<<< HEAD
-
-    var results = fs.readdirSync(test_output_dir);
-
-    var output = path.join(test_output_dir, test_output_filename);
-    var files = results.map(x => path.join(test_output_dir, x));
-    reportMerger.mergeFiles(output, files, {}, function() {
-=======
     var results = fs.readdirSync(testOutputDir);
     var files = results.map(x => path.join(testOutputDir, x));
     reportMerger.mergeFiles(testOutputFile, files, {}, function() {
->>>>>>> development
         async.each(files, fs.unlink);
     });
 });
