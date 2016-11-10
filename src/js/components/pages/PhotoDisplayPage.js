@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import Helmet from 'react-helmet';
 
+import { LoadActions } from '../../stores/CollectionStores';
 import SESSION from '../../modules/session';
 import T from '../../modules/translation';
 import UTILS from '../../modules/utils';
@@ -21,13 +22,16 @@ class PhotoDisplayPage extends Component {
     constructor() {
         super();
         this.state = {
+            isLoading: false,
             selectedInteriorExterior: null,
             selectedObject: null,
         };
         this.handleObjectSelect = this.handleObjectSelect.bind(this);
         this.handleInteriorExteriorSelect = this.handleInteriorExteriorSelect.bind(this);
         this.handlePercentileReset = this.handlePercentileReset.bind(this);
-        this.photos = [];
+        this.onLoadPhotoData = this.onLoadPhotoData.bind(this);
+
+        this.photoBins = [];
         this.objectPhotosMap = {};
         this.photoUrlMap = {};
         this.interiorPhotos = [];
@@ -46,15 +50,22 @@ class PhotoDisplayPage extends Component {
             return this.context.router.push(UTILS.DRY_NAV.SIGNIN.URL);
         }
 
-        this.photos = require('../../../../data/airbnb-scores.json');
-        this.objectPhotosMap = require('../../../../data/airbnb-object-photos-map.json');
-        this.photoUrlMap = require('../../../../data/airbnb-photo-url-map.json');
-        this.interiorPhotos = require('../../../../data/airbnb-interior-photos.json');
-        this.exteriorPhotos = require('../../../../data/airbnb-exterior-photos.json');
+        LoadActions.loadAirbnb(this.onLoadPhotoData)
+    }
+
+    onLoadPhotoData(photoData) {
+        if (photoData) {
+            this.photoBins = photoData.photoBins;
+            this.objectPhotosMap = photoData.objectPhotosMap;
+            this.photoUrlMap = photoData.photoUrlMap;
+            this.interiorPhotos = photoData.interiorPhotos;
+            this.exteriorPhotos = photoData.exteriorPhotos;
+            this.setState({ isLoading: false });
+        }
     }
 
     getImgsForBin(binIndex) {
-        return _.sampleSize(this.photos[binIndex], PhotoDisplayPage.howMany).map(photo =>
+        return _.sampleSize(this.photoBins[binIndex], PhotoDisplayPage.howMany).map(photo =>
             <img
                 key={photo[0]}
                 alt="bnb"
@@ -125,7 +136,9 @@ class PhotoDisplayPage extends Component {
             T.get('airbnb.button.seeMore');
 
         let content;
-        if (selectedObject) {
+        if (this.isLoading) {
+            content = null;
+        } else if (selectedObject) {
             content = (
                 <div>
                     <h1 className="xxTitle xxTitle--has-photo-page">

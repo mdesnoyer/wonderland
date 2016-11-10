@@ -836,6 +836,14 @@ export const LoadActions = Object.assign({}, AjaxMixin, {
         });
         return LoadActions;
     },
+
+    loadAirbnb(callback) {
+        LoadActions.get('airbnb/photos.json', {
+            host: '/data/',
+            no_authorization_header: true,
+        }).then(res => callback(res));
+        return LoadActions;
+    },
 });
 
 // Search intercepts requests to the tag store
