@@ -44,6 +44,7 @@ if (env == 'prod') {
 }
 
 var staticsSrc = ['./src/**/*.html', './src/robots.txt', './src/*.ico'];
+var dataSrc = ['./data/**'];
 
 var testOutputDir = 'test_output';
 var testOutputFile = 'test_results.xml';
@@ -110,6 +111,15 @@ gulp.task('stylesLive', function() {
 gulp.task('statics', function() {
     return gulp.src(staticsSrc)
         .pipe(gulp.dest('./build/'))
+        .pipe(reload({
+            stream: true
+        }));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+gulp.task('data', function() {
+    return gulp.src(dataSrc)
+        .pipe(gulp.dest('./build//data/'))
         .pipe(reload({
             stream: true
         }));
@@ -309,7 +319,7 @@ gulp.task('eslint-checkstyle', function() {
         .pipe(eslint.format('checkstyle', process.stdout));
 });
 
-gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'browser-sync'], function() {
+gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'data', 'config', 'timelineConfig', 'browser-sync'], function() {
     gutil.log('Gulp is running - debug');
     gutil.log('ENVIRONMENT: ' + env);
     gulp.watch('./src/img/**/*', ['images']);
@@ -320,7 +330,7 @@ gulp.task('debug', ['images', 'stylesDebug', 'clipboardJs', 'objectFitPoly', 'fo
     return buildScript('wonderland.js', true);
 });
 
-gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'config', 'timelineConfig', 'redirects'], function() {
+gulp.task('live', ['images', 'stylesLive', 'clipboardJs', 'objectFitPoly', 'fonts', 'statics', 'data', 'config', 'timelineConfig', 'redirects'], function() {
     gutil.log('Gulp is running - live');
     gutil.log('ENVIRONMENT: ' + env);
     return buildScript('wonderland.js', false);
