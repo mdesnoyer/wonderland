@@ -49,6 +49,7 @@
     "jest": "^15.1.1",
     "jest-cli": "^15.1.1",
     "junit-report-merger": "0.0.4",
+    "license-checker": "^8.0.3",
     "merge-stream": "^1.0.0",
     "react-addons-test-utils": "^0.14.8",
     "vinyl-buffer": "^1.0.0",
