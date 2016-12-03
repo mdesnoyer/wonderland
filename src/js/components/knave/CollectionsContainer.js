@@ -250,13 +250,17 @@ const CollectionsContainer = React.createClass({
                 return [];
             }
 
-            // For the right, use the best scoring.
-            const right = UTILS.bestThumbnail(_.values(allThumbnailMap));
-            // For the left, find a default thumbnail or use the worst.
+            // default
             const _default = UTILS.findDefaultThumbnail(
                 {thumbnails: _.values(allThumbnailMap)}
             );
+
+            // For the left, find a default thumbnail or use the worst.
             const left = _default || UTILS.worstThumbnail(_.values(allThumbnailMap));
+
+            // For the right, use the best scoring OR fallback to the default
+            const right = UTILS.bestThumbnail(_.values(allThumbnailMap)) || _default;
+
             const rest = _
                 .chain(allThumbnailMap)
                 // Remove the feature thumbnails from the small list.
