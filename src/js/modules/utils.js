@@ -582,8 +582,11 @@ var UTILS = {
     },
 
     // Given array of thumbnails, return the thumbnail with best score.
-    bestThumbnail: (thumbnails) => {
-        return _.orderBy(thumbnails, ['neon_score', 'created'], ['desc', 'desc'])[0];
+    bestThumbnail: (thumbnails, reject='default') => {
+        const acceptedThumbnails = _.reject(thumbnails, function(tn) {
+            return tn.type === reject;
+        });
+        return _.orderBy(acceptedThumbnails, ['neon_score', 'created'], ['desc', 'desc'])[0];
     },
 
     // Given array of thumbnails, return the thumbnail with worst score.
