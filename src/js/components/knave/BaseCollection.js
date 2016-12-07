@@ -260,7 +260,7 @@ class BaseCollection extends React.Component {
         const blurText = this.props.isMine ?
             T.get('imageUpload.addMoreBlurText') :
             '';
-        const className = isLeft ? "xxThumbnail--lowLight" : "";
+        const className = isLeft ? 'xxThumbnail--lowLight' : 'xxThumbnail--highLight';
         const onMouseEnter = isLeft ? this.setLiftThumbnailToLeft: this.setLiftThumbnailToRight;
         return (
             <FeatureThumbnail
