@@ -19,6 +19,9 @@ const propTypes = {
     onClick: PropTypes.func,
 
     // Style
+    extraClass: PropTypes.string,
+    size: PropTypes.string,
+    type: PropTypes.string,
     className: PropTypes.string,
     wrapperClassName: PropTypes.string,
 
@@ -28,6 +31,9 @@ const propTypes = {
 
 const defaultProps = {
     className: '',
+    extraClass: '',
+    size: '',
+    type: '',
     wrapperClassName: '',
     onClick: (e) => e.preventDefault(),
     // I.e., do nothing.
@@ -43,22 +49,35 @@ function fadeIn(e) {
 }
 
 function Thumbnail(props) {
-    const disabledClassName = props.enabled ? '' : 'xxThumbnail--disabled';
     const dominantColorHex = UTILS.findDominantColor(props.dominantColor);
     const inlineBackgroundColour = dominantColorHex ? {
         backgroundColor: dominantColorHex
     } : null;
-    const className = `xxThumbnail xxThumbnail--neon \
-        xxThumbnail--highLight ${props.className} \
-        ${disabledClassName}`;
+    const assembledStyle = Object.assign({}, props.style, inlineBackgroundColour);
+    let assembledClass = ['xxThumbnail'];
+    if (props.className) {
+        assembledClass.push(props.className);
+    }
+    if (props.extraClass) {
+        assembledClass.push(props.extraClass);
+    }
+    if (props.size) {
+        assembledClass.push('xxThumbnail--' + props.size);
+    }
+    if (props.type) {
+        assembledClass.push('xxThumbnail--' + props.type);
+    }
+    if (!props.enabled) {
+        assembledClass.push('xxThumbnail--disabled');
+    }
 
     return (
         <div className={props.wrapperClassName}>
             <span
-                className={className}
+                className={assembledClass.join(' ')}
                 data-score={props.score}
                 onClick={props.onClick}
-                style={inlineBackgroundColour}
+                style={assembledStyle}
             >
                 <img
                     onLoad={fadeIn}
