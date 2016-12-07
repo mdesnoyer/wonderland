@@ -46,6 +46,9 @@ export const ThumbnailList = React.createClass({
             .map(t => {
                 return (
                     <Thumbnail
+                        size={'small'}
+                        type={t.type}
+                        extraClass={'xxThumbnail--highLight'}
                         showHref={true}
                         className={this.props.className || ''}
                         key={t.thumbnail_id}
